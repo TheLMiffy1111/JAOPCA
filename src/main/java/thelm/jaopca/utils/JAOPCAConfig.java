@@ -3,12 +3,12 @@ package thelm.jaopca.utils;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
 import net.minecraftforge.common.config.Configuration;
-import scala.actors.threadpool.Arrays;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.ore.OreEntry;
 
