@@ -1,0 +1,61 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+repositories {
+    maven {
+        name 'blamejared'
+        url = "http://maven.blamejared.com"
+    }
+    maven {
+        name "progwml6"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        name "tehnut"
+        url = "http://tehnut.info/maven"
+    }
+    maven {
+        name "amadornes"
+        url = "http://maven.amadornes.com/"
+    }
+    maven {
+        name = "player"
+        url = "http://maven.ic2.player.to/"
+    }
+}
+
+version = "1.0.0"
+group= "thelm.jaopca"
+archivesBaseName = "JAOPCA"
+
+sourceCompatibility = targetCompatibility = "1.8"
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+minecraft {
+    version = "1.10.2-12.18.3.2254"
+    runDir = "run"
+    mappings = "stable_29"
+    makeObfSourceJar = false
+}
+
+dependencies {
+    deobfCompile "MCMultiPart:MCMultiPart-experimental:1.4.0_93:universal"
+    deobfCompile "mezz.jei:jei_1.10.2:3.14.7.417"
+    deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.5.205"
+    deobfCompile "slimeknights:TConstruct:1.10.2-2.6.3.501"
+    deobfCompile "net.industrial-craft:industrialcraft-2:2.6.204-ex110"
+}
+
+processResources
+{
+}
