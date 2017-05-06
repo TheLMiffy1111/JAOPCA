@@ -1,4 +1,6 @@
-package thelm.jaopca.fluid;
+package thelm.jaopca.api.fluid;
+
+import java.util.Locale;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -6,6 +8,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
+import thelm.jaopca.modules.ModuleMolten;
 
 public class FluidBase extends Fluid {
 
@@ -13,7 +16,7 @@ public class FluidBase extends Fluid {
 	public final ItemEntry itemEntry;
 
 	public FluidBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-		super(itemEntry.prefix+"_"+oreEntry.getOreName(), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_still"), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_flowing"));
+		super(((itemEntry == ModuleMolten.MOLTEN_ENTRY ? "" : itemEntry.name + "_") + oreEntry.getOreName()).toLowerCase(Locale.ENGLISH), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_still"), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_flowing"));
 		this.setUnlocalizedName("jaopca."+itemEntry.name);
 		this.oreEntry = oreEntry;
 		this.itemEntry = itemEntry;

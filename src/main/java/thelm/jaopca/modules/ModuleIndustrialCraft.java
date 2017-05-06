@@ -20,7 +20,7 @@ import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleAbstract;
 
-public class ModuleIC2 extends ModuleAbstract {
+public class ModuleIndustrialCraft extends ModuleAbstract {
 
 	public static final ItemEntry CRUSHED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crushed", new ModelResourceLocation("jaopca:crushed#inventory"), ImmutableList.<String>of(
 			"Copper", "Gold", "Iron", "Lead", "Tin", "Silver", "Uranium"
@@ -74,14 +74,14 @@ public class ModuleIC2 extends ModuleAbstract {
 		}
 	}
 	
-	private static void addCentrifugeRecipe(IRecipeInput input, int minHeat, ItemStack... output) {
+	public static void addCentrifugeRecipe(IRecipeInput input, int minHeat, ItemStack... output) {
 		NBTTagCompound metadata = new NBTTagCompound();
 		metadata.setInteger("minHeat", minHeat);
 
 		Recipes.centrifuge.addRecipe(input, metadata, true, output);
 	}
 
-	private static void addOreWashingRecipe(IRecipeInput input, ItemStack... output) {
+	public static void addOreWashingRecipe(IRecipeInput input, ItemStack... output) {
 		NBTTagCompound metadata = new NBTTagCompound();
 		metadata.setInteger("amount", 1000);
 

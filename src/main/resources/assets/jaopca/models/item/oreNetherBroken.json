@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:items/oreBroken",
+        "layer1": "jaopca:items/oreNetherBroken_overlay"
+    }
+}

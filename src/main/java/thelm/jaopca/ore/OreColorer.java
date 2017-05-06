@@ -2,46 +2,39 @@ package thelm.jaopca.ore;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.utils.JAOPCAConfig;
-import thelm.jaopca.api.IOreEntry;
 
 public class OreColorer {
 
 	public static final HashMap<String, Color> DEFAULT_COLORS = Maps.<String, Color>newHashMap();
-	
+
 	static {
-		DEFAULT_COLORS.put("Cobalt", new Color(0x2376DD));
-		DEFAULT_COLORS.put("Ardite", new Color(0xF48A00));
-		DEFAULT_COLORS.put("Aluminum", new Color(0xEDEDED));
+		
 	}
-	
+
 	public static Color getColor(String prefix, String oreName) {
 		if(DEFAULT_COLORS.containsKey(oreName)) {
 			return DEFAULT_COLORS.get(oreName);
 		}
-		
+
 		List<ItemStack> ores = OreDictionary.getOres(prefix + oreName);
 		if(ores.isEmpty())
 			return Color.WHITE;
 
-		Set<Color> colors = new LinkedHashSet<Color>();
+		Set<Color> colors = Sets.<Color>newLinkedHashSet();
 		for(ItemStack stack : ores) {
 			try {
 				BufferedImage texture = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(getIconResource(stack)).getInputStream());
@@ -84,7 +77,7 @@ public class OreColorer {
 		for(int i = 0; i < image.getWidth(); i++) {
 			for(int j = 0; j < image.getHeight(); j++) {
 				Color c = new Color(image.getRGB(i, j));
-				if((c.getAlpha() == 255) && ((c.getRed() > 10) || (c.getBlue() > 10) || (c.getGreen() > 10))) {
+				if((c.getAlpha() == 255) && ((c.getRed() > 30) || (c.getBlue() > 30) || (c.getGreen() > 30))) {
 					red += c.getRed();
 					green += c.getGreen();
 					blue += c.getBlue();

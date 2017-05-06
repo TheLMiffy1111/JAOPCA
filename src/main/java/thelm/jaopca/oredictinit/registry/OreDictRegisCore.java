@@ -38,7 +38,7 @@ public class OreDictRegisCore {
 								Woodchopper.error(e.toString());
 								break;
 							}
-							addCustomEntryB(entries[i].trim(), rawData[1].trim(), rawData[2].trim(), damageValues[i], custom);
+							addCustomEntryB(entries[i].trim(), rawData[1].trim(), rawData[2].trim(), damageValues[i]);
 						}
 					}
 					else {
@@ -72,7 +72,7 @@ public class OreDictRegisCore {
 								Woodchopper.error(e.toString());						
 								break;
 							}
-							addCustomEntryI(entries[i].trim(), rawData[1].trim(), rawData[2].trim(), damageValues[i].trim(), custom);
+							addCustomEntryI(entries[i].trim(), rawData[1].trim(), rawData[2].trim(), damageValues[i].trim());
 						}
 					}
 					else {
@@ -80,8 +80,7 @@ public class OreDictRegisCore {
 						Woodchopper.warn("Number of entries is inequal to number of damage values.");
 					}
 				}
-				else if(rawData.length == 1 && rawData[0].trim().isEmpty());
-				else {
+				else if(rawData.length != 1 || rawData[0].trim().isEmpty()) {
 					Woodchopper.warn("Entry " + custom + " has errored:");
 					Woodchopper.warn("Entry length is incorrect.");
 				}
@@ -89,14 +88,14 @@ public class OreDictRegisCore {
 		}
 	}
 
-	public static void addCustomEntryB(String entry, String mod, String block, String damage, String fallback) {
+	public static void addCustomEntryB(String entry, String mod, String block, String damage) {
 		int dam = Integer.parseInt(damage);
 		Block thing = getBlock(mod,block);
 		if(thing != Blocks.AIR)
 			OreDictionary.registerOre(entry, new ItemStack(thing, 1, dam));
 	}
 
-	public static void addCustomEntryI(String entry, String mod, String item, String damage, String fallback) {
+	public static void addCustomEntryI(String entry, String mod, String item, String damage) {
 		int dam = Integer.parseInt(damage);
 		Item thing = getItem(mod,item);
 		if(thing != null)

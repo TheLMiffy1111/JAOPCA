@@ -1,21 +1,22 @@
-package thelm.jaopca.item;
+package thelm.jaopca.api.item;
 
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
+import thelm.jaopca.api.block.BlockBase;
 
-public class ItemBase extends Item {
+public class ItemBlockBase extends ItemBlock {
 
 	public final IOreEntry oreEntry;
 	public final ItemEntry itemEntry;
 
-	public ItemBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-		setUnlocalizedName("jaopca."+itemEntry.name);
-		setRegistryName("jaopca:item_"+itemEntry.prefix+oreEntry.getOreName());
-		this.oreEntry = oreEntry;
-		this.itemEntry = itemEntry;
+	public ItemBlockBase(BlockBase block) {
+		super(block);
+		setRegistryName(block.getRegistryName());
+		this.oreEntry = block.oreEntry;
+		this.itemEntry = block.itemEntry;
 	}
 
 	@Override

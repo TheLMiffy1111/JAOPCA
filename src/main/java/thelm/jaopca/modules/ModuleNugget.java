@@ -44,7 +44,7 @@ public class ModuleNugget extends ModuleAbstract {
 					"nugget"+entry.getOreName(),
 			}));
 
-			GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(JAOPCAApi.ITEMS_TABLE.get("nugget", entry.getOreName()),9,0), new Object[] {
+			GameRegistry.addRecipe(new ShapelessOreRecipe(getOreStack("nugget", entry, 9), new Object[] {
 					"ingot"+entry.getOreName(),
 			}));
 		}

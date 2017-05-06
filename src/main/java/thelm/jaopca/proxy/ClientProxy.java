@@ -3,6 +3,8 @@ package thelm.jaopca.proxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -14,21 +16,14 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.LoaderState;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.block.BlockBase;
-import thelm.jaopca.item.ItemBase;
-import thelm.jaopca.item.ItemBlockBase;
-import thelm.jaopca.ore.OreColorer;
+import thelm.jaopca.api.block.BlockBase;
+import thelm.jaopca.api.item.ItemBase;
+import thelm.jaopca.api.item.ItemBlockBase;
 
 public class ClientProxy extends CommonProxy {
 
@@ -78,6 +73,7 @@ public class ClientProxy extends CommonProxy {
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 			block.setCreativeTab(JAOPCA_TAB);
 			ModelLoader.setCustomModelResourceLocation(itemblock, 0, itemEntry.itemModelLocation);
+			ModelLoader.setCustomStateMapper(block, new JAOPCAStateMap(itemEntry.itemModelLocation));
 		}
 	}
 
@@ -111,6 +107,20 @@ public class ClientProxy extends CommonProxy {
 				blockcolors.registerBlockColorHandler(JAOPCA_BLOCK_COLOR, block);
 				itemcolors.registerItemColorHandler(JAOPCA_ITEM_COLOR, block);
 			}
+		}
+	}
+	
+	public static class JAOPCAStateMap extends StateMapperBase {
+
+		private final ModelResourceLocation location;
+		
+		public JAOPCAStateMap(ModelResourceLocation location) {
+			this.location = location;
+		}
+		
+		@Override
+		protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+			return location;
 		}
 	}
 }

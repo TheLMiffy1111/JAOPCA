@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "jaopca:cube_overlayed",
+        "textures": {
+            "base": "jaopca:blocks/oreGravel",
+            "overlay": "jaopca:blocks/oreGravel_overlay"
+        }
+    },
+    "variants": {
+        "normal": [{}]
+    }
+}

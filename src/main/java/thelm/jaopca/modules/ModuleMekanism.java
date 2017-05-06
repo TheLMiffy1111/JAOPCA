@@ -20,7 +20,6 @@ import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleAbstract;
-import thelm.jaopca.utils.JAOPCAUtils;
 
 public class ModuleMekanism extends ModuleAbstract {
 
@@ -73,57 +72,58 @@ public class ModuleMekanism extends ModuleAbstract {
 
 	@Override
 	public void registerRecipes() {
+		//Will switch to IMC later (if it works though)
 		for(IOreEntry entry : JAOPCAApi.ORE_ENTRY_LIST) {
 			ItemStack dust = getOreStack("dust"+entry.getOreName(),1);
 
 			if(!MINOR_COMPAT_BLACKLIST.contains(entry.getOreName())) {
-				RecipeHelper.addCombinerRecipe(JAOPCAUtils.size(dust,8), getOreStack("ore",entry,1));
+				RecipeHelper.addCombinerRecipe(resizeStack(dust,8), getOreStack("ore",entry,1));
 
 				for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
-					RecipeHelper.addEnrichmentChamberRecipe(JAOPCAUtils.size(ore, 1), JAOPCAUtils.size(dust,2));
+					RecipeHelper.addEnrichmentChamberRecipe(resizeStack(ore, 1), resizeStack(dust,2));
 				}
 
 				for(ItemStack ore : OreDictionary.getOres("ingot" + entry.getOreName())) {
-					RecipeHelper.addCrusherRecipe(JAOPCAUtils.size(ore, 1), JAOPCAUtils.size(dust,1));
+					RecipeHelper.addCrusherRecipe(resizeStack(ore, 1), resizeStack(dust,1));
 				}
 			}
 
 			if(!DIRTY_DUST_2_DUST_BLACKLIST.contains(entry.getOreName())) {
 				for(ItemStack ore : OreDictionary.getOres("dustDirty" + entry.getOreName())) {
-					RecipeHelper.addEnrichmentChamberRecipe(JAOPCAUtils.size(ore, 1), JAOPCAUtils.size(dust,1));
+					RecipeHelper.addEnrichmentChamberRecipe(resizeStack(ore, 1), resizeStack(dust,1));
 				}
 			}
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustDirty")) {
 			for(ItemStack ore : OreDictionary.getOres("clump" + entry.getOreName())) {
-				RecipeHelper.addCrusherRecipe(JAOPCAUtils.size(ore, 1), new ItemStack(JAOPCAApi.ITEMS_TABLE.get("dustDirty",entry.getOreName()),1,0));
+				RecipeHelper.addCrusherRecipe(resizeStack(ore, 1), getOreStack("dustDirty", entry, 1));
 			}
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("clump")) {
 			for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
-				RecipeHelper.addPurificationChamberRecipe(JAOPCAUtils.size(ore, 1), new ItemStack(JAOPCAApi.ITEMS_TABLE.get("clump",entry.getOreName()),3,0));
+				RecipeHelper.addPurificationChamberRecipe(resizeStack(ore, 1), getOreStack("clump", entry, 3));
 			}
 
 			for(ItemStack ore : OreDictionary.getOres("shard" + entry.getOreName())) {
-				RecipeHelper.addPurificationChamberRecipe(JAOPCAUtils.size(ore, 1), new ItemStack(JAOPCAApi.ITEMS_TABLE.get("clump",entry.getOreName()),3,0));
+				RecipeHelper.addPurificationChamberRecipe(resizeStack(ore, 1), getOreStack("clump", entry, 1));
 			}
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("shard")) {
 			for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
-				RecipeHelper.addChemicalInjectionChamberRecipe(JAOPCAUtils.size(ore, 1), "hydrogenChloride", new ItemStack(JAOPCAApi.ITEMS_TABLE.get("shard",entry.getOreName()),4,0));
+				RecipeHelper.addChemicalInjectionChamberRecipe(resizeStack(ore, 1), "hydrogenChloride", getOreStack("shard", entry, 4));
 			}
 
 			for(ItemStack ore : OreDictionary.getOres("crystal" + entry.getOreName())) {
-				RecipeHelper.addChemicalInjectionChamberRecipe(JAOPCAUtils.size(ore, 1), "hydrogenChloride", new ItemStack(JAOPCAApi.ITEMS_TABLE.get("shard",entry.getOreName()),1,0));
+				RecipeHelper.addChemicalInjectionChamberRecipe(resizeStack(ore, 1), "hydrogenChloride", getOreStack("shard", entry, 1));
 			}
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crystal")) {
 			if(GASES_TABLE.contains("slurryClean", entry.getOreName())) {
-				RecipeHelper.addChemicalCrystallizerRecipe(new GasStack(GASES_TABLE.get("slurryClean",entry.getOreName()), 200), new ItemStack(JAOPCAApi.ITEMS_TABLE.get("crystal",entry.getOreName()),1,0));
+				RecipeHelper.addChemicalCrystallizerRecipe(new GasStack(GASES_TABLE.get("slurryClean",entry.getOreName()), 200), getOreStack("crystal", entry, 1));
 			}
 		}
 
@@ -135,7 +135,7 @@ public class ModuleMekanism extends ModuleAbstract {
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("slurry")) {
 			for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
-				RecipeHelper.addChemicalDissolutionChamberRecipe(JAOPCAUtils.size(ore, 1), new GasStack(GASES_TABLE.get("slurry",entry.getOreName()), 1000));
+				RecipeHelper.addChemicalDissolutionChamberRecipe(resizeStack(ore, 1), new GasStack(GASES_TABLE.get("slurry",entry.getOreName()), 1000));
 			}
 		}
 	}
@@ -146,7 +146,7 @@ public class ModuleMekanism extends ModuleAbstract {
 		public final ItemEntry itemEntry;
 
 		public GasBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-			super(itemEntry.prefix+oreEntry.getOreName(), "mekanism:blocks/liquid/Liquid" + (itemEntry.prefix.contains("Clean") ? "Clean" : "") + "Ore");
+			super(itemEntry.name+oreEntry.getOreName(), "mekanism:blocks/liquid/Liquid" + (itemEntry.prefix.contains("Clean") ? "Clean" : "") + "Ore");
 			setUnlocalizedName("jaopca."+itemEntry.name);
 			this.oreEntry = oreEntry;
 			this.itemEntry = itemEntry;

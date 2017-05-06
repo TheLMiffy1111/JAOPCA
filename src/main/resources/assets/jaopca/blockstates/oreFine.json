@@ -1,0 +1,12 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "jaopca:cube_colored",
+        "textures": {
+            "base": "jaopca:blocks/oreDust"
+        }
+    },
+    "variants": {
+        "normal": [{}]
+    }
+}

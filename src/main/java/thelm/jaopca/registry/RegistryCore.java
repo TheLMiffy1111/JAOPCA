@@ -1,7 +1,9 @@
 package thelm.jaopca.registry;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -18,21 +20,33 @@ import thelm.jaopca.api.IModule;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.block.BlockBase;
-import thelm.jaopca.fluid.FluidBase;
-import thelm.jaopca.item.ItemBase;
-import thelm.jaopca.item.ItemBlockBase;
+import thelm.jaopca.api.block.BlockBase;
+import thelm.jaopca.api.block.BlockProperties;
+import thelm.jaopca.api.fluid.FluidBase;
+import thelm.jaopca.api.item.ItemBase;
+import thelm.jaopca.api.item.ItemBlockBase;
+import thelm.jaopca.modules.ModuleAppliedEnergistics;
+import thelm.jaopca.modules.ModuleBlock;
 import thelm.jaopca.modules.ModuleDust;
-import thelm.jaopca.modules.ModuleIC2;
+import thelm.jaopca.modules.ModuleEnderIO;
+import thelm.jaopca.modules.ModuleExNihiloOmnia;
+import thelm.jaopca.modules.ModuleExNihiloOmniaEnder;
+import thelm.jaopca.modules.ModuleExNihiloOmniaNether;
+import thelm.jaopca.modules.ModuleExNihiloOmniaOverworld;
+import thelm.jaopca.modules.ModuleImmersiveEngineering;
+import thelm.jaopca.modules.ModuleIndustrialCraft;
 import thelm.jaopca.modules.ModuleMekanism;
+import thelm.jaopca.modules.ModuleMolten;
 import thelm.jaopca.modules.ModuleNugget;
-import thelm.jaopca.modules.ModuleTConstruct;
+import thelm.jaopca.modules.ModuleThermalExpansion;
+import thelm.jaopca.modules.ModuleTinkersConstruct;
 
 public class RegistryCore {
 
 	public static void preInit() {
 		registerBuiltInModules();
 
+		filterModules();
 		initItemEntries();
 		initItemBlacklist();
 		initEntryToOreMap();
@@ -52,12 +66,51 @@ public class RegistryCore {
 	private static void registerBuiltInModules() {
 		JAOPCAApi.registerModule(new ModuleDust());
 		JAOPCAApi.registerModule(new ModuleNugget());
-		if(Loader.isModLoaded("Mekanism"))
+		JAOPCAApi.registerModule(new ModuleBlock());
+		JAOPCAApi.registerModule(new ModuleMolten());
+		if(Loader.isModLoaded("Mekanism")) {
 			JAOPCAApi.registerModule(new ModuleMekanism());
-		if(Loader.isModLoaded("tconstruct"))
-			JAOPCAApi.registerModule(new ModuleTConstruct());
-		if(Loader.isModLoaded("IC2"))
-			JAOPCAApi.registerModule(new ModuleIC2());
+		}
+		if(Loader.isModLoaded("tconstruct")) {
+			JAOPCAApi.registerModule(new ModuleTinkersConstruct());
+		}
+		if(Loader.isModLoaded("IC2")) {
+			JAOPCAApi.registerModule(new ModuleIndustrialCraft());
+		}
+		if(Loader.isModLoaded("appliedenergistics2")) {
+			JAOPCAApi.registerModule(new ModuleAppliedEnergistics());
+		}
+		if(Loader.isModLoaded("EnderIO")) {
+			JAOPCAApi.registerModule(new ModuleEnderIO());
+		}
+		if(Loader.isModLoaded("thermalexpansion")) {
+			JAOPCAApi.registerModule(new ModuleThermalExpansion());
+		}
+		if(Loader.isModLoaded("exnihiloomnia")) {
+			JAOPCAApi.registerModule(new ModuleExNihiloOmnia());
+			JAOPCAApi.registerModule(new ModuleExNihiloOmniaOverworld());
+			JAOPCAApi.registerModule(new ModuleExNihiloOmniaNether());
+			JAOPCAApi.registerModule(new ModuleExNihiloOmniaEnder());
+		}
+		if(Loader.isModLoaded("immersiveengineering")) {
+			JAOPCAApi.registerModule(new ModuleImmersiveEngineering());
+		}
+	}
+
+	private static void filterModules() {
+		ArrayList<IModule> toRemove = Lists.<IModule>newArrayList();
+		ArrayList<String> toRemoveNames = Lists.<String>newArrayList();
+		for(IModule module : JAOPCAApi.MODULE_LIST) {
+			for(String moduleName : module.getDependencies()) {
+				if(!JAOPCAApi.NAME_TO_MODULE_MAP.containsKey(moduleName)) {
+					toRemove.add(module);
+					toRemoveNames.add(module.getName());
+				}
+			}
+		}
+
+		JAOPCAApi.MODULE_LIST.removeAll(toRemove);
+		JAOPCAApi.NAME_TO_MODULE_MAP.remove(toRemoveNames);
 	}
 
 	private static void initItemEntries() {
@@ -84,7 +137,22 @@ public class RegistryCore {
 					}
 				}
 
+				if(entry.type == EnumEntryType.FLUID) {
+					if(entry == ModuleMolten.MOLTEN_ENTRY && FluidRegistry.isFluidRegistered(ore.getOreName().toLowerCase(Locale.ENGLISH))) {
+						entry.blacklist.add(ore.getOreName());
+					}
+					else if(FluidRegistry.isFluidRegistered((entry.prefix+"_"+ore.getOreName()).toLowerCase(Locale.ENGLISH))) {
+						entry.blacklist.add(ore.getOreName());
+					}
+				}
+
 				for(String moduleName : ore.getModuleBlacklist()) {
+					for(IModule module : entry.moduleList) {
+						if(!module.getDependencies().isEmpty() && module.getDependencies().contains(moduleName)) {
+							entry.blacklist.add(ore.getOreName());
+						}
+					}
+
 					if(entry.moduleList.contains(JAOPCAApi.NAME_TO_MODULE_MAP.get(moduleName))) {
 						entry.blacklist.add(ore.getOreName());
 					}
@@ -129,7 +197,8 @@ public class RegistryCore {
 					continue;
 				}
 
-				BlockBase block = new BlockBase(entry, ore);
+				BlockProperties ppt = entry.blockProperties;
+				BlockBase block = new BlockBase(ppt.material, ppt.mapColor, entry, ore);
 				GameRegistry.register(block);
 				ItemBlockBase itemblock = new ItemBlockBase(block);
 				GameRegistry.register(itemblock);

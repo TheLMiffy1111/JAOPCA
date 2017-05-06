@@ -11,28 +11,38 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 
 repositories {
     maven {
-        name 'blamejared'
         url = "http://maven.blamejared.com"
     }
     maven {
-        name "progwml6"
         url = "http://dvs1.progwml6.com/files/maven"
     }
     maven {
-        name "tehnut"
         url = "http://tehnut.info/maven"
     }
     maven {
-        name "amadornes"
         url = "http://maven.amadornes.com/"
     }
     maven {
-        name = "player"
         url = "http://maven.ic2.player.to/"
+    }
+    maven {
+        url = "http://maven.tterrag.com/"
+    }
+    ivy {
+        url "http://ae-mod.info/builds"
+        layout "pattern", {
+            artifact "[module]-[revision](-[classifier])(.[ext])"
+        }
+    }
+    maven {
+        url = "http://maven.epoxide.org/"
+    }
+    maven {
+        url = "https://maven.chaosfield.at/"
     }
 }
 
-version = "1.0.0"
+version = "1102.1.0.2"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -54,8 +64,35 @@ dependencies {
     deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.5.205"
     deobfCompile "slimeknights:TConstruct:1.10.2-2.6.3.501"
     deobfCompile "net.industrial-craft:industrialcraft-2:2.6.204-ex110"
+    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.10.2-r75"
+    deobfCompile "blusunrize:ImmersiveEngineering:0.10-57-58"
 }
 
 processResources
 {
 }
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+task apiZip(type: Zip) {
+    from(sourceSets.main.java) {
+        include "thelm/jaopca/api/**"
+    }
+    classifier = 'api'
+}
+task apiJar(type: Jar) {
+    from(sourceSets.main.java) {
+        include "thelm/jaopca/api/**"
+    }
+    classifier = 'api'
+}
+
+artifacts {
+    archives deobfJar
+    archives apiZip
+    archives apiJar
+}
+
