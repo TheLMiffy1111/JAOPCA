@@ -1,0 +1,30 @@
+#Default
+item.jaopca.dust.name=%sstaub
+item.jaopca.nugget.name=%snugget
+tile.jaopca.block.name=%sblock
+fluid.jaopca.molten=Geschmolzenes %s
+
+#Mekanism
+item.jaopca.dustDirty.name=Schmutziger %sstaub
+item.jaopca.clump.name=%sklumpen
+item.jaopca.shard.name=%sscherbe
+item.jaopca.crystal.name=%skristall
+gas.jaopca.slurryClean=Saubere %sschlacke
+gas.jaopca.slurry=%sschlacke
+
+#IC2
+item.jaopca.crushed.name=Zerstoßenes %serz
+item.jaopca.purified.name=Gereinigtes Zerstoßenes %serz
+item.jaopca.dustTiny.name=Winziger Haufen %sstaub
+
+#ExNihiloOmnia
+item.jaopca.oreBroken.name=Zerbrochenes %serz
+item.jaopca.oreNetherBroken.name=Zerbrochenes %serz
+item.jaopca.oreEnderBroken.name=Zerbrochenes %serz
+item.jaopca.oreCrushed.name=Zerstoßenes %serz
+item.jaopca.orePowdered.name=Pulverisiertes %serz
+tile.jaopca.oreGravel.name=%s-Erzkies
+tile.jaopca.oreNetherGravel.name=Nether-%s-Erzkies
+tile.jaopca.oreEnderGravel.name=Ender-%s-Erzkies
+tile.jaopca.oreSand.name=%s-Erzsand
+tile.jaopca.oreFine.name=%s-Erzstaub
