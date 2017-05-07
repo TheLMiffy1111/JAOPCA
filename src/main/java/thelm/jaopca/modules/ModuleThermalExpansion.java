@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
@@ -20,6 +21,11 @@ public class ModuleThermalExpansion extends ModuleAbstract {
 	}
 
 	@Override
+	public List<String> getDependencies() {
+		return Lists.<String>newArrayList("dust");
+	}
+
+	@Override
 	public List<ItemEntry> getItemRequests() {
 		return Lists.<ItemEntry>newArrayList();
 	}
@@ -27,11 +33,14 @@ public class ModuleThermalExpansion extends ModuleAbstract {
 	@Override
 	public void registerRecipes() {
 		ItemStack cinnabar = getOreStack("crystalCinnabar", 1);
+		ItemStack richSlag = getOreStack("crystalSlagRich", 1);
 
 		for(IOreEntry entry : JAOPCAApi.ORE_ENTRY_LIST) {
-			addPulverizerRecipe(1000, getOreStack("ingot", entry, 1), getOreStack("dust", entry, 1), null, 0);
-			addPulverizerRecipe(energyI(entry, 4000), getOreStack("ore", entry, 1), getOreStack("dust", entry, 2), getOreStackExtra("dust", entry, 1), 10);
-			addInductionSmelterRecipe(energyI(entry, 4000), getOreStack("ore", entry, 1), cinnabar.copy(), getOreStack("ingot", entry, 3), getOreStackExtra("ingot", entry, 1), 100);
+			if(!entry.getModuleBlacklist().contains(getName())) {
+				boolean flag = entry.getOreName().equals(entry.getExtra());
+				addPulverizerRecipe(energyI(entry, 4000), getOreStack("ore", entry, 1), getOreStack("dust", entry, 2), flag ? null : getOreStackExtra("dust", entry, 1), 10);
+				addInductionSmelterRecipe(energyI(entry, 4000), getOreStack("ore", entry, 1), cinnabar.copy(), getOreStack("ingot", entry, 3), flag ? richSlag : getOreStackExtra("ingot", entry, 1), flag ? 75 : 100);
+			}
 		}
 	}
 
@@ -64,5 +73,15 @@ public class ModuleThermalExpansion extends ModuleAbstract {
 		}
 
 		FMLInterModComms.sendMessage("thermalexpansion", "addsmelterrecipe", data);
+	}
+
+	public static void addCrucibleRecipe(int energy, ItemStack input, FluidStack output) {
+		NBTTagCompound message = new NBTTagCompound();
+
+		message.setInteger("energy", energy);
+		message.setTag("input", input.writeToNBT(new NBTTagCompound()));
+		message.setTag("output", output.writeToNBT(new NBTTagCompound()));
+
+		FMLInterModComms.sendMessage("thermalexpansion", "addcruciblerecipe", message);
 	}
 }

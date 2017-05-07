@@ -42,7 +42,7 @@ repositories {
     }
 }
 
-version = "1102.1.0.2"
+version = "1102.1.0.3"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -84,7 +84,7 @@ task apiZip(type: Zip) {
     classifier = 'api'
 }
 task apiJar(type: Jar) {
-    from(sourceSets.main.java) {
+    from(sourceSets.main.output) {
         include "thelm/jaopca/api/**"
     }
     classifier = 'api'

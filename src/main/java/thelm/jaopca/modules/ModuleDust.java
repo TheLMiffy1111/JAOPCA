@@ -18,12 +18,12 @@ import thelm.jaopca.api.ModuleAbstract;
 public class ModuleDust extends ModuleAbstract {
 
 	public static final ItemEntry DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dust", new ModelResourceLocation("jaopca:dust#inventory"));
-	
+
 	@Override
 	public String getName() {
 		return "dust";
 	}
-	
+
 	@Override
 	public List<ItemEntry> getItemRequests() {
 		return Lists.newArrayList(DUST_ENTRY);

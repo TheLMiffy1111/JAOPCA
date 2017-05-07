@@ -1,6 +1,6 @@
 package thelm.jaopca.registry;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -39,7 +39,9 @@ import thelm.jaopca.modules.ModuleMekanism;
 import thelm.jaopca.modules.ModuleMolten;
 import thelm.jaopca.modules.ModuleNugget;
 import thelm.jaopca.modules.ModuleThermalExpansion;
+import thelm.jaopca.modules.ModuleThermalSmeltery;
 import thelm.jaopca.modules.ModuleTinkersConstruct;
+import thelm.jaopca.utils.JAOPCAConfig;
 
 public class RegistryCore {
 
@@ -95,17 +97,26 @@ public class RegistryCore {
 		if(Loader.isModLoaded("immersiveengineering")) {
 			JAOPCAApi.registerModule(new ModuleImmersiveEngineering());
 		}
+		if(Loader.isModLoaded("thermalsmeltery")) {
+			//I hope iterating order is correct
+			JAOPCAApi.registerModule(new ModuleThermalSmeltery());
+		}
 	}
 
 	private static void filterModules() {
-		ArrayList<IModule> toRemove = Lists.<IModule>newArrayList();
-		ArrayList<String> toRemoveNames = Lists.<String>newArrayList();
+		HashSet<IModule> toRemove = Sets.<IModule>newHashSet();
+		HashSet<String> toRemoveNames = Sets.<String>newHashSet();
 		for(IModule module : JAOPCAApi.MODULE_LIST) {
 			for(String moduleName : module.getDependencies()) {
 				if(!JAOPCAApi.NAME_TO_MODULE_MAP.containsKey(moduleName)) {
 					toRemove.add(module);
 					toRemoveNames.add(module.getName());
 				}
+			}
+			
+			if(JAOPCAConfig.moduleBlacklist.contains(module.getName())) {
+				toRemove.add(module);
+				toRemoveNames.add(module.getName());
 			}
 		}
 

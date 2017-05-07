@@ -18,6 +18,11 @@ public class ModuleImmersiveEngineering extends ModuleAbstract {
 	}
 
 	@Override
+	public List<String> getDependencies() {
+		return Lists.<String>newArrayList("dust");
+	}
+
+	@Override
 	public List<ItemEntry> getItemRequests() {
 		return Lists.<ItemEntry>newArrayList();
 	}
@@ -27,8 +32,10 @@ public class ModuleImmersiveEngineering extends ModuleAbstract {
 		IERecipes.oreOutputSecondaries.replace("Iridium", new Object[] {"dustPlatinum", Float.valueOf(0.1F)});
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dust")) {
-			if(!entry.getOreName().equals(entry.getExtra())) {
-				IERecipes.oreOutputSecondaries.putIfAbsent(entry.getOreName(), new Object[] {"dust"+entry.getExtra(), Float.valueOf(0.1F)});
+			if(!entry.getModuleBlacklist().contains(getName())) {
+				if(!entry.getOreName().equals(entry.getExtra())) {
+					IERecipes.oreOutputSecondaries.putIfAbsent(entry.getOreName(), new Object[] {"dust"+entry.getExtra(), Float.valueOf(0.1F)});
+				}
 			}
 		}
 	}

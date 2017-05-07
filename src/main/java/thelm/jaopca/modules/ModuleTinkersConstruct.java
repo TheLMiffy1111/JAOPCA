@@ -20,6 +20,11 @@ public class ModuleTinkersConstruct extends ModuleAbstract {
 	}
 
 	@Override
+	public List<String> getDependencies() {
+		return Lists.<String>newArrayList("molten");
+	}
+
+	@Override
 	public List<ItemEntry> getItemRequests() {
 		return Lists.<ItemEntry>newArrayList();
 	}
@@ -29,10 +34,12 @@ public class ModuleTinkersConstruct extends ModuleAbstract {
 		//Use TConstruct's internal method because it adds everything for us
 		//Might change
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("molten")) {
-			TinkerSmeltery.registerOredictMeltingCasting(JAOPCAApi.FLUIDS_TABLE.get("molten", entry.getOreName()), entry.getOreName());
+			if(!entry.getModuleBlacklist().contains(getName())) {
+				TinkerSmeltery.registerOredictMeltingCasting(JAOPCAApi.FLUIDS_TABLE.get("molten", entry.getOreName()), entry.getOreName());
+			}
 		}
 	}
-	
+
 	public static void addMeltingRecipe(String oreName, Fluid fluid, int amount) {
 		TinkerRegistry.registerMelting(oreName, fluid, amount);
 	}

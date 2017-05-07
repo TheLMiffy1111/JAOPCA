@@ -22,13 +22,16 @@ public class OreFinder {
 	static {
 		DEFAULT_EXTRAS.put("Cobalt", "Iron");
 		DEFAULT_EXTRAS.put("Ardite", "Gold");
-		DEFAULT_EXTRAS.put("Aluminum", "Tin");
+		DEFAULT_EXTRAS.put("Aluminum", "Iron");
 		DEFAULT_EXTRAS.put("Copper", "Gold");
 		DEFAULT_EXTRAS.put("Tin", "Iron");
 		DEFAULT_EXTRAS.put("Lead", "Silver");
 		DEFAULT_EXTRAS.put("Iron", "Nickel");
 		DEFAULT_EXTRAS.put("Silver", "Lead");
 		DEFAULT_EXTRAS.put("Nickel", "Platinum");
+		DEFAULT_EXTRAS.put("Platinum", "Iridium");
+		DEFAULT_EXTRAS.put("Iridium", "Platinum");
+		DEFAULT_EXTRAS.put("Mithril", "Gold");
 		DEFAULT_EXTRAS.put("FzDarkIron", "Silver");
 		
 		DEFAULT_ENERGY_MODIFIERS.put("Cobalt", 3D);

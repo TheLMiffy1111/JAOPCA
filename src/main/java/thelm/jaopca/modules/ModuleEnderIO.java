@@ -1,5 +1,6 @@
 package thelm.jaopca.modules;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -13,23 +14,45 @@ import thelm.jaopca.api.ModuleAbstract;
 
 public class ModuleEnderIO extends ModuleAbstract {
 
-	private static final String XML_MESSAGE =
+	public static final ArrayList<String> ORE_BLACKLIST = Lists.<String>newArrayList(
+			"Iron", "Gold", "Copper", "Lead", "Silver", "Nickel"
+			);
+	
+	public static final String XML_MESSAGE =
 			"<recipeGroup name=\"JAOPCA\">" + 
 				"<recipe name=\"%sOre\" energyCost=\"%d\">" +
 					"<input>" +
 						"<itemStack oreDictionary=\"ore%s\" />" +
 					"</input>" +
 					"<output>" +
-						"<itemStack oreDictionary=\"dust%s\" number=\"2\" />" +      
-						"<itemStack oreDictionary=\"dust%s\" number=\"1\" chance=\"0.1\" />" +       
+						"<itemStack oreDictionary=\"dust%s\" number=\"2\" />" +
+						"<itemStack oreDictionary=\"dust%s\" number=\"1\" chance=\"0.1\" />" +
 						"<itemStack modID=\"minecraft\" itemName=\"cobblestone\" chance=\"0.15\"/>" +
 					"</output>" +
 				"</recipe>" + 
 			"</recipeGroup>";
 	
+	public static final String XML_MESSAGE_1 =
+			"<recipeGroup name=\"JAOPCA\">" +
+				"<recipe name=\"%sOre\" energyCost=\"%d\">" +
+					"<input>" +
+						"<itemStack oreDictionary=\"ore%s\" />" +
+					"</input>" +
+					"<output>" +
+						"<itemStack oreDictionary=\"dust%s\" number=\"2\" />" +
+						"<itemStack modID=\"minecraft\" itemName=\"cobblestone\" chance=\"0.15\"/>" +
+					"</output>" +
+				"</recipe>" +
+			"</recipeGroup>";
+	
 	@Override
 	public String getName() {
 		return "enderio";
+	}
+
+	@Override
+	public List<String> getDependencies() {
+		return Lists.<String>newArrayList("dust");
 	}
 
 	@Override
@@ -39,8 +62,12 @@ public class ModuleEnderIO extends ModuleAbstract {
 
 	@Override
 	public void registerRecipes() {
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dust")) {
-			addSAGMillRecipe(entry.getOreName(), energyI(entry, 3600), entry.getExtra());
+		for(IOreEntry entry : JAOPCAApi.ORE_ENTRY_LIST) {
+			if(!entry.getModuleBlacklist().contains(getName())) {
+				if(!ORE_BLACKLIST.contains(entry.getOreName())) {
+					addSAGMillRecipe(entry.getOreName(), energyI(entry, 3600), entry.getExtra());
+				}
+			}
 		}
 	}
 	
@@ -48,6 +75,11 @@ public class ModuleEnderIO extends ModuleAbstract {
 		if(OreDictionary.getOres("dust" + extra).isEmpty())
 			extra = input;
 
-		FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE, input, energy, input, input, extra));
+		if(!extra.equals(input)) {
+			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE, input, energy, input, input, extra));
+		}
+		else {
+			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE_1, input, energy, input, input));
+		}
 	}
 }

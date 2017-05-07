@@ -56,7 +56,7 @@ public class ModuleExNihiloOmniaEnder extends ModuleAbstract {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreEnderBroken")) {
 			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.GRAVEL_ENDER, getOreStack("oreEnderBroken", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
 
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
+			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(entry.getOreName().toLowerCase())) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreEnderBroken"+entry.getOreName(), FluidRegistry.getFluid(entry.getOreName().toLowerCase()), 36);
 			}
 		}
@@ -73,12 +73,16 @@ public class ModuleExNihiloOmniaEnder extends ModuleAbstract {
 
 			ModuleExNihiloOmnia.addOreHammerRecipe(JAOPCAApi.BLOCKS_TABLE.get("oreEnderGravel", entry.getOreName()), getOreStack("oreCrushed", entry, 1));
 
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
+			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(entry.getOreName().toLowerCase())) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreEnderGravel"+entry.getOreName(), FluidRegistry.getFluid(entry.getOreName().toLowerCase()), 144);
 			}
 
 			if(ENOCompatibility.aa_crusher && Loader.isModLoaded("actuallyadditions")) {
 				ModuleExNihiloOmnia.addActuallyAdditionsCrusherRecipe(getOreStack("oreEnderGravel", entry, 1), getOreStack("oreCrushed", entry, 5), getOreStack("oreCrushed", entry, 2), 30);
+			}
+			
+			if(ENOCompatibility.mekanism_crusher & Loader.isModLoaded("Mekanism")) {
+				ModuleMekanism.addCrusherRecipe(getOreStack("oreEnderGravel", entry, 1), getOreStack("oreCrushed", entry, 6));
 			}
 		}
 	}

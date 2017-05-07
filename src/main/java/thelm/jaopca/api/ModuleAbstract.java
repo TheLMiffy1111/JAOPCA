@@ -31,6 +31,10 @@ public abstract class ModuleAbstract implements IModule {
 	}
 
 	public static ItemStack getOreStack(String name, int amount) {
+		if(OreDictionary.getOres(name).isEmpty()) {
+			return null;
+		}
+		
 		ItemStack ret = OreDictionary.getOres(name).get(0).copy();
 		ret.stackSize = amount;
 		return ret;

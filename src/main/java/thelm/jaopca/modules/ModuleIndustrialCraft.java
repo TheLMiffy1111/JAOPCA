@@ -38,6 +38,11 @@ public class ModuleIndustrialCraft extends ModuleAbstract {
 	}
 
 	@Override
+	public List<String> getDependencies() {
+		return Lists.<String>newArrayList("dust");
+	}
+
+	@Override
 	public List<ItemEntry> getItemRequests() {
 		return Lists.<ItemEntry>newArrayList(CRUSHED_ENTRY,PURIFIED_ENTRY,TINY_DUST_ENTRY);
 	}

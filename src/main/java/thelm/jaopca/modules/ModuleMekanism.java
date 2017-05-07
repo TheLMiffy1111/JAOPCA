@@ -13,7 +13,9 @@ import mekanism.api.gas.GasStack;
 import mekanism.api.recipe.RecipeHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.IOreEntry;
@@ -54,6 +56,11 @@ public class ModuleMekanism extends ModuleAbstract {
 	@Override
 	public String getName() {
 		return "mekanism";
+	}
+
+	@Override
+	public List<String> getDependencies() {
+		return Lists.<String>newArrayList("dust");
 	}
 
 	@Override
@@ -138,6 +145,14 @@ public class ModuleMekanism extends ModuleAbstract {
 				RecipeHelper.addChemicalDissolutionChamberRecipe(resizeStack(ore, 1), new GasStack(GASES_TABLE.get("slurry",entry.getOreName()), 1000));
 			}
 		}
+	}
+	
+	public static void addCrusherRecipe(ItemStack input, ItemStack output) {
+		output.stackSize = 6;
+		NBTTagCompound msg = new NBTTagCompound();
+		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
+		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
+		FMLInterModComms.sendMessage("Mekanism", "CrusherRecipe", msg);
 	}
 
 	public static class GasBase extends Gas {

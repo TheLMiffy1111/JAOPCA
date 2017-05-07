@@ -109,6 +109,10 @@ public class ModuleExNihiloOmnia extends ModuleAbstract {
 			if(ENOCompatibility.aa_crusher && Loader.isModLoaded("actuallyadditions")) {
 				addActuallyAdditionsCrusherRecipe(getOreStack("oreSand", entry, 1), getOreStack("orePowdered", entry, 5), getOreStack("orePowdered", entry, 2), 30);
 			}
+			
+			if(ENOCompatibility.mekanism_crusher & Loader.isModLoaded("Mekanism")) {
+				ModuleMekanism.addCrusherRecipe(getOreStack("oreSand", entry, 1), getOreStack("orePowdered", entry, 6));
+			}
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreFine")) {

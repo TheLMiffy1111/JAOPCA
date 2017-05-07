@@ -25,7 +25,7 @@ public class ModuleBlock extends ModuleAbstract {
 	public static final ItemEntry BLOCK_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "block", new ModelResourceLocation("jaopca:block#normal"), ImmutableList.<String>of(
 			"Iron", "Gold"
 			)).setBlockProperties(METAL_BLOCK_PROPERTIES);
-	
+
 	@Override
 	public String getName() {
 		return "block";
@@ -58,7 +58,7 @@ public class ModuleBlock extends ModuleAbstract {
 					"ingot"+entry.getOreName(),
 					"ingot"+entry.getOreName(),
 			}));
-			
+
 			GameRegistry.addRecipe(new ShapelessOreRecipe(entry.getIngotStack(), new Object[] {
 					"block"+entry.getOreName()
 			}));

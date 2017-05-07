@@ -21,6 +21,11 @@ public class ModuleAppliedEnergistics extends ModuleAbstract {
 	}
 
 	@Override
+	public List<String> getDependencies() {
+		return Lists.<String>newArrayList("dust");
+	}
+
+	@Override
 	public List<ItemEntry> getItemRequests() {
 		return Lists.<ItemEntry>newArrayList();
 	}
@@ -28,23 +33,25 @@ public class ModuleAppliedEnergistics extends ModuleAbstract {
 	@Override
 	public void registerRecipes() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dust")) {
-			ItemStack dust = getOreStack("dust", entry, 1);
-			//AOBD required this
-			float doubleChance = 0.9F;
-			try {
-				Class<?> configClass = Class.forName("appeng.core.AEConfig");
-				Object instance = configClass.getField("instance").get(null);
-				double oreDoublePercentage = configClass.getField("oreDoublePercentage").getDouble(instance);
+			if(!entry.getModuleBlacklist().contains(getName())) {
+				ItemStack dust = getOreStack("dust", entry, 1);
+				//AOBD required this
+				float doubleChance = 0.9F;
+				try {
+					Class<?> configClass = Class.forName("appeng.core.AEConfig");
+					Object instance = configClass.getField("instance").get(null);
+					double oreDoublePercentage = configClass.getField("oreDoublePercentage").getDouble(instance);
 
-				doubleChance = (float)(oreDoublePercentage / 100.0D);
-			}
-			catch(Exception e) {}
+					doubleChance = (float)(oreDoublePercentage / 100.0D);
+				}
+				catch(Exception e) {}
 
-			for(ItemStack stack : OreDictionary.getOres("ore" + entry.getOreName())) {
-				addGrinderRecipe(stack, dust, dust, doubleChance, energyI(entry, 8));
-			}
-			for(ItemStack stack : OreDictionary.getOres("ingot" + entry.getOreName())) {
-				addGrinderRecipe(stack, dust, energyI(entry, 4));
+				for(ItemStack stack : OreDictionary.getOres("ore" + entry.getOreName())) {
+					addGrinderRecipe(stack, dust, dust, doubleChance, energyI(entry, 8));
+				}
+				for(ItemStack stack : OreDictionary.getOres("ingot" + entry.getOreName())) {
+					addGrinderRecipe(stack, dust, energyI(entry, 4));
+				}
 			}
 		}
 	}
