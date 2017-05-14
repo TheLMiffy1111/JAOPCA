@@ -126,8 +126,8 @@ public class BlockBase extends Block {
 		}
 	}
 
-	public BlockBase setFallable() {
-		fallable = true;
+	public BlockBase setFallable(boolean fallable) {
+		this.fallable = fallable;
 		return this;
 	}
 

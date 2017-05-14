@@ -33,12 +33,6 @@ public class OreFinder {
 		DEFAULT_EXTRAS.put("Iridium", "Platinum");
 		DEFAULT_EXTRAS.put("Mithril", "Gold");
 		DEFAULT_EXTRAS.put("FzDarkIron", "Silver");
-		
-		DEFAULT_ENERGY_MODIFIERS.put("Cobalt", 3D);
-		DEFAULT_ENERGY_MODIFIERS.put("Ardite", 3D);
-		DEFAULT_ENERGY_MODIFIERS.put("FzDarkIron", 3D);
-		DEFAULT_ENERGY_MODIFIERS.put("Osmium", 2D);
-		DEFAULT_ENERGY_MODIFIERS.put("Tungsten", 2D);
 	}
 
 	public static void findOres() {
@@ -46,7 +40,7 @@ public class OreFinder {
 		ArrayList<OreEntry> allEntries = Lists.<OreEntry>newArrayList();
 		for(String name : allOres) {
 			OreEntry entry = new OreEntry(name);
-			if(DEFAULT_EXTRAS.containsKey(name) && !OreDictionary.getOres("ingot"+DEFAULT_EXTRAS.get(name)).isEmpty()) {
+			if(DEFAULT_EXTRAS.containsKey(name) && !OreDictionary.getOres("ore"+DEFAULT_EXTRAS.get(name)).isEmpty()) {
 				entry.setExtra(DEFAULT_EXTRAS.get(name));
 			}
 			if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {

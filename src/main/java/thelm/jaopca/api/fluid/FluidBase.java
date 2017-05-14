@@ -16,7 +16,7 @@ public class FluidBase extends Fluid {
 	public final ItemEntry itemEntry;
 
 	public FluidBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-		super(((itemEntry == ModuleMolten.MOLTEN_ENTRY ? "" : itemEntry.name + "_") + oreEntry.getOreName()).toLowerCase(Locale.ENGLISH), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_still"), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_flowing"));
+		super(((itemEntry == ModuleMolten.MOLTEN_ENTRY ? "" : itemEntry.name + "_") + oreEntry.getOreName()).toLowerCase(Locale.US), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_still"), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_flowing"));
 		this.setUnlocalizedName("jaopca."+itemEntry.name);
 		this.oreEntry = oreEntry;
 		this.itemEntry = itemEntry;

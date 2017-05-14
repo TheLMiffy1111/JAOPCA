@@ -71,6 +71,8 @@ public class JAOPCAApi {
 	 */
 	public static final HashMultimap<String,IOreEntry> ENTRY_NAME_TO_ORES_MAP = HashMultimap.<String,IOreEntry>create();
 	
+	public static final HashMultimap<IModule,IOreEntry> MODULE_TO_ORES_MAP = HashMultimap.<IModule,IOreEntry>create();
+	
 	/**
 	 * Set of textures to register
 	 */
@@ -88,5 +90,9 @@ public class JAOPCAApi {
 	public static void registerModule(IModule module) {
 		MODULE_LIST.add(module);
 		NAME_TO_MODULE_MAP.put(module.getName(), module);
+	}
+	
+	public static boolean isModuleLoaded(String name) {
+		return NAME_TO_MODULE_MAP.containsKey(name);
 	}
 }

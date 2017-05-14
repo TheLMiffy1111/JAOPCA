@@ -1,3 +1,5 @@
+itemGroup.jaopca=JAOPCA
+
 #Default
 item.jaopca.dust.name=%sstaub
 item.jaopca.nugget.name=%snugget
@@ -28,3 +30,7 @@ tile.jaopca.oreNetherGravel.name=Nether-%s-Erzkies
 tile.jaopca.oreEnderGravel.name=Ender-%s-Erzkies
 tile.jaopca.oreSand.name=%s-Erzsand
 tile.jaopca.oreFine.name=%s-Erzstaub
+
+#ExNihiloAdscensio
+
+#OreNames

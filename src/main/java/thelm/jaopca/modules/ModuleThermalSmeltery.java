@@ -1,29 +1,20 @@
 package thelm.jaopca.modules;
 
 import java.lang.reflect.Field;
-import java.util.List;
-
-import com.google.common.collect.Lists;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
-import thelm.jaopca.api.ItemEntry;
+import thelm.jaopca.api.IModule;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.ModuleAbstract;
 
-public class ModuleThermalSmeltery extends ModuleAbstract {
+public class ModuleThermalSmeltery implements IModule {
 
 	@Override
 	public String getName() {
 		return "thermalsmeltery";
-	}
-
-	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.<ItemEntry>newArrayList();
 	}
 
 	@Override
@@ -41,9 +32,9 @@ public class ModuleThermalSmeltery extends ModuleAbstract {
 
 		for(MeltingRecipe rec : TinkerRegistry.getAllMeltingRecipies()) {
 			for(ItemStack item : rec.input.getInputs()) {
-				if(item != null && (JAOPCAApi.ITEMS_TABLE.values().contains(item.getItem()) || (item.getItem() instanceof ItemBlock && JAOPCAApi.BLOCKS_TABLE.values().contains(Block.getBlockFromItem(item.getItem()))))) {
+				if(item != null && rec.output != null && (JAOPCAApi.ITEMS_TABLE.containsValue(item.getItem()) || (item.getItem() instanceof ItemBlock && JAOPCAApi.BLOCKS_TABLE.containsValue(Block.getBlockFromItem(item.getItem()))) || JAOPCAApi.FLUIDS_TABLE.containsValue(rec.output.getFluid()))) {
 					int energy = rec.getTemperature() * modifier;
-					ModuleThermalExpansion.addCrucibleRecipe(energy, item, rec.getResult());
+					ModuleThermalExpansion.addCrucibleRecipe(energy, item, rec.output);
 				}
 			}
 		}

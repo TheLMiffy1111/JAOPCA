@@ -8,12 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import thelm.jaopca.api.IModule;
 import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.ModuleAbstract;
+import thelm.jaopca.api.utils.Utils;
 
-public class ModuleThermalExpansion extends ModuleAbstract {
+public class ModuleThermalExpansion implements IModule {
 
 	@Override
 	public String getName() {
@@ -26,21 +26,21 @@ public class ModuleThermalExpansion extends ModuleAbstract {
 	}
 
 	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.<ItemEntry>newArrayList();
+	public List<String> getOreBlacklist() {
+		return Lists.newArrayList(
+				"Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Aluminum", "Nickel", "Platinum", "Iridium", "Mithril"
+				);
 	}
 
 	@Override
 	public void registerRecipes() {
-		ItemStack cinnabar = getOreStack("crystalCinnabar", 1);
-		ItemStack richSlag = getOreStack("crystalSlagRich", 1);
+		ItemStack cinnabar = Utils.getOreStack("crystalCinnabar", 1);
+		ItemStack richSlag = Utils.getOreStack("crystalSlagRich", 1);
 
-		for(IOreEntry entry : JAOPCAApi.ORE_ENTRY_LIST) {
-			if(!entry.getModuleBlacklist().contains(getName())) {
-				boolean flag = entry.getOreName().equals(entry.getExtra());
-				addPulverizerRecipe(energyI(entry, 4000), getOreStack("ore", entry, 1), getOreStack("dust", entry, 2), flag ? null : getOreStackExtra("dust", entry, 1), 10);
-				addInductionSmelterRecipe(energyI(entry, 4000), getOreStack("ore", entry, 1), cinnabar.copy(), getOreStack("ingot", entry, 3), flag ? richSlag : getOreStackExtra("ingot", entry, 1), flag ? 75 : 100);
-			}
+		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
+			boolean flag = entry.getOreName().equals(entry.getExtra());
+			addPulverizerRecipe(Utils.energyI(entry, 4000), Utils.getOreStack("ore", entry, 1), Utils.getOreStack("dust", entry, 2), flag ? null : Utils.getOreStackExtra("dust", entry, 1), 10);
+			addInductionSmelterRecipe(Utils.energyI(entry, 4000), Utils.getOreStack("ore", entry, 1), cinnabar.copy(), Utils.getOreStack("ingot", entry, 3), flag ? richSlag.copy() : Utils.getOreStackExtra("ingot", entry, 1), flag ? 75 : 100);
 		}
 	}
 
@@ -56,7 +56,7 @@ public class ModuleThermalExpansion extends ModuleAbstract {
 			data.setInteger("secondaryChance", chance);
 		}
 
-		FMLInterModComms.sendMessage("thermalexpansion", "addpulverizerrecipe", data);
+		FMLInterModComms.sendMessage("addpulverizerrecipe", "thermalexpansion", data);
 	}
 
 	public static void addInductionSmelterRecipe(int energy, ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int chance) {

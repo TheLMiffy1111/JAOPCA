@@ -12,16 +12,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
+import thelm.jaopca.api.IModule;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.ModuleAbstract;
-import thelm.jaopca.api.block.BlockBase;
 import thelm.jaopca.api.block.BlockProperties;
+import thelm.jaopca.api.utils.Utils;
 
-public class ModuleBlock extends ModuleAbstract {
+public class ModuleBlock implements IModule {
 
-	public static final BlockProperties METAL_BLOCK_PROPERTIES = new BlockProperties().setMaterialMapColor(Material.IRON);
+	public static final BlockProperties METAL_BLOCK_PROPERTIES = new BlockProperties().
+			setMaterialMapColor(Material.IRON).
+			setHardnessFunc((entry)->{return 5F;}).
+			setSoundType(SoundType.METAL).
+			setFallable(true);
 	public static final ItemEntry BLOCK_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "block", new ModelResourceLocation("jaopca:block#normal"), ImmutableList.<String>of(
 			"Iron", "Gold"
 			)).setBlockProperties(METAL_BLOCK_PROPERTIES);
@@ -34,14 +38,6 @@ public class ModuleBlock extends ModuleAbstract {
 	@Override
 	public List<ItemEntry> getItemRequests() {
 		return Lists.<ItemEntry>newArrayList(BLOCK_ENTRY);
-	}
-
-	@Override
-	public void setCustomProperties() {
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("block")) {
-			BlockBase block = JAOPCAApi.BLOCKS_TABLE.get("block", entry.getOreName());
-			block.setFallable().setSoundType(SoundType.METAL).setHardness(5F);
-		}
 	}
 
 	@Override
@@ -59,7 +55,7 @@ public class ModuleBlock extends ModuleAbstract {
 					"ingot"+entry.getOreName(),
 			}));
 
-			GameRegistry.addRecipe(new ShapelessOreRecipe(entry.getIngotStack(), new Object[] {
+			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("ingot", entry, 1), new Object[] {
 					"block"+entry.getOreName()
 			}));
 		}

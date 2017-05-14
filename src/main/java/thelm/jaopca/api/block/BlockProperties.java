@@ -1,53 +1,59 @@
 package thelm.jaopca.api.block;
 
+import java.util.function.ToIntFunction;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.EnumRarity;
+import thelm.jaopca.api.IOreEntry;
+import thelm.jaopca.api.ToFloatFunction;
 import thelm.jaopca.api.item.ItemBlockBase;
 
 /**
- * Only Material and MapColor are implemented, use setCustomProperties for now.
+ * 
  * @author TheLMiffy1111
  */
 public class BlockProperties {
 
 	public static final BlockProperties DEFAULT = new BlockProperties();
 
-	//Might change some of these to BiFunction s
-	public float hardness = 2F;
-	public float resistance = 10F;
-	public int lightOpacity = 255;
-	public float lightValue = 0F;
-	public SoundType soundType = SoundType.STONE;
+	public ToFloatFunction<IOreEntry> hardnessFunc = (entry)->{return 2F;};
+	public ToFloatFunction<IOreEntry> resisFunc = (entry)->{return hardnessFunc.applyAsFloat(entry)*5;};
+	public ToIntFunction<IOreEntry> lgtOpacFunc = (entry)->{return 255;};
+	public ToFloatFunction<IOreEntry> lgtValFunc = (entry)->{return 0F;};
+	public ToFloatFunction<IOreEntry> slippyFunc = (entry)->{return 0.6F;};
 	public Material material = Material.ROCK;
 	public MapColor mapColor = MapColor.STONE;
-	public float slipperiness = 0.6F;
+	public SoundType soundType = SoundType.STONE;
+	public int maxStkSize = 64;
+	public EnumRarity rarity = EnumRarity.COMMON;
 	public boolean fallable = false;
 	public Class<? extends BlockBase> blockClass = BlockBase.class;
 	public Class<? extends ItemBlockBase> itemBlockClass = ItemBlockBase.class;
 
-	public BlockProperties setHardness(float value) {
-		hardness = value;
+	public BlockProperties setHardnessFunc(ToFloatFunction<IOreEntry> value) {
+		hardnessFunc = value;
 		return this;
 	}
 
-	public BlockProperties setResistance(float value) {
-		resistance = value;
+	public BlockProperties setResistanceFunc(ToFloatFunction<IOreEntry> value) {
+		resisFunc = value;
 		return this;
 	}
 
-	public BlockProperties setLightOpacity(int value) {
-		lightOpacity = value;
+	public BlockProperties setLightOpacityFunc(ToIntFunction<IOreEntry> value) {
+		lgtOpacFunc = value;
 		return this;
 	}
 
-	public BlockProperties setLightValue(float value) {
-		lightValue = value;
+	public BlockProperties setLightValueFunc(ToFloatFunction<IOreEntry> value) {
+		lgtValFunc = value;
 		return this;
 	}
 
-	public BlockProperties setSoundType(SoundType value) {
-		soundType = value;
+	public BlockProperties setSlipperinessFunc(ToFloatFunction<IOreEntry> value) {
+		slippyFunc = value;
 		return this;
 	}
 
@@ -61,8 +67,18 @@ public class BlockProperties {
 		return this;
 	}
 
-	public BlockProperties setSlipperiness(float value) {
-		slipperiness = value;
+	public BlockProperties setSoundType(SoundType value) {
+		soundType = value;
+		return this;
+	}
+
+	public BlockProperties setMaxStackSize(int value) {
+		maxStkSize = value;
+		return this;
+	}
+
+	public BlockProperties setRarity(EnumRarity value) {
+		rarity = value;
 		return this;
 	}
 

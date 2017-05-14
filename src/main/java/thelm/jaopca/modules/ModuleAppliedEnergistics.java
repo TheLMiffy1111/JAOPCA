@@ -8,12 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
+import thelm.jaopca.api.IModule;
 import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.ModuleAbstract;
+import thelm.jaopca.api.utils.Utils;
 
-public class ModuleAppliedEnergistics extends ModuleAbstract {
+public class ModuleAppliedEnergistics implements IModule {
 
 	@Override
 	public String getName() {
@@ -26,15 +26,10 @@ public class ModuleAppliedEnergistics extends ModuleAbstract {
 	}
 
 	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.<ItemEntry>newArrayList();
-	}
-
-	@Override
 	public void registerRecipes() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dust")) {
 			if(!entry.getModuleBlacklist().contains(getName())) {
-				ItemStack dust = getOreStack("dust", entry, 1);
+				ItemStack dust = Utils.getOreStack("dust", entry, 1);
 				//AOBD required this
 				float doubleChance = 0.9F;
 				try {
@@ -47,10 +42,10 @@ public class ModuleAppliedEnergistics extends ModuleAbstract {
 				catch(Exception e) {}
 
 				for(ItemStack stack : OreDictionary.getOres("ore" + entry.getOreName())) {
-					addGrinderRecipe(stack, dust, dust, doubleChance, energyI(entry, 8));
+					addGrinderRecipe(stack, dust, dust, doubleChance, Utils.energyI(entry, 8));
 				}
 				for(ItemStack stack : OreDictionary.getOres("ingot" + entry.getOreName())) {
-					addGrinderRecipe(stack, dust, energyI(entry, 4));
+					addGrinderRecipe(stack, dust, Utils.energyI(entry, 4));
 				}
 			}
 		}

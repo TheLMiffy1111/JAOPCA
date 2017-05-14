@@ -37,7 +37,7 @@ public class ClientProxy extends CommonProxy {
 		public boolean hasSearchBar() {
 			return true;
 		}
-	};
+	}.setBackgroundImageName("item_search.png");
 
 	public static final IItemColor JAOPCA_ITEM_COLOR = new IItemColor() {
 		@Override

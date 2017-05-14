@@ -5,12 +5,11 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import blusunrize.immersiveengineering.common.IERecipes;
+import thelm.jaopca.api.IModule;
 import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.ModuleAbstract;
 
-public class ModuleImmersiveEngineering extends ModuleAbstract {
+public class ModuleImmersiveEngineering implements IModule {
 
 	@Override
 	public String getName() {
@@ -23,18 +22,20 @@ public class ModuleImmersiveEngineering extends ModuleAbstract {
 	}
 
 	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.<ItemEntry>newArrayList();
+	public List<String> getOreBlacklist() {
+		return Lists.<String>newArrayList(
+				"Iron", "Gold", "Copper", "Lead", "Silver", "Nickel", "Platinum", "Tungsten", "Uranium", "Yellorium", "Plutonium", "Osmium", "Iridium", "FzDarkIron"
+				);
 	}
 
 	@Override
 	public void registerRecipes() {
 		IERecipes.oreOutputSecondaries.replace("Iridium", new Object[] {"dustPlatinum", Float.valueOf(0.1F)});
 
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dust")) {
+		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			if(!entry.getModuleBlacklist().contains(getName())) {
 				if(!entry.getOreName().equals(entry.getExtra())) {
-					IERecipes.oreOutputSecondaries.putIfAbsent(entry.getOreName(), new Object[] {"dust"+entry.getExtra(), Float.valueOf(0.1F)});
+					IERecipes.oreOutputSecondaries.put(entry.getOreName(), new Object[] {"dust"+entry.getExtra(), Float.valueOf(0.1F)});
 				}
 			}
 		}

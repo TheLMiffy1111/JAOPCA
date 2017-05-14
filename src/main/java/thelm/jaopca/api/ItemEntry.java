@@ -9,6 +9,8 @@ import com.google.common.collect.Sets;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import thelm.jaopca.api.block.BlockProperties;
+import thelm.jaopca.api.fluid.FluidProperties;
+import thelm.jaopca.api.item.ItemProperties;
 
 /**
  * 
@@ -24,9 +26,9 @@ public class ItemEntry {
 	public final ArrayList<IModule> moduleList = Lists.<IModule>newArrayList();
 
 	//Will implement later.
-	//public ItemProperties itemProperties = ItemProperties.DEFAULT;
+	public ItemProperties itemProperties = ItemProperties.DEFAULT;
 	public BlockProperties blockProperties = BlockProperties.DEFAULT;
-	//public FluidProperties fluidProperties = FluidProperties.DEFAULT;
+	public FluidProperties fluidProperties = FluidProperties.DEFAULT;
 
 	public ItemEntry(EnumEntryType type, String name, String oreDictPrefix, ModelResourceLocation itemModelLocation) {
 		this.type = type;

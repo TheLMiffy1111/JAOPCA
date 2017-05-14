@@ -1,5 +1,6 @@
 package thelm.jaopca.api.item;
 
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
@@ -12,11 +13,29 @@ public class ItemBlockBase extends ItemBlock {
 	public final IOreEntry oreEntry;
 	public final ItemEntry itemEntry;
 
+	public EnumRarity rarity;
+
 	public ItemBlockBase(BlockBase block) {
 		super(block);
 		setRegistryName(block.getRegistryName());
 		this.oreEntry = block.oreEntry;
 		this.itemEntry = block.itemEntry;
+	}
+
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+		return rarity;
+	}
+
+	public ItemBlockBase setRarity(EnumRarity rarity) {
+		this.rarity = rarity;
+		return this;
+	}
+
+	@Override
+	public ItemBlockBase setMaxStackSize(int maxStackSize) {
+		super.setMaxStackSize(maxStackSize);
+		return this;
 	}
 
 	@Override

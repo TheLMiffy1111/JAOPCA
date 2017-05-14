@@ -36,8 +36,4 @@ public interface IOreEntry {
 	 * @return The color of the ore
 	 */
 	public int getColor();
-
-	public default ItemStack getIngotStack() {
-		return OreDictionary.getOres("ingot"+this.getOreName()).get(0).copy();
-	}
 }

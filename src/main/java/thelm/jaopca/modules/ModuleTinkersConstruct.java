@@ -7,12 +7,11 @@ import com.google.common.collect.Lists;
 import net.minecraftforge.fluids.Fluid;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.smeltery.TinkerSmeltery;
+import thelm.jaopca.api.IModule;
 import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.ModuleAbstract;
 
-public class ModuleTinkersConstruct extends ModuleAbstract {
+public class ModuleTinkersConstruct implements IModule {
 
 	@Override
 	public String getName() {
@@ -22,11 +21,6 @@ public class ModuleTinkersConstruct extends ModuleAbstract {
 	@Override
 	public List<String> getDependencies() {
 		return Lists.<String>newArrayList("molten");
-	}
-
-	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.<ItemEntry>newArrayList();
 	}
 
 	@Override
