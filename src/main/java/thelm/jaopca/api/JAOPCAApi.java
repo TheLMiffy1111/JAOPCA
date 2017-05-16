@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
@@ -82,6 +85,8 @@ public class JAOPCAApi {
 	 * List of ore dict entry compats
 	 */
 	public static final ArrayList<ICompat> ORE_DICT_COMPAT_LIST = Lists.<ICompat>newArrayList();
+	
+	public static final Logger LOGGER = LogManager.getLogger("JAOPCA");
 	
 	/**
 	 * Register your {@link IModule}s here.

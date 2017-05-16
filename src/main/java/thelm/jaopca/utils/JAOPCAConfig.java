@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import thelm.jaopca.api.IModule;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
@@ -24,30 +25,47 @@ public class JAOPCAConfig {
 
 	public static void init(File file) {
 		configFile = new Configuration(file);
-		initModuleConfigs();
+		initModConfigs();
 	}
 
-	public static void initModuleConfigs() {
-		String name = "modules";
+	public static void initModConfigs() {
+		String name = "jaopca";
 
-		moduleBlacklist.addAll(Arrays.asList(configFile.get(name, "blacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
+		Utils.MOD_IDS.addAll(Arrays.asList(configFile.get(name, "orePreference", new String[0]).setRequiresMcRestart(true).getStringList()));
+
+		for(ModContainer mod : Loader.instance().getActiveModList()) {
+			String modId = mod.getModId();
+			if(!Utils.MOD_IDS.contains(modId)) {
+				Utils.MOD_IDS.add(modId);
+			}
+		}
+
+		moduleBlacklist.addAll(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
 
 		usedCategories.add(name);
-	}
-	
-	public static void initModPreferenceConfigs() {
-		String name = "ore_preference";
-		
-		Utils.MOD_IDS.addAll(Arrays.asList(configFile.get(name, "list", new String[0]).setRequiresMcRestart(true).getStringList()));
 
-		usedCategories.add(name);
+		if(configFile.hasChanged())
+			configFile.save();
 	}
 
 	public static void initOreConfigs(List<OreEntry> allOres) {
 		for(OreEntry entry : allOres) {
 			String name = entry.getOreName().toLowerCase(Locale.US);
 
-			entry.setExtra(configFile.get(name, "extra", entry.getExtra()).setRequiresMcRestart(true).getString());
+			String originalExtra = entry.getExtra();
+			String configExtra = configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true).getString();
+			boolean doesOreExist = Utils.doesOreNameExist("ore"+configExtra) && Utils.doesOreNameExist("ingot"+configExtra);
+
+			if(doesOreExist) {
+				entry.setExtra(configExtra);
+			}
+			else {
+				JAOPCAApi.LOGGER.warn("Found invalid extra name in ore entry "+entry.getOreName()+", replacing");
+				configFile.getCategory(name).remove("extra");
+				configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true);
+				entry.setExtra(originalExtra);
+			}
+
 			entry.setEnergyModifier(configFile.get(name, "energyModifier", entry.getEnergyModifier()).setRequiresMcRestart(true).getDouble());
 			entry.addBlacklistedModules(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
 

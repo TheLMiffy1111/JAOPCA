@@ -1,11 +1,11 @@
 package thelm.jaopca.api.utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -19,7 +19,7 @@ import thelm.jaopca.api.item.ItemBase;
 public class Utils {
 
 	public static final HashMap<String,ItemStack> CACHE = Maps.<String,ItemStack>newHashMap();
-	public static final LinkedHashSet<String> MOD_IDS = Sets.<String>newLinkedHashSet();
+	public static final ArrayList<String> MOD_IDS = Lists.<String>newArrayList();
 
 	public static ItemStack getOreStack(String name, int amount) {
 		if(CACHE.containsKey(name)) {
@@ -31,13 +31,14 @@ public class Utils {
 		ItemStack ret = null;
 		if(!OreDictionary.getOres(name).isEmpty()) {
 			List<ItemStack> list = OreDictionary.getOres(name);
-			ret = list.get(0).copy();
+			ret = getPreferredStack(list);
 		}
 
 		if(ret != null) {
 			CACHE.put(name, ret.copy());
 			ret.stackSize = amount;
 		}
+		
 		return ret;
 	}
 
@@ -106,5 +107,26 @@ public class Utils {
 
 	public static boolean doesOreNameExist(String name) {
 		return !OreDictionary.getOres(name).isEmpty();
+	}
+	
+	public static ItemStack getPreferredStack(Iterable<ItemStack> itemList) {
+		ItemStack ret = null;
+		int index = Integer.MAX_VALUE;
+		
+		for(ItemStack stack : itemList) {
+			if(stack == null || stack.getItem() == null) {
+				continue;
+			}
+			
+			String modId = stack.getItem().getRegistryName().getResourceDomain();
+			int idex = MOD_IDS.indexOf(modId);
+			
+			if(idex < index) {
+				index = idex;
+				ret = stack;
+			}
+		}
+		
+		return ret;
 	}
 }
