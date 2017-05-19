@@ -9,13 +9,13 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 
-public class ModuleNugget implements IModule {
+public class ModuleNugget extends ModuleBase {
 
 	public static final ItemEntry NUGGET_ENTRY = new ItemEntry(EnumEntryType.ITEM, "nugget", new ModelResourceLocation("jaopca:nugget#inventory"), ImmutableList.<String>of("Gold"));
 
@@ -30,7 +30,7 @@ public class ModuleNugget implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("nugget")) {
 			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("ingot", entry, 1), new Object[] {
 					"nugget"+entry.getOreName(),

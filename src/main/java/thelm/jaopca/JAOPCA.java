@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.ore.OreFinder;
 import thelm.jaopca.oredictinit.OreDictInit;
 import thelm.jaopca.proxy.CommonProxy;
@@ -29,7 +30,7 @@ import thelm.jaopca.utils.JAOPCAEventHandler;
 		)
 public class JAOPCA {
 	public static final String MOD_ID = "jaopca";
-	public static final String VERSION = "1102.1.0.6";
+	public static final String VERSION = "1102.1.0.7";
 	@Instance(JAOPCA.MOD_ID)
 	public static JAOPCA core;
 	@SidedProxy(clientSide = "thelm.jaopca.proxy.ClientProxy", serverSide = "thelm.jaopca.proxy.CommonProxy", modId = JAOPCA.MOD_ID)
@@ -66,6 +67,6 @@ public class JAOPCA {
 
 	@EventHandler
 	public void thirdMovement(FMLPostInitializationEvent event) {
-
+		RegistryCore.postInit();
 	}
 }

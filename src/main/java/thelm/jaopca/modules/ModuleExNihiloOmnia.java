@@ -26,14 +26,14 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.block.BlockProperties;
 import thelm.jaopca.api.utils.Utils;
 
-public class ModuleExNihiloOmnia implements IModule {
+public class ModuleExNihiloOmnia extends ModuleBase {
 
 	/*
 	 * Ex Nihilo Omnia has ores for each dimension, so I split this module into four.
@@ -93,7 +93,7 @@ public class ModuleExNihiloOmnia implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreCrushed")) {
 			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreCrushed"+entry.getOreName(), FluidRegistry.getFluid(entry.getOreName().toLowerCase()), 36);

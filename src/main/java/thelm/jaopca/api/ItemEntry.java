@@ -23,7 +23,7 @@ public class ItemEntry {
 	public EnumEntryType type;
 	public ModelResourceLocation itemModelLocation;
 	public final LinkedHashSet<String> blacklist = Sets.<String>newLinkedHashSet();
-	public final ArrayList<IModule> moduleList = Lists.<IModule>newArrayList();
+	public final ArrayList<ModuleBase> moduleList = Lists.<ModuleBase>newArrayList();
 
 	//Will implement later.
 	public ItemProperties itemProperties = ItemProperties.DEFAULT;
@@ -53,5 +53,19 @@ public class ItemEntry {
 	public ItemEntry setBlockProperties(BlockProperties properties) {
 		blockProperties = properties;
 		return this;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if(other instanceof ItemEntry) {
+			ItemEntry entry = (ItemEntry)other;
+			return entry.name.equals(name) && entry.prefix.equals(prefix) && entry.type.equals(type);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return name.hashCode()&prefix.hashCode()^type.hashCode();
 	}
 }

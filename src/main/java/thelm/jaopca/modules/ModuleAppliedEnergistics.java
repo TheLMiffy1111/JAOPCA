@@ -8,12 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 
-public class ModuleAppliedEnergistics implements IModule {
+public class ModuleAppliedEnergistics extends ModuleBase {
 
 	@Override
 	public String getName() {
@@ -26,7 +26,7 @@ public class ModuleAppliedEnergistics implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dust")) {
 			if(!entry.getModuleBlacklist().contains(getName())) {
 				ItemStack dust = Utils.getOreStack("dust", entry, 1);

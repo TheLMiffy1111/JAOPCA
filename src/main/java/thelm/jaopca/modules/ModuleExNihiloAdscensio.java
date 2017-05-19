@@ -31,13 +31,13 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 
-public class ModuleExNihiloAdscensio implements IModule {
+public class ModuleExNihiloAdscensio extends ModuleBase {
 
 	public static final ItemEntry PIECE_ENTRY = new ItemEntry(EnumEntryType.ITEM, "orePiece", new ModelResourceLocation("jaopca:oreCrushed#inventory"));
 	public static final ItemEntry CHUNK_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreChunk", new ModelResourceLocation("jaopca:oreBroken#inventory"));
@@ -72,7 +72,7 @@ public class ModuleExNihiloAdscensio implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("orePiece")) {
 			SieveRegistry.register(Blocks.GRAVEL.getDefaultState(), Utils.getOreStack("orePiece", entry, 1), 0.2F, MeshType.FLINT.getID());
 			SieveRegistry.register(Blocks.GRAVEL.getDefaultState(), Utils.getOreStack("orePiece", entry, 1), 0.2F, MeshType.IRON.getID());

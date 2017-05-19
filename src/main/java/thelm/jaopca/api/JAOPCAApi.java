@@ -60,21 +60,21 @@ public class JAOPCAApi {
 	public static final ArrayList<IOreEntry> ORE_ENTRY_LIST = Lists.<IOreEntry>newArrayList();
 	
 	/**
-	 * List of all {@link IModule}s.
+	 * List of all {@link ModuleBase}s.
 	 */
-	public static final ArrayList<IModule> MODULE_LIST = Lists.<IModule>newArrayList();
+	public static final ArrayList<ModuleBase> MODULE_LIST = Lists.<ModuleBase>newArrayList();
 	
 	/**
-	 * A map for convenience of all {@link IModule}s.
+	 * A map for convenience of all {@link ModuleBase}s.
 	 */
-	public static final HashMap<String,IModule> NAME_TO_MODULE_MAP = Maps.<String,IModule>newHashMap();
+	public static final HashMap<String,ModuleBase> NAME_TO_MODULE_MAP = Maps.<String,ModuleBase>newHashMap();
 	
 	/**
-	 * A {@link ItemEntry} name to {@link IModule} for convenience.
+	 * A {@link ItemEntry} name to {@link ModuleBase} for convenience.
 	 */
 	public static final HashMultimap<String,IOreEntry> ENTRY_NAME_TO_ORES_MAP = HashMultimap.<String,IOreEntry>create();
 	
-	public static final HashMultimap<IModule,IOreEntry> MODULE_TO_ORES_MAP = HashMultimap.<IModule,IOreEntry>create();
+	public static final HashMultimap<ModuleBase,IOreEntry> MODULE_TO_ORES_MAP = HashMultimap.<ModuleBase,IOreEntry>create();
 	
 	/**
 	 * Set of textures to register
@@ -89,10 +89,10 @@ public class JAOPCAApi {
 	public static final Logger LOGGER = LogManager.getLogger("JAOPCA");
 	
 	/**
-	 * Register your {@link IModule}s here.
+	 * Register your {@link ModuleBase}s here.
 	 * @param module The module to register
 	 */
-	public static void registerModule(IModule module) {
+	public static void registerModule(ModuleBase module) {
 		MODULE_LIST.add(module);
 		NAME_TO_MODULE_MAP.put(module.getName(), module);
 	}

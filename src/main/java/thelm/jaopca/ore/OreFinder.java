@@ -36,6 +36,7 @@ public class OreFinder {
 	}
 
 	public static void findOres() {
+		JAOPCAApi.LOGGER.debug("Finding ores");
 		LinkedHashSet<String> allOres = getMaterialsWithPrefixes("ore", "ingot");
 		ArrayList<OreEntry> allEntries = Lists.<OreEntry>newArrayList();
 		for(String name : allOres) {

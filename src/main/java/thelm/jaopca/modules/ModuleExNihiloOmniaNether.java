@@ -12,13 +12,13 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 
-public class ModuleExNihiloOmniaNether implements IModule {
+public class ModuleExNihiloOmniaNether extends ModuleBase {
 
 	public static final ItemEntry ORE_NETHER_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreNetherBroken", new ModelResourceLocation("jaopca:oreNetherBroken#inventory"));
 	public static final ItemEntry ORE_NETHER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreNetherGravel", new ModelResourceLocation("jaopca:oreNetherGravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
@@ -43,7 +43,7 @@ public class ModuleExNihiloOmniaNether implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreNetherBroken")) {
 			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.GRAVEL_NETHER, Utils.getOreStack("oreNetherBroken", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
 

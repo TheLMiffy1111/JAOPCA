@@ -18,13 +18,13 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 
-public class ModuleMekanism implements IModule {
+public class ModuleMekanism extends ModuleBase {
 
 	public static final HashBasedTable<String,String,Gas> GASES_TABLE = HashBasedTable.<String,String,Gas>create();
 
@@ -79,7 +79,7 @@ public class ModuleMekanism implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		//Will switch to IMC later (if it works though)
 		for(IOreEntry entry : JAOPCAApi.ORE_ENTRY_LIST) {
 			ItemStack dust = Utils.getOreStack("dust"+entry.getOreName(),1);

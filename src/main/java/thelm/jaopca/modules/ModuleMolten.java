@@ -8,11 +8,11 @@ import com.google.common.collect.Lists;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fml.common.Loader;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.fluid.FluidProperties;
 
-public class ModuleMolten implements IModule {
+public class ModuleMolten extends ModuleBase {
 
 	public static final FluidProperties MOLTEN_PROPERTIES = new FluidProperties().
 			setDensityFunc((entry)->{return 2000;}).
@@ -40,5 +40,5 @@ public class ModuleMolten implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {}
+	public void init() {}
 }

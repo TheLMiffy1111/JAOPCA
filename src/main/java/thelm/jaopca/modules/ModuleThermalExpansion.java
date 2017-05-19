@@ -8,12 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 
-public class ModuleThermalExpansion implements IModule {
+public class ModuleThermalExpansion extends ModuleBase {
 
 	@Override
 	public String getName() {
@@ -33,7 +33,7 @@ public class ModuleThermalExpansion implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void postInit() {
 		ItemStack cinnabar = Utils.getOreStack("crystalCinnabar", 1);
 		ItemStack richSlag = Utils.getOreStack("crystalSlagRich", 1);
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -128,5 +130,34 @@ public class Utils {
 		}
 		
 		return ret;
+	}
+	
+	public static String to_under_score(String camelCase) {
+		if(StringUtils.isEmpty(camelCase)) {
+			return "";
+		}
+		
+		String[] strings = StringUtils.splitByCharacterTypeCamelCase(camelCase);
+		StringBuilder ret = new StringBuilder();
+		for(int i = 0; i < strings.length; i++) {
+			ret.append(StringUtils.uncapitalize(strings[i]));
+			if(i < strings.length-1) {
+				ret.append('_');
+			}
+		}
+		return ret.toString();
+	}
+	
+	public static String toPascal(String under_score) {
+		if(StringUtils.isEmpty(under_score)) {
+			return "";
+		}
+		
+		String[] strings = StringUtils.split(under_score, '_');
+		StringBuilder ret = new StringBuilder();
+		for(int i = 0; i < strings.length; i++) {
+			ret.append(StringUtils.capitalize(strings[i]));
+		}
+		return ret.toString();
 	}
 }

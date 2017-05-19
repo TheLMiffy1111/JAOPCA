@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
+import thelm.jaopca.api.utils.Utils;
 import thelm.jaopca.modules.ModuleMolten;
 
 public class FluidBase extends Fluid {
@@ -16,7 +17,7 @@ public class FluidBase extends Fluid {
 	public final ItemEntry itemEntry;
 
 	public FluidBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-		super(((itemEntry == ModuleMolten.MOLTEN_ENTRY ? "" : itemEntry.name + "_") + oreEntry.getOreName()).toLowerCase(Locale.US), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_still"), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_flowing"));
+		super((itemEntry == ModuleMolten.MOLTEN_ENTRY ? "" : itemEntry.name + "_") + Utils.to_under_score(oreEntry.getOreName()), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_still"), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_flowing"));
 		this.setUnlocalizedName("jaopca."+itemEntry.name);
 		this.oreEntry = oreEntry;
 		this.itemEntry = itemEntry;

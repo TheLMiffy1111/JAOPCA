@@ -7,10 +7,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.JAOPCAApi;
 
-public class ModuleThermalSmeltery implements IModule {
+public class ModuleThermalSmeltery extends ModuleBase {
 
 	@Override
 	public String getName() {
@@ -18,7 +18,7 @@ public class ModuleThermalSmeltery implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		int modifier = 5;
 		try {
 			Class<?> configClass = Class.forName("us.drullk.thermalsmeltery.common.TSmeltConfig");

@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
@@ -29,6 +29,7 @@ import thelm.jaopca.api.fluid.FluidProperties;
 import thelm.jaopca.api.item.ItemBase;
 import thelm.jaopca.api.item.ItemBlockBase;
 import thelm.jaopca.api.item.ItemProperties;
+import thelm.jaopca.api.utils.Utils;
 import thelm.jaopca.modules.ModuleAppliedEnergistics;
 import thelm.jaopca.modules.ModuleBlock;
 import thelm.jaopca.modules.ModuleDust;
@@ -73,7 +74,11 @@ public class RegistryCore {
 	}
 
 	public static void init() {
-		registerRecipes();
+		registerInit();
+	}
+
+	public static void postInit() {
+		registerPostInit();
 	}
 
 	private static void registerBuiltInModules() {
@@ -125,9 +130,9 @@ public class RegistryCore {
 	}
 
 	private static void filterModules() {
-		HashSet<IModule> toRemove = Sets.<IModule>newHashSet();
+		HashSet<ModuleBase> toRemove = Sets.<ModuleBase>newHashSet();
 		HashSet<String> toRemoveNames = Sets.<String>newHashSet();
-		for(IModule module : JAOPCAApi.MODULE_LIST) {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
 			for(String moduleName : module.getDependencies()) {
 				if(!JAOPCAApi.NAME_TO_MODULE_MAP.containsKey(moduleName)) {
 					toRemove.add(module);
@@ -146,7 +151,7 @@ public class RegistryCore {
 	}
 
 	private static void initItemEntries() {
-		for(IModule module : JAOPCAApi.MODULE_LIST) {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
 			List<ItemEntry> entries = module.getItemRequests();
 			for(ItemEntry entry : entries) {
 				if(!JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.containsKey(entry.name)) {
@@ -170,10 +175,10 @@ public class RegistryCore {
 				}
 
 				if(entry.type == EnumEntryType.FLUID) {
-					if(entry == ModuleMolten.MOLTEN_ENTRY && FluidRegistry.isFluidRegistered(ore.getOreName().toLowerCase(Locale.US))) {
+					if(entry == ModuleMolten.MOLTEN_ENTRY && FluidRegistry.isFluidRegistered(Utils.to_under_score(ore.getOreName()))) {
 						entry.blacklist.add(ore.getOreName());
 					}
-					else if(FluidRegistry.isFluidRegistered((entry.prefix+"_"+ore.getOreName()).toLowerCase(Locale.US))) {
+					else if(FluidRegistry.isFluidRegistered(entry.prefix+"_"+Utils.to_under_score(ore.getOreName()))) {
 						entry.blacklist.add(ore.getOreName());
 					}
 				}
@@ -181,7 +186,7 @@ public class RegistryCore {
 				HashSet<String> toBlacklist = Sets.<String>newHashSet();
 
 				for(String moduleName : ore.getModuleBlacklist()) {
-					for(IModule module : entry.moduleList) {
+					for(ModuleBase module : entry.moduleList) {
 						if(!module.getDependencies().isEmpty() && module.getDependencies().contains(moduleName)) {
 							entry.blacklist.add(ore.getOreName());
 						}
@@ -207,7 +212,7 @@ public class RegistryCore {
 			JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.putAll(entry.name, oreSet);
 		}
 
-		for(IModule module : JAOPCAApi.MODULE_LIST) {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
 			LinkedHashSet<IOreEntry> oreSet = Sets.<IOreEntry>newLinkedHashSet();
 			JAOPCAApi.ORE_ENTRY_LIST.stream().filter((oreEntry)->{
 				return !module.getOreBlacklist().contains(oreEntry.getOreName()) && !oreEntry.getModuleBlacklist().contains(module.getName());
@@ -319,27 +324,36 @@ public class RegistryCore {
 		for(ItemEntry entry : JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.get(EnumEntryType.CUSTOM)) {
 			List<IOreEntry> oreList = Lists.newArrayList(JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get(entry.name));
 
-			for(IModule module : entry.moduleList) {
+			for(ModuleBase module : entry.moduleList) {
 				module.registerCustom(entry, oreList);
 			}
 		}
 	}
 
 	private static void setProperties() {
-		for(IModule module : JAOPCAApi.MODULE_LIST) {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
 			module.setCustomProperties();
 		}
 	}
 
 	private static void registerPreInit() {
-		for(IModule module : JAOPCAApi.MODULE_LIST) {
-			module.registerPreInit();
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+			JAOPCAApi.LOGGER.debug("PreInit-ing module "+module.getName());
+			module.preInit();
 		}
 	}
 
-	private static void registerRecipes() {
-		for(IModule module : JAOPCAApi.MODULE_LIST) {
-			module.registerRecipes();
+	private static void registerInit() {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+			JAOPCAApi.LOGGER.debug("Init-ing module "+module.getName());
+			module.init();
+		}
+	}
+
+	private static void registerPostInit() {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+			JAOPCAApi.LOGGER.debug("PostInit-ing module "+module.getName());
+			module.postInit();
 		}
 	}
 }

@@ -11,12 +11,12 @@ import com.google.common.collect.Maps;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 
-public class ModuleEnderIO implements IModule {
+public class ModuleEnderIO extends ModuleBase {
 
 	public static final String XML_MESSAGE = "" +
 			"<recipeGroup name=\"JAOPCA_EIO\">" + 
@@ -67,13 +67,13 @@ public class ModuleEnderIO implements IModule {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			String[] value = config.get(entry.getOreName(), "enderIOSecondary", "minecraft:cobblestone").setRequiresMcRestart(true).getString().split(":");
+			String[] value = config.get(Utils.to_under_score(entry.getOreName()), "enderIOSecondary", "minecraft:cobblestone").setRequiresMcRestart(true).getString().split(":");
 			ORE_SECONDARIES.put(entry.getOreName(), Pair.<String,String>of(value[0], value[1]));
 		}
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			addSAGMillRecipe(entry.getOreName(), Utils.energyI(entry, 3600), entry.getExtra(), ORE_SECONDARIES.get(entry.getOreName()));
 		}

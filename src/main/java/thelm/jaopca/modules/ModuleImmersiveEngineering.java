@@ -5,11 +5,11 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import blusunrize.immersiveengineering.common.IERecipes;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 
-public class ModuleImmersiveEngineering implements IModule {
+public class ModuleImmersiveEngineering extends ModuleBase {
 
 	@Override
 	public String getName() {
@@ -29,7 +29,7 @@ public class ModuleImmersiveEngineering implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		IERecipes.oreOutputSecondaries.replace("Iridium", new Object[] {"dustPlatinum", Float.valueOf(0.1F)});
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {

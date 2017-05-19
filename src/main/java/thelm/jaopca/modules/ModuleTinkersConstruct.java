@@ -7,11 +7,11 @@ import com.google.common.collect.Lists;
 import net.minecraftforge.fluids.Fluid;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.smeltery.TinkerSmeltery;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 
-public class ModuleTinkersConstruct implements IModule {
+public class ModuleTinkersConstruct extends ModuleBase {
 
 	@Override
 	public String getName() {
@@ -24,7 +24,7 @@ public class ModuleTinkersConstruct implements IModule {
 	}
 
 	@Override
-	public void registerRecipes() {
+	public void init() {
 		//Use TConstruct's internal method because it adds everything for us
 		//Might change
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("molten")) {

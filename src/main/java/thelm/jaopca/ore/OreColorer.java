@@ -22,7 +22,7 @@ public class OreColorer {
 	public static final HashMap<String, Color> DEFAULT_COLORS = Maps.<String, Color>newHashMap();
 
 	static {
-		
+
 	}
 
 	public static Color getColor(String prefix, String oreName) {
@@ -70,6 +70,23 @@ public class OreColorer {
 	}
 
 	public static Color getAverageColor(BufferedImage image) {
+		boolean isMostlyDark;
+		float number = 0F;
+		float pixels = 0F;
+		for(int i = 0; i < image.getWidth(); i++) {
+			for(int j = 0; j < image.getHeight(); j++) {
+				Color c = new Color(image.getRGB(i, j));
+				if(c.getAlpha() == 255) {
+					pixels += 1F;
+					if((c.getRed() < 30 && c.getBlue() < 30 && c.getGreen() < 30)) {
+						number += 1;
+					}
+				}
+			}
+		}
+
+		isMostlyDark = number/pixels > 0.6F;
+
 		float red = 0F;
 		float green = 0F;
 		float blue = 0F;
@@ -77,7 +94,7 @@ public class OreColorer {
 		for(int i = 0; i < image.getWidth(); i++) {
 			for(int j = 0; j < image.getHeight(); j++) {
 				Color c = new Color(image.getRGB(i, j));
-				if((c.getAlpha() == 255) && ((c.getRed() > 30) || (c.getBlue() > 30) || (c.getGreen() > 30))) {
+				if((c.getAlpha() == 255) && ((c.getRed() > 30 || c.getBlue() > 30 || c.getGreen() > 30) || isMostlyDark)) {
 					red += c.getRed();
 					green += c.getGreen();
 					blue += c.getBlue();

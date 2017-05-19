@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
-import thelm.jaopca.api.IModule;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 import thelm.jaopca.ore.OreEntry;
@@ -50,7 +50,7 @@ public class JAOPCAConfig {
 
 	public static void initOreConfigs(List<OreEntry> allOres) {
 		for(OreEntry entry : allOres) {
-			String name = entry.getOreName().toLowerCase(Locale.US);
+			String name = Utils.to_under_score(entry.getOreName());
 
 			String originalExtra = entry.getExtra();
 			String configExtra = configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true).getString();
@@ -77,7 +77,7 @@ public class JAOPCAConfig {
 	}
 
 	public static void initModulewiseConfigs() {
-		for(IModule module : JAOPCAApi.MODULE_LIST) {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
 			module.registerConfigs(configFile);
 		}
 
@@ -86,7 +86,7 @@ public class JAOPCAConfig {
 	}
 
 	public static void initColorConfigs(OreEntry entry) {
-		String name = entry.getOreName().toLowerCase(Locale.US);
+		String name = Utils.to_under_score(entry.getOreName());
 
 		entry.setColor(Color.decode(configFile.get(name, "color", "0x"+Integer.toHexString(entry.getColor() & 0xFFFFFF)).getString()));
 
