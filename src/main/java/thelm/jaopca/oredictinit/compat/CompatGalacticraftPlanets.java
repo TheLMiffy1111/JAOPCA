@@ -1,12 +1,12 @@
 package thelm.jaopca.oredictinit.compat;
 
+import static thelm.jaopca.oredictinit.registry.OreDictRegisCore.getBlock;
+import static thelm.jaopca.oredictinit.registry.OreDictRegisCore.getItem;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.ICompat;
-
-import static thelm.jaopca.oredictinit.registry.OreDictRegisCore.getBlock;
-import static thelm.jaopca.oredictinit.registry.OreDictRegisCore.getItem;
 
 public class CompatGalacticraftPlanets implements ICompat {
 

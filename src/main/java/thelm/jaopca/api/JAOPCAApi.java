@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -52,7 +52,7 @@ public class JAOPCAApi {
 	/**
 	 * A map for convenience of all {@link ItemEntry}s.
 	 */
-	public static final HashMultimap<EnumEntryType,ItemEntry> TYPE_TO_ITEM_ENTRY_MAP = HashMultimap.<EnumEntryType,ItemEntry>create();
+	public static final LinkedHashMultimap<EnumEntryType,ItemEntry> TYPE_TO_ITEM_ENTRY_MAP = LinkedHashMultimap.<EnumEntryType,ItemEntry>create();
 	
 	/**
 	 * List of all {@link IOreEntry}s.
@@ -72,9 +72,9 @@ public class JAOPCAApi {
 	/**
 	 * A {@link ItemEntry} name to {@link ModuleBase} for convenience.
 	 */
-	public static final HashMultimap<String,IOreEntry> ENTRY_NAME_TO_ORES_MAP = HashMultimap.<String,IOreEntry>create();
+	public static final LinkedHashMultimap<String,IOreEntry> ENTRY_NAME_TO_ORES_MAP = LinkedHashMultimap.<String,IOreEntry>create();
 	
-	public static final HashMultimap<ModuleBase,IOreEntry> MODULE_TO_ORES_MAP = HashMultimap.<ModuleBase,IOreEntry>create();
+	public static final LinkedHashMultimap<ModuleBase,IOreEntry> MODULE_TO_ORES_MAP = LinkedHashMultimap.<ModuleBase,IOreEntry>create();
 	
 	/**
 	 * Set of textures to register

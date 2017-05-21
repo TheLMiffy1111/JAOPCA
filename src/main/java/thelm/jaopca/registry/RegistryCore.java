@@ -3,7 +3,6 @@ package thelm.jaopca.registry;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -18,10 +17,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.block.BlockBase;
 import thelm.jaopca.api.block.BlockProperties;
 import thelm.jaopca.api.fluid.FluidBase;
@@ -86,19 +85,19 @@ public class RegistryCore {
 		JAOPCAApi.registerModule(new ModuleNugget());
 		JAOPCAApi.registerModule(new ModuleBlock());
 		JAOPCAApi.registerModule(new ModuleMolten());
-		if(Loader.isModLoaded("Mekanism")) {
+		if(Loader.isModLoaded("mekanism")) {
 			JAOPCAApi.registerModule(new ModuleMekanism());
 		}
 		if(Loader.isModLoaded("tconstruct")) {
 			JAOPCAApi.registerModule(new ModuleTinkersConstruct());
 		}
-		if(Loader.isModLoaded("IC2")) {
+		if(Loader.isModLoaded("ic2")) {
 			JAOPCAApi.registerModule(new ModuleIndustrialCraft());
 		}
 		if(Loader.isModLoaded("appliedenergistics2")) {
 			JAOPCAApi.registerModule(new ModuleAppliedEnergistics());
 		}
-		if(Loader.isModLoaded("EnderIO")) {
+		if(Loader.isModLoaded("enderio")) {
 			JAOPCAApi.registerModule(new ModuleEnderIO());
 		}
 		if(Loader.isModLoaded("thermalexpansion")) {
@@ -205,7 +204,7 @@ public class RegistryCore {
 			LinkedHashSet<IOreEntry> oreSet = Sets.<IOreEntry>newLinkedHashSet();
 			JAOPCAApi.ORE_ENTRY_LIST.stream().filter((oreEntry)->{
 				return !entry.blacklist.contains(oreEntry.getOreName());
-			}).forEach((oreEntry) -> {
+			}).forEach((oreEntry)->{
 				oreSet.add(oreEntry);
 			});
 

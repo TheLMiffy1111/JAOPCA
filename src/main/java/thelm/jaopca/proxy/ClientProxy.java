@@ -29,8 +29,8 @@ public class ClientProxy extends CommonProxy {
 
 	public static final CreativeTabs JAOPCA_TAB = new CreativeTabs("jaopca") {
 		@Override
-		public Item getTabIconItem() {
-			return Items.GLOWSTONE_DUST;
+		public ItemStack getTabIconItem() {
+			return new ItemStack(Items.GLOWSTONE_DUST);
 		}
 
 		@Override

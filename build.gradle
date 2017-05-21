@@ -42,7 +42,7 @@ repositories {
     }
 }
 
-version = "1.10.2-1.0.8"
+version = "1.11.2-1.1.9"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -52,20 +52,20 @@ compileJava {
 }
 
 minecraft {
-    version = "1.10.2-12.18.3.2254"
+    version = "1.11.2-13.20.0.2282"
     runDir = "run"
-    mappings = "stable_29"
+    mappings = "snapshot_20170401"
     makeObfSourceJar = false
 }
 
 dependencies {
-    deobfCompile "MCMultiPart:MCMultiPart-experimental:1.4.0_93:universal"
-    deobfCompile "mezz.jei:jei_1.10.2:3.14.7.417"
-    deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.5.205"
-    deobfCompile "slimeknights:TConstruct:1.10.2-2.6.3.501"
-    deobfCompile "net.industrial-craft:industrialcraft-2:2.6.204-ex110"
-    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.10.2-r75"
-    deobfCompile "blusunrize:ImmersiveEngineering:0.10-57-58"
+    deobfCompile "mezz.jei:jei_1.11.2:4.3.5.277"
+    deobfCompile "slimeknights.mantle:Mantle:1.11.2-1.2.0.26"
+    deobfCompile "slimeknights:TConstruct:1.11.2-2.7.0.12"
+    deobfCompile "net.industrial-craft:industrialcraft-2:2.7.33-ex111"
+    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.11.2-r107"
+    deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-102"
+    deobfCompile "MCMultiPart2:MCMultiPart-exp:2.0.0_19"
 }
 
 processResources

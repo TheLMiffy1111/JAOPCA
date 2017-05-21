@@ -84,10 +84,10 @@ public class ModuleEnderIO extends ModuleBase {
 			extra = input;
 
 		if(!extra.equals(input)) {
-			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE, input, energy, input, input, extra, secondary.getLeft(), secondary.getRight()));
+			FMLInterModComms.sendMessage("enderio", "recipe:sagmill", String.format(XML_MESSAGE, input, energy, input, input, extra, secondary.getLeft(), secondary.getRight()));
 		}
 		else {
-			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE_1, input, energy, input, input, secondary.getLeft(), secondary.getRight()));
+			FMLInterModComms.sendMessage("enderio", "recipe:sagmill", String.format(XML_MESSAGE_1, input, energy, input, input, secondary.getLeft(), secondary.getRight()));
 		}
 	}
 }

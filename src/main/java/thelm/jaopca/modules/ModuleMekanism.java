@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
 import mekanism.api.gas.GasStack;
-import mekanism.api.recipe.RecipeHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,10 +17,10 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.utils.Utils;
 
 public class ModuleMekanism extends ModuleBase {
@@ -80,7 +79,6 @@ public class ModuleMekanism extends ModuleBase {
 
 	@Override
 	public void init() {
-		//Will switch to IMC later (if it works though)
 		for(IOreEntry entry : JAOPCAApi.ORE_ENTRY_LIST) {
 			ItemStack dust = Utils.getOreStack("dust"+entry.getOreName(),1);
 
@@ -152,7 +150,7 @@ public class ModuleMekanism extends ModuleBase {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "CrusherRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "CrusherRecipe", msg);
 	}
 	
 	public static void addCombinerRecipe(ItemStack input, ItemStack output) {
@@ -161,14 +159,14 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("gasType", gasType.write(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "CombinerRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "CombinerRecipe", msg);
 	}
 	
 	public static void addEnrichmentChamberRecipe(ItemStack input, ItemStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "EnrichmentChamberRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "EnrichmentChamberRecipe", msg);
 	}
 	
 	public static void addPurificationChamberRecipe(ItemStack input, ItemStack output) {
@@ -177,7 +175,7 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("gasType", gasType.write(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "PurificationChamberRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "PurificationChamberRecipe", msg);
 	}
 	
 	public static void addChemicalInjectionChamberRecipe(ItemStack input, String gasName, ItemStack output) {
@@ -186,28 +184,28 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("gasType", gasType.write(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "ChemicalInjectionChamberRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "ChemicalInjectionChamberRecipe", msg);
 	}
 	
 	public static void addChemicalCrystallizerRecipe(GasStack input, ItemStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.write(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "ChemicalCrystallizerRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "ChemicalCrystallizerRecipe", msg);
 	}
 	
 	public static void addChemicalWasherRecipe(GasStack input, GasStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.write(new NBTTagCompound()));
 		msg.setTag("output", output.write(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "ChemicalWasherRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "ChemicalWasherRecipe", msg);
 	}
 	
 	public static void addChemicalDissolutionChamberRecipe(ItemStack input, GasStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("output", output.write(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "ChemicalDissolutionChamberRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "ChemicalDissolutionChamberRecipe", msg);
 	}
 
 	public static class GasBase extends Gas {

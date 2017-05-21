@@ -1,37 +1,6 @@
 package thelm.jaopca.modules;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.collect.Lists;
-
-import exnihiloomnia.compatibility.ENOCompatibility;
-import exnihiloomnia.registries.hammering.HammerRegistry;
-import exnihiloomnia.registries.hammering.HammerRegistryEntry;
-import exnihiloomnia.registries.ore.OreRegistry;
-import exnihiloomnia.registries.sifting.SieveRegistry;
-import exnihiloomnia.registries.sifting.SieveRegistryEntry;
-import exnihiloomnia.util.enums.EnumMetadataBehavior;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.ModuleBase;
-import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ItemEntry;
-import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.block.BlockProperties;
-import thelm.jaopca.api.utils.Utils;
 
 public class ModuleExNihiloOmnia extends ModuleBase {
 
@@ -41,7 +10,7 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 	 * However we will not help ENO do dimension-only ores, we instead let the users decide which they want.
 	 */
 
-	public static final BlockProperties GRAVEL_PROPERTIES = new BlockProperties().
+	/*public static final BlockProperties GRAVEL_PROPERTIES = new BlockProperties().
 			setMaterialMapColor(Material.SAND).
 			setHardnessFunc((entry)->{return 0.6F;}).
 			setSoundType(SoundType.GROUND).
@@ -76,14 +45,14 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 			"<itemStack oreDictionary=\"%s\" number=\"2\" chance=\"0.3\" />" +
 			"</output>" +
 			"</recipe>" + 
-			"</recipeGroup>";
+			"</recipeGroup>";*/
 
 	@Override
 	public String getName() {
 		return "exnihiloomnia";
 	}
 
-	@Override
+	/*@Override
 	public List<ItemEntry> getItemRequests() {
 		List<ItemEntry> ret = Lists.<ItemEntry>newArrayList(ORE_CRUSHED_ENTRY, ORE_POWDERED_ENTRY, ORE_SAND_ENTRY, ORE_DUST_ENTRY);
 		for(ItemEntry entry : ret) {
@@ -189,5 +158,5 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 		for(String name : OreRegistry.registry.keySet()) {
 			EXISTING_ORES.add(StringUtils.capitalize(name));
 		};
-	}
+	}*/
 }

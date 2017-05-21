@@ -39,7 +39,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			boolean flag = entry.getOreName().equals(entry.getExtra());
-			addPulverizerRecipe(Utils.energyI(entry, 4000), Utils.getOreStack("ore", entry, 1), Utils.getOreStack("dust", entry, 2), flag ? null : Utils.getOreStackExtra("dust", entry, 1), 10);
+			addPulverizerRecipe(Utils.energyI(entry, 4000), Utils.getOreStack("ore", entry, 1), Utils.getOreStack("dust", entry, 2), flag ? ItemStack.EMPTY : Utils.getOreStackExtra("dust", entry, 1), 10);
 			addInductionSmelterRecipe(Utils.energyI(entry, 4000), Utils.getOreStack("ore", entry, 1), cinnabar.copy(), Utils.getOreStack("ingot", entry, 3), flag ? richSlag.copy() : Utils.getOreStackExtra("ingot", entry, 1), flag ? 75 : 100);
 		}
 	}
@@ -51,7 +51,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 		data.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		data.setTag("primaryOutput", output.writeToNBT(new NBTTagCompound()));
 
-		if(bonus != null) {
+		if(!bonus.isEmpty()) {
 			data.setTag("secondaryOutput", bonus.writeToNBT(new NBTTagCompound()));
 			data.setInteger("secondaryChance", chance);
 		}
@@ -67,7 +67,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 		data.setTag("secondaryInput", input2.writeToNBT(new NBTTagCompound()));
 		data.setTag("primaryOutput", output1.writeToNBT(new NBTTagCompound()));
 
-		if(output2 != null) {
+		if(!output2.isEmpty()) {
 			data.setTag("secondaryOutput", output2.writeToNBT(new NBTTagCompound()));
 			data.setInteger("secondaryChance", chance);
 		}

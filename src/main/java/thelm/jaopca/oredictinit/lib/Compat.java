@@ -11,8 +11,9 @@ import thelm.jaopca.oredictinit.compat.CompatNuclearCraft;
 public class Compat {
 
 	public static void init() {
-		if(Loader.isModLoaded("Mekanism"))
+		if(Loader.isModLoaded("mekanism")) {
 			JAOPCAApi.ORE_DICT_COMPAT_LIST.add(new CompatMekanism());
+		}
 		if(Loader.isModLoaded("draconicevolution")) {
 			JAOPCAApi.ORE_DICT_COMPAT_LIST.add(new CompatDraconicEvolution());
 		}

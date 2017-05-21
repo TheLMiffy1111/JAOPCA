@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import teamroots.embers.item.EnumStampType;
@@ -31,7 +32,7 @@ public class ModuleEmbers extends ModuleBase {
 	@Override
 	public List<String> getOreBlacklist() {
 		return Lists.<String>newArrayList(
-				"Iron", "Gold", "Silver", "Copper", "Lead"
+				"Iron", "Gold", "Silver", "Copper", "Lead", "Aluminum", "Nickel", "Tin"
 				);
 	}
 
@@ -39,19 +40,16 @@ public class ModuleEmbers extends ModuleBase {
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			if(FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
-				RecipeRegistry.meltingOreRecipes.put("ore"+entry.getOreName(),
-						new ItemMeltingOreRecipe("ore"+entry.getOreName(), new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 288)));
-				RecipeRegistry.meltingOreRecipes.put("ingot"+entry.getOreName(),
-						new ItemMeltingOreRecipe("ingot"+entry.getOreName(), new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144)));
-				RecipeRegistry.meltingOreRecipes.put("nugget"+entry.getOreName(),
-						new ItemMeltingOreRecipe("nugget"+entry.getOreName(), new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 16)));
+				RecipeRegistry.meltingOreRecipes.add(new ItemMeltingOreRecipe("ore"+entry.getOreName(), new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 288)));
+				RecipeRegistry.meltingOreRecipes.add(new ItemMeltingOreRecipe("ingot"+entry.getOreName(), new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144)));
+				RecipeRegistry.meltingOreRecipes.add(new ItemMeltingOreRecipe("nugget"+entry.getOreName(), new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 16)));
 
 				RecipeRegistry.stampingRecipes.add(
-						new ItemStampingRecipe(null, new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144),
+						new ItemStampingRecipe(ItemStack.EMPTY, new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144),
 								EnumStampType.TYPE_BAR, Utils.getOreStack("ingot", entry, 1), false, false));
 				if(Utils.doesOreNameExist("plate"+entry.getOreName())) {
 					RecipeRegistry.stampingRecipes.add(
-							new ItemStampingRecipe(null, new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144),
+							new ItemStampingRecipe(ItemStack.EMPTY, new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144),
 									EnumStampType.TYPE_PLATE, Utils.getOreStack("plate", entry, 1), false, false));
 				}
 			}

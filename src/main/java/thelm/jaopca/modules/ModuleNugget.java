@@ -17,7 +17,9 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleNugget extends ModuleBase {
 
-	public static final ItemEntry NUGGET_ENTRY = new ItemEntry(EnumEntryType.ITEM, "nugget", new ModelResourceLocation("jaopca:nugget#inventory"), ImmutableList.<String>of("Gold"));
+	public static final ItemEntry NUGGET_ENTRY = new ItemEntry(EnumEntryType.ITEM, "nugget", new ModelResourceLocation("jaopca:nugget#inventory"), ImmutableList.<String>of(
+			"Iron", "Gold"
+			));
 
 	@Override
 	public String getName() {

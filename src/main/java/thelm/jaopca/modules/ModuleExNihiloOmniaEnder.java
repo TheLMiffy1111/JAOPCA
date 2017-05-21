@@ -4,24 +4,12 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.compatibility.ENOCompatibility;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.ModuleBase;
-import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ItemEntry;
-import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.utils.Utils;
 
 public class ModuleExNihiloOmniaEnder extends ModuleBase {
 
-	public static final ItemEntry ORE_ENDER_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreEnderBroken", new ModelResourceLocation("jaopca:ore_ender_broken#inventory"));
-	public static final ItemEntry ORE_ENDER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreEnderGravel", new ModelResourceLocation("jaopca:ore_ender_gravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
+	/*public static final ItemEntry ORE_ENDER_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreEnderBroken", new ModelResourceLocation("jaopca:ore_ender_broken#inventory"));
+	public static final ItemEntry ORE_ENDER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreEnderGravel", new ModelResourceLocation("jaopca:ore_ender_gravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);*/
 
 	@Override
 	public String getName() {
@@ -33,7 +21,7 @@ public class ModuleExNihiloOmniaEnder extends ModuleBase {
 		return Lists.<String>newArrayList("exnihiloomnia");
 	}
 
-	@Override
+	/*@Override
 	public List<ItemEntry> getItemRequests() {
 		List<ItemEntry> ret = Lists.<ItemEntry>newArrayList(ORE_ENDER_BROKEN_ENTRY, ORE_ENDER_GRAVEL_ENTRY);
 		for(ItemEntry entry : ret) {
@@ -80,5 +68,5 @@ public class ModuleExNihiloOmniaEnder extends ModuleBase {
 				ModuleExNihiloOmnia.addOreSAGMillRecipe("oreEnderGravel"+entry.getOreName(), "oreCrushed"+entry.getOreName());
 			}
 		}
-	}
+	}*/
 }

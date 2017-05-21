@@ -26,19 +26,19 @@ public class Utils {
 	public static ItemStack getOreStack(String name, int amount) {
 		if(CACHE.containsKey(name)) {
 			ItemStack ret = CACHE.get(name).copy();
-			ret.stackSize = amount;
+			ret.setCount(amount);
 			return ret;
 		}
 
-		ItemStack ret = null;
+		ItemStack ret = ItemStack.EMPTY;
 		if(!OreDictionary.getOres(name).isEmpty()) {
 			List<ItemStack> list = OreDictionary.getOres(name);
 			ret = getPreferredStack(list);
 		}
 
-		if(ret != null) {
+		if(!ret.isEmpty()) {
 			CACHE.put(name, ret.copy());
-			ret.stackSize = amount;
+			ret.setCount(amount);
 		}
 		
 		return ret;
@@ -47,7 +47,7 @@ public class Utils {
 	public static ItemStack getOreStack(String prefix, IOreEntry entry, int amount) {
 		if(CACHE.containsKey(prefix+entry.getOreName())) {
 			ItemStack ret = CACHE.get(prefix+entry.getOreName()).copy();
-			ret.stackSize = amount;
+			ret.setCount(amount);
 			return ret;
 		}
 
@@ -69,7 +69,7 @@ public class Utils {
 	public static ItemStack getOreStackExtra(String prefix, IOreEntry entry, int amount) {
 		if(CACHE.containsKey(prefix+entry.getExtra())) {
 			ItemStack ret = CACHE.get(prefix+entry.getExtra()).copy();
-			ret.stackSize = amount;
+			ret.setCount(amount);
 			return ret;
 		}
 
@@ -93,18 +93,18 @@ public class Utils {
 	}
 
 	public static void addSmelting(ItemStack input, ItemStack output, float xp) {
-		if(FurnaceRecipes.instance().getSmeltingResult(input) == null) {
+		if(FurnaceRecipes.instance().getSmeltingResult(input).isEmpty()) {
 			GameRegistry.addSmelting(input.copy(), output.copy(), xp);
 		}
 	}
 
 	public static ItemStack resizeStack(ItemStack stack, int size) {
-		if(stack != null) {
+		if(!stack.isEmpty()) {
 			ItemStack ret = stack.copy();
-			ret.stackSize = size;
+			ret.setCount(size);
 			return ret;
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	public static boolean doesOreNameExist(String name) {
@@ -112,11 +112,11 @@ public class Utils {
 	}
 	
 	public static ItemStack getPreferredStack(Iterable<ItemStack> itemList) {
-		ItemStack ret = null;
+		ItemStack ret = ItemStack.EMPTY;
 		int index = Integer.MAX_VALUE;
 		
 		for(ItemStack stack : itemList) {
-			if(stack == null || stack.getItem() == null) {
+			if(stack.isEmpty()) {
 				continue;
 			}
 			

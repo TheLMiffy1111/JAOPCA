@@ -32,7 +32,7 @@ public class ModuleThermalSmeltery extends ModuleBase {
 
 		for(MeltingRecipe rec : TinkerRegistry.getAllMeltingRecipies()) {
 			for(ItemStack item : rec.input.getInputs()) {
-				if(item != null && rec.output != null && (JAOPCAApi.ITEMS_TABLE.containsValue(item.getItem()) || (item.getItem() instanceof ItemBlock && JAOPCAApi.BLOCKS_TABLE.containsValue(Block.getBlockFromItem(item.getItem()))) || JAOPCAApi.FLUIDS_TABLE.containsValue(rec.output.getFluid()))) {
+				if(!item.isEmpty() && rec.output != null && (JAOPCAApi.ITEMS_TABLE.containsValue(item.getItem()) || (item.getItem() instanceof ItemBlock && JAOPCAApi.BLOCKS_TABLE.containsValue(Block.getBlockFromItem(item.getItem()))) || JAOPCAApi.FLUIDS_TABLE.containsValue(rec.output.getFluid()))) {
 					int energy = rec.getTemperature() * modifier;
 					ModuleThermalExpansion.addCrucibleRecipe(energy, item, rec.output);
 				}

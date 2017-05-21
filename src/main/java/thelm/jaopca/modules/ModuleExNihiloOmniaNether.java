@@ -1,34 +1,18 @@
 package thelm.jaopca.modules;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
-import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.compatibility.ENOCompatibility;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.ModuleBase;
-import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ItemEntry;
-import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.utils.Utils;
 
 public class ModuleExNihiloOmniaNether extends ModuleBase {
 
-	public static final ItemEntry ORE_NETHER_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreNetherBroken", new ModelResourceLocation("jaopca:ore_nether_broken#inventory"));
-	public static final ItemEntry ORE_NETHER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreNetherGravel", new ModelResourceLocation("jaopca:ore_nether_gravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
+	/*public static final ItemEntry ORE_NETHER_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreNetherBroken", new ModelResourceLocation("jaopca:ore_nether_broken#inventory"));
+	public static final ItemEntry ORE_NETHER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreNetherGravel", new ModelResourceLocation("jaopca:ore_nether_gravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);*/
 
 	@Override
 	public String getName() {
 		return "exnihiloomnianether";
 	}
 
-	@Override
+	/*@Override
 	public List<String> getDependencies() {
 		return Lists.<String>newArrayList("exnihiloomnia");
 	}
@@ -80,5 +64,5 @@ public class ModuleExNihiloOmniaNether extends ModuleBase {
 				ModuleExNihiloOmnia.addOreSAGMillRecipe("oreNetherGravel"+entry.getOreName(), "oreCrushed"+entry.getOreName());
 			}
 		}
-	}
+	}*/
 }
