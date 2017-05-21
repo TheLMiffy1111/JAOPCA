@@ -3,8 +3,8 @@
     "defaults": {
         "model": "jaopca:cube_overlayed",
         "textures": {
-            "base": "jaopca:blocks/oreGravel",
-            "overlay": "jaopca:blocks/oreNetherGravel_overlay"
+            "base": "jaopca:blocks/ore_gravel",
+            "overlay": "jaopca:blocks/ore_nether_gravel_overlay"
         }
     },
     "variants": {

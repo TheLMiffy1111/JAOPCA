@@ -39,8 +39,8 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleExNihiloAdscensio extends ModuleBase {
 
-	public static final ItemEntry PIECE_ENTRY = new ItemEntry(EnumEntryType.ITEM, "orePiece", new ModelResourceLocation("jaopca:oreCrushed#inventory"));
-	public static final ItemEntry CHUNK_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreChunk", new ModelResourceLocation("jaopca:oreBroken#inventory"));
+	public static final ItemEntry PIECE_ENTRY = new ItemEntry(EnumEntryType.ITEM, "orePiece", new ModelResourceLocation("jaopca:ore_crushed#inventory"));
+	public static final ItemEntry CHUNK_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreChunk", new ModelResourceLocation("jaopca:ore_broken#inventory"));
 
 	public static final ArrayList<String> EXISTING_ORES = Lists.<String>newArrayList();
 

@@ -57,11 +57,11 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 			setSoundType(SoundType.SNOW).
 			setFallable(true);
 
-	public static final ItemEntry ORE_CRUSHED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreCrushed", new ModelResourceLocation("jaopca:oreCrushed#inventory"));
-	public static final ItemEntry ORE_POWDERED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "orePowdered", new ModelResourceLocation("jaopca:orePowdered#inventory"));
-	public static final ItemEntry ORE_SAND_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreSand", new ModelResourceLocation("jaopca:oreSand#normal")).setBlockProperties(SAND_PROPERTIES);
+	public static final ItemEntry ORE_CRUSHED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreCrushed", new ModelResourceLocation("jaopca:ore_crushed#inventory"));
+	public static final ItemEntry ORE_POWDERED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "orePowdered", new ModelResourceLocation("jaopca:ore_powdered#inventory"));
+	public static final ItemEntry ORE_SAND_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreSand", new ModelResourceLocation("jaopca:ore_sand#normal")).setBlockProperties(SAND_PROPERTIES);
 	//oreFine because oreDust may be used
-	public static final ItemEntry ORE_DUST_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreFine", new ModelResourceLocation("jaopca:oreFine#normal")).setBlockProperties(DUST_PROPERTIES);
+	public static final ItemEntry ORE_DUST_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreFine", new ModelResourceLocation("jaopca:ore_fine#normal")).setBlockProperties(DUST_PROPERTIES);
 
 	public static final ArrayList<String> EXISTING_ORES = Lists.<String>newArrayList();
 

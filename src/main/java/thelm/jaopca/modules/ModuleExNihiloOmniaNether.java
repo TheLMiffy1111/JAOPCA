@@ -20,8 +20,8 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleExNihiloOmniaNether extends ModuleBase {
 
-	public static final ItemEntry ORE_NETHER_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreNetherBroken", new ModelResourceLocation("jaopca:oreNetherBroken#inventory"));
-	public static final ItemEntry ORE_NETHER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreNetherGravel", new ModelResourceLocation("jaopca:oreNetherGravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
+	public static final ItemEntry ORE_NETHER_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreNetherBroken", new ModelResourceLocation("jaopca:ore_nether_broken#inventory"));
+	public static final ItemEntry ORE_NETHER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreNetherGravel", new ModelResourceLocation("jaopca:ore_nether_gravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
 
 	@Override
 	public String getName() {

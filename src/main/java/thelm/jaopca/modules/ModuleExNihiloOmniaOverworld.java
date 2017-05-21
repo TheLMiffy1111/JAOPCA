@@ -21,8 +21,8 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleExNihiloOmniaOverworld extends ModuleBase {
 
-	public static final ItemEntry ORE_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreBroken", new ModelResourceLocation("jaopca:oreBroken#inventory"));
-	public static final ItemEntry ORE_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreGravel", new ModelResourceLocation("jaopca:oreGravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
+	public static final ItemEntry ORE_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreBroken", new ModelResourceLocation("jaopca:ore_broken#inventory"));
+	public static final ItemEntry ORE_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreGravel", new ModelResourceLocation("jaopca:ore_gravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
 
 	@Override
 	public String getName() {

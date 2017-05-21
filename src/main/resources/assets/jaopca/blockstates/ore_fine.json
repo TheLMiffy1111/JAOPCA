@@ -3,7 +3,7 @@
     "defaults": {
         "model": "jaopca:cube_colored",
         "textures": {
-            "base": "jaopca:blocks/oreSand"
+            "base": "jaopca:blocks/ore_dust"
         }
     },
     "variants": {

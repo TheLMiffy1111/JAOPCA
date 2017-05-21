@@ -6,6 +6,8 @@ package thelm.jaopca.api;
  */
 public interface ICompat {
 	
+	public String getName();
+	
 	/**
 	 * Register all of your ore dict entries here
 	 * @author TheLMiffy1111

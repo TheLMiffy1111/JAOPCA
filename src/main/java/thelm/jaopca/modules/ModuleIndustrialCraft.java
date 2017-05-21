@@ -29,7 +29,7 @@ public class ModuleIndustrialCraft extends ModuleBase {
 	public static final ItemEntry PURIFIED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "purified", new ModelResourceLocation("jaopca:purified#inventory"), ImmutableList.<String>of(
 			"Copper", "Gold", "Iron", "Lead", "Tin", "Silver", "Uranium"
 			));
-	public static final ItemEntry TINY_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustTiny", new ModelResourceLocation("jaopca:dustTiny#inventory"), ImmutableList.<String>of(
+	public static final ItemEntry TINY_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustTiny", new ModelResourceLocation("jaopca:dust_tiny#inventory"), ImmutableList.<String>of(
 			"Copper", "Gold", "Iron", "Lead", "Lithium", "Silver", "Tin"
 			));
 

@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/orePowdered"
+        "layer0": "jaopca:items/dust_tiny"
     }
 }

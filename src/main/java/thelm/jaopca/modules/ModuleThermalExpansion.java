@@ -56,7 +56,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 			data.setInteger("secondaryChance", chance);
 		}
 
-		FMLInterModComms.sendMessage("addpulverizerrecipe", "thermalexpansion", data);
+		FMLInterModComms.sendMessage("thermalexpansion", "addpulverizerrecipe", data);
 	}
 
 	public static void addInductionSmelterRecipe(int energy, ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int chance) {

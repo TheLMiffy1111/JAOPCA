@@ -1,11 +1,17 @@
 package thelm.jaopca.oredictinit.lib;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
+
 import net.minecraftforge.common.config.Configuration;
+import thelm.jaopca.api.ICompat;
+import thelm.jaopca.api.JAOPCAApi;
 
 public class ConfigHandler {
 
@@ -17,23 +23,36 @@ public class ConfigHandler {
 
 		initThing();
 		initCompat();
-		usedCategories.add("Custom");
-		usedCategories.add("Compat");
+		usedCategories.add("custom");
+		usedCategories.add("compat");
 	}
 
 	private static void initThing() {
-		Data.definedThingyBlocks.addAll(Arrays.asList(getStringArrayWithComment("Custom", "blocks", new String[0], "Format: oreDictEntry,modID,Block,damageValue;oreDictEntry,modID,Block,damageValue;etc.")));
-		Data.definedThingyItems.addAll(Arrays.asList(getStringArrayWithComment("Custom", "items", new String[0], "Format: oreDictEntry,modID,Item,damageValue;oreDictEntry,modID,Item,damageValue;etc.")));
+		Data.definedThingyBlocks.addAll(Arrays.asList(getStringArrayWithComment("custom", "blocks", new String[0], "Format: oreDictEntry,modID,Block,damageValue;oreDictEntry,modID,Block,damageValue;etc.")));
+		Data.definedThingyItems.addAll(Arrays.asList(getStringArrayWithComment("custom", "items", new String[0], "Format: oreDictEntry,modID,Item,damageValue;oreDictEntry,modID,Item,damageValue;etc.")));
 
 		if(configFile.hasChanged())
 			configFile.save();
 	}
 
 	private static void initCompat() {
-		//Nothing to see here yet :D
+		List<String> blacklist = Arrays.<String>asList(getStringArray("compat", "blacklist", new String[0]));
+		ArrayList<ICompat> toRemove = Lists.<ICompat>newArrayList();
+		
+		for(ICompat compat : JAOPCAApi.ORE_DICT_COMPAT_LIST) {
+			if(blacklist.contains(compat.getName())) {
+				toRemove.add(compat);
+			}
+		}
+		
+		JAOPCAApi.ORE_DICT_COMPAT_LIST.removeAll(toRemove);
 
 		if(configFile.hasChanged())
 			configFile.save();
+	}
+	
+	private static String[] getStringArray(String category, String name, String[] def) {
+		return configFile.get(category, name, def).setRequiresMcRestart(true).getStringList();
 	}
 
 	private static String[] getStringArrayWithComment(String category, String name, String[] def, String comment) {
