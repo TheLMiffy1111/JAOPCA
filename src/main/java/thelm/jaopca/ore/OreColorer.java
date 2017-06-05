@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -129,7 +130,7 @@ public class OreColorer {
 			iconName = iconName.substring(colonIndex + 1);
 		}
 
-		string = string.toLowerCase();
+		string = string.toLowerCase(Locale.US);
 		iconName = "textures/" + iconName + ".png";
 		return new ResourceLocation(string, iconName);
 	}

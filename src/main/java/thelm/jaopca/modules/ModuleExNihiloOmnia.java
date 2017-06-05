@@ -65,13 +65,13 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreCrushed")) {
 			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
-				ModuleTinkersConstruct.addMeltingRecipe("oreCrushed"+entry.getOreName(), FluidRegistry.getFluid(entry.getOreName().toLowerCase()), 36);
+				ModuleTinkersConstruct.addMeltingRecipe("oreCrushed"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);
 			}
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("orePowdered")) {
 			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
-				ModuleTinkersConstruct.addMeltingRecipe("orePowdered"+entry.getOreName(), FluidRegistry.getFluid(entry.getOreName().toLowerCase()), 36);
+				ModuleTinkersConstruct.addMeltingRecipe("orePowdered"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);
 			}
 		}
 
@@ -87,8 +87,8 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 
 			addOreHammerRecipe(JAOPCAApi.BLOCKS_TABLE.get("oreSand", entry.getOreName()), Utils.getOreStack("orePowdered", entry, 1));
 
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
-				ModuleTinkersConstruct.addMeltingRecipe("oreSand"+entry.getOreName(), FluidRegistry.getFluid(entry.getOreName().toLowerCase()), 144);
+			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
+				ModuleTinkersConstruct.addMeltingRecipe("oreSand"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144);
 			}
 
 			if(ENOCompatibility.aa_crusher && Loader.isModLoaded("actuallyadditions")) {
@@ -115,7 +115,7 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 			Utils.addSmelting(Utils.getOreStack("oreFine", entry, 1), Utils.getOreStack("ingot", entry, 1), 0);
 
 			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
-				ModuleTinkersConstruct.addMeltingRecipe("oreFine"+entry.getOreName(), FluidRegistry.getFluid(entry.getOreName().toLowerCase()), 144);
+				ModuleTinkersConstruct.addMeltingRecipe("oreFine"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144);
 			}
 		}
 	}

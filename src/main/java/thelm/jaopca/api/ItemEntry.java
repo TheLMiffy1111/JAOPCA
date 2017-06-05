@@ -25,7 +25,6 @@ public class ItemEntry {
 	public final LinkedHashSet<String> blacklist = Sets.<String>newLinkedHashSet();
 	public final ArrayList<ModuleBase> moduleList = Lists.<ModuleBase>newArrayList();
 
-	//Will implement later.
 	public ItemProperties itemProperties = ItemProperties.DEFAULT;
 	public BlockProperties blockProperties = BlockProperties.DEFAULT;
 	public FluidProperties fluidProperties = FluidProperties.DEFAULT;
@@ -52,6 +51,16 @@ public class ItemEntry {
 
 	public ItemEntry setBlockProperties(BlockProperties properties) {
 		blockProperties = properties;
+		return this;
+	}
+
+	public ItemEntry setItemProperties(ItemProperties itemProperties) {
+		this.itemProperties = itemProperties;
+		return this;
+	}
+
+	public ItemEntry setFluidProperties(FluidProperties fluidProperties) {
+		this.fluidProperties = fluidProperties;
 		return this;
 	}
 

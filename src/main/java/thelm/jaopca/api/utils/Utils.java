@@ -1,7 +1,7 @@
 package thelm.jaopca.api.utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +21,7 @@ import thelm.jaopca.api.item.ItemBase;
 public class Utils {
 
 	public static final HashMap<String,ItemStack> CACHE = Maps.<String,ItemStack>newHashMap();
-	public static final ArrayList<String> MOD_IDS = Lists.<String>newArrayList();
+	public static final LinkedList<String> MOD_IDS = Lists.<String>newLinkedList();
 
 	public static ItemStack getOreStack(String name, int amount) {
 		if(CACHE.containsKey(name)) {
