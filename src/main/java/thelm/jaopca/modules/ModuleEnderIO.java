@@ -3,17 +3,14 @@ package thelm.jaopca.modules;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.oredict.OreDictionary;
-import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.utils.Utils;
 
 public class ModuleEnderIO extends ModuleBase {
@@ -27,7 +24,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"<output>" +
 			"<itemStack oreDictionary=\"dust%s\" number=\"2\" />" +
 			"<itemStack oreDictionary=\"dust%s\" number=\"1\" chance=\"0.1\" />" +
-			"<itemStack modID=\"%s\" itemName=\"%s\" chance=\"0.15\"/>" +
+			"<itemStack %s />" +
 			"</output>" +
 			"</recipe>" + 
 			"</recipeGroup>";
@@ -40,12 +37,12 @@ public class ModuleEnderIO extends ModuleBase {
 			"</input>" +
 			"<output>" +
 			"<itemStack oreDictionary=\"dust%s\" number=\"2\" />" +
-			"<itemStack modID=\"%s\" itemName=\"%s\" chance=\"0.15\"/>" +
+			"<itemStack %s />" +
 			"</output>" +
 			"</recipe>" +
 			"</recipeGroup>";
 
-	public static final HashMap<String,Pair<String,String>> ORE_SECONDARIES = Maps.<String,Pair<String,String>>newHashMap();
+	public static final HashMap<String,String> ORE_SECONDARIES = Maps.<String,String>newHashMap();
 
 	@Override
 	public String getName() {
@@ -67,8 +64,8 @@ public class ModuleEnderIO extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			String[] value = config.get(Utils.to_under_score(entry.getOreName()), "enderIOSecondary", "minecraft:cobblestone").setRequiresMcRestart(true).getString().split(":");
-			ORE_SECONDARIES.put(entry.getOreName(), Pair.<String,String>of(value[0], value[1]));
+			String value = config.get(Utils.to_under_score(entry.getOreName()), "enderIOSecondaryXml", "modID=\"minecraft\" itemName=\"cobblestone\" number=\"1\" chance=\"0.15\"").setRequiresMcRestart(true).getString();
+			ORE_SECONDARIES.put(entry.getOreName(), value);
 		}
 	}
 
@@ -79,15 +76,15 @@ public class ModuleEnderIO extends ModuleBase {
 		}
 	}
 
-	public static void addSAGMillRecipe(String input, int energy, String extra, Pair<String, String> secondary) {
+	public static void addSAGMillRecipe(String input, int energy, String extra, String secondary) {
 		if(!Utils.doesOreNameExist("dust" + extra))
 			extra = input;
 
 		if(!extra.equals(input)) {
-			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE, input, energy, input, input, extra, secondary.getLeft(), secondary.getRight()));
+			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE, input, energy, input, input, extra, secondary));
 		}
 		else {
-			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE_1, input, energy, input, input, secondary.getLeft(), secondary.getRight()));
+			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE_1, input, energy, input, input, secondary));
 		}
 	}
 }

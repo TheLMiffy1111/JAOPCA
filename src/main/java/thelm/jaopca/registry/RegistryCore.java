@@ -61,14 +61,14 @@ public class RegistryCore {
 		initBlacklists();
 		initToOreMaps();
 
+		JAOPCAConfig.initModulewiseConfigs();
+
 		registerItems();
 		registerBlocks();
 		registerFluids();
 		registerCustoms();
 
 		setProperties();
-
-		JAOPCAConfig.initModulewiseConfigs();
 
 		registerPreInit();
 	}
@@ -166,8 +166,15 @@ public class RegistryCore {
 	}
 
 	private static void initBlacklists() {
-		for(ItemEntry entry : JAOPCAApi.ITEM_ENTRY_LIST) {
-			for(IOreEntry ore : JAOPCAApi.ORE_ENTRY_LIST) {
+		for(IOreEntry ore : JAOPCAApi.ORE_ENTRY_LIST) {
+			if(ore.getModuleBlacklist().contains("*")) {
+				ore.getModuleBlacklist().clear();
+				for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+					ore.getModuleBlacklist().add(module.getName());
+				}
+			}
+			
+			for(ItemEntry entry : JAOPCAApi.ITEM_ENTRY_LIST) {
 				if(entry.type == EnumEntryType.BLOCK || entry.type == EnumEntryType.ITEM) {
 					if(!OreDictionary.getOres(entry.prefix+ore.getOreName()).isEmpty()) {
 						entry.blacklist.add(ore.getOreName());
@@ -182,8 +189,6 @@ public class RegistryCore {
 						entry.blacklist.add(ore.getOreName());
 					}
 				}
-
-				HashSet<String> toBlacklist = Sets.<String>newHashSet();
 
 				for(String moduleName : ore.getModuleBlacklist()) {
 					for(ModuleBase module : entry.moduleList) {
