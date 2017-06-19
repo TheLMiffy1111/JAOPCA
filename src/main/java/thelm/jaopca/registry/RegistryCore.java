@@ -3,7 +3,6 @@ package thelm.jaopca.registry;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -18,10 +17,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.block.BlockBase;
 import thelm.jaopca.api.block.BlockProperties;
 import thelm.jaopca.api.fluid.FluidBase;
@@ -30,6 +29,7 @@ import thelm.jaopca.api.item.ItemBase;
 import thelm.jaopca.api.item.ItemBlockBase;
 import thelm.jaopca.api.item.ItemProperties;
 import thelm.jaopca.api.utils.Utils;
+import thelm.jaopca.modules.ModuleAbyssalCraft;
 import thelm.jaopca.modules.ModuleAppliedEnergistics;
 import thelm.jaopca.modules.ModuleBlock;
 import thelm.jaopca.modules.ModuleDust;
@@ -40,12 +40,14 @@ import thelm.jaopca.modules.ModuleExNihiloOmnia;
 import thelm.jaopca.modules.ModuleExNihiloOmniaEnder;
 import thelm.jaopca.modules.ModuleExNihiloOmniaNether;
 import thelm.jaopca.modules.ModuleExNihiloOmniaOverworld;
+import thelm.jaopca.modules.ModuleFuturePack;
 import thelm.jaopca.modules.ModuleImmersiveEngineering;
 import thelm.jaopca.modules.ModuleIndustrialCraft;
 import thelm.jaopca.modules.ModuleMekanism;
 import thelm.jaopca.modules.ModuleMolten;
 import thelm.jaopca.modules.ModuleNugget;
 import thelm.jaopca.modules.ModuleRailcraft;
+import thelm.jaopca.modules.ModuleTechReborn;
 import thelm.jaopca.modules.ModuleThermalExpansion;
 import thelm.jaopca.modules.ModuleThermalSmeltery;
 import thelm.jaopca.modules.ModuleTinkersConstruct;
@@ -123,6 +125,15 @@ public class RegistryCore {
 		if(Loader.isModLoaded("embers")) {
 			JAOPCAApi.registerModule(new ModuleEmbers());
 		}
+		if(Loader.isModLoaded("fp")) {
+			JAOPCAApi.registerModule(new ModuleFuturePack());
+		}
+		if(Loader.isModLoaded("abyssalcraft")) {
+			JAOPCAApi.registerModule(new ModuleAbyssalCraft());
+		}
+		if(Loader.isModLoaded("techreborn")) {
+			JAOPCAApi.registerModule(new ModuleTechReborn());
+		}
 		if(Loader.isModLoaded("thermalsmeltery")) {
 			//I hope iterating order is correct
 			JAOPCAApi.registerModule(new ModuleThermalSmeltery());
@@ -159,6 +170,9 @@ public class RegistryCore {
 					JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.put(entry.type, entry);
 					JAOPCAApi.ITEM_ENTRY_LIST.add(entry);
 				}
+				else {
+					JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).blacklist.addAll(entry.blacklist);
+				}
 
 				JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).moduleList.add(module);
 			}
@@ -173,7 +187,7 @@ public class RegistryCore {
 					ore.getModuleBlacklist().add(module.getName());
 				}
 			}
-			
+
 			for(ItemEntry entry : JAOPCAApi.ITEM_ENTRY_LIST) {
 				if(entry.type == EnumEntryType.BLOCK || entry.type == EnumEntryType.ITEM) {
 					if(!OreDictionary.getOres(entry.prefix+ore.getOreName()).isEmpty()) {
@@ -274,6 +288,12 @@ public class RegistryCore {
 					setLightLevel(ppt.lgtValFunc.applyAsFloat(ore)).
 					setSlipperiness(ppt.slippyFunc.applyAsFloat(ore)).
 					setSoundType(ppt.soundType).
+					setBeaconBase(ppt.beaconBase).
+					setBoundingBox(ppt.boundingBox).
+					setHarvestTool(ppt.harvestTool).
+					setHarvestLevel(ppt.harvestLevel).
+					setFull(ppt.full).
+					setOpaque(ppt.opaque).
 					setFallable(ppt.fallable);
 					GameRegistry.register(block);
 					ItemBlockBase itemblock = ppt.itemBlockClass.getConstructor(BlockBase.class).newInstance(block);
@@ -343,21 +363,21 @@ public class RegistryCore {
 
 	private static void registerPreInit() {
 		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
-			JAOPCAApi.LOGGER.debug("PreInit-ing module "+module.getName());
+			JAOPCAApi.LOGGER.debug("PreInitializing module "+module.getName());
 			module.preInit();
 		}
 	}
 
 	private static void registerInit() {
 		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
-			JAOPCAApi.LOGGER.debug("Init-ing module "+module.getName());
+			JAOPCAApi.LOGGER.debug("Initializing module "+module.getName());
 			module.init();
 		}
 	}
 
 	private static void registerPostInit() {
 		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
-			JAOPCAApi.LOGGER.debug("PostInit-ing module "+module.getName());
+			JAOPCAApi.LOGGER.debug("PostInitializing module "+module.getName());
 			module.postInit();
 		}
 	}

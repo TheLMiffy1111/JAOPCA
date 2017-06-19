@@ -64,8 +64,8 @@ public class ModuleExNihiloOmniaEnder extends ModuleBase {
 
 			ModuleExNihiloOmnia.addOreHammerRecipe(JAOPCAApi.BLOCKS_TABLE.get("oreEnderGravel", entry.getOreName()), Utils.getOreStack("oreCrushed", entry, 1));
 
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(entry.getOreName().toLowerCase())) {
-				ModuleTinkersConstruct.addMeltingRecipe("oreEnderGravel"+entry.getOreName(), FluidRegistry.getFluid(entry.getOreName().toLowerCase()), 144);
+			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
+				ModuleTinkersConstruct.addMeltingRecipe("oreEnderGravel"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144);
 			}
 
 			if(ENOCompatibility.aa_crusher && Loader.isModLoaded("actuallyadditions")) {

@@ -7,8 +7,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
-import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.ModuleBase;
 
 public class ModuleThermalSmeltery extends ModuleBase {
 

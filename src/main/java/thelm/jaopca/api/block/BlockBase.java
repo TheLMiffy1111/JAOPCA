@@ -11,7 +11,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -66,16 +68,89 @@ public class BlockBase extends Block {
 		return this;
 	}
 
-	public BlockBase setHarvestLvl(String toolClass, int level) {
-		super.setHarvestLevel(toolClass, level);
-		return this;
-	}
-
 	public BlockBase setSlipperiness(float slipperiness) {
 		this.slipperiness = slipperiness;
 		return this;
 	}
 
+	/*======================================== BEACON ======================================*/
+
+	protected boolean beaconBase = false;
+
+	public BlockBase setBeaconBase(boolean beaconBase) {
+		this.beaconBase = beaconBase;
+		return this;
+	}
+
+	@Override
+	public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon) {
+		return beaconBase;
+	}
+
+	/*========================================= AABB =======================================*/
+
+	protected AxisAlignedBB boundingBox = FULL_BLOCK_AABB;
+	
+	public BlockBase setBoundingBox(AxisAlignedBB boundingBox) {
+		this.boundingBox = boundingBox;
+		return this;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return boundingBox;
+	}
+
+	/*======================================== HARVEST =====================================*/
+
+	protected String harvestTool = null;
+	protected int harvestLevel = -1;
+	
+	public BlockBase setHarvestTool(String harvestTool) {
+		this.harvestTool = harvestTool;
+		return this;
+	}
+	
+	public BlockBase setHarvestLevel(int harvestLevel) {
+		this.harvestLevel = harvestLevel;
+		return this;
+	}
+
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		return harvestTool;
+	}
+
+	@Override
+	public int getHarvestLevel(IBlockState state) {
+		return harvestLevel;
+	}
+	
+	/*======================================== OPACITY =====================================*/
+	
+	protected boolean full = true;
+	protected boolean opaque = true;
+	
+	public BlockBase setFull(boolean full) {
+		this.full = full;
+		return this;
+	}
+	
+	public BlockBase setOpaque(boolean opaque) {
+		this.opaque = opaque;
+		return this;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return full;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return opaque;
+	}
+	
 	/*======================================== FALLING =====================================*/
 
 	protected boolean fallable = false;

@@ -145,8 +145,8 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 
 			Utils.addSmelting(Utils.getOreStack("oreFine", entry, 1), Utils.getOreStack("ingot", entry, 1), 0);
 
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
-				ModuleTinkersConstruct.addMeltingRecipe("oreFine"+entry.getOreName(), FluidRegistry.getFluid(entry.getOreName().toLowerCase()), 144);
+			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
+				ModuleTinkersConstruct.addMeltingRecipe("oreFine"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144);
 			}
 		}
 	}
