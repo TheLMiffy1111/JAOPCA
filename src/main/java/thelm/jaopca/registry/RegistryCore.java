@@ -29,6 +29,7 @@ import thelm.jaopca.api.item.ItemBase;
 import thelm.jaopca.api.item.ItemBlockBase;
 import thelm.jaopca.api.item.ItemProperties;
 import thelm.jaopca.api.utils.Utils;
+import thelm.jaopca.modules.ModuleAbyssalCraft;
 import thelm.jaopca.modules.ModuleAppliedEnergistics;
 import thelm.jaopca.modules.ModuleBlock;
 import thelm.jaopca.modules.ModuleDust;
@@ -39,12 +40,14 @@ import thelm.jaopca.modules.ModuleExNihiloOmnia;
 import thelm.jaopca.modules.ModuleExNihiloOmniaEnder;
 import thelm.jaopca.modules.ModuleExNihiloOmniaNether;
 import thelm.jaopca.modules.ModuleExNihiloOmniaOverworld;
+import thelm.jaopca.modules.ModuleFuturePack;
 import thelm.jaopca.modules.ModuleImmersiveEngineering;
 import thelm.jaopca.modules.ModuleIndustrialCraft;
 import thelm.jaopca.modules.ModuleMekanism;
 import thelm.jaopca.modules.ModuleMolten;
 import thelm.jaopca.modules.ModuleNugget;
 import thelm.jaopca.modules.ModuleRailcraft;
+import thelm.jaopca.modules.ModuleTechReborn;
 import thelm.jaopca.modules.ModuleThermalExpansion;
 import thelm.jaopca.modules.ModuleThermalSmeltery;
 import thelm.jaopca.modules.ModuleTinkersConstruct;
@@ -121,6 +124,15 @@ public class RegistryCore {
 		}
 		if(Loader.isModLoaded("embers")) {
 			JAOPCAApi.registerModule(new ModuleEmbers());
+		}
+		if(Loader.isModLoaded("fp")) {
+			JAOPCAApi.registerModule(new ModuleFuturePack());
+		}
+		if(Loader.isModLoaded("abyssalcraft")) {
+			JAOPCAApi.registerModule(new ModuleAbyssalCraft());
+		}
+		if(Loader.isModLoaded("techreborn")) {
+			JAOPCAApi.registerModule(new ModuleTechReborn());
 		}
 		if(Loader.isModLoaded("thermalsmeltery")) {
 			//I hope iterating order is correct

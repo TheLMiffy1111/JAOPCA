@@ -40,9 +40,21 @@ repositories {
     maven {
         url = "https://maven.chaosfield.at/"
     }
+    maven {
+        url = "http://maven.modmuss50.me/"
+    }
+    maven {
+        url = "https://modmaven.k-4u.nl/" 
+    }
+    ivy {
+        url "https://addons-origin.cursecdn.com/files/2392/421/"
+        layout "pattern", {
+            artifact "[module]-[revision](-[classifier]).[ext]"
+        }
+    }
 }
 
-version = "1.11.2-1.1.14"
+version = "1.11.2-1.1.16"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -59,13 +71,16 @@ minecraft {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.11.2:4.3.5.277"
+    deobfCompile "mezz.jei:jei_1.11.2:4.3.5.277" 
     deobfCompile "slimeknights.mantle:Mantle:1.11.2-1.2.0.26"
     deobfCompile "slimeknights:TConstruct:1.11.2-2.7.0.12"
     deobfCompile "net.industrial-craft:industrialcraft-2:2.7.33-ex111"
     deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.11.2-r107"
     deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-102"
     deobfCompile "MCMultiPart2:MCMultiPart-exp:2.0.0_19"
+    deobfCompile("RebornCore:RebornCore-1.11.2:2.16.1.115:universal") {
+        transitive = false
+    }
 }
 
 processResources

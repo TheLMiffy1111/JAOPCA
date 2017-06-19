@@ -46,11 +46,8 @@ public class ModuleMekanism extends ModuleBase {
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
 			));
 
-	public static final ArrayList<String> DIRTY_DUST_2_DUST_BLACKLIST = Lists.<String>newArrayList(
-			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
-			);
 	public static final ArrayList<String> MINOR_COMPAT_BLACKLIST = Lists.<String>newArrayList(
-			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead", "Nickel", "Aluminum", "Uranium", "Draconium"
+			"Nickel", "Aluminum", "Uranium", "Draconium"
 			);
 
 	@Override
@@ -61,6 +58,13 @@ public class ModuleMekanism extends ModuleBase {
 	@Override
 	public List<String> getDependencies() {
 		return Lists.<String>newArrayList("dust");
+	}
+
+	@Override
+	public List<String> getOreBlacklist() {
+		return Lists.<String>newArrayList(
+				"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
+				);
 	}
 
 	@Override
@@ -79,7 +83,7 @@ public class ModuleMekanism extends ModuleBase {
 
 	@Override
 	public void init() {
-		for(IOreEntry entry : JAOPCAApi.ORE_ENTRY_LIST) {
+		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			ItemStack dust = Utils.getOreStack("dust"+entry.getOreName(),1);
 
 			if(!MINOR_COMPAT_BLACKLIST.contains(entry.getOreName())) {
@@ -94,10 +98,8 @@ public class ModuleMekanism extends ModuleBase {
 				}
 			}
 
-			if(!DIRTY_DUST_2_DUST_BLACKLIST.contains(entry.getOreName())) {
-				for(ItemStack ore : OreDictionary.getOres("dustDirty" + entry.getOreName())) {
-					addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.resizeStack(dust,1));
-				}
+			for(ItemStack ore : OreDictionary.getOres("dustDirty" + entry.getOreName())) {
+				addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.resizeStack(dust,1));
 			}
 		}
 

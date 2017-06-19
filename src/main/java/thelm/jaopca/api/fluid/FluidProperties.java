@@ -14,6 +14,9 @@ import thelm.jaopca.api.IOreEntry;
  */
 public class FluidProperties {
 
+	/**
+	 * The default FluidProperties. DO NOT CALL ANY METHODS ON THIS FIELD.
+	 */
 	public static final FluidProperties DEFAULT = new FluidProperties();
 
 	public ToIntFunction<IOreEntry> luminosFunc = (entry)->{return 0;};

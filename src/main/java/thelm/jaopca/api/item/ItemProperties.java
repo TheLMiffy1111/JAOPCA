@@ -8,6 +8,9 @@ import net.minecraft.item.EnumRarity;
  */
 public class ItemProperties {
 
+	/**
+	 * The default ItemProperties. DO NOT CALL ANY METHODS ON THIS FIELD.
+	 */
 	public static final ItemProperties DEFAULT = new ItemProperties();
 
 	public int maxStkSize = 64;
