@@ -14,8 +14,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
+import thelm.jaopca.api.IItemRequest;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
+import thelm.jaopca.api.ItemEntryGroup;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.utils.Utils;
@@ -43,8 +45,8 @@ public class ModuleIndustrialCraft extends ModuleBase {
 	}
 
 	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.<ItemEntry>newArrayList(CRUSHED_ENTRY,PURIFIED_ENTRY,TINY_DUST_ENTRY);
+	public List<IItemRequest> getItemRequests() {
+		return Lists.<IItemRequest>newArrayList(ItemEntryGroup.of(CRUSHED_ENTRY,PURIFIED_ENTRY),TINY_DUST_ENTRY);
 	}
 
 	@Override

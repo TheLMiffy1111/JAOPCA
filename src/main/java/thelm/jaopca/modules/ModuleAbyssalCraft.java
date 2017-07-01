@@ -17,6 +17,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
+import thelm.jaopca.api.ItemEntryGroup;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.block.BlockProperties;
@@ -44,7 +45,7 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			));
 	public static final ItemEntry CRYSTAL_CLUSTER_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "crystalCluster", new ModelResourceLocation("jaopca:crystal_cluster#normal"), ImmutableList.<String>of(
 			"Iron", "Gold", "Potassium", "Abyssalnite", "Coralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
-			)).setBlockProperties(CRYSTAL_CLUSTER_PROPERTIES);
+			)).setBlockProperties(CRYSTAL_CLUSTER_PROPERTIES).skipWhenGrouped(true);
 
 	@Override
 	public String getName() {
@@ -52,15 +53,15 @@ public class ModuleAbyssalCraft extends ModuleBase {
 	}
 
 	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.<ItemEntry>newArrayList(CRYSTAL_FRAGMENT_ENTRY, CRYSTAL_SHARD_ENTRY, CRYSTAL_ENTRY, CRYSTAL_CLUSTER_ENTRY);
+	public List<ItemEntryGroup> getItemRequests() {
+		return Lists.<ItemEntryGroup>newArrayList(ItemEntryGroup.of(CRYSTAL_FRAGMENT_ENTRY, CRYSTAL_SHARD_ENTRY, CRYSTAL_ENTRY, CRYSTAL_CLUSTER_ENTRY));
 	}
 
 	@Override
 	public void init() {
 		AbyssalCraftAPI.registerFuelHandler(new JAOPCAAbyssFuelHandler(), FuelType.CRYSTALLIZER);
 		AbyssalCraftAPI.registerFuelHandler(new JAOPCAAbyssFuelHandler(), FuelType.TRANSMUTATOR);
-		
+
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crystalFragment")) {
 			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("crystalFragment", entry, 9), new Object[] {
 					"crystalShard"+entry.getOreName(),
@@ -132,15 +133,15 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			}));
 		}
 	}
-	
+
 	public static void addSingleCrystallization(String input, String output, int amount, float xp) {
 		AbyssalCraftAPI.addSingleCrystallization(input, output, amount, xp);
 	}
-	
+
 	public static void addTransmutation(String input, String output, int amount, float xp) {
 		AbyssalCraftAPI.addTransmutation(input, output, amount, xp);
 	}
-	
+
 	public static class JAOPCAAbyssFuelHandler implements IFuelHandler {
 		@Override
 		public int getBurnTime(ItemStack fuel) {

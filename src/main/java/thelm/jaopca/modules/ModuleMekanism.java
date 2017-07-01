@@ -19,6 +19,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
+import thelm.jaopca.api.ItemEntryGroup;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.utils.Utils;
@@ -41,10 +42,10 @@ public class ModuleMekanism extends ModuleBase {
 			));
 	public static final ItemEntry CLEAN_SLURRY_ENTRY = new ItemEntry(EnumEntryType.CUSTOM, "slurryClean", null, ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
-			));
+			)).skipWhenGrouped(true);
 	public static final ItemEntry SLURRY_ENTRY = new ItemEntry(EnumEntryType.CUSTOM, "slurry", null, ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
-			));
+			)).skipWhenGrouped(true);
 
 	public static final ArrayList<String> MINOR_COMPAT_BLACKLIST = Lists.<String>newArrayList(
 			"Nickel", "Aluminum", "Uranium", "Draconium"
@@ -68,8 +69,8 @@ public class ModuleMekanism extends ModuleBase {
 	}
 
 	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.newArrayList(DIRTY_DUST_ENTRY,CLUMP_ENTRY,SHARD_ENTRY,CRYSTAL_ENTRY,CLEAN_SLURRY_ENTRY,SLURRY_ENTRY);
+	public List<ItemEntryGroup> getItemRequests() {
+		return Lists.<ItemEntryGroup>newArrayList(ItemEntryGroup.of(DIRTY_DUST_ENTRY,CLUMP_ENTRY,SHARD_ENTRY,CRYSTAL_ENTRY,CLEAN_SLURRY_ENTRY,SLURRY_ENTRY));
 	}
 
 	@Override
@@ -154,7 +155,7 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
 		FMLInterModComms.sendMessage("mekanism", "CrusherRecipe", msg);
 	}
-	
+
 	public static void addCombinerRecipe(ItemStack input, ItemStack output) {
 		Gas gasType = GasRegistry.getGas("liquidstone");
 		NBTTagCompound msg = new NBTTagCompound();
@@ -163,14 +164,14 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
 		FMLInterModComms.sendMessage("mekanism", "CombinerRecipe", msg);
 	}
-	
+
 	public static void addEnrichmentChamberRecipe(ItemStack input, ItemStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
 		FMLInterModComms.sendMessage("mekanism", "EnrichmentChamberRecipe", msg);
 	}
-	
+
 	public static void addPurificationChamberRecipe(ItemStack input, ItemStack output) {
 		Gas gasType = GasRegistry.getGas("oxygen");
 		NBTTagCompound msg = new NBTTagCompound();
@@ -179,7 +180,7 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
 		FMLInterModComms.sendMessage("mekanism", "PurificationChamberRecipe", msg);
 	}
-	
+
 	public static void addChemicalInjectionChamberRecipe(ItemStack input, String gasName, ItemStack output) {
 		Gas gasType = GasRegistry.getGas(gasName);
 		NBTTagCompound msg = new NBTTagCompound();
@@ -188,21 +189,21 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
 		FMLInterModComms.sendMessage("mekanism", "ChemicalInjectionChamberRecipe", msg);
 	}
-	
+
 	public static void addChemicalCrystallizerRecipe(GasStack input, ItemStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.write(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
 		FMLInterModComms.sendMessage("mekanism", "ChemicalCrystallizerRecipe", msg);
 	}
-	
+
 	public static void addChemicalWasherRecipe(GasStack input, GasStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.write(new NBTTagCompound()));
 		msg.setTag("output", output.write(new NBTTagCompound()));
 		FMLInterModComms.sendMessage("mekanism", "ChemicalWasherRecipe", msg);
 	}
-	
+
 	public static void addChemicalDissolutionChamberRecipe(ItemStack input, GasStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));

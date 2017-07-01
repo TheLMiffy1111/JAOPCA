@@ -2,7 +2,6 @@ package thelm.jaopca.oredictinit;
 
 import java.io.File;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import thelm.jaopca.oredictinit.lib.Compat;
 import thelm.jaopca.oredictinit.lib.ConfigHandler;
