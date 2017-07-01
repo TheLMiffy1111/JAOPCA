@@ -1,5 +1,6 @@
 package thelm.jaopca.registry;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,8 +18,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.EnumEntryType;
+import thelm.jaopca.api.IItemRequest;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
+import thelm.jaopca.api.ItemEntryGroup;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.block.BlockBase;
@@ -53,7 +56,14 @@ import thelm.jaopca.modules.ModuleThermalSmeltery;
 import thelm.jaopca.modules.ModuleTinkersConstruct;
 import thelm.jaopca.utils.JAOPCAConfig;
 
+/**
+ * The class where most things of this mod is done.
+ * Many methods may not be efficient.
+ * @author TheLMiffy1111
+ */
 public class RegistryCore {
+
+	public static final ArrayList<IItemRequest> ITEM_REQUEST_LIST = Lists.<IItemRequest>newArrayList();
 
 	public static void preInit() {
 		registerBuiltInModules();
@@ -163,18 +173,36 @@ public class RegistryCore {
 
 	private static void initItemEntries() {
 		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
-			List<ItemEntry> entries = module.getItemRequests();
-			for(ItemEntry entry : entries) {
-				if(!JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.containsKey(entry.name)) {
-					JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.put(entry.name, entry);
-					JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.put(entry.type, entry);
-					JAOPCAApi.ITEM_ENTRY_LIST.add(entry);
-				}
-				else {
-					JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).blacklist.addAll(entry.blacklist);
-				}
+			List<? extends IItemRequest> requests = module.getItemRequests();
+			for(IItemRequest request : requests) {
+				if(request instanceof ItemEntry) {
+					ItemEntry entry = (ItemEntry)request;
+					if(!JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.containsKey(entry.name)) {
+						JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.put(entry.name, entry);
+						JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.put(entry.type, entry);
+						JAOPCAApi.ITEM_ENTRY_LIST.add(entry);
+					}
+					else {
+						JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).blacklist.addAll(entry.blacklist);
+					}
 
-				JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).moduleList.add(module);
+					JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).moduleList.add(module);
+				}
+				else if(request instanceof ItemEntryGroup) {
+					for(ItemEntry entry : ((ItemEntryGroup)request).entryList) {
+						if(!JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.containsKey(entry.name)) {
+							JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.put(entry.name, entry);
+							JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.put(entry.type, entry);
+							JAOPCAApi.ITEM_ENTRY_LIST.add(entry);
+						}
+						else {
+							JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).blacklist.addAll(entry.blacklist);
+						}
+
+						JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).moduleList.add(module);
+					}
+				}
+				ITEM_REQUEST_LIST.add(request);
 			}
 		}
 	}
@@ -188,31 +216,75 @@ public class RegistryCore {
 				}
 			}
 
-			for(ItemEntry entry : JAOPCAApi.ITEM_ENTRY_LIST) {
-				if(entry.type == EnumEntryType.BLOCK || entry.type == EnumEntryType.ITEM) {
-					if(!OreDictionary.getOres(entry.prefix+ore.getOreName()).isEmpty()) {
-						entry.blacklist.add(ore.getOreName());
-					}
-				}
-
-				if(entry.type == EnumEntryType.FLUID) {
-					if(entry == ModuleMolten.MOLTEN_ENTRY && FluidRegistry.isFluidRegistered(Utils.to_under_score(ore.getOreName()))) {
-						entry.blacklist.add(ore.getOreName());
-					}
-					else if(FluidRegistry.isFluidRegistered(entry.prefix+"_"+Utils.to_under_score(ore.getOreName()))) {
-						entry.blacklist.add(ore.getOreName());
-					}
-				}
-
-				for(String moduleName : ore.getModuleBlacklist()) {
-					for(ModuleBase module : entry.moduleList) {
-						if(!module.getDependencies().isEmpty() && module.getDependencies().contains(moduleName)) {
+			for(IItemRequest request : ITEM_REQUEST_LIST) {
+				if(request instanceof ItemEntry) {
+					ItemEntry entry = (ItemEntry)request;
+					if(entry.type == EnumEntryType.BLOCK || entry.type == EnumEntryType.ITEM) {
+						if(!OreDictionary.getOres(entry.prefix+ore.getOreName()).isEmpty()) {
 							entry.blacklist.add(ore.getOreName());
 						}
 					}
+					else if(entry.type == EnumEntryType.FLUID) {
+						if((entry == ModuleMolten.MOLTEN_ENTRY && FluidRegistry.isFluidRegistered(Utils.to_under_score(ore.getOreName())))
+								|| FluidRegistry.isFluidRegistered(entry.prefix+"_"+Utils.to_under_score(ore.getOreName()))) {
+							entry.blacklist.add(ore.getOreName());
+						}
+					}
+					else {
+						for(ModuleBase module : entry.moduleList) {
+							if(module.blacklistCustom(entry, ore)) {
+								entry.blacklist.add(ore.getOreName());
+							}
+						}
+					}
 
-					if(entry.moduleList.contains(JAOPCAApi.NAME_TO_MODULE_MAP.get(moduleName))) {
-						entry.blacklist.add(ore.getOreName());
+					for(String moduleName : ore.getModuleBlacklist()) {
+						for(ModuleBase module : entry.moduleList) {
+							if(!module.getDependencies().isEmpty() && module.getDependencies().contains(moduleName)) {
+								entry.blacklist.add(ore.getOreName());
+							}
+						}
+
+						if(entry.moduleList.contains(JAOPCAApi.NAME_TO_MODULE_MAP.get(moduleName))) {
+							entry.blacklist.add(ore.getOreName());
+						}
+					}
+				}
+				else if(request instanceof ItemEntryGroup) {
+					ItemEntryGroup entryGroup = (ItemEntryGroup)request;
+					boolean flag = true;
+					for(ItemEntry entry : entryGroup.entryList) {
+						if(!entry.skipWhenGrouped) {
+							if(entry.type == EnumEntryType.BLOCK || entry.type == EnumEntryType.ITEM) {
+								flag &= !OreDictionary.getOres(entry.prefix+ore.getOreName()).isEmpty();
+							}
+							else if(entry.type == EnumEntryType.FLUID) {
+								flag &= (entry == ModuleMolten.MOLTEN_ENTRY && FluidRegistry.isFluidRegistered(Utils.to_under_score(ore.getOreName())))
+										|| FluidRegistry.isFluidRegistered(entry.prefix+"_"+Utils.to_under_score(ore.getOreName()));
+							}
+							else {
+								for(ModuleBase module : entry.moduleList) {
+									flag &= module.blacklistCustom(entry, ore);
+								}
+							}
+						}
+
+						for(String moduleName : ore.getModuleBlacklist()) {
+							for(ModuleBase module : entry.moduleList) {
+								if(!module.getDependencies().isEmpty() && module.getDependencies().contains(moduleName)) {
+									entry.blacklist.add(ore.getOreName());
+								}
+							}
+
+							if(entry.moduleList.contains(JAOPCAApi.NAME_TO_MODULE_MAP.get(moduleName))) {
+								entry.blacklist.add(ore.getOreName());
+							}
+						}
+					}
+					if(flag) {
+						for(ItemEntry entry : entryGroup.entryList) {
+							entry.blacklist.add(ore.getOreName());
+						}
 					}
 				}
 			}

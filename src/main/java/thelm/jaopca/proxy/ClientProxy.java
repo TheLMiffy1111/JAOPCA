@@ -109,15 +109,15 @@ public class ClientProxy extends CommonProxy {
 			}
 		}
 	}
-	
+
 	public static class JAOPCAStateMap extends StateMapperBase {
 
 		private final ModelResourceLocation location;
-		
+
 		public JAOPCAStateMap(ModelResourceLocation location) {
 			this.location = location;
 		}
-		
+
 		@Override
 		protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 			return location;

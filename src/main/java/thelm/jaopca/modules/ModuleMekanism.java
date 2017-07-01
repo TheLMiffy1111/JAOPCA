@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
 import mekanism.api.gas.GasStack;
-import mekanism.api.recipe.RecipeHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,10 +17,11 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
+import thelm.jaopca.api.ItemEntryGroup;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.utils.Utils;
 
 public class ModuleMekanism extends ModuleBase {
@@ -42,10 +42,10 @@ public class ModuleMekanism extends ModuleBase {
 			));
 	public static final ItemEntry CLEAN_SLURRY_ENTRY = new ItemEntry(EnumEntryType.CUSTOM, "slurryClean", null, ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
-			));
+			)).skipWhenGrouped(true);
 	public static final ItemEntry SLURRY_ENTRY = new ItemEntry(EnumEntryType.CUSTOM, "slurry", null, ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
-			));
+			)).skipWhenGrouped(true);
 
 	public static final ArrayList<String> MINOR_COMPAT_BLACKLIST = Lists.<String>newArrayList(
 			"Nickel", "Aluminum", "Uranium", "Draconium"
@@ -69,8 +69,8 @@ public class ModuleMekanism extends ModuleBase {
 	}
 
 	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.newArrayList(DIRTY_DUST_ENTRY,CLUMP_ENTRY,SHARD_ENTRY,CRYSTAL_ENTRY,CLEAN_SLURRY_ENTRY,SLURRY_ENTRY);
+	public List<ItemEntryGroup> getItemRequests() {
+		return Lists.<ItemEntryGroup>newArrayList(ItemEntryGroup.of(DIRTY_DUST_ENTRY,CLUMP_ENTRY,SHARD_ENTRY,CRYSTAL_ENTRY,CLEAN_SLURRY_ENTRY,SLURRY_ENTRY));
 	}
 
 	@Override

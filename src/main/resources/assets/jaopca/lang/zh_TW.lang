@@ -38,7 +38,7 @@ item.jaopca.oreChunk.name=%s礦石塊
 #AbyssalCraft
 item.jaopca.crystalFragment.name=結晶%s断片
 item.jaopca.crystalShard.name=結晶%s碎片
-item.jaopca.crystalAbyss.name=結晶 %s
+item.jaopca.crystalAbyss.name=結晶%s
 tile.jaopca.crystalCluster.name=結晶%s簇
 
 #TechReborn

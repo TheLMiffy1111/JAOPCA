@@ -1,7 +1,6 @@
 package thelm.jaopca.modules;
 
 import java.util.List;
-import java.util.Locale;
 
 import com.google.common.collect.Lists;
 
@@ -11,9 +10,9 @@ import teamroots.embers.item.EnumStampType;
 import teamroots.embers.recipe.ItemMeltingOreRecipe;
 import teamroots.embers.recipe.ItemStampingRecipe;
 import teamroots.embers.recipe.RecipeRegistry;
-import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.utils.Utils;
 
 public class ModuleEmbers extends ModuleBase {

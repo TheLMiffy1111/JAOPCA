@@ -1,18 +1,8 @@
 package thelm.jaopca.oredictinit.compat;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.oredict.OreDictionary;
-import thelm.jaopca.api.ICompat;
-
-import static thelm.jaopca.oredictinit.registry.OreDictRegisCore.getBlock;
-import static thelm.jaopca.oredictinit.registry.OreDictRegisCore.getItem;
-
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import thelm.jaopca.api.ICompat;
 
 public class CompatDraconicEvolution implements ICompat {
 

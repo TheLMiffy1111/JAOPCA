@@ -4,24 +4,20 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import thelm.jaopca.api.utils.Utils;
 
 /**
  * A module
  * @author TheLMiffy1111
  */
 public abstract class ModuleBase {
-	
+
 	/**
 	 * Gets the name of this module.
 	 * @return the name of this module
 	 */
 	public abstract String getName();
-	
+
 	/**
 	 * Gets the dependencies of this module.
 	 * Return an empty list for no dependencies.
@@ -34,17 +30,21 @@ public abstract class ModuleBase {
 	public List<String> getOreBlacklist() {
 		return Lists.<String>newArrayList();
 	}
-	
+
 	/**
 	 * Gets the item entries of this module.
 	 * @return the list of item entries of this module
 	 */
-	public List<ItemEntry> getItemRequests() {
-		return Lists.<ItemEntry>newArrayList();
+	public List<? extends IItemRequest> getItemRequests() {
+		return Lists.<IItemRequest>newArrayList();
 	}
 
 	public void registerConfigs(Configuration config) {}
-	
+
+	public boolean blacklistCustom(ItemEntry itemEntry, IOreEntry oreEntry) {
+		return false;
+	}
+
 	/**
 	 * Register your custom things that aren't block, items, or fluids here.
 	 * The passed in ItemEntry will have an entry type of EnumEntryType.CUSTOM
@@ -59,9 +59,9 @@ public abstract class ModuleBase {
 	public void setCustomProperties() {}
 
 	public void preInit() {}
-	
+
 	public void init() {}
-	
+
 	public void postInit() {}
 
 	@Override

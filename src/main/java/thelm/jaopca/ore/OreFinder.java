@@ -1,6 +1,5 @@
 package thelm.jaopca.ore;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -9,7 +8,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.utils.JAOPCAConfig;

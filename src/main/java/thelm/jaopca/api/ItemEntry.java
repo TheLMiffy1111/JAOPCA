@@ -16,7 +16,7 @@ import thelm.jaopca.api.item.ItemProperties;
  * 
  * @author TheLMiffy1111
  */
-public class ItemEntry {
+public class ItemEntry implements IItemRequest {
 
 	public String name;
 	public String prefix;
@@ -28,6 +28,8 @@ public class ItemEntry {
 	public ItemProperties itemProperties = ItemProperties.DEFAULT;
 	public BlockProperties blockProperties = BlockProperties.DEFAULT;
 	public FluidProperties fluidProperties = FluidProperties.DEFAULT;
+	
+	public boolean skipWhenGrouped = false;
 
 	public ItemEntry(EnumEntryType type, String name, String oreDictPrefix, ModelResourceLocation itemModelLocation) {
 		this.type = type;
@@ -61,6 +63,11 @@ public class ItemEntry {
 
 	public ItemEntry setFluidProperties(FluidProperties fluidProperties) {
 		this.fluidProperties = fluidProperties;
+		return this;
+	}
+	
+	public ItemEntry skipWhenGrouped(boolean does) {
+		skipWhenGrouped = does;
 		return this;
 	}
 

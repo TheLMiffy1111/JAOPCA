@@ -2,9 +2,6 @@ package thelm.jaopca.api;
 
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-
 public interface IOreEntry {
 
 	/**

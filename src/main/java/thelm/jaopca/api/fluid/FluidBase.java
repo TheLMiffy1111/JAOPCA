@@ -1,7 +1,5 @@
 package thelm.jaopca.api.fluid;
 
-import java.util.Locale;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.Fluid;
