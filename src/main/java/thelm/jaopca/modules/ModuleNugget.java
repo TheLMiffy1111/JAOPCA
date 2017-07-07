@@ -34,7 +34,7 @@ public class ModuleNugget extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("nugget")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("ingot", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("ingot", entry, 1), new Object[] {
 					"nugget"+entry.getOreName(),
 					"nugget"+entry.getOreName(),
 					"nugget"+entry.getOreName(),
@@ -44,11 +44,11 @@ public class ModuleNugget extends ModuleBase {
 					"nugget"+entry.getOreName(),
 					"nugget"+entry.getOreName(),
 					"nugget"+entry.getOreName(),
-			}));
+			});
 
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("nugget", entry, 9), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("nugget", entry, 9), new Object[] {
 					"ingot"+entry.getOreName(),
-			}));
+			});
 		}
 	}
 }

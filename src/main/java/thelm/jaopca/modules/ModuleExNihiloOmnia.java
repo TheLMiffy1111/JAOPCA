@@ -76,12 +76,12 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreSand")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("oreSand", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("oreSand", entry, 1), new Object[] {
 					"oreCrushed"+entry.getOreName(),
 					"oreCrushed"+entry.getOreName(),
 					"oreCrushed"+entry.getOreName(),
 					"oreCrushed"+entry.getOreName(),
-			}));
+			});
 
 			Utils.addSmelting(Utils.getOreStack("oreSand", entry, 1), Utils.getOreStack("ingot", entry, 1), 0);
 
@@ -105,12 +105,12 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreFine")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("oreFine", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("oreFine", entry, 1), new Object[] {
 					"orePowdered"+entry.getOreName(),
 					"orePowdered"+entry.getOreName(),
 					"orePowdered"+entry.getOreName(),
 					"orePowdered"+entry.getOreName(),
-			}));
+			});
 
 			Utils.addSmelting(Utils.getOreStack("oreFine", entry, 1), Utils.getOreStack("ingot", entry, 1), 0);
 

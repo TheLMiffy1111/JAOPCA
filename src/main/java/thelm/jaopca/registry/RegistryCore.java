@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.EnumEntryType;
@@ -330,7 +330,7 @@ public class RegistryCore {
 					setMaxStackSize(ppt.maxStkSize).
 					setFull3D(ppt.full3D).
 					setRarity(ppt.rarity);
-					GameRegistry.register(item);
+					ForgeRegistries.ITEMS.register(item);
 					JAOPCA.proxy.handleItemRegister(entry, ore, item);
 					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack(item, 1, 0));
 					JAOPCAApi.ITEMS_TABLE.put(entry.name, ore.getOreName(), item);
@@ -361,12 +361,12 @@ public class RegistryCore {
 					setSlipperiness(ppt.slippyFunc.applyAsFloat(ore)).
 					setSoundType(ppt.soundType).
 					setFallable(ppt.fallable);
-					GameRegistry.register(block);
+					ForgeRegistries.BLOCKS.register(block);
 					ItemBlockBase itemblock = ppt.itemBlockClass.getConstructor(BlockBase.class).newInstance(block);
 					itemblock.
 					setMaxStackSize(ppt.maxStkSize).
 					setRarity(ppt.rarity);
-					GameRegistry.register(itemblock);
+					ForgeRegistries.ITEMS.register(itemblock);
 					JAOPCA.proxy.handleBlockRegister(entry, ore, block, itemblock);
 					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack(block, 1, 0));
 					JAOPCAApi.BLOCKS_TABLE.put(entry.name, ore.getOreName(), block);

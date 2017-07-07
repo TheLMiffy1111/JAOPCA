@@ -43,7 +43,7 @@ public class ModuleBlock extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("block")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(JAOPCAApi.BLOCKS_TABLE.get("block", entry.getOreName())), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("block", entry, 1), new Object[] {
 					"ingot"+entry.getOreName(),
 					"ingot"+entry.getOreName(),
 					"ingot"+entry.getOreName(),
@@ -53,11 +53,11 @@ public class ModuleBlock extends ModuleBase {
 					"ingot"+entry.getOreName(),
 					"ingot"+entry.getOreName(),
 					"ingot"+entry.getOreName(),
-			}));
+			});
 
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("ingot", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("ingot", entry, 1), new Object[] {
 					"block"+entry.getOreName()
-			}));
+			});
 		}
 	}
 }

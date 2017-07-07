@@ -68,7 +68,7 @@ public class ModuleIndustrialCraft extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustTiny")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("dust",entry,1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("dust",entry,1), new Object[] {
 					"dustTiny"+entry.getOreName(),
 					"dustTiny"+entry.getOreName(),
 					"dustTiny"+entry.getOreName(),
@@ -78,7 +78,7 @@ public class ModuleIndustrialCraft extends ModuleBase {
 					"dustTiny"+entry.getOreName(),
 					"dustTiny"+entry.getOreName(),
 					"dustTiny"+entry.getOreName(),
-			}));
+			});
 		}
 	}
 	

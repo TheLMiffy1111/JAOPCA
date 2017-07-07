@@ -7,10 +7,10 @@ import com.google.common.collect.Lists;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import teamroots.embers.item.EnumStampType;
+/*import teamroots.embers.item.EnumStampType;
 import teamroots.embers.recipe.ItemMeltingOreRecipe;
 import teamroots.embers.recipe.ItemStampingRecipe;
-import teamroots.embers.recipe.RecipeRegistry;
+import teamroots.embers.recipe.RecipeRegistry;*/
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
@@ -23,7 +23,7 @@ public class ModuleEmbers extends ModuleBase {
 		return "embers";
 	}
 
-	@Override
+	/*@Override
 	public List<String> getDependencies() {
 		return Lists.<String>newArrayList("molten");
 	}
@@ -53,5 +53,5 @@ public class ModuleEmbers extends ModuleBase {
 				}
 			}
 		}
-	}
+	}*/
 }

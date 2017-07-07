@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import exnihiloadscensio.ExNihiloAdscensio;
+/*import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
 import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ore.Ore;
@@ -22,12 +22,14 @@ import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.json.CustomOreJson;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.util.BlockInfo;
-import exnihiloadscensio.util.ItemInfo;
+import exnihiloadscensio.util.ItemInfo;*/
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
@@ -39,7 +41,7 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleExNihiloAdscensio extends ModuleBase {
 
-	public static final ItemEntry PIECE_ENTRY = new ItemEntry(EnumEntryType.ITEM, "orePiece", new ModelResourceLocation("jaopca:ore_crushed#inventory"));
+	/*public static final ItemEntry PIECE_ENTRY = new ItemEntry(EnumEntryType.ITEM, "orePiece", new ModelResourceLocation("jaopca:ore_crushed#inventory"));
 	public static final ItemEntry CHUNK_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreChunk", new ModelResourceLocation("jaopca:ore_broken#inventory"));
 
 	public static final ArrayList<String> EXISTING_ORES = Lists.<String>newArrayList();
@@ -54,14 +56,14 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 			"<itemStack oreDictionary=\"%s\" number=\"2\" />" +
 			"</output>" +
 			"</recipe>" + 
-			"</recipeGroup>";
+			"</recipeGroup>";*/
 
 	@Override
 	public String getName() {
 		return "exnihiloadscensio";
 	}
 
-	@Override
+	/*@Override
 	public List<ItemEntry> getItemRequests() {
 		ArrayList<ItemEntry> ret = Lists.newArrayList(PIECE_ENTRY, CHUNK_ENTRY);
 		for(ItemEntry entry : ret) {
@@ -80,12 +82,12 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreChunk")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("oreChunk", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("oreChunk", entry, 1), new Object[] {
 					"orePiece"+entry.getOreName(),
 					"orePiece"+entry.getOreName(),
 					"orePiece"+entry.getOreName(),
 					"orePiece"+entry.getOreName(),
-			}));
+			});
 			Utils.addSmelting(Utils.getOreStack("oreChunk", entry, 1), Utils.getOreStack("ingot", entry, 1), 0.7F);
 
 			if(Config.doTICCompat && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
@@ -144,5 +146,5 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 			e.printStackTrace();
 			EXISTING_ORES.addAll(defaults);
 		}
-	}
+	}*/
 }

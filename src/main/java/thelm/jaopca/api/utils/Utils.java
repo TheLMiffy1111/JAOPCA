@@ -13,8 +13,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.registries.GameData;
+import scala.actors.threadpool.Arrays;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.block.BlockBase;
@@ -220,5 +227,27 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return ItemStack.EMPTY;
+	}
+	
+	public static void addShapedOreRecipe(ItemStack output, Object... input) {
+		ResourceLocation location = getNameForRecipe(output, input);
+		ShapedOreRecipe recipe = new ShapedOreRecipe(location, output, input);
+		recipe.setRegistryName(location);
+		ForgeRegistries.RECIPES.register(recipe);
+	}
+	
+	public static void addShapelessOreRecipe(ItemStack output, Object... input) {
+		ResourceLocation location = getNameForRecipe(output, input);
+		ShapelessOreRecipe recipe = new ShapelessOreRecipe(location, output, input);
+		recipe.setRegistryName(location);
+		ForgeRegistries.RECIPES.register(recipe);
+	}
+	
+	public static ResourceLocation getNameForRecipe(ItemStack output, Object... input) {
+		ModContainer activeContainer = Loader.instance().activeModContainer();
+		ResourceLocation baseLoc = new ResourceLocation(activeContainer.getModId(), output.getItem().getRegistryName().getResourcePath());
+		ResourceLocation recipeLoc = baseLoc;
+		recipeLoc = new ResourceLocation(activeContainer.getModId(), baseLoc.getResourcePath()+"_"+Arrays.hashCode(input));
+		return recipeLoc;
 	}
 }

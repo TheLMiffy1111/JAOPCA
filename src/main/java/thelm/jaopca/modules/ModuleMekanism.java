@@ -7,9 +7,9 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-import mekanism.api.gas.Gas;
+/*import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
-import mekanism.api.gas.GasStack;
+import mekanism.api.gas.GasStack;*/
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,7 +26,7 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleMekanism extends ModuleBase {
 
-	public static final HashBasedTable<String,String,Gas> GASES_TABLE = HashBasedTable.<String,String,Gas>create();
+	/*public static final HashBasedTable<String,String,Gas> GASES_TABLE = HashBasedTable.<String,String,Gas>create();
 
 	public static final ItemEntry DIRTY_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustDirty", new ModelResourceLocation("jaopca:dust_dirty#inventory"), ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
@@ -49,14 +49,14 @@ public class ModuleMekanism extends ModuleBase {
 
 	public static final ArrayList<String> MINOR_COMPAT_BLACKLIST = Lists.<String>newArrayList(
 			"Nickel", "Aluminum", "Uranium", "Draconium"
-			);
+			);*/
 
 	@Override
 	public String getName() {
 		return "mekanism";
 	}
 
-	@Override
+	/*@Override
 	public List<String> getDependencies() {
 		return Lists.<String>newArrayList("dust");
 	}
@@ -227,5 +227,5 @@ public class ModuleMekanism extends ModuleBase {
 		public String getLocalizedName() {
 			return String.format(super.getLocalizedName(), I18n.canTranslate("jaopca.entry."+oreEntry.getOreName()) ? I18n.translateToLocal("jaopca.entry."+oreEntry.getOreName()) : oreEntry.getOreName());
 		}
-	}
+	}*/
 }

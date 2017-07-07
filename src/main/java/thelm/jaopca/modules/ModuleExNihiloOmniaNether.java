@@ -37,12 +37,12 @@ public class ModuleExNihiloOmniaNether extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreNetherGravel")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("oreNetherGravel", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("oreNetherGravel", entry, 1), new Object[] {
 					"oreNetherBroken"+entry.getOreName(),
 					"oreNetherBroken"+entry.getOreName(),
 					"oreNetherBroken"+entry.getOreName(),
 					"oreNetherBroken"+entry.getOreName(),
-			}));
+			});
 
 			Utils.addSmelting(Utils.getOreStack("oreNetherGravel", entry, 1), Utils.getOreStack("ingot", entry, 1), 0);
 

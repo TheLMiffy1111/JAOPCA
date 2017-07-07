@@ -16,12 +16,12 @@ public class ModuleExNihiloOmniaEnder extends ModuleBase {
 		return "exnihiloomniaender";
 	}
 
-	@Override
+	/*@Override
 	public List<String> getDependencies() {
 		return Lists.<String>newArrayList("exnihiloomnia");
 	}
 
-	/*@Override
+	@Override
 	public List<ItemEntry> getItemRequests() {
 		List<ItemEntry> ret = Lists.<ItemEntry>newArrayList(ORE_ENDER_BROKEN_ENTRY, ORE_ENDER_GRAVEL_ENTRY);
 		for(ItemEntry entry : ret) {
@@ -41,12 +41,12 @@ public class ModuleExNihiloOmniaEnder extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreEnderGravel")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("oreEnderGravel", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("oreEnderGravel", entry, 1), new Object[] {
 					"oreEnderBroken"+entry.getOreName(),
 					"oreEnderBroken"+entry.getOreName(),
 					"oreEnderBroken"+entry.getOreName(),
 					"oreEnderBroken"+entry.getOreName(),
-			}));
+			});
 
 			Utils.addSmelting(Utils.getOreStack("oreNetherGravel", entry, 1), Utils.getOreStack("ingot", entry, 1), 0);
 

@@ -40,12 +40,12 @@ public class ModuleExNihiloOmniaOverworld extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreGravel")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("oreGravel", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("oreGravel", entry, 1), new Object[] {
 					"oreBroken"+entry.getOreName(),
 					"oreBroken"+entry.getOreName(),
 					"oreBroken"+entry.getOreName(),
 					"oreBroken"+entry.getOreName(),
-			}));
+			});
 
 			Utils.addSmelting(Utils.getOreStack("oreGravel", entry, 1), Utils.getOreStack("ingot", entry, 1), 0);
 

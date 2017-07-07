@@ -5,8 +5,8 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraftforge.fluids.Fluid;
-import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.smeltery.TinkerSmeltery;
+/*import slimeknights.tconstruct.library.TinkerRegistry;
+import slimeknights.tconstruct.smeltery.TinkerSmeltery;*/
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
@@ -18,7 +18,7 @@ public class ModuleTinkersConstruct extends ModuleBase {
 		return "tconstruct";
 	}
 
-	@Override
+	/*@Override
 	public List<String> getDependencies() {
 		return Lists.<String>newArrayList("molten");
 	}
@@ -36,5 +36,5 @@ public class ModuleTinkersConstruct extends ModuleBase {
 
 	public static void addMeltingRecipe(String oreName, Fluid fluid, int amount) {
 		TinkerRegistry.registerMelting(oreName, fluid, amount);
-	}
+	}*/
 }

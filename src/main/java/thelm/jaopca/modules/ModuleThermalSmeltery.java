@@ -5,8 +5,8 @@ import java.lang.reflect.Field;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
+/*import slimeknights.tconstruct.library.TinkerRegistry;
+import slimeknights.tconstruct.library.smeltery.MeltingRecipe;*/
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
 
@@ -17,7 +17,7 @@ public class ModuleThermalSmeltery extends ModuleBase {
 		return "thermalsmeltery";
 	}
 
-	@Override
+	/*@Override
 	public void init() {
 		int modifier = 5;
 		try {
@@ -38,5 +38,5 @@ public class ModuleThermalSmeltery extends ModuleBase {
 				}
 			}
 		}
-	}
+	}*/
 }

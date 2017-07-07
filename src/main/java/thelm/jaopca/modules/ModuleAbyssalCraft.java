@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.shinoow.abyssalcraft.api.AbyssalCraftAPI;
-import com.shinoow.abyssalcraft.api.AbyssalCraftAPI.FuelType;
+/*import com.shinoow.abyssalcraft.api.AbyssalCraftAPI;
+import com.shinoow.abyssalcraft.api.AbyssalCraftAPI.FuelType;*/
 
 import net.minecraft.block.SoundType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -26,7 +26,7 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleAbyssalCraft extends ModuleBase {
 
-	public static final BlockProperties CRYSTAL_CLUSTER_PROPERTIES = new BlockProperties().
+	/*public static final BlockProperties CRYSTAL_CLUSTER_PROPERTIES = new BlockProperties().
 			setHardnessFunc((entry)->{return 0.4F;}).
 			setResistanceFunc((entry)->{return 0.8F;}).
 			setSoundType(SoundType.GLASS).
@@ -45,14 +45,14 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			));
 	public static final ItemEntry CRYSTAL_CLUSTER_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "crystalCluster", new ModelResourceLocation("jaopca:crystal_cluster#normal"), ImmutableList.<String>of(
 			"Iron", "Gold", "Potassium", "Abyssalnite", "Coralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
-			)).setBlockProperties(CRYSTAL_CLUSTER_PROPERTIES).skipWhenGrouped(true);
+			)).setBlockProperties(CRYSTAL_CLUSTER_PROPERTIES).skipWhenGrouped(true);*/
 
 	@Override
 	public String getName() {
 		return "abyssalcraft";
 	}
 
-	@Override
+	/*@Override
 	public List<ItemEntryGroup> getItemRequests() {
 		return Lists.<ItemEntryGroup>newArrayList(ItemEntryGroup.of(CRYSTAL_FRAGMENT_ENTRY, CRYSTAL_SHARD_ENTRY, CRYSTAL_ENTRY, CRYSTAL_CLUSTER_ENTRY));
 	}
@@ -63,13 +63,13 @@ public class ModuleAbyssalCraft extends ModuleBase {
 		AbyssalCraftAPI.registerFuelHandler(new JAOPCAAbyssFuelHandler(), FuelType.TRANSMUTATOR);
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crystalFragment")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("crystalFragment", entry, 9), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("crystalFragment", entry, 9), new Object[] {
 					"crystalShard"+entry.getOreName(),
-			}));
+			});
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crystalShard")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("crystalShard", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("crystalShard", entry, 1), new Object[] {
 					"crystalFragment"+entry.getOreName(),
 					"crystalFragment"+entry.getOreName(),
 					"crystalFragment"+entry.getOreName(),
@@ -79,11 +79,11 @@ public class ModuleAbyssalCraft extends ModuleBase {
 					"crystalFragment"+entry.getOreName(),
 					"crystalFragment"+entry.getOreName(),
 					"crystalFragment"+entry.getOreName(),
-			}));
+			});
 
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("crystalShard", entry, 9), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("crystalShard", entry, 9), new Object[] {
 					"crystal"+entry.getOreName(),
-			}));
+			});
 
 			addSingleCrystallization("ingot"+entry.getOreName(), "crystalShard"+entry.getOreName(), 4, 0.1F);
 			addSingleCrystallization("ore"+entry.getOreName(), "crystalShard"+entry.getOreName(), 4, 0.1F);
@@ -97,7 +97,7 @@ public class ModuleAbyssalCraft extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crystalAbyss")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getJAOPCAOrOreStack("crystalAbyss", "crystal", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getJAOPCAOrOreStack("crystalAbyss", "crystal", entry, 1), new Object[] {
 					"crystalShard"+entry.getOreName(),
 					"crystalShard"+entry.getOreName(),
 					"crystalShard"+entry.getOreName(),
@@ -107,11 +107,11 @@ public class ModuleAbyssalCraft extends ModuleBase {
 					"crystalShard"+entry.getOreName(),
 					"crystalShard"+entry.getOreName(),
 					"crystalShard"+entry.getOreName(),
-			}));
+			});
 
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getJAOPCAOrOreStack("crystalAbyss", "crystal", entry, 9), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getJAOPCAOrOreStack("crystalAbyss", "crystal", entry, 9), new Object[] {
 					"crystalCluster"+entry.getOreName(),
-			}));
+			});
 
 			if(Utils.doesOreNameExist("block"+entry.getOreName())) {
 				addSingleCrystallization("block"+entry.getOreName(), "crystal"+entry.getOreName(), 4, 0.9F);
@@ -120,7 +120,7 @@ public class ModuleAbyssalCraft extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crystalCluster")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("crystalCluster", entry, 9), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("crystalCluster", entry, 9), new Object[] {
 					"crystal"+entry.getOreName(),
 					"crystal"+entry.getOreName(),
 					"crystal"+entry.getOreName(),
@@ -130,7 +130,7 @@ public class ModuleAbyssalCraft extends ModuleBase {
 					"crystal"+entry.getOreName(),
 					"crystal"+entry.getOreName(),
 					"crystal"+entry.getOreName(),
-			}));
+			});
 		}
 	}
 
@@ -155,5 +155,5 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			}
 			return 0;
 		}
-	}
+	}*/
 }

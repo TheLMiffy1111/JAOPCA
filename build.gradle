@@ -4,7 +4,7 @@ buildscript {
         maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -52,9 +52,12 @@ repositories {
             artifact "[module]-[revision](-[classifier]).[ext]"
         }
     }
+    maven {
+        url = "http://maven.covers1624.net/"
+    }
 }
 
-version = "1.11.2-1.1.18"
+version = "1.12-1.2.19"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -64,23 +67,23 @@ compileJava {
 }
 
 minecraft {
-    version = "1.11.2-13.20.0.2282"
+    version = "1.12-14.21.1.2397"
     runDir = "run"
-    mappings = "snapshot_20170401"
+    mappings = "snapshot_20170624"
     makeObfSourceJar = false
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.11.2:4.3.5.277" 
-    deobfCompile "slimeknights.mantle:Mantle:1.11.2-1.2.0.26"
-    deobfCompile "slimeknights:TConstruct:1.11.2-2.7.0.12"
-    deobfCompile "net.industrial-craft:industrialcraft-2:2.7.33-ex111"
-    deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.11.2-r107"
-    deobfCompile "blusunrize:ImmersiveEngineering:0.11-59-102"
-    deobfCompile "MCMultiPart2:MCMultiPart-exp:2.0.0_19"
-    deobfCompile("RebornCore:RebornCore-1.11.2:2.16.1.115:universal") {
+    deobfCompile "mezz.jei:jei_1.12:4.7.1.69" 
+    deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.0.6"
+    //deobfCompile "slimeknights:TConstruct:1.12-????"
+    deobfCompile "net.industrial-craft:industrialcraft-2:2.8.4-ex112"
+    deobfCompile "blusunrize:ImmersiveEngineering:0.12-64-165"
+    deobfCompile "MCMultiPart2:MCMultiPart-exp:2.2.2_37"
+    deobfCompile("RebornCore:RebornCore-1.12:3.2.3.83:universal") {
         transitive = false
     }
+    deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
 }
 
 processResources

@@ -78,12 +78,12 @@ public class ModuleTechReborn extends ModuleBase {
 		FluidStack na2s2o8 = new FluidStack(FluidRegistry.getFluid("fluidsodiumpersulfate"), 1000);
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustSmall")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("dust", entry, 1), new Object[] {
+			Utils.addShapelessOreRecipe(Utils.getOreStack("dust", entry, 1), new Object[] {
 					"dustSmall"+entry.getOreName(),
 					"dustSmall"+entry.getOreName(),
 					"dustSmall"+entry.getOreName(),
 					"dustSmall"+entry.getOreName(),
-			}));
+			});
 		}
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
