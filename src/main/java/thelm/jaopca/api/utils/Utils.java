@@ -1,5 +1,6 @@
 package thelm.jaopca.api.utils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,8 +21,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import net.minecraftforge.registries.GameData;
-import scala.actors.threadpool.Arrays;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.block.BlockBase;
