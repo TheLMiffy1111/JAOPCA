@@ -1,5 +1,6 @@
 package thelm.jaopca.registry;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -12,8 +13,10 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.JAOPCA;
@@ -54,9 +57,13 @@ import thelm.jaopca.modules.ModuleTechReborn;
 import thelm.jaopca.modules.ModuleThermalExpansion;
 import thelm.jaopca.modules.ModuleThermalSmeltery;
 import thelm.jaopca.modules.ModuleTinkersConstruct;
+import thelm.jaopca.ore.OreFinder;
+import thelm.jaopca.oredictinit.OreDictInit;
 import thelm.jaopca.utils.JAOPCAConfig;
+import thelm.jaopca.utils.JAOPCAEventHandler;
 
 /**
+ * Internal.
  * The class where most things of this mod is done.
  * Many methods may not be efficient.
  * @author TheLMiffy1111
@@ -65,23 +72,37 @@ public class RegistryCore {
 
 	public static final ArrayList<IItemRequest> ITEM_REQUEST_LIST = Lists.<IItemRequest>newArrayList();
 
-	public static void preInit() {
-		registerBuiltInModules();
+	public static int phase = 0;
 
+	public static void preInit(FMLPreInitializationEvent event) {
+		MinecraftForge.EVENT_BUS.register(new JAOPCAEventHandler());
+
+		OreDictInit.instance.preInit(event);
+
+		JAOPCAConfig.init(new File(event.getModConfigurationDirectory(), "JAOPCA.cfg"));
+
+		registerBuiltInModules();
 		filterModules();
+
 		initItemEntries();
+	}
+
+	public static void preInit1() {
+		OreDictInit.instance.preInit1();
+
+		OreFinder.findOres();
 		initBlacklists();
 		initToOreMaps();
 
 		JAOPCAConfig.initModulewiseConfigs();
 
-		registerItems();
 		registerBlocks();
+		registerItems();
+		//registerEntities();
 		registerFluids();
 		registerCustoms();
 
 		setProperties();
-
 		registerPreInit();
 	}
 
@@ -315,33 +336,6 @@ public class RegistryCore {
 		}
 	}
 
-	private static void registerItems() {
-		for(ItemEntry entry : JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.get(EnumEntryType.ITEM)) {
-			ItemProperties ppt = entry.itemProperties;
-
-			for(IOreEntry ore : JAOPCAApi.ORE_ENTRY_LIST) {
-				if(entry.blacklist.contains(ore.getOreName())) {
-					continue;
-				}
-
-				try {
-					ItemBase item = ppt.itemClass.getConstructor(ItemEntry.class, IOreEntry.class).newInstance(entry, ore);
-					item.
-					setMaxStackSize(ppt.maxStkSize).
-					setFull3D(ppt.full3D).
-					setRarity(ppt.rarity);
-					ForgeRegistries.ITEMS.register(item);
-					JAOPCA.proxy.handleItemRegister(entry, ore, item);
-					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack(item, 1, 0));
-					JAOPCAApi.ITEMS_TABLE.put(entry.name, ore.getOreName(), item);
-				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 	private static void registerBlocks() {
 		for(ItemEntry entry : JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.get(EnumEntryType.BLOCK)) {
 			BlockProperties ppt = entry.blockProperties;
@@ -370,6 +364,33 @@ public class RegistryCore {
 					JAOPCA.proxy.handleBlockRegister(entry, ore, block, itemblock);
 					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack(block, 1, 0));
 					JAOPCAApi.BLOCKS_TABLE.put(entry.name, ore.getOreName(), block);
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private static void registerItems() {
+		for(ItemEntry entry : JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.get(EnumEntryType.ITEM)) {
+			ItemProperties ppt = entry.itemProperties;
+
+			for(IOreEntry ore : JAOPCAApi.ORE_ENTRY_LIST) {
+				if(entry.blacklist.contains(ore.getOreName())) {
+					continue;
+				}
+
+				try {
+					ItemBase item = ppt.itemClass.getConstructor(ItemEntry.class, IOreEntry.class).newInstance(entry, ore);
+					item.
+					setMaxStackSize(ppt.maxStkSize).
+					setFull3D(ppt.full3D).
+					setRarity(ppt.rarity);
+					ForgeRegistries.ITEMS.register(item);
+					JAOPCA.proxy.handleItemRegister(entry, ore, item);
+					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack(item, 1, 0));
+					JAOPCAApi.ITEMS_TABLE.put(entry.name, ore.getOreName(), item);
 				}
 				catch(Exception e) {
 					e.printStackTrace();

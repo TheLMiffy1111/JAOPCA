@@ -10,6 +10,7 @@ import thelm.jaopca.oredictinit.compat.CompatGalacticraftPlanets;
 import thelm.jaopca.oredictinit.compat.CompatMekanism;
 import thelm.jaopca.oredictinit.compat.CompatNuclearCraft;
 import thelm.jaopca.oredictinit.compat.CompatTheBetweenlands;
+import thelm.jaopca.oredictinit.compat.CompatTinkersConstruct;
 
 public class Compat {
 
@@ -37,6 +38,9 @@ public class Compat {
 		}
 		if(Loader.isModLoaded("bigreactors")) {
 			JAOPCAApi.ORE_DICT_COMPAT_LIST.add(new CompatExtremeReactors());
+		}
+		if(Loader.isModLoaded("tconstruct")) {
+			JAOPCAApi.ORE_DICT_COMPAT_LIST.add(new CompatTinkersConstruct());
 		}
 	}
 }

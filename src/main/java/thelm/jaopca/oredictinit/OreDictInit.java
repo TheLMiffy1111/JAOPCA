@@ -14,17 +14,15 @@ public class OreDictInit {
 	public static OreDictInit instance = new OreDictInit();
 	
 	public void preInit(FMLPreInitializationEvent event) {
-		Woodchopper.info("Initializing...");
-		
 		Woodchopper.debug("Generating and Registering Config File");
 		ConfigHandler.preInit(new File(event.getModConfigurationDirectory(), "OreDictInit.cfg"));
-		
+
 		Woodchopper.debug("Registering Compats");
 		Compat.init();
-		
+	}
+	
+	public void preInit1() {
 		OreDictRegisCore.initCompat();
 		OreDictRegisCore.initCustom();
-		
-		Woodchopper.info("Done!");
 	}
 }

@@ -246,7 +246,7 @@ public class Utils {
 		ModContainer activeContainer = Loader.instance().activeModContainer();
 		ResourceLocation baseLoc = new ResourceLocation(activeContainer.getModId(), output.getItem().getRegistryName().getResourcePath());
 		ResourceLocation recipeLoc = baseLoc;
-		recipeLoc = new ResourceLocation(activeContainer.getModId(), baseLoc.getResourcePath()+"_"+Arrays.hashCode(input));
+		recipeLoc = new ResourceLocation(activeContainer.getModId(), baseLoc.getResourcePath()+"_"+Arrays.deepToString(input).hashCode());
 		return recipeLoc;
 	}
 }
