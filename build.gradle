@@ -52,9 +52,12 @@ repositories {
             artifact "[module]-[revision](-[classifier]).[ext]"
         }
     }
+    maven {
+        url = "http://maven.covers1624.net/"
+    }
 }
 
-version = "1.11.2-1.1.18"
+version = "1.11.2-1.1.22"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
