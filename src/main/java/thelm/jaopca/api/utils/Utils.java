@@ -230,14 +230,14 @@ public class Utils {
 	
 	public static void addShapedOreRecipe(ItemStack output, Object... input) {
 		ResourceLocation location = getNameForRecipe(output, input);
-		ShapedOreRecipe recipe = new ShapedOreRecipe(location, output, input);
+		ShapedOreRecipe recipe = new ShapedOreRecipe(null, output, input);
 		recipe.setRegistryName(location);
 		ForgeRegistries.RECIPES.register(recipe);
 	}
 	
 	public static void addShapelessOreRecipe(ItemStack output, Object... input) {
 		ResourceLocation location = getNameForRecipe(output, input);
-		ShapelessOreRecipe recipe = new ShapelessOreRecipe(location, output, input);
+		ShapelessOreRecipe recipe = new ShapelessOreRecipe(null, output, input);
 		recipe.setRegistryName(location);
 		ForgeRegistries.RECIPES.register(recipe);
 	}
@@ -246,7 +246,7 @@ public class Utils {
 		ModContainer activeContainer = Loader.instance().activeModContainer();
 		ResourceLocation baseLoc = new ResourceLocation(activeContainer.getModId(), output.getItem().getRegistryName().getResourcePath());
 		ResourceLocation recipeLoc = baseLoc;
-		recipeLoc = new ResourceLocation(activeContainer.getModId(), baseLoc.getResourcePath()+"_"+Arrays.deepToString(input).hashCode());
+		recipeLoc = new ResourceLocation(activeContainer.getModId(), baseLoc.getResourcePath()+"_"+Integer.toUnsignedString(Arrays.deepToString(input).hashCode(), 32));
 		return recipeLoc;
 	}
 }

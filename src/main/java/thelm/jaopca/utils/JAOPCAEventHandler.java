@@ -30,14 +30,15 @@ public class JAOPCAEventHandler {
 
 	@SubscribeEvent(priority=EventPriority.LOWEST)
 	public void onEntityRegisterLowest(RegistryEvent.Register<EntityEntry> event) {
-		/*
-		 * Used EntityEntry here because it fires after blocks and items, and prepares if I decide to support entities.
-		 */
+		//Used EntityEntry here because it fires after blocks and items, and prepares if I decide to support entities.
+		//Technically still preInit
 		RegistryCore.preInit1();
 	}
 
 	@SubscribeEvent
 	public void onRecipeRegister(RegistryEvent.Register<IRecipe> event) {
-
+		//These should be fired right after preInit, so maybe counts as init
+		//RegistryCore.init();
+		//IC2 crashes if I register here somehow
 	}
 }

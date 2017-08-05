@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraftforge.fluids.Fluid;
+import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.smeltery.TinkerSmeltery;
 /*import slimeknights.tconstruct.library.TinkerRegistry;
@@ -29,9 +30,11 @@ public class ModuleTinkersConstruct extends ModuleBase {
 	public void init() {
 		//Use TConstruct's internal method because it adds everything for us
 		//Might change
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("molten")) {
-			if(!entry.getModuleBlacklist().contains(getName())) {
-				TinkerSmeltery.registerOredictMeltingCasting(JAOPCAApi.FLUIDS_TABLE.get("molten", entry.getOreName()), entry.getOreName());
+		if(TConstruct.pulseManager.isPulseLoaded(TinkerSmeltery.PulseId)) {
+			for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
+				if(!entry.getModuleBlacklist().contains(getName())) {
+					TinkerSmeltery.registerOredictMeltingCasting(JAOPCAApi.FLUIDS_TABLE.get("molten", entry.getOreName()), entry.getOreName());
+				}
 			}
 		}
 	}
