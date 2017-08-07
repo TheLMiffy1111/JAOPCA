@@ -78,6 +78,11 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 			"</recipe>" + 
 			"</recipeGroup>";
 
+	public static boolean add_smeltery_melting;
+	public static boolean aa_crusher;
+	public static boolean mekanism_crusher;
+	public static boolean sag_mill;
+
 	@Override
 	public String getName() {
 		return "exnihiloomnia";
@@ -118,19 +123,19 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 
 			addOreHammerRecipe(JAOPCAApi.BLOCKS_TABLE.get("oreSand", entry.getOreName()), Utils.getOreStack("orePowdered", entry, 1));
 
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
+			if(add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreSand"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144);
 			}
 
-			if(ENOCompatibility.aa_crusher && Loader.isModLoaded("actuallyadditions")) {
+			if(aa_crusher && Loader.isModLoaded("actuallyadditions")) {
 				addActuallyAdditionsCrusherRecipe(Utils.getOreStack("oreSand", entry, 1), Utils.getOreStack("orePowdered", entry, 5), Utils.getOreStack("orePowdered", entry, 2), 30);
 			}
 
-			if(ENOCompatibility.mekanism_crusher && Loader.isModLoaded("Mekanism")) {
+			if(mekanism_crusher && Loader.isModLoaded("Mekanism")) {
 				ModuleMekanism.addCrusherRecipe(Utils.getOreStack("oreSand", entry, 1), Utils.getOreStack("orePowdered", entry, 6));
 			}
 
-			if(ENOCompatibility.sag_mill && Loader.isModLoaded("EnderIO")) {
+			if(sag_mill && Loader.isModLoaded("EnderIO")) {
 				addOreSAGMillRecipe("oreSand"+entry.getOreName(), "orePowdered"+entry.getOreName());
 			}
 		}
@@ -145,7 +150,7 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 
 			Utils.addSmelting(Utils.getOreStack("oreFine", entry, 1), Utils.getOreStack("ingot", entry, 1), 0);
 
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
+			if(add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreFine"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144);
 			}
 		}
@@ -189,5 +194,21 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 		for(String name : OreRegistry.registry.keySet()) {
 			EXISTING_ORES.add(StringUtils.capitalize(name));
 		};
+
+		try {
+			add_smeltery_melting = ENOCompatibility.class.getField("add_smeltery_melting").getBoolean(null);
+		}
+		catch(Exception e) {
+			add_smeltery_melting = false;
+		}
+		
+		try {
+			aa_crusher = ENOCompatibility.class.getField("aa_crusher").getBoolean(null);
+			mekanism_crusher = ENOCompatibility.class.getField("mekanism_crusher").getBoolean(null);
+			sag_mill = ENOCompatibility.class.getField("sag_mill").getBoolean(null);
+		}
+		catch(Exception e) {
+			aa_crusher = mekanism_crusher = sag_mill = false;
+		}
 	}
 }

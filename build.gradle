@@ -46,9 +46,12 @@ repositories {
     maven {
         url = "https://modmaven.k-4u.nl/" 
     }
+    maven {
+        url = "http://maven.covers1624.net/"
+    }
 }
 
-version = "1.10.2-1.0.17"
+version = "1.10.2-1.0.24"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 

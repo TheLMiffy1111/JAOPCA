@@ -27,7 +27,7 @@ public class FluidProperties {
 	public EnumRarity rarity = EnumRarity.COMMON;
 	public SoundEvent fillSound = SoundEvents.ITEM_BUCKET_FILL;
 	public SoundEvent emptySound = SoundEvents.ITEM_BUCKET_EMPTY;
-	public Class<? extends FluidBase> fluidClass = FluidBase.class;
+	public Class<? extends IFluidWithProperty> fluidClass = FluidBase.class;
 
 	public FluidProperties setLuminosityFunc(ToIntFunction<IOreEntry> value) {
 		luminosFunc = value;
@@ -69,7 +69,7 @@ public class FluidProperties {
 		return this;
 	}
 
-	public FluidProperties setFluidClass(Class<? extends FluidBase> value) {
+	public FluidProperties setFluidClass(Class<? extends IFluidWithProperty> value) {
 		fluidClass = value;
 		return this;
 	}

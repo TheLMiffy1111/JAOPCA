@@ -51,7 +51,7 @@ public class ModuleExNihiloOmniaOverworld extends ModuleBase {
 			ModuleExNihiloOmnia.addOreSieveRecipe(Blocks.SAND, Utils.getOreStack("oreCrushed", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
 			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.DUST, Utils.getOreStack("orePowdered", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
 
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
+			if(ModuleExNihiloOmnia.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreBroken"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);
 			}
 		}
@@ -68,19 +68,19 @@ public class ModuleExNihiloOmniaOverworld extends ModuleBase {
 
 			ModuleExNihiloOmnia.addOreHammerRecipe(JAOPCAApi.BLOCKS_TABLE.get("oreGravel", entry.getOreName()), Utils.getOreStack("oreCrushed", entry, 1));
 
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
+			if(ModuleExNihiloOmnia.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreGravel"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144);
 			}
 
-			if(ENOCompatibility.aa_crusher && Loader.isModLoaded("actuallyadditions")) {
+			if(ModuleExNihiloOmnia.aa_crusher && Loader.isModLoaded("actuallyadditions")) {
 				ModuleExNihiloOmnia.addActuallyAdditionsCrusherRecipe(Utils.getOreStack("oreGravel", entry, 1), Utils.getOreStack("oreCrushed", entry, 5), Utils.getOreStack("oreCrushed", entry, 2), 30);
 			}
 
-			if(ENOCompatibility.mekanism_crusher && Loader.isModLoaded("Mekanism")) {
+			if(ModuleExNihiloOmnia.mekanism_crusher && Loader.isModLoaded("Mekanism")) {
 				ModuleMekanism.addCrusherRecipe(Utils.getOreStack("oreGravel", entry, 1), Utils.getOreStack("oreCrushed", entry, 6));
 			}
 
-			if(ENOCompatibility.sag_mill && Loader.isModLoaded("EnderIO")) {
+			if(ModuleExNihiloOmnia.sag_mill && Loader.isModLoaded("EnderIO")) {
 				ModuleExNihiloOmnia.addOreSAGMillRecipe("oreGravel"+entry.getOreName(), "oreCrushed"+entry.getOreName());
 			}
 		}

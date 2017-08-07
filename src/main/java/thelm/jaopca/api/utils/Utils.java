@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -17,8 +18,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.block.BlockBase;
-import thelm.jaopca.api.item.ItemBase;
 
 public class Utils {
 
@@ -54,20 +53,20 @@ public class Utils {
 		}
 
 		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getOreName())) {
-			BlockBase b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getOreName());
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getOreName());
 			CACHE.put(prefix+entry.getOreName(), new ItemStack(b, 1, 0));
 			return new ItemStack(b, amount, 0);
 		}
 
 		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getOreName())) {
-			ItemBase i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getOreName());
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getOreName());
 			CACHE.put(prefix+entry.getOreName(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
 
 		return getOreStack(prefix+entry.getOreName(), amount);
 	}
-	
+
 	public static ItemStack getJAOPCAOrOreStack(String prefix, String fallback, IOreEntry entry, int amount) {
 		if(CACHE.containsKey(prefix+entry.getOreName())) {
 			ItemStack ret = CACHE.get(prefix+entry.getOreName()).copy();
@@ -76,17 +75,17 @@ public class Utils {
 		}
 
 		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getOreName())) {
-			BlockBase b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getOreName());
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getOreName());
 			CACHE.put(prefix+entry.getOreName(), new ItemStack(b, 1, 0));
 			return new ItemStack(b, amount, 0);
 		}
 
 		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getOreName())) {
-			ItemBase i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getOreName());
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getOreName());
 			CACHE.put(prefix+entry.getOreName(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
-		
+
 		return getOreStack(fallback, entry, amount);
 	}
 
@@ -98,20 +97,20 @@ public class Utils {
 		}
 
 		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getExtra())) {
-			BlockBase b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getExtra());
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getExtra());
 			CACHE.put(prefix+entry.getExtra(), new ItemStack(b, 1, 0));
 			return new ItemStack(b, amount, 0);
 		}
 
 		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getExtra())) {
-			ItemBase i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getExtra());
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getExtra());
 			CACHE.put(prefix+entry.getExtra(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
 
 		return getOreStack(prefix+entry.getExtra(), amount);
 	}
-	
+
 	public static ItemStack getJAOPCAOrOreStackExtra(String prefix, String fallback, IOreEntry entry, int amount) {
 		if(CACHE.containsKey(prefix+entry.getExtra())) {
 			ItemStack ret = CACHE.get(prefix+entry.getExtra()).copy();
@@ -120,17 +119,17 @@ public class Utils {
 		}
 
 		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getExtra())) {
-			BlockBase b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getExtra());
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getExtra());
 			CACHE.put(prefix+entry.getExtra(), new ItemStack(b, 1, 0));
 			return new ItemStack(b, amount, 0);
 		}
 
 		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getExtra())) {
-			ItemBase i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getExtra());
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getExtra());
 			CACHE.put(prefix+entry.getExtra(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
-		
+
 		return getOreStackExtra(fallback, entry, amount);
 	}
 

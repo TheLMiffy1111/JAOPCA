@@ -8,10 +8,14 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -24,12 +28,12 @@ import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.ItemEntryGroup;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
-import thelm.jaopca.api.block.BlockBase;
 import thelm.jaopca.api.block.BlockProperties;
-import thelm.jaopca.api.fluid.FluidBase;
+import thelm.jaopca.api.block.IBlockWithProperty;
 import thelm.jaopca.api.fluid.FluidProperties;
-import thelm.jaopca.api.item.ItemBase;
-import thelm.jaopca.api.item.ItemBlockBase;
+import thelm.jaopca.api.fluid.IFluidWithProperty;
+import thelm.jaopca.api.item.IItemBlockWithProperty;
+import thelm.jaopca.api.item.IItemWithProperty;
 import thelm.jaopca.api.item.ItemProperties;
 import thelm.jaopca.api.utils.Utils;
 import thelm.jaopca.modules.ModuleAbyssalCraft;
@@ -325,15 +329,15 @@ public class RegistryCore {
 				}
 
 				try {
-					ItemBase item = ppt.itemClass.getConstructor(ItemEntry.class, IOreEntry.class).newInstance(entry, ore);
+					IItemWithProperty item = ppt.itemClass.getConstructor(ItemEntry.class, IOreEntry.class).newInstance(entry, ore);
 					item.
 					setMaxStackSize(ppt.maxStkSize).
 					setFull3D(ppt.full3D).
 					setRarity(ppt.rarity);
-					GameRegistry.register(item);
-					JAOPCA.proxy.handleItemRegister(entry, ore, item);
-					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack(item, 1, 0));
-					JAOPCAApi.ITEMS_TABLE.put(entry.name, ore.getOreName(), item);
+					GameRegistry.register((Item)item);
+					JAOPCA.proxy.handleItemRegister(entry, ore, (Item)item);
+					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack((Item)item, 1, 0));
+					JAOPCAApi.ITEMS_TABLE.put(entry.name, ore.getOreName(), (Item)item);
 				}
 				catch(Exception e) {
 					e.printStackTrace();
@@ -352,7 +356,7 @@ public class RegistryCore {
 				}
 
 				try {
-					BlockBase block = ppt.blockClass.getConstructor(Material.class, MapColor.class, ItemEntry.class, IOreEntry.class).newInstance(ppt.material, ppt.mapColor, entry, ore);
+					IBlockWithProperty block = ppt.blockClass.getConstructor(Material.class, MapColor.class, ItemEntry.class, IOreEntry.class).newInstance(ppt.material, ppt.mapColor, entry, ore);
 					block.
 					setHardness(ppt.hardnessFunc.applyAsFloat(ore)).
 					setResistance(ppt.resisFunc.applyAsFloat(ore)).
@@ -366,16 +370,20 @@ public class RegistryCore {
 					setHarvestLevel(ppt.harvestLevel).
 					setFull(ppt.full).
 					setOpaque(ppt.opaque).
+					setBlockLayer(ppt.layer).
+					setFlammability(ppt.flammabFunc.applyAsInt(ore)).
+					setFireSpreadSpeed(ppt.fireSpdFunc.applyAsInt(ore)).
+					setFireSource(ppt.fireSource).
 					setFallable(ppt.fallable);
-					GameRegistry.register(block);
-					ItemBlockBase itemblock = ppt.itemBlockClass.getConstructor(BlockBase.class).newInstance(block);
+					GameRegistry.register((Block)block);
+					IItemBlockWithProperty itemblock = ppt.itemBlockClass.getConstructor(IBlockWithProperty.class).newInstance(block);
 					itemblock.
 					setMaxStackSize(ppt.maxStkSize).
 					setRarity(ppt.rarity);
-					GameRegistry.register(itemblock);
-					JAOPCA.proxy.handleBlockRegister(entry, ore, block, itemblock);
-					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack(block, 1, 0));
-					JAOPCAApi.BLOCKS_TABLE.put(entry.name, ore.getOreName(), block);
+					GameRegistry.register((ItemBlock)itemblock);
+					JAOPCA.proxy.handleBlockRegister(entry, ore, (Block)block, (ItemBlock)itemblock);
+					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack((Block)block, 1, 0));
+					JAOPCAApi.BLOCKS_TABLE.put(entry.name, ore.getOreName(), (Block)block);
 				}
 				catch(Exception e) {
 					e.printStackTrace();
@@ -397,18 +405,18 @@ public class RegistryCore {
 				}
 
 				try {
-					FluidBase fluid = ppt.fluidClass.getConstructor(ItemEntry.class, IOreEntry.class).newInstance(entry, ore);
+					IFluidWithProperty fluid = ppt.fluidClass.getConstructor(ItemEntry.class, IOreEntry.class).newInstance(entry, ore);
 					fluid.
 					setLuminosity(ppt.luminosFunc.applyAsInt(ore)).
-					setTemperature(ppt.densityFunc.applyAsInt(ore)).
+					setTemperature(ppt.tempFunc.applyAsInt(ore)).
 					setDensity(ppt.densityFunc.applyAsInt(ore)).
 					setViscosity(ppt.viscosFunc.applyAsInt(ore)).
 					setGaseous(ppt.gaseous.test(ore)).
 					setRarity(ppt.rarity).
 					setFillSound(ppt.fillSound).
 					setEmptySound(ppt.emptySound);
-					FluidRegistry.registerFluid(fluid);
-					JAOPCAApi.FLUIDS_TABLE.put(entry.name, ore.getOreName(), fluid);
+					FluidRegistry.registerFluid((Fluid)fluid);
+					JAOPCAApi.FLUIDS_TABLE.put(entry.name, ore.getOreName(), (Fluid)fluid);
 				}
 				catch(Exception e) {
 					e.printStackTrace();

@@ -1,6 +1,8 @@
 package thelm.jaopca.api.fluid;
 
+import net.minecraft.item.EnumRarity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -9,7 +11,7 @@ import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.utils.Utils;
 import thelm.jaopca.modules.ModuleMolten;
 
-public class FluidBase extends Fluid {
+public class FluidBase extends Fluid implements IFluidWithProperty {
 
 	public final IOreEntry oreEntry;
 	public final ItemEntry itemEntry;
@@ -19,6 +21,54 @@ public class FluidBase extends Fluid {
 		this.setUnlocalizedName("jaopca."+itemEntry.name);
 		this.oreEntry = oreEntry;
 		this.itemEntry = itemEntry;
+	}
+
+	@Override
+	public FluidBase setLuminosity(int luminosity) {
+		super.setLuminosity(luminosity);
+		return this;
+	}
+
+	@Override
+	public FluidBase setDensity(int density) {
+		super.setDensity(density);
+		return this;
+	}
+
+	@Override
+	public FluidBase setTemperature(int temperature) {
+		super.setTemperature(temperature);
+		return this;
+	}
+
+	@Override
+	public FluidBase setViscosity(int viscosity) {
+		super.setViscosity(viscosity);
+		return this;
+	}
+
+	@Override
+	public FluidBase setGaseous(boolean isGaseous) {
+		super.setGaseous(isGaseous);
+		return this;
+	}
+
+	@Override
+	public FluidBase setRarity(EnumRarity rarity) {
+		super.setRarity(rarity);
+		return this;
+	}
+
+	@Override
+	public FluidBase setFillSound(SoundEvent fillSound) {
+		super.setFillSound(fillSound);
+		return this;
+	}
+
+	@Override
+	public FluidBase setEmptySound(SoundEvent emptySound) {
+		super.setEmptySound(emptySound);
+		return this;
 	}
 
 	@Override

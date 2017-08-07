@@ -16,7 +16,7 @@ public class ItemProperties {
 	public int maxStkSize = 64;
 	public boolean full3D = false;
 	public EnumRarity rarity = EnumRarity.COMMON;
-	public Class<? extends ItemBase> itemClass = ItemBase.class;
+	public Class<? extends IItemWithProperty> itemClass = ItemBase.class;
 
 	public ItemProperties setMaxStackSize(int value) {
 		maxStkSize = value;
@@ -33,7 +33,7 @@ public class ItemProperties {
 		return this;
 	}
 
-	public ItemProperties setItemClass(Class<? extends ItemBase> value) {
+	public ItemProperties setItemClass(Class<? extends IItemWithProperty> value) {
 		itemClass = value;
 		return this;
 	}

@@ -7,7 +7,7 @@ import net.minecraft.util.text.translation.I18n;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 
-public class ItemBase extends Item {
+public class ItemBase extends Item implements IItemWithProperty {
 
 	public final IOreEntry oreEntry;
 	public final ItemEntry itemEntry;
@@ -26,14 +26,15 @@ public class ItemBase extends Item {
 		return rarity;
 	}
 
+	@Override
 	public ItemBase setRarity(EnumRarity rarity) {
 		this.rarity = rarity;
 		return this;
 	}
 
+	@Override
 	public ItemBase setFull3D(boolean value) {
-		if(value)
-			super.setFull3D();
+		bFull3D = value;
 		return this;
 	}
 
