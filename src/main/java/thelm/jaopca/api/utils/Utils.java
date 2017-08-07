@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -23,8 +24,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.block.BlockBase;
-import thelm.jaopca.api.item.ItemBase;
 
 public class Utils {
 
@@ -48,7 +47,7 @@ public class Utils {
 			CACHE.put(name, ret.copy());
 			ret.setCount(amount);
 		}
-		
+
 		return ret;
 	}
 
@@ -60,13 +59,13 @@ public class Utils {
 		}
 
 		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getOreName())) {
-			BlockBase b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getOreName());
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getOreName());
 			CACHE.put(prefix+entry.getOreName(), new ItemStack(b, 1, 0));
 			return new ItemStack(b, amount, 0);
 		}
 
 		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getOreName())) {
-			ItemBase i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getOreName());
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getOreName());
 			CACHE.put(prefix+entry.getOreName(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
@@ -82,17 +81,17 @@ public class Utils {
 		}
 
 		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getOreName())) {
-			BlockBase b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getOreName());
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getOreName());
 			CACHE.put(prefix+entry.getOreName(), new ItemStack(b, 1, 0));
 			return new ItemStack(b, amount, 0);
 		}
 
 		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getOreName())) {
-			ItemBase i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getOreName());
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getOreName());
 			CACHE.put(prefix+entry.getOreName(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
-		
+
 		return getOreStack(fallback, entry, amount);
 	}
 
@@ -104,20 +103,20 @@ public class Utils {
 		}
 
 		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getExtra())) {
-			BlockBase b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getExtra());
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getExtra());
 			CACHE.put(prefix+entry.getExtra(), new ItemStack(b, 1, 0));
 			return new ItemStack(b, amount, 0);
 		}
 
 		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getExtra())) {
-			ItemBase i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getExtra());
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getExtra());
 			CACHE.put(prefix+entry.getExtra(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
 
 		return getOreStack(prefix+entry.getExtra(), amount);
 	}
-	
+
 	public static ItemStack getJAOPCAOrOreStackExtra(String prefix, String fallback, IOreEntry entry, int amount) {
 		if(CACHE.containsKey(prefix+entry.getExtra())) {
 			ItemStack ret = CACHE.get(prefix+entry.getExtra()).copy();
@@ -126,17 +125,17 @@ public class Utils {
 		}
 
 		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getExtra())) {
-			BlockBase b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getExtra());
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getExtra());
 			CACHE.put(prefix+entry.getExtra(), new ItemStack(b, 1, 0));
 			return new ItemStack(b, amount, 0);
 		}
 
 		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getExtra())) {
-			ItemBase i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getExtra());
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getExtra());
 			CACHE.put(prefix+entry.getExtra(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
-		
+
 		return getOreStackExtra(fallback, entry, amount);
 	}
 
@@ -162,33 +161,33 @@ public class Utils {
 	public static boolean doesOreNameExist(String name) {
 		return !OreDictionary.getOres(name).isEmpty();
 	}
-	
+
 	public static ItemStack getPreferredStack(Iterable<ItemStack> itemList) {
 		ItemStack ret = ItemStack.EMPTY;
 		int index = Integer.MAX_VALUE;
-		
+
 		for(ItemStack stack : itemList) {
 			if(stack.isEmpty()) {
 				continue;
 			}
-			
+
 			String modId = stack.getItem().getRegistryName().getResourceDomain();
 			int idex = MOD_IDS.indexOf(modId);
-			
+
 			if(idex < index) {
 				index = idex;
 				ret = stack;
 			}
 		}
-		
+
 		return ret;
 	}
-	
+
 	public static String to_under_score(String camelCase) {
 		if(StringUtils.isEmpty(camelCase)) {
 			return "";
 		}
-		
+
 		String[] strings = StringUtils.splitByCharacterTypeCamelCase(camelCase);
 		StringBuilder ret = new StringBuilder();
 		for(int i = 0; i < strings.length; i++) {
@@ -199,12 +198,12 @@ public class Utils {
 		}
 		return ret.toString();
 	}
-	
+
 	public static String toPascal(String under_score) {
 		if(StringUtils.isEmpty(under_score)) {
 			return "";
 		}
-		
+
 		String[] strings = StringUtils.split(under_score, '_');
 		StringBuilder ret = new StringBuilder();
 		for(int i = 0; i < strings.length; i++) {
@@ -212,7 +211,7 @@ public class Utils {
 		}
 		return ret.toString();
 	}
-	
+
 	public static ItemStack parseItemStack(String input) {
 		try {
 			String[] split0 = input.split("@");
@@ -227,21 +226,21 @@ public class Utils {
 		}
 		return ItemStack.EMPTY;
 	}
-	
+
 	public static void addShapedOreRecipe(ItemStack output, Object... input) {
 		ResourceLocation location = getNameForRecipe(output, input);
 		ShapedOreRecipe recipe = new ShapedOreRecipe(null, output, input);
 		recipe.setRegistryName(location);
 		ForgeRegistries.RECIPES.register(recipe);
 	}
-	
+
 	public static void addShapelessOreRecipe(ItemStack output, Object... input) {
 		ResourceLocation location = getNameForRecipe(output, input);
 		ShapelessOreRecipe recipe = new ShapelessOreRecipe(null, output, input);
 		recipe.setRegistryName(location);
 		ForgeRegistries.RECIPES.register(recipe);
 	}
-	
+
 	public static ResourceLocation getNameForRecipe(ItemStack output, Object... input) {
 		ModContainer activeContainer = Loader.instance().activeModContainer();
 		ResourceLocation baseLoc = new ResourceLocation(activeContainer.getModId(), output.getItem().getRegistryName().getResourcePath());

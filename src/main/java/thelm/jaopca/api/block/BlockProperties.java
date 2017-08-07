@@ -7,9 +7,11 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ToFloatFunction;
+import thelm.jaopca.api.item.IItemBlockWithProperty;
 import thelm.jaopca.api.item.ItemBlockBase;
 
 /**
@@ -40,8 +42,12 @@ public class BlockProperties {
 	public int harvestLevel = -1;
 	public boolean full = true;
 	public boolean opaque = true;
-	public Class<? extends BlockBase> blockClass = BlockBase.class;
-	public Class<? extends ItemBlockBase> itemBlockClass = ItemBlockBase.class;
+	public BlockRenderLayer layer = BlockRenderLayer.CUTOUT;
+	public ToIntFunction<IOreEntry> flammabFunc = (entry)->{return 0;};
+	public ToIntFunction<IOreEntry> fireSpdFunc = (entry)->{return 0;};
+	public boolean fireSource = false;
+	public Class<? extends IBlockWithProperty> blockClass = BlockBase.class;
+	public Class<? extends IItemBlockWithProperty> itemBlockClass = ItemBlockBase.class;
 
 	public BlockProperties setHardnessFunc(ToFloatFunction<IOreEntry> value) {
 		hardnessFunc = value;
@@ -129,6 +135,26 @@ public class BlockProperties {
 		opaque = value;
 		return this;
 	}
+	
+	public BlockProperties setBlockLayer(BlockRenderLayer value) {
+		layer = value;
+		return this;
+	}
+	
+	public BlockProperties setFlammabilityFunc(ToIntFunction<IOreEntry> value) {
+		flammabFunc = value;
+		return this;
+	}
+	
+	public BlockProperties setFireSpreadSpeedFunc(ToIntFunction<IOreEntry> value) {
+		fireSpdFunc = value;
+		return this;
+	}
+	
+	public BlockProperties setFireSource(boolean value) {
+		fireSource = value;
+		return this;
+	}
 
 	public BlockProperties setMaterialMapColor(Material value) {
 		material = value;
@@ -136,12 +162,12 @@ public class BlockProperties {
 		return this;
 	}
 
-	public BlockProperties setBlockClass(Class<? extends BlockBase> value) {
+	public BlockProperties setBlockClass(Class<? extends IBlockWithProperty> value) {
 		blockClass = value;
 		return this;
 	}
 
-	public BlockProperties setItemBlockClass(Class<? extends ItemBlockBase> value) {
+	public BlockProperties setItemBlockClass(Class<? extends IItemBlockWithProperty> value) {
 		itemBlockClass = value;
 		return this;
 	}

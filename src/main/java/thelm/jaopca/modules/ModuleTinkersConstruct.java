@@ -31,7 +31,7 @@ public class ModuleTinkersConstruct extends ModuleBase {
 		//Use TConstruct's internal method because it adds everything for us
 		//Might change
 		if(TConstruct.pulseManager.isPulseLoaded(TinkerSmeltery.PulseId)) {
-			for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
+			for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("molten")) {
 				if(!entry.getModuleBlacklist().contains(getName())) {
 					TinkerSmeltery.registerOredictMeltingCasting(JAOPCAApi.FLUIDS_TABLE.get("molten", entry.getOreName()), entry.getOreName());
 				}

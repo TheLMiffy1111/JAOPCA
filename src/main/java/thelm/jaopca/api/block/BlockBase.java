@@ -10,15 +10,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 
-public class BlockBase extends Block {
+public class BlockBase extends Block implements IBlockWithProperty {
 
 	public final IOreEntry oreEntry;
 	public final ItemEntry itemEntry;
@@ -32,8 +35,13 @@ public class BlockBase extends Block {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
+	public IOreEntry getOreEntry() {
+		return oreEntry;
+	}
+
+	@Override
+	public ItemEntry getItemEntry() {
+		return itemEntry;
 	}
 
 	@Override
@@ -66,36 +74,174 @@ public class BlockBase extends Block {
 		return this;
 	}
 
-	public BlockBase setHarvestLvl(String toolClass, int level) {
-		super.setHarvestLevel(toolClass, level);
-		return this;
-	}
-
+	@Override
 	public BlockBase setSlipperiness(float slipperiness) {
 		this.slipperiness = slipperiness;
 		return this;
+	}
+
+	/*======================================== BEACON ======================================*/
+
+	protected boolean beaconBase = false;
+
+	@Override
+	public BlockBase setBeaconBase(boolean beaconBase) {
+		this.beaconBase = beaconBase;
+		return this;
+	}
+
+	@Override
+	public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon) {
+		return beaconBase;
+	}
+
+	/*========================================= AABB =======================================*/
+
+	protected AxisAlignedBB boundingBox = FULL_BLOCK_AABB;
+
+	@Override
+	public BlockBase setBoundingBox(AxisAlignedBB boundingBox) {
+		this.boundingBox = boundingBox;
+		return this;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return boundingBox;
+	}
+
+	/*======================================== HARVEST =====================================*/
+
+	protected String harvestTool = null;
+	protected int harvestLevel = -1;
+
+	@Override
+	public BlockBase setHarvestTool(String harvestTool) {
+		this.harvestTool = harvestTool;
+		return this;
+	}
+
+	@Override
+	public BlockBase setHarvestLevel(int harvestLevel) {
+		this.harvestLevel = harvestLevel;
+		return this;
+	}
+
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		return harvestTool;
+	}
+
+	@Override
+	public int getHarvestLevel(IBlockState state) {
+		return harvestLevel;
+	}
+
+	/*======================================== OPACITY =====================================*/
+
+	protected boolean full = true;
+	protected boolean opaque = true;
+
+	@Override
+	public BlockBase setFull(boolean full) {
+		this.full = full;
+		return this;
+	}
+
+	@Override
+	public BlockBase setOpaque(boolean opaque) {
+		this.opaque = opaque;
+		return this;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return full;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return opaque;
+	}
+
+	/*======================================== RENDER ======================================*/
+
+	protected BlockRenderLayer layer = BlockRenderLayer.CUTOUT;
+
+	@Override
+	public BlockBase setBlockLayer(BlockRenderLayer layer) {
+		this.layer = layer;
+		return this;
+	}
+
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return layer;
+	}
+
+	/*========================================= FIRE =======================================*/
+
+	protected int flammability = 0;
+	protected int fireSpreadSpeed = 0;
+	protected boolean fireSource = false;
+
+	@Override
+	public BlockBase setFlammability(int flammability) {
+		this.flammability = flammability;
+		return this;
+	}
+
+	@Override
+	public BlockBase setFireSpreadSpeed(int fireSpreadSpeed) {
+		this.fireSpreadSpeed = fireSpreadSpeed;
+		return this;
+	}
+
+	@Override
+	public BlockBase setFireSource(boolean fireSource) {
+		this.fireSource = fireSource;
+		return this;
+	}
+
+	@Override
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return flammability;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return fireSpreadSpeed;
+	}
+
+	@Override
+	public boolean isFireSource(World world, BlockPos pos, EnumFacing side) {
+		return fireSource && side == EnumFacing.UP;
 	}
 
 	/*======================================== FALLING =====================================*/
 
 	protected boolean fallable = false;
 
+	@Override
 	public int tickRate(World worldIn) {
 		return 2;
 	}
 
+	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		if(fallable) {
 			worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 		}
 	}
 
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		if(fallable) {
 			worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 		}
 	}
 
+	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 		if(fallable && !worldIn.isRemote) {
 			checkFallable(worldIn, pos);
@@ -131,6 +277,7 @@ public class BlockBase extends Block {
 		return this;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		if(fallable && rand.nextInt(16) == 0) {
