@@ -8,7 +8,7 @@ import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.block.BlockBase;
 
-public class ItemBlockBase extends ItemBlock {
+public class ItemBlockBase extends ItemBlock implements IItemBlockWithProperty {
 
 	public final IOreEntry oreEntry;
 	public final ItemEntry itemEntry;
@@ -27,6 +27,7 @@ public class ItemBlockBase extends ItemBlock {
 		return rarity;
 	}
 
+	@Override
 	public ItemBlockBase setRarity(EnumRarity rarity) {
 		this.rarity = rarity;
 		return this;
