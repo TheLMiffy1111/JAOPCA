@@ -75,6 +75,15 @@ public class JAOPCAConfig {
 			configFile.save();
 	}
 
+	public static void preInitModulewiseConfigs() {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+			module.registerConfigsPre(configFile);
+		}
+
+		if(configFile.hasChanged())
+			configFile.save();
+	}
+
 	public static void initModulewiseConfigs() {
 		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
 			module.registerConfigs(configFile);

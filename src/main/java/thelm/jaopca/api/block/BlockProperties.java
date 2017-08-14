@@ -25,11 +25,11 @@ public class BlockProperties {
 	 */
 	public static final BlockProperties DEFAULT = new BlockProperties();
 
-	public ToFloatFunction<IOreEntry> hardnessFunc = (entry)->{return 2F;};
-	public ToFloatFunction<IOreEntry> resisFunc = (entry)->{return hardnessFunc.applyAsFloat(entry)*5;};
-	public ToIntFunction<IOreEntry> lgtOpacFunc = (entry)->{return 255;};
-	public ToFloatFunction<IOreEntry> lgtValFunc = (entry)->{return 0F;};
-	public ToFloatFunction<IOreEntry> slippyFunc = (entry)->{return 0.6F;};
+	public ToFloatFunction<IOreEntry> hardnessFunc = entry->2F;
+	public ToFloatFunction<IOreEntry> resisFunc = entry->hardnessFunc.applyAsFloat(entry)*5;
+	public ToIntFunction<IOreEntry> lgtOpacFunc = entry->255;
+	public ToFloatFunction<IOreEntry> lgtValFunc = entry->0F;
+	public ToFloatFunction<IOreEntry> slippyFunc = entry->0.6F;
 	public Material material = Material.ROCK;
 	public MapColor mapColor = MapColor.STONE;
 	public SoundType soundType = SoundType.STONE;
@@ -43,8 +43,8 @@ public class BlockProperties {
 	public boolean full = true;
 	public boolean opaque = true;
 	public BlockRenderLayer layer = BlockRenderLayer.CUTOUT;
-	public ToIntFunction<IOreEntry> flammabFunc = (entry)->{return 0;};
-	public ToIntFunction<IOreEntry> fireSpdFunc = (entry)->{return 0;};
+	public ToIntFunction<IOreEntry> flammabFunc = entry->0;
+	public ToIntFunction<IOreEntry> fireSpdFunc = entry->0;
 	public boolean fireSource = false;
 	public Class<? extends IBlockWithProperty> blockClass = BlockBase.class;
 	public Class<? extends IItemBlockWithProperty> itemBlockClass = ItemBlockBase.class;

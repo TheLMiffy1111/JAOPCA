@@ -39,6 +39,8 @@ public abstract class ModuleBase {
 		return Lists.<IItemRequest>newArrayList();
 	}
 
+	public void registerConfigsPre(Configuration configFile) {}
+
 	public void registerConfigs(Configuration config) {}
 
 	public boolean blacklistCustom(ItemEntry itemEntry, IOreEntry oreEntry) {

@@ -3,13 +3,11 @@ package thelm.jaopca.api.block;
 import net.minecraft.block.SoundType;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
+import thelm.jaopca.api.IObjectWithProperty;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 
-public interface IBlockWithProperty {
-	
-	IOreEntry getOreEntry();
-	ItemEntry getItemEntry();
+public interface IBlockWithProperty extends IObjectWithProperty {
 	
 	IBlockWithProperty setSoundType(SoundType sound);
 	IBlockWithProperty setLightOpacity(int opacity);

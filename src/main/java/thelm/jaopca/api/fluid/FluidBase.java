@@ -17,12 +17,22 @@ public class FluidBase extends Fluid implements IFluidWithProperty {
 	public final ItemEntry itemEntry;
 
 	public FluidBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-		super((itemEntry == ModuleMolten.MOLTEN_ENTRY ? "" : itemEntry.name + "_") + Utils.to_under_score(oreEntry.getOreName()), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_still"), new ResourceLocation("jaopca:fluids/"+itemEntry.prefix+"_flowing"));
+		super((itemEntry==ModuleMolten.MOLTEN_ENTRY?"":Utils.to_under_score(itemEntry.name)+"_")+Utils.to_under_score(oreEntry.getOreName()), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_still"), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_flowing"));
 		this.setUnlocalizedName("jaopca."+itemEntry.name);
 		this.oreEntry = oreEntry;
 		this.itemEntry = itemEntry;
 	}
-	
+
+	@Override
+	public IOreEntry getOreEntry() {
+		return oreEntry;
+	}
+
+	@Override
+	public ItemEntry getItemEntry() {
+		return itemEntry;
+	}
+
 	@Override
 	public FluidBase setLuminosity(int luminosity) {
 		super.setLuminosity(luminosity);
@@ -71,9 +81,17 @@ public class FluidBase extends Fluid implements IFluidWithProperty {
 		return this;
 	}
 
+	protected int opacity = 255;
+
+	@Override
+	public FluidBase setOpacity(int opacity) {
+		this.opacity = opacity;
+		return this;
+	}
+
 	@Override
 	public int getColor() {
-		return oreEntry.getColor();
+		return (oreEntry.getColor()&0xFFFFFF) | (opacity<<24);
 	}
 
 	@Override

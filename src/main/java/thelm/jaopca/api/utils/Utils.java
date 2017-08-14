@@ -208,11 +208,17 @@ public class Utils {
 	
 	public static ItemStack parseItemStack(String input) {
 		try {
+			Item item;
+			int meta=0, amount=1;
 			String[] split0 = input.split("@");
-			Item item = Item.REGISTRY.getObject(new ResourceLocation(split0[0]));
-			String[] split1 = split0[1].split("x");
-			int meta = Integer.parseInt(split1[0]);
-			int amount = Integer.parseInt(split1[1]);
+			item = Item.REGISTRY.getObject(new ResourceLocation(split0[0]));
+			if(split0.length == 2) {
+				String[] split1 = split0[1].split("x");
+				meta = Integer.parseInt(split1[0]);
+				if(split1.length == 2) {
+					amount = Integer.parseInt(split1[1]);
+				}
+			}
 			return new ItemStack(item, amount, meta);
 		}
 		catch(Exception e) {
