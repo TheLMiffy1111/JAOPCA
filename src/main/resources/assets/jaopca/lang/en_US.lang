@@ -44,5 +44,11 @@ tile.jaopca.crystalCluster.name=Crystallized %s Cluster
 #TechReborn
 item.jaopca.dustSmall.name=Small Pile of %s Dust
 
+#SkyResources
+item.jaopca.shardCrystal.name=%s Crystal Shard
+fluid.jaopca.dirtyCrystalFluid=Dirty %s Crystal Fluid
+fluid.jaopca.crystalFluid=%s Crystal Fluid
+fluid.jaopca.moltenCrystalFluid=%s Crystal Fluid
+
 #OreNames
 jaopca.entry.LiquifiedCoralium=Refined Coralium

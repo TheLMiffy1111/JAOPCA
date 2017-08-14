@@ -24,8 +24,18 @@ public class ItemBlockBase extends ItemBlock implements IItemBlockWithProperty {
 	}
 
 	@Override
+	public IOreEntry getOreEntry() {
+		return oreEntry;
+	}
+
+	@Override
+	public ItemEntry getItemEntry() {
+		return itemEntry;
+	}
+
+	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return rarity;
+		return rarity == EnumRarity.COMMON ? super.getRarity(stack) : rarity;
 	}
 
 	@Override

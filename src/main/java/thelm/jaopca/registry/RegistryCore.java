@@ -29,9 +29,11 @@ import thelm.jaopca.api.ItemEntryGroup;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.block.BlockProperties;
+import thelm.jaopca.api.block.IBlockFluidWithProperty;
 import thelm.jaopca.api.block.IBlockWithProperty;
 import thelm.jaopca.api.fluid.FluidProperties;
 import thelm.jaopca.api.fluid.IFluidWithProperty;
+import thelm.jaopca.api.item.IItemBlockFluidWithProperty;
 import thelm.jaopca.api.item.IItemBlockWithProperty;
 import thelm.jaopca.api.item.IItemWithProperty;
 import thelm.jaopca.api.item.ItemProperties;
@@ -54,6 +56,7 @@ import thelm.jaopca.modules.ModuleMekanism;
 import thelm.jaopca.modules.ModuleMolten;
 import thelm.jaopca.modules.ModuleNugget;
 import thelm.jaopca.modules.ModuleRailcraft;
+import thelm.jaopca.modules.ModuleSkyResources;
 import thelm.jaopca.modules.ModuleTechReborn;
 import thelm.jaopca.modules.ModuleThermalExpansion;
 import thelm.jaopca.modules.ModuleThermalSmeltery;
@@ -73,6 +76,9 @@ public class RegistryCore {
 		registerBuiltInModules();
 
 		filterModules();
+
+		JAOPCAConfig.preInitModulewiseConfigs();
+		
 		initItemEntries();
 		initBlacklists();
 		initToOreMaps();
@@ -83,8 +89,6 @@ public class RegistryCore {
 		registerBlocks();
 		registerFluids();
 		registerCustoms();
-
-		setProperties();
 
 		registerPreInit();
 	}
@@ -147,6 +151,9 @@ public class RegistryCore {
 		}
 		if(Loader.isModLoaded("techreborn")) {
 			JAOPCAApi.registerModule(new ModuleTechReborn());
+		}
+		if(Loader.isModLoaded("skyresources")) {
+			JAOPCAApi.registerModule(new ModuleSkyResources());
 		}
 		if(Loader.isModLoaded("thermalsmeltery")) {
 			//I hope iterating order is correct
@@ -298,22 +305,18 @@ public class RegistryCore {
 	private static void initToOreMaps() {
 		for(ItemEntry entry : JAOPCAApi.ITEM_ENTRY_LIST) {
 			LinkedHashSet<IOreEntry> oreSet = Sets.<IOreEntry>newLinkedHashSet();
-			JAOPCAApi.ORE_ENTRY_LIST.stream().filter((oreEntry)->{
-				return !entry.blacklist.contains(oreEntry.getOreName());
-			}).forEach((oreEntry) -> {
-				oreSet.add(oreEntry);
-			});
+			JAOPCAApi.ORE_ENTRY_LIST.stream().
+			filter(oreEntry->!entry.blacklist.contains(oreEntry.getOreName())).
+			forEach(oreEntry->oreSet.add(oreEntry));
 
 			JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.putAll(entry.name, oreSet);
 		}
 
 		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
 			LinkedHashSet<IOreEntry> oreSet = Sets.<IOreEntry>newLinkedHashSet();
-			JAOPCAApi.ORE_ENTRY_LIST.stream().filter((oreEntry)->{
-				return !module.getOreBlacklist().contains(oreEntry.getOreName()) && !oreEntry.getModuleBlacklist().contains(module.getName());
-			}).forEach((oreEntry) -> {
-				oreSet.add(oreEntry);
-			});
+			JAOPCAApi.ORE_ENTRY_LIST.stream().
+			filter(oreEntry->!module.getOreBlacklist().contains(oreEntry.getOreName()) && !oreEntry.getModuleBlacklist().contains(module.getName())).
+			forEach(oreEntry->oreSet.add(oreEntry));
 
 			JAOPCAApi.MODULE_TO_ORES_MAP.putAll(module, oreSet);
 		}
@@ -394,10 +397,12 @@ public class RegistryCore {
 
 	private static void registerFluids() {
 		for(ItemEntry entry : JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.get(EnumEntryType.FLUID)) {
-			JAOPCAApi.TEXTURES.add(new ResourceLocation("jaopca:fluids/"+entry.prefix+"_still"));
-			JAOPCAApi.TEXTURES.add(new ResourceLocation("jaopca:fluids/"+entry.prefix+"_flowing"));
-
 			FluidProperties ppt = entry.fluidProperties;
+
+			if(!ppt.hasBlock) {
+				JAOPCAApi.TEXTURES.add(new ResourceLocation("jaopca:fluids/"+entry.prefix+"_still"));
+				JAOPCAApi.TEXTURES.add(new ResourceLocation("jaopca:fluids/"+entry.prefix+"_flowing"));
+			}
 
 			for(IOreEntry ore : JAOPCAApi.ORE_ENTRY_LIST) {
 				if(entry.blacklist.contains(ore.getOreName())) {
@@ -414,8 +419,19 @@ public class RegistryCore {
 					setGaseous(ppt.gaseous.test(ore)).
 					setRarity(ppt.rarity).
 					setFillSound(ppt.fillSound).
-					setEmptySound(ppt.emptySound);
+					setEmptySound(ppt.emptySound).
+					setOpacity(ppt.opacityFunc.applyAsInt(ore));
 					FluidRegistry.registerFluid((Fluid)fluid);
+					FluidRegistry.addBucketForFluid((Fluid)fluid);
+					if(ppt.hasBlock) {
+						IBlockFluidWithProperty blockfluid = ppt.blockFluidClass.getConstructor(IFluidWithProperty.class, Material.class).newInstance(fluid, ppt.material);
+						blockfluid.
+						setQuantaPerBlock(ppt.quantaFunc.applyAsInt(ore));
+						GameRegistry.register((Block)blockfluid);
+						IItemBlockFluidWithProperty itemblockfluid = ppt.itemBlockFluidClass.getConstructor(IBlockFluidWithProperty.class).newInstance(blockfluid);
+						GameRegistry.register((ItemBlock)itemblockfluid);
+						JAOPCA.proxy.handleBlockRegister(entry, ore, (Block)blockfluid, (ItemBlock)itemblockfluid);
+					}
 					JAOPCAApi.FLUIDS_TABLE.put(entry.name, ore.getOreName(), (Fluid)fluid);
 				}
 				catch(Exception e) {
@@ -432,12 +448,6 @@ public class RegistryCore {
 			for(ModuleBase module : entry.moduleList) {
 				module.registerCustom(entry, oreList);
 			}
-		}
-	}
-
-	private static void setProperties() {
-		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
-			module.setCustomProperties();
 		}
 	}
 

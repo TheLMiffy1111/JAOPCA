@@ -39,6 +39,8 @@ public abstract class ModuleBase {
 		return Lists.<IItemRequest>newArrayList();
 	}
 
+	public void registerConfigsPre(Configuration configFile) {}
+
 	public void registerConfigs(Configuration config) {}
 
 	public boolean blacklistCustom(ItemEntry itemEntry, IOreEntry oreEntry) {
@@ -52,11 +54,6 @@ public abstract class ModuleBase {
 	 * @param allOres all ores this item entry can use
 	 */
 	public void registerCustom(ItemEntry itemEntry, List<IOreEntry> allOres) {}
-
-	/**
-	 * Set custom properties of things here.
-	 */
-	public void setCustomProperties() {}
 
 	public void preInit() {}
 

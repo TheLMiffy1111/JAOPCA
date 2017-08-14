@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "jaopca:fluid",
+        "textures": {
+            "still": "jaopca:fluids/crystal_fluid_still",
+            "flowing": "jaopca:fluids/crystal_fluid_flowing"
+        }
+    },
+    "variants": {
+        "normal": [{}]
+    }
+}
