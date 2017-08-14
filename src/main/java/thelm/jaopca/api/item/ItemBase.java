@@ -22,8 +22,18 @@ public class ItemBase extends Item implements IItemWithProperty {
 	}
 
 	@Override
+	public IOreEntry getOreEntry() {
+		return oreEntry;
+	}
+
+	@Override
+	public ItemEntry getItemEntry() {
+		return itemEntry;
+	}
+
+	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return rarity;
+		return rarity == EnumRarity.COMMON ? super.getRarity(stack) : rarity;
 	}
 
 	@Override
@@ -34,8 +44,7 @@ public class ItemBase extends Item implements IItemWithProperty {
 
 	@Override
 	public ItemBase setFull3D(boolean value) {
-		if(value)
-			super.setFull3D();
+		bFull3D = value;
 		return this;
 	}
 

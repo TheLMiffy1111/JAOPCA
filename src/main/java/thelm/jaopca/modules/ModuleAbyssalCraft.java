@@ -27,8 +27,8 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleAbyssalCraft extends ModuleBase {
 
 	/*public static final BlockProperties CRYSTAL_CLUSTER_PROPERTIES = new BlockProperties().
-			setHardnessFunc((entry)->{return 0.4F;}).
-			setResistanceFunc((entry)->{return 0.8F;}).
+			setHardnessFunc(entry->0.4F).
+			setResistanceFunc(entry->0.8F).
 			setSoundType(SoundType.GLASS).
 			setHarvestTool("pickaxe").
 			setHarvestLevel(3).

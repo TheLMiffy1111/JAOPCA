@@ -1,5 +1,6 @@
 package thelm.jaopca;
 
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -20,13 +21,17 @@ import thelm.jaopca.registry.RegistryCore;
 public class JAOPCA {
 
 	public static final String MOD_ID = "jaopca";
-	public static final String VERSION = "1.12-1.2.26";
+	public static final String VERSION = "1.12-1.2.29";
 	@Instance(JAOPCA.MOD_ID)
 	public static JAOPCA core;
 	@SidedProxy(clientSide = "thelm.jaopca.proxy.ClientProxy", serverSide = "thelm.jaopca.proxy.CommonProxy", modId = JAOPCA.MOD_ID)
 	public static CommonProxy proxy;
 	public static ModMetadata metadata;
 
+	static {
+		FluidRegistry.enableUniversalBucket();
+	}
+	
 	@EventHandler
 	public void firstMovement(FMLPreInitializationEvent event) {
 		metadata = event.getModMetadata();
@@ -45,6 +50,7 @@ public class JAOPCA {
 	public void secondMovement(FMLInitializationEvent event) {
 		proxy.initBlockColors();
 		proxy.initItemColors();
+		proxy.initFluidColors();
 
 		RegistryCore.init();
 	}

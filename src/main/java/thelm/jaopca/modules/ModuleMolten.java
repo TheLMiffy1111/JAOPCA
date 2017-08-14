@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fml.common.Loader;
@@ -16,15 +18,17 @@ import thelm.jaopca.api.fluid.FluidProperties;
 public class ModuleMolten extends ModuleBase {
 
 	public static final FluidProperties MOLTEN_PROPERTIES = new FluidProperties().
-			setDensityFunc((entry)->{return 2000;}).
-			setViscosityFunc((entry)->{return 10000;}).
-			setTemperatureFunc((entry)->{return Math.min(1000, (int)(500*Math.sqrt(entry.getEnergyModifier())));}).
-			setLuminosityFunc((entry)->{return 10;}).
+			setDensityFunc(entry->2000).
+			setViscosityFunc(entry->10000).
+			setTemperatureFunc(entry->Math.min(1000, (int)(500*Math.sqrt(entry.getEnergyModifier())))).
+			setLuminosityFunc(entry->10).
 			setRarity(EnumRarity.UNCOMMON).
 			setFillSound(SoundEvents.ITEM_BUCKET_FILL_LAVA).
-			setEmptySound(SoundEvents.ITEM_BUCKET_EMPTY_LAVA);
+			setEmptySound(SoundEvents.ITEM_BUCKET_EMPTY_LAVA).
+			setMaterial(Material.LAVA);
 
-	public static final ItemEntry MOLTEN_ENTRY = new ItemEntry(EnumEntryType.FLUID, "molten", null);
+	public static final ItemEntry MOLTEN_ENTRY = new ItemEntry(EnumEntryType.FLUID, "molten", new ModelResourceLocation("jaopca:fluids/molten#normal")).
+			setFluidProperties(MOLTEN_PROPERTIES);
 
 	public static final ArrayList<String> MOLTEN_BLACKLIST_TCON = Lists.<String>newArrayList(
 			"Iron", "Cobalt", "Ardite", "Gold", "Copper", "Tin", "Lead", "Nickel", "Silver", "Aluminum", "Zinc"

@@ -15,4 +15,6 @@ public class CommonProxy {
 	public void initItemColors() {}
 
 	public void initBlockColors() {}
+	
+	public void initFluidColors() {}
 }

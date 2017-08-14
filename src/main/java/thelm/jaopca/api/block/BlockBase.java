@@ -272,6 +272,7 @@ public class BlockBase extends Block implements IBlockWithProperty {
 		}
 	}
 
+	@Override
 	public BlockBase setFallable(boolean fallable) {
 		this.fallable = fallable;
 		return this;

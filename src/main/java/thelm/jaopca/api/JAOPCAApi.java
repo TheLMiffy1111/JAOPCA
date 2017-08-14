@@ -70,7 +70,7 @@ public class JAOPCAApi {
 	public static final HashMap<String,ModuleBase> NAME_TO_MODULE_MAP = Maps.<String,ModuleBase>newHashMap();
 
 	/**
-	 * A {@link ItemEntry} name to {@link ModuleBase} for convenience.
+	 * A {@link ItemEntry} name to {@link IOreEntry} for convenience.
 	 */
 	public static final LinkedHashMultimap<String,IOreEntry> ENTRY_NAME_TO_ORES_MAP = LinkedHashMultimap.<String,IOreEntry>create();
 

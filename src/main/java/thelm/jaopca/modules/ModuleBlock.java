@@ -23,7 +23,7 @@ public class ModuleBlock extends ModuleBase {
 
 	public static final BlockProperties METAL_BLOCK_PROPERTIES = new BlockProperties().
 			setMaterialMapColor(Material.IRON).
-			setHardnessFunc((entry)->{return 5F;}).
+			setHardnessFunc(entry->5F).
 			setSoundType(SoundType.METAL).
 			setBeaconBase(true);
 	public static final ItemEntry BLOCK_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "block", new ModelResourceLocation("jaopca:block#normal"), ImmutableList.<String>of(

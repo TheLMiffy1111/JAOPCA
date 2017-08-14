@@ -1,12 +1,13 @@
 package thelm.jaopca.api.item;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
-import thelm.jaopca.api.block.BlockBase;
+import thelm.jaopca.api.block.IBlockWithProperty;
 
 public class ItemBlockBase extends ItemBlock implements IItemBlockWithProperty {
 
@@ -15,16 +16,26 @@ public class ItemBlockBase extends ItemBlock implements IItemBlockWithProperty {
 
 	public EnumRarity rarity;
 
-	public ItemBlockBase(BlockBase block) {
-		super(block);
-		setRegistryName(block.getRegistryName());
-		this.oreEntry = block.oreEntry;
-		this.itemEntry = block.itemEntry;
+	public ItemBlockBase(IBlockWithProperty block) {
+		super((Block)block);
+		setRegistryName(((Block)block).getRegistryName());
+		this.oreEntry = block.getOreEntry();
+		this.itemEntry = block.getItemEntry();
+	}
+
+	@Override
+	public IOreEntry getOreEntry() {
+		return oreEntry;
+	}
+
+	@Override
+	public ItemEntry getItemEntry() {
+		return itemEntry;
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		return rarity;
+		return rarity == EnumRarity.COMMON ? super.getRarity(stack) : rarity;
 	}
 
 	@Override

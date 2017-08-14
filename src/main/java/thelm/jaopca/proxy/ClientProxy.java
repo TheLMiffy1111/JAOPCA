@@ -17,13 +17,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import thelm.jaopca.api.IObjectWithProperty;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.block.BlockBase;
-import thelm.jaopca.api.item.ItemBase;
-import thelm.jaopca.api.item.ItemBlockBase;
+import thelm.jaopca.model.ModelFluidTextured;
 
 public class ClientProxy extends CommonProxy {
 
@@ -43,12 +44,8 @@ public class ClientProxy extends CommonProxy {
 		@Override
 		public int getColorFromItemstack(ItemStack stack, int tintIndex) {
 			if(tintIndex == 0) {
-				if(stack.getItem() instanceof ItemBase) {
-					return ((ItemBase)stack.getItem()).oreEntry.getColor();
-				}
-
-				if(stack.getItem() instanceof ItemBlockBase) {
-					return ((ItemBlockBase)stack.getItem()).oreEntry.getColor();
+				if(stack.getItem() instanceof IObjectWithProperty) {
+					return ((IObjectWithProperty)stack.getItem()).getOreEntry().getColor();
 				}
 			}
 			return 0xFFFFFF;
@@ -59,13 +56,17 @@ public class ClientProxy extends CommonProxy {
 		@Override
 		public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) {
 			if(tintIndex == 0) {
-				if(state.getBlock() instanceof BlockBase) {
-					return ((BlockBase)state.getBlock()).oreEntry.getColor();
+				if(state.getBlock() instanceof IObjectWithProperty) {
+					return ((IObjectWithProperty)state.getBlock()).getOreEntry().getColor();
 				}
 			}
 			return 0xFFFFFF;
 		}
 	};
+
+	static {
+		ModelLoaderRegistry.registerLoader(ModelFluidTextured.FluidTexturedLoader.INSTANCE);
+	}
 
 	@Override
 	public void handleBlockRegister(ItemEntry itemEntry, IOreEntry oreEntry, Block block, ItemBlock itemblock) {
@@ -109,15 +110,31 @@ public class ClientProxy extends CommonProxy {
 			}
 		}
 	}
-	
+
+	@Override
+	public void initFluidColors() {
+		super.initFluidColors();
+		if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+			BlockColors blockcolors = Minecraft.getMinecraft().getBlockColors();
+			ItemColors itemcolors = Minecraft.getMinecraft().getItemColors();
+			for(Fluid fluid : JAOPCAApi.FLUIDS_TABLE.values()) {
+				if(fluid.getBlock() != null) {
+					Block block = fluid.getBlock();
+					blockcolors.registerBlockColorHandler(JAOPCA_BLOCK_COLOR, block);
+					itemcolors.registerItemColorHandler(JAOPCA_ITEM_COLOR, block);
+				}
+			}
+		}
+	}
+
 	public static class JAOPCAStateMap extends StateMapperBase {
 
 		private final ModelResourceLocation location;
-		
+
 		public JAOPCAStateMap(ModelResourceLocation location) {
 			this.location = location;
 		}
-		
+
 		@Override
 		protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 			return location;
