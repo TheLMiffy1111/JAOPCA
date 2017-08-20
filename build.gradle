@@ -43,9 +43,6 @@ repositories {
     maven {
         url = "http://maven.modmuss50.me/"
     }
-    maven {
-        url = "https://modmaven.k-4u.nl/" 
-    }
     ivy {
         url "https://addons-origin.cursecdn.com/files/2392/421/"
         layout "pattern", {
@@ -55,9 +52,18 @@ repositories {
     maven {
         url = "http://maven.covers1624.net/"
     }
+    maven {
+        url = "http://chickenbones.net/maven/"
+    }
+    maven {
+        url = "https://dl.bintray.com/shinoow/maven/"
+    }
+    maven {
+        url = "https://modmaven.k-4u.nl/" 
+    }
 }
 
-version = "1.11.2-1.1.28"
+version = "1.11.2-1.1.31"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -67,7 +73,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.11.2-13.20.0.2282"
+    version = "1.11.2-13.20.1.2386"
     runDir = "run"
     mappings = "snapshot_20170401"
     makeObfSourceJar = false
@@ -84,6 +90,17 @@ dependencies {
     deobfCompile("RebornCore:RebornCore-1.11.2:2.16.1.115:universal") {
         transitive = false
     }
+    deobfCompile "codechicken:CodeChickenLib:1.11.2-3.0.0.291:universal"
+    deobfCompile("cofh:CoFHCore:1.11.2-4.2.7.15:universal") {
+        transitive = false
+    }
+    deobfCompile("cofh:ThermalFoundation:1.11.2-2.2.5.16:universal") {
+        transitive = false
+    }
+    deobfCompile("cofh:ThermalExpansion:1.11.2-5.2.6.23:universal") {
+        transitive = false
+    }
+    deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.11.2-1.9.4-pre-4"
 }
 
 processResources

@@ -33,7 +33,7 @@ public class ModuleTechReborn extends ModuleBase {
 			));
 
 	public static final ArrayList<String> COMPAT_ORE_BLACKLIST = Lists.<String>newArrayList(
-			"Osmium", "Ardite", "Cobalt"
+			"Osmium", "Ardite", "Cobalt", "Iridium"
 			);
 
 	public static final HashMap<String, boolean[]> GRINDING_FLUIDS = Maps.<String, boolean[]>newHashMap();
@@ -90,13 +90,13 @@ public class ModuleTechReborn extends ModuleBase {
 			if(!COMPAT_ORE_BLACKLIST.contains(entry.getOreName())) {
 				boolean[] data = GRINDING_FLUIDS.get(entry.getOreName());
 				if(data[0]) {
-					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), h2o, 100, 128, Utils.getOreStack("dust", entry, 2), Utils.getOreStackExtra("dustSmall", entry, 1));
+					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), h2o, 100, Utils.energyI(entry, 128), Utils.getOreStack("dust", entry, 2), Utils.getOreStackExtra("dustSmall", entry, 1));
 				}
 				if(data[1]) {
-					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), na2s2o8, 100, 128, Utils.getOreStack("dust", entry, 3), Utils.getOreStackExtra("dustSmall", entry, 1));
+					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), na2s2o8, 100, Utils.energyI(entry, 128), Utils.getOreStack("dust", entry, 3), Utils.getOreStackExtra("dustSmall", entry, 1));
 				}
 				if(data[2]) {
-					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), hg, 100, 128, Utils.getOreStack("dust", entry, 3), Utils.getOreStackExtra("dust", entry, 1));
+					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), hg, 100, Utils.energyI(entry, 128), Utils.getOreStack("dust", entry, 3), Utils.getOreStackExtra("dust", entry, 1));
 				}
 			}
 			addScrap(Utils.getOreStack("dust", entry, 1));

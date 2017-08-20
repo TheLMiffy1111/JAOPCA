@@ -153,7 +153,7 @@ public class Utils {
 	}
 
 	public static boolean doesOreNameExist(String name) {
-		return !OreDictionary.getOres(name).isEmpty();
+		return !OreDictionary.getOres(name, false).isEmpty();
 	}
 	
 	public static ItemStack getPreferredStack(Iterable<ItemStack> itemList) {

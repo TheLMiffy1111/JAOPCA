@@ -4,10 +4,14 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
+import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.Loader;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
@@ -38,50 +42,65 @@ public class ModuleThermalExpansion extends ModuleBase {
 		ItemStack richSlag = Utils.getOreStack("crystalSlagRich", 1);
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			boolean flag = entry.getOreName().equals(entry.getExtra());
-			addPulverizerRecipe(Utils.energyI(entry, 4000), Utils.getOreStack("ore", entry, 1), Utils.getOreStack("dust", entry, 2), flag ? ItemStack.EMPTY : Utils.getOreStackExtra("dust", entry, 1), 10);
-			addInductionSmelterRecipe(Utils.energyI(entry, 4000), Utils.getOreStack("ore", entry, 1), cinnabar.copy(), Utils.getOreStack("ingot", entry, 3), flag ? richSlag.copy() : Utils.getOreStackExtra("ingot", entry, 1), flag ? 75 : 100);
+			if(!entry.getOreName().equals(entry.getExtra())) {
+				replacePulverizerRecipe(4000, Utils.getOreStack("ore", entry, 1), Utils.getOreStack("dust", entry, 2), Utils.getOreStackExtra("dust", entry, 1), 10);
+				replaceInductionSmelterRecipe(4000, Utils.getOreStack("ore", entry, 1), cinnabar.copy(), Utils.getOreStack("ingot", entry, 3), Utils.getOreStackExtra("ingot", entry, 1), 100);
+			}
+			if(Loader.isModLoaded("tconstruct")) {
+				addCrucibleRecipes(entry);
+			}
 		}
 	}
 
-	public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack output, ItemStack bonus, int chance) {
-		NBTTagCompound data = new NBTTagCompound();
-
-		data.setInteger("energy", energy);
-		data.setTag("input", input.writeToNBT(new NBTTagCompound()));
-		data.setTag("primaryOutput", output.writeToNBT(new NBTTagCompound()));
-
-		if(!bonus.isEmpty()) {
-			data.setTag("secondaryOutput", bonus.writeToNBT(new NBTTagCompound()));
-			data.setInteger("secondaryChance", chance);
-		}
-
-		FMLInterModComms.sendMessage("thermalexpansion", "addpulverizerrecipe", data);
+	//Much more reliable than IMC
+	public static void replacePulverizerRecipe(int energy, ItemStack input, ItemStack output, ItemStack bonus, int chance) {
+		PulverizerManager.removeRecipe(input);
+		PulverizerManager.addRecipe(energy, input, output, bonus, chance);
 	}
 
-	public static void addInductionSmelterRecipe(int energy, ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int chance) {
-		NBTTagCompound data = new NBTTagCompound();
+	public static void replaceInductionSmelterRecipe(int energy, ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int chance) {
+		SmelterManager.removeRecipe(input1, input2);
+		SmelterManager.addRecipe(energy, input1, input2, output1, output2, chance);
+	}
+	
+	public static boolean addCrucibleRecipes(IOreEntry entry) {
+		if(entry == null) {
+			return false;
+		}
+		Fluid fluid = FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName()));
 
-		data.setInteger("energy", energy);
-		data.setTag("primaryInput", input1.writeToNBT(new NBTTagCompound()));
-		data.setTag("secondaryInput", input2.writeToNBT(new NBTTagCompound()));
-		data.setTag("primaryOutput", output1.writeToNBT(new NBTTagCompound()));
-
-		if(!output2.isEmpty()) {
-			data.setTag("secondaryOutput", output2.writeToNBT(new NBTTagCompound()));
-			data.setInteger("secondaryChance", chance);
+		if(fluid == null) {
+			return false;
 		}
 
-		FMLInterModComms.sendMessage("thermalexpansion", "addsmelterrecipe", data);
-	}
+		int energy = 4000;
+		int fluidIngot = 144;
 
-	public static void addCrucibleRecipe(int energy, ItemStack input, FluidStack output) {
-		NBTTagCompound message = new NBTTagCompound();
+		ItemStack nugget = Utils.getOreStack("nugget", entry, 1);
+		ItemStack ingot = Utils.getOreStack("ingot", entry, 1);
+		ItemStack ore = Utils.getOreStack("ore", entry, 1);
+		ItemStack block = Utils.getOreStack("block", entry, 1);
+		ItemStack dust = Utils.getOreStack("dust", entry, 1);
+		ItemStack plate = Utils.getOreStack("plate", entry, 1);
 
-		message.setInteger("energy", energy);
-		message.setTag("input", input.writeToNBT(new NBTTagCompound()));
-		message.setTag("output", output.writeToNBT(new NBTTagCompound()));
-
-		FMLInterModComms.sendMessage("thermalexpansion", "addcruciblerecipe", message);
+		if(!nugget.isEmpty()) {
+			CrucibleManager.addRecipe(energy / 8, nugget, new FluidStack(fluid, fluidIngot / 9));
+		}
+		if(!ingot.isEmpty()) {
+			CrucibleManager.addRecipe(energy, ingot, new FluidStack(fluid, fluidIngot));
+		}
+		if(!ore.isEmpty()) {
+			CrucibleManager.addRecipe(energy * 2, ore, new FluidStack(fluid, fluidIngot * 2));
+		}
+		if(!block.isEmpty()) {
+			CrucibleManager.addRecipe(energy * 8, block, new FluidStack(fluid, fluidIngot * 9));
+		}
+		if(!dust.isEmpty()) {
+			CrucibleManager.addRecipe(energy / 2, dust, new FluidStack(fluid, fluidIngot));
+		}
+		if(!plate.isEmpty()) {
+			CrucibleManager.addRecipe(energy, plate, new FluidStack(fluid, fluidIngot));
+		}
+		return true;
 	}
 }

@@ -96,6 +96,7 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 				addOreSAGMillRecipe("oreChunk"+entry.getOreName(), "dust"+entry.getOreName());
 			}
 		}
+		ExNihiloAdscensio.configsLoaded = false;
 	}
 
 	public static void addOreSAGMillRecipe(String input, String output) {
