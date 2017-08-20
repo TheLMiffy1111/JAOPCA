@@ -8,9 +8,9 @@ import thelm.jaopca.api.ItemEntry;
 
 public class CommonProxy {
 
-	public void handleBlockRegister(ItemEntry itemEntry, IOreEntry oreEntry, Block block, ItemBlock itemblock) {}
+	public void handleBlockRegister(Block block, ItemBlock itemblock) {}
 
-	public void handleItemRegister(ItemEntry itemEntry, IOreEntry oreEntry, Item item) {}
+	public void handleItemRegister(Item item) {}
 
 	public void initItemColors() {}
 

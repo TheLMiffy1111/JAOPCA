@@ -2,6 +2,8 @@ package thelm.jaopca.api.fluid;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import thelm.jaopca.api.IObjectWithProperty;
 
 public interface IFluidWithProperty extends IObjectWithProperty {
@@ -15,4 +17,8 @@ public interface IFluidWithProperty extends IObjectWithProperty {
 	IFluidWithProperty setFillSound(SoundEvent fillSound);
 	IFluidWithProperty setEmptySound(SoundEvent emptySound);
 	IFluidWithProperty setOpacity(int opacity);
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	default void registerModels() {}
 }

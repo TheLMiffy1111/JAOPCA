@@ -2,8 +2,8 @@ package thelm.jaopca.oredictinit.compat;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.ICompat;
 
 public class CompatExtremeReactors implements ICompat {
@@ -17,10 +17,16 @@ public class CompatExtremeReactors implements ICompat {
 	public void register() {
 		try {
 			Class<?> initClass = Class.forName("erogenousbeef.bigreactors.init.InitHandler");
+			Class<?> objClass = Class.forName("it.zerono.mods.zerocore.lib.IGameObject");
 			Field instanceField = initClass.getField("INSTANCE");
-			Method initMethod = initClass.getMethod("onInit", FMLInitializationEvent.class);
+			Field objListField = initClass.getDeclaredField("_objects");
+			objListField.setAccessible(true);
+			Method registerMethod = objClass.getMethod("registerOreDictionaryEntries");
 			Object instance = instanceField.get(null);
-			initMethod.invoke(instance, (Object[])null);
+			List<?> objList = (List<?>)objListField.get(instance);
+			for(Object obj : objList) {
+				registerMethod.invoke(obj);
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();

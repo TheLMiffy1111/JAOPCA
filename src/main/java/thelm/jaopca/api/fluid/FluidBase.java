@@ -17,7 +17,7 @@ public class FluidBase extends Fluid implements IFluidWithProperty {
 	public final ItemEntry itemEntry;
 
 	public FluidBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-		super((itemEntry==ModuleMolten.MOLTEN_ENTRY?"":Utils.to_under_score(itemEntry.name)+"_")+Utils.to_under_score(oreEntry.getOreName()), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_still"), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_flowing"));
+		super((itemEntry.name.equals("molten")?"":Utils.to_under_score(itemEntry.name)+"_")+Utils.to_under_score(oreEntry.getOreName()), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_still"), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_flowing"));
 		this.setUnlocalizedName("jaopca."+itemEntry.name);
 		this.oreEntry = oreEntry;
 		this.itemEntry = itemEntry;

@@ -6,14 +6,14 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 /*import com.shinoow.abyssalcraft.api.AbyssalCraftAPI;
 import com.shinoow.abyssalcraft.api.AbyssalCraftAPI.FuelType;*/
+import com.shinoow.abyssalcraft.api.AbyssalCraftAPI;
+import com.shinoow.abyssalcraft.api.AbyssalCraftAPI.FuelType;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.IFuelHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
@@ -26,7 +26,7 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleAbyssalCraft extends ModuleBase {
 
-	/*public static final BlockProperties CRYSTAL_CLUSTER_PROPERTIES = new BlockProperties().
+	public static final BlockProperties CRYSTAL_CLUSTER_PROPERTIES = new BlockProperties().
 			setHardnessFunc(entry->0.4F).
 			setResistanceFunc(entry->0.8F).
 			setSoundType(SoundType.GLASS).
@@ -35,24 +35,24 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			setFull(false).
 			setBoundingBox(new AxisAlignedBB(0.2D, 0.0D, 0.2D, 0.8D, 0.7D, 0.8D));
 	public static final ItemEntry CRYSTAL_FRAGMENT_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crystalFragment", new ModelResourceLocation("jaopca:crystal_fragment#inventory"), ImmutableList.<String>of(
-			"Iron", "Gold", "Potassium", "Abyssalnite", "Coralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
+			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
 			));
 	public static final ItemEntry CRYSTAL_SHARD_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crystalShard", new ModelResourceLocation("jaopca:crystal_shard#inventory"), ImmutableList.<String>of(
-			"Iron", "Gold", "Potassium", "Abyssalnite", "Coralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
+			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
 			));
 	public static final ItemEntry CRYSTAL_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crystalAbyss", "crystal", new ModelResourceLocation("jaopca:crystal_abyss#inventory"), ImmutableList.<String>of(
-			"Iron", "Gold", "Potassium", "Abyssalnite", "Coralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
+			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
 			));
 	public static final ItemEntry CRYSTAL_CLUSTER_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "crystalCluster", new ModelResourceLocation("jaopca:crystal_cluster#normal"), ImmutableList.<String>of(
-			"Iron", "Gold", "Potassium", "Abyssalnite", "Coralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
-			)).setBlockProperties(CRYSTAL_CLUSTER_PROPERTIES).skipWhenGrouped(true);*/
+			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
+			)).setBlockProperties(CRYSTAL_CLUSTER_PROPERTIES).skipWhenGrouped(true);
 
 	@Override
 	public String getName() {
 		return "abyssalcraft";
 	}
 
-	/*@Override
+	@Override
 	public List<ItemEntryGroup> getItemRequests() {
 		return Lists.<ItemEntryGroup>newArrayList(ItemEntryGroup.of(CRYSTAL_FRAGMENT_ENTRY, CRYSTAL_SHARD_ENTRY, CRYSTAL_ENTRY, CRYSTAL_CLUSTER_ENTRY));
 	}
@@ -155,5 +155,5 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			}
 			return 0;
 		}
-	}*/
+	}
 }
