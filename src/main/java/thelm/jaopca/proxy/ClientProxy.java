@@ -3,8 +3,6 @@ package thelm.jaopca.proxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -24,6 +22,7 @@ import thelm.jaopca.api.IObjectWithProperty;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.utils.JAOPCAStateMap;
 import thelm.jaopca.model.ModelFluidTextured;
 
 public class ClientProxy extends CommonProxy {
@@ -69,21 +68,21 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public void handleBlockRegister(ItemEntry itemEntry, IOreEntry oreEntry, Block block, ItemBlock itemblock) {
-		super.handleBlockRegister(itemEntry, oreEntry, block, itemblock);
+	public void handleBlockRegister(Block block, ItemBlock itemblock) {
+		super.handleBlockRegister(block, itemblock);
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 			block.setCreativeTab(JAOPCA_TAB);
-			ModelLoader.setCustomModelResourceLocation(itemblock, 0, itemEntry.itemModelLocation);
-			ModelLoader.setCustomStateMapper(block, new JAOPCAStateMap(itemEntry.itemModelLocation));
+			((IObjectWithProperty)block).registerModels();
+			((IObjectWithProperty)itemblock).registerModels();
 		}
 	}
 
 	@Override
-	public void handleItemRegister(ItemEntry itemEntry, IOreEntry oreEntry, Item item) {
-		super.handleItemRegister(itemEntry, oreEntry, item);
+	public void handleItemRegister(Item item) {
+		super.handleItemRegister(item);
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 			item.setCreativeTab(JAOPCA_TAB);
-			ModelLoader.setCustomModelResourceLocation(item, 0, itemEntry.itemModelLocation);
+			((IObjectWithProperty)item).registerModels();
 		}
 	}
 
@@ -124,20 +123,6 @@ public class ClientProxy extends CommonProxy {
 					itemcolors.registerItemColorHandler(JAOPCA_ITEM_COLOR, block);
 				}
 			}
-		}
-	}
-
-	public static class JAOPCAStateMap extends StateMapperBase {
-
-		private final ModelResourceLocation location;
-
-		public JAOPCAStateMap(ModelResourceLocation location) {
-			this.location = location;
-		}
-
-		@Override
-		protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-			return location;
 		}
 	}
 }

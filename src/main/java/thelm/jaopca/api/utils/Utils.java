@@ -1,4 +1,4 @@
-package thelm.jaopca.api.utils;
+ package thelm.jaopca.api.utils;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,8 +32,8 @@ public class Utils {
 		}
 
 		ItemStack ret = null;
-		if(!OreDictionary.getOres(name).isEmpty()) {
-			List<ItemStack> list = OreDictionary.getOres(name);
+		if(!OreDictionary.getOres(name, false).isEmpty()) {
+			List<ItemStack> list = OreDictionary.getOres(name, false);
 			ret = getPreferredStack(list);
 		}
 
@@ -153,7 +153,7 @@ public class Utils {
 	}
 
 	public static boolean doesOreNameExist(String name) {
-		return !OreDictionary.getOres(name).isEmpty();
+		return !OreDictionary.getOres(name, false).isEmpty();
 	}
 
 	public static ItemStack getPreferredStack(Iterable<ItemStack> itemList) {

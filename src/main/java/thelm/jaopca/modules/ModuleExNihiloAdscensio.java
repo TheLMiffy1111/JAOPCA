@@ -20,14 +20,17 @@ import exnihiloadscensio.items.ore.Ore;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
 import exnihiloadscensio.json.CustomOreJson;
+import exnihiloadscensio.registries.RegistryReloadedEvent;
 import exnihiloadscensio.registries.SieveRegistry;
 import exnihiloadscensio.util.BlockInfo;
 import exnihiloadscensio.util.ItemInfo;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
@@ -72,13 +75,12 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 	}
 
 	@Override
-	public void init() {
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("orePiece")) {
-			SieveRegistry.register(Blocks.GRAVEL.getDefaultState(), Utils.getOreStack("orePiece", entry, 1), 0.2F, MeshType.FLINT.getID());
-			SieveRegistry.register(Blocks.GRAVEL.getDefaultState(), Utils.getOreStack("orePiece", entry, 1), 0.2F, MeshType.IRON.getID());
-			SieveRegistry.register(Blocks.GRAVEL.getDefaultState(), Utils.getOreStack("orePiece", entry, 1), 0.1F, MeshType.DIAMOND.getID());
-		}
+	public void preInit() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
+	@Override
+	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreChunk")) {
 			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("oreChunk", entry, 1), new Object[] {
 					"orePiece"+entry.getOreName(),
@@ -95,6 +97,15 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 			if(Config.doEnderIOCompat && Loader.isModLoaded("EnderIO")) {
 				addOreSAGMillRecipe("oreChunk"+entry.getOreName(), "dust"+entry.getOreName());
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onRegistryReload(RegistryReloadedEvent event) {
+		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("orePiece")) {
+			SieveRegistry.register(Blocks.GRAVEL.getDefaultState(), Utils.getOreStack("orePiece", entry, 1), 0.2F, MeshType.FLINT.getID());
+			SieveRegistry.register(Blocks.GRAVEL.getDefaultState(), Utils.getOreStack("orePiece", entry, 1), 0.2F, MeshType.IRON.getID());
+			SieveRegistry.register(Blocks.GRAVEL.getDefaultState(), Utils.getOreStack("orePiece", entry, 1), 0.1F, MeshType.DIAMOND.getID());
 		}
 	}
 

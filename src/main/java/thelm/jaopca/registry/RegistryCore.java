@@ -1,5 +1,6 @@
 package thelm.jaopca.registry;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -17,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.JAOPCA;
@@ -38,29 +38,7 @@ import thelm.jaopca.api.item.IItemBlockWithProperty;
 import thelm.jaopca.api.item.IItemWithProperty;
 import thelm.jaopca.api.item.ItemProperties;
 import thelm.jaopca.api.utils.Utils;
-import thelm.jaopca.modules.ModuleAbyssalCraft;
-import thelm.jaopca.modules.ModuleAppliedEnergistics;
-import thelm.jaopca.modules.ModuleBlock;
-import thelm.jaopca.modules.ModuleDust;
-import thelm.jaopca.modules.ModuleEmbers;
-import thelm.jaopca.modules.ModuleEnderIO;
-import thelm.jaopca.modules.ModuleExNihiloAdscensio;
-import thelm.jaopca.modules.ModuleExNihiloOmnia;
-import thelm.jaopca.modules.ModuleExNihiloOmniaEnder;
-import thelm.jaopca.modules.ModuleExNihiloOmniaNether;
-import thelm.jaopca.modules.ModuleExNihiloOmniaOverworld;
-import thelm.jaopca.modules.ModuleFuturePack;
-import thelm.jaopca.modules.ModuleImmersiveEngineering;
-import thelm.jaopca.modules.ModuleIndustrialCraft;
-import thelm.jaopca.modules.ModuleMekanism;
 import thelm.jaopca.modules.ModuleMolten;
-import thelm.jaopca.modules.ModuleNugget;
-import thelm.jaopca.modules.ModuleRailcraft;
-import thelm.jaopca.modules.ModuleSkyResources;
-import thelm.jaopca.modules.ModuleTechReborn;
-import thelm.jaopca.modules.ModuleThermalExpansion;
-import thelm.jaopca.modules.ModuleThermalSmeltery;
-import thelm.jaopca.modules.ModuleTinkersConstruct;
 import thelm.jaopca.utils.JAOPCAConfig;
 
 /**
@@ -102,62 +80,16 @@ public class RegistryCore {
 	}
 
 	private static void registerBuiltInModules() {
-		JAOPCAApi.registerModule(new ModuleDust());
-		JAOPCAApi.registerModule(new ModuleNugget());
-		JAOPCAApi.registerModule(new ModuleBlock());
-		JAOPCAApi.registerModule(new ModuleMolten());
-		if(Loader.isModLoaded("Mekanism")) {
-			JAOPCAApi.registerModule(new ModuleMekanism());
+		try {
+			Class<?> moduleClass = Class.forName("thelm.jaopca.modules.RegistryModules");
+			Method initMethod = moduleClass.getMethod("preInit");
+			initMethod.invoke(null);
 		}
-		if(Loader.isModLoaded("tconstruct")) {
-			JAOPCAApi.registerModule(new ModuleTinkersConstruct());
+		catch(ClassNotFoundException e) {
+			JAOPCAApi.LOGGER.warn("Module registry not found! Will continue loading.");
 		}
-		if(Loader.isModLoaded("IC2")) {
-			JAOPCAApi.registerModule(new ModuleIndustrialCraft());
-		}
-		if(Loader.isModLoaded("appliedenergistics2")) {
-			JAOPCAApi.registerModule(new ModuleAppliedEnergistics());
-		}
-		if(Loader.isModLoaded("EnderIO")) {
-			JAOPCAApi.registerModule(new ModuleEnderIO());
-		}
-		if(Loader.isModLoaded("thermalexpansion")) {
-			JAOPCAApi.registerModule(new ModuleThermalExpansion());
-		}
-		if(Loader.isModLoaded("exnihiloomnia")) {
-			JAOPCAApi.registerModule(new ModuleExNihiloOmnia());
-			JAOPCAApi.registerModule(new ModuleExNihiloOmniaOverworld());
-			JAOPCAApi.registerModule(new ModuleExNihiloOmniaNether());
-			JAOPCAApi.registerModule(new ModuleExNihiloOmniaEnder());
-		}
-		if(Loader.isModLoaded("exnihiloadscensio")) {
-			JAOPCAApi.registerModule(new ModuleExNihiloAdscensio());
-		}
-		if(Loader.isModLoaded("immersiveengineering")) {
-			JAOPCAApi.registerModule(new ModuleImmersiveEngineering());
-		}
-		if(Loader.isModLoaded("railcraft")) {
-			//should remove itself if industrialcraft is not loaded
-			JAOPCAApi.registerModule(new ModuleRailcraft());
-		}
-		if(Loader.isModLoaded("embers")) {
-			JAOPCAApi.registerModule(new ModuleEmbers());
-		}
-		if(Loader.isModLoaded("fp")) {
-			JAOPCAApi.registerModule(new ModuleFuturePack());
-		}
-		if(Loader.isModLoaded("abyssalcraft")) {
-			JAOPCAApi.registerModule(new ModuleAbyssalCraft());
-		}
-		if(Loader.isModLoaded("techreborn")) {
-			JAOPCAApi.registerModule(new ModuleTechReborn());
-		}
-		if(Loader.isModLoaded("skyresources")) {
-			JAOPCAApi.registerModule(new ModuleSkyResources());
-		}
-		if(Loader.isModLoaded("thermalsmeltery")) {
-			//I hope iterating order is correct
-			JAOPCAApi.registerModule(new ModuleThermalSmeltery());
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -338,7 +270,7 @@ public class RegistryCore {
 					setFull3D(ppt.full3D).
 					setRarity(ppt.rarity);
 					GameRegistry.register((Item)item);
-					JAOPCA.proxy.handleItemRegister(entry, ore, (Item)item);
+					JAOPCA.proxy.handleItemRegister((Item)item);
 					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack((Item)item, 1, 0));
 					JAOPCAApi.ITEMS_TABLE.put(entry.name, ore.getOreName(), (Item)item);
 				}
@@ -384,7 +316,7 @@ public class RegistryCore {
 					setMaxStackSize(ppt.maxStkSize).
 					setRarity(ppt.rarity);
 					GameRegistry.register((ItemBlock)itemblock);
-					JAOPCA.proxy.handleBlockRegister(entry, ore, (Block)block, (ItemBlock)itemblock);
+					JAOPCA.proxy.handleBlockRegister((Block)block, (ItemBlock)itemblock);
 					OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack((Block)block, 1, 0));
 					JAOPCAApi.BLOCKS_TABLE.put(entry.name, ore.getOreName(), (Block)block);
 				}
@@ -430,7 +362,7 @@ public class RegistryCore {
 						GameRegistry.register((Block)blockfluid);
 						IItemBlockFluidWithProperty itemblockfluid = ppt.itemBlockFluidClass.getConstructor(IBlockFluidWithProperty.class).newInstance(blockfluid);
 						GameRegistry.register((ItemBlock)itemblockfluid);
-						JAOPCA.proxy.handleBlockRegister(entry, ore, (Block)blockfluid, (ItemBlock)itemblockfluid);
+						JAOPCA.proxy.handleBlockRegister((Block)blockfluid, (ItemBlock)itemblockfluid);
 					}
 					JAOPCAApi.FLUIDS_TABLE.put(entry.name, ore.getOreName(), (Fluid)fluid);
 				}

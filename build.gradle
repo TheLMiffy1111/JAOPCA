@@ -44,14 +44,20 @@ repositories {
         url = "http://maven.modmuss50.me/"
     }
     maven {
-        url = "https://modmaven.k-4u.nl/" 
+        url = "http://maven.covers1624.net/"
     }
     maven {
-        url = "http://maven.covers1624.net/"
+        url = "http://chickenbones.net/maven/"
+    }
+    maven {
+        url = "https://dl.bintray.com/shinoow/maven/"
+    }
+    maven {
+        url = "https://modmaven.k-4u.nl/" 
     }
 }
 
-version = "1.10.2-1.0.27"
+version = "1.10.2-1.0.30"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -77,6 +83,17 @@ dependencies {
     deobfCompile "blusunrize:ImmersiveEngineering:0.10-57-58"
     deobfCompile "RebornCore:RebornCore-1.10.2:2.13.6.142:universal"
     deobfCompile "TechReborn:TechReborn-1.10.2:2.1.13.219:universal"
+    deobfCompile "codechicken:CodeChickenLib:1.10.2-2.5.9.283:universal"
+    deobfCompile("cofh:CoFHCore:1.10.2-4.1.11.16:universal") {
+        transitive = false
+    }
+    deobfCompile("cofh:ThermalFoundation:1.10.2-2.1.5.12:universal") {
+        transitive = false
+    }
+    deobfCompile("cofh:ThermalExpansion:1.10.2-5.1.9.24:universal") {
+        transitive = false
+    }
+    deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.10.2-1.9.4-pre-4"
 }
 
 processResources
