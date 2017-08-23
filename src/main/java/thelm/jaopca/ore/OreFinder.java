@@ -9,7 +9,9 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import net.minecraftforge.oredict.OreDictionary;
+import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.utils.Utils;
 import thelm.jaopca.utils.JAOPCAConfig;
 
 public class OreFinder {
@@ -35,18 +37,87 @@ public class OreFinder {
 
 	public static void findOres() {
 		JAOPCAApi.LOGGER.debug("Finding ores");
-		LinkedHashSet<String> allOres = getMaterialsWithPrefixes("ore", "ingot");
+
 		ArrayList<OreEntry> allEntries = Lists.<OreEntry>newArrayList();
-		for(String name : allOres) {
-			OreEntry entry = new OreEntry(name);
-			if(DEFAULT_EXTRAS.containsKey(name) && !OreDictionary.getOres("ore"+DEFAULT_EXTRAS.get(name)).isEmpty()) {
-				entry.setExtra(DEFAULT_EXTRAS.get(name));
+		LinkedHashSet<String> allOres = Sets.<String>newLinkedHashSet();
+
+		LinkedHashSet<String> ingotOres = getMaterialsWithPrefixes("ore", "ingot");
+		allOres.addAll(ingotOres);
+		if(JAOPCAConfig.ingot) {
+			for(String name : ingotOres) {
+				OreEntry entry = new OreEntry(name);
+				if(DEFAULT_EXTRAS.containsKey(name) && Utils.doesOreNameExist("ore"+DEFAULT_EXTRAS.get(name))) {
+					entry.setExtra(DEFAULT_EXTRAS.get(name));
+				}
+				if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {
+					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
+				}
+				allEntries.add(entry);
 			}
-			if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {
-				entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
-			}
-			allEntries.add(entry);
 		}
+
+		LinkedHashSet<String> gemOres = getMaterialsWithPrefixes("ore", "gem");
+		gemOres.removeAll(allOres);
+		allOres.addAll(gemOres);
+		if(JAOPCAConfig.gem) {
+			for(String name : gemOres) {
+				OreEntry entry = new OreEntry(name);
+				entry.setOreType(EnumOreType.GEM);
+				if(DEFAULT_EXTRAS.containsKey(name) && Utils.doesOreNameExist("ore"+DEFAULT_EXTRAS.get(name))) {
+					entry.setExtra(DEFAULT_EXTRAS.get(name));
+				}
+				if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {
+					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
+				}
+				allEntries.add(entry);
+			}
+		}
+
+		LinkedHashSet<String> dustOres = getMaterialsWithPrefixes("ore", "dust");
+		dustOres.removeAll(allOres);
+		allOres.addAll(dustOres);
+		if(JAOPCAConfig.dust) {
+			for(String name : dustOres) {
+				OreEntry entry = new OreEntry(name);
+				entry.setOreType(EnumOreType.DUST);
+				if(DEFAULT_EXTRAS.containsKey(name) && Utils.doesOreNameExist("ore"+DEFAULT_EXTRAS.get(name))) {
+					entry.setExtra(DEFAULT_EXTRAS.get(name));
+				}
+				if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {
+					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
+				}
+				allEntries.add(entry);
+			}
+		}
+
+		LinkedHashSet<String> ingotNoOres = getMaterialsWithPrefixButNot("ingot", "ore");
+		ingotNoOres.removeAll(allOres);
+		allOres.addAll(ingotNoOres);
+		if(JAOPCAConfig.ingot_oreless) {
+			for(String name : ingotNoOres) {
+				OreEntry entry = new OreEntry(name);
+				entry.setOreType(EnumOreType.INGOT_ORELESS);
+				if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {
+					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
+				}
+				allEntries.add(entry);
+			}
+		}
+
+		LinkedHashSet<String> gemNoOres = getMaterialsWithPrefixButNot("gem", "ore");
+		gemNoOres.removeAll(allOres);
+		allOres.addAll(gemNoOres);
+		if(JAOPCAConfig.gem_oreless) {
+			for(String name : gemNoOres) {
+				OreEntry entry = new OreEntry(name);
+				entry.setOreType(EnumOreType.GEM_ORELESS);
+				if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {
+					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
+				}
+				allEntries.add(entry);
+			}
+		}
+
 		JAOPCAApi.ORE_ENTRY_LIST.addAll(allEntries);
 		JAOPCAConfig.initOreConfigs(allEntries);
 	}
@@ -54,11 +125,24 @@ public class OreFinder {
 	public static LinkedHashSet<String> getMaterialsWithPrefixes(String prefix1, String prefix2) {
 		LinkedHashSet<String> ores = Sets.<String>newLinkedHashSet();
 		for(String name : OreDictionary.getOreNames()) {
-			if(name.startsWith(prefix1) && !OreDictionary.getOres(name).isEmpty()) {
+			if(name.startsWith(prefix1) && Utils.doesOreNameExist(name)) {
 				String oreName = name.substring(prefix1.length());
-				for(String n : OreDictionary.getOreNames()) {
-					if(n.equals(prefix2 + oreName) && !OreDictionary.getOres(n).isEmpty())
-						ores.add(oreName);
+				if(Utils.doesOreNameExist(prefix2 + oreName)) {
+					ores.add(oreName);
+				}
+			}
+		}
+
+		return ores;
+	}
+
+	public static LinkedHashSet<String> getMaterialsWithPrefixButNot(String prefix1, String prefix2) {
+		LinkedHashSet<String> ores = Sets.<String>newLinkedHashSet();
+		for(String name : OreDictionary.getOreNames()) {
+			if(name.startsWith(prefix1) && Utils.doesOreNameExist(name)) {
+				String oreName = name.substring(prefix1.length());
+				if(!Utils.doesOreNameExist(prefix2 + oreName)) {
+					ores.add(oreName);
 				}
 			}
 		}

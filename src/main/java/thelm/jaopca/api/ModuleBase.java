@@ -1,5 +1,6 @@
 package thelm.jaopca.api;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -25,6 +26,10 @@ public abstract class ModuleBase {
 	 */
 	public List<String> getDependencies() {
 		return Lists.<String>newArrayList();
+	}
+
+	public EnumSet<EnumOreType> getOreTypes() {
+		return EnumSet.<EnumOreType>of(EnumOreType.INGOT);
 	}
 
 	public List<String> getOreBlacklist() {

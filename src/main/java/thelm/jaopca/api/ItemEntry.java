@@ -1,13 +1,15 @@
 package thelm.jaopca.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.LinkedHashSet;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import thelm.jaopca.api.block.BlockProperties;
 import thelm.jaopca.api.fluid.FluidProperties;
 import thelm.jaopca.api.item.ItemProperties;
@@ -21,33 +23,34 @@ public class ItemEntry implements IItemRequest {
 	public String name;
 	public String prefix;
 	public EnumEntryType type;
-	public ResourceLocation itemModelLocation;
+	public EnumSet<EnumOreType> oreTypes = EnumSet.<EnumOreType>of(EnumOreType.INGOT);
+	public ModelResourceLocation itemModelLocation;
 	public final LinkedHashSet<String> blacklist = Sets.<String>newLinkedHashSet();
 	public final ArrayList<ModuleBase> moduleList = Lists.<ModuleBase>newArrayList();
 
 	public ItemProperties itemProperties = ItemProperties.DEFAULT;
 	public BlockProperties blockProperties = BlockProperties.DEFAULT;
 	public FluidProperties fluidProperties = FluidProperties.DEFAULT;
-	
+
 	public boolean skipWhenGrouped = false;
 
-	public ItemEntry(EnumEntryType type, String name, String oreDictPrefix, ResourceLocation itemModelLocation) {
+	public ItemEntry(EnumEntryType type, String name, String oreDictPrefix, ModelResourceLocation itemModelLocation) {
 		this.type = type;
 		this.name = name;
 		this.prefix = oreDictPrefix;
 		this.itemModelLocation = itemModelLocation;
 	}
 
-	public ItemEntry(EnumEntryType type, String name, String oreDictPrefix, ResourceLocation itemModelLocation, Collection<String> blacklist) {
+	public ItemEntry(EnumEntryType type, String name, String oreDictPrefix, ModelResourceLocation itemModelLocation, Collection<String> blacklist) {
 		this(type,name,oreDictPrefix,itemModelLocation);
 		this.blacklist.addAll(blacklist);
 	}
 
-	public ItemEntry(EnumEntryType type, String name, ResourceLocation itemModelLocation) {
+	public ItemEntry(EnumEntryType type, String name, ModelResourceLocation itemModelLocation) {
 		this(type,name,name,itemModelLocation);
 	}
 
-	public ItemEntry(EnumEntryType type, String name, ResourceLocation itemModelLocation, Collection<String> blacklist) {
+	public ItemEntry(EnumEntryType type, String name, ModelResourceLocation itemModelLocation, Collection<String> blacklist) {
 		this(type,name,name,itemModelLocation,blacklist);
 	}
 
@@ -63,6 +66,11 @@ public class ItemEntry implements IItemRequest {
 
 	public ItemEntry setFluidProperties(FluidProperties fluidProperties) {
 		this.fluidProperties = fluidProperties;
+		return this;
+	}
+	
+	public ItemEntry setOreTypes(EnumOreType... types) {
+		oreTypes = EnumSet.<EnumOreType>copyOf(Arrays.asList(types));
 		return this;
 	}
 	

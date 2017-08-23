@@ -5,6 +5,10 @@ item.jaopca.dust.name=%sstaub
 item.jaopca.nugget.name=%snugget
 tile.jaopca.block.name=%sblock
 fluid.jaopca.molten=Geschmolzenes %s
+item.jaopca.coin.name=%smünze
+item.jaopca.gear.name=%szahnrad
+item.jaopca.plate.name=%splatte
+item.jaopca.stick.name=%sstab
 
 #Mekanism
 item.jaopca.dustDirty.name=Schmutziger %sstaub
@@ -32,5 +36,57 @@ tile.jaopca.oreSand.name=%s-Erzsand
 tile.jaopca.oreFine.name=%s-Erzstaub
 
 #ExNihiloAdscensio
+item.jaopca.orePiece.name=%s Erzstück
+item.jaopca.oreChunk.name=%s Erzbrocken
+
+#AbyssalCraft
+item.jaopca.crystalFragment.name=Kristallisiertes %s fragment
+item.jaopca.crystalShard.name=Kristallisierte %s Scherbe
+item.jaopca.crystalAbyss.name=Kristallisiertes %s
+tile.jaopca.crystalCluster.name=Kristallisierter %s Haufen
+
+#TechReborn
+item.jaopca.dustSmall.name=Kleiner Haufen aus %sstaub
+
+#SkyResources
+item.jaopca.dustAlch.name=%s Alchemistischer Erzstaub
 
 #OreNames
+jaopca.entry.Abyssalnite=Abgrundite
+jaopca.entry.Aluminum=Aluminium
+jaopca.entry.Ardite=Ardit
+jaopca.entry.Beryllium=Beryllium
+jaopca.entry.Boron=Bor
+jaopca.entry.Cadmium=Kadmium
+jaopca.entry.Cobalt=Kobalt
+jaopca.entry.Copper=Kupfer
+jaopca.entry.DarkIron=Dunkles Eisen
+jaopca.entry.Desh=Desh
+jaopca.entry.Draconium=Draconium
+jaopca.entry.Gold=Gold
+jaopca.entry.Iridium=Iridium
+jaopca.entry.Iron=Eisen
+jaopca.entry.Lead=Blei
+jaopca.entry.LiquifiedCoralium=Korallium
+jaopca.entry.Lithium=Lithium
+jaopca.entry.Magnesium=Magnesium
+jaopca.entry.Manganese=Mangan
+jaopca.entry.Mercury=Quecksilber
+jaopca.entry.MeteoricIron=Meteorisches Eisen
+jaopca.entry.Mithril=Mithril
+jaopca.entry.Molybdenum=Molybdän
+jaopca.entry.Nickel=Nickel
+jaopca.entry.Osmium=Osmium
+jaopca.entry.Palladium=Palladium
+jaopca.entry.Platinum=Platin
+jaopca.entry.Potassium=Kalium
+jaopca.entry.Silver=Silber
+jaopca.entry.Silicon=Silizium
+jaopca.entry.Steel=Stahl
+jaopca.entry.Tin=Zinn
+jaopca.entry.Titanium=Titan
+jaopca.entry.Tungsten=Wolfram
+jaopca.entry.Uranium=Uran
+jaopca.entry.Vanadium=Vanadium
+jaopca.entry.Zinc=Zink
+

@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 
 import ic2.api.item.IC2Items;
 import ic2.api.recipe.IRecipeInput;
+import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.Recipes;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -83,21 +84,93 @@ public class ModuleIndustrialCraft extends ModuleBase {
 		}
 	}
 	
-	public static void addMaceratorRecipe(IRecipeInput input, ItemStack output) {
-		Recipes.macerator.addRecipe(input, null, false, output);
+	public static void addMaceratorRecipe(Object input, ItemStack output) {
+		IRecipeInput ri = null;
+		if(input instanceof String) {
+			ri = new RecipeInputOreDict((String)input);
+		}
+		if(input instanceof ItemStack) {
+			ri = new RecipeInputItemStack((ItemStack)input);
+		}
+		if(input instanceof IRecipeInput) {
+			ri = (IRecipeInput)input;
+		}
+		Recipes.macerator.addRecipe(ri, null, false, output);
 	}
 
-	public static void addCentrifugeRecipe(IRecipeInput input, int minHeat, ItemStack... output) {
+	public static void addCentrifugeRecipe(Object input, int minHeat, ItemStack... output) {
+		IRecipeInput ri = null;
+		if(input instanceof String) {
+			ri = new RecipeInputOreDict((String)input);
+		}
+		if(input instanceof ItemStack) {
+			ri = new RecipeInputItemStack((ItemStack)input);
+		}
+		if(input instanceof IRecipeInput) {
+			ri = (IRecipeInput)input;
+		}
 		NBTTagCompound metadata = new NBTTagCompound();
 		metadata.setInteger("minHeat", minHeat);
-
-		Recipes.centrifuge.addRecipe(input, metadata, false, output);
+		Recipes.centrifuge.addRecipe(ri, metadata, false, output);
 	}
 
-	public static void addOreWashingRecipe(IRecipeInput input, ItemStack... output) {
+	public static void addOreWashingRecipe(Object input, ItemStack... output) {
+		IRecipeInput ri = null;
+		if(input instanceof String) {
+			ri = new RecipeInputOreDict((String)input);
+		}
+		if(input instanceof ItemStack) {
+			ri = new RecipeInputItemStack((ItemStack)input);
+		}
+		if(input instanceof IRecipeInput) {
+			ri = (IRecipeInput)input;
+		}
 		NBTTagCompound metadata = new NBTTagCompound();
 		metadata.setInteger("amount", 1000);
+		Recipes.oreWashing.addRecipe(ri, metadata, false, output);
+	}
 
-		Recipes.oreWashing.addRecipe(input, metadata, false, output);
+	public static void addCompressorRecipe(Object input, ItemStack output) {
+		IRecipeInput ri = null;
+		if(input instanceof String) {
+			ri = new RecipeInputOreDict((String)input);
+		}
+		if(input instanceof ItemStack) {
+			ri = new RecipeInputItemStack((ItemStack)input);
+		}
+		if(input instanceof IRecipeInput) {
+			ri = (IRecipeInput)input;
+		}
+		Recipes.compressor.addRecipe(ri, null, false, output);
+	}
+	
+	public static void addRollingRecipe(Object input, ItemStack output) {
+		IRecipeInput ri = null;
+		if(input instanceof String) {
+			ri = new RecipeInputOreDict((String)input);
+		}
+		if(input instanceof ItemStack) {
+			ri = new RecipeInputItemStack((ItemStack)input);
+		}
+		if(input instanceof IRecipeInput) {
+			ri = (IRecipeInput)input;
+		}
+		Recipes.metalformerRolling.addRecipe(ri, null, false, output);
+	}
+
+	public static void addBlockCutterRecipe(Object input, int hardness, ItemStack output) {
+		IRecipeInput ri = null;
+		if(input instanceof String) {
+			ri = new RecipeInputOreDict((String)input);
+		}
+		if(input instanceof ItemStack) {
+			ri = new RecipeInputItemStack((ItemStack)input);
+		}
+		if(input instanceof IRecipeInput) {
+			ri = (IRecipeInput)input;
+		}
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("hardness", hardness);
+		Recipes.blockcutter.addRecipe(ri, nbt, false, output);
 	}
 }

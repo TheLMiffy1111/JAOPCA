@@ -4,20 +4,20 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
-import javax.imageio.ImageIO;
-
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
+import de.androidpit.colorthief.ColorThief;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
+/**
+ * Code partially taken from mezz's JEI
+ */
 public class OreColorer {
 
 	public static final HashMap<String, Color> DEFAULT_COLORS = Maps.<String, Color>newHashMap();
@@ -31,23 +31,21 @@ public class OreColorer {
 			return DEFAULT_COLORS.get(oreName);
 		}
 
-		List<ItemStack> ores = OreDictionary.getOres(prefix + oreName);
-		if(ores.isEmpty())
+		List<ItemStack> ores = OreDictionary.getOres(prefix+oreName, false);
+		if(ores.isEmpty()) {
 			return Color.WHITE;
+		}
 
-		Set<Color> colors = Sets.<Color>newLinkedHashSet();
+		List<int[]> colors = Lists.<int[]>newArrayList();
 		for(ItemStack stack : ores) {
 			try {
-				BufferedImage texture = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(getIconResource(stack)).getInputStream());
-				Color texColor = getAverageColor(texture);
+				BufferedImage texture = getBufferedImage(getTextureAtlasSprite(stack));
+				int[] texColor = ColorThief.getColor(texture);
+				int colorMultiplier = getColorMultiplier(stack);
+				texColor[0] = MathHelper.clamp((int)((texColor[0]-1)*(float)(colorMultiplier>>16&0xFF)/255F), 0, 255);
+				texColor[1] = MathHelper.clamp((int)((texColor[1]-1)*(float)(colorMultiplier>>8&0xFF)/255F), 0, 255);
+				texColor[2] = MathHelper.clamp((int)((texColor[2]-1)*(float)(colorMultiplier&0xFF)/255F), 0, 255);
 				colors.add(texColor);
-				for(int pass = 0; pass < 2; pass++) {
-					int c = getStackColor(stack, pass);
-					if((c & 0xFFFFFF) != 0xFFFFFF) {
-						colors.add(new Color(c));
-						colors.remove(texColor);
-					}
-				}
 			}
 			catch(Exception e) {
 				continue;
@@ -57,81 +55,38 @@ public class OreColorer {
 		float red = 0;
 		float green = 0;
 		float blue = 0;
-		for(Color c : colors) {
-			red += c.getRed();
-			green += c.getGreen();
-			blue += c.getBlue();
+		for(int[] c : colors) {
+			red += c[0]*c[0];
+			green += c[1]*c[1];
+			blue += c[2]*c[2];
 		}
-		float count = colors.size();
-		return new Color((int)(red / count), (int)(green / count), (int)(blue / count));
+		int count = colors.size();
+		return new Color((int)Math.sqrt(red/count), (int)Math.sqrt(green/count), (int)Math.sqrt(blue/count));
 	}
 
-	private static int getStackColor(ItemStack stack, int tintIndex) {
-		return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(stack, tintIndex);
-	}
-
-	public static Color getAverageColor(BufferedImage image) {
-		boolean isMostlyDark;
-		float number = 0F;
-		float pixels = 0F;
-		for(int i = 0; i < image.getWidth(); i++) {
-			for(int j = 0; j < image.getHeight(); j++) {
-				Color c = new Color(image.getRGB(i, j));
-				if(c.getAlpha() == 255) {
-					pixels += 1F;
-					if((c.getRed() < 30 && c.getBlue() < 30 && c.getGreen() < 30)) {
-						number += 1;
-					}
-				}
-			}
-		}
-
-		isMostlyDark = number/pixels > 0.6F;
-
-		float red = 0F;
-		float green = 0F;
-		float blue = 0F;
-		float count = 0F;
-		for(int i = 0; i < image.getWidth(); i++) {
-			for(int j = 0; j < image.getHeight(); j++) {
-				Color c = new Color(image.getRGB(i, j));
-				if((c.getAlpha() == 255) && ((c.getRed() > 30 || c.getBlue() > 30 || c.getGreen() > 30) || isMostlyDark)) {
-					red += c.getRed();
-					green += c.getGreen();
-					blue += c.getBlue();
-					count += 1F;
-				}
-			}
-		}
-		return new Color((int)(red / count), (int)(green / count), (int)(blue / count));
-	}
-
-	public static String getIconName(ItemStack stack) {
-		TextureAtlasSprite icon = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, null, null).getParticleTexture();
-		if(icon != null) {
-			return icon.getIconName();
-		}
-		return null;
-	}
-
-	public static ResourceLocation getIconResource(ItemStack stack) {
-		String iconName = getIconName(stack);
-		if(iconName == null) {
+	private static BufferedImage getBufferedImage(TextureAtlasSprite textureAtlasSprite) {
+		final int iconWidth = textureAtlasSprite.getIconWidth();
+		final int iconHeight = textureAtlasSprite.getIconHeight();
+		final int frameCount = textureAtlasSprite.getFrameCount();
+		if(iconWidth <= 0 || iconHeight <= 0 || frameCount <= 0) {
 			return null;
 		}
 
-		String string = "minecraft";
-
-		int colonIndex = iconName.indexOf(':');
-		if(colonIndex >= 0) {
-			if(colonIndex > 1)
-				string = iconName.substring(0, colonIndex);
-
-			iconName = iconName.substring(colonIndex + 1);
+		BufferedImage bufferedImage = new BufferedImage(iconWidth, iconHeight * frameCount, BufferedImage.TYPE_4BYTE_ABGR);
+		for(int i = 0; i < frameCount; i++) {
+			int[][] frameTextureData = textureAtlasSprite.getFrameTextureData(i);
+			int[] largestMipMapTextureData = frameTextureData[0];
+			bufferedImage.setRGB(0, i * iconHeight, iconWidth, iconHeight, largestMipMapTextureData, 0, iconWidth);
 		}
 
-		string = string.toLowerCase(Locale.US);
-		iconName = "textures/" + iconName + ".png";
-		return new ResourceLocation(string, iconName);
+		return bufferedImage;
+	}
+
+	private static TextureAtlasSprite getTextureAtlasSprite(ItemStack itemStack) {
+		return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack).getParticleTexture();
+	}
+	
+	private static int getColorMultiplier(ItemStack itemStack) {
+		return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(itemStack, 0);
 	}
 }

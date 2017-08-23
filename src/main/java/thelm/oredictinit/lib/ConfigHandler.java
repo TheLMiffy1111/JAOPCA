@@ -1,4 +1,4 @@
-package thelm.jaopca.oredictinit.lib;
+package thelm.oredictinit.lib;
 
 import java.io.File;
 import java.util.ArrayList;

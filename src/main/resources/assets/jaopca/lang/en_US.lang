@@ -5,6 +5,10 @@ item.jaopca.dust.name=%s Dust
 item.jaopca.nugget.name=%s Nugget
 tile.jaopca.block.name=Block of %s
 fluid.jaopca.molten=Molten %s
+item.jaopca.coin.name=%s Coin
+item.jaopca.gear.name=%s Gear
+item.jaopca.plate.name=%s Plate
+item.jaopca.stick.name=%s Rod
 
 #Mekanism
 item.jaopca.dustDirty.name=Dirty %s Dust

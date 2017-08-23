@@ -1,6 +1,6 @@
-package thelm.jaopca.oredictinit.compat;
+package thelm.oredictinit.compat;
 
-import static thelm.jaopca.oredictinit.registry.OreDictRegisCore.getBlock;
+import static thelm.oredictinit.registry.OreDictRegisCore.getBlock;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
