@@ -10,6 +10,10 @@ public class RegistryModules {
 		JAOPCAApi.registerModule(new ModuleNugget());
 		JAOPCAApi.registerModule(new ModuleBlock());
 		JAOPCAApi.registerModule(new ModuleMolten());
+		JAOPCAApi.registerModule(new ModuleCoin());
+		JAOPCAApi.registerModule(new ModuleGear());
+		JAOPCAApi.registerModule(new ModulePlate());
+		JAOPCAApi.registerModule(new ModuleStick());
 		if(Loader.isModLoaded("mekanism")) {
 			JAOPCAApi.registerModule(new ModuleMekanism());
 		}

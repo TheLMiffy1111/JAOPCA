@@ -3,6 +3,7 @@ package thelm.jaopca.api.utils;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,7 +42,7 @@ public class Utils {
 			CACHE.put(name, ret.copy());
 			ret.setCount(amount);
 		}
-		
+
 		return ret;
 	}
 
@@ -85,7 +86,7 @@ public class Utils {
 			CACHE.put(prefix+entry.getOreName(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
-		
+
 		return getOreStack(fallback, entry, amount);
 	}
 
@@ -110,7 +111,7 @@ public class Utils {
 
 		return getOreStack(prefix+entry.getExtra(), amount);
 	}
-	
+
 	public static ItemStack getJAOPCAOrOreStackExtra(String prefix, String fallback, IOreEntry entry, int amount) {
 		if(CACHE.containsKey(prefix+entry.getExtra())) {
 			ItemStack ret = CACHE.get(prefix+entry.getExtra()).copy();
@@ -129,7 +130,7 @@ public class Utils {
 			CACHE.put(prefix+entry.getExtra(), new ItemStack(i, 1, 0));
 			return new ItemStack(i, amount, 0);
 		}
-		
+
 		return getOreStackExtra(fallback, entry, amount);
 	}
 
@@ -155,33 +156,33 @@ public class Utils {
 	public static boolean doesOreNameExist(String name) {
 		return !OreDictionary.getOres(name, false).isEmpty();
 	}
-	
+
 	public static ItemStack getPreferredStack(Iterable<ItemStack> itemList) {
 		ItemStack ret = ItemStack.EMPTY;
 		int index = Integer.MAX_VALUE;
-		
+
 		for(ItemStack stack : itemList) {
 			if(stack.isEmpty()) {
 				continue;
 			}
-			
+
 			String modId = stack.getItem().getRegistryName().getResourceDomain();
 			int idex = MOD_IDS.indexOf(modId);
-			
+
 			if(idex < index) {
 				index = idex;
 				ret = stack;
 			}
 		}
-		
-		return ret;
+
+		return ret.copy();
 	}
-	
+
 	public static String to_under_score(String camelCase) {
 		if(StringUtils.isEmpty(camelCase)) {
 			return "";
 		}
-		
+
 		String[] strings = StringUtils.splitByCharacterTypeCamelCase(camelCase);
 		StringBuilder ret = new StringBuilder();
 		for(int i = 0; i < strings.length; i++) {
@@ -192,12 +193,12 @@ public class Utils {
 		}
 		return ret.toString();
 	}
-	
+
 	public static String toPascal(String under_score) {
 		if(StringUtils.isEmpty(under_score)) {
 			return "";
 		}
-		
+
 		String[] strings = StringUtils.split(under_score, '_');
 		StringBuilder ret = new StringBuilder();
 		for(int i = 0; i < strings.length; i++) {
@@ -205,7 +206,31 @@ public class Utils {
 		}
 		return ret.toString();
 	}
-	
+
+	public static String toCamelCase(String under_score) {
+		return StringUtils.uncapitalize(toPascal(under_score));
+	}
+
+	public static String toLowerCase(String s) {
+		return s.toLowerCase(Locale.US);
+	}
+
+	public static String toSpaceSeparated(String camelCase) {
+		if(StringUtils.isEmpty(camelCase)) {
+			return "";
+		}
+
+		String[] strings = StringUtils.splitByCharacterTypeCamelCase(camelCase);
+		StringBuilder ret = new StringBuilder();
+		for(int i = 0; i < strings.length; i++) {
+			ret.append(StringUtils.capitalize(strings[i]));
+			if(i < strings.length-1) {
+				ret.append(' ');
+			}
+		}
+		return ret.toString();
+	}
+
 	public static ItemStack parseItemStack(String input) {
 		try {
 			Item item;

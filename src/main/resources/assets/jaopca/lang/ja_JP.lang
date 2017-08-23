@@ -5,6 +5,7 @@ item.jaopca.dust.name=%sの粉
 item.jaopca.nugget.name=%sナゲット
 tile.jaopca.block.name=%sブロック
 fluid.jaopca.molten=溶融%s
+item.jaopca.gear.name=%sの歯車
 
 #Mekanism
 item.jaopca.dustDirty.name=汚れた%sの粉

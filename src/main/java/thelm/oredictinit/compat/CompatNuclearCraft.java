@@ -1,4 +1,4 @@
-package thelm.jaopca.oredictinit.compat;
+package thelm.oredictinit.compat;
 
 import java.lang.reflect.Method;
 

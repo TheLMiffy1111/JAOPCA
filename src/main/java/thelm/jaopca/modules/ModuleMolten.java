@@ -11,6 +11,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fml.common.Loader;
 import thelm.jaopca.api.EnumEntryType;
+import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.fluid.FluidProperties;
@@ -28,10 +29,11 @@ public class ModuleMolten extends ModuleBase {
 			setMaterial(Material.LAVA);
 
 	public static final ItemEntry MOLTEN_ENTRY = new ItemEntry(EnumEntryType.FLUID, "molten", new ModelResourceLocation("jaopca:fluids/molten#normal")).
-			setFluidProperties(MOLTEN_PROPERTIES);
+			setFluidProperties(MOLTEN_PROPERTIES).
+			setOreTypes(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS);
 
 	public static final ArrayList<String> MOLTEN_BLACKLIST_TCON = Lists.<String>newArrayList(
-			"Iron", "Cobalt", "Ardite", "Gold", "Copper", "Tin", "Lead", "Nickel", "Silver", "Aluminum", "Zinc"
+			"Iron", "Cobalt", "Ardite", "Gold", "Copper", "Tin", "Lead", "Nickel", "Silver", "Aluminum", "Zinc", "BrickSeared"
 			);
 	public static final ArrayList<String> MOLTEN_BLOCKLIST_EMBERS = Lists.<String>newArrayList(
 			"Iron", "Gold", "Silver", "Copper", "Lead"

@@ -8,6 +8,7 @@ import net.minecraft.util.text.translation.I18n;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.block.IBlockWithProperty;
+import thelm.jaopca.api.utils.Utils;
 
 public class ItemBlockBase extends ItemBlock implements IItemBlockWithProperty {
 
@@ -52,6 +53,6 @@ public class ItemBlockBase extends ItemBlock implements IItemBlockWithProperty {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return String.format(super.getItemStackDisplayName(stack), I18n.canTranslate("jaopca.entry."+oreEntry.getOreName()) ? I18n.translateToLocal("jaopca.entry."+oreEntry.getOreName()) : oreEntry.getOreName());
+		return String.format(super.getItemStackDisplayName(stack), I18n.canTranslate("jaopca.entry."+oreEntry.getOreName()) ? I18n.translateToLocal("jaopca.entry."+oreEntry.getOreName()) : Utils.toSpaceSeparated(oreEntry.getOreName()));
 	}
 }

@@ -161,54 +161,9 @@ public class RegistryCore {
 			for(IItemRequest request : ITEM_REQUEST_LIST) {
 				if(request instanceof ItemEntry) {
 					ItemEntry entry = (ItemEntry)request;
-					if(entry.type == EnumEntryType.BLOCK || entry.type == EnumEntryType.ITEM) {
-						if(!OreDictionary.getOres(entry.prefix+ore.getOreName()).isEmpty()) {
+					if(entry.oreTypes.contains(ore.getOreType())) {
+						if(checkEntry(ore, entry)) {
 							entry.blacklist.add(ore.getOreName());
-						}
-					}
-					else if(entry.type == EnumEntryType.FLUID) {
-						if((entry == ModuleMolten.MOLTEN_ENTRY && FluidRegistry.isFluidRegistered(Utils.to_under_score(ore.getOreName())))
-								|| FluidRegistry.isFluidRegistered(entry.prefix+"_"+Utils.to_under_score(ore.getOreName()))) {
-							entry.blacklist.add(ore.getOreName());
-						}
-					}
-					else {
-						for(ModuleBase module : entry.moduleList) {
-							if(module.blacklistCustom(entry, ore)) {
-								entry.blacklist.add(ore.getOreName());
-							}
-						}
-					}
-
-					for(String moduleName : ore.getModuleBlacklist()) {
-						for(ModuleBase module : entry.moduleList) {
-							if(!module.getDependencies().isEmpty() && module.getDependencies().contains(moduleName)) {
-								entry.blacklist.add(ore.getOreName());
-							}
-						}
-
-						if(entry.moduleList.contains(JAOPCAApi.NAME_TO_MODULE_MAP.get(moduleName))) {
-							entry.blacklist.add(ore.getOreName());
-						}
-					}
-				}
-				else if(request instanceof ItemEntryGroup) {
-					ItemEntryGroup entryGroup = (ItemEntryGroup)request;
-					boolean flag = true;
-					for(ItemEntry entry : entryGroup.entryList) {
-						if(!entry.skipWhenGrouped) {
-							if(entry.type == EnumEntryType.BLOCK || entry.type == EnumEntryType.ITEM) {
-								flag &= !OreDictionary.getOres(entry.prefix+ore.getOreName()).isEmpty();
-							}
-							else if(entry.type == EnumEntryType.FLUID) {
-								flag &= (entry == ModuleMolten.MOLTEN_ENTRY && FluidRegistry.isFluidRegistered(Utils.to_under_score(ore.getOreName())))
-										|| FluidRegistry.isFluidRegistered(entry.prefix+"_"+Utils.to_under_score(ore.getOreName()));
-							}
-							else {
-								for(ModuleBase module : entry.moduleList) {
-									flag &= module.blacklistCustom(entry, ore);
-								}
-							}
 						}
 
 						for(String moduleName : ore.getModuleBlacklist()) {
@@ -223,6 +178,27 @@ public class RegistryCore {
 							}
 						}
 					}
+				}
+				else if(request instanceof ItemEntryGroup) {
+					ItemEntryGroup entryGroup = (ItemEntryGroup)request;
+					boolean flag = true;
+					for(ItemEntry entry : entryGroup.entryList) {
+						if(entry.oreTypes.contains(ore.getOreType())) {
+							flag &= checkEntry(ore, entry);
+
+							for(String moduleName : ore.getModuleBlacklist()) {
+								for(ModuleBase module : entry.moduleList) {
+									if(!module.getDependencies().isEmpty() && module.getDependencies().contains(moduleName)) {
+										entry.blacklist.add(ore.getOreName());
+									}
+								}
+
+								if(entry.moduleList.contains(JAOPCAApi.NAME_TO_MODULE_MAP.get(moduleName))) {
+									entry.blacklist.add(ore.getOreName());
+								}
+							}
+						}
+					}
 					if(flag) {
 						for(ItemEntry entry : entryGroup.entryList) {
 							entry.blacklist.add(ore.getOreName());
@@ -233,11 +209,28 @@ public class RegistryCore {
 		}
 	}
 
+	public static boolean checkEntry(IOreEntry ore, ItemEntry entry) {
+		if(entry.type == EnumEntryType.BLOCK || entry.type == EnumEntryType.ITEM) {
+			return Utils.doesOreNameExist(entry.prefix+ore.getOreName());
+		}
+		else if(entry.type == EnumEntryType.FLUID) {
+			return entry.name.equals("molten") && FluidRegistry.isFluidRegistered(Utils.to_under_score(ore.getOreName()))
+					|| FluidRegistry.isFluidRegistered(entry.prefix+"_"+Utils.to_under_score(ore.getOreName()));
+		}
+		else {
+			boolean flag = true;
+			for(ModuleBase module : entry.moduleList) {
+				flag &= module.blacklistCustom(entry, ore);
+			}
+			return flag;
+		}
+	}
+
 	private static void initToOreMaps() {
 		for(ItemEntry entry : JAOPCAApi.ITEM_ENTRY_LIST) {
 			LinkedHashSet<IOreEntry> oreSet = Sets.<IOreEntry>newLinkedHashSet();
 			JAOPCAApi.ORE_ENTRY_LIST.stream().
-			filter(oreEntry->!entry.blacklist.contains(oreEntry.getOreName())).
+			filter(oreEntry->entry.oreTypes.contains(oreEntry.getOreType())&&!entry.blacklist.contains(oreEntry.getOreName())).
 			forEach(oreEntry->oreSet.add(oreEntry));
 
 			JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.putAll(entry.name, oreSet);
@@ -246,7 +239,7 @@ public class RegistryCore {
 		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
 			LinkedHashSet<IOreEntry> oreSet = Sets.<IOreEntry>newLinkedHashSet();
 			JAOPCAApi.ORE_ENTRY_LIST.stream().
-			filter(oreEntry->!module.getOreBlacklist().contains(oreEntry.getOreName()) && !oreEntry.getModuleBlacklist().contains(module.getName())).
+			filter(oreEntry->module.getOreTypes().contains(oreEntry.getOreType())&&!module.getOreBlacklist().contains(oreEntry.getOreName())&&!oreEntry.getModuleBlacklist().contains(module.getName())).
 			forEach(oreEntry->oreSet.add(oreEntry));
 
 			JAOPCAApi.MODULE_TO_ORES_MAP.putAll(module, oreSet);
@@ -257,11 +250,7 @@ public class RegistryCore {
 		for(ItemEntry entry : JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.get(EnumEntryType.ITEM)) {
 			ItemProperties ppt = entry.itemProperties;
 
-			for(IOreEntry ore : JAOPCAApi.ORE_ENTRY_LIST) {
-				if(entry.blacklist.contains(ore.getOreName())) {
-					continue;
-				}
-
+			for(IOreEntry ore : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get(entry.name)) {
 				try {
 					IItemWithProperty item = ppt.itemClass.getConstructor(ItemEntry.class, IOreEntry.class).newInstance(entry, ore);
 					item.
@@ -284,11 +273,7 @@ public class RegistryCore {
 		for(ItemEntry entry : JAOPCAApi.TYPE_TO_ITEM_ENTRY_MAP.get(EnumEntryType.BLOCK)) {
 			BlockProperties ppt = entry.blockProperties;
 
-			for(IOreEntry ore : JAOPCAApi.ORE_ENTRY_LIST) {
-				if(entry.blacklist.contains(ore.getOreName())) {
-					continue;
-				}
-
+			for(IOreEntry ore : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get(entry.name)) {
 				try {
 					IBlockWithProperty block = ppt.blockClass.getConstructor(Material.class, MapColor.class, ItemEntry.class, IOreEntry.class).newInstance(ppt.material, ppt.mapColor, entry, ore);
 					block.
@@ -335,11 +320,7 @@ public class RegistryCore {
 				JAOPCAApi.TEXTURES.add(new ResourceLocation("jaopca:fluids/"+entry.prefix+"_flowing"));
 			}
 
-			for(IOreEntry ore : JAOPCAApi.ORE_ENTRY_LIST) {
-				if(entry.blacklist.contains(ore.getOreName())) {
-					continue;
-				}
-
+			for(IOreEntry ore : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get(entry.name)) {
 				try {
 					IFluidWithProperty fluid = ppt.fluidClass.getConstructor(ItemEntry.class, IOreEntry.class).newInstance(entry, ore);
 					fluid.
