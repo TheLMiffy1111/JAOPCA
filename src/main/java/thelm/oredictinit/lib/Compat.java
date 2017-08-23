@@ -1,16 +1,16 @@
-package thelm.jaopca.oredictinit.lib;
+package thelm.oredictinit.lib;
 
 import net.minecraftforge.fml.common.Loader;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.oredictinit.compat.CompatCalculator;
-import thelm.jaopca.oredictinit.compat.CompatDraconicEvolution;
-import thelm.jaopca.oredictinit.compat.CompatExtremeReactors;
-import thelm.jaopca.oredictinit.compat.CompatGalacticraftCore;
-import thelm.jaopca.oredictinit.compat.CompatGalacticraftPlanets;
-import thelm.jaopca.oredictinit.compat.CompatMekanism;
-import thelm.jaopca.oredictinit.compat.CompatNuclearCraft;
-import thelm.jaopca.oredictinit.compat.CompatTheBetweenlands;
-import thelm.jaopca.oredictinit.compat.CompatTinkersConstruct;
+import thelm.oredictinit.compat.CompatCalculator;
+import thelm.oredictinit.compat.CompatDraconicEvolution;
+import thelm.oredictinit.compat.CompatExtremeReactors;
+import thelm.oredictinit.compat.CompatGalacticraftCore;
+import thelm.oredictinit.compat.CompatGalacticraftPlanets;
+import thelm.oredictinit.compat.CompatMekanism;
+import thelm.oredictinit.compat.CompatNuclearCraft;
+import thelm.oredictinit.compat.CompatTheBetweenlands;
+import thelm.oredictinit.compat.CompatTinkersConstruct;
 
 public class Compat {
 

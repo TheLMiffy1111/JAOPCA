@@ -1,4 +1,4 @@
-package thelm.jaopca.oredictinit.registry;
+package thelm.oredictinit.registry;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -8,8 +8,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.ICompat;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.oredictinit.Woodchopper;
-import thelm.jaopca.oredictinit.lib.Data;
+import thelm.oredictinit.Woodchopper;
+import thelm.oredictinit.lib.Data;
 
 public class OreDictRegisCore {
 	

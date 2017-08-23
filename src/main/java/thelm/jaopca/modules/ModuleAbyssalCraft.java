@@ -45,7 +45,8 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			));
 	public static final ItemEntry CRYSTAL_CLUSTER_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "crystalCluster", new ModelResourceLocation("jaopca:crystal_cluster#normal"), ImmutableList.<String>of(
 			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
-			)).setBlockProperties(CRYSTAL_CLUSTER_PROPERTIES).skipWhenGrouped(true);
+			)).setBlockProperties(CRYSTAL_CLUSTER_PROPERTIES).
+			skipWhenGrouped(true);
 
 	@Override
 	public String getName() {

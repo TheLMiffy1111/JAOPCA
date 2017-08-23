@@ -1,17 +1,16 @@
 package thelm.jaopca.utils;
 
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.registry.RegistryCore;
+import thelm.wrapup.event.InitializationWrapUpEvent;
+import thelm.wrapup.event.PostInitializationWrapUpEvent;
+import thelm.wrapup.event.PreInitializationWrapUpEvent;
+import thelm.wrapup.event.RegistryWrapUpEvent;
 
 public class JAOPCAEventHandler {
 
@@ -24,21 +23,22 @@ public class JAOPCAEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-
+	public void onPreInitWrapUp(PreInitializationWrapUpEvent.Event2 event) {
+		RegistryCore.preInit(event.event);
 	}
 
-	@SubscribeEvent(priority=EventPriority.LOWEST)
-	public void onEntityRegisterLowest(RegistryEvent.Register<EntityEntry> event) {
-		//Used EntityEntry here because it fires after blocks and items, and prepares if I decide to support entities.
-		//Technically still preInit
+	@SubscribeEvent
+	public void onRegistryWrapUp(RegistryWrapUpEvent.Event2 event) {
 		RegistryCore.preInit1();
 	}
 
 	@SubscribeEvent
-	public void onRecipeRegister(RegistryEvent.Register<IRecipe> event) {
-		//These should be fired right after preInit, so maybe counts as init
-		//RegistryCore.init();
-		//IC2 crashes if I register here somehow
+	public void onInitWrapUp(InitializationWrapUpEvent.Event2 event) {
+		RegistryCore.init();
+	}
+
+	@SubscribeEvent
+	public void onPostInitWrapUp(PostInitializationWrapUpEvent.Event2 event) {
+		RegistryCore.postInit();
 	}
 }

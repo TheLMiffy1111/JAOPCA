@@ -7,6 +7,9 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.LoaderState;
+import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.utils.JAOPCAConfig;
 
@@ -16,6 +19,7 @@ public class OreEntry implements IOreEntry {
 	protected String extra;
 	protected double energy;
 	protected List<String> moduleBlacklist = Lists.<String>newArrayList();
+	protected EnumOreType type = EnumOreType.INGOT;
 	protected Color color = null;
 
 	public OreEntry(String oreName) {
@@ -45,10 +49,27 @@ public class OreEntry implements IOreEntry {
 	}
 
 	@Override
+	public EnumOreType getOreType() {
+		return type;
+	}
+
+	@Override
 	public int getColor() {
 		if(color == null) {
-			if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-				color = OreColorer.getColor("ingot", oreName);
+			if(Loader.instance().hasReachedState(LoaderState.AVAILABLE)&&FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+				String s = "ingot";
+				switch(type) {
+				case DUST:
+					s = "dust";
+					break;
+				case GEM:
+				case GEM_ORELESS:
+					s = "gem";
+					break;
+				default:
+					break;
+				}
+				color = OreColorer.getColor(s, oreName);
 				JAOPCAConfig.initColorConfigs(this);
 			}
 			else {
@@ -69,6 +90,10 @@ public class OreEntry implements IOreEntry {
 
 	public void addBlacklistedModules(Collection<String> blacklist) {
 		this.moduleBlacklist.addAll(blacklist);
+	}
+	
+	public void setOreType(EnumOreType type) {
+		this.type = type;
 	}
 
 	public void setColor(Color color) {

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -180,7 +181,7 @@ public class Utils {
 			}
 		}
 
-		return ret;
+		return ret.copy();
 	}
 
 	public static String to_under_score(String camelCase) {
@@ -208,6 +209,30 @@ public class Utils {
 		StringBuilder ret = new StringBuilder();
 		for(int i = 0; i < strings.length; i++) {
 			ret.append(StringUtils.capitalize(strings[i]));
+		}
+		return ret.toString();
+	}
+
+	public static String toCamelCase(String under_score) {
+		return StringUtils.uncapitalize(toPascal(under_score));
+	}
+
+	public static String toLowerCase(String s) {
+		return s.toLowerCase(Locale.US);
+	}
+
+	public static String toSpaceSeparated(String camelCase) {
+		if(StringUtils.isEmpty(camelCase)) {
+			return "";
+		}
+
+		String[] strings = StringUtils.splitByCharacterTypeCamelCase(camelCase);
+		StringBuilder ret = new StringBuilder();
+		for(int i = 0; i < strings.length; i++) {
+			ret.append(StringUtils.capitalize(strings[i]));
+			if(i < strings.length-1) {
+				ret.append(' ');
+			}
 		}
 		return ret.toString();
 	}

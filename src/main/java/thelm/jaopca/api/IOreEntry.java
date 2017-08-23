@@ -33,4 +33,6 @@ public interface IOreEntry {
 	 * @return The color of the ore
 	 */
 	public int getColor();
+
+	public EnumOreType getOreType();
 }

@@ -1,5 +1,6 @@
 package thelm.jaopca.api;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -31,6 +32,10 @@ public abstract class ModuleBase {
 		return Lists.<String>newArrayList();
 	}
 
+	public EnumSet<EnumOreType> getOreTypes() {
+		return EnumSet.<EnumOreType>of(EnumOreType.INGOT);
+	}
+
 	/**
 	 * Gets the item entries of this module.
 	 * @return the list of item entries of this module
@@ -54,11 +59,6 @@ public abstract class ModuleBase {
 	 * @param allOres all ores this item entry can use
 	 */
 	public void registerCustom(ItemEntry itemEntry, List<IOreEntry> allOres) {}
-
-	/**
-	 * Set custom properties of things here.
-	 */
-	public void setCustomProperties() {}
 
 	public void preInit() {}
 

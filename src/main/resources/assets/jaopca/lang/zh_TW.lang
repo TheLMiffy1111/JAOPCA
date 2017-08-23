@@ -5,6 +5,10 @@ item.jaopca.dust.name=%s粉
 item.jaopca.nugget.name=%s粒
 tile.jaopca.block.name=%s磚
 fluid.jaopca.molten=熔融%s
+item.jaopca.coin.name=%s幣
+item.jaopca.gear.name=%s齒輪
+item.jaopca.plate.name=%s板
+item.jaopca.stick.name=%s桿
 
 #Mekanism
 item.jaopca.dustDirty.name=污濁的%s粉

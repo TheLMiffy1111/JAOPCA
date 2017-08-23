@@ -1,7 +1,9 @@
 package thelm.jaopca.api;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.LinkedHashSet;
 
 import com.google.common.collect.Lists;
@@ -21,6 +23,7 @@ public class ItemEntry implements IItemRequest {
 	public String name;
 	public String prefix;
 	public EnumEntryType type;
+	public EnumSet<EnumOreType> oreTypes = EnumSet.<EnumOreType>of(EnumOreType.INGOT);
 	public ModelResourceLocation itemModelLocation;
 	public final LinkedHashSet<String> blacklist = Sets.<String>newLinkedHashSet();
 	public final ArrayList<ModuleBase> moduleList = Lists.<ModuleBase>newArrayList();
@@ -63,6 +66,11 @@ public class ItemEntry implements IItemRequest {
 
 	public ItemEntry setFluidProperties(FluidProperties fluidProperties) {
 		this.fluidProperties = fluidProperties;
+		return this;
+	}
+	
+	public ItemEntry setOreTypes(EnumOreType... types) {
+		oreTypes = EnumSet.<EnumOreType>copyOf(Arrays.asList(types));
 		return this;
 	}
 	

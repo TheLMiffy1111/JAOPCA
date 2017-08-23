@@ -21,6 +21,11 @@ public class JAOPCAConfig {
 	public static Configuration configFile;
 	public static ArrayList<String> usedCategories = Lists.<String>newArrayList();
 	public static ArrayList<String> moduleBlacklist = Lists.<String>newArrayList();
+	public static boolean ingot;
+	public static boolean gem;
+	public static boolean dust;
+	public static boolean ingot_oreless;
+	public static boolean gem_oreless;
 
 	public static void init(File file) {
 		configFile = new Configuration(file);
@@ -41,6 +46,12 @@ public class JAOPCAConfig {
 
 		moduleBlacklist.addAll(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
 
+		ingot = configFile.get(name, "ingot", true).setRequiresMcRestart(true).getBoolean();
+		gem = configFile.get(name, "gem", true).setRequiresMcRestart(true).getBoolean();
+		dust = configFile.get(name, "dust", true).setRequiresMcRestart(true).getBoolean();
+		ingot_oreless = configFile.get(name, "ingot_oreless", false).setRequiresMcRestart(true).getBoolean();
+		gem_oreless = configFile.get(name, "gem_oreless", false).setRequiresMcRestart(true).getBoolean();
+
 		usedCategories.add(name);
 
 		if(configFile.hasChanged())
@@ -51,18 +62,20 @@ public class JAOPCAConfig {
 		for(OreEntry entry : allOres) {
 			String name = Utils.to_under_score(entry.getOreName());
 
-			String originalExtra = entry.getExtra();
-			String configExtra = configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true).getString();
-			boolean doesOreExist = Utils.doesOreNameExist("ore"+configExtra) && Utils.doesOreNameExist("ingot"+configExtra);
+			if(entry.getOreType().ordinal() < 3) {
+				String originalExtra = entry.getExtra();
+				String configExtra = configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true).getString();
+				boolean doesOreExist = Utils.doesOreNameExist("ore"+configExtra);
 
-			if(doesOreExist) {
-				entry.setExtra(configExtra);
-			}
-			else {
-				JAOPCAApi.LOGGER.warn("Found invalid extra name in ore entry "+entry.getOreName()+", replacing");
-				configFile.getCategory(name).remove("extra");
-				configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true);
-				entry.setExtra(originalExtra);
+				if(doesOreExist) {
+					entry.setExtra(configExtra);
+				}
+				else {
+					JAOPCAApi.LOGGER.warn("Found invalid extra name in ore entry "+entry.getOreName()+", replacing");
+					configFile.getCategory(name).remove("extra");
+					configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true);
+					entry.setExtra(originalExtra);
+				}
 			}
 
 			entry.setEnergyModifier(configFile.get(name, "energyModifier", entry.getEnergyModifier()).setRequiresMcRestart(true).getDouble());

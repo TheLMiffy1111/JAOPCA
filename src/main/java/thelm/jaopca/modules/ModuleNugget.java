@@ -6,9 +6,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
+import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
@@ -19,7 +18,7 @@ public class ModuleNugget extends ModuleBase {
 
 	public static final ItemEntry NUGGET_ENTRY = new ItemEntry(EnumEntryType.ITEM, "nugget", new ModelResourceLocation("jaopca:nugget#inventory"), ImmutableList.<String>of(
 			"Iron", "Gold"
-			));
+			)).setOreTypes(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS, EnumOreType.GEM, EnumOreType.GEM_ORELESS);
 
 	@Override
 	public String getName() {
@@ -34,7 +33,16 @@ public class ModuleNugget extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("nugget")) {
-			Utils.addShapelessOreRecipe(Utils.getOreStack("ingot", entry, 1), new Object[] {
+			String s = "ingot";
+			switch(entry.getOreType()) {
+			case GEM:
+			case GEM_ORELESS:
+				s = "gem";
+				break;
+			default:
+				break;
+			}
+			Utils.addShapelessOreRecipe(Utils.getOreStack(s, entry, 1), new Object[] {
 					"nugget"+entry.getOreName(),
 					"nugget"+entry.getOreName(),
 					"nugget"+entry.getOreName(),
@@ -47,7 +55,7 @@ public class ModuleNugget extends ModuleBase {
 			});
 
 			Utils.addShapelessOreRecipe(Utils.getOreStack("nugget", entry, 9), new Object[] {
-					"ingot"+entry.getOreName(),
+					s+entry.getOreName(),
 			});
 		}
 	}
