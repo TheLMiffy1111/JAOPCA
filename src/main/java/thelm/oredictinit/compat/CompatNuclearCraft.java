@@ -2,7 +2,7 @@ package thelm.oredictinit.compat;
 
 import java.lang.reflect.Method;
 
-import thelm.jaopca.api.ICompat;
+import thelm.oredictinit.api.ICompat;
 
 public class CompatNuclearCraft implements ICompat {
 

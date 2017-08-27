@@ -17,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
+import thelm.oredictinit.api.ICompat;
 
 /**
  * Contains all lists and maps used by this mod (and other stuff)
@@ -76,15 +77,12 @@ public class JAOPCAApi {
 
 	public static final LinkedHashMultimap<ModuleBase,IOreEntry> MODULE_TO_ORES_MAP = LinkedHashMultimap.<ModuleBase,IOreEntry>create();
 
+	public static final LinkedHashMultimap<EnumOreType,IOreEntry> ORE_TYPE_TO_ORES_MAP = LinkedHashMultimap.<EnumOreType,IOreEntry>create();
+
 	/**
 	 * Set of textures to register
 	 */
 	public static final HashSet<ResourceLocation> TEXTURES = Sets.<ResourceLocation>newHashSet();
-
-	/**
-	 * List of ore dict entry compats
-	 */
-	public static final ArrayList<ICompat> ORE_DICT_COMPAT_LIST = Lists.<ICompat>newArrayList();
 
 	public static final Logger LOGGER = LogManager.getLogger("JAOPCA");
 

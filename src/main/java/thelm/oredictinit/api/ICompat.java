@@ -1,4 +1,4 @@
-package thelm.jaopca.api;
+package thelm.oredictinit.api;
 
 /**
  * Add an instance of this interface to JAOPCAApi.ORE_DICT_COMPAT_LIST to register ore dict entries at the end of preInit.

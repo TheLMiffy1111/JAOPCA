@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 
@@ -138,6 +139,50 @@ public class Utils {
 		}
 
 		return getOreStackExtra(fallback, entry, amount);
+	}
+
+	public static ItemStack getOreStackSecondExtra(String prefix, IOreEntry entry, int amount) {
+		if(CACHE.containsKey(prefix+entry.getSecondExtra())) {
+			ItemStack ret = CACHE.get(prefix+entry.getSecondExtra()).copy();
+			ret.setCount(amount);
+			return ret;
+		}
+
+		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getSecondExtra())) {
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getSecondExtra());
+			CACHE.put(prefix+entry.getSecondExtra(), new ItemStack(b, 1, 0));
+			return new ItemStack(b, amount, 0);
+		}
+
+		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getSecondExtra())) {
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getSecondExtra());
+			CACHE.put(prefix+entry.getSecondExtra(), new ItemStack(i, 1, 0));
+			return new ItemStack(i, amount, 0);
+		}
+
+		return getOreStack(prefix+entry.getSecondExtra(), amount);
+	}
+
+	public static ItemStack getJAOPCAOrOreStackSecondExtra(String prefix, String fallback, IOreEntry entry, int amount) {
+		if(CACHE.containsKey(prefix+entry.getSecondExtra())) {
+			ItemStack ret = CACHE.get(prefix+entry.getSecondExtra()).copy();
+			ret.setCount(amount);
+			return ret;
+		}
+
+		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getSecondExtra())) {
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getSecondExtra());
+			CACHE.put(prefix+entry.getSecondExtra(), new ItemStack(b, 1, 0));
+			return new ItemStack(b, amount, 0);
+		}
+
+		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getSecondExtra())) {
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getSecondExtra());
+			CACHE.put(prefix+entry.getSecondExtra(), new ItemStack(i, 1, 0));
+			return new ItemStack(i, amount, 0);
+		}
+
+		return getOreStackSecondExtra(fallback, entry, amount);
 	}
 
 	public static int energyI(IOreEntry entry, double energy) {
@@ -258,16 +303,20 @@ public class Utils {
 		return ItemStack.EMPTY;
 	}
 
+	public static EnumOreType oreNameToType(String oreName) {
+		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->entry.getOreName().equals(oreName)).findAny().get().getOreType();
+	}
+
 	public static void addShapedOreRecipe(ItemStack output, Object... input) {
 		ResourceLocation location = getNameForRecipe(output, input);
-		ShapedOreRecipe recipe = new ShapedOreRecipe(null, output, input);
+		ShapedOreRecipe recipe = new ShapedOreRecipe(output.getItem().getRegistryName(), output, input);
 		recipe.setRegistryName(location);
 		ForgeRegistries.RECIPES.register(recipe);
 	}
 
 	public static void addShapelessOreRecipe(ItemStack output, Object... input) {
 		ResourceLocation location = getNameForRecipe(output, input);
-		ShapelessOreRecipe recipe = new ShapelessOreRecipe(null, output, input);
+		ShapelessOreRecipe recipe = new ShapelessOreRecipe(output.getItem().getRegistryName(), output, input);
 		recipe.setRegistryName(location);
 		ForgeRegistries.RECIPES.register(recipe);
 	}

@@ -3,7 +3,7 @@ package thelm.oredictinit.compat;
 import java.lang.reflect.Method;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import thelm.jaopca.api.ICompat;
+import thelm.oredictinit.api.ICompat;
 
 public class CompatTinkersConstruct implements ICompat {
 

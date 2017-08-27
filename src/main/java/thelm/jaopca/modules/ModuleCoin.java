@@ -22,7 +22,7 @@ public class ModuleCoin extends ModuleBase {
 	public static final HashMap<String,Integer> TE_NUMISM_VALUES = Maps.<String,Integer>newHashMap();
 	
 	public static final ItemEntry COIN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "coin", new ModelResourceLocation("jaopca:coin#inventory")).
-			setOreTypes(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS);
+			setOreTypes(EnumOreType.INGOTS);
 
 	@Override
 	public String getName() {

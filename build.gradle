@@ -60,7 +60,7 @@ repositories {
     }
 }
 
-version = "1.12-2.2.0.35"
+version = "1.12-2.2.1.38"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -112,22 +112,7 @@ task deobfJar(type: Jar) {
     classifier = 'deobf'
 }
 
-task apiZip(type: Zip) {
-    from(sourceSets.main.java) {
-        include "thelm/jaopca/api/**"
-    }
-    classifier = 'api'
-}
-task apiJar(type: Jar) {
-    from(sourceSets.main.output) {
-        include "thelm/jaopca/api/**"
-    }
-    classifier = 'api'
-}
-
 artifacts {
     archives deobfJar
-    archives apiZip
-    archives apiJar
 }
 

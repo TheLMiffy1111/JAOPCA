@@ -11,10 +11,9 @@ import ic2.api.recipe.Recipes;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.fml.common.Loader;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.IItemRequest;
+import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.ItemEntryGroup;
@@ -31,8 +30,9 @@ public class ModuleIndustrialCraft extends ModuleBase {
 			"Copper", "Gold", "Iron", "Lead", "Tin", "Silver", "Uranium"
 			));
 	public static final ItemEntry TINY_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustTiny", new ModelResourceLocation("jaopca:dust_tiny#inventory"), ImmutableList.<String>of(
-			"Copper", "Gold", "Iron", "Lead", "Lithium", "Silver", "Tin"
-			));
+			"Copper", "Gold", "Iron", "Lead", "Lithium", "Silver", "Tin", "Lapis", "Bronze"
+			)).skipWhenGrouped(Loader.isModLoaded("techreborn")).
+			setOreTypes(EnumOreType.DUSTLESS);
 
 	@Override
 	public String getName() {
@@ -45,8 +45,8 @@ public class ModuleIndustrialCraft extends ModuleBase {
 	}
 
 	@Override
-	public List<IItemRequest> getItemRequests() {
-		return Lists.<IItemRequest>newArrayList(ItemEntryGroup.of(CRUSHED_ENTRY,PURIFIED_ENTRY),TINY_DUST_ENTRY);
+	public List<ItemEntryGroup> getItemRequests() {
+		return Lists.<ItemEntryGroup>newArrayList(ItemEntryGroup.of(CRUSHED_ENTRY,PURIFIED_ENTRY),ItemEntryGroup.of(TINY_DUST_ENTRY));
 	}
 
 	@Override

@@ -76,6 +76,20 @@ public class JAOPCAConfig {
 					configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true);
 					entry.setExtra(originalExtra);
 				}
+				
+				String originalExtra2 = entry.getExtra();
+				String configExtra2 = configFile.get(name, "extra2", originalExtra2).setRequiresMcRestart(true).getString();
+				boolean doesOreExist2 = Utils.doesOreNameExist("ore"+configExtra2);
+
+				if(doesOreExist2) {
+					entry.setSecondExtra(configExtra2);
+				}
+				else {
+					JAOPCAApi.LOGGER.warn("Found invalid extra name in ore entry "+entry.getOreName()+", replacing");
+					configFile.getCategory(name).remove("extra2");
+					configFile.get(name, "extra2", originalExtra2).setRequiresMcRestart(true);
+					entry.setExtra(originalExtra2);
+				}
 			}
 
 			entry.setEnergyModifier(configFile.get(name, "energyModifier", entry.getEnergyModifier()).setRequiresMcRestart(true).getDouble());

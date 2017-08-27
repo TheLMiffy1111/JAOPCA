@@ -10,6 +10,7 @@ import com.google.common.collect.Maps;
 
 import de.androidpit.colorthief.ColorThief;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -38,18 +39,14 @@ public class OreColorer {
 
 		List<int[]> colors = Lists.<int[]>newArrayList();
 		for(ItemStack stack : ores) {
-			try {
-				BufferedImage texture = getBufferedImage(getTextureAtlasSprite(stack));
-				int[] texColor = ColorThief.getColor(texture);
-				int colorMultiplier = getColorMultiplier(stack);
-				texColor[0] = MathHelper.clamp((int)((texColor[0]-1)*(float)(colorMultiplier>>16&0xFF)/255F), 0, 255);
-				texColor[1] = MathHelper.clamp((int)((texColor[1]-1)*(float)(colorMultiplier>>8&0xFF)/255F), 0, 255);
-				texColor[2] = MathHelper.clamp((int)((texColor[2]-1)*(float)(colorMultiplier&0xFF)/255F), 0, 255);
-				colors.add(texColor);
-			}
-			catch(Exception e) {
-				continue;
-			}
+			BufferedImage texture = getBufferedImage(getTextureAtlasSprite(stack));
+			int[][] texColors = ColorThief.getPalette(texture, 4);
+			int[] texColor0 = texColors[0];
+			int colorMultiplier = getColorMultiplier(stack);
+			texColor0[0] = MathHelper.clamp((int)((texColor0[0]-1)*(float)(colorMultiplier>>16&0xFF)/255F), 0, 255);
+			texColor0[1] = MathHelper.clamp((int)((texColor0[1]-1)*(float)(colorMultiplier>>8&0xFF)/255F), 0, 255);
+			texColor0[2] = MathHelper.clamp((int)((texColor0[2]-1)*(float)(colorMultiplier&0xFF)/255F), 0, 255);
+			colors.add(texColor0);
 		}
 
 		float red = 0;
@@ -85,8 +82,17 @@ public class OreColorer {
 	private static TextureAtlasSprite getTextureAtlasSprite(ItemStack itemStack) {
 		return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack).getParticleTexture();
 	}
-	
+
 	private static int getColorMultiplier(ItemStack itemStack) {
-		return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(itemStack, 0);
+		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
+		int color = 0xFFFFFF;
+		int i = 4;
+		do {
+			color = itemColors.getColorFromItemstack(itemStack, i);
+			i--;
+		}
+		while((color&0xFFFFFF) == 0xFFFFFF && i != -1);
+		return color;
 	}
 }

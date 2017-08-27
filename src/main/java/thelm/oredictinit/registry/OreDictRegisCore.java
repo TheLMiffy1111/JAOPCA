@@ -6,15 +6,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import thelm.jaopca.api.ICompat;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.oredictinit.Woodchopper;
+import thelm.oredictinit.api.ICompat;
+import thelm.oredictinit.api.OreDictInitApi;
 import thelm.oredictinit.lib.Data;
 
 public class OreDictRegisCore {
 	
 	public static void initCompat() {
-		for(ICompat compat : JAOPCAApi.ORE_DICT_COMPAT_LIST) {
+		for(ICompat compat : OreDictInitApi.ORE_DICT_COMPAT_LIST) {
 			compat.register();
 		}
 	}

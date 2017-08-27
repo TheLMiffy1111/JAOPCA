@@ -50,6 +50,7 @@ item.jaopca.dustSmall.name=Small Pile of %s Dust
 
 #SkyResources
 item.jaopca.dustAlch.name=%s Alchemical Ore Dust
+item.jaopca.dirtyGem.name=Dirty %s
 
 #OreNames
 jaopca.entry.LiquifiedCoralium=Coralium
