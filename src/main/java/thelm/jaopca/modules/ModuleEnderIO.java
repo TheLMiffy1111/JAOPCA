@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
@@ -22,8 +23,8 @@ public class ModuleEnderIO extends ModuleBase {
 			"<itemStack oreDictionary=\"ore%s\" />" +
 			"</input>" +
 			"<output>" +
-			"<itemStack oreDictionary=\"dust%s\" number=\"2\" />" +
-			"<itemStack oreDictionary=\"dust%s\" number=\"1\" chance=\"0.1\" />" +
+			"<itemStack oreDictionary=\"%s\" number=\"2\" />" +
+			"<itemStack oreDictionary=\"%s\" number=\"1\" chance=\"0.1\" />" +
 			"<itemStack %s />" +
 			"</output>" +
 			"</recipe>" + 
@@ -36,7 +37,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"<itemStack oreDictionary=\"ore%s\" />" +
 			"</input>" +
 			"<output>" +
-			"<itemStack oreDictionary=\"dust%s\" number=\"2\" />" +
+			"<itemStack oreDictionary=\"%s\" number=\"2\" />" +
 			"<itemStack %s />" +
 			"</output>" +
 			"</recipe>" +
@@ -72,19 +73,20 @@ public class ModuleEnderIO extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			addSAGMillRecipe(entry.getOreName(), Utils.energyI(entry, 3600), entry.getExtra(), ORE_SECONDARIES.get(entry.getOreName()));
+			addSAGMillRecipes(entry, Utils.energyI(entry, 3600), ORE_SECONDARIES.get(entry.getOreName()));
 		}
 	}
 
-	public static void addSAGMillRecipe(String input, int energy, String extra, String secondary) {
-		if(!Utils.doesOreNameExist("dust" + extra))
-			extra = input;
-
+	public static void addSAGMillRecipes(IOreEntry entry, int energy, String secondary) {
+		String input = entry.getOreName();
+		String extra = entry.getExtra();
+		String s1 = entry.getOreType()==EnumOreType.GEM?"gem":"dust";
 		if(!extra.equals(input)) {
-			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE, input, energy, input, input, extra, secondary));
+			String s2 = Utils.oreNameToType(extra)==EnumOreType.GEM?"gem":"dust";
+			FMLInterModComms.sendMessage("enderio", "recipe:sagmill", String.format(XML_MESSAGE, input, energy, input, s1+input, s2+extra, secondary));
 		}
 		else {
-			FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(XML_MESSAGE_1, input, energy, input, input, secondary));
+			FMLInterModComms.sendMessage("enderio", "recipe:sagmill", String.format(XML_MESSAGE_1, input, energy, input, s1+input, secondary));
 		}
 	}
 }

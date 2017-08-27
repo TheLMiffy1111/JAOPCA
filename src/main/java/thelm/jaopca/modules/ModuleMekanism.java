@@ -1,11 +1,14 @@
 package thelm.jaopca.modules;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
@@ -17,6 +20,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
+import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.ItemEntryGroup;
@@ -62,9 +66,14 @@ public class ModuleMekanism extends ModuleBase {
 	}
 
 	@Override
+	public EnumSet<EnumOreType> getOreTypes() {
+		return EnumSet.<EnumOreType>copyOf(Arrays.asList(EnumOreType.DUSTLESS));
+	}
+
+	@Override
 	public List<String> getOreBlacklist() {
 		return Lists.<String>newArrayList(
-				"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
+				"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead", "Quartz", "Diamond", "Lapis", "Coal", "RefinedObsidian", "Redstone", "RefinedGlowstone", "Bronze"
 				);
 	}
 
@@ -85,22 +94,51 @@ public class ModuleMekanism extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			ItemStack dust = Utils.getOreStack("dust"+entry.getOreName(),1);
-
-			if(!MINOR_COMPAT_BLACKLIST.contains(entry.getOreName())) {
-				addCombinerRecipe(Utils.resizeStack(dust,8), Utils.getOreStack("ore",entry,1));
-
+			ItemStack dust = Utils.getOreStack("dust", entry, 1);
+			switch(entry.getOreType()) {
+			case GEM: {
 				for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
-					addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.resizeStack(dust,2));
-				}
-
-				for(ItemStack ore : OreDictionary.getOres("ingot" + entry.getOreName())) {
-					addCrusherRecipe(Utils.resizeStack(ore, 1), Utils.resizeStack(dust,1));
+					addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("gem", entry, 2));
 				}
 			}
+			case GEM_ORELESS: {
+				for(ItemStack ore : OreDictionary.getOres("dust" + entry.getOreName())) {
+					addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("gem", entry, 1));
+				}
 
-			for(ItemStack ore : OreDictionary.getOres("dustDirty" + entry.getOreName())) {
-				addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.resizeStack(dust,1));
+				for(ItemStack ore : OreDictionary.getOres("gem" + entry.getOreName())) {
+					addCrusherRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 1));
+				}
+				break;
+			}
+			case INGOT: {
+				if(!MINOR_COMPAT_BLACKLIST.contains(entry.getOreName())) {
+					for(ItemStack ore : OreDictionary.getOres("dust" + entry.getOreName())) {
+						addCombinerRecipe(Utils.resizeStack(ore, 8), Utils.getOreStack("ore", entry, 1));
+					}
+
+					for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
+						addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 2));
+					}
+
+					for(ItemStack ore : OreDictionary.getOres("ingot" + entry.getOreName())) {
+						addCrusherRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 1));
+					}
+				}
+
+				for(ItemStack ore : OreDictionary.getOres("dustDirty" + entry.getOreName())) {
+					addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 1));
+				}
+				break;
+			}
+			case INGOT_ORELESS: {
+				for(ItemStack ore : OreDictionary.getOres("ingot" + entry.getOreName())) {
+					addCrusherRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 1));
+				}
+				break;
+			}
+			default:
+				break;
 			}
 		}
 
@@ -153,7 +191,7 @@ public class ModuleMekanism extends ModuleBase {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "CrusherRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "CrusherRecipe", msg);
 	}
 
 	public static void addCombinerRecipe(ItemStack input, ItemStack output) {
@@ -162,14 +200,14 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("gasType", gasType.write(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "CombinerRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "CombinerRecipe", msg);
 	}
 
 	public static void addEnrichmentChamberRecipe(ItemStack input, ItemStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "EnrichmentChamberRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "EnrichmentChamberRecipe", msg);
 	}
 
 	public static void addPurificationChamberRecipe(ItemStack input, ItemStack output) {
@@ -178,7 +216,7 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("gasType", gasType.write(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "PurificationChamberRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "PurificationChamberRecipe", msg);
 	}
 
 	public static void addChemicalInjectionChamberRecipe(ItemStack input, String gasName, ItemStack output) {
@@ -187,28 +225,28 @@ public class ModuleMekanism extends ModuleBase {
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("gasType", gasType.write(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "ChemicalInjectionChamberRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "ChemicalInjectionChamberRecipe", msg);
 	}
 
 	public static void addChemicalCrystallizerRecipe(GasStack input, ItemStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.write(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "ChemicalCrystallizerRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "ChemicalCrystallizerRecipe", msg);
 	}
 
 	public static void addChemicalWasherRecipe(GasStack input, GasStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.write(new NBTTagCompound()));
 		msg.setTag("output", output.write(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "ChemicalWasherRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "ChemicalWasherRecipe", msg);
 	}
 
 	public static void addChemicalDissolutionChamberRecipe(ItemStack input, GasStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
 		msg.setTag("output", output.write(new NBTTagCompound()));
-		FMLInterModComms.sendMessage("Mekanism", "ChemicalDissolutionChamberRecipe", msg);
+		FMLInterModComms.sendMessage("mekanism", "ChemicalDissolutionChamberRecipe", msg);
 	}
 
 	public static class GasBase extends Gas {

@@ -15,6 +15,9 @@ public interface IOreEntry {
 	 * @return The name of the extra of the ore
 	 */
 	public String getExtra();
+	
+
+	public String getSecondExtra();
 
 	/**
 	 * 

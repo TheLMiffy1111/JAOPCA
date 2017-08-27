@@ -19,7 +19,7 @@ import thelm.jaopca.api.utils.Utils;
 public class ModulePlate extends ModuleBase {
 
 	public static final ItemEntry PLATE_ENTRY = new ItemEntry(EnumEntryType.ITEM, "plate", new ModelResourceLocation("jaopca:plate#inventory")).
-			setOreTypes(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS, EnumOreType.GEM, EnumOreType.GEM_ORELESS);
+			setOreTypes(EnumOreType.DUSTLESS);
 
 	@Override
 	public String getName() {
@@ -34,15 +34,12 @@ public class ModulePlate extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("plate")) {
-			if(Loader.isModLoaded("ic2")) {
+			if(Loader.isModLoaded("IC2")) {
 				switch(entry.getOreType()) {
 				case GEM:
 				case GEM_ORELESS: {
 					if(Utils.doesOreNameExist("dust"+entry.getOreName())) {
 						ModuleIndustrialCraft.addCompressorRecipe("dust"+entry.getOreName(), Utils.getOreStack("plate", entry, 1));
-					}
-					if(Utils.doesOreNameExist("block"+entry.getOreName())) {
-						ModuleIndustrialCraft.addBlockCutterRecipe("block"+entry.getOreName(), entry.getEnergyModifier()>1.5?8:5, Utils.getOreStack("plate", entry, 9));
 					}
 					break;
 				}
@@ -53,13 +50,16 @@ public class ModulePlate extends ModuleBase {
 							"craftingToolForgeHammer",
 					}));
 					ModuleIndustrialCraft.addRollingRecipe("ingot"+entry.getOreName(), Utils.getOreStack("plate", entry, 1));
-					if(Utils.doesOreNameExist("block"+entry.getOreName())) {
-						ModuleIndustrialCraft.addBlockCutterRecipe("block"+entry.getOreName(), entry.getEnergyModifier()>1.5?8:5, Utils.getOreStack("plate", entry, 9));
-					}
 					break;
 				}
 				default:
 					break;
+				}
+				if(Utils.doesOreNameExist("block"+entry.getOreName())) {
+					ModuleIndustrialCraft.addBlockCutterRecipe("block"+entry.getOreName(), entry.getEnergyModifier()>1.5?8:5, Utils.getOreStack("plate", entry, 9));
+				}
+				if(Utils.doesOreNameExist("dustTiny"+entry.getOreName())) {
+					ModuleIndustrialCraft.addMaceratorRecipe("plate"+entry.getOreName(), Utils.getOreStack("dustTiny", entry, 8));
 				}
 			}
 		}

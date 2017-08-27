@@ -18,7 +18,7 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleStick extends ModuleBase {
 
 	public static final ItemEntry STICK_ENTRY = new ItemEntry(EnumEntryType.ITEM, "stick", new ModelResourceLocation("jaopca:stick#inventory")).
-			setOreTypes(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS, EnumOreType.GEM, EnumOreType.GEM_ORELESS);
+			setOreTypes(EnumOreType.DUSTLESS);
 
 	@Override
 	public String getName() {

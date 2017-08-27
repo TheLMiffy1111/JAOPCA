@@ -18,7 +18,7 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleGear extends ModuleBase {
 
 	public static final ItemEntry GEAR_ENTRY = new ItemEntry(EnumEntryType.ITEM, "gear", new ModelResourceLocation("jaopca:gear#inventory")).
-			setOreTypes(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS);
+			setOreTypes(EnumOreType.DUSTLESS);
 
 	@Override
 	public String getName() {
@@ -33,11 +33,20 @@ public class ModuleGear extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("gear")) {
+			String s = "ingot";
+			switch(entry.getOreType()) {
+			case GEM:
+			case GEM_ORELESS:
+				s = "gem";
+				break;
+			default:
+				break;
+			}
 			GameRegistry.addRecipe(new ShapedOreRecipe(Utils.getOreStack("gear", entry, 1), new Object[] {
 					" o ",
 					"oio",
 					" o ",
-					'o', "ingot"+entry.getOreName(),
+					'o', s+entry.getOreName(),
 					'i', "ingotIron",
 			}));
 		}

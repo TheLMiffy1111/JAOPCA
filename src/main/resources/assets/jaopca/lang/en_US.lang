@@ -53,6 +53,7 @@ item.jaopca.shardCrystal.name=%s Crystal Shard
 fluid.jaopca.dirtyCrystalFluid=Dirty %s Crystal Fluid
 fluid.jaopca.crystalFluid=%s Crystal Fluid
 fluid.jaopca.moltenCrystalFluid=%s Crystal Fluid
+item.jaopca.dirtyGem.name=Dirty %s
 
 #OreNames
 jaopca.entry.LiquifiedCoralium=Coralium
