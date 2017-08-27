@@ -6,7 +6,7 @@ import static thelm.oredictinit.registry.OreDictRegisCore.getItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import thelm.jaopca.api.ICompat;
+import thelm.oredictinit.api.ICompat;
 
 public class CompatGalacticraftPlanets implements ICompat {
 

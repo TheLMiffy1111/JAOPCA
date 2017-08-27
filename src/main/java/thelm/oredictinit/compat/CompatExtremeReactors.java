@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import thelm.jaopca.api.ICompat;
+import thelm.oredictinit.api.ICompat;
 
 public class CompatExtremeReactors implements ICompat {
 

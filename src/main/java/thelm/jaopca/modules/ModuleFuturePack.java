@@ -2,6 +2,8 @@ package thelm.jaopca.modules;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
+import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
@@ -31,11 +34,17 @@ public class ModuleFuturePack extends ModuleBase {
 	}
 
 	@Override
+	public EnumSet<EnumOreType> getOreTypes() {
+		return EnumSet.<EnumOreType>copyOf(Arrays.asList(EnumOreType.ORE));
+	}
+
+	@Override
 	public List<String> getOreBlacklist() {
 		return Lists.<String>newArrayList(
 				"Iron", "Gold", "Tin", "Copper", "Zinc", "Magnetite", "Silver", "Lead", "Iridium", "Titanium", "Unobtainium",
-				"Tungsten", "Platinum", "Cobalt", "Naquadah", "Nickel", "Molybdenum", "Beryllium", "Manganese", "Magnesium",
-				"DevilsIron"
+				"Tungsten", "Platinum", "Cobalt", "Naquadah", "Nickel", "Molybdenum", "Wulfenit", "Beryllium", "Manganese",
+				"Magnesium", "DevilsIron", "Diamond", "Emerald", "Lapis", "Quartz", "Ruby", "Amethyst", "Cinnabar", "Apatite",
+				"Olivine", "Coal", "Sulfur", "Pyrite"
 				);
 	}
 
@@ -50,16 +59,56 @@ public class ModuleFuturePack extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
-				addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
-								Utils.getOreStack("dust", entry, 10),
-								Utils.parseItemStack(ORE_SECONDARIES.get(entry.getOreName())),
-								Utils.getOreStackExtra("dust", entry, 3) //Decided to go with 3
-								}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
+			switch(entry.getOreType()) {
+			case DUST: {
+				for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
+					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
+							Utils.getOreStack("dust", entry, 12),
+							Utils.parseItemStack(ORE_SECONDARIES.get(entry.getOreName())),
+							getExtraStack(entry)
+					}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
+				}
+				break;
+			}
+			case GEM: {
+				for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
+					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
+							Utils.getOreStack("gem", entry, 12),
+							Utils.parseItemStack(ORE_SECONDARIES.get(entry.getOreName())),
+							getExtraStack(entry)
+					}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
+				}
+				break;
+			}
+			case INGOT: {
+				for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
+					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
+							Utils.getOreStack("dust", entry, 10),
+							Utils.parseItemStack(ORE_SECONDARIES.get(entry.getOreName())),
+							getExtraStack(entry)
+					}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
+				}
+				break;
+			}
+			default:
+				break;
 			}
 		}
 	}
 	
+	public static ItemStack getExtraStack(IOreEntry entry) {
+		switch(Utils.oreNameToType(entry.getExtra())) {
+		case GEM:
+			return Utils.getOreStackExtra("gem", entry, 1);
+		case INGOT:
+		case DUST:
+			return Utils.getOreStackExtra("dust", entry, 3);
+		default:
+			break;
+		}
+		return ItemStack.EMPTY;
+	}
+
 	public static void addCentrifugeRecipe(ItemStack in, ItemStack[] out, int support, int time) {
 		//FuturePack API makers, I don't know if you'll ever see this, BUT WHY DID YOU NOT PUT METHODS TO ADD CENTRIFUGE RECIPES?
 		try {

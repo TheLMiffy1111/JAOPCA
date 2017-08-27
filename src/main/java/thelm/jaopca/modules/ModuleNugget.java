@@ -20,7 +20,7 @@ public class ModuleNugget extends ModuleBase {
 
 	public static final ItemEntry NUGGET_ENTRY = new ItemEntry(EnumEntryType.ITEM, "nugget", new ModelResourceLocation("jaopca:nugget#inventory"), ImmutableList.<String>of(
 			"Iron", "Gold"
-			)).setOreTypes(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS, EnumOreType.GEM, EnumOreType.GEM_ORELESS);
+			)).setOreTypes(EnumOreType.DUSTLESS);
 
 	@Override
 	public String getName() {

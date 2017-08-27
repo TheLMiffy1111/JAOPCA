@@ -18,7 +18,7 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleDust extends ModuleBase {
 
 	public static final ItemEntry DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dust", new ModelResourceLocation("jaopca:dust#inventory")).
-			setOreTypes(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS, EnumOreType.GEM, EnumOreType.GEM_ORELESS);
+			setOreTypes(EnumOreType.DUSTLESS);
 
 	@Override
 	public String getName() {

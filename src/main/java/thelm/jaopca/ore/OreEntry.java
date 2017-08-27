@@ -17,6 +17,7 @@ public class OreEntry implements IOreEntry {
 
 	protected final String oreName;
 	protected String extra;
+	protected String extra2;
 	protected double energy;
 	protected List<String> moduleBlacklist = Lists.<String>newArrayList();
 	protected EnumOreType type = EnumOreType.INGOT;
@@ -25,6 +26,7 @@ public class OreEntry implements IOreEntry {
 	public OreEntry(String oreName) {
 		this.oreName = oreName;
 		this.extra = oreName;
+		this.extra2 = oreName;
 		this.energy = 1D;
 	}
 
@@ -36,6 +38,11 @@ public class OreEntry implements IOreEntry {
 	@Override
 	public String getExtra() {
 		return extra;
+	}
+
+	@Override
+	public String getSecondExtra() {
+		return extra2;
 	}
 
 	@Override
@@ -82,6 +89,10 @@ public class OreEntry implements IOreEntry {
 
 	public void setExtra(String extra) {
 		this.extra = extra;
+	}
+
+	public void setSecondExtra(String extra2) {
+		this.extra2 = extra2;
 	}
 
 	public void setEnergyModifier(double energyModifier) {

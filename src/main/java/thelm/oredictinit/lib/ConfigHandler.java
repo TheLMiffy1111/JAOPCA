@@ -10,8 +10,8 @@ import java.util.Set;
 import com.google.common.collect.Lists;
 
 import net.minecraftforge.common.config.Configuration;
-import thelm.jaopca.api.ICompat;
-import thelm.jaopca.api.JAOPCAApi;
+import thelm.oredictinit.api.ICompat;
+import thelm.oredictinit.api.OreDictInitApi;
 
 public class ConfigHandler {
 
@@ -39,13 +39,13 @@ public class ConfigHandler {
 		List<String> blacklist = Arrays.<String>asList(getStringArray("compat", "blacklist", new String[0]));
 		ArrayList<ICompat> toRemove = Lists.<ICompat>newArrayList();
 		
-		for(ICompat compat : JAOPCAApi.ORE_DICT_COMPAT_LIST) {
+		for(ICompat compat : OreDictInitApi.ORE_DICT_COMPAT_LIST) {
 			if(blacklist.contains(compat.getName())) {
 				toRemove.add(compat);
 			}
 		}
 		
-		JAOPCAApi.ORE_DICT_COMPAT_LIST.removeAll(toRemove);
+		OreDictInitApi.ORE_DICT_COMPAT_LIST.removeAll(toRemove);
 
 		if(configFile.hasChanged())
 			configFile.save();
