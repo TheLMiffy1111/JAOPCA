@@ -40,6 +40,9 @@ public class OreColorer {
 		List<int[]> colors = Lists.<int[]>newArrayList();
 		for(ItemStack stack : ores) {
 			BufferedImage texture = getBufferedImage(getTextureAtlasSprite(stack));
+			if(texture == null) {
+				continue;
+			}
 			int[][] texColors = ColorThief.getPalette(texture, 4);
 			int[] texColor0 = texColors[0];
 			int colorMultiplier = getColorMultiplier(stack);
@@ -62,6 +65,9 @@ public class OreColorer {
 	}
 
 	private static BufferedImage getBufferedImage(TextureAtlasSprite textureAtlasSprite) {
+		if(textureAtlasSprite == null) {
+			return null;
+		}
 		final int iconWidth = textureAtlasSprite.getIconWidth();
 		final int iconHeight = textureAtlasSprite.getIconHeight();
 		final int frameCount = textureAtlasSprite.getFrameCount();
@@ -80,7 +86,7 @@ public class OreColorer {
 	}
 
 	private static TextureAtlasSprite getTextureAtlasSprite(ItemStack itemStack) {
-		return Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack).getParticleTexture();
+		return Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemStack, null, null).getParticleTexture();
 	}
 
 	private static int getColorMultiplier(ItemStack itemStack) {

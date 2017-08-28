@@ -91,7 +91,7 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 			Utils.addSmelting(Utils.getOreStack("oreChunk", entry, 1), Utils.getOreStack("ingot", entry, 1), 0.7F);
 
 			if(Config.doTICCompat && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
-				ModuleTinkersConstruct.addMeltingRecipe("oreChunk"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144);
+				ModuleTinkersConstruct.addMeltingRecipe("oreChunk"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 288);
 			}
 
 			if(Config.doEnderIOCompat && Loader.isModLoaded("EnderIO")) {

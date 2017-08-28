@@ -57,7 +57,7 @@ repositories {
     }
 }
 
-version = "1.10.2-2.0.1.36"
+version = "1.10.2-2.0.1.39"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 

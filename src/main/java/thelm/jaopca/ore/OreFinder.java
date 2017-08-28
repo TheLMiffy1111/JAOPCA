@@ -11,7 +11,6 @@ import com.google.common.collect.Sets;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 import thelm.jaopca.utils.JAOPCAConfig;
@@ -21,6 +20,12 @@ public class OreFinder {
 	public static final HashMap<String, String> DEFAULT_EXTRAS = Maps.<String, String>newHashMap();
 	public static final HashMap<String, String> DEFAULT_SECOND_EXTRAS = Maps.<String, String>newHashMap();
 	public static final HashMap<String, Double> DEFAULT_ENERGY_MODIFIERS = Maps.<String, Double>newHashMap();
+	public static final ArrayList<String> SHOULD_BE_GEMS = Lists.<String>newArrayList(
+			"Coal", "Lapis", "Diamond", "Emerald", "Quartz"
+			);
+	public static final ArrayList<String> SHOULD_BE_DUSTS = Lists.<String>newArrayList(
+			"Redstone"
+			);
 
 	static {
 		DEFAULT_EXTRAS.put("Cobalt", "Iron");
@@ -45,6 +50,8 @@ public class OreFinder {
 		LinkedHashSet<String> allOres = Sets.<String>newLinkedHashSet();
 
 		LinkedHashSet<String> ingotOres = getMaterialsWithPrefixes("ore", "ingot");
+		ingotOres.removeAll(SHOULD_BE_GEMS);
+		ingotOres.removeAll(SHOULD_BE_DUSTS);
 		allOres.addAll(ingotOres);
 		if(JAOPCAConfig.ingot) {
 			for(String name : ingotOres) {
@@ -63,6 +70,7 @@ public class OreFinder {
 		}
 
 		LinkedHashSet<String> gemOres = getMaterialsWithPrefixes("ore", "gem");
+		gemOres.removeAll(SHOULD_BE_DUSTS);
 		gemOres.removeAll(allOres);
 		allOres.addAll(gemOres);
 		if(JAOPCAConfig.gem) {
@@ -103,6 +111,7 @@ public class OreFinder {
 		}
 
 		LinkedHashSet<String> ingotNoOres = getMaterialsWithPrefixButNot("ingot", "ore");
+		ingotNoOres.removeAll(SHOULD_BE_GEMS);
 		ingotNoOres.removeAll(allOres);
 		allOres.addAll(ingotNoOres);
 		if(JAOPCAConfig.ingot_oreless) {
