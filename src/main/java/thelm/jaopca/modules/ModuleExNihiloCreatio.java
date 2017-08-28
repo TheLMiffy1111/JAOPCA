@@ -15,7 +15,6 @@ import com.google.gson.GsonBuilder;
 
 import exnihilocreatio.ExNihiloCreatio;
 import exnihilocreatio.blocks.BlockSieve.MeshType;
-import exnihilocreatio.config.Config;
 import exnihilocreatio.items.ore.Ore;
 import exnihilocreatio.json.CustomBlockInfoJson;
 import exnihilocreatio.json.CustomItemInfoJson;
@@ -24,16 +23,6 @@ import exnihilocreatio.registries.RegistryReloadedEvent;
 import exnihilocreatio.registries.SieveRegistry;
 import exnihilocreatio.util.BlockInfo;
 import exnihilocreatio.util.ItemInfo;
-/*import exnihiloadscensio.ExNihiloAdscensio;
-import exnihiloadscensio.blocks.BlockSieve.MeshType;
-import exnihiloadscensio.config.Config;
-import exnihiloadscensio.items.ore.Ore;
-import exnihiloadscensio.json.CustomBlockInfoJson;
-import exnihiloadscensio.json.CustomItemInfoJson;
-import exnihiloadscensio.json.CustomOreJson;
-import exnihiloadscensio.registries.SieveRegistry;
-import exnihiloadscensio.util.BlockInfo;
-import exnihiloadscensio.util.ItemInfo;*/
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -67,6 +56,10 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 			"</recipe>" + 
 			"</recipeGroup>";
 
+	public static boolean doTICCompat;
+	public static double ingotsPerChunkWhenMelting;
+	public static boolean doEnderIOCompat;
+
 	@Override
 	public String getName() {
 		return "exnihilocreatio";
@@ -98,11 +91,11 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 			});
 			Utils.addSmelting(Utils.getOreStack("oreChunk", entry, 1), Utils.getOreStack("ingot", entry, 1), 0.7F);
 
-			if(Config.doTICCompat && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
-				ModuleTinkersConstruct.addMeltingRecipe("oreChunk"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144);
+			if(doTICCompat && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
+				ModuleTinkersConstruct.addMeltingRecipe("oreChunk"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), (int)(144*ingotsPerChunkWhenMelting));
 			}
 
-			if(Config.doEnderIOCompat && Loader.isModLoaded("EnderIO")) {
+			if(doEnderIOCompat && Loader.isModLoaded("EnderIO")) {
 				addOreSAGMillRecipe("oreChunk"+entry.getOreName(), "dust"+entry.getOreName());
 			}
 		}
@@ -149,7 +142,14 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 				);
 		try {
 			File file = new File(ExNihiloCreatio.configDirectory, "OreRegistry.json");
-			if(file.exists()) {
+			boolean doRead = true;
+			try {
+				Class<?> configClass = Class.forName("exnihilocreatio.config.ModConfig");
+				Class<?> miscClass = Class.forName("exnihilocreatio.config.ModConfig.Misc");
+				doRead = miscClass.getField("enableJSONLoading").getBoolean(configClass.getField("misc").get(null));
+			}
+			catch(ClassNotFoundException e) {}
+			if(file.exists() && doRead) {
 				FileReader e = new FileReader(file);
 				for(Ore ore : gson.<List<Ore>>fromJson(e, TYPE)) {
 					EXISTING_ORES.add(StringUtils.capitalize(ore.getName()));
@@ -162,6 +162,29 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 		catch(Exception e) {
 			e.printStackTrace();
 			EXISTING_ORES.addAll(defaults);
+		}
+
+		try {
+			try {
+				Class<?> configClass = Class.forName("exnihilocreatio.config.Config");
+				doTICCompat = configClass.getField("doTICCompat").getBoolean(null);
+				ingotsPerChunkWhenMelting = 2D;
+				doEnderIOCompat = configClass.getField("doEnderIOCompat").getBoolean(null);
+			}
+			catch(ClassNotFoundException e) {
+				doEnderIOCompat = false;
+				Class<?> configClass = Class.forName("exnihilocreatio.config.ModConfig");
+				Class<?> compatClass = Class.forName("exnihilocreatio.config.ModConfig.Compatibility");
+				Class<?> tconClass = Class.forName("exnihilocreatio.config.ModConfig.Compatibility.TinkersConstructCompat");
+				Object tcon = compatClass.getField("tinkers_construct_compat").get(configClass.getField("compatibility").get(null));
+				doTICCompat = tconClass.getField("doTinkersConstructCompat").getBoolean(tcon) && tconClass.getField("addMeltingOfChunks").getBoolean(tcon);
+				ingotsPerChunkWhenMelting = tconClass.getField("ingotsPerChunkWhenMelting").getDouble(tcon);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			ingotsPerChunkWhenMelting = 2D;
+			doTICCompat = doEnderIOCompat = false;
 		}
 	}
 }

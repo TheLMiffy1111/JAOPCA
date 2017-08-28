@@ -12,11 +12,12 @@ import thelm.oredictinit.compat.CompatNuclearCraft;
 import thelm.oredictinit.compat.CompatQuark;
 import thelm.oredictinit.compat.CompatRFTools;
 import thelm.oredictinit.compat.CompatTheBetweenlands;
+import thelm.oredictinit.compat.CompatTinkersConstruct;
 
 public class Compat {
 
 	public static void init() {
-		if(Loader.isModLoaded("Mekanism")) {
+		if(Loader.isModLoaded("mekanism")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMekanism());
 		}
 		if(Loader.isModLoaded("draconicevolution")) {
@@ -39,6 +40,9 @@ public class Compat {
 		}
 		if(Loader.isModLoaded("bigreactors")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatExtremeReactors());
+		}
+		if(Loader.isModLoaded("tconstruct")) {
+			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatTinkersConstruct());
 		}
 		if(Loader.isModLoaded("quark")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatQuark());
