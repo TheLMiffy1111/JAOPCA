@@ -16,7 +16,7 @@ import thelm.oredictinit.compat.CompatTheBetweenlands;
 public class Compat {
 
 	public static void init() {
-		if(Loader.isModLoaded("Mekanism")) {
+		if(Loader.isModLoaded("mekanism")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMekanism());
 		}
 		if(Loader.isModLoaded("draconicevolution")) {
