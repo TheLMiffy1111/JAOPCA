@@ -15,7 +15,7 @@ item.jaopca.crystal.name=%sの結晶
 gas.jaopca.slurryClean=純粋な%sの懸濁液
 gas.jaopca.slurry=%sの懸濁液
 
-#OreNames
+#Ingots
 jaopca.entry.Aluminum=アルミニウム
 jaopca.entry.Ardite=アーダイト
 jaopca.entry.Beryllium=ベリリウム
@@ -49,3 +49,11 @@ jaopca.entry.Tungsten=タングステン
 jaopca.entry.Uranium=ウラン
 jaopca.entry.Vanadium=バナジウム
 jaopca.entry.Zinc=亜鉛
+
+#Gems
+
+#Dusts
+
+#IngotNoOres
+
+#GemNoOres

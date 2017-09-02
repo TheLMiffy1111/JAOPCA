@@ -94,7 +94,6 @@ public class ModuleMekanism extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			ItemStack dust = Utils.getOreStack("dust", entry, 1);
 			switch(entry.getOreType()) {
 			case GEM: {
 				for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {

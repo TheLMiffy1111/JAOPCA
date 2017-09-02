@@ -167,6 +167,13 @@ public class RegistryCore {
 					ore.getModuleBlacklist().add(module.getName());
 				}
 			}
+			else {
+				for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+					if(ore.getModuleBlacklist().stream().anyMatch(name->module.getDependencies().contains(name))) {
+						ore.getModuleBlacklist().add(module.getName());
+					}
+				}
+			}
 
 			for(IItemRequest request : ITEM_REQUEST_LIST) {
 				if(request instanceof ItemEntry) {
@@ -178,7 +185,7 @@ public class RegistryCore {
 
 						for(String moduleName : ore.getModuleBlacklist()) {
 							for(ModuleBase module : entry.moduleList) {
-								if(!module.getDependencies().isEmpty() && module.getDependencies().contains(moduleName)) {
+								if(module.getDependencies().contains(moduleName)) {
 									entry.blacklist.add(ore.getOreName());
 								}
 							}
@@ -198,7 +205,7 @@ public class RegistryCore {
 
 							for(String moduleName : ore.getModuleBlacklist()) {
 								for(ModuleBase module : entry.moduleList) {
-									if(!module.getDependencies().isEmpty() && module.getDependencies().contains(moduleName)) {
+									if(module.getDependencies().contains(moduleName)) {
 										entry.blacklist.add(ore.getOreName());
 									}
 								}

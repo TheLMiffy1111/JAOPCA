@@ -96,6 +96,9 @@ public class FluidBase extends Fluid implements IFluidWithProperty {
 
 	@Override
 	public String getLocalizedName(FluidStack stack) {
+		if(I18n.canTranslate(getUnlocalizedName(stack)+'.'+oreEntry.getOreName())) {
+			return I18n.translateToLocal(getUnlocalizedName(stack)+'.'+oreEntry.getOreName());
+		}
 		return String.format(super.getLocalizedName(stack), I18n.canTranslate("jaopca.entry."+oreEntry.getOreName()) ? I18n.translateToLocal("jaopca.entry."+oreEntry.getOreName()) : Utils.toSpaceSeparated(oreEntry.getOreName()));
 	}
 }
