@@ -26,6 +26,7 @@ public class JAOPCAConfig {
 	public static boolean dust;
 	public static boolean ingot_oreless;
 	public static boolean gem_oreless;
+	public static boolean reloadColors;
 
 	public static void init(File file) {
 		configFile = new Configuration(file);
@@ -52,6 +53,13 @@ public class JAOPCAConfig {
 		ingot_oreless = configFile.get(name, "ingot_oreless", false).setRequiresMcRestart(true).getBoolean();
 		gem_oreless = configFile.get(name, "gem_oreless", false).setRequiresMcRestart(true).getBoolean();
 
+		reloadColors = configFile.get(name, "reloadColorConfigs", false, "Set to true to reload color configs.").setRequiresMcRestart(true).getBoolean();
+
+		if(reloadColors) {
+			configFile.getCategory(name).remove("reloadColorConfigs");
+			configFile.get(name, "reloadColorConfigs", false, "Set to true to reload color configs.").setRequiresMcRestart(true).getBoolean();
+		}
+
 		usedCategories.add(name);
 
 		if(configFile.hasChanged())
@@ -76,7 +84,7 @@ public class JAOPCAConfig {
 					configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true);
 					entry.setExtra(originalExtra);
 				}
-				
+
 				String originalExtra2 = entry.getExtra();
 				String configExtra2 = configFile.get(name, "extra2", originalExtra2).setRequiresMcRestart(true).getString();
 				boolean doesOreExist2 = Utils.doesOreNameExist("ore"+configExtra2);
@@ -122,6 +130,10 @@ public class JAOPCAConfig {
 
 	public static void initColorConfigs(OreEntry entry) {
 		String name = Utils.to_under_score(entry.getOreName());
+
+		if(reloadColors) {
+			configFile.getCategory(name).remove("color");
+		}
 
 		entry.setColor(Color.decode(configFile.get(name, "color", "0x"+Integer.toHexString(entry.getColor() & 0xFFFFFF)).getString()));
 

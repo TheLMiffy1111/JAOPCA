@@ -8,6 +8,7 @@ import thelm.oredictinit.compat.CompatExtremeReactors;
 import thelm.oredictinit.compat.CompatGalacticraftCore;
 import thelm.oredictinit.compat.CompatGalacticraftPlanets;
 import thelm.oredictinit.compat.CompatMekanism;
+import thelm.oredictinit.compat.CompatMinecraft;
 import thelm.oredictinit.compat.CompatNuclearCraft;
 import thelm.oredictinit.compat.CompatQuark;
 import thelm.oredictinit.compat.CompatRFTools;
@@ -16,6 +17,7 @@ import thelm.oredictinit.compat.CompatTheBetweenlands;
 public class Compat {
 
 	public static void init() {
+		OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMinecraft());
 		if(Loader.isModLoaded("Mekanism")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMekanism());
 		}

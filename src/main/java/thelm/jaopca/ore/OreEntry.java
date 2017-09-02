@@ -102,7 +102,7 @@ public class OreEntry implements IOreEntry {
 	public void addBlacklistedModules(Collection<String> blacklist) {
 		this.moduleBlacklist.addAll(blacklist);
 	}
-	
+
 	public void setOreType(EnumOreType type) {
 		this.type = type;
 	}

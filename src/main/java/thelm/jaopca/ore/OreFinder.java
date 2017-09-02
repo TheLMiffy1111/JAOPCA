@@ -3,6 +3,7 @@ package thelm.jaopca.ore;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.TreeSet;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -49,7 +50,7 @@ public class OreFinder {
 		ArrayList<OreEntry> allEntries = Lists.<OreEntry>newArrayList();
 		LinkedHashSet<String> allOres = Sets.<String>newLinkedHashSet();
 
-		LinkedHashSet<String> ingotOres = getMaterialsWithPrefixes("ore", "ingot");
+		TreeSet<String> ingotOres = getMaterialsWithPrefixes("ore", "ingot");
 		ingotOres.removeAll(SHOULD_BE_GEMS);
 		ingotOres.removeAll(SHOULD_BE_DUSTS);
 		allOres.addAll(ingotOres);
@@ -66,10 +67,11 @@ public class OreFinder {
 					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
 				}
 				allEntries.add(entry);
+				JAOPCAApi.LOGGER.debug("Found ingot ore "+name);
 			}
 		}
 
-		LinkedHashSet<String> gemOres = getMaterialsWithPrefixes("ore", "gem");
+		TreeSet<String> gemOres = getMaterialsWithPrefixes("ore", "gem");
 		gemOres.removeAll(SHOULD_BE_DUSTS);
 		gemOres.removeAll(allOres);
 		allOres.addAll(gemOres);
@@ -87,10 +89,11 @@ public class OreFinder {
 					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
 				}
 				allEntries.add(entry);
+				JAOPCAApi.LOGGER.debug("Found gem ore "+name);
 			}
 		}
 
-		LinkedHashSet<String> dustOres = getMaterialsWithPrefixes("ore", "dust");
+		TreeSet<String> dustOres = getMaterialsWithPrefixes("ore", "dust");
 		dustOres.removeAll(allOres);
 		allOres.addAll(dustOres);
 		if(JAOPCAConfig.dust) {
@@ -107,10 +110,11 @@ public class OreFinder {
 					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
 				}
 				allEntries.add(entry);
+				JAOPCAApi.LOGGER.debug("Found dust ore "+name);
 			}
 		}
 
-		LinkedHashSet<String> ingotNoOres = getMaterialsWithPrefixButNot("ingot", "ore");
+		TreeSet<String> ingotNoOres = getMaterialsWithPrefixButNot("ingot", "ore");
 		ingotNoOres.removeAll(SHOULD_BE_GEMS);
 		ingotNoOres.removeAll(allOres);
 		allOres.addAll(ingotNoOres);
@@ -125,10 +129,11 @@ public class OreFinder {
 					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
 				}
 				allEntries.add(entry);
+				JAOPCAApi.LOGGER.debug("Found ingot "+name);
 			}
 		}
 
-		LinkedHashSet<String> gemNoOres = getMaterialsWithPrefixButNot("gem", "ore");
+		TreeSet<String> gemNoOres = getMaterialsWithPrefixButNot("gem", "ore");
 		gemNoOres.removeAll(allOres);
 		allOres.addAll(gemNoOres);
 		if(JAOPCAConfig.gem_oreless) {
@@ -139,6 +144,7 @@ public class OreFinder {
 					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
 				}
 				allEntries.add(entry);
+				JAOPCAApi.LOGGER.debug("Found gem "+name);
 			}
 		}
 
@@ -154,8 +160,8 @@ public class OreFinder {
 		JAOPCAConfig.initOreConfigs(allEntries);
 	}
 
-	public static LinkedHashSet<String> getMaterialsWithPrefixes(String prefix1, String prefix2) {
-		LinkedHashSet<String> ores = Sets.<String>newLinkedHashSet();
+	public static TreeSet<String> getMaterialsWithPrefixes(String prefix1, String prefix2) {
+		TreeSet<String> ores = Sets.<String>newTreeSet();
 		for(String name : OreDictionary.getOreNames()) {
 			if(name.startsWith(prefix1) && Utils.doesOreNameExist(name)) {
 				String oreName = name.substring(prefix1.length());
@@ -168,8 +174,8 @@ public class OreFinder {
 		return ores;
 	}
 
-	public static LinkedHashSet<String> getMaterialsWithPrefixButNot(String prefix1, String prefix2) {
-		LinkedHashSet<String> ores = Sets.<String>newLinkedHashSet();
+	public static TreeSet<String> getMaterialsWithPrefixButNot(String prefix1, String prefix2) {
+		TreeSet<String> ores = Sets.<String>newTreeSet();
 		for(String name : OreDictionary.getOreNames()) {
 			if(name.startsWith(prefix1) && Utils.doesOreNameExist(name)) {
 				String oreName = name.substring(prefix1.length());

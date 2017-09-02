@@ -100,6 +100,7 @@ public class ModuleMekanism extends ModuleBase {
 				for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
 					addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("gem", entry, 2));
 				}
+				break;
 			}
 			case GEM_ORELESS: {
 				for(ItemStack ore : OreDictionary.getOres("dust" + entry.getOreName())) {

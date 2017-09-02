@@ -59,7 +59,7 @@ public class ModuleSkyResources extends ModuleBase {
 	public static final ArrayList<String> GEM_BLACKLIST = Lists.<String>newArrayList(
 			"Emerald", "Ruby", "Sapphire", "Peridot", "RedGarnet", "YellowGarnet", "Apatite", "Amber", "Lepidolite", "Malachite", "Onyx", "Moldavite",
 			"Agate", "Opal", "Amethyst", "Jasper", "Aquamarine", "Heliodor", "Turquoise", "Moonstone", "Morganite", "Carnelian", "Beryl", "GoldenBeryl",
-			"Citrine", "Indicolite", "Garnet", "Topaz", "Ametrine", "Tanzanite", "VioletSappphire", "Alexandrite", "BlueTopaz", "Spinel", "Iolite",
+			"Citrine", "Indicolite", "Garnet", "Topaz", "Ametrine", "Tanzanite", "VioletSapphire", "Alexandrite", "BlueTopaz", "Spinel", "Iolite",
 			"BlackDiamond", "Chaos", "EnderEssence", "Quartz", "Lapis", "QuartzBlack", "CertusQuartz"
 			);
 

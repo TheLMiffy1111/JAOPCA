@@ -80,6 +80,13 @@ public class ModuleTechReborn extends ModuleBase {
 				};
 				GRINDING_FLUIDS.put(entry.getOreName(), data);
 			}
+			if(entry.getOreType()==EnumOreType.DUST) {
+				boolean[] data = {
+						config.get(Utils.to_under_score(entry.getOreName()), "techRebornH2O", true).getBoolean(),
+						config.get(Utils.to_under_score(entry.getOreName()), "techRebornNa2S2O8", true).getBoolean(),
+				};
+				GRINDING_FLUIDS.put(entry.getOreName(), data);
+			}
 		}
 	}
 
