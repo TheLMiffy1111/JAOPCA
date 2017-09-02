@@ -48,7 +48,7 @@ tile.jaopca.crystalCluster.name=Kristallisierter %s Haufen
 #TechReborn
 item.jaopca.dustSmall.name=Kleiner Haufen aus %sstaub
 
-#OreNames
+#Ingots
 jaopca.entry.Abyssalnite=Abgrundite
 jaopca.entry.Aluminum=Aluminium
 jaopca.entry.Ardite=Ardit
@@ -87,3 +87,10 @@ jaopca.entry.Uranium=Uran
 jaopca.entry.Vanadium=Vanadium
 jaopca.entry.Zinc=Zink
 
+#Gems
+
+#Dusts
+
+#IngotNoOres
+
+#GemNoOres

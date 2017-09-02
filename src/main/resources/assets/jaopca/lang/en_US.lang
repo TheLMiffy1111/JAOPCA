@@ -54,5 +54,19 @@ fluid.jaopca.crystalFluid=%s Crystal Fluid
 fluid.jaopca.moltenCrystalFluid=%s Crystal Fluid
 item.jaopca.dirtyGem.name=Dirty %s
 
-#OreNames
+#Please refer to zh_CN or zh_TW for all names to localize.
+#Ingots
 jaopca.entry.LiquifiedCoralium=Coralium
+
+#Gems
+jaopca.entry.Lapis=Lapis Lazuli
+
+#Dusts
+
+#IngotNoOres
+jaopca.entry.Aluminumbrass=Aluminum Brass
+jaopca.entry.ElvenElementium=Elementium
+jaocpa.entry.Galvanizedsteel=Galvanized Steel
+jaopca.entry.Stainlesssteel=Stainless Steel
+
+#GemNoOres

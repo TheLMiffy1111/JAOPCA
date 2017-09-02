@@ -157,6 +157,13 @@ public class RegistryCore {
 					ore.getModuleBlacklist().add(module.getName());
 				}
 			}
+			else {
+				for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+					if(ore.getModuleBlacklist().stream().anyMatch(name->module.getDependencies().contains(name))) {
+						ore.getModuleBlacklist().add(module.getName());
+					}
+				}
+			}
 
 			for(IItemRequest request : ITEM_REQUEST_LIST) {
 				if(request instanceof ItemEntry) {
