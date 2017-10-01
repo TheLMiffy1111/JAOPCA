@@ -21,7 +21,7 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleFuturePack extends ModuleBase {
 
-	public static final HashMap<String,String> ORE_SECONDARIES = Maps.<String,String>newHashMap();
+	public static final HashMap<IOreEntry,String> ORE_SECONDARIES = Maps.<IOreEntry,String>newHashMap();
 
 	@Override
 	public String getName() {
@@ -52,7 +52,7 @@ public class ModuleFuturePack extends ModuleBase {
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			String value = config.get(Utils.to_under_score(entry.getOreName()), "futurePackSecondary", "minecraft:cobblestone@0x3").setRequiresMcRestart(true).getString();
-			ORE_SECONDARIES.put(entry.getOreName(), value);
+			ORE_SECONDARIES.put(entry, value);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class ModuleFuturePack extends ModuleBase {
 				for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
 					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
 							Utils.getOreStack("dust", entry, 12),
-							Utils.parseItemStack(ORE_SECONDARIES.get(entry.getOreName())),
+							Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
 							getExtraStack(entry)
 					}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
 				}
@@ -74,7 +74,7 @@ public class ModuleFuturePack extends ModuleBase {
 				for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
 					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
 							Utils.getOreStack("gem", entry, 12),
-							Utils.parseItemStack(ORE_SECONDARIES.get(entry.getOreName())),
+							Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
 							getExtraStack(entry)
 					}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
 				}
@@ -84,7 +84,7 @@ public class ModuleFuturePack extends ModuleBase {
 				for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
 					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
 							Utils.getOreStack("dust", entry, 10),
-							Utils.parseItemStack(ORE_SECONDARIES.get(entry.getOreName())),
+							Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
 							getExtraStack(entry)
 					}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
 				}
@@ -95,7 +95,7 @@ public class ModuleFuturePack extends ModuleBase {
 			}
 		}
 	}
-	
+
 	public static ItemStack getExtraStack(IOreEntry entry) {
 		switch(Utils.oreNameToType(entry.getExtra())) {
 		case GEM:

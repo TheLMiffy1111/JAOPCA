@@ -59,9 +59,9 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 
 	public static final ItemEntry ORE_CRUSHED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreCrushed", new ModelResourceLocation("jaopca:ore_crushed#inventory"));
 	public static final ItemEntry ORE_POWDERED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "orePowdered", new ModelResourceLocation("jaopca:ore_powdered#inventory"));
-	public static final ItemEntry ORE_SAND_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreSand", new ModelResourceLocation("jaopca:ore_sand#normal")).setBlockProperties(SAND_PROPERTIES);
+	public static final ItemEntry ORE_SAND_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreSand", new ModelResourceLocation("jaopca:ore_sand#normal")).setProperties(SAND_PROPERTIES);
 	//oreFine because oreDust may be used
-	public static final ItemEntry ORE_DUST_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreFine", new ModelResourceLocation("jaopca:ore_fine#normal")).setBlockProperties(DUST_PROPERTIES);
+	public static final ItemEntry ORE_DUST_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreFine", new ModelResourceLocation("jaopca:ore_fine#normal")).setProperties(DUST_PROPERTIES);
 
 	public static final ArrayList<String> EXISTING_ORES = Lists.<String>newArrayList();
 
@@ -75,7 +75,7 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 			"<itemStack oreDictionary=\"%s\" number=\"5\" />" +
 			"<itemStack oreDictionary=\"%s\" number=\"2\" chance=\"0.3\" />" +
 			"</output>" +
-			"</recipe>" + 
+			"</recipe>" +
 			"</recipeGroup>";
 
 	public static boolean add_smeltery_melting;
@@ -100,13 +100,13 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreCrushed")) {
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
+			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreCrushed"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);
 			}
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("orePowdered")) {
-			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct")) {
+			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("orePowdered"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);
 			}
 		}
@@ -201,7 +201,7 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 		catch(Exception e) {
 			add_smeltery_melting = false;
 		}
-		
+
 		try {
 			aa_crusher = ENOCompatibility.class.getField("aa_crusher").getBoolean(null);
 			mekanism_crusher = ENOCompatibility.class.getField("mekanism_crusher").getBoolean(null);

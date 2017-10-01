@@ -53,7 +53,7 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleSkyResources extends ModuleBase {
 
 	public static final ArrayList<String> BLACKLIST = Lists.<String>newArrayList(
-			"Iron", "Gold", "Copper", "Tin", "Silver", "Zinc", "Nickel", "Platinum", "Aluminum", "Lead", "Mercury", "Quartz", "Cobalt", "Ardite",
+			"Iron", "Gold", "Copper", "Tin", "Silver", "Zinc", "Nickel", "Platinum", "Aluminium", "Lead", "Mercury", "Quartz", "Cobalt", "Ardite",
 			"Adamantine", "Coldiron", "Osmium", "Lapis", "Draconium", "Certus"
 			);
 	public static final ArrayList<String> GEM_BLACKLIST = Lists.<String>newArrayList(
@@ -62,9 +62,6 @@ public class ModuleSkyResources extends ModuleBase {
 			"Citrine", "Indicolite", "Garnet", "Topaz", "Ametrine", "Tanzanite", "VioletSapphire", "Alexandrite", "BlueTopaz", "Spinel", "Iolite",
 			"BlackDiamond", "Chaos", "EnderEssence", "Quartz", "Lapis", "QuartzBlack", "CertusQuartz"
 			);
-
-	public static final HashMap<String,Integer> ORE_RARITYS = Maps.<String,Integer>newHashMap();
-	public static final HashMap<String,Float> ORE_GEM_RARITYS = Maps.<String,Float>newHashMap();
 
 	public static final FluidProperties DIRTY_CRYSTAL_FLUID_PROPERTIES = new FluidProperties().
 			setBlockFluidClass(BlockDirtyCrystalFluidBase.class);
@@ -75,9 +72,9 @@ public class ModuleSkyResources extends ModuleBase {
 			setBlockFluidClass(BlockMoltenCrystalFluidBase.class);
 
 	public static final ItemEntry CRYSTAL_SHARD_ENTRY = new ItemEntry(EnumEntryType.ITEM, "shardCrystal", "shardCrystal", new ModelResourceLocation("jaopca:shard_crystal#inventory"), BLACKLIST);
-	public static final ItemEntry DIRTY_CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "dirtyCrystalFluid", new ModelResourceLocation("jaopca:fluids/dirty_crystal_fluid#normal"), BLACKLIST).setFluidProperties(DIRTY_CRYSTAL_FLUID_PROPERTIES);
-	public static final ItemEntry CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "crystalFluid", new ModelResourceLocation("jaopca:fluids/crystal_fluid#normal"), BLACKLIST).setFluidProperties(CRYSTAL_FLUID_PROPERTIES);
-	public static final ItemEntry MOLTEN_CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "moltenCrystalFluid", new ModelResourceLocation("jaopca:fluids/molten_crystal_fluid#normal"), BLACKLIST).setFluidProperties(MOLTEN_CRYSTAL_FLUID_PROPERTIES);
+	public static final ItemEntry DIRTY_CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "dirtyCrystalFluid", new ModelResourceLocation("jaopca:fluids/dirty_crystal_fluid#normal"), BLACKLIST).setProperties(DIRTY_CRYSTAL_FLUID_PROPERTIES);
+	public static final ItemEntry CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "crystalFluid", new ModelResourceLocation("jaopca:fluids/crystal_fluid#normal"), BLACKLIST).setProperties(CRYSTAL_FLUID_PROPERTIES);
+	public static final ItemEntry MOLTEN_CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "moltenCrystalFluid", new ModelResourceLocation("jaopca:fluids/molten_crystal_fluid#normal"), BLACKLIST).setProperties(MOLTEN_CRYSTAL_FLUID_PROPERTIES);
 	public static final ItemEntry DIRTY_GEM_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dirtyGem", new ModelResourceLocation("jaopca:dirty_gem#inventory"), GEM_BLACKLIST).
 			setOreTypes(EnumOreType.GEM);
 
@@ -111,23 +108,13 @@ public class ModuleSkyResources extends ModuleBase {
 		return Lists.<ItemEntry>newArrayList(CRYSTAL_SHARD_ENTRY, DIRTY_CRYSTAL_FLUID_ENTRY, CRYSTAL_FLUID_ENTRY, MOLTEN_CRYSTAL_FLUID_ENTRY, DIRTY_GEM_ENTRY);
 	}
 
-	@Override
-	public void registerConfigs(Configuration config) {
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyGem")) {
-			ORE_GEM_RARITYS.put(entry.getOreName(), (float)config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesRarity", 0.006D).setRequiresMcRestart(true).getDouble());
-		}
-		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			ORE_RARITYS.put(entry.getOreName(), config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesRarity", 6).setRequiresMcRestart(true).getInt());
-		}
-	}
-
 	//WHY
 	@Override
 	public void postInit() {
 		boolean easy = ConfigOptions.easyMode;
 		//Many things are hardcoded and has no custom recipes
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyCrystalFluid")) {
-			int rarity = ORE_RARITYS.get(entry.getOreName());
+			int rarity = Utils.rarityI(entry, 6D);
 			Fluid dcfluid = JAOPCAApi.FLUIDS_TABLE.get("dirtyCrystalFluid", entry.getOreName());
 			ModFluids.addCrystalFluid(StringUtils.uncapitalize(entry.getOreName()), -1, rarity, FluidRegisterInfo.CrystalFluidType.NORMAL);
 			ModFluids.dirtyCrystalFluids.add(dcfluid);
@@ -144,7 +131,7 @@ public class ModuleSkyResources extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("moltenCrystalFluid")) {
-			int rarity = ORE_RARITYS.get(entry.getOreName());
+			int rarity = Utils.rarityI(entry, 6D);
 			Fluid mcfluid = JAOPCAApi.FLUIDS_TABLE.get("moltenCrystalFluid", entry.getOreName());
 			ModFluids.addCrystalFluid(StringUtils.uncapitalize(entry.getOreName()), -1, rarity, FluidRegisterInfo.CrystalFluidType.MOLTEN);
 			ModFluids.moltenCrystalFluids.add(mcfluid);
@@ -164,14 +151,14 @@ public class ModuleSkyResources extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyGem")) {
-			float rarity = ORE_GEM_RARITYS.get(entry.getOreName());
+			float rarity = Utils.rarityReciprocalF(entry, 0.006D);
 			RockGrinderRecipes.addRecipe(Utils.getOreStack("dirtyGem", entry, 1), false, Blocks.STONE.getDefaultState(), rarity*(easy?1.5F:1F));
 			//same thing right
 			CauldronCleanRecipes.addRecipe(Utils.getOreStack("gem", entry, 1), 1F, Utils.getOreStack("dirtyGem", entry, 1));
 		}
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			int rarity = ORE_RARITYS.get(entry.getOreName());
+			int rarity = Utils.rarityI(entry, 6D);
 			ItemStack dust = Utils.getOreStack("dust", entry, 1);
 
 			if(dust != null) {
@@ -203,8 +190,9 @@ public class ModuleSkyResources extends ModuleBase {
 		}
 
 		//use forge's code here to flow while not trying to spawn items
+		@Override
 		public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-			int rarity = ORE_RARITYS.get(oreEntry.getOreName());
+			int rarity = Utils.rarityI(oreEntry, 6D);
 			do {
 				if(!isSourceBlock(world, pos) && ForgeEventFactory.canCreateFluidSource(world, pos, state, false)) {
 					int adjacentSourceBlocks =
@@ -293,7 +281,7 @@ public class ModuleSkyResources extends ModuleBase {
 			Entity entity = new EntityItem(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, stack);
 			world.spawnEntity(entity);
 			world.playSound(null, pos, SoundEvents.ENTITY_ARROW_HIT_PLAYER, SoundCategory.BLOCKS, 1.0F, 2.2F/(rand.nextFloat()*0.2F + 0.9F));
-			if(rand.nextInt((rarity/2)+8) >= 8) {
+			if(rand.nextInt(rarity/2+8) >= 8) {
 				world.setBlockToAir(pos);
 			}
 		}

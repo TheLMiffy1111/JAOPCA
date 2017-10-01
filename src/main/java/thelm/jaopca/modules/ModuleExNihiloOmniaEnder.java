@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.compatibility.ENOCompatibility;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
@@ -21,7 +20,7 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleExNihiloOmniaEnder extends ModuleBase {
 
 	public static final ItemEntry ORE_ENDER_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreEnderBroken", new ModelResourceLocation("jaopca:ore_ender_broken#inventory"));
-	public static final ItemEntry ORE_ENDER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreEnderGravel", new ModelResourceLocation("jaopca:ore_ender_gravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
+	public static final ItemEntry ORE_ENDER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreEnderGravel", new ModelResourceLocation("jaopca:ore_ender_gravel#normal")).setProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
 
 	@Override
 	public String getName() {
@@ -45,7 +44,7 @@ public class ModuleExNihiloOmniaEnder extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreEnderBroken")) {
-			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.GRAVEL_ENDER, Utils.getOreStack("oreEnderBroken", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
+			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.GRAVEL_ENDER, Utils.getOreStack("oreEnderBroken", entry, 1), Utils.rarityReciprocalI(entry, 15D)+2);
 
 			if(ModuleExNihiloOmnia.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreEnderBroken"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);
@@ -71,11 +70,11 @@ public class ModuleExNihiloOmniaEnder extends ModuleBase {
 			if(ModuleExNihiloOmnia.aa_crusher && Loader.isModLoaded("actuallyadditions")) {
 				ModuleExNihiloOmnia.addActuallyAdditionsCrusherRecipe(Utils.getOreStack("oreEnderGravel", entry, 1), Utils.getOreStack("oreCrushed", entry, 5), Utils.	getOreStack("oreCrushed", entry, 2), 30);
 			}
-			
+
 			if(ModuleExNihiloOmnia.mekanism_crusher && Loader.isModLoaded("Mekanism")) {
 				ModuleMekanism.addCrusherRecipe(Utils.getOreStack("oreEnderGravel", entry, 1), Utils.getOreStack("oreCrushed", entry, 6));
 			}
-			
+
 			if(ModuleExNihiloOmnia.sag_mill && Loader.isModLoaded("EnderIO")) {
 				ModuleExNihiloOmnia.addOreSAGMillRecipe("oreEnderGravel"+entry.getOreName(), "oreCrushed"+entry.getOreName());
 			}

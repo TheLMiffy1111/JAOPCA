@@ -38,19 +38,19 @@ public class ConfigHandler {
 	private static void initCompat() {
 		List<String> blacklist = Arrays.<String>asList(getStringArray("compat", "blacklist", new String[0]));
 		ArrayList<ICompat> toRemove = Lists.<ICompat>newArrayList();
-		
+
 		for(ICompat compat : OreDictInitApi.ORE_DICT_COMPAT_LIST) {
 			if(blacklist.contains(compat.getName())) {
 				toRemove.add(compat);
 			}
 		}
-		
+
 		OreDictInitApi.ORE_DICT_COMPAT_LIST.removeAll(toRemove);
 
 		if(configFile.hasChanged())
 			configFile.save();
 	}
-	
+
 	private static String[] getStringArray(String category, String name, String[] def) {
 		return configFile.get(category, name, def).setRequiresMcRestart(true).getStringList();
 	}

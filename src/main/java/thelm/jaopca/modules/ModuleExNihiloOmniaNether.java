@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.compatibility.ENOCompatibility;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
@@ -21,7 +20,7 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleExNihiloOmniaNether extends ModuleBase {
 
 	public static final ItemEntry ORE_NETHER_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreNetherBroken", new ModelResourceLocation("jaopca:ore_nether_broken#inventory"));
-	public static final ItemEntry ORE_NETHER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreNetherGravel", new ModelResourceLocation("jaopca:ore_nether_gravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
+	public static final ItemEntry ORE_NETHER_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreNetherGravel", new ModelResourceLocation("jaopca:ore_nether_gravel#normal")).setProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
 
 	@Override
 	public String getName() {
@@ -45,7 +44,7 @@ public class ModuleExNihiloOmniaNether extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreNetherBroken")) {
-			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.GRAVEL_NETHER, Utils.getOreStack("oreNetherBroken", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
+			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.GRAVEL_NETHER, Utils.getOreStack("oreNetherBroken", entry, 1), Utils.rarityReciprocalI(entry, 15D)+2);
 
 			if(ModuleExNihiloOmnia.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreNetherBroken"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);

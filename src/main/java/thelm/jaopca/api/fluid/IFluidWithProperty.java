@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import thelm.jaopca.api.IObjectWithProperty;
 
 public interface IFluidWithProperty extends IObjectWithProperty {
-	
+
 	IFluidWithProperty setLuminosity(int luminosity);
 	IFluidWithProperty setTemperature(int temperature);
 	IFluidWithProperty setDensity(int density);

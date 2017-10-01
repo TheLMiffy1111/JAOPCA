@@ -21,6 +21,15 @@ public class OreFinder {
 	public static final HashMap<String, String> DEFAULT_EXTRAS = Maps.<String, String>newHashMap();
 	public static final HashMap<String, String> DEFAULT_SECOND_EXTRAS = Maps.<String, String>newHashMap();
 	public static final HashMap<String, Double> DEFAULT_ENERGY_MODIFIERS = Maps.<String, Double>newHashMap();
+	public static final ArrayList<String> NAMING_NONSENSE = Lists.<String>newArrayList(
+			"Aluminum",
+			"Sulphur",
+			"Chrome",
+			"Cesium",
+			"Wolfram", "Wolframium",
+
+			"Brick"
+			);
 	public static final ArrayList<String> SHOULD_BE_GEMS = Lists.<String>newArrayList(
 			"Coal", "Lapis", "Diamond", "Emerald", "Quartz"
 			);
@@ -31,7 +40,7 @@ public class OreFinder {
 	static {
 		DEFAULT_EXTRAS.put("Cobalt", "Iron");
 		DEFAULT_EXTRAS.put("Ardite", "Gold");
-		DEFAULT_EXTRAS.put("Aluminum", "Iron");
+		DEFAULT_EXTRAS.put("Aluminium", "Iron");
 		DEFAULT_EXTRAS.put("Copper", "Gold");
 		DEFAULT_EXTRAS.put("Tin", "Iron");
 		DEFAULT_EXTRAS.put("Lead", "Silver");
@@ -55,7 +64,12 @@ public class OreFinder {
 		ingotOres.removeAll(SHOULD_BE_DUSTS);
 		allOres.addAll(ingotOres);
 		if(JAOPCAConfig.ingot) {
-			for(String name : ingotOres) {
+			main:for(String name : ingotOres) {
+				for(String nonsense : NAMING_NONSENSE) {
+					if(name.contains(nonsense)) {
+						continue main;
+					}
+				}
 				OreEntry entry = new OreEntry(name);
 				if(DEFAULT_EXTRAS.containsKey(name) && Utils.doesOreNameExist("ore"+DEFAULT_EXTRAS.get(name))) {
 					entry.setExtra(DEFAULT_EXTRAS.get(name));
@@ -76,7 +90,12 @@ public class OreFinder {
 		gemOres.removeAll(allOres);
 		allOres.addAll(gemOres);
 		if(JAOPCAConfig.gem) {
-			for(String name : gemOres) {
+			main:for(String name : gemOres) {
+				for(String nonsense : NAMING_NONSENSE) {
+					if(name.contains(nonsense)) {
+						continue main;
+					}
+				}
 				OreEntry entry = new OreEntry(name);
 				entry.setOreType(EnumOreType.GEM);
 				if(DEFAULT_EXTRAS.containsKey(name) && Utils.doesOreNameExist("ore"+DEFAULT_EXTRAS.get(name))) {
@@ -97,7 +116,12 @@ public class OreFinder {
 		dustOres.removeAll(allOres);
 		allOres.addAll(dustOres);
 		if(JAOPCAConfig.dust) {
-			for(String name : dustOres) {
+			main:for(String name : dustOres) {
+				for(String nonsense : NAMING_NONSENSE) {
+					if(name.contains(nonsense)) {
+						continue main;
+					}
+				}
 				OreEntry entry = new OreEntry(name);
 				entry.setOreType(EnumOreType.DUST);
 				if(DEFAULT_EXTRAS.containsKey(name) && Utils.doesOreNameExist("ore"+DEFAULT_EXTRAS.get(name))) {
@@ -119,9 +143,11 @@ public class OreFinder {
 		ingotNoOres.removeAll(allOres);
 		allOres.addAll(ingotNoOres);
 		if(JAOPCAConfig.ingot_oreless) {
-			for(String name : ingotNoOres) {
-				if(name.contains("Brick")) {
-					continue;
+			main:for(String name : ingotNoOres) {
+				for(String nonsense : NAMING_NONSENSE) {
+					if(name.contains(nonsense)) {
+						continue main;
+					}
 				}
 				OreEntry entry = new OreEntry(name);
 				entry.setOreType(EnumOreType.INGOT_ORELESS);
@@ -137,7 +163,12 @@ public class OreFinder {
 		gemNoOres.removeAll(allOres);
 		allOres.addAll(gemNoOres);
 		if(JAOPCAConfig.gem_oreless) {
-			for(String name : gemNoOres) {
+			main:for(String name : gemNoOres) {
+				for(String nonsense : NAMING_NONSENSE) {
+					if(name.contains(nonsense)) {
+						continue main;
+					}
+				}
 				OreEntry entry = new OreEntry(name);
 				entry.setOreType(EnumOreType.GEM_ORELESS);
 				if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {

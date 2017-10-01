@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.EnumOreType;
@@ -28,6 +29,13 @@ public class ModuleStick extends ModuleBase {
 	@Override
 	public List<ItemEntry> getItemRequests() {
 		return Lists.<ItemEntry>newArrayList(STICK_ENTRY);
+	}
+
+	@Override
+	public void preInit() {
+		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("stick")) {
+			OreDictionary.registerOre("rod"+entry.getOreName(), Utils.getOreStack("stick", entry, 1));
+		}
 	}
 
 	@Override

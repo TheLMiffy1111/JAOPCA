@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import exnihiloomnia.blocks.ENOBlocks;
-import exnihiloomnia.compatibility.ENOCompatibility;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -22,7 +21,7 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleExNihiloOmniaOverworld extends ModuleBase {
 
 	public static final ItemEntry ORE_BROKEN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "oreBroken", new ModelResourceLocation("jaopca:ore_broken#inventory"));
-	public static final ItemEntry ORE_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreGravel", new ModelResourceLocation("jaopca:ore_gravel#normal")).setBlockProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
+	public static final ItemEntry ORE_GRAVEL_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "oreGravel", new ModelResourceLocation("jaopca:ore_gravel#normal")).setProperties(ModuleExNihiloOmnia.GRAVEL_PROPERTIES);
 
 	@Override
 	public String getName() {
@@ -46,10 +45,10 @@ public class ModuleExNihiloOmniaOverworld extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreBroken")) {
-			ModuleExNihiloOmnia.addOreSieveRecipe(Blocks.GRAVEL, Utils.getOreStack("oreBroken", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
+			ModuleExNihiloOmnia.addOreSieveRecipe(Blocks.GRAVEL, Utils.getOreStack("oreBroken", entry, 1), Utils.rarityReciprocalI(entry, 15D)+2);
 			//Should exist
-			ModuleExNihiloOmnia.addOreSieveRecipe(Blocks.SAND, Utils.getOreStack("oreCrushed", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
-			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.DUST, Utils.getOreStack("orePowdered", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
+			ModuleExNihiloOmnia.addOreSieveRecipe(Blocks.SAND, Utils.getOreStack("oreCrushed", entry, 1), Utils.rarityReciprocalI(entry, 15D)+2);
+			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.DUST, Utils.getOreStack("orePowdered", entry, 1), Utils.rarityReciprocalI(entry, 15D)+2);
 
 			if(ModuleExNihiloOmnia.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreBroken"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);

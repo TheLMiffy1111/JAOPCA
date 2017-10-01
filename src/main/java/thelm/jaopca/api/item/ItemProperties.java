@@ -1,12 +1,14 @@
 package thelm.jaopca.api.item;
 
 import net.minecraft.item.EnumRarity;
+import thelm.jaopca.api.EnumEntryType;
+import thelm.jaopca.api.IProperties;
 
 /**
- * 
+ *
  * @author TheLMiffy1111
  */
-public class ItemProperties {
+public class ItemProperties implements IProperties {
 
 	/**
 	 * The default ItemProperties. DO NOT CALL ANY METHODS ON THIS FIELD.
@@ -17,6 +19,11 @@ public class ItemProperties {
 	public boolean full3D = false;
 	public EnumRarity rarity = EnumRarity.COMMON;
 	public Class<? extends IItemWithProperty> itemClass = ItemBase.class;
+
+	@Override
+	public EnumEntryType getType() {
+		return EnumEntryType.ITEM;
+	}
 
 	public ItemProperties setMaxStackSize(int value) {
 		maxStkSize = value;

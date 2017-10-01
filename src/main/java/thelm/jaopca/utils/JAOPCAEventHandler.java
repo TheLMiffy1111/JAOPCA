@@ -30,12 +30,12 @@ public class JAOPCAEventHandler {
 		OreFinder.findOres();
 		RegistryCore.preInit();
 	}
-	
+
 	@SubscribeEvent
 	public void onInitWrapUp(InitializationWrapUpEvent.Event2 event) {
 		RegistryCore.init();
 	}
-	
+
 	@SubscribeEvent
 	public void onPostInitWrapUp(PostInitializationWrapUpEvent.Event2 event) {
 		RegistryCore.postInit();

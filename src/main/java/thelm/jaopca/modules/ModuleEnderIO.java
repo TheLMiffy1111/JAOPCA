@@ -17,7 +17,7 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleEnderIO extends ModuleBase {
 
 	public static final String XML_MESSAGE = "" +
-			"<recipeGroup name=\"JAOPCA_EIO\">" + 
+			"<recipeGroup name=\"JAOPCA_EIO\">" +
 			"<recipe name=\"%sOre\" energyCost=\"%d\">" +
 			"<input>" +
 			"<itemStack oreDictionary=\"ore%s\" />" +
@@ -27,7 +27,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"<itemStack oreDictionary=\"%s\" number=\"1\" chance=\"0.1\" />" +
 			"<itemStack %s />" +
 			"</output>" +
-			"</recipe>" + 
+			"</recipe>" +
 			"</recipeGroup>";
 
 	public static final String XML_MESSAGE_1 = "" +
@@ -43,7 +43,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"</recipe>" +
 			"</recipeGroup>";
 
-	public static final HashMap<String,String> ORE_SECONDARIES = Maps.<String,String>newHashMap();
+	public static final HashMap<IOreEntry,String> ORE_SECONDARIES = Maps.<IOreEntry,String>newHashMap();
 
 	@Override
 	public String getName() {
@@ -66,14 +66,14 @@ public class ModuleEnderIO extends ModuleBase {
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			String value = config.get(Utils.to_under_score(entry.getOreName()), "enderIOSecondaryXml", "modID=\"minecraft\" itemName=\"cobblestone\" number=\"1\" chance=\"0.15\"").setRequiresMcRestart(true).getString();
-			ORE_SECONDARIES.put(entry.getOreName(), value);
+			ORE_SECONDARIES.put(entry, value);
 		}
 	}
 
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			addSAGMillRecipes(entry, Utils.energyI(entry, 3600), ORE_SECONDARIES.get(entry.getOreName()));
+			addSAGMillRecipes(entry, Utils.energyI(entry, 3600), ORE_SECONDARIES.get(entry));
 		}
 	}
 

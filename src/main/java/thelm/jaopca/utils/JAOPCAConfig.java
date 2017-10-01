@@ -28,6 +28,9 @@ public class JAOPCAConfig {
 	public static boolean gem_oreless;
 	public static boolean reloadColors;
 
+	public static final ArrayList<String> FRONT_MOD_IDS = Lists.<String>newArrayList("minecraft");
+	public static final ArrayList<String> BACK_MOD_IDS = Lists.<String>newArrayList("exnihiloomnia", "exnihiloadscensio", "jaopca");
+
 	public static void init(File file) {
 		configFile = new Configuration(file);
 		initModConfigs();
@@ -37,13 +40,14 @@ public class JAOPCAConfig {
 		String name = "jaopca";
 
 		Utils.MOD_IDS.addAll(Arrays.asList(configFile.get(name, "orePreference", new String[0]).setRequiresMcRestart(true).getStringList()));
-
+		Utils.MOD_IDS.addAll(FRONT_MOD_IDS);
 		for(ModContainer mod : Loader.instance().getActiveModList()) {
 			String modId = mod.getModId();
-			if(!Utils.MOD_IDS.contains(modId)) {
+			if(!Utils.MOD_IDS.contains(modId) && !BACK_MOD_IDS.contains(modId)) {
 				Utils.MOD_IDS.add(modId);
 			}
 		}
+		Utils.MOD_IDS.addAll(BACK_MOD_IDS);
 
 		moduleBlacklist.addAll(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
 
@@ -101,6 +105,7 @@ public class JAOPCAConfig {
 			}
 
 			entry.setEnergyModifier(configFile.get(name, "energyModifier", entry.getEnergyModifier()).setRequiresMcRestart(true).getDouble());
+			entry.setRarity(configFile.get(name, "rarity", entry.getRarity()).setRequiresMcRestart(true).getDouble());
 			entry.addBlacklistedModules(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
 
 			usedCategories.add(name);

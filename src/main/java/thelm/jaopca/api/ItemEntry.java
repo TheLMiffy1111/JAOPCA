@@ -15,7 +15,7 @@ import thelm.jaopca.api.fluid.FluidProperties;
 import thelm.jaopca.api.item.ItemProperties;
 
 /**
- * 
+ *
  * @author TheLMiffy1111
  */
 public class ItemEntry implements IItemRequest {
@@ -28,9 +28,7 @@ public class ItemEntry implements IItemRequest {
 	public final LinkedHashSet<String> blacklist = Sets.<String>newLinkedHashSet();
 	public final ArrayList<ModuleBase> moduleList = Lists.<ModuleBase>newArrayList();
 
-	public ItemProperties itemProperties = ItemProperties.DEFAULT;
-	public BlockProperties blockProperties = BlockProperties.DEFAULT;
-	public FluidProperties fluidProperties = FluidProperties.DEFAULT;
+	public IProperties properties;
 
 	public boolean skipWhenGrouped = false;
 
@@ -39,6 +37,7 @@ public class ItemEntry implements IItemRequest {
 		this.name = name;
 		this.prefix = oreDictPrefix;
 		this.itemModelLocation = itemModelLocation;
+		this.properties = type.defaultPpt;
 	}
 
 	public ItemEntry(EnumEntryType type, String name, String oreDictPrefix, ModelResourceLocation itemModelLocation, Collection<String> blacklist) {
@@ -54,26 +53,34 @@ public class ItemEntry implements IItemRequest {
 		this(type,name,name,itemModelLocation,blacklist);
 	}
 
-	public ItemEntry setBlockProperties(BlockProperties properties) {
-		blockProperties = properties;
-		return this;
+	@Deprecated
+	public ItemEntry setBlockProperties(BlockProperties blockProperties) {
+		return setProperties(blockProperties);
 	}
 
+	@Deprecated
 	public ItemEntry setItemProperties(ItemProperties itemProperties) {
-		this.itemProperties = itemProperties;
-		return this;
+		return setProperties(itemProperties);
 	}
 
+	@Deprecated
 	public ItemEntry setFluidProperties(FluidProperties fluidProperties) {
-		this.fluidProperties = fluidProperties;
-		return this;
+		return setProperties(fluidProperties);
 	}
 	
+	public ItemEntry setProperties(IProperties properties) {
+		if(properties.getType() != this.type) {
+			throw new IllegalArgumentException("property type and entry type do not match");
+		}
+		this.properties = properties;
+		return this;
+	}
+
 	public ItemEntry setOreTypes(EnumOreType... types) {
 		oreTypes = EnumSet.<EnumOreType>copyOf(Arrays.asList(types));
 		return this;
 	}
-	
+
 	public ItemEntry skipWhenGrouped(boolean does) {
 		skipWhenGrouped = does;
 		return this;
