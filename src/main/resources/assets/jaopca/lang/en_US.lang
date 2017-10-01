@@ -36,8 +36,8 @@ tile.jaopca.oreSand.name=%s Ore Sand
 tile.jaopca.oreFine.name=%s Ore Dust
 
 #ExNihiloAdscensio
-item.jaopca.orePiece.name=%s Ore Piece
-item.jaopca.oreChunk.name=%s Ore Chunk
+item.jaopca.piece.name=%s Ore Piece
+item.jaopca.hunk.name=%s Ore Chunk
 
 #AbyssalCraft
 item.jaopca.crystalFragment.name=Crystallized %s Fragment
@@ -64,7 +64,7 @@ jaopca.entry.Lapis=Lapis Lazuli
 #Dusts
 
 #IngotNoOres
-jaopca.entry.Aluminumbrass=Aluminum Brass
+jaopca.entry.Aluminiumbrass=Aluminium Brass
 jaopca.entry.ElvenElementium=Elementium
 jaocpa.entry.Galvanizedsteel=Galvanized Steel
 jaopca.entry.Stainlesssteel=Stainless Steel

@@ -1,7 +1,7 @@
 /*
  * Java Color Thief
  * by Sven Woltmann, Fonpit AG
- * 
+ *
  * http://www.androidpit.com
  * http://www.androidpit.de
  *
@@ -83,12 +83,12 @@ public class ColorThief
 
 	/**
 	 * Use the median cut algorithm to cluster similar colors.
-	 * 
+	 *
 	 * @param sourceImage
 	 *            the source image
 	 * @param colorCount
 	 *            the size of the palette; the number of colors returned
-	 * 
+	 *
 	 * @return the palette as array of RGB arrays
 	 */
 	public static int[][] getPalette(BufferedImage sourceImage, int colorCount)
@@ -103,7 +103,7 @@ public class ColorThief
 
 	/**
 	 * Use the median cut algorithm to cluster similar colors.
-	 * 
+	 *
 	 * @param sourceImage
 	 *            the source image
 	 * @param colorCount
@@ -115,7 +115,7 @@ public class ColorThief
 	 *            likelihood that colors will be missed.
 	 * @param ignoreWhite
 	 *            if <code>true</code>, white pixels are ignored
-	 * 
+	 *
 	 * @return the palette as array of RGB arrays
 	 */
 	public static int[][] getPalette(
@@ -134,12 +134,12 @@ public class ColorThief
 
 	/**
 	 * Use the median cut algorithm to cluster similar colors.
-	 * 
+	 *
 	 * @param sourceImage
 	 *            the source image
 	 * @param colorCount
 	 *            the size of the palette; the number of colors returned
-	 * 
+	 *
 	 * @return the color map
 	 */
 	public static CMap getColorMap(BufferedImage sourceImage, int colorCount)
@@ -153,7 +153,7 @@ public class ColorThief
 
 	/**
 	 * Use the median cut algorithm to cluster similar colors.
-	 * 
+	 *
 	 * @param sourceImage
 	 *            the source image
 	 * @param colorCount
@@ -165,7 +165,7 @@ public class ColorThief
 	 *            likelihood that colors will be missed.
 	 * @param ignoreWhite
 	 *            if <code>true</code>, white pixels are ignored
-	 * 
+	 *
 	 * @return the color map
 	 */
 	public static CMap getColorMap(
@@ -196,7 +196,7 @@ public class ColorThief
 	/**
 	 * Gets the image's pixels via BufferedImage.getRaster().getDataBuffer().
 	 * Fast, but doesn't work for all color models.
-	 * 
+	 *
 	 * @param sourceImage
 	 *            the source image
 	 * @param quality
@@ -206,7 +206,7 @@ public class ColorThief
 	 *            likelihood that colors will be missed.
 	 * @param ignoreWhite
 	 *            if <code>true</code>, white pixels are ignored
-	 * 
+	 *
 	 * @return an array of pixels (each an RGB int array)
 	 */
 	private static int[][] getPixelsFast(
@@ -304,7 +304,7 @@ public class ColorThief
 	/**
 	 * Gets the image's pixels via BufferedImage.getRGB(..). Slow, but the fast
 	 * method doesn't work for all color models.
-	 * 
+	 *
 	 * @param sourceImage
 	 *            the source image
 	 * @param quality
@@ -314,7 +314,7 @@ public class ColorThief
 	 *            likelihood that colors will be missed.
 	 * @param ignoreWhite
 	 *            if <code>true</code>, white pixels are ignored
-	 * 
+	 *
 	 * @return an array of pixels (each an RGB int array)
 	 */
 	private static int[][] getPixelsSlow(
@@ -342,14 +342,14 @@ public class ColorThief
 			int col = i % width;
 			int rgb = sourceImage.getRGB(col, row);
 
-			r = (rgb >> 16) & 0xFF;
-			g = (rgb >> 8) & 0xFF;
-			b = (rgb) & 0xFF;
-			if (!(ignoreWhite && r > 250 && r > 250 && r > 250))
-			{
-				res[numUsedPixels] = new int[] {r, g, b};
-				numUsedPixels++;
-			}
+			r = rgb >> 16 & 0xFF;
+		g = rgb >> 8 & 0xFF;
+		b = rgb & 0xFF;
+		if (!(ignoreWhite && r > 250 && r > 250 && r > 250))
+		{
+			res[numUsedPixels] = new int[] {r, g, b};
+			numUsedPixels++;
+		}
 		}
 
 		return Arrays.copyOfRange(res, 0, numUsedPixels);

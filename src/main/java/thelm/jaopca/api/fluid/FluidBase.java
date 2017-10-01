@@ -9,7 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.utils.Utils;
-import thelm.jaopca.modules.ModuleMolten;
 
 public class FluidBase extends Fluid implements IFluidWithProperty {
 
@@ -17,7 +16,7 @@ public class FluidBase extends Fluid implements IFluidWithProperty {
 	public final ItemEntry itemEntry;
 
 	public FluidBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-		super((itemEntry==ModuleMolten.MOLTEN_ENTRY?"":Utils.to_under_score(itemEntry.name)+"_")+Utils.to_under_score(oreEntry.getOreName()), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_still"), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_flowing"));
+		super((itemEntry.name.equals("molten")?"":itemEntry.name+"_")+Utils.to_under_score(oreEntry.getOreName()), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_still"), new ResourceLocation("jaopca:fluids/"+Utils.to_under_score(itemEntry.prefix)+"_flowing"));
 		this.setUnlocalizedName("jaopca."+itemEntry.name);
 		this.oreEntry = oreEntry;
 		this.itemEntry = itemEntry;
@@ -91,7 +90,7 @@ public class FluidBase extends Fluid implements IFluidWithProperty {
 
 	@Override
 	public int getColor() {
-		return (oreEntry.getColor()&0xFFFFFF) | (opacity<<24);
+		return oreEntry.getColor()&0xFFFFFF | opacity<<24;
 	}
 
 	@Override

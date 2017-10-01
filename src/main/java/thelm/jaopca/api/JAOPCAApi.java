@@ -17,7 +17,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import thelm.oredictinit.api.ICompat;
 
 /**
  * Contains all lists and maps used by this mod (and other stuff)

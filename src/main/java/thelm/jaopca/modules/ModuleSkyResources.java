@@ -36,8 +36,8 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleSkyResources extends ModuleBase {
 
 	public static final ArrayList<String> BLACKLIST = Lists.<String>newArrayList(
-			"Iron", "Gold", "Copper", "Tin", "Silver", "Zinc", "Nickel", "Platinum", "Aluminum", "Lead", "Mercury", "Quartz", "Cobalt", "Ardite", "Osmium",
-			"Lapis", "Draconium", "CertusQuartz", "Titanium", "Tungsten", "Chrome", "Iridium", "QuartzBlack", "Boron", "Lithium", "Magnesium", "Mithril"
+			"Iron", "Gold", "Copper", "Tin", "Silver", "Zinc", "Nickel", "Platinum", "Aluminium", "Lead", "Mercury", "Quartz", "Cobalt", "Ardite", "Osmium",
+			"Lapis", "Draconium", "CertusQuartz", "Titanium", "Tungsten", "Chromium", "Iridium", "QuartzBlack", "Boron", "Lithium", "Magnesium", "Mithril"
 			);
 	public static final ArrayList<String> GEM_BLACKLIST = Lists.<String>newArrayList(
 			"Emerald", "Diamond", "Ruby", "Sapphire", "Peridot", "RedGarnet", "YellowGarnet", "Apatite", "Amber", "Lepidolite", "Malachite", "Onyx", "Moldavite",
@@ -46,9 +46,6 @@ public class ModuleSkyResources extends ModuleBase {
 			"Iolite", "BlackDiamond", "Chaos", "EnderEssence", "Dark", "Quartz", "Lapis", "QuartzBlack", "CertusQuartz"
 			);
 
-	public static final HashMap<String,Integer> ORE_RARITYS = Maps.<String,Integer>newHashMap();
-	public static final HashMap<String,Float> ORE_GEM_RARITYS = Maps.<String,Float>newHashMap();
-
 	public static final FluidProperties CRYSTAL_FLUID_PROPERTIES = new FluidProperties().
 			setBlockFluidClass(BlockCrystalFluidBase.class);
 	public static final FluidProperties MOLTEN_CRYSTAL_FLUID_PROPERTIES = new FluidProperties().
@@ -56,8 +53,8 @@ public class ModuleSkyResources extends ModuleBase {
 			setBlockFluidClass(BlockCrystalFluidBase.class);
 
 	public static final ItemEntry CRYSTAL_SHARD_ENTRY = new ItemEntry(EnumEntryType.ITEM, "shardCrystal", "shardCrystal", new ModelResourceLocation("jaopca:shard_crystal#inventory"), BLACKLIST);
-	public static final ItemEntry CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "crystalFluid", new ModelResourceLocation("jaopca:fluids/crystal_fluid#normal"), BLACKLIST).setFluidProperties(CRYSTAL_FLUID_PROPERTIES);
-	public static final ItemEntry MOLTEN_CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "moltenCrystalFluid", new ModelResourceLocation("jaopca:fluids/molten_crystal_fluid#normal"), BLACKLIST).setFluidProperties(MOLTEN_CRYSTAL_FLUID_PROPERTIES);
+	public static final ItemEntry CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "crystalFluid", new ModelResourceLocation("jaopca:fluids/crystal_fluid#normal"), BLACKLIST).setProperties(CRYSTAL_FLUID_PROPERTIES);
+	public static final ItemEntry MOLTEN_CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "moltenCrystalFluid", new ModelResourceLocation("jaopca:fluids/molten_crystal_fluid#normal"), BLACKLIST).setProperties(MOLTEN_CRYSTAL_FLUID_PROPERTIES);
 	public static final ItemEntry DIRTY_GEM_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dirtyGem", new ModelResourceLocation("jaopca:dirty_gem#inventory"), GEM_BLACKLIST).
 			setOreTypes(EnumOreType.GEM);
 
@@ -90,21 +87,11 @@ public class ModuleSkyResources extends ModuleBase {
 		return Lists.<ItemEntry>newArrayList(CRYSTAL_SHARD_ENTRY, CRYSTAL_FLUID_ENTRY, MOLTEN_CRYSTAL_FLUID_ENTRY, DIRTY_GEM_ENTRY);
 	}
 
-	@Override
-	public void registerConfigs(Configuration config) {
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyGem")) {
-			ORE_GEM_RARITYS.put(entry.getOreName(), (float)config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesRarity", 0.006D).setRequiresMcRestart(true).getDouble());
-		}
-		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			ORE_RARITYS.put(entry.getOreName(), config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesRarity", 6).setRequiresMcRestart(true).getInt());
-		}
-	}
-
 	//WHY
 	@Override
 	public void postInit() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crystalFluid")) {
-			int rarity = ORE_RARITYS.get(entry.getOreName());
+			int rarity = Utils.rarityI(entry, 6D);
 			Fluid fluid = JAOPCAApi.FLUIDS_TABLE.get("crystalFluid", entry.getOreName());
 			ModFluids.addCrystalFluid(StringUtils.uncapitalize(entry.getOreName()), -1, rarity, FluidRegisterInfo.CrystalFluidType.NORMAL);
 			ModFluids.crystalFluids.add(fluid);
@@ -114,7 +101,7 @@ public class ModuleSkyResources extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("moltenCrystalFluid")) {
-			int rarity = ORE_RARITYS.get(entry.getOreName());
+			int rarity = Utils.rarityI(entry, 6D);
 			Fluid fluid = JAOPCAApi.FLUIDS_TABLE.get("moltenCrystalFluid", entry.getOreName());
 			ModFluids.addCrystalFluid(StringUtils.uncapitalize(entry.getOreName()), -1, rarity, FluidRegisterInfo.CrystalFluidType.MOLTEN);
 			ModFluids.crystalFluids.add(fluid);
@@ -124,14 +111,14 @@ public class ModuleSkyResources extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyGem")) {
-			float rarity = ORE_GEM_RARITYS.get(entry.getOreName());
+			float rarity = Utils.rarityReciprocalF(entry, 0.006D);
 			ProcessRecipeManager.rockGrinderRecipes.addRecipe(Utils.getOreStack("dirtyGem", entry, 1), rarity, Blocks.STONE.getDefaultState());
 			//same thing right
 			ProcessRecipeManager.cauldronCleanRecipes.addRecipe(Utils.getOreStack("gem", entry, 1), 1F, Utils.getOreStack("dirtyGem", entry, 1));
 		}
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			int rarity = ORE_RARITYS.get(entry.getOreName());
+			int rarity = Utils.rarityI(entry, 6D);
 			ItemStack dust = Utils.getOreStack("dust", entry, 1);
 
 			if(!dust.isEmpty()) {

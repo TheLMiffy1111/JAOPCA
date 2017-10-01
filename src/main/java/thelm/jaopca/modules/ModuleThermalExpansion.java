@@ -37,7 +37,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 	@Override
 	public List<String> getOreBlacklist() {
 		return Lists.newArrayList(
-				"Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Aluminum", "Nickel", "Platinum", "Iridium", "Mithril"
+				"Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Aluminium", "Nickel", "Platinum", "Iridium", "Mithril"
 				);
 	}
 
@@ -61,7 +61,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 			}
 		}
 	}
-	
+
 	public static boolean addCrucibleRecipes(IOreEntry entry) {
 		if(entry == null) {
 			return false;
@@ -113,7 +113,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 		SmelterManager.removeRecipe(input1, input2);
 		SmelterManager.addRecipe(energy, input1, input2, output1, output2, chance);
 	}
-	
+
 	public static void addCrucibleRecipe(int energy, ItemStack input, FluidStack output) {
 		CrucibleManager.addRecipe(energy, input, output);
 	}

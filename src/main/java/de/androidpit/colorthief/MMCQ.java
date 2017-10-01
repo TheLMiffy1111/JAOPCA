@@ -1,7 +1,7 @@
 /*
  * Java Color Thief
  * by Sven Woltmann, Fonpit AG
- * 
+ *
  * http://www.androidpit.com
  * http://www.androidpit.de
  *
@@ -30,26 +30,26 @@ public class MMCQ
 	private static final int SIGBITS = 5;
 	private static final int RSHIFT = 8 - SIGBITS;
 	private static final int MULT = 1 << RSHIFT;
-	private static final int HISTOSIZE = 1 << (3 * SIGBITS);
+	private static final int HISTOSIZE = 1 << 3 * SIGBITS;
 	private static final int VBOX_LENGTH = 1 << SIGBITS;
 	private static final double FRACT_BY_POPULATION = 0.75;
 	private static final int MAX_ITERATIONS = 1000;
 
 	/**
 	 * Get reduced-space color index for a pixel.
-	 * 
+	 *
 	 * @param r
 	 *            the red value
 	 * @param g
 	 *            the green value
 	 * @param b
 	 *            the blue value
-	 * 
+	 *
 	 * @return the color index
 	 */
 	static int getColorIndex(int r, int g, int b)
 	{
-		return (r << (2 * SIGBITS)) + (g << SIGBITS) + b;
+		return (r << 2 * SIGBITS) + (g << SIGBITS) + b;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class MMCQ
 		{
 			if (_volume == null || force)
 			{
-				_volume = ((r2 - r1 + 1) * (g2 - g1 + 1) * (b2 - b1 + 1));
+				_volume = (r2 - r1 + 1) * (g2 - g1 + 1) * (b2 - b1 + 1);
 			}
 
 			return _volume;
@@ -151,9 +151,9 @@ public class MMCQ
 							histoindex = getColorIndex(i, j, k);
 							hval = histo[histoindex];
 							ntot += hval;
-							rsum += (hval * (i + 0.5) * MULT);
-							gsum += (hval * (j + 0.5) * MULT);
-							bsum += (hval * (k + 0.5) * MULT);
+							rsum += hval * (i + 0.5) * MULT;
+							gsum += hval * (j + 0.5) * MULT;
+							bsum += hval * (k + 0.5) * MULT;
 						}
 					}
 				}
@@ -180,8 +180,8 @@ public class MMCQ
 					int gval = pixel[1] >> RSHIFT;
 						int bval = pixel[2] >> RSHIFT;
 
-				return (rval >= r1 && rval <= r2 && gval >= g1 && gval <= g2
-						&& bval >= b1 && bval <= b2);
+				return rval >= r1 && rval <= r2 && gval >= g1 && gval <= g2
+						&& bval >= b1 && bval <= b2;
 		}
 
 	}
@@ -385,7 +385,7 @@ public class MMCQ
 		}
 		else
 			/* maxw == bw */
-			{
+		{
 			for (i = vbox.b1; i <= vbox.b2; i++)
 			{
 				sum = 0;
@@ -400,7 +400,7 @@ public class MMCQ
 				total += sum;
 				partialsum[i] = total;
 			}
-			}
+		}
 
 		for (i = 0; i < VBOX_LENGTH; i++)
 		{

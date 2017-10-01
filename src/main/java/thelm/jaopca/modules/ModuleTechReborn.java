@@ -17,12 +17,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import reborncore.api.recipe.IBaseRecipeType;
 import reborncore.api.recipe.RecipeHandler;
 import techreborn.api.ScrapboxList;
 import techreborn.api.recipe.machines.ImplosionCompressorRecipe;
 import techreborn.api.recipe.machines.IndustrialGrinderRecipe;
-import techreborn.init.recipes.RecipeMethods;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
@@ -34,13 +32,13 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleTechReborn extends ModuleBase {
 
 	public static final ItemEntry SMALL_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustSmall", new ModelResourceLocation("jaopca:dust_small#inventory"), ImmutableList.<String>of(
-			"Almandine", "Aluminum", "Andradite", "Ashes", "Basalt", "Bauxite", "Brass", "Bronze", "Calcite", "Chrome", "Cinnabar", "Coal", "Copper",
+			"Almandine", "Aluminium", "Andradite", "Ashes", "Basalt", "Bauxite", "Brass", "Bronze", "Calcite", "Chromium", "Cinnabar", "Coal", "Copper",
 			"Diamond", "Electrum", "Emerald", "Galena", "Gold", "Grossular", "Invar", "Iron", "Lazurite", "Lead", "Magnesium", "Manganese",
 			"Nickel", "Peridot", "Phosphorous", "Platinum", "Pyrite", "Pyrope", "RedGarnet", "Ruby", "Saltpeter", "Sapphire", "Silver", "Sodalite",
 			"Spessartine", "Sphalerite", "Steel", "Sulfur", "Tin", "Titanium", "Tungsten", "Uvarovite", "YellowGarnet", "Zinc", "Redstone", "Glowstone"
 			)).setOreTypes(EnumOreType.values());
 
-	public static final HashMap<String, boolean[]> GRINDING_FLUIDS = Maps.<String, boolean[]>newHashMap();
+	public static final HashMap<IOreEntry, boolean[]> GRINDING_FLUIDS = Maps.<IOreEntry, boolean[]>newHashMap();
 
 	@Override
 	public String getName() {
@@ -62,11 +60,12 @@ public class ModuleTechReborn extends ModuleBase {
 		return Lists.<String>newArrayList(
 				"Copper", "Tin", "Uranium", "Coal", "Iron", "Lapis", "Redstone", "Gold", "Diamond", "Emerald", "Galena", "Lead", "Silver", "Iridium",
 				"Ruby", "Sapphire", "Bauxite", "Quartz", "Pyrite", "Cinnabar", "Sphalerite", "Tungsten", "Sheldonite", "Peridot", "Sodalite", "Apatite",
-				"CertusQuartz", "ChargedCertusQuartz", "Nickel", "Zinc", "Amethyst", "Topaz", "Tanzanite", "Malachite", "Pitchblende", "Aluminum",
+				"CertusQuartz", "ChargedCertusQuartz", "Nickel", "Zinc", "Amethyst", "Topaz", "Tanzanite", "Malachite", "Pitchblende", "Aluminium",
 				"Ardite", "Cobalt", "Osmium", "Teslatite", "Sulfur", "Saltpeter", "RedGarnet", "YellowGarnet"
 				);
 	}
 
+	@Override
 	public List<ItemEntry> getItemRequests() {
 		return Lists.<ItemEntry>newArrayList(SMALL_DUST_ENTRY);
 	}
@@ -80,14 +79,14 @@ public class ModuleTechReborn extends ModuleBase {
 						config.get(Utils.to_under_score(entry.getOreName()), "techRebornNa2S2O8", true).getBoolean(),
 						config.get(Utils.to_under_score(entry.getOreName()), "techRebornHg", true).getBoolean(),
 				};
-				GRINDING_FLUIDS.put(entry.getOreName(), data);
+				GRINDING_FLUIDS.put(entry, data);
 			}
 			if(entry.getOreType()==EnumOreType.DUST) {
 				boolean[] data = {
 						config.get(Utils.to_under_score(entry.getOreName()), "techRebornH2O", true).getBoolean(),
 						config.get(Utils.to_under_score(entry.getOreName()), "techRebornNa2S2O8", true).getBoolean(),
 				};
-				GRINDING_FLUIDS.put(entry.getOreName(), data);
+				GRINDING_FLUIDS.put(entry, data);
 			}
 		}
 	}
@@ -114,7 +113,7 @@ public class ModuleTechReborn extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			switch(entry.getOreType()) {
 			case DUST: {
-				boolean[] data = GRINDING_FLUIDS.get(entry.getOreName());
+				boolean[] data = GRINDING_FLUIDS.get(entry);
 				if(data[0]) {
 					ItemStack i0 = Utils.getOreStack("dust", entry, 5);
 					ItemStack i1 = entry.getExtra().equals(entry.getOreName())?null:Utils.getOreStackExtra("dust", entry, 1);
@@ -144,7 +143,7 @@ public class ModuleTechReborn extends ModuleBase {
 				break;
 			}
 			case INGOT: {
-				boolean[] data = GRINDING_FLUIDS.get(entry.getOreName());
+				boolean[] data = GRINDING_FLUIDS.get(entry);
 				if(data[0]) {
 					ItemStack i0 = Utils.getOreStack("dust", entry, 2);
 					ItemStack i1 = entry.getExtra().equals(entry.getOreName())?null:Utils.getOreStackExtra("dustSmall", entry, 1);

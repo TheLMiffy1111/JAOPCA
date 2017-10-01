@@ -32,12 +32,6 @@ public class RegistryModules {
 		if(Loader.isModLoaded("thermalexpansion")) {
 			JAOPCAApi.registerModule(new ModuleThermalExpansion());
 		}
-		if(Loader.isModLoaded("exnihiloomnia")) {
-			JAOPCAApi.registerModule(new ModuleExNihiloOmnia());
-			JAOPCAApi.registerModule(new ModuleExNihiloOmniaOverworld());
-			JAOPCAApi.registerModule(new ModuleExNihiloOmniaNether());
-			JAOPCAApi.registerModule(new ModuleExNihiloOmniaEnder());
-		}
 		if(Loader.isModLoaded("exnihiloadscensio")) {
 			JAOPCAApi.registerModule(new ModuleExNihiloAdscensio());
 		}

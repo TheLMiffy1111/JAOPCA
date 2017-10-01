@@ -5,34 +5,36 @@ import java.util.List;
 public interface IOreEntry {
 
 	/**
-	 * 
+	 *
 	 * @return The name of the ore
 	 */
 	public String getOreName();
 
 	/**
-	 * 
+	 *
 	 * @return The name of the extra of the ore
 	 */
 	public String getExtra();
-	
+
 
 	public String getSecondExtra();
 
 	/**
-	 * 
+	 *
 	 * @return The energy modifier of processing
 	 */
 	public double getEnergyModifier();
 
+	public double getRarity();
+
 	/**
-	 * 
+	 *
 	 * @return The list of blacklisted modules
 	 */
 	public List<String> getModuleBlacklist();
 
 	/**
-	 * 
+	 *
 	 * @return The color of the ore
 	 */
 	public int getColor();

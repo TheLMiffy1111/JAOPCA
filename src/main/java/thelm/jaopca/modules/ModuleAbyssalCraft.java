@@ -35,17 +35,17 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			setFull(false).
 			setBoundingBox(new AxisAlignedBB(0.2D, 0.0D, 0.2D, 0.8D, 0.7D, 0.8D));
 	public static final ItemEntry CRYSTAL_FRAGMENT_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crystalFragment", new ModelResourceLocation("jaopca:crystal_fragment#inventory"), ImmutableList.<String>of(
-			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
+			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminium", "Zinc"
 			));
 	public static final ItemEntry CRYSTAL_SHARD_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crystalShard", new ModelResourceLocation("jaopca:crystal_shard#inventory"), ImmutableList.<String>of(
-			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
+			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminium", "Zinc"
 			));
 	public static final ItemEntry CRYSTAL_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crystalAbyss", "crystal", new ModelResourceLocation("jaopca:crystal_abyss#inventory"), ImmutableList.<String>of(
-			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
+			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminium", "Zinc"
 			));
 	public static final ItemEntry CRYSTAL_CLUSTER_ENTRY = new ItemEntry(EnumEntryType.BLOCK, "crystalCluster", new ModelResourceLocation("jaopca:crystal_cluster#normal"), ImmutableList.<String>of(
-			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminum", "Zinc"
-			)).setBlockProperties(CRYSTAL_CLUSTER_PROPERTIES).skipWhenGrouped(true);
+			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminium", "Zinc"
+			)).setProperties(CRYSTAL_CLUSTER_PROPERTIES).skipWhenGrouped(true);
 
 	@Override
 	public String getName() {

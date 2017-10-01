@@ -180,7 +180,35 @@ public class Utils {
 	}
 
 	public static int energyI(IOreEntry entry, double energy) {
-		return (int)(entry.getEnergyModifier()*energy);
+		return (int)(energy*entry.getEnergyModifier());
+	}
+
+	public static float energyF(IOreEntry entry, double energy) {
+		return (float)(energy*entry.getEnergyModifier());
+	}
+
+	public static int energyReciprocalI(IOreEntry entry, double energy) {
+		return (int)(energy/entry.getEnergyModifier());
+	}
+
+	public static float energyReciprocalF(IOreEntry entry, double energy) {
+		return (float)(energy/entry.getEnergyModifier());
+	}
+
+	public static int rarityI(IOreEntry entry, double rarity) {
+		return (int)(rarity*entry.getRarity());
+	}
+
+	public static float rarityF(IOreEntry entry, double rarity) {
+		return (float)(rarity*entry.getRarity());
+	}
+
+	public static int rarityReciprocalI(IOreEntry entry, double rarity) {
+		return (int)(rarity/entry.getRarity());
+	}
+
+	public static float rarityReciprocalF(IOreEntry entry, double rarity) {
+		return (float)(rarity/entry.getRarity());
 	}
 
 	public static void addSmelting(ItemStack input, ItemStack output, float xp) {
@@ -239,23 +267,6 @@ public class Utils {
 		return ret.toString();
 	}
 
-	public static String toPascal(String under_score) {
-		if(StringUtils.isEmpty(under_score)) {
-			return "";
-		}
-
-		String[] strings = StringUtils.split(under_score, '_');
-		StringBuilder ret = new StringBuilder();
-		for(int i = 0; i < strings.length; i++) {
-			ret.append(StringUtils.capitalize(strings[i]));
-		}
-		return ret.toString();
-	}
-
-	public static String toCamelCase(String under_score) {
-		return StringUtils.uncapitalize(toPascal(under_score));
-	}
-
 	public static String toLowerCase(String s) {
 		return s.toLowerCase(Locale.US);
 	}
@@ -270,7 +281,9 @@ public class Utils {
 		for(int i = 0; i < strings.length; i++) {
 			ret.append(StringUtils.capitalize(strings[i]));
 			if(i < strings.length-1) {
-				ret.append(' ');
+				if(!strings[i].equals("_") && !strings[i+1].equals("_")) {
+					ret.append(' ');
+				}
 			}
 		}
 		return ret.toString();

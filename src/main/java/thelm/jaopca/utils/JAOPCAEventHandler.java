@@ -15,7 +15,7 @@ import thelm.wrapup.event.PostInitializationWrapUpEvent;
 import thelm.wrapup.event.PreInitializationWrapUpEvent;
 
 public class JAOPCAEventHandler {
-	
+
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onTextureStitchPre(TextureStitchEvent.Pre event) {
@@ -30,12 +30,12 @@ public class JAOPCAEventHandler {
 		OreFinder.findOres();
 		RegistryCore.preInit();
 	}
-	
+
 	@SubscribeEvent
 	public void onInitWrapUp(InitializationWrapUpEvent.Event2 event) {
 		RegistryCore.init();
 	}
-	
+
 	@SubscribeEvent
 	public void onPostInitWrapUp(PostInitializationWrapUpEvent.Event2 event) {
 		RegistryCore.postInit();
