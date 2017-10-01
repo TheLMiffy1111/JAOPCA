@@ -1,9 +1,5 @@
 package thelm.jaopca.modules;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import thelm.jaopca.api.ModuleBase;
 
 public class ModuleExNihiloOmniaEnder extends ModuleBase {
@@ -33,7 +29,7 @@ public class ModuleExNihiloOmniaEnder extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreEnderBroken")) {
-			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.GRAVEL_ENDER, Utils.getOreStack("oreEnderBroken", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
+			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.GRAVEL_ENDER, Utils.getOreStack("oreEnderBroken", entry, 1), Utils.rarityReciprocalI(entry, 15D)+2);
 
 			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreEnderBroken"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);
@@ -59,11 +55,11 @@ public class ModuleExNihiloOmniaEnder extends ModuleBase {
 			if(ENOCompatibility.aa_crusher && Loader.isModLoaded("actuallyadditions")) {
 				ModuleExNihiloOmnia.addActuallyAdditionsCrusherRecipe(Utils.getOreStack("oreEnderGravel", entry, 1), Utils.getOreStack("oreCrushed", entry, 5), Utils.	getOreStack("oreCrushed", entry, 2), 30);
 			}
-			
+
 			if(ENOCompatibility.mekanism_crusher && Loader.isModLoaded("Mekanism")) {
 				ModuleMekanism.addCrusherRecipe(Utils.getOreStack("oreEnderGravel", entry, 1), Utils.getOreStack("oreCrushed", entry, 6));
 			}
-			
+
 			if(ENOCompatibility.sag_mill && Loader.isModLoaded("EnderIO")) {
 				ModuleExNihiloOmnia.addOreSAGMillRecipe("oreEnderGravel"+entry.getOreName(), "oreCrushed"+entry.getOreName());
 			}

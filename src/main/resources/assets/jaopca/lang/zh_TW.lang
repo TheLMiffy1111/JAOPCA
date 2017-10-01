@@ -35,9 +35,9 @@ tile.jaopca.oreEnderGravel.name=終界%s礦石礫
 tile.jaopca.oreSand.name=%s礦石沙
 tile.jaopca.oreFine.name=%s礦石粉
 
-#ExNihiloAdscensio
-item.jaopca.orePiece.name=%s礦石碎片
-item.jaopca.oreChunk.name=%s礦石塊
+#ExNihiloCreatio
+item.jaopca.piece.name=%s礦石碎片
+item.jaopca.hunk.name=%s礦石塊
 
 #AbyssalCraft
 item.jaopca.crystalFragment.name=結晶%s断片
@@ -47,6 +47,10 @@ tile.jaopca.crystalCluster.name=結晶%s簇
 
 #TechReborn
 item.jaopca.dustSmall.name=小堆%s粉
+
+#Magneticraft
+item.jaopca.rockyChunk.name=%s礫岩
+item.jaopca.chunk.name=細塊%s礦
 
 #Ingots
 jaopca.entry.Abyssalnite=深淵
@@ -160,13 +164,12 @@ jaopca.entry.Sulfur=硫
 #IngotNoOres
 jaopca.entry.AdvancedAlloy=高級合金
 jaopca.entry.Alubrass=鋁黃銅
-jaopca.entry.AluminumBrass=鋁黃銅
-jaopca.entry.Aluminumbrass=鋁黃銅
+jaopca.entry.AluminiumBrass=鋁黃銅
+jaopca.entry.Aluminiumbrass=鋁黃銅
 jaopca.entry.Aquarium=水金
 jaopca.entry.Blutonium=藍鈽
 jaopca.entry.Brass=黃銅
 jaopca.entry.Bronze=青銅
-jaopca.entry.Chrome=鉻
 jaopca.entry.ConductiveIron=導電鐵
 jaopca.entry.Constantan=康銅
 jaopca.entry.Cupronickel=白銅

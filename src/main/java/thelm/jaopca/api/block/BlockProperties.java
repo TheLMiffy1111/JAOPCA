@@ -9,16 +9,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
+import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.IOreEntry;
+import thelm.jaopca.api.IProperties;
 import thelm.jaopca.api.ToFloatFunction;
 import thelm.jaopca.api.item.IItemBlockWithProperty;
 import thelm.jaopca.api.item.ItemBlockBase;
 
 /**
- * 
+ *
  * @author TheLMiffy1111
  */
-public class BlockProperties {
+public class BlockProperties implements IProperties {
 
 	/**
 	 * The default BlockProperties. DO NOT CALL ANY METHODS ON THIS FIELD.
@@ -48,6 +50,11 @@ public class BlockProperties {
 	public boolean fireSource = false;
 	public Class<? extends IBlockWithProperty> blockClass = BlockBase.class;
 	public Class<? extends IItemBlockWithProperty> itemBlockClass = ItemBlockBase.class;
+
+	@Override
+	public EnumEntryType getType() {
+		return EnumEntryType.BLOCK;
+	}
 
 	public BlockProperties setHardnessFunc(ToFloatFunction<IOreEntry> value) {
 		hardnessFunc = value;
@@ -135,22 +142,22 @@ public class BlockProperties {
 		opaque = value;
 		return this;
 	}
-	
+
 	public BlockProperties setBlockLayer(BlockRenderLayer value) {
 		layer = value;
 		return this;
 	}
-	
+
 	public BlockProperties setFlammabilityFunc(ToIntFunction<IOreEntry> value) {
 		flammabFunc = value;
 		return this;
 	}
-	
+
 	public BlockProperties setFireSpreadSpeedFunc(ToIntFunction<IOreEntry> value) {
 		fireSpdFunc = value;
 		return this;
 	}
-	
+
 	public BlockProperties setFireSource(boolean value) {
 		fireSource = value;
 		return this;

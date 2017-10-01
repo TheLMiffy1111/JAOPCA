@@ -19,8 +19,8 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleCoin extends ModuleBase {
 
-	public static final HashMap<String,Integer> TE_NUMISM_VALUES = Maps.<String,Integer>newHashMap();
-	
+	public static final HashMap<IOreEntry,Integer> TE_NUMISM_VALUES = Maps.<IOreEntry,Integer>newHashMap();
+
 	public static final ItemEntry COIN_ENTRY = new ItemEntry(EnumEntryType.ITEM, "coin", new ModelResourceLocation("jaopca:coin#inventory")).
 			setOreTypes(EnumOreType.INGOTS);
 
@@ -38,7 +38,7 @@ public class ModuleCoin extends ModuleBase {
 	public void registerConfigs(Configuration config) {
 		if(Loader.isModLoaded("thermalexpansion")) {
 			for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("coin")) {
-				TE_NUMISM_VALUES.put(entry.getOreName(), config.get(Utils.to_under_score(entry.getOreName()), "teNumismValue", 32000).setRequiresMcRestart(true).getInt());
+				TE_NUMISM_VALUES.put(entry, config.get(Utils.to_under_score(entry.getOreName()), "teNumismValue", 32000).setRequiresMcRestart(true).getInt());
 			}
 		}
 	}
@@ -54,8 +54,8 @@ public class ModuleCoin extends ModuleBase {
 				if(Utils.doesOreNameExist("block"+entry.getOreName())) {
 					ModuleThermalExpansion.addMintRecipe(Utils.energyI(entry, 32000), Utils.getOreStack("block", entry, 1), Utils.getOreStack("coin", entry, 27));
 				}
-				
-				ModuleThermalExpansion.addNumismaticFuel(Utils.getOreStack("coin", entry, 1), TE_NUMISM_VALUES.get(entry.getOreName()));
+
+				ModuleThermalExpansion.addNumismaticFuel(Utils.getOreStack("coin", entry, 1), TE_NUMISM_VALUES.get(entry));
 			}
 		}
 	}

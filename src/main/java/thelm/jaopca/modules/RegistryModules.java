@@ -63,5 +63,8 @@ public class RegistryModules {
 		if(Loader.isModLoaded("skyresources")) {
 			JAOPCAApi.registerModule(new ModuleSkyResources());
 		}
+		if(Loader.isModLoaded("magneticraft")) {
+			JAOPCAApi.registerModule(new ModuleMagneticraft());
+		}
 	}
 }

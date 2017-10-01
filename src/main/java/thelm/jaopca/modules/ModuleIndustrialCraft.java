@@ -81,7 +81,7 @@ public class ModuleIndustrialCraft extends ModuleBase {
 			});
 		}
 	}
-	
+
 	public static void addMaceratorRecipe(Object input, ItemStack output) {
 		IRecipeInput ri = null;
 		if(input instanceof String) {
@@ -141,7 +141,7 @@ public class ModuleIndustrialCraft extends ModuleBase {
 		}
 		Recipes.compressor.addRecipe(ri, null, false, output);
 	}
-	
+
 	public static void addRollingRecipe(Object input, ItemStack output) {
 		IRecipeInput ri = null;
 		if(input instanceof String) {

@@ -35,7 +35,7 @@ public class ModuleEmbers extends ModuleBase {
 	@Override
 	public List<String> getOreBlacklist() {
 		return Lists.<String>newArrayList(
-				"Iron", "Gold", "Silver", "Copper", "Lead", "Aluminum", "Nickel", "Tin"
+				"Iron", "Gold", "Silver", "Copper", "Lead", "Aluminium", "Nickel", "Tin"
 				);
 	}
 

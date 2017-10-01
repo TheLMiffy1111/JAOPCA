@@ -7,17 +7,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.SoundEvent;
+import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.IOreEntry;
+import thelm.jaopca.api.IProperties;
 import thelm.jaopca.api.block.BlockFluidBase;
 import thelm.jaopca.api.block.IBlockFluidWithProperty;
 import thelm.jaopca.api.item.IItemBlockFluidWithProperty;
 import thelm.jaopca.api.item.ItemBlockFluidBase;
 
 /**
- * 
+ *
  * @author TheLMiffy1111
  */
-public class FluidProperties {
+public class FluidProperties implements IProperties {
 
 	/**
 	 * The default FluidProperties. DO NOT CALL ANY METHODS ON THIS FIELD.
@@ -39,6 +41,11 @@ public class FluidProperties {
 	public Class<? extends IFluidWithProperty> fluidClass = FluidBase.class;
 	public Class<? extends IBlockFluidWithProperty> blockFluidClass = BlockFluidBase.class;
 	public Class<? extends IItemBlockFluidWithProperty> itemBlockFluidClass = ItemBlockFluidBase.class;
+
+	@Override
+	public EnumEntryType getType() {
+		return EnumEntryType.FLUID;
+	}
 
 	public FluidProperties setLuminosityFunc(ToIntFunction<IOreEntry> value) {
 		luminosFunc = value;

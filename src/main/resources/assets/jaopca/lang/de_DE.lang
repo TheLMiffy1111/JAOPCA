@@ -11,12 +11,12 @@ item.jaopca.plate.name=%splatte
 item.jaopca.stick.name=%sstab
 
 #Mekanism
-item.jaopca.dustDirty.name=Dreckiger %sstaub
+item.jaopca.dustDirty.name=Schmutziger %sstaub
 item.jaopca.clump.name=%sklumpen
-item.jaopca.shard.name=%ssplitter
+item.jaopca.shard.name=%sscherbe
 item.jaopca.crystal.name=%skristall
-gas.jaopca.slurryClean=Sauberer %sschlamm
-gas.jaopca.slurry=%sschlamm
+gas.jaopca.slurryClean=Saubere %sschlacke
+gas.jaopca.slurry=%sschlacke
 
 #IC2
 item.jaopca.crushed.name=Zerstoßenes %serz
@@ -29,31 +29,31 @@ item.jaopca.oreNetherBroken.name=Zerbrochenes %serz
 item.jaopca.oreEnderBroken.name=Zerbrochenes %serz
 item.jaopca.oreCrushed.name=Zerstoßenes %serz
 item.jaopca.orePowdered.name=Pulverisiertes %serz
-tile.jaopca.oreGravel.name=%s-Erzkies
-tile.jaopca.oreNetherGravel.name=Nether-%s-Erzkies
-tile.jaopca.oreEnderGravel.name=Ender-%s-Erzkies
+tile.jaopca.oreGravel.name=%serz Kies
+tile.jaopca.oreNetherGravel.name=Nether %serz Kies
+tile.jaopca.oreEnderGravel.name=Ender %serz Kies
 tile.jaopca.oreSand.name=%s-Erzsand
 tile.jaopca.oreFine.name=%s-Erzstaub
 
 #ExNihiloAdscensio
-item.jaopca.orePiece.name=%s Erzstück
-item.jaopca.oreChunk.name=%s Erzbrocken
+item.jaopca.piece.name=%s Erzstück
+item.jaopca.hunk.name=%s Erzbrocken
 
 #AbyssalCraft
-item.jaopca.crystalFragment.name=Kristallisiertes %s fragment
-item.jaopca.crystalShard.name=Kristallisierte %s Scherbe
+item.jaopca.crystalFragment.name=Kristallisiertes %sfragment
+item.jaopca.crystalShard.name=Kristallisierte %sscherbe
 item.jaopca.crystalAbyss.name=Kristallisiertes %s
-tile.jaopca.crystalCluster.name=Kristallisierter %s Haufen
+tile.jaopca.crystalCluster.name=Kristallisierte %ssanhäufung
 
 #TechReborn
-item.jaopca.dustSmall.name=Kleiner Haufen aus %sstaub
+item.jaopca.dustSmall.name=Kleiner Haufen %sstaub
 
 #SkyResources
-item.jaopca.dustAlch.name=%s Alchemistischer Erzstaub
+item.jaopca.dustAlch.name=Alchemistischr %serzstaub
 
 #Ingots
 jaopca.entry.Abyssalnite=Abgrundite
-jaopca.entry.Aluminum=Aluminium
+jaopca.entry.Aluminium=Aluminium
 jaopca.entry.Ardite=Ardit
 jaopca.entry.Beryllium=Beryllium
 jaopca.entry.Boron=Bor

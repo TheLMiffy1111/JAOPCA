@@ -2,6 +2,7 @@ package thelm.oredictinit.lib;
 
 import net.minecraftforge.fml.common.Loader;
 import thelm.oredictinit.api.OreDictInitApi;
+import thelm.oredictinit.compat.CompatNamingNonsense;
 import thelm.oredictinit.compat.CompatCalculator;
 import thelm.oredictinit.compat.CompatDraconicEvolution;
 import thelm.oredictinit.compat.CompatExtremeReactors;
@@ -19,6 +20,7 @@ public class Compat {
 
 	public static void init() {
 		OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMinecraft());
+		OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatNamingNonsense());
 		if(Loader.isModLoaded("mekanism")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMekanism());
 		}

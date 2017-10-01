@@ -2,9 +2,11 @@ package thelm.jaopca.utils;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.registry.RegistryCore;
 import thelm.wrapup.event.InitializationWrapUpEvent;
@@ -40,5 +42,11 @@ public class JAOPCAEventHandler {
 	@SubscribeEvent
 	public void onPostInitWrapUp(PostInitializationWrapUpEvent.Event2 event) {
 		RegistryCore.postInit();
+	}
+
+	//Can't even put a wildcard here
+	@SubscribeEvent
+	public void onMissingMappings(RegistryEvent.MissingMappings event) {
+		RegistryCore.onMissingMappings(event.getMappings());
 	}
 }

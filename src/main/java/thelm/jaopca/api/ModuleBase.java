@@ -3,6 +3,8 @@ package thelm.jaopca.api;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.Lists;
 
 import net.minecraftforge.common.config.Configuration;
@@ -48,6 +50,7 @@ public abstract class ModuleBase {
 
 	public void registerConfigs(Configuration config) {}
 
+	@Deprecated
 	public boolean blacklistCustom(ItemEntry itemEntry, IOreEntry oreEntry) {
 		return false;
 	}
@@ -58,6 +61,7 @@ public abstract class ModuleBase {
 	 * @param itemEntry the item entry
 	 * @param allOres all ores this item entry can use
 	 */
+	@Deprecated
 	public void registerCustom(ItemEntry itemEntry, List<IOreEntry> allOres) {}
 
 	public void preInit() {}
@@ -65,6 +69,10 @@ public abstract class ModuleBase {
 	public void init() {}
 
 	public void postInit() {}
+
+	public List<Pair<String, String>> remaps() {
+		return Lists.<Pair<String, String>>newArrayList();
+	}
 
 	@Override
 	public boolean equals(Object other) {

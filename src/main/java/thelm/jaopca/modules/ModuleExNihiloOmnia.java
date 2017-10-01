@@ -44,7 +44,7 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 			"<itemStack oreDictionary=\"%s\" number=\"5\" />" +
 			"<itemStack oreDictionary=\"%s\" number=\"2\" chance=\"0.3\" />" +
 			"</output>" +
-			"</recipe>" + 
+			"</recipe>" +
 			"</recipeGroup>";*/
 
 	@Override

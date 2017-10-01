@@ -56,6 +56,7 @@ public final class ModelFluidTextured implements IModel {
 		this.flowing = flowing;
 	}
 
+	@Override
 	public Collection<ResourceLocation> getTextures() {
 		return ImmutableSet.of(still, flowing);
 	}
@@ -194,8 +195,8 @@ public final class ModelFluidTextured implements IModel {
 					builder.setQuadOrientation(side);
 					builder.setTexture(topSprite);
 					builder.setQuadTint(0);
-					for(int i = gas ? 3 : 0; i != (gas ? -1 : 4); i += (gas ? -1 : 1)) {
-						int l = (k * 3) + (1 - 2 * k) * i;
+					for(int i = gas ? 3 : 0; i != (gas ? -1 : 4); i += gas ? -1 : 1) {
+						int l = k * 3 + (1 - 2 * k) * i;
 						putVertex(
 								builder, side,
 								x[l], y[l], z[l],
@@ -213,12 +214,12 @@ public final class ModelFluidTextured implements IModel {
 				builder.setQuadOrientation(side);
 				builder.setTexture(still);
 				builder.setQuadTint(0);
-				for(int i = gas ? 3 : 0; i != (gas ? -1 : 4); i+= (gas ? -1 : 1)) {
+				for(int i = gas ? 3 : 0; i != (gas ? -1 : 4); i+= gas ? -1 : 1) {
 					putVertex(
 							builder, side,
 							z[i], gas ? 1 : 0, x[i],
-							still.getInterpolatedU(z[i] * 16),
-							still.getInterpolatedV(x[i] * 16), opacity);
+									still.getInterpolatedU(z[i] * 16),
+									still.getInterpolatedV(x[i] * 16), opacity);
 				}
 				faceQuads.put(side, ImmutableList.of(builder.build()));
 
@@ -234,7 +235,7 @@ public final class ModelFluidTextured implements IModel {
 						builder.setTexture(flowing);
 						builder.setQuadTint(0);
 						for(int j = 0; j < 4; j++) {
-							int l = (k * 3) + (1 - 2 * k) * j;
+							int l = k * 3 + (1 - 2 * k) * j;
 							float yl = z[l] * y[(i + x[l]) % 4];
 							if(gas && z[l] == 0) yl = 1;
 							putVertex(
@@ -285,7 +286,7 @@ public final class ModelFluidTextured implements IModel {
 					break;
 				}
 				case NORMAL:
-					builder.put(e, (float)side.getFrontOffsetX(), (float)side.getFrontOffsetY(), (float)side.getFrontOffsetZ(), 0f);
+					builder.put(e, side.getFrontOffsetX(), side.getFrontOffsetY(), side.getFrontOffsetZ(), 0f);
 					break;
 				default:
 					builder.put(e);
@@ -332,7 +333,7 @@ public final class ModelFluidTextured implements IModel {
 				key <<= 1;
 				key |= fluid.isGaseous() ? 1 : 0;
 				key <<= 10;
-				key |= (fluid.getColor()>>>24);
+				key |= fluid.getColor()>>>24;
 				model = modelCache.getUnchecked(key);
 			}
 			if(side == null)

@@ -56,11 +56,14 @@ repositories {
         url = "https://dl.bintray.com/shinoow/maven/"
     }
     maven {
+        url = "http://maven.shadowfacts.net/"
+    }
+    maven {
         url = "https://modmaven.k-4u.nl/" 
     }
 }
 
-version = "1.12-2.2.2.44"
+version = "1.12-2.2.3.47"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -101,6 +104,9 @@ dependencies {
         transitive = false
     }
     deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.12-1.9.4-pre-4"
+    deobfCompile("net.shadowfacts:Forgelin:1.5.1") {
+        transitive = false
+    }
 }
 
 processResources

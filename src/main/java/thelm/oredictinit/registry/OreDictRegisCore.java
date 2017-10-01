@@ -12,7 +12,7 @@ import thelm.oredictinit.api.OreDictInitApi;
 import thelm.oredictinit.lib.Data;
 
 public class OreDictRegisCore {
-	
+
 	public static void initCompat() {
 		for(ICompat compat : OreDictInitApi.ORE_DICT_COMPAT_LIST) {
 			compat.register();
@@ -69,7 +69,7 @@ public class OreDictRegisCore {
 							}
 							catch(Throwable e) {
 								Woodchopper.warn("Entry " + custom + " has errored:");
-								Woodchopper.error(e.toString());						
+								Woodchopper.error(e.toString());
 								break;
 							}
 							addCustomEntryI(entries[i].trim(), rawData[1].trim(), rawData[2].trim(), damageValues[i].trim());

@@ -27,8 +27,8 @@ import thelm.jaopca.api.utils.Utils;
 public class ModuleSkyResources extends ModuleBase {
 
 	public static final ArrayList<String> BLACKLIST = Lists.<String>newArrayList(
-			"Iron", "Gold", "Copper", "Tin", "Silver", "Zinc", "Nickel", "Platinum", "Aluminum", "Lead", "Cobalt", "Ardite",
-			"Osmium", "Draconium", "Titanium", "Tungsten", "Chrome", "Iridium", "Boron", "Lithium", "Magnesium", "Mithril"
+			"Iron", "Gold", "Copper", "Tin", "Silver", "Zinc", "Nickel", "Platinum", "Aluminium", "Lead", "Cobalt", "Ardite",
+			"Osmium", "Draconium", "Titanium", "Tungsten", "Chromium", "Iridium", "Boron", "Lithium", "Magnesium", "Mithril"
 			);
 	public static final ArrayList<String> GEM_BLACKLIST = Lists.<String>newArrayList(
 			"Emerald", "Diamond", "Ruby", "Sapphire", "Peridot", "RedGarnet", "YellowGarnet", "Apatite", "Amber", "Lepidolite", "Malachite", "Onyx",
@@ -37,9 +37,7 @@ public class ModuleSkyResources extends ModuleBase {
 			"Iolite", "BlackDiamond", "Chaos", "EnderEssence", "Dark", "Quartz", "Lapis", "QuartzBlack", "CertusQuartz"
 			);
 
-	public static final HashMap<String,Integer> ORE_RARITYS = Maps.<String,Integer>newHashMap();
-	public static final HashMap<String,Float> ORE_GEM_RARITYS = Maps.<String,Float>newHashMap();
-	public static final HashMap<String,ItemStack> ORE_BASES = Maps.<String,ItemStack>newHashMap();
+	public static final HashMap<IOreEntry,ItemStack> ORE_BASES = Maps.<IOreEntry,ItemStack>newHashMap();
 
 	public static final ItemEntry ALCH_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustAlch", new ModelResourceLocation("jaopca:dust_alch#inventory"), BLACKLIST);
 	public static final ItemEntry DIRTY_GEM_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dirtyGem", new ModelResourceLocation("jaopca:dirty_gem#inventory"), GEM_BLACKLIST).
@@ -63,35 +61,33 @@ public class ModuleSkyResources extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyGem")) {
-			ORE_GEM_RARITYS.put(entry.getOreName(), (float)config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesRarity", 0.006D).setRequiresMcRestart(true).getDouble());
-			ORE_BASES.put(entry.getOreName(), Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone").setRequiresMcRestart(true).getString()));
+			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone").setRequiresMcRestart(true).getString()));
 		}
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			ORE_RARITYS.put(entry.getOreName(), config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesRarity", 6).setRequiresMcRestart(true).getInt());
-			ORE_BASES.put(entry.getOreName(), Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone").setRequiresMcRestart(true).getString()));
+			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone").setRequiresMcRestart(true).getString()));
 		}
 	}
 
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustAlch")) {
-			int rarity = ORE_RARITYS.get(entry.getOreName());
-			ItemStack base = ORE_BASES.get(entry.getOreName());
+			int rarity = Utils.rarityI(entry, 6);
+			ItemStack base = ORE_BASES.get(entry);
 			ProcessRecipeManager.condenserRecipes.addRecipe(Utils.getOreStack("ingot", entry, 1), (float)Math.pow(rarity*1.05D, 1.4D), Lists.newArrayList(Utils.getOreStack("dustAlch", entry, 1), new FluidStack(ModFluids.crystalFluid, 1000)));
 			ProcessRecipeManager.condenserRecipes.addRecipe(Utils.getOreStack("ore", entry, 1), (float)Math.pow(rarity*1.05D, 1.8D), Lists.newArrayList(Utils.getOreStack("dustAlch", entry, 1), base));
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyGem")) {
-			float rarity = ORE_GEM_RARITYS.get(entry.getOreName());
-			ItemStack base = ORE_BASES.get(entry.getOreName());
+			float rarity = Utils.rarityReciprocalF(entry, 0.006D);
+			ItemStack base = ORE_BASES.get(entry);
 			ProcessRecipeManager.rockGrinderRecipes.addRecipe(Utils.getOreStack("dirtyGem", entry, 1), rarity, base);
 			//same thing right
 			ProcessRecipeManager.cauldronCleanRecipes.addRecipe(Utils.getOreStack("gem", entry, 1), 1F, Utils.getOreStack("dirtyGem", entry, 1));
 		}
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			int rarity = ORE_RARITYS.get(entry.getOreName());
-			ItemStack base = ORE_BASES.get(entry.getOreName());
+			int rarity = Utils.rarityI(entry, 6);
+			ItemStack base = ORE_BASES.get(entry);
 			if(Utils.doesOreNameExist("dust"+entry.getOreName())) {
 				ProcessRecipeManager.fusionRecipes.addRecipe(Utils.getOreStack("dustAlch", entry, 1), rarity*0.004F, Lists.newArrayList("dust"+entry.getOreName(), getOreItemDust(rarity)));
 				if(base!=null&&!base.isEmpty()) {

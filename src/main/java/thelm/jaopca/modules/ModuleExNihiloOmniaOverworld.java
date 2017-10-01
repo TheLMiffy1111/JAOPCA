@@ -29,10 +29,10 @@ public class ModuleExNihiloOmniaOverworld extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("oreBroken")) {
-			ModuleExNihiloOmnia.addOreSieveRecipe(Blocks.GRAVEL, Utils.getOreStack("oreBroken", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
+			ModuleExNihiloOmnia.addOreSieveRecipe(Blocks.GRAVEL, Utils.getOreStack("oreBroken", entry, 1), Utils.rarityReciprocalI(entry, 15D)+2);
 			//Should exist
-			ModuleExNihiloOmnia.addOreSieveRecipe(Blocks.SAND, Utils.getOreStack("oreCrushed", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
-			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.DUST, Utils.getOreStack("orePowdered", entry, 1), (int)(15D/entry.getEnergyModifier())+2);
+			ModuleExNihiloOmnia.addOreSieveRecipe(Blocks.SAND, Utils.getOreStack("oreCrushed", entry, 1), Utils.rarityReciprocalI(entry, 15D)+2);
+			ModuleExNihiloOmnia.addOreSieveRecipe(ENOBlocks.DUST, Utils.getOreStack("orePowdered", entry, 1), Utils.rarityReciprocalI(entry, 15D)+2);
 
 			if(ENOCompatibility.add_smeltery_melting && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				ModuleTinkersConstruct.addMeltingRecipe("oreBroken"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 36);

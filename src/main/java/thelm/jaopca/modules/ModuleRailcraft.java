@@ -1,9 +1,5 @@
 package thelm.jaopca.modules;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import thelm.jaopca.api.ModuleBase;
 
 public class ModuleRailcraft extends ModuleBase {

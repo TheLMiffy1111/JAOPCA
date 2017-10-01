@@ -8,7 +8,7 @@ import java.util.List;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.gson.JsonObject;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
@@ -21,17 +21,29 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.EnumOreType;
+import thelm.jaopca.api.IObjectWithProperty;
 import thelm.jaopca.api.IOreEntry;
+import thelm.jaopca.api.IProperties;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.ItemEntryGroup;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
+import thelm.jaopca.api.utils.JsonUtils;
 import thelm.jaopca.api.utils.Utils;
 
 public class ModuleMekanism extends ModuleBase {
 
 	public static final HashBasedTable<String,String,Gas> GASES_TABLE = HashBasedTable.<String,String,Gas>create();
 
+	public static final EnumEntryType GAS = EnumEntryType.addEntryType("GAS", ModuleMekanism::checkGasEntry, ModuleMekanism::registerGases, GasProperties.DEFAULT, ModuleMekanism::parseGasPpt);
+
+	public static final GasProperties CLEAN_SLURRY_PROPERTIES = new GasProperties().
+			setIconName("mekanism:blocks/liquid/liquidcleanore").
+			setVisible(false);
+	public static final GasProperties SLURRY_PROPERTIES = new GasProperties().
+			setIconName("mekanism:blocks/liquid/liquidore").
+			setVisible(false);
+	
 	public static final ItemEntry DIRTY_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustDirty", new ModelResourceLocation("jaopca:dust_dirty#inventory"), ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
 			));
@@ -44,12 +56,12 @@ public class ModuleMekanism extends ModuleBase {
 	public static final ItemEntry CRYSTAL_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crystal", new ModelResourceLocation("jaopca:crystal#inventory"), ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
 			));
-	public static final ItemEntry CLEAN_SLURRY_ENTRY = new ItemEntry(EnumEntryType.CUSTOM, "slurryClean", null, ImmutableList.<String>of(
+	public static final ItemEntry CLEAN_SLURRY_ENTRY = new ItemEntry(GAS, "slurryClean", null, ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
-			)).skipWhenGrouped(true);
-	public static final ItemEntry SLURRY_ENTRY = new ItemEntry(EnumEntryType.CUSTOM, "slurry", null, ImmutableList.<String>of(
+			)).setProperties(CLEAN_SLURRY_PROPERTIES).skipWhenGrouped(true);
+	public static final ItemEntry SLURRY_ENTRY = new ItemEntry(GAS, "slurry", null, ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
-			)).skipWhenGrouped(true);
+			)).setProperties(SLURRY_PROPERTIES).skipWhenGrouped(true);
 
 	public static final ArrayList<String> MINOR_COMPAT_BLACKLIST = Lists.<String>newArrayList(
 			"Nickel", "Aluminum", "Uranium", "Draconium"
@@ -80,15 +92,6 @@ public class ModuleMekanism extends ModuleBase {
 	@Override
 	public List<ItemEntryGroup> getItemRequests() {
 		return Lists.<ItemEntryGroup>newArrayList(ItemEntryGroup.of(DIRTY_DUST_ENTRY,CLUMP_ENTRY,SHARD_ENTRY,CRYSTAL_ENTRY,CLEAN_SLURRY_ENTRY,SLURRY_ENTRY));
-	}
-
-	@Override
-	public void registerCustom(ItemEntry entry, List<IOreEntry> allOres) {
-		for(IOreEntry ore : allOres) {
-			GasBase gas = new GasBase(entry, ore);
-			GasRegistry.register(gas);
-			GASES_TABLE.put(entry.name, ore.getOreName(), gas);
-		}
 	}
 
 	@Override
@@ -248,16 +251,99 @@ public class ModuleMekanism extends ModuleBase {
 		FMLInterModComms.sendMessage("mekanism", "ChemicalDissolutionChamberRecipe", msg);
 	}
 
-	public static class GasBase extends Gas {
+	public static boolean checkGasEntry(ItemEntry entry, IOreEntry ore) {
+		//return false for now
+		return false;
+	}
+
+	public static void registerGases(ItemEntry entry) {
+		GasProperties ppt = (GasProperties)entry.properties;
+
+		for(IOreEntry ore : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get(entry.name)) {
+			try {
+				IGasWithProperty gas = ppt.gasClass.getConstructor(String.class, ItemEntry.class, IOreEntry.class).newInstance(ppt.iconName, entry, ore);
+				gas.
+				setVisible(ppt.visible);
+				GasRegistry.register((Gas)gas);
+				GASES_TABLE.put(entry.name, ore.getOreName(), (Gas)gas);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static GasProperties parseGasPpt(JsonObject jsonObject) {
+		String iconName = JsonUtils.getString(jsonObject, "icon_name", "minecraft:blocks/water_still");
+		boolean visible = JsonUtils.getBoolean(jsonObject, "visible", true);
+		GasProperties ppt = new GasProperties().
+				setIconName(iconName);
+		return ppt;
+	}
+
+	public static class GasProperties implements IProperties {
+
+		public static final GasProperties DEFAULT = new GasProperties();
+
+		public String iconName = "minecraft:blocks/water_still";
+		public boolean visible = true;
+		public Class<? extends IGasWithProperty> gasClass = GasBase.class;
+
+		@Override
+		public EnumEntryType getType() {
+			return GAS;
+		}
+
+		public GasProperties setIconName(String value) {
+			iconName = value;
+			return this;
+		}
+
+		public GasProperties setVisible(boolean value) {
+			visible = value;
+			return this;
+		}
+
+		public GasProperties setGasClass(Class<? extends IGasWithProperty> value) {
+			gasClass = value;
+			return this;
+		}
+	}
+
+	public static interface IGasWithProperty extends IObjectWithProperty {
+
+		public IGasWithProperty setVisible(boolean visible);
+
+		@Override
+		default void registerModels() {}
+	}
+
+	public static class GasBase extends Gas implements IGasWithProperty {
 
 		public final IOreEntry oreEntry;
 		public final ItemEntry itemEntry;
 
-		public GasBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-			super(itemEntry.name+oreEntry.getOreName(), "mekanism:blocks/liquid/Liquid" + (itemEntry.prefix.contains("Clean") ? "Clean" : "") + "Ore");
+		public GasBase(String iconName, ItemEntry itemEntry, IOreEntry oreEntry) {
+			super(itemEntry.name+oreEntry.getOreName(), iconName);
 			setUnlocalizedName("jaopca."+itemEntry.name);
 			this.oreEntry = oreEntry;
 			this.itemEntry = itemEntry;
+		}
+
+		@Override
+		public IOreEntry getOreEntry() {
+			return oreEntry;
+		}
+
+		@Override
+		public ItemEntry getItemEntry() {
+			return itemEntry;
+		}
+
+		@Override
+		public GasBase setVisible(boolean visible) {
+			super.setVisible(visible);
+			return this;
 		}
 
 		@Override

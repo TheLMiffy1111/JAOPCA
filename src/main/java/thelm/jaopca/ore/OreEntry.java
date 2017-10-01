@@ -19,6 +19,7 @@ public class OreEntry implements IOreEntry {
 	protected String extra;
 	protected String extra2;
 	protected double energy;
+	protected double rarity;
 	protected List<String> moduleBlacklist = Lists.<String>newArrayList();
 	protected EnumOreType type = EnumOreType.INGOT;
 	protected Color color = null;
@@ -28,6 +29,7 @@ public class OreEntry implements IOreEntry {
 		this.extra = oreName;
 		this.extra2 = oreName;
 		this.energy = 1D;
+		this.rarity = 1D;
 	}
 
 	@Override
@@ -48,6 +50,11 @@ public class OreEntry implements IOreEntry {
 	@Override
 	public double getEnergyModifier() {
 		return energy;
+	}
+
+	@Override
+	public double getRarity() {
+		return rarity;
 	}
 
 	@Override
@@ -99,10 +106,14 @@ public class OreEntry implements IOreEntry {
 		this.energy = energyModifier;
 	}
 
+	public void setRarity(double rarity) {
+		this.rarity = rarity;
+	}
+	
 	public void addBlacklistedModules(Collection<String> blacklist) {
 		this.moduleBlacklist.addAll(blacklist);
 	}
-	
+
 	public void setOreType(EnumOreType type) {
 		this.type = type;
 	}

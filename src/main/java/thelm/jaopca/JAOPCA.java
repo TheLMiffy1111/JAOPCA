@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import thelm.jaopca.proxy.CommonProxy;
+import thelm.jaopca.registry.RegistryCore;
 import thelm.jaopca.utils.JAOPCAEventHandler;
 
 @Mod(
@@ -21,7 +22,7 @@ import thelm.jaopca.utils.JAOPCAEventHandler;
 public class JAOPCA {
 	public static final String MOD_ID = "jaopca";
 	public static final String NAME = "JAOPCA";
-	public static final String VERSION = "1.12-2.2.2.44";
+	public static final String VERSION = "1.12-2.2.3.47";
 	@Instance(JAOPCA.MOD_ID)
 	public static JAOPCA core;
 	@SidedProxy(clientSide = "thelm.jaopca.proxy.ClientProxy", serverSide = "thelm.jaopca.proxy.CommonProxy", modId = JAOPCA.MOD_ID)

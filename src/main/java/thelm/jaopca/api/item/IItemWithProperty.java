@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import thelm.jaopca.api.IObjectWithProperty;
 
 public interface IItemWithProperty extends IObjectWithProperty {
-	
+
 	IItemWithProperty setMaxStackSize(int maxStkSize);
 	IItemWithProperty setFull3D(boolean full3D);
 	IItemWithProperty setRarity(EnumRarity rarity);
@@ -17,6 +17,6 @@ public interface IItemWithProperty extends IObjectWithProperty {
 	@SideOnly(Side.CLIENT)
 	@Override
 	default void registerModels() {
-		ModelLoader.setCustomModelResourceLocation((Item)this, 0, (ModelResourceLocation)getItemEntry().itemModelLocation);
+		ModelLoader.setCustomModelResourceLocation((Item)this, 0, getItemEntry().itemModelLocation);
 	}
 }

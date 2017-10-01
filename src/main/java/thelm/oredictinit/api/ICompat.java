@@ -5,9 +5,9 @@ package thelm.oredictinit.api;
  * @author TheLMiffy1111
  */
 public interface ICompat {
-	
+
 	public String getName();
-	
+
 	/**
 	 * Register all of your ore dict entries here
 	 * @author TheLMiffy1111

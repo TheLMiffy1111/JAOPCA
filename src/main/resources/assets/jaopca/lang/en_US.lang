@@ -35,9 +35,9 @@ tile.jaopca.oreEnderGravel.name=Ender %s Ore Gravel
 tile.jaopca.oreSand.name=%s Ore Sand
 tile.jaopca.oreFine.name=%s Ore Dust
 
-#ExNihiloAdscensio
-item.jaopca.orePiece.name=%s Ore Piece
-item.jaopca.oreChunk.name=%s Ore Chunk
+#ExNihiloCreatio
+item.jaopca.piece.name=%s Ore Piece
+item.jaopca.hunk.name=%s Ore Chunk
 
 #AbyssalCraft
 item.jaopca.crystalFragment.name=Crystallized %s Fragment
@@ -52,6 +52,10 @@ item.jaopca.dustSmall.name=Small Pile of %s Dust
 item.jaopca.dustAlch.name=%s Alchemical Ore Dust
 item.jaopca.dirtyGem.name=Dirty %s
 
+#Magneticraft
+item.jaopca.rockyChunk.name=%s Rocky Chunk
+item.jaopca.chunk.name=%s Chunk
+
 #Please refer to zh_CN or zh_TW for all names to localize.
 #Ingots
 jaopca.entry.LiquifiedCoralium=Coralium
@@ -62,7 +66,7 @@ jaopca.entry.Lapis=Lapis Lazuli
 #Dusts
 
 #IngotNoOres
-jaopca.entry.Aluminumbrass=Aluminum Brass
+jaopca.entry.Aluminiumbrass=Aluminium Brass
 jaopca.entry.ElvenElementium=Elementium
 jaocpa.entry.Galvanizedsteel=Galvanized Steel
 jaopca.entry.Stainlesssteel=Stainless Steel
