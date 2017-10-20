@@ -57,5 +57,8 @@ public class RegistryModules {
 		if(Loader.isModLoaded("skyresources")) {
 			JAOPCAApi.registerModule(new ModuleSkyResources());
 		}
+		if(Loader.isModLoaded("bcoreprocessing")) {
+			JAOPCAApi.registerModule(new ModuleBuildcraftOreProcessing());
+		}
 	}
 }

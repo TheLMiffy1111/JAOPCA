@@ -54,6 +54,11 @@ fluid.jaopca.crystalFluid=%s Crystal Fluid
 fluid.jaopca.moltenCrystalFluid=%s Crystal Fluid
 item.jaopca.dirtyGem.name=Dirty %s
 
+#BuildcraftOreProcessing
+fluid.jaopca.searingMolten=Molten %s (§cSearing§r)
+fluid.jaopca.hotMolten=Molten %s (§6Hot§r)
+fluid.jaopca.coolMolten=Molten %s (§bCool§r)
+
 #Please refer to zh_CN or zh_TW for all names to localize.
 #Ingots
 jaopca.entry.LiquifiedCoralium=Coralium

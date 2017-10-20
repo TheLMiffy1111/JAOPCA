@@ -3,6 +3,10 @@ package thelm.jaopca.api.utils;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.reflect.Method;
+import java.util.function.Predicate;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,7 +20,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 
-import net.minecraft.item.Item;
+import thelm.jaopca.api.IOreEntry;
+import thelm.jaopca.api.ToFloatFunction;
 
 /**
  * Vanilla JsonUtils but without Forge's SideOnly
@@ -365,5 +370,43 @@ public class JsonUtils {
 
 	public static <T> T gsonDeserialize(Gson gsonIn, String json, Class<T> adapter, boolean lenient) {
 		return gsonDeserialize(gsonIn, new StringReader(json), adapter, lenient);
+	}
+
+	public static ToIntFunction<IOreEntry> parseIntFunction(JsonObject json) {
+		return entry->(int)parseDoubleFunction(json).applyAsDouble(entry);
+	}
+
+	public static ToFloatFunction<IOreEntry> parseFloatFunction(JsonObject json) {
+		return entry->(float)parseDoubleFunction(json).applyAsDouble(entry);
+	}
+
+	public static ToDoubleFunction<IOreEntry> parseDoubleFunction(JsonObject json) {
+		try {
+			Class<?> clazz = Class.forName("thelm.jaopca.custom.json.ItemRequestDeserializer");
+			Method method = clazz.getDeclaredMethod("parseDoubleFunction", JsonObject.class);
+			method.setAccessible(true);
+			return (ToDoubleFunction<IOreEntry>)method.invoke(null, json);
+		}
+		catch(ClassNotFoundException e) {
+			return entry->0D;
+		}
+		catch(Exception e) {
+			throw new JsonParseException("Error occurred", e);
+		}
+	}
+
+	public static Predicate<IOreEntry> parsePredicate(JsonObject json) {
+		try {
+			Class<?> clazz = Class.forName("thelm.jaopca.custom.json.ItemRequestDeserializer");
+			Method method = clazz.getDeclaredMethod("parsePredicate", JsonObject.class);
+			method.setAccessible(true);
+			return (Predicate<IOreEntry>)method.invoke(null, json);
+		}
+		catch(ClassNotFoundException e) {
+			return entry->false;
+		}
+		catch(Exception e) {
+			throw new JsonParseException("Error occurred", e);
+		}
 	}
 }

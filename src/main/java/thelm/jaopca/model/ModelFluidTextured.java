@@ -52,7 +52,7 @@ import thelm.jaopca.JAOPCA;
  * Has a tintindex of 0
  */
 public final class ModelFluidTextured implements IRetexturableModel {
-	public static final ModelFluidTextured WATER = new ModelFluidTextured(new ResourceLocation("models/water_still"), new ResourceLocation("models/water_flow"));
+	public static final ModelFluidTextured WATER = new ModelFluidTextured(new ResourceLocation("blocks/water_still"), new ResourceLocation("blocks/water_flow"));
 	private final ResourceLocation still, flowing;
 
 	public ModelFluidTextured(ResourceLocation still, ResourceLocation flowing) {

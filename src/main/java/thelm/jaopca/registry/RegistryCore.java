@@ -220,8 +220,8 @@ public class RegistryCore {
 			return Utils.doesOreNameExist(entry.prefix+ore.getOreName());
 		}
 		else if(entry.type == EnumEntryType.FLUID) {
-			return entry.name.equals("molten") && FluidRegistry.isFluidRegistered(Utils.to_under_score(ore.getOreName()))
-					|| FluidRegistry.isFluidRegistered(entry.prefix+ore.getOreName());
+			return entry.prefix.isEmpty() && FluidRegistry.isFluidRegistered(Utils.to_under_score(ore.getOreName()))
+					|| FluidRegistry.isFluidRegistered(entry.prefix+'_'+ore.getOreName());
 		}
 		else if(entry.type == EnumEntryType.CUSTOM) {
 			boolean flag = true;
@@ -231,7 +231,7 @@ public class RegistryCore {
 			return flag;
 		}
 		else {
-			return false;
+			throw new IllegalArgumentException("Unsupported entry type: "+entry.type);
 		}
 	}
 
@@ -294,7 +294,11 @@ public class RegistryCore {
 				setRarity(ppt.rarity);
 				GameRegistry.register((ItemBlock)itemblock);
 				JAOPCA.proxy.handleBlockRegister((Block)block, (ItemBlock)itemblock);
-				OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack((Block)block, 1, 0));
+				for(int i = 0; i <= block.getMaxMeta(); ++i) {
+					if(block.hasMeta(i)) {
+						OreDictionary.registerOre(block.getPrefix(i)+ore.getOreName(), new ItemStack((Block)block, 1, i));
+					}
+				}
 				JAOPCAApi.BLOCKS_TABLE.put(entry.name, ore.getOreName(), (Block)block);
 			}
 			catch(RuntimeException e) {
@@ -318,10 +322,15 @@ public class RegistryCore {
 				item.
 				setMaxStackSize(ppt.maxStkSize).
 				setFull3D(ppt.full3D).
-				setRarity(ppt.rarity);
+				setRarity(ppt.rarity).
+				setHasEffect(ppt.hasEffect.test(ore));
 				GameRegistry.register((Item)item);
 				JAOPCA.proxy.handleItemRegister((Item)item);
-				OreDictionary.registerOre(entry.prefix+ore.getOreName(), new ItemStack((Item)item, 1, 0));
+				for(int i = 0; i <= item.getMaxMeta(); ++i) {
+					if(item.hasMeta(i)) {
+						OreDictionary.registerOre(item.getPrefix(i)+ore.getOreName(), new ItemStack((Item)item, 1, i));
+					}
+				}
 				JAOPCAApi.ITEMS_TABLE.put(entry.name, ore.getOreName(), (Item)item);
 			}
 			catch(RuntimeException e) {
@@ -340,8 +349,8 @@ public class RegistryCore {
 		FluidProperties ppt = (FluidProperties)entry.properties;
 
 		if(!ppt.hasBlock) {
-			JAOPCAApi.TEXTURES.add(new ResourceLocation("jaopca:fluids/"+entry.prefix+"_still"));
-			JAOPCAApi.TEXTURES.add(new ResourceLocation("jaopca:fluids/"+entry.prefix+"_flowing"));
+			JAOPCAApi.TEXTURES.add(new ResourceLocation("jaopca:fluids/"+entry.name+"_still"));
+			JAOPCAApi.TEXTURES.add(new ResourceLocation("jaopca:fluids/"+entry.name+"_flowing"));
 		}
 
 		for(IOreEntry ore : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get(entry.name)) {

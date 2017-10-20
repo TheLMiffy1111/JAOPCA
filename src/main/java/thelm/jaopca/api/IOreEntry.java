@@ -40,4 +40,14 @@ public interface IOreEntry {
 	public int getColor();
 
 	public EnumOreType getOreType();
+
+	public boolean getHasEffect();
+
+	default boolean hasExtra() {
+		return !getExtra().equals(getOreName());
+	}
+
+	default boolean hasSecondExtra() {
+		return !getSecondExtra().equals(getOreName()) && !getSecondExtra().equals(getExtra());
+	}
 }

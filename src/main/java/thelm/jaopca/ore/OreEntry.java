@@ -18,18 +18,32 @@ public class OreEntry implements IOreEntry {
 	protected final String oreName;
 	protected String extra;
 	protected String extra2;
-	protected double energy;
-	protected double rarity;
+	protected double energy = 1D;
+	protected double rarity = 1D;
 	protected List<String> moduleBlacklist = Lists.<String>newArrayList();
 	protected EnumOreType type = EnumOreType.INGOT;
+	protected boolean hasEffect = false;
 	protected Color color = null;
 
 	public OreEntry(String oreName) {
 		this.oreName = oreName;
 		this.extra = oreName;
 		this.extra2 = oreName;
-		this.energy = 1D;
-		this.rarity = 1D;
+		if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+			String s = "ingot";
+			switch(type) {
+			case DUST:
+				s = "dust";
+				break;
+			case GEM:
+			case GEM_ORELESS:
+				s = "gem";
+				break;
+			default:
+				break;
+			}
+			hasEffect = OreColorer.getHasEffect(s, oreName);
+		}
 	}
 
 	@Override
@@ -65,6 +79,11 @@ public class OreEntry implements IOreEntry {
 	@Override
 	public EnumOreType getOreType() {
 		return type;
+	}
+
+	@Override
+	public boolean getHasEffect() {
+		return hasEffect;
 	}
 
 	@Override
@@ -116,6 +135,10 @@ public class OreEntry implements IOreEntry {
 
 	public void setOreType(EnumOreType type) {
 		this.type = type;
+	}
+
+	public void setHasEffect(boolean hasEffect) {
+		this.hasEffect = hasEffect;
 	}
 
 	public void setColor(Color color) {
