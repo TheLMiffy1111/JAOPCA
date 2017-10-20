@@ -30,6 +30,8 @@ public interface IBlockWithProperty extends IObjectWithProperty {
 	IBlockWithProperty setFireSource(boolean fireSource);
 	IBlockWithProperty setFallable(boolean fallable);
 
+	boolean hasSubtypes();
+
 	@SideOnly(Side.CLIENT)
 	@Override
 	default void registerModels() {

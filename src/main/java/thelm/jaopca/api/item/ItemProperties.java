@@ -1,7 +1,10 @@
 package thelm.jaopca.api.item;
 
+import java.util.function.Predicate;
+
 import net.minecraft.item.EnumRarity;
 import thelm.jaopca.api.EnumEntryType;
+import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.IProperties;
 
 /**
@@ -18,6 +21,7 @@ public class ItemProperties implements IProperties {
 	public int maxStkSize = 64;
 	public boolean full3D = false;
 	public EnumRarity rarity = EnumRarity.COMMON;
+	public Predicate<IOreEntry> hasEffect = entry->entry.getHasEffect();
 	public Class<? extends IItemWithProperty> itemClass = ItemBase.class;
 
 	@Override
@@ -37,6 +41,11 @@ public class ItemProperties implements IProperties {
 
 	public ItemProperties setRarity(EnumRarity value) {
 		rarity = value;
+		return this;
+	}
+
+	public ItemProperties setHasEffect(Predicate<IOreEntry> value) {
+		hasEffect = value;
 		return this;
 	}
 

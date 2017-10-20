@@ -28,7 +28,7 @@ public class JAOPCAStateMap extends StateMapperBase {
 	protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 		if(!(location instanceof ModelResourceLocation)) {
 			LinkedHashMap<IProperty<?>,Comparable<?>> map = Maps.<IProperty<?>,Comparable<?>>newLinkedHashMap(state.getProperties());
-			for(IProperty<?> iproperty : ignored){
+			for(IProperty<?> iproperty : ignored) {
 				map.remove(iproperty);
 			}
 			return new ModelResourceLocation(location, getPropertyString(map));

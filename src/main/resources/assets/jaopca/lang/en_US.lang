@@ -56,6 +56,9 @@ item.jaopca.dirtyGem.name=Dirty %s
 item.jaopca.rockyChunk.name=%s Rocky Chunk
 item.jaopca.chunk.name=%s Chunk
 
+#TeslaPoweredThingies
+item.jaopca.teslaLump.name=Teslified %s Lump
+
 #Please refer to zh_CN or zh_TW for all names to localize.
 #Ingots
 jaopca.entry.LiquifiedCoralium=Coralium

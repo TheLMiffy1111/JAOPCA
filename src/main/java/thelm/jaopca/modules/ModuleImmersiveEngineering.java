@@ -42,7 +42,7 @@ public class ModuleImmersiveEngineering extends ModuleBase {
 		IERecipes.oreOutputSecondaries.replace("Iridium", new Object[] {"dustPlatinum", Float.valueOf(0.1F)});
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			if(!entry.getOreName().equals(entry.getExtra())) {
+			if(entry.hasExtra()) {
 				String s = Utils.oreNameToType(entry.getExtra())==EnumOreType.GEM?"gem":"dust";
 
 				IERecipes.oreOutputSecondaries.put(entry.getOreName(), new Object[] {s+entry.getExtra(), 0.1F});

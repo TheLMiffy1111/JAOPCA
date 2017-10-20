@@ -28,7 +28,7 @@ public class ModuleMolten extends ModuleBase {
 			setEmptySound(SoundEvents.ITEM_BUCKET_EMPTY_LAVA).
 			setMaterial(Material.LAVA);
 
-	public static final ItemEntry MOLTEN_ENTRY = new ItemEntry(EnumEntryType.FLUID, "molten", new ModelResourceLocation("jaopca:fluids/molten#normal")).
+	public static final ItemEntry MOLTEN_ENTRY = new ItemEntry(EnumEntryType.FLUID, "molten", "", new ModelResourceLocation("jaopca:fluids/molten#normal")).
 			setProperties(MOLTEN_PROPERTIES).
 			setOreTypes(EnumOreType.INGOTS);
 

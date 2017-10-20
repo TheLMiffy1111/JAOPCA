@@ -28,12 +28,6 @@ repositories {
     maven {
         url = "http://maven.tterrag.com/"
     }
-    ivy {
-        url "http://ae-mod.info/builds"
-        layout "pattern", {
-            artifact "[module]-[revision](-[classifier])(.[ext])"
-        }
-    }
     maven {
         url = "http://maven.epoxide.org/"
     }
@@ -42,12 +36,6 @@ repositories {
     }
     maven {
         url = "http://maven.modmuss50.me/"
-    }
-    ivy {
-        url "https://addons-origin.cursecdn.com/files/2392/421/"
-        layout "pattern", {
-            artifact "[module]-[revision](-[classifier]).[ext]"
-        }
     }
     maven {
         url = "http://maven.covers1624.net/"
@@ -59,11 +47,14 @@ repositories {
         url = "http://maven.shadowfacts.net/"
     }
     maven {
+        url = "http://maven.ndrei.net/"
+    }
+    maven {
         url = "https://modmaven.k-4u.nl/" 
     }
 }
 
-version = "1.12-2.2.3.47"
+version = "1.12.2-2.2.4.50"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -73,7 +64,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12-14.21.1.2426"
+    version = "1.12-14.21.1.2443"
     runDir = "run"
     mappings = "snapshot_20170624"
     makeObfSourceJar = false
@@ -107,6 +98,8 @@ dependencies {
     deobfCompile("net.shadowfacts:Forgelin:1.5.1") {
         transitive = false
     }
+    deobfCompile "net.darkhax.tesla:Tesla-1.12:1.0.61"
+    deobfCompile "net.ndrei:tesla-core-lib:1.12-1.0.10-snapshot"
 }
 
 processResources

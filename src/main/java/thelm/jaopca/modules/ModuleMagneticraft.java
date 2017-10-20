@@ -53,7 +53,7 @@ public class ModuleMagneticraft extends ModuleBase {
 			ISluiceBoxRecipeManager manager = MagneticraftApi.getSluiceBoxRecipeManager();
 			List<Pair<ItemStack, Float>> list = Lists.<Pair<ItemStack, Float>>newArrayList();
 			list.add(TuplesKt.to(Utils.getOreStackExtra("dust", entry, 1), 0.15F));
-			if(!entry.getSecondExtra().equals(entry.getOreName()) && !entry.getSecondExtra().equals(entry.getExtra())) {
+			if(entry.hasSecondExtra()) {
 				list.add(TuplesKt.to(Utils.getOreStackSecondExtra("dust", entry, 1), 0.15F));
 			}
 			list.add(TuplesKt.to(new ItemStack(Blocks.COBBLESTONE), 0.15F));
