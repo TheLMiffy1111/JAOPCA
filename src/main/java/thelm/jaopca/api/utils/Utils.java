@@ -4,17 +4,24 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Table;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumOreType;
@@ -24,6 +31,7 @@ import thelm.jaopca.api.JAOPCAApi;
 public class Utils {
 
 	public static final HashMap<String,ItemStack> CACHE = Maps.<String,ItemStack>newHashMap();
+	public static final HashMap<String,FluidStack> CACHE1 = Maps.<String,FluidStack>newHashMap();
 	public static final LinkedList<String> MOD_IDS = Lists.<String>newLinkedList();
 
 	public static ItemStack getOreStack(String name, int amount) {
@@ -177,6 +185,130 @@ public class Utils {
 		}
 
 		return getOreStackSecondExtra(fallback, entry, amount);
+	}
+
+	public static FluidStack getFluidStack(String name, int amount) {
+		if(CACHE1.containsKey(name)) {
+			FluidStack ret = CACHE1.get(name).copy();
+			ret.amount = amount;
+			return ret;
+		}
+
+		FluidStack ret = FluidRegistry.getFluidStack(name, 1);
+		if(ret != null) {
+			CACHE1.put(name, ret.copy());
+			ret.amount = amount;
+		}
+
+		return ret;
+	}
+
+	public static FluidStack getFluidStack(String prefix, IOreEntry entry, int amount) {
+		String s = (prefix.isEmpty()?"":toLowerCase(prefix)+'_')+to_under_score(entry.getOreName());
+
+		if(CACHE1.containsKey(s)) {
+			FluidStack ret = CACHE1.get(s).copy();
+			ret.amount = amount;
+			return ret;
+		}
+
+		if(JAOPCAApi.FLUIDS_TABLE.contains(prefix, entry.getOreName())) {
+			Fluid f = JAOPCAApi.FLUIDS_TABLE.get(prefix, entry.getOreName());
+			CACHE1.put(s, new FluidStack(f, 1));
+			return new FluidStack(f, amount);
+		}
+
+		return getFluidStack(s, amount);
+	}
+
+	public static FluidStack getFluidStackExtra(String prefix, IOreEntry entry, int amount) {
+		String s = (prefix.isEmpty()?"":toLowerCase(prefix)+'_')+to_under_score(entry.getExtra());
+
+		if(CACHE1.containsKey(s)) {
+			FluidStack ret = CACHE1.get(s).copy();
+			ret.amount = amount;
+			return ret;
+		}
+
+		if(JAOPCAApi.FLUIDS_TABLE.contains(prefix, entry.getExtra())) {
+			Fluid f = JAOPCAApi.FLUIDS_TABLE.get(prefix, entry.getExtra());
+			CACHE1.put(s, new FluidStack(f, 1));
+			return new FluidStack(f, amount);
+		}
+
+		return getFluidStack(s, amount);
+	}
+
+	public static FluidStack getFluidStackSecondExtra(String prefix, IOreEntry entry, int amount) {
+		String s = (prefix.isEmpty()?"":toLowerCase(prefix)+'_')+to_under_score(entry.getSecondExtra());
+
+		if(CACHE1.containsKey(s)) {
+			FluidStack ret = CACHE1.get(s).copy();
+			ret.amount = amount;
+			return ret;
+		}
+
+		if(JAOPCAApi.FLUIDS_TABLE.contains(prefix, entry.getSecondExtra())) {
+			Fluid f = JAOPCAApi.FLUIDS_TABLE.get(prefix, entry.getSecondExtra());
+			CACHE1.put(s, new FluidStack(f, 1));
+			return new FluidStack(f, amount);
+		}
+
+		return getFluidStack(s, amount);
+	}
+
+	public static FluidStack getJAOPCAOrFluidStack(String prefix, String fallback, IOreEntry entry, int amount) {
+		String s = (prefix.isEmpty()?"":toLowerCase(prefix)+'_')+to_under_score(entry.getOreName());
+
+		if(CACHE1.containsKey(s)) {
+			FluidStack ret = CACHE1.get(s).copy();
+			ret.amount = amount;
+			return ret;
+		}
+
+		if(JAOPCAApi.FLUIDS_TABLE.contains(prefix, entry.getOreName())) {
+			Fluid f = JAOPCAApi.FLUIDS_TABLE.get(prefix, entry.getOreName());
+			CACHE1.put(s, new FluidStack(f, 1));
+			return new FluidStack(f, amount);
+		}
+
+		return getFluidStack(fallback, entry, amount);
+	}
+
+	public static FluidStack getJAOPCAOrFluidStackExtra(String prefix, String fallback, IOreEntry entry, int amount) {
+		String s = (prefix.isEmpty()?"":toLowerCase(prefix)+'_')+to_under_score(entry.getExtra());
+
+		if(CACHE1.containsKey(s)) {
+			FluidStack ret = CACHE1.get(s).copy();
+			ret.amount = amount;
+			return ret;
+		}
+
+		if(JAOPCAApi.FLUIDS_TABLE.contains(prefix, entry.getExtra())) {
+			Fluid f = JAOPCAApi.FLUIDS_TABLE.get(prefix, entry.getExtra());
+			CACHE1.put(s, new FluidStack(f, 1));
+			return new FluidStack(f, amount);
+		}
+
+		return getFluidStackExtra(fallback, entry, amount);
+	}
+
+	public static FluidStack getJAOPCAOrFluidStackSecondExtra(String prefix, String fallback, IOreEntry entry, int amount) {
+		String s = (prefix.isEmpty()?"":toLowerCase(prefix)+'_')+to_under_score(entry.getSecondExtra());
+
+		if(CACHE1.containsKey(s)) {
+			FluidStack ret = CACHE1.get(s).copy();
+			ret.amount = amount;
+			return ret;
+		}
+
+		if(JAOPCAApi.FLUIDS_TABLE.contains(prefix, entry.getSecondExtra())) {
+			Fluid f = JAOPCAApi.FLUIDS_TABLE.get(prefix, entry.getSecondExtra());
+			CACHE1.put(s, new FluidStack(f, 1));
+			return new FluidStack(f, amount);
+		}
+
+		return getFluidStackSecondExtra(fallback, entry, amount);
 	}
 
 	public static int energyI(IOreEntry entry, double energy) {

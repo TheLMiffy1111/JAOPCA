@@ -14,6 +14,7 @@ public class ItemBase extends Item implements IItemWithProperty {
 	public final ItemEntry itemEntry;
 
 	public EnumRarity rarity = EnumRarity.COMMON;
+	public boolean hasEffect = false;
 
 	public ItemBase(ItemEntry itemEntry, IOreEntry oreEntry) {
 		setUnlocalizedName("jaopca."+itemEntry.name);
@@ -53,6 +54,17 @@ public class ItemBase extends Item implements IItemWithProperty {
 	public ItemBase setMaxStackSize(int maxStackSize) {
 		super.setMaxStackSize(maxStackSize);
 		return this;
+	}
+
+	@Override
+	public ItemBase setHasEffect(boolean hasEffect) {
+		this.hasEffect = hasEffect;
+		return this;
+	}
+
+	@Override
+	public boolean hasEffect(ItemStack stack) {
+		return hasEffect || super.hasEffect(stack);
 	}
 
 	@Override

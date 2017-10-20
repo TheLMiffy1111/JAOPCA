@@ -292,4 +292,11 @@ public class BlockBase extends Block implements IBlockWithProperty {
 			}
 		}
 	}
+
+	/*======================================== UNUSED ======================================*/
+	
+	@Override
+	public boolean hasSubtypes() {
+		return false;
+	}
 }

@@ -39,18 +39,18 @@ public class ModuleEmbers extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			if(FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				RecipeRegistry.meltingOreRecipes.put("ore"+entry.getOreName(),
-						new ItemMeltingOreRecipe("ore"+entry.getOreName(), new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 288)));
+						new ItemMeltingOreRecipe("ore"+entry.getOreName(), FluidRegistry.getFluidStack(Utils.to_under_score(entry.getOreName()), 288)));
 				RecipeRegistry.meltingOreRecipes.put("ingot"+entry.getOreName(),
-						new ItemMeltingOreRecipe("ingot"+entry.getOreName(), new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144)));
+						new ItemMeltingOreRecipe("ingot"+entry.getOreName(), FluidRegistry.getFluidStack(Utils.to_under_score(entry.getOreName()), 144)));
 				RecipeRegistry.meltingOreRecipes.put("nugget"+entry.getOreName(),
-						new ItemMeltingOreRecipe("nugget"+entry.getOreName(), new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 16)));
+						new ItemMeltingOreRecipe("nugget"+entry.getOreName(), FluidRegistry.getFluidStack(Utils.to_under_score(entry.getOreName()), 16)));
 
 				RecipeRegistry.stampingRecipes.add(
-						new ItemStampingRecipe(null, new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144),
+						new ItemStampingRecipe(null, FluidRegistry.getFluidStack(Utils.to_under_score(entry.getOreName()), 144),
 								EnumStampType.TYPE_BAR, Utils.getOreStack("ingot", entry, 1), false, false));
 				if(Utils.doesOreNameExist("plate"+entry.getOreName())) {
 					RecipeRegistry.stampingRecipes.add(
-							new ItemStampingRecipe(null, new FluidStack(FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 144),
+							new ItemStampingRecipe(null, FluidRegistry.getFluidStack(Utils.to_under_score(entry.getOreName()), 144),
 									EnumStampType.TYPE_PLATE, Utils.getOreStack("plate", entry, 1), false, false));
 				}
 			}

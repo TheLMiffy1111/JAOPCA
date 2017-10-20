@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 
 import mekanism.api.gas.Gas;
@@ -274,7 +275,7 @@ public class ModuleMekanism extends ModuleBase {
 		}
 	}
 
-	public static GasProperties parseGasPpt(JsonObject jsonObject) {
+	public static GasProperties parseGasPpt(JsonObject jsonObject, JsonDeserializationContext context) {
 		String iconName = JsonUtils.getString(jsonObject, "icon_name", "minecraft:blocks/water_still");
 		boolean visible = JsonUtils.getBoolean(jsonObject, "visible", true);
 		GasProperties ppt = new GasProperties().

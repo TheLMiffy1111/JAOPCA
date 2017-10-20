@@ -101,4 +101,18 @@ public class OreColorer {
 		while((color&0xFFFFFF) == 0xFFFFFF && i != -1);
 		return color;
 	}
+
+	public static boolean getHasEffect(String prefix, String oreName) {
+		List<ItemStack> ores = OreDictionary.getOres(prefix+oreName, false);
+		if(ores.isEmpty()) {
+			return false;
+		}
+
+		for(ItemStack ore : ores) {
+			if(ore.hasEffect()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

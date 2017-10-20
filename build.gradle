@@ -28,12 +28,6 @@ repositories {
     maven {
         url = "http://maven.tterrag.com/"
     }
-    ivy {
-        url "http://ae-mod.info/builds"
-        layout "pattern", {
-            artifact "[module]-[revision](-[classifier])(.[ext])"
-        }
-    }
     maven {
         url = "http://maven.epoxide.org/"
     }
@@ -57,7 +51,7 @@ repositories {
     }
 }
 
-version = "1.10.2-2.0.3.45"
+version = "1.10.2-2.0.4.48"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 

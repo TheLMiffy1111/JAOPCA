@@ -60,8 +60,7 @@ public class JAOPCAConfig {
 		reloadColors = configFile.get(name, "reloadColorConfigs", false, "Set to true to reload color configs.").setRequiresMcRestart(true).getBoolean();
 
 		if(reloadColors) {
-			configFile.getCategory(name).remove("reloadColorConfigs");
-			configFile.get(name, "reloadColorConfigs", false, "Set to true to reload color configs.").setRequiresMcRestart(true).getBoolean();
+			configFile.getCategory(name).get("reloadColorConfigs").setToDefault();
 		}
 
 		usedCategories.add(name);
@@ -84,8 +83,7 @@ public class JAOPCAConfig {
 				}
 				else {
 					JAOPCAApi.LOGGER.warn("Found invalid extra name in ore entry "+entry.getOreName()+", replacing");
-					configFile.getCategory(name).remove("extra");
-					configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true);
+					configFile.getCategory(name).get("extra").setToDefault();
 					entry.setExtra(originalExtra);
 				}
 
@@ -98,14 +96,14 @@ public class JAOPCAConfig {
 				}
 				else {
 					JAOPCAApi.LOGGER.warn("Found invalid extra name in ore entry "+entry.getOreName()+", replacing");
-					configFile.getCategory(name).remove("extra2");
-					configFile.get(name, "extra2", originalExtra2).setRequiresMcRestart(true);
+					configFile.getCategory(name).get("extra2").setToDefault();
 					entry.setExtra(originalExtra2);
 				}
 			}
 
 			entry.setEnergyModifier(configFile.get(name, "energyModifier", entry.getEnergyModifier()).setRequiresMcRestart(true).getDouble());
 			entry.setRarity(configFile.get(name, "rarity", entry.getRarity()).setRequiresMcRestart(true).getDouble());
+			entry.setHasEffect(configFile.get(name, "hasEffect", entry.getHasEffect()).setRequiresMcRestart(true).getBoolean());
 			entry.addBlacklistedModules(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
 
 			usedCategories.add(name);
