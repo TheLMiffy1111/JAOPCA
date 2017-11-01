@@ -58,6 +58,7 @@ item.jaopca.chunk.name=%s Chunk
 
 #TeslaPoweredThingies
 item.jaopca.teslaLump.name=Teslified %s Lump
+item.jaopca.augmentedLump.name=Augmented %s Lump
 
 #Please refer to zh_CN or zh_TW for all names to localize.
 #Ingots

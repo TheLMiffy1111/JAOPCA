@@ -67,7 +67,7 @@ public class RegistryModules {
 			JAOPCAApi.registerModule(new ModuleMagneticraft());
 		}
 		if(Loader.isModLoaded("teslathingies")) {
-			JAOPCAApi.registerModule(new ModuleTeslaPoweredThingies());
+			JAOPCAApi.registerModule(new ModulePoweredThingies());
 		}
 	}
 }

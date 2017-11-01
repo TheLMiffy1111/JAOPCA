@@ -3,10 +3,7 @@ package thelm.jaopca.api.utils;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.reflect.Method;
-import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
+import java.lang.reflect.Type;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,16 +15,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-
-import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ToFloatFunction;
 
 /**
  * Vanilla JsonUtils but without Forge's SideOnly
  */
 public class JsonUtils {
-	
+
 	/**
 	 * Does the given JsonObject contain a string field with the given name?
 	 */
@@ -49,7 +44,7 @@ public class JsonUtils {
 	public static boolean isNumber(JsonElement json) {
 		return !json.isJsonPrimitive() ? false : json.getAsJsonPrimitive().isNumber();
 	}
-	
+
 	public static boolean isBoolean(JsonObject json, String memberName) {
 		return !isJsonPrimitive(json, memberName) ? false : json.getAsJsonPrimitive(memberName).isBoolean();
 	}
@@ -105,7 +100,7 @@ public class JsonUtils {
 	 * Gets the string value of the field on the JsonObject with the given name, or the given default value if the field
 	 * is missing.
 	 */
-	
+
 	public static String getString(JsonObject json, String memberName, String fallback) {
 		return json.has(memberName) ? getString(json.get(memberName), memberName) : fallback;
 	}
@@ -126,7 +121,7 @@ public class JsonUtils {
 	/**
 	 * Gets the boolean value of the field on the JsonObject with the given name.
 	 */
-	
+
 	public static boolean getBoolean(JsonObject json, String memberName) {
 		if(json.has(memberName)) {
 			return getBoolean(json.get(memberName), memberName);
@@ -176,7 +171,7 @@ public class JsonUtils {
 	public static float getFloat(JsonObject json, String memberName, float fallback) {
 		return json.has(memberName) ? getFloat(json.get(memberName), memberName) : fallback;
 	}
-	
+
 	public static double getDouble(JsonElement json, String memberName) {
 		if(json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber()) {
 			return json.getAsDouble();
@@ -185,7 +180,7 @@ public class JsonUtils {
 			throw new JsonSyntaxException("Expected "+memberName+" to be a Float, was "+toString(json));
 		}
 	}
-	
+
 	public static double getDouble(JsonObject json, String memberName) {
 		if(json.has(memberName)) {
 			return getDouble(json.get(memberName), memberName);
@@ -194,7 +189,7 @@ public class JsonUtils {
 			throw new JsonSyntaxException("Missing "+memberName+", expected to find a Double");
 		}
 	}
-	
+
 	public static double getDouble(JsonObject json, String memberName, double fallback) {
 		return json.has(memberName) ? getDouble(json.get(memberName), memberName) : fallback;
 	}
@@ -258,7 +253,7 @@ public class JsonUtils {
 	 * Gets the JsonObject field on the JsonObject with the given name, or the given default value if the field is
 	 * missing.
 	 */
-	
+
 	public static JsonObject getJsonObject(JsonObject json, String memberName, JsonObject fallback) {
 		return json.has(memberName) ? getJsonObject(json.get(memberName), memberName) : fallback;
 	}
@@ -296,26 +291,26 @@ public class JsonUtils {
 		return json.has(memberName) ? getJsonArray(json.get(memberName), memberName) : fallback;
 	}
 
-	public static <T> T deserializeClass(JsonElement json, String memberName, JsonDeserializationContext context, Class<? extends T> adapter) {
+	public static <T> T deserializeClass(JsonElement json, String memberName, JsonDeserializationContext context, Type typeOfT) {
 		if(json != null) {
-			return context.deserialize(json, adapter);
+			return context.deserialize(json, typeOfT);
 		}
 		else {
 			throw new JsonSyntaxException("Missing "+memberName);
 		}
 	}
 
-	public static <T> T deserializeClass(JsonObject json, String memberName, JsonDeserializationContext context, Class<? extends T> adapter) {
+	public static <T> T deserializeClass(JsonObject json, String memberName, JsonDeserializationContext context, Type typeOfT) {
 		if(json.has(memberName)) {
-			return deserializeClass(json.get(memberName), memberName, context, adapter);
+			return deserializeClass(json.get(memberName), memberName, context, typeOfT);
 		}
 		else {
 			throw new JsonSyntaxException("Missing "+memberName);
 		}
 	}
 
-	public static <T> T deserializeClass(JsonObject json, String memberName, T fallback, JsonDeserializationContext context, Class<? extends T> adapter) {
-		return (T)(json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, adapter) : fallback);
+	public static <T> T deserializeClass(JsonObject json, String memberName, T fallback, JsonDeserializationContext context, Type typeOfT) {
+		return (T)(json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, typeOfT) : fallback);
 	}
 
 	/**
@@ -353,60 +348,22 @@ public class JsonUtils {
 		}
 	}
 
-	public static <T> T gsonDeserialize(Gson gsonIn, Reader readerIn, Class<T> adapter, boolean lenient) {
+	public static <T> T gsonDeserialize(Gson gsonIn, Reader readerIn, Type typeOfT, boolean lenient) {
 		try {
 			JsonReader jsonreader = new JsonReader(readerIn);
 			jsonreader.setLenient(lenient);
-			return gsonIn.getAdapter(adapter).read(jsonreader);
+			return gsonIn.getAdapter((TypeToken<T>)TypeToken.get(typeOfT)).read(jsonreader);
 		}
 		catch(IOException ioexception) {
 			throw new JsonParseException(ioexception);
 		}
 	}
 
-	public static <T> T gsonDeserialize(Gson gsonIn, String json, Class<T> adapter) {
-		return gsonDeserialize(gsonIn, json, adapter, false);
+	public static <T> T gsonDeserialize(Gson gsonIn, String json, Type typeOfT) {
+		return gsonDeserialize(gsonIn, json, typeOfT, false);
 	}
 
-	public static <T> T gsonDeserialize(Gson gsonIn, String json, Class<T> adapter, boolean lenient) {
-		return gsonDeserialize(gsonIn, new StringReader(json), adapter, lenient);
-	}
-
-	public static ToIntFunction<IOreEntry> parseIntFunction(JsonObject json) {
-		return entry->(int)parseDoubleFunction(json).applyAsDouble(entry);
-	}
-
-	public static ToFloatFunction<IOreEntry> parseFloatFunction(JsonObject json) {
-		return entry->(float)parseDoubleFunction(json).applyAsDouble(entry);
-	}
-
-	public static ToDoubleFunction<IOreEntry> parseDoubleFunction(JsonObject json) {
-		try {
-			Class<?> clazz = Class.forName("thelm.jaopca.custom.json.ItemRequestDeserializer");
-			Method method = clazz.getDeclaredMethod("parseDoubleFunction", JsonObject.class);
-			method.setAccessible(true);
-			return (ToDoubleFunction<IOreEntry>)method.invoke(null, json);
-		}
-		catch(ClassNotFoundException e) {
-			return entry->0D;
-		}
-		catch(Exception e) {
-			throw new JsonParseException("Error occurred", e);
-		}
-	}
-
-	public static Predicate<IOreEntry> parsePredicate(JsonObject json) {
-		try {
-			Class<?> clazz = Class.forName("thelm.jaopca.custom.json.ItemRequestDeserializer");
-			Method method = clazz.getDeclaredMethod("parsePredicate", JsonObject.class);
-			method.setAccessible(true);
-			return (Predicate<IOreEntry>)method.invoke(null, json);
-		}
-		catch(ClassNotFoundException e) {
-			return entry->false;
-		}
-		catch(Exception e) {
-			throw new JsonParseException("Error occurred", e);
-		}
+	public static <T> T gsonDeserialize(Gson gsonIn, String json, Type typeOfT, boolean lenient) {
+		return gsonDeserialize(gsonIn, new StringReader(json), typeOfT, lenient);
 	}
 }

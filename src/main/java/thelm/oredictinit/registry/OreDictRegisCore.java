@@ -6,9 +6,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import thelm.oredictinit.Woodchopper;
 import thelm.oredictinit.api.ICompat;
 import thelm.oredictinit.api.OreDictInitApi;
+import thelm.oredictinit.api.Woodchopper;
 import thelm.oredictinit.lib.Data;
 
 public class OreDictRegisCore {
