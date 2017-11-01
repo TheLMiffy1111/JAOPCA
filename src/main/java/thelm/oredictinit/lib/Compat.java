@@ -4,6 +4,7 @@ import net.minecraftforge.fml.common.Loader;
 import thelm.oredictinit.api.OreDictInitApi;
 import thelm.oredictinit.compat.CompatCalculator;
 import thelm.oredictinit.compat.CompatDraconicEvolution;
+import thelm.oredictinit.compat.CompatEvilCraft;
 import thelm.oredictinit.compat.CompatExtremeReactors;
 import thelm.oredictinit.compat.CompatGalacticraftCore;
 import thelm.oredictinit.compat.CompatGalacticraftPlanets;
@@ -49,6 +50,9 @@ public class Compat {
 		}
 		if(Loader.isModLoaded("rftools")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatRFTools());
+		}
+		if(Loader.isModLoaded("evilcraft")) {
+			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatEvilCraft());
 		}
 	}
 }
