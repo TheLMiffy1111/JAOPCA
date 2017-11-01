@@ -1,7 +1,6 @@
 package thelm.jaopca.modules;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -20,7 +19,6 @@ import com.bartz24.skyresources.technology.cauldron.CauldronCleanRecipes;
 import com.bartz24.skyresources.technology.concentrator.ConcentratorRecipes;
 import com.bartz24.skyresources.technology.rockgrinder.RockGrinderRecipes;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

@@ -3,7 +3,7 @@ package thelm.oredictinit.lib;
 import java.io.File;
 
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import thelm.oredictinit.Woodchopper;
+import thelm.oredictinit.api.Woodchopper;
 import thelm.oredictinit.registry.OreDictRegisCore;
 import thelm.wrapup.event.PreInitializationWrapUpEvent;
 

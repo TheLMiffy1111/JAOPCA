@@ -18,7 +18,6 @@ import com.google.gson.GsonBuilder;
 
 import exnihiloadscensio.ExNihiloAdscensio;
 import exnihiloadscensio.blocks.BlockSieve.MeshType;
-import exnihiloadscensio.config.Config;
 import exnihiloadscensio.items.ore.Ore;
 import exnihiloadscensio.json.CustomBlockInfoJson;
 import exnihiloadscensio.json.CustomItemInfoJson;
@@ -31,11 +30,9 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.IOreEntry;
@@ -52,18 +49,6 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 	public static final ArrayList<String> EXISTING_ORES = Lists.<String>newArrayList();
 
 	public static final HashMap<IOreEntry, double[]> RARITY_MUTIPLIERS = Maps.<IOreEntry, double[]>newHashMap();
-
-	public static final String ENDER_IO_MESSAGE = "" +
-			"<recipeGroup name=\"JAOPCA_ENA\">" +
-			"<recipe name=\"%s\" energyCost=\"400\">" +
-			"<input>" +
-			"<itemStack oreDictionary=\"%s\" />" +
-			"</input>" +
-			"<output>" +
-			"<itemStack oreDictionary=\"%s\" number=\"2\" />" +
-			"</output>" +
-			"</recipe>" +
-			"</recipeGroup>";
 
 	@Override
 	public String getName() {
@@ -95,6 +80,9 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 	@Override
 	public void preInit() {
 		MinecraftForge.EVENT_BUS.register(this);
+		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("hunk")) {
+			OreDictionary.registerOre("ore"+entry.getOreName(), Utils.getOreStack("hunk", entry, 1));
+		}
 	}
 
 	@Override
@@ -107,14 +95,6 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 					"piece"+entry.getOreName(),
 			}));
 			Utils.addSmelting(Utils.getOreStack("hunk", entry, 1), Utils.getOreStack("ingot", entry, 1), 0.7F);
-
-			if(Config.doTICCompat && Loader.isModLoaded("tconstruct") && FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
-				ModuleTinkersConstruct.addMeltingRecipe("hunk"+entry.getOreName(), FluidRegistry.getFluid(Utils.to_under_score(entry.getOreName())), 288);
-			}
-
-			if(Config.doEnderIOCompat && Loader.isModLoaded("EnderIO")) {
-				addOreSAGMillRecipe("hunk"+entry.getOreName(), "dust"+entry.getOreName());
-			}
 		}
 	}
 
@@ -134,10 +114,6 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 				Pair.of("orePiece", "piece"),
 				Pair.of("oreChunk", "hunk")
 				);
-	}
-
-	public static void addOreSAGMillRecipe(String input, String output) {
-		FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", String.format(ENDER_IO_MESSAGE, input, input, output));
 	}
 
 	static {

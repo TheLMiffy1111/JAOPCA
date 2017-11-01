@@ -3,10 +3,7 @@ package thelm.jaopca.api.utils;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.reflect.Method;
-import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
+import java.lang.reflect.Type;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,10 +15,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-
-import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ToFloatFunction;
 
 /**
  * Vanilla JsonUtils but without Forge's SideOnly
@@ -296,26 +291,26 @@ public class JsonUtils {
 		return json.has(memberName) ? getJsonArray(json.get(memberName), memberName) : fallback;
 	}
 
-	public static <T> T deserializeClass(JsonElement json, String memberName, JsonDeserializationContext context, Class<? extends T> adapter) {
+	public static <T> T deserializeClass(JsonElement json, String memberName, JsonDeserializationContext context, Type typeOfT) {
 		if(json != null) {
-			return context.deserialize(json, adapter);
+			return context.deserialize(json, typeOfT);
 		}
 		else {
 			throw new JsonSyntaxException("Missing "+memberName);
 		}
 	}
 
-	public static <T> T deserializeClass(JsonObject json, String memberName, JsonDeserializationContext context, Class<? extends T> adapter) {
+	public static <T> T deserializeClass(JsonObject json, String memberName, JsonDeserializationContext context, Type typeOfT) {
 		if(json.has(memberName)) {
-			return deserializeClass(json.get(memberName), memberName, context, adapter);
+			return deserializeClass(json.get(memberName), memberName, context, typeOfT);
 		}
 		else {
 			throw new JsonSyntaxException("Missing "+memberName);
 		}
 	}
 
-	public static <T> T deserializeClass(JsonObject json, String memberName, T fallback, JsonDeserializationContext context, Class<? extends T> adapter) {
-		return (T)(json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, adapter) : fallback);
+	public static <T> T deserializeClass(JsonObject json, String memberName, T fallback, JsonDeserializationContext context, Type typeOfT) {
+		return (T)(json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, typeOfT) : fallback);
 	}
 
 	/**
@@ -353,22 +348,22 @@ public class JsonUtils {
 		}
 	}
 
-	public static <T> T gsonDeserialize(Gson gsonIn, Reader readerIn, Class<T> adapter, boolean lenient) {
+	public static <T> T gsonDeserialize(Gson gsonIn, Reader readerIn, Type typeOfT, boolean lenient) {
 		try {
 			JsonReader jsonreader = new JsonReader(readerIn);
 			jsonreader.setLenient(lenient);
-			return gsonIn.getAdapter(adapter).read(jsonreader);
+			return gsonIn.getAdapter((TypeToken<T>)TypeToken.get(typeOfT)).read(jsonreader);
 		}
 		catch(IOException ioexception) {
 			throw new JsonParseException(ioexception);
 		}
 	}
 
-	public static <T> T gsonDeserialize(Gson gsonIn, String json, Class<T> adapter) {
-		return gsonDeserialize(gsonIn, json, adapter, false);
+	public static <T> T gsonDeserialize(Gson gsonIn, String json, Type typeOfT) {
+		return gsonDeserialize(gsonIn, json, typeOfT, false);
 	}
 
-	public static <T> T gsonDeserialize(Gson gsonIn, String json, Class<T> adapter, boolean lenient) {
-		return gsonDeserialize(gsonIn, new StringReader(json), adapter, lenient);
+	public static <T> T gsonDeserialize(Gson gsonIn, String json, Type typeOfT, boolean lenient) {
+		return gsonDeserialize(gsonIn, new StringReader(json), typeOfT, lenient);
 	}
 }

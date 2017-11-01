@@ -21,7 +21,7 @@ public class OreFinder {
 	public static final HashMap<String, String> DEFAULT_EXTRAS = Maps.<String, String>newHashMap();
 	public static final HashMap<String, String> DEFAULT_SECOND_EXTRAS = Maps.<String, String>newHashMap();
 	public static final HashMap<String, Double> DEFAULT_ENERGY_MODIFIERS = Maps.<String, Double>newHashMap();
-	public static final ArrayList<String> NAMING_NONSENSE = Lists.<String>newArrayList(
+	public static final ArrayList<String> CONTAINING_BLACKLIST = Lists.<String>newArrayList(
 			"Aluminum",
 			"Sulphur",
 			"Chrome",
@@ -65,7 +65,7 @@ public class OreFinder {
 		allOres.addAll(ingotOres);
 		if(JAOPCAConfig.ingot) {
 			main:for(String name : ingotOres) {
-				for(String nonsense : NAMING_NONSENSE) {
+				for(String nonsense : CONTAINING_BLACKLIST) {
 					if(name.contains(nonsense)) {
 						continue main;
 					}
@@ -91,7 +91,7 @@ public class OreFinder {
 		allOres.addAll(gemOres);
 		if(JAOPCAConfig.gem) {
 			main:for(String name : gemOres) {
-				for(String nonsense : NAMING_NONSENSE) {
+				for(String nonsense : CONTAINING_BLACKLIST) {
 					if(name.contains(nonsense)) {
 						continue main;
 					}
@@ -117,7 +117,7 @@ public class OreFinder {
 		allOres.addAll(dustOres);
 		if(JAOPCAConfig.dust) {
 			main:for(String name : dustOres) {
-				for(String nonsense : NAMING_NONSENSE) {
+				for(String nonsense : CONTAINING_BLACKLIST) {
 					if(name.contains(nonsense)) {
 						continue main;
 					}
@@ -144,7 +144,7 @@ public class OreFinder {
 		allOres.addAll(ingotNoOres);
 		if(JAOPCAConfig.ingot_oreless) {
 			main:for(String name : ingotNoOres) {
-				for(String nonsense : NAMING_NONSENSE) {
+				for(String nonsense : CONTAINING_BLACKLIST) {
 					if(name.contains(nonsense)) {
 						continue main;
 					}
@@ -164,7 +164,7 @@ public class OreFinder {
 		allOres.addAll(gemNoOres);
 		if(JAOPCAConfig.gem_oreless) {
 			main:for(String name : gemNoOres) {
-				for(String nonsense : NAMING_NONSENSE) {
+				for(String nonsense : CONTAINING_BLACKLIST) {
 					if(name.contains(nonsense)) {
 						continue main;
 					}
