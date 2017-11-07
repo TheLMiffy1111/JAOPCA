@@ -22,7 +22,7 @@ import thelm.jaopca.utils.JAOPCAEventHandler;
 public class JAOPCA {
 	public static final String MOD_ID = "jaopca";
 	public static final String NAME = "JAOPCA";
-	public static final String VERSION = "1.12-2.2.4.53";
+	public static final String VERSION = "1.12-2.2.4.54";
 	@Instance(JAOPCA.MOD_ID)
 	public static JAOPCA core;
 	@SidedProxy(clientSide = "thelm.jaopca.proxy.ClientProxy", serverSide = "thelm.jaopca.proxy.CommonProxy", modId = JAOPCA.MOD_ID)

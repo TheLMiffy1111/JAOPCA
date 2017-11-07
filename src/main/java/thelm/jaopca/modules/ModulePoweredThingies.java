@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
+import net.ndrei.teslapoweredthingies.api.PoweredThingiesAPI;
 import net.ndrei.teslapoweredthingies.common.IRecipeOutput;
 import net.ndrei.teslapoweredthingies.common.OreOutput;
 import net.ndrei.teslapoweredthingies.common.SecondaryOreOutput;
@@ -151,8 +152,7 @@ public class ModulePoweredThingies extends ModuleBase {
 			}
 			ItemStack tLump = Utils.getOreStack("teslaLump", entry, 1);
 			ItemStack aLump = Utils.getOreStack("augmentedLump", entry, 1);
-			CompoundMakerRegistry.INSTANCE.addRecipe(new CompoundMakerRecipe(aLump.getItem().getRegistryName(),
-					aLump, null, new ItemStack[] {tLump}, null, new ItemStack[] {tO.copy()}), true);
+			PoweredThingiesAPI.compoundMakerRegistry.registerRecipe(aLump, null, new ItemStack[] {tLump}, null, new ItemStack[] {tO.copy()});
 			ArrayList<IRecipeOutput> outputList = Lists.<IRecipeOutput>newArrayList(
 					new OreOutput("dust"+entry.getOreName(), amount)
 					);
