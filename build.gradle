@@ -54,7 +54,7 @@ repositories {
     }
 }
 
-version = "1.12.2-2.2.4.54"
+version = "1.12.2-2.2.5.57"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -104,6 +104,7 @@ dependencies {
     deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.11") {
         transitive = false
     }
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.9.285"
 }
 
 processResources
