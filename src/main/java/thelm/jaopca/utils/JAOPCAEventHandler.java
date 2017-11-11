@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.minetweaker.RegistryMineTweaker;
 import thelm.jaopca.ore.OreFinder;
 import thelm.jaopca.registry.RegistryCore;
 import thelm.wrapup.event.InitializationWrapUpEvent;
@@ -26,9 +27,7 @@ public class JAOPCAEventHandler {
 
 	@SubscribeEvent
 	public void onPreInitWrapUp(PreInitializationWrapUpEvent.Event2 event) {
-		JAOPCAConfig.init(new File(event.event.getModConfigurationDirectory(), "JAOPCA.cfg"));
-		OreFinder.findOres();
-		RegistryCore.preInit();
+		RegistryCore.preInit(event.event);
 	}
 
 	@SubscribeEvent

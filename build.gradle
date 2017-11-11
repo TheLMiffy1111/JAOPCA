@@ -57,7 +57,7 @@ repositories {
     }
 }
 
-version = "1.11.2-2.1.4.52"
+version = "1.11.2-2.1.5.56"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -99,6 +99,7 @@ dependencies {
         transitive = false
     }
     deobfCompile "com.mod-buildcraft:buildcraft:7.99.7"
+    deobfCompile "MineTweaker3:MineTweaker3-MC1112-Main:1.11.2-3.0.26.113"
 }
 
 processResources
