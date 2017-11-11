@@ -51,7 +51,7 @@ repositories {
     }
 }
 
-version = "1.10.2-2.0.4.51"
+version = "1.10.2-2.0.5.55"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -88,6 +88,7 @@ dependencies {
         transitive = false
     }
     deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.10.2-1.9.4-pre-4"
+    deobfCompile "MineTweaker3:MineTweaker3-MC1102-Main:1.10.2-3.0.26.113"
 }
 
 processResources

@@ -1,5 +1,6 @@
 package thelm.jaopca.registry;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.JAOPCA;
@@ -41,6 +43,8 @@ import thelm.jaopca.api.item.IItemBlockWithProperty;
 import thelm.jaopca.api.item.IItemWithProperty;
 import thelm.jaopca.api.item.ItemProperties;
 import thelm.jaopca.api.utils.Utils;
+import thelm.jaopca.minetweaker.RegistryMineTweaker;
+import thelm.jaopca.ore.OreFinder;
 import thelm.jaopca.utils.JAOPCAConfig;
 
 /**
@@ -52,7 +56,10 @@ public class RegistryCore {
 
 	public static final ArrayList<IItemRequest> ITEM_REQUEST_LIST = Lists.<IItemRequest>newArrayList();
 
-	public static void preInit() {
+	public static void preInit(FMLPreInitializationEvent event) {
+		JAOPCAConfig.init(new File(event.getModConfigurationDirectory(), "JAOPCA.cfg"));
+		OreFinder.findOres();
+
 		registerBuiltInModules();
 
 		JAOPCAConfig.preInitModulewiseConfigs();
@@ -67,6 +74,8 @@ public class RegistryCore {
 		registerEntries();
 
 		registerPreInit();
+
+		RegistryMineTweaker.preInit();
 	}
 
 	public static void init() {

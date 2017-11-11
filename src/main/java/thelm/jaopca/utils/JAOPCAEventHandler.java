@@ -26,9 +26,7 @@ public class JAOPCAEventHandler {
 
 	@SubscribeEvent
 	public void onPreInitWrapUp(PreInitializationWrapUpEvent.Event2 event) {
-		JAOPCAConfig.init(new File(event.event.getModConfigurationDirectory(), "JAOPCA.cfg"));
-		OreFinder.findOres();
-		RegistryCore.preInit();
+		RegistryCore.preInit(event.event);
 	}
 
 	@SubscribeEvent
