@@ -44,6 +44,9 @@ public class OreColorer {
 				continue;
 			}
 			int[][] texColors = ColorThief.getPalette(texture, 4);
+			if(texColors == null) {
+				continue;
+			}
 			int[] texColor0 = texColors[0];
 			int colorMultiplier = getColorMultiplier(stack);
 			texColor0[0] = MathHelper.clamp((int)((texColor0[0]-1)*(float)(colorMultiplier>>16&0xFF)/255F), 0, 255);

@@ -11,7 +11,7 @@ import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.utils.Utils;
 
-@ZenClass("thelm.jaopca.OreEntry")
+@ZenClass("mods.jaopca.OreEntry")
 public class OreEntryAccess {
 
 	private final IOreEntry entry;
