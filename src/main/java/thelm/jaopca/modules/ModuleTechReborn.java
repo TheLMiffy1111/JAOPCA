@@ -118,13 +118,13 @@ public class ModuleTechReborn extends ModuleBase {
 					ItemStack i0 = Utils.getOreStack("dust", entry, 5);
 					ItemStack i1 = entry.hasExtra()?Utils.getOreStackExtra("dust", entry, 1):null;
 					ItemStack i2 = entry.hasSecondExtra()?Utils.getOreStackSecondExtra("dustSmall", entry, 1):null;
-					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), h2o, 100, Utils.energyI(entry, 128), i0, i1, i2);
+					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), h2o.copy(), 100, Utils.energyI(entry, 128), i0, i1, i2);
 				}
 				if(data[1]) {
 					ItemStack i0 = Utils.getOreStack("dust", entry, 5);
 					ItemStack i1 = entry.hasExtra()?Utils.getOreStackExtra("dust", entry, 3):null;
 					ItemStack i2 = entry.hasSecondExtra()?Utils.getOreStackSecondExtra("dustSmall", entry, 1):null;
-					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), na2s2o8, 100, Utils.energyI(entry, 128), i0, i1, i2);
+					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), na2s2o8.copy(), 100, Utils.energyI(entry, 128), i0, i1, i2);
 				}
 				break;
 			}
@@ -132,7 +132,7 @@ public class ModuleTechReborn extends ModuleBase {
 				ItemStack i0 = Utils.getOreStack("gem", entry, 1);
 				ItemStack i1 = Utils.getOreStack("dustSmall", entry, 6);
 				ItemStack i2 = entry.hasExtra()?Utils.getOreStackExtra("dustSmall", entry, 2):null;
-				addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), h2o, 100, Utils.energyI(entry, 128), i0, i1, i2);
+				addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), h2o.copy(), 100, Utils.energyI(entry, 128), i0, i1, i2);
 			}
 			case GEM_ORELESS: {
 				addImplosionCompressorRecipe(Utils.getOreStack("dust", entry, 4), Utils.getOreStack("gem", entry, 3), 12);
@@ -148,19 +148,19 @@ public class ModuleTechReborn extends ModuleBase {
 					ItemStack i0 = Utils.getOreStack("dust", entry, 2);
 					ItemStack i1 = entry.hasExtra()?Utils.getOreStackExtra("dustSmall", entry, 1):null;
 					ItemStack i2 = entry.hasSecondExtra()?Utils.getOreStackSecondExtra("dustSmall", entry, 1):null;
-					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), h2o, 100, Utils.energyI(entry, 128), i0, i1, i2);
+					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), h2o.copy(), 100, Utils.energyI(entry, 128), i0, i1, i2);
 				}
 				if(data[1]) {
 					ItemStack i0 = Utils.getOreStack("dust", entry, 3);
 					ItemStack i1 = entry.hasExtra()?Utils.getOreStackExtra("dustSmall", entry, 1):null;
 					ItemStack i2 = entry.hasSecondExtra()?Utils.getOreStackSecondExtra("dustSmall", entry, 1):null;
-					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), na2s2o8, 100, Utils.energyI(entry, 128), i0, i1, i2);
+					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), na2s2o8.copy(), 100, Utils.energyI(entry, 128), i0, i1, i2);
 				}
 				if(data[2]) {
 					ItemStack i0 = Utils.getOreStack("dust", entry, 3);
 					ItemStack i1 = entry.hasExtra()?Utils.getOreStackExtra("dust", entry, 1):null;
 					ItemStack i2 = entry.hasSecondExtra()?Utils.getOreStackSecondExtra("dustSmall", entry, 1):null;
-					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), hg, 100, Utils.energyI(entry, 128), i0, i1, i2);
+					addIndustrialGrinderRecipe(Utils.getOreStack("ore", entry, 1), hg.copy(), 100, Utils.energyI(entry, 128), i0, i1, i2);
 				}
 				if(Utils.doesOreNameExist("nugget"+entry.getOreName())) {
 					addScrap(Utils.getOreStack("nugget", entry, 1));

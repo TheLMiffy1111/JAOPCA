@@ -69,7 +69,7 @@ public class ModuleSkyResources extends ModuleBase {
 			setMaterial(Material.LAVA).
 			setBlockFluidClass(BlockMoltenCrystalFluidBase.class);
 
-	public static final ItemEntry CRYSTAL_SHARD_ENTRY = new ItemEntry(EnumEntryType.ITEM, "shardCrystal", "shardCrystal", new ModelResourceLocation("jaopca:shard_crystal#inventory"), BLACKLIST);
+	public static final ItemEntry CRYSTAL_SHARD_ENTRY = new ItemEntry(EnumEntryType.ITEM, "shardCrystal", new ModelResourceLocation("jaopca:shard_crystal#inventory"), BLACKLIST);
 	public static final ItemEntry DIRTY_CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "dirtyCrystalFluid", new ModelResourceLocation("jaopca:fluids/dirty_crystal_fluid#normal"), BLACKLIST).setProperties(DIRTY_CRYSTAL_FLUID_PROPERTIES);
 	public static final ItemEntry CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "crystalFluid", new ModelResourceLocation("jaopca:fluids/crystal_fluid#normal"), BLACKLIST).setProperties(CRYSTAL_FLUID_PROPERTIES);
 	public static final ItemEntry MOLTEN_CRYSTAL_FLUID_ENTRY = new ItemEntry(EnumEntryType.FLUID, "moltenCrystalFluid", new ModelResourceLocation("jaopca:fluids/molten_crystal_fluid#normal"), BLACKLIST).setProperties(MOLTEN_CRYSTAL_FLUID_PROPERTIES);

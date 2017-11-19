@@ -8,7 +8,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.JAOPCAApi;
 
-@ZenClass("thelm.jaopca.JAOPCA")
+@ZenClass("mods.jaopca.JAOPCA")
 public class JAOPCAAccess {
 
 	@ZenMethod

@@ -43,17 +43,17 @@ public class ModuleExNihiloOmnia extends ModuleBase {
 
 	public static final BlockProperties GRAVEL_PROPERTIES = new BlockProperties().
 			setMaterialMapColor(Material.SAND).
-			setHardnessFunc((entry)->{return 0.6F;}).
+			setHardnessFunc(entry->0.6F).
 			setSoundType(SoundType.GROUND).
 			setFallable(true);
 	public static final BlockProperties SAND_PROPERTIES = new BlockProperties().
 			setMaterialMapColor(Material.SAND).
-			setHardnessFunc((entry)->{return 0.6F;}).
+			setHardnessFunc(entry->0.6F).
 			setSoundType(SoundType.GROUND).
 			setFallable(true);
 	public static final BlockProperties DUST_PROPERTIES = new BlockProperties().
 			setMaterialMapColor(Material.SAND).
-			setHardnessFunc((entry)->{return 0.6F;}).
+			setHardnessFunc(entry->0.6F).
 			setSoundType(SoundType.SNOW).
 			setFallable(true);
 
