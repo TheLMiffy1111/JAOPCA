@@ -28,7 +28,8 @@ public class ModuleSkyResources extends ModuleBase {
 
 	public static final ArrayList<String> BLACKLIST = Lists.<String>newArrayList(
 			"Iron", "Gold", "Copper", "Tin", "Silver", "Zinc", "Nickel", "Platinum", "Aluminium", "Lead", "Cobalt", "Ardite",
-			"Osmium", "Draconium", "Titanium", "Tungsten", "Chromium", "Iridium", "Boron", "Lithium", "Magnesium", "Mithril"
+			"Osmium", "Draconium", "Titanium", "Tungsten", "Chromium", "Iridium", "Boron", "Lithium", "Magnesium", "Mithril",
+			"Yellorium", "Uranium", "Thorium"
 			);
 	public static final ArrayList<String> GEM_BLACKLIST = Lists.<String>newArrayList(
 			"Emerald", "Diamond", "Ruby", "Sapphire", "Peridot", "RedGarnet", "YellowGarnet", "Apatite", "Amber", "Lepidolite", "Malachite", "Onyx",

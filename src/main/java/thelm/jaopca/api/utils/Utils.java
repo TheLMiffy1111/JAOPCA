@@ -426,6 +426,10 @@ public class Utils {
 	}
 
 	public static ItemStack parseItemStack(String input) {
+		if(input.startsWith("ore:")) {
+			return ItemStack.EMPTY;
+		}
+
 		try {
 			Item item;
 			int meta=0, amount=1;

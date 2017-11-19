@@ -29,10 +29,12 @@ public class ModuleAbyssalCraft extends ModuleBase {
 	public static final BlockProperties CRYSTAL_CLUSTER_PROPERTIES = new BlockProperties().
 			setHardnessFunc(entry->0.4F).
 			setResistanceFunc(entry->0.8F).
+			setLightOpacityFunc(entry->0).
 			setSoundType(SoundType.GLASS).
 			setHarvestTool("pickaxe").
 			setHarvestLevel(3).
 			setFull(false).
+			setOpaque(false).
 			setBoundingBox(new AxisAlignedBB(0.2D, 0.0D, 0.2D, 0.8D, 0.7D, 0.8D));
 	public static final ItemEntry CRYSTAL_FRAGMENT_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crystalFragment", new ModelResourceLocation("jaopca:crystal_fragment#inventory"), ImmutableList.<String>of(
 			"Iron", "Gold", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminium", "Zinc"

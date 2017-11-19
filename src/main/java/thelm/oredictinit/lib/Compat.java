@@ -8,7 +8,6 @@ import thelm.oredictinit.compat.CompatEvilCraft;
 import thelm.oredictinit.compat.CompatExtremeReactors;
 import thelm.oredictinit.compat.CompatGalacticraftCore;
 import thelm.oredictinit.compat.CompatGalacticraftPlanets;
-import thelm.oredictinit.compat.CompatIngotter;
 import thelm.oredictinit.compat.CompatMekanism;
 import thelm.oredictinit.compat.CompatMinecraft;
 import thelm.oredictinit.compat.CompatNamingNonsense;
@@ -58,9 +57,6 @@ public class Compat {
 		}
 		if(Loader.isModLoaded("evilcraft")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatEvilCraft());
-		}
-		if(Loader.isModLoaded("ingotter")) {
-			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatIngotter());
 		}
 	}
 }

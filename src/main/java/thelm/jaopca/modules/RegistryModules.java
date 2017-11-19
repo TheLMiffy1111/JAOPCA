@@ -69,5 +69,8 @@ public class RegistryModules {
 		if(Loader.isModLoaded("teslathingies")) {
 			JAOPCAApi.registerModule(new ModulePoweredThingies());
 		}
+		if(Loader.isModLoaded("sc")) {
+			JAOPCAApi.registerModule(new ModuleSkyCompression());
+		}
 	}
 }

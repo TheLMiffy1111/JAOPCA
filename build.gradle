@@ -54,7 +54,7 @@ repositories {
     }
 }
 
-version = "1.12.2-2.2.5.57"
+version = "1.12.2-2.2.5.60"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -105,6 +105,9 @@ dependencies {
         transitive = false
     }
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.9.285"
+    deobfCompile("exnihilocreatio:exnihilocreatio:1.12-0.1.5.50") {
+        transitive = false
+    }
 }
 
 processResources
