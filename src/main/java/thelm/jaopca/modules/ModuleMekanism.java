@@ -117,7 +117,7 @@ public class ModuleMekanism extends ModuleBase {
 			case INGOT: {
 				if(!MINOR_COMPAT_BLACKLIST.contains(entry.getOreName())) {
 					for(ItemStack ore : OreDictionary.getOres("dust" + entry.getOreName())) {
-						addCombinerRecipe(Utils.resizeStack(ore, 8), Utils.getOreStack("ore", entry, 1));
+						addCombinerRecipe(Utils.resizeStack(ore, 8), Utils.getOreStack("cobblestone", 1), Utils.getOreStack("ore", entry, 1));
 					}
 
 					for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
@@ -197,11 +197,10 @@ public class ModuleMekanism extends ModuleBase {
 		FMLInterModComms.sendMessage("mekanism", "CrusherRecipe", msg);
 	}
 
-	public static void addCombinerRecipe(ItemStack input, ItemStack output) {
-		Gas gasType = GasRegistry.getGas("liquidstone");
+	public static void addCombinerRecipe(ItemStack input, ItemStack extra, ItemStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
-		msg.setTag("gasType", gasType.write(new NBTTagCompound()));
+		msg.setTag("extra", extra.writeToNBT(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
 		FMLInterModComms.sendMessage("mekanism", "CombinerRecipe", msg);
 	}
