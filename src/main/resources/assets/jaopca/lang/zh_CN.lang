@@ -53,8 +53,8 @@ item.jaopca.rockyChunk.name=%s砾岩
 item.jaopca.chunk.name=细块%s矿
 
 #TeslaPoweredThingies
-item.jaopca.teslaLump.name=特斯拉 %s 碎块
-item.jaopca.augmentedLump.name=增强 %s 碎块
+item.jaopca.teslaLump.name=特斯拉%s碎块
+item.jaopca.augmentedLump.name=增强%s碎块
 
 #Ingots
 jaopca.entry.Abyssalnite=深渊
