@@ -52,6 +52,10 @@ item.jaopca.dustSmall.name=小堆%s粉
 item.jaopca.rockyChunk.name=%s礫岩
 item.jaopca.chunk.name=細塊%s礦
 
+#TeslaPoweredThingies
+item.jaopca.teslaLump.name=特斯拉%s碎塊
+item.jaopca.augmentedLump.name=增強%s碎塊
+
 #Ingots
 jaopca.entry.Abyssalnite=深淵
 jaopca.entry.Adamantine=亞德曼

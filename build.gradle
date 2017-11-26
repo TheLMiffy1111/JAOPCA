@@ -50,11 +50,14 @@ repositories {
         url = "https://maven.modcrafters.net/"
     }
     maven {
+        url = "http://maven.thiakil.com/"
+    }
+    maven {
         url = "https://modmaven.k-4u.nl/" 
     }
 }
 
-version = "1.12.2-2.2.5.60"
+version = "1.12.2-2.2.5.63"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
