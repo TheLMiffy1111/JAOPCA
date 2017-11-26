@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -75,7 +76,9 @@ public class RegistryCore {
 
 		registerPreInit();
 
-		RegistryMineTweaker.preInit();
+		if(Loader.isModLoaded("crafttweaker")) {
+			RegistryMineTweaker.preInit();
+		}
 	}
 
 	public static void init() {

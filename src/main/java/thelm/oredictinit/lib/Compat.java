@@ -2,6 +2,7 @@ package thelm.oredictinit.lib;
 
 import net.minecraftforge.fml.common.Loader;
 import thelm.oredictinit.api.OreDictInitApi;
+import thelm.oredictinit.compat.CompatAppliedEnergistics;
 import thelm.oredictinit.compat.CompatCalculator;
 import thelm.oredictinit.compat.CompatDraconicEvolution;
 import thelm.oredictinit.compat.CompatEvilCraft;
@@ -53,6 +54,9 @@ public class Compat {
 		}
 		if(Loader.isModLoaded("evilcraft")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatEvilCraft());
+		}
+		if(Loader.isModLoaded("appliedenergistics2")) {
+			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatAppliedEnergistics());
 		}
 	}
 }
