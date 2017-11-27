@@ -3,11 +3,13 @@ package thelm.jaopca.modules;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 
@@ -18,6 +20,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
@@ -44,7 +47,9 @@ public class ModuleMekanism extends ModuleBase {
 	public static final GasProperties SLURRY_PROPERTIES = new GasProperties().
 			setIconName("mekanism:blocks/liquid/liquidore").
 			setVisible(false);
-	
+
+	public static final HashMap<IOreEntry,ItemStack> ORE_BASES = Maps.<IOreEntry,ItemStack>newHashMap();
+
 	public static final ItemEntry DIRTY_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustDirty", new ModelResourceLocation("jaopca:dust_dirty#inventory"), ImmutableList.<String>of(
 			"Iron", "Gold", "Osmium", "Copper", "Tin", "Silver", "Lead"
 			));
@@ -96,6 +101,13 @@ public class ModuleMekanism extends ModuleBase {
 	}
 
 	@Override
+	public void registerConfigs(Configuration config) {
+		JAOPCAApi.MODULE_TO_ORES_MAP.get(this).stream().filter(entry->entry.getOreType() == EnumOreType.INGOT && !MINOR_COMPAT_BLACKLIST.contains(entry.getOreName())).forEach(entry->{
+			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "mekanismBase", "minecraft:cobblestone").setRequiresMcRestart(true).getString()));
+		});
+	}
+
+	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			switch(entry.getOreType()) {
@@ -116,8 +128,9 @@ public class ModuleMekanism extends ModuleBase {
 			}
 			case INGOT: {
 				if(!MINOR_COMPAT_BLACKLIST.contains(entry.getOreName())) {
+					ItemStack base = ORE_BASES.get(entry);
 					for(ItemStack ore : OreDictionary.getOres("dust" + entry.getOreName())) {
-						addCombinerRecipe(Utils.resizeStack(ore, 8), Utils.getOreStack("ore", entry, 1));
+						addCombinerRecipe(Utils.resizeStack(ore, 8), base, Utils.getOreStack("ore", entry, 1));
 					}
 
 					for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
@@ -197,11 +210,10 @@ public class ModuleMekanism extends ModuleBase {
 		FMLInterModComms.sendMessage("mekanism", "CrusherRecipe", msg);
 	}
 
-	public static void addCombinerRecipe(ItemStack input, ItemStack output) {
-		Gas gasType = GasRegistry.getGas("liquidstone");
+	public static void addCombinerRecipe(ItemStack input, ItemStack extra, ItemStack output) {
 		NBTTagCompound msg = new NBTTagCompound();
 		msg.setTag("input", input.writeToNBT(new NBTTagCompound()));
-		msg.setTag("gasType", gasType.write(new NBTTagCompound()));
+		msg.setTag("extra", extra.writeToNBT(new NBTTagCompound()));
 		msg.setTag("output", output.writeToNBT(new NBTTagCompound()));
 		FMLInterModComms.sendMessage("mekanism", "CombinerRecipe", msg);
 	}
