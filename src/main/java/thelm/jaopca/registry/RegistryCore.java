@@ -3,7 +3,6 @@ package thelm.jaopca.registry;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -21,8 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -65,7 +64,6 @@ public class RegistryCore {
 
 		JAOPCAConfig.preInitModulewiseConfigs();
 
-		filterModules();
 		initItemEntries();
 		initBlacklists();
 		initToOreMaps();
@@ -103,27 +101,6 @@ public class RegistryCore {
 		}
 	}
 
-	private static void filterModules() {
-		HashSet<ModuleBase> toRemove = Sets.<ModuleBase>newHashSet();
-		HashSet<String> toRemoveNames = Sets.<String>newHashSet();
-		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
-			for(String moduleName : module.getDependencies()) {
-				if(!JAOPCAApi.NAME_TO_MODULE_MAP.containsKey(moduleName)) {
-					toRemove.add(module);
-					toRemoveNames.add(module.getName());
-				}
-			}
-
-			if(JAOPCAConfig.moduleBlacklist.contains(module.getName())) {
-				toRemove.add(module);
-				toRemoveNames.add(module.getName());
-			}
-		}
-
-		JAOPCAApi.MODULE_LIST.removeAll(toRemove);
-		JAOPCAApi.NAME_TO_MODULE_MAP.remove(toRemoveNames);
-	}
-
 	private static void initItemEntries() {
 		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
 			List<? extends IItemRequest> requests = module.getItemRequests();
@@ -137,6 +114,7 @@ public class RegistryCore {
 					}
 					else {
 						JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).blacklist.addAll(entry.blacklist);
+						continue;
 					}
 
 					JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).moduleList.add(module);
@@ -150,6 +128,7 @@ public class RegistryCore {
 						}
 						else {
 							JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).blacklist.addAll(entry.blacklist);
+							continue;
 						}
 
 						JAOPCAApi.NAME_TO_ITEM_ENTRY_MAP.get(entry.name).moduleList.add(module);
@@ -162,17 +141,9 @@ public class RegistryCore {
 
 	private static void initBlacklists() {
 		for(IOreEntry ore : JAOPCAApi.ORE_ENTRY_LIST) {
-			if(ore.getModuleBlacklist().contains("*")) {
-				ore.getModuleBlacklist().clear();
-				for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+			for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+				if(ore.getModuleBlacklist().stream().anyMatch(name->module.getDependencies().contains(name))) {
 					ore.getModuleBlacklist().add(module.getName());
-				}
-			}
-			else {
-				for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
-					if(ore.getModuleBlacklist().stream().anyMatch(name->module.getDependencies().contains(name))) {
-						ore.getModuleBlacklist().add(module.getName());
-					}
 				}
 			}
 
