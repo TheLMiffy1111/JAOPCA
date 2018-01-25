@@ -1,6 +1,7 @@
 package thelm.jaopca.ore;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class OreEntry implements IOreEntry {
 	protected String extra2;
 	protected double energy = 1D;
 	protected double rarity = 1D;
-	protected List<String> moduleBlacklist = Lists.<String>newArrayList();
+	protected ArrayList<String> moduleBlacklist = Lists.<String>newArrayList();
 	protected EnumOreType type = EnumOreType.INGOT;
 	protected boolean hasEffect = false;
 	protected Color color = null;
@@ -128,7 +129,7 @@ public class OreEntry implements IOreEntry {
 	public void setRarity(double rarity) {
 		this.rarity = rarity;
 	}
-	
+
 	public void addBlacklistedModules(Collection<String> blacklist) {
 		this.moduleBlacklist.addAll(blacklist);
 	}
