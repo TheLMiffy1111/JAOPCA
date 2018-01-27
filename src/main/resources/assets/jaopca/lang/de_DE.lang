@@ -51,6 +51,9 @@ item.jaopca.dustSmall.name=Kleiner Haufen %sstaub
 #SkyResources
 item.jaopca.dustAlch.name=Alchemistischr %serzstaub
 
+#Thaumcraft
+item.jaopca.cluster.name=Nativer %sklumpen
+
 #Ingots
 jaopca.entry.Abyssalnite=Abgrundite
 jaopca.entry.Aluminium=Aluminium

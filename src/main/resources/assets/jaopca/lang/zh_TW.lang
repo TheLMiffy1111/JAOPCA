@@ -52,6 +52,9 @@ item.jaopca.dustSmall.name=小堆%s粉
 item.jaopca.crushedOre.name=大塊%s礦
 item.jaopca.pebbles.name=細%s礦
 
+#Thaumcraft
+item.jaopca.cluster.name=原生%s礦簇
+
 #Ingots
 jaopca.entry.Abyssalnite=深淵
 jaopca.entry.Adamantine=亞德曼
@@ -247,6 +250,7 @@ jaopca.entry.Superium=高級精華
 jaopca.entry.Supremium=終極精華
 jaopca.entry.Terrasteel=泰拉鋼
 jaopca.entry.Teslarium=特斯拉
+jaopca.entry.Thaumium=靛鐵
 jaopca.entry.ThoriumOxide=氧化釷
 jaopca.entry.TitaniumAluminide=鈦鋁
 jaopca.entry.TitaniumIridium=鈦銥
@@ -254,6 +258,7 @@ jaopca.entry.Tough=高強合金
 jaopca.entry.Tungstensteel=鎢鋼
 jaopca.entry.UraniumOxide=氧化鈾
 jaopca.entry.VibrantAlloy=脈衝合金
+jaopca.entry.Void=虛鋼
 
 #GemNoOres
 jaopca.entry.BoronNitride=氮化硼

@@ -66,5 +66,8 @@ public class RegistryModules {
 		if(Loader.isModLoaded("magneticraft")) {
 			JAOPCAApi.registerModule(new ModuleMagneticraft());
 		}
+		if(Loader.isModLoaded("thaumcraft")) {
+			JAOPCAApi.registerModule(new ModuleThaumcraft());
+		}
 	}
 }
