@@ -11,9 +11,11 @@ public interface IObjectWithProperty {
 	default int getMaxMeta() {
 		return 0;
 	}
+
 	default boolean hasMeta(int meta) {
 		return meta <= getMaxMeta();
 	}
+
 	default String getPrefix(int meta) {
 		return getItemEntry().prefix;
 	}

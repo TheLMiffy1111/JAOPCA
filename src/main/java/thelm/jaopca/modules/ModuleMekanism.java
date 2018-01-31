@@ -314,7 +314,9 @@ public class ModuleMekanism extends ModuleBase {
 
 	public static interface IGasWithProperty extends IObjectWithProperty {
 
-		public IGasWithProperty setVisible(boolean visible);
+		default IGasWithProperty setVisible(boolean visible) {
+			return this;
+		}
 
 		@Override
 		default void registerModels() {}

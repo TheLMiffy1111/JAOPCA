@@ -9,10 +9,21 @@ import thelm.jaopca.api.IObjectWithProperty;
 
 public interface IItemWithProperty extends IObjectWithProperty {
 
-	IItemWithProperty setMaxStackSize(int maxStkSize);
-	IItemWithProperty setFull3D(boolean full3D);
-	IItemWithProperty setRarity(EnumRarity rarity);
-	IItemWithProperty setHasEffect(boolean hasEffect);
+	default IItemWithProperty setMaxStackSize(int maxStkSize) {
+		return this;
+	}
+
+	default IItemWithProperty setFull3D(boolean full3D) {
+		return this;
+	}
+
+	default IItemWithProperty setRarity(EnumRarity rarity) {
+		return this;
+	}
+
+	default IItemWithProperty setHasEffect(boolean hasEffect) {
+		return this;
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

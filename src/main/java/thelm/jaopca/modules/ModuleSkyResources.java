@@ -89,7 +89,7 @@ public class ModuleSkyResources extends ModuleBase {
 	@Override
 	public void registerConfigsPre(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.ORE_TYPE_TO_ORES_MAP.get(EnumOreType.INGOT)) {
-			if(!BLACKLIST.contains(entry.getOreName())) {
+			if(!BLACKLIST.contains(entry.getOreName()) && !entry.getModuleBlacklist().contains(this.getName())) {
 				if(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesIsMolten", false).setRequiresMcRestart(true).getBoolean()) {
 					DIRTY_CRYSTAL_FLUID_ENTRY.blacklist.add(entry.getOreName());
 					CRYSTAL_FLUID_ENTRY.blacklist.add(entry.getOreName());

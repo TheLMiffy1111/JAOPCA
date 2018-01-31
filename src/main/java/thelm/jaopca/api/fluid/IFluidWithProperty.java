@@ -8,15 +8,41 @@ import thelm.jaopca.api.IObjectWithProperty;
 
 public interface IFluidWithProperty extends IObjectWithProperty {
 
-	IFluidWithProperty setLuminosity(int luminosity);
-	IFluidWithProperty setTemperature(int temperature);
-	IFluidWithProperty setDensity(int density);
-	IFluidWithProperty setViscosity(int viscosity);
-	IFluidWithProperty setGaseous(boolean gaseous);
-	IFluidWithProperty setRarity(EnumRarity rarity);
-	IFluidWithProperty setFillSound(SoundEvent fillSound);
-	IFluidWithProperty setEmptySound(SoundEvent emptySound);
-	IFluidWithProperty setOpacity(int opacity);
+	default IFluidWithProperty setLuminosity(int luminosity) {
+		return this;
+	}
+
+	default IFluidWithProperty setTemperature(int temperature) {
+		return this;
+	}
+
+	default IFluidWithProperty setDensity(int density) {
+		return this;
+	}
+
+	default IFluidWithProperty setViscosity(int viscosity) {
+		return this;
+	}
+
+	default IFluidWithProperty setGaseous(boolean gaseous) {
+		return this;
+	}
+
+	default IFluidWithProperty setRarity(EnumRarity rarity) {
+		return this;
+	}
+
+	default IFluidWithProperty setFillSound(SoundEvent fillSound) {
+		return this;
+	}
+
+	default IFluidWithProperty setEmptySound(SoundEvent emptySound) {
+		return this;
+	}
+
+	default IFluidWithProperty setOpacity(int opacity) {
+		return this;
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
