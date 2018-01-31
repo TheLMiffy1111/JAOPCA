@@ -12,25 +12,77 @@ import thelm.jaopca.api.utils.JAOPCAStateMap;
 
 public interface IBlockWithProperty extends IObjectWithProperty {
 
-	IBlockWithProperty setSoundType(SoundType sound);
-	IBlockWithProperty setLightOpacity(int opacity);
-	IBlockWithProperty setLightLevel(float value);
-	IBlockWithProperty setResistance(float resistance);
-	IBlockWithProperty setHardness(float hardness);
-	IBlockWithProperty setSlipperiness(float slipperiness);
-	IBlockWithProperty setBeaconBase(boolean beaconBase);
-	IBlockWithProperty setBoundingBox(AxisAlignedBB boundingBox);
-	IBlockWithProperty setHarvestTool(String harvestTool);
-	IBlockWithProperty setHarvestLevel(int harvestLevel);
-	IBlockWithProperty setFull(boolean full);
-	IBlockWithProperty setOpaque(boolean opaque);
-	IBlockWithProperty setBlockLayer(BlockRenderLayer layer);
-	IBlockWithProperty setFlammability(int flammability);
-	IBlockWithProperty setFireSpreadSpeed(int fireSpreadSpeed);
-	IBlockWithProperty setFireSource(boolean fireSource);
-	IBlockWithProperty setFallable(boolean fallable);
+	default IBlockWithProperty setSoundType(SoundType sound) {
+		return this;
+	}
 
-	boolean hasSubtypes();
+	default IBlockWithProperty setLightOpacity(int opacity) {
+		return this;
+	}
+
+	default IBlockWithProperty setLightLevel(float value) {
+		return this;
+	}
+
+	default IBlockWithProperty setResistance(float resistance) {
+		return this;
+	}
+
+	default IBlockWithProperty setHardness(float hardness) {
+		return this;
+	}
+
+	default IBlockWithProperty setSlipperiness(float slipperiness) {
+		return this;
+	}
+
+	default IBlockWithProperty setBeaconBase(boolean beaconBase) {
+		return this;
+	}
+
+	default IBlockWithProperty setBoundingBox(AxisAlignedBB boundingBox) {
+		return this;
+	}
+
+	default IBlockWithProperty setHarvestTool(String harvestTool) {
+		return this;
+	}
+
+	default IBlockWithProperty setHarvestLevel(int harvestLevel) {
+		return this;
+	}
+
+	default IBlockWithProperty setFull(boolean full) {
+		return this;
+	}
+
+	default IBlockWithProperty setOpaque(boolean opaque) {
+		return this;
+	}
+
+	default IBlockWithProperty setBlockLayer(BlockRenderLayer layer) {
+		return this;
+	}
+
+	default IBlockWithProperty setFlammability(int flammability) {
+		return this;
+	}
+
+	default IBlockWithProperty setFireSpreadSpeed(int fireSpreadSpeed) {
+		return this;
+	}
+
+	default IBlockWithProperty setFireSource(boolean fireSource) {
+		return this;
+	}
+
+	default IBlockWithProperty setFallable(boolean fallable) {
+		return this;
+	}
+
+	default boolean hasSubtypes() {
+		return false;
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

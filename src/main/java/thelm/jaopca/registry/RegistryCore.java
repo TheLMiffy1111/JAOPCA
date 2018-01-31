@@ -60,8 +60,6 @@ public class RegistryCore {
 		JAOPCAConfig.init(new File(event.getModConfigurationDirectory(), "JAOPCA.cfg"));
 		OreFinder.findOres();
 
-		registerBuiltInModules();
-
 		JAOPCAConfig.preInitModulewiseConfigs();
 
 		initItemEntries();
@@ -87,7 +85,7 @@ public class RegistryCore {
 		registerPostInit();
 	}
 
-	private static void registerBuiltInModules() {
+	public static void registerBuiltInModules() {
 		try {
 			Class<?> moduleClass = Class.forName("thelm.jaopca.modules.RegistryModules");
 			Method initMethod = moduleClass.getMethod("preInit");
