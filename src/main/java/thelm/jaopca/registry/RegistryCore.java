@@ -60,16 +60,14 @@ public class RegistryCore {
 
 	public static void preInit(FMLPreInitializationEvent event) {
 		JAOPCAConfig.init(new File(event.getModConfigurationDirectory(), "JAOPCA.cfg"));
-
-		registerBuiltInModules();
-
-		JAOPCAConfig.preInitModulewiseConfigs();
-
-		initItemEntries();
 	}
 
 	public static void preInit1() {
 		OreFinder.findOres();
+
+		JAOPCAConfig.preInitModulewiseConfigs();
+
+		initItemEntries();
 		initBlacklists();
 		initToOreMaps();
 
@@ -88,7 +86,7 @@ public class RegistryCore {
 		registerPostInit();
 	}
 
-	private static void registerBuiltInModules() {
+	public static void registerBuiltInModules() {
 		try {
 			Class<?> moduleClass = Class.forName("thelm.jaopca.modules.RegistryModules");
 			Method initMethod = moduleClass.getMethod("preInit");

@@ -12,19 +12,26 @@ import thelm.jaopca.api.block.IBlockWithProperty;
 
 public interface IItemBlockWithProperty extends IObjectWithProperty {
 
-	IItemBlockWithProperty setMaxStackSize(int maxStkSize);
-	IItemBlockWithProperty setRarity(EnumRarity rarity);
+	default IItemBlockWithProperty setMaxStackSize(int maxStkSize) {
+		return this;
+	}
+
+	default IItemBlockWithProperty setRarity(EnumRarity rarity) {
+		return this;
+	}
 
 	@Override
 	default int getMaxMeta() {
 		IBlockWithProperty block = (IBlockWithProperty)((ItemBlock)this).getBlock();
 		return block.hasSubtypes() ? block.getMaxMeta() : IObjectWithProperty.super.getMaxMeta();
 	}
+
 	@Override
 	default boolean hasMeta(int meta) {
 		IBlockWithProperty block = (IBlockWithProperty)((ItemBlock)this).getBlock();
 		return block.hasSubtypes() ? block.hasMeta(meta) : IObjectWithProperty.super.hasMeta(meta);
 	}
+
 	@Override
 	default String getPrefix(int meta) {
 		IBlockWithProperty block = (IBlockWithProperty)((ItemBlock)this).getBlock();

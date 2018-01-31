@@ -9,7 +9,9 @@ import thelm.jaopca.api.utils.JAOPCAStateMap;
 
 public interface IBlockFluidWithProperty extends IObjectWithProperty {
 
-	IBlockFluidWithProperty setQuantaPerBlock(int quantaPerBlock);
+	default IBlockFluidWithProperty setQuantaPerBlock(int quantaPerBlock) {
+		return this;
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

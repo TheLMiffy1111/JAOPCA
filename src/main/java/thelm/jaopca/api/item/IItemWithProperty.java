@@ -1,21 +1,29 @@
 package thelm.jaopca.api.item;
 
-import java.util.function.Predicate;
-
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thelm.jaopca.api.IObjectWithProperty;
-import thelm.jaopca.api.IOreEntry;
 
 public interface IItemWithProperty extends IObjectWithProperty {
 
-	IItemWithProperty setMaxStackSize(int maxStkSize);
-	IItemWithProperty setFull3D(boolean full3D);
-	IItemWithProperty setRarity(EnumRarity rarity);
-	IItemWithProperty setHasEffect(boolean hasEffect);
+	default IItemWithProperty setMaxStackSize(int maxStkSize) {
+		return this;
+	}
+
+	default IItemWithProperty setFull3D(boolean full3D) {
+		return this;
+	}
+
+	default IItemWithProperty setRarity(EnumRarity rarity) {
+		return this;
+	}
+
+	default IItemWithProperty setHasEffect(boolean hasEffect) {
+		return this;
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
