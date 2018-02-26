@@ -42,15 +42,28 @@ public class ModuleMagneticraft extends ModuleBase {
 	@Override
 	public void init() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crushedOre")) {
-			ICrushingTableRecipeManager manager = MagneticraftApi.getCrushingTableRecipeManager();
-			manager.registerRecipe(manager.createRecipe(Utils.getOreStack("ore", entry, 1), Utils.getOreStack("crushedOre", entry, 1), true));
+			addCrushingTableRecipe(Utils.getOreStack("ore", entry, 1), Utils.getOreStack("crushedOre", entry, 1));
 			Utils.addSmelting(Utils.getOreStack("crushedOre", entry, 1), Utils.getOreStack("ingot", entry, 1), 0.1F);
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("pebbles")) {
-			ITableSieveRecipeManager manager = MagneticraftApi.getTableSieveRecipeManager();
-			manager.registerRecipe(manager.createRecipe(Utils.getOreStack("crushedOre", entry, 1), Utils.getOreStack("pebbles", entry, 1), new ItemStack(Blocks.COBBLESTONE), 0.15F, true));
+			addTableSieveRecipe(Utils.getOreStack("crushedOre", entry, 1), Utils.getOreStack("pebbles", entry, 1), new ItemStack(Blocks.COBBLESTONE), 0.15F);
 			Utils.addSmelting(Utils.getOreStack("pebbles", entry, 1), Utils.getOreStack("ingot", entry, 2), 0.1F);
 		}
+	}
+
+	public static void addCrushingTableRecipe(ItemStack input, ItemStack output) {
+		ICrushingTableRecipeManager manager = MagneticraftApi.getCrushingTableRecipeManager();
+		manager.registerRecipe(manager.createRecipe(input, output, true));
+	}
+
+	public static void addTableSieveRecipe(ItemStack input, ItemStack output) {
+		ITableSieveRecipeManager manager = MagneticraftApi.getTableSieveRecipeManager();
+		manager.registerRecipe(manager.createRecipe(input, output, null, 0F, true));
+	}
+
+	public static void addTableSieveRecipe(ItemStack input, ItemStack output, ItemStack secondary, float secondaryChance) {
+		ITableSieveRecipeManager manager = MagneticraftApi.getTableSieveRecipeManager();
+		manager.registerRecipe(manager.createRecipe(input, output, secondary, secondaryChance, true));
 	}
 }
