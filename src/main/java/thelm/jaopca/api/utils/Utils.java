@@ -12,6 +12,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -432,7 +434,7 @@ public class Utils {
 
 		try {
 			Item item;
-			int meta=0, amount=1;
+			int meta = 0, amount = 1;
 			String[] split0 = input.split("@");
 			item = Item.REGISTRY.getObject(new ResourceLocation(split0[0]));
 			if(split0.length == 2) {
@@ -448,6 +450,26 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return ItemStack.EMPTY;
+	}
+	
+	public static IBlockState parseBlockState(String input) {
+		if(input.startsWith("ore:")) {
+			return Blocks.AIR.getDefaultState();
+		}
+		try {
+			Block block;
+			int meta = 0;
+			String[] split = input.split("@");
+			block = Block.REGISTRY.getObject(new ResourceLocation(split[0]));
+			if(split.length == 2) {
+				meta = Integer.parseInt(split[1]);
+			}
+			return block.getStateFromMeta(meta);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return Blocks.AIR.getDefaultState();
 	}
 
 	public static EnumOreType oreNameToType(String oreName) {

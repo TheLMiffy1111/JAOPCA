@@ -38,7 +38,7 @@ public class ModuleSkyResources extends ModuleBase {
 			"Iolite", "BlackDiamond", "Chaos", "EnderEssence", "Dark", "Quartz", "Lapis", "QuartzBlack", "CertusQuartz"
 			);
 
-	public static final HashMap<IOreEntry,ItemStack> ORE_BASES = Maps.<IOreEntry,ItemStack>newHashMap();
+	public static final HashMap<IOreEntry, ItemStack> ORE_BASES = Maps.<IOreEntry, ItemStack>newHashMap();
 
 	public static final ItemEntry ALCH_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustAlch", new ModelResourceLocation("jaopca:dust_alch#inventory"), BLACKLIST);
 	public static final ItemEntry DIRTY_GEM_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dirtyGem", new ModelResourceLocation("jaopca:dirty_gem#inventory"), GEM_BLACKLIST).
