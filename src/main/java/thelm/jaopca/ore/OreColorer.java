@@ -2,17 +2,21 @@ package thelm.jaopca.ore;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import de.androidpit.colorthief.ColorThief;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -39,31 +43,43 @@ public class OreColorer {
 
 		List<int[]> colors = Lists.<int[]>newArrayList();
 		for(ItemStack stack : ores) {
-			BufferedImage texture = getBufferedImage(getTextureAtlasSprite(stack));
-			if(texture == null) {
+			List<BakedQuad> quads = getBakedQuads(stack).stream().sorted((quad0, quad1)->Integer.compare(quad1.getTintIndex(), quad0.getTintIndex())).collect(Collectors.toList());
+			if(quads.isEmpty()) {
 				continue;
 			}
-			int[][] texColors = ColorThief.getPalette(texture, 4);
-			if(texColors == null) {
-				continue;
+			int colorMultiplier = getColorMultiplier(stack, quads.get(0));
+			for(BakedQuad quad : quads) {
+				BufferedImage texture = getBufferedImage(quad.getSprite());
+				if(texture == null) {
+					continue;
+				}
+				int[][] texColors = ColorThief.getPalette(texture, 4);
+				if(texColors == null) {
+					continue;
+				}
+				int[] texColor = texColors[0];
+				if(texColor == null) {
+					continue;
+				}
+				texColor[0] = (int)MathHelper.clamp(texColor[0]*(colorMultiplier>>16&0xFF)/255D, 0, 255);
+				texColor[1] = (int)MathHelper.clamp(texColor[1]*(colorMultiplier>> 8&0xFF)/255D, 0, 255);
+				texColor[2] = (int)MathHelper.clamp(texColor[2]*(colorMultiplier    &0xFF)/255D, 0, 255);
+				colors.add(texColor);
 			}
-			int[] texColor0 = texColors[0];
-			int colorMultiplier = getColorMultiplier(stack);
-			texColor0[0] = MathHelper.clamp((int)((texColor0[0]-1)*(float)(colorMultiplier>>16&0xFF)/255F), 0, 255);
-			texColor0[1] = MathHelper.clamp((int)((texColor0[1]-1)*(float)(colorMultiplier>>8&0xFF)/255F), 0, 255);
-			texColor0[2] = MathHelper.clamp((int)((texColor0[2]-1)*(float)(colorMultiplier&0xFF)/255F), 0, 255);
-			colors.add(texColor0);
 		}
 
-		float red = 0;
-		float green = 0;
-		float blue = 0;
+		double count = colors.size();
+		if(count == 0) {
+			return Color.WHITE;
+		}
+		long red = 0;
+		long green = 0;
+		long blue = 0;
 		for(int[] c : colors) {
 			red += c[0]*c[0];
 			green += c[1]*c[1];
 			blue += c[2]*c[2];
 		}
-		int count = colors.size();
 		return new Color((int)Math.sqrt(red/count), (int)Math.sqrt(green/count), (int)Math.sqrt(blue/count));
 	}
 
@@ -88,21 +104,18 @@ public class OreColorer {
 		return bufferedImage;
 	}
 
-	private static TextureAtlasSprite getTextureAtlasSprite(ItemStack itemStack) {
-		return Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemStack, null, null).getParticleTexture();
+	private static List<BakedQuad> getBakedQuads(ItemStack itemStack) {
+		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemStack, null, null);
+		ArrayList<BakedQuad> list = Lists.<BakedQuad>newArrayList();
+		for(EnumFacing facing : EnumFacing.values()) {
+			list.addAll(model.getQuads(null, facing, 0).stream().filter(quad->quad.getFace() == EnumFacing.SOUTH).collect(Collectors.toList()));
+		}
+		list.addAll(model.getQuads(null, null, 0).stream().filter(quad->quad.getFace() == EnumFacing.SOUTH).collect(Collectors.toList()));
+		return list;
 	}
 
-	private static int getColorMultiplier(ItemStack itemStack) {
-		ItemColors itemColors = Minecraft.getMinecraft().getItemColors();
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
-		int color = 0xFFFFFF;
-		int i = 4;
-		do {
-			color = itemColors.getColorFromItemstack(itemStack, i);
-			i--;
-		}
-		while((color&0xFFFFFF) == 0xFFFFFF && i != -1);
-		return color;
+	private static int getColorMultiplier(ItemStack itemStack, BakedQuad quad) {
+		return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(itemStack, quad.getTintIndex());
 	}
 
 	public static boolean getHasEffect(String prefix, String oreName) {
