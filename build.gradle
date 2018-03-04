@@ -51,7 +51,7 @@ repositories {
     }
 }
 
-version = "1.10.2-2.0.6.72"
+version = "1.10.2-2.0.6.75"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -72,7 +72,7 @@ dependencies {
     deobfCompile "mezz.jei:jei_1.10.2:3.14.7.417"
     deobfCompile "slimeknights.mantle:Mantle:1.10.2-1.1.5.205"
     deobfCompile "slimeknights:TConstruct:1.10.2-2.6.3.501"
-    deobfCompile "net.industrial-craft:industrialcraft-2:2.6.204-ex110"
+    deobfCompile "net.industrial-craft:industrialcraft-2:2.6.258-ex110"
     deobfCompile "de.ellpeck.actuallyadditions:ActuallyAdditions:1.10.2-r75"
     deobfCompile "blusunrize:ImmersiveEngineering:0.10-57-58"
     deobfCompile "RebornCore:RebornCore-1.10.2:2.13.6.142:universal"
