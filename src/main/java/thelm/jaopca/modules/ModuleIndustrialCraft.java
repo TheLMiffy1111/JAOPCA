@@ -2,6 +2,8 @@ package thelm.jaopca.modules;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -26,7 +28,7 @@ public class ModuleIndustrialCraft extends ModuleBase {
 	public static final ItemEntry CRUSHED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crushed", new ModelResourceLocation("jaopca:crushed#inventory"), ImmutableList.<String>of(
 			"Copper", "Gold", "Iron", "Lead", "Tin", "Silver", "Uranium"
 			));
-	public static final ItemEntry PURIFIED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "purified", new ModelResourceLocation("jaopca:purified#inventory"), ImmutableList.<String>of(
+	public static final ItemEntry PURIFIED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crushedPurified", new ModelResourceLocation("jaopca:crushed_purified#inventory"), ImmutableList.<String>of(
 			"Copper", "Gold", "Iron", "Lead", "Tin", "Silver", "Uranium"
 			));
 	public static final ItemEntry TINY_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustTiny", new ModelResourceLocation("jaopca:dust_tiny#inventory"), ImmutableList.<String>of(
@@ -54,17 +56,15 @@ public class ModuleIndustrialCraft extends ModuleBase {
 		ItemStack stoneDust = IC2Items.getItem("dust", "stone");
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crushed")) {
-			JAOPCAApi.LOGGER.debug("crushed"+entry.getOreName());
 			addMaceratorRecipe(Recipes.inputFactory.forOreDict("ore"+entry.getOreName()), Utils.getOreStack("crushed",entry,2));
 			addCentrifugeRecipe(Recipes.inputFactory.forOreDict("crushed"+entry.getOreName()), Utils.energyI(entry, 1500), Utils.getOreStack("dust",entry,1), Utils.getOreStackExtra("dustTiny",entry,2), stoneDust.copy());
-			addOreWashingRecipe(Recipes.inputFactory.forOreDict("crushed"+entry.getOreName()), Utils.getOreStack("purified",entry,1), Utils.getOreStack("dustTiny",entry,2), stoneDust.copy());
+			addOreWashingRecipe(Recipes.inputFactory.forOreDict("crushed"+entry.getOreName()), Utils.getOreStack("crushedPurified",entry,1), Utils.getOreStack("dustTiny",entry,2), stoneDust.copy());
 			Utils.addSmelting(Utils.getOreStack("crushed", entry, 1), Utils.getOreStack("ingot", entry, 1), 0.2F);
 		}
 
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("purified")) {
-			JAOPCAApi.LOGGER.debug("purified"+entry.getOreName());
-			addCentrifugeRecipe(Recipes.inputFactory.forOreDict("purified"+entry.getOreName()), Utils.energyI(entry, 1500), Utils.getOreStack("dust",entry,1), Utils.getOreStackExtra("dustTiny",entry,1));
-			Utils.addSmelting(Utils.getOreStack("purified", entry, 1), Utils.getOreStack("ingot", entry, 1), 0.2F);
+		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("crushedPurified")) {
+			addCentrifugeRecipe(Recipes.inputFactory.forOreDict("crushedPurified"+entry.getOreName()), Utils.energyI(entry, 1500), Utils.getOreStack("dust",entry,1), Utils.getOreStackExtra("dustTiny",entry,1));
+			Utils.addSmelting(Utils.getOreStack("crushedPurified", entry, 1), Utils.getOreStack("ingot", entry, 1), 0.2F);
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustTiny")) {
@@ -80,6 +80,13 @@ public class ModuleIndustrialCraft extends ModuleBase {
 					"dustTiny"+entry.getOreName(),
 			});
 		}
+	}
+
+	@Override
+	public List<Pair<String, String>> remaps() {
+		return Lists.<Pair<String, String>>newArrayList(
+				Pair.of("purified", "crushedPurified")
+				);
 	}
 
 	public static void addMaceratorRecipe(Object input, ItemStack output) {

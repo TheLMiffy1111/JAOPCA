@@ -20,7 +20,7 @@ gas.jaopca.slurry=%s漿液
 
 #IC2
 item.jaopca.crushed.name=粉碎%s礦
-item.jaopca.purified.name=乾淨的粉碎%s礦
+item.jaopca.crushedPurified.name=乾淨的粉碎%s礦
 item.jaopca.dustTiny.name=小撮%s粉
 
 #ExNihiloOmnia

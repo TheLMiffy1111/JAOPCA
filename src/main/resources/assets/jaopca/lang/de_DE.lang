@@ -20,7 +20,7 @@ gas.jaopca.slurry=%sschlacke
 
 #IC2
 item.jaopca.crushed.name=Zerstoßenes %serz
-item.jaopca.purified.name=Gereinigtes Zerstoßenes %serz
+item.jaopca.crushedPurified.name=Gereinigtes Zerstoßenes %serz
 item.jaopca.dustTiny.name=Winziger Haufen %sstaub
 
 #ExNihiloOmnia
