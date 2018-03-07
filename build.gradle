@@ -47,7 +47,7 @@ repositories {
         url = "http://maven.shadowfacts.net/"
     }
     maven {
-        url = "https://maven.modcrafters.net/"
+        url = "https://maven.mcmoddev.com/"
     }
     maven {
         url = "http://maven.thiakil.com/"
@@ -80,7 +80,10 @@ dependencies {
     deobfCompile "net.industrial-craft:industrialcraft-2:2.8.62-ex112"
     deobfCompile "blusunrize:ImmersiveEngineering:0.12-69-197"
     deobfCompile "MCMultiPart2:MCMultiPart-exp:2.2.2_37"
-    deobfCompile("RebornCore:RebornCore-1.12:3.2.3.83:universal") {
+    deobfCompile("RebornCore:RebornCore-1.12.2:3.6.9.216:universal") {
+        transitive = false
+    }
+    deobfCompile("TechReborn:TechReborn-1.12.2:2.12.4.496:universal") {
         transitive = false
     }
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:universal"
@@ -101,10 +104,10 @@ dependencies {
     deobfCompile("net.shadowfacts:Forgelin:1.5.1") {
         transitive = false
     }
-    deobfCompile("net.ndrei:tesla-core-lib:1.12-1.0.11") {
+    deobfCompile("net.ndrei:tesla-core-lib:1.12-1.0.13.8") {
         transitive = false
     }
-    deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.11") {
+    deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.13.12") {
         transitive = false
     }
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.9.285"
