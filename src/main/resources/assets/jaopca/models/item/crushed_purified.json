@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/purified"
+        "layer0": "jaopca:items/crushed_purified"
     }
 }
