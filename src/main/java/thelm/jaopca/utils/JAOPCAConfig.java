@@ -7,9 +7,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multisets;
 import com.google.common.collect.Sets;
+import com.google.common.collect.TreeMultiset;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
@@ -23,7 +26,7 @@ public class JAOPCAConfig {
 
 	public static Configuration configFile;
 	public static ArrayList<String> usedCategories = Lists.<String>newArrayList();
-	public static TreeSet<String> moduleBlacklist = Sets.<String>newTreeSet();
+	public static TreeMultiset<String> moduleBlacklist = TreeMultiset.<String>create();
 	public static boolean ingot;
 	public static boolean gem;
 	public static boolean dust;
@@ -53,6 +56,9 @@ public class JAOPCAConfig {
 		Utils.MOD_IDS.addAll(BACK_MOD_IDS);
 
 		Collections.<String>addAll(moduleBlacklist, configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList());
+		int count = moduleBlacklist.count("*");
+		JAOPCAApi.NAME_TO_MODULE_MAP.keySet().forEach(s->moduleBlacklist.add(s, count));
+		moduleBlacklist.remove("*", count);
 
 		ingot = configFile.get(name, "ingot", true).setRequiresMcRestart(true).getBoolean();
 		gem = configFile.get(name, "gem", true).setRequiresMcRestart(true).getBoolean();
@@ -68,8 +74,9 @@ public class JAOPCAConfig {
 
 		usedCategories.add(name);
 
-		if(configFile.hasChanged())
+		if(configFile.hasChanged()) {
 			configFile.save();
+		}
 	}
 
 	public static void initOreConfigs(List<OreEntry> allOres) {
@@ -108,22 +115,19 @@ public class JAOPCAConfig {
 			entry.setRarity(configFile.get(name, "rarity", entry.getRarity()).setRequiresMcRestart(true).getDouble());
 			entry.setHasEffect(configFile.get(name, "hasEffect", entry.getHasEffect()).setRequiresMcRestart(true).getBoolean());
 
-			if(moduleBlacklist.contains("*")) {
-				moduleBlacklist.clear();
-				moduleBlacklist.addAll(JAOPCAApi.NAME_TO_MODULE_MAP.keySet());
-			}
-			TreeSet<String> blacklist = Sets.<String>newTreeSet(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
-			if(blacklist.contains("*")) {
-				blacklist.clear();
-				blacklist.addAll(JAOPCAApi.NAME_TO_MODULE_MAP.keySet());
-			}
-			entry.addBlacklistedModules(Sets.<String>union(Sets.<String>difference(moduleBlacklist, blacklist), Sets.<String>difference(blacklist, moduleBlacklist)));
+			TreeMultiset<String> blacklist = TreeMultiset.<String>create(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
+			int count = blacklist.count("*");
+			JAOPCAApi.NAME_TO_MODULE_MAP.keySet().forEach(s->blacklist.add(s, count));
+			blacklist.remove("*", count);
+
+			entry.addBlacklistedModules(Multisets.sum(moduleBlacklist, blacklist).entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(e->e.getElement()).collect(Collectors.toCollection(()->Sets.<String>newTreeSet())));
 
 			usedCategories.add(name);
 		}
 
-		if(configFile.hasChanged())
+		if(configFile.hasChanged()) {
 			configFile.save();
+		}
 	}
 
 	public static void preInitModulewiseConfigs() {
@@ -131,8 +135,9 @@ public class JAOPCAConfig {
 			module.registerConfigsPre(configFile);
 		}
 
-		if(configFile.hasChanged())
+		if(configFile.hasChanged()) {
 			configFile.save();
+		}
 	}
 
 	public static void initModulewiseConfigs() {
@@ -140,8 +145,9 @@ public class JAOPCAConfig {
 			module.registerConfigs(configFile);
 		}
 
-		if(configFile.hasChanged())
+		if(configFile.hasChanged()) {
 			configFile.save();
+		}
 	}
 
 	public static void initColorConfigs(OreEntry entry) {
@@ -153,7 +159,8 @@ public class JAOPCAConfig {
 
 		entry.setColor(Color.decode(configFile.get(name, "color", "0x"+Integer.toHexString(entry.getColor() & 0xFFFFFF)).getString()));
 
-		if(configFile.hasChanged())
+		if(configFile.hasChanged()) {
 			configFile.save();
+		}
 	}
 }

@@ -26,7 +26,7 @@ public class RegistryModules {
 		if(Loader.isModLoaded("appliedenergistics2")) {
 			JAOPCAApi.registerModule(new ModuleAppliedEnergistics());
 		}
-		if(Loader.isModLoaded("enderio")) {
+		if(Loader.isModLoaded("EnderIO")) {
 			JAOPCAApi.registerModule(new ModuleEnderIO());
 		}
 		if(Loader.isModLoaded("thermalexpansion")) {
