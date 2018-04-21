@@ -17,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -464,5 +465,15 @@ public class Utils {
 
 	public static EnumOreType oreNameToType(String oreName) {
 		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->entry.getOreName().equals(oreName)).findAny().get().getOreType();
+	}
+
+	//If localization issues ever arise, change the implementation here.
+	public static String smartLocalize(String key, String specialKeyFormat, IOreEntry entry) {
+		String ore = entry.getOreName();
+		if(I18n.canTranslate(String.format(specialKeyFormat, ore))) {
+			return I18n.translateToLocal(String.format(specialKeyFormat, ore)).trim();
+		}
+		String locOre = I18n.canTranslate("jaopca.entry."+ore) ? I18n.translateToLocal("jaopca.entry."+ore) : Utils.toSpaceSeparated(ore);
+		return String.format(I18n.translateToLocal(key), locOre).trim();
 	}
 }

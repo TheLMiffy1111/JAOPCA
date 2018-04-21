@@ -349,7 +349,7 @@ public class ModuleMekanism extends ModuleBase {
 
 		@Override
 		public String getLocalizedName() {
-			return String.format(super.getLocalizedName(), I18n.canTranslate("jaopca.entry."+oreEntry.getOreName()) ? I18n.translateToLocal("jaopca.entry."+oreEntry.getOreName()) : oreEntry.getOreName());
+			return Utils.smartLocalize(this.getUnlocalizedName(), this.getUnlocalizedName()+".%s", this.getOreEntry());
 		}
 	}
 }
