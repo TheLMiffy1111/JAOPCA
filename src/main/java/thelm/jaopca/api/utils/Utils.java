@@ -18,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -451,7 +452,7 @@ public class Utils {
 		}
 		return ItemStack.EMPTY;
 	}
-	
+
 	public static IBlockState parseBlockState(String input) {
 		if(input.startsWith("ore:")) {
 			return Blocks.AIR.getDefaultState();
@@ -492,9 +493,18 @@ public class Utils {
 
 	public static ResourceLocation getNameForRecipe(ItemStack output, Object... input) {
 		ModContainer activeContainer = Loader.instance().activeModContainer();
-		ResourceLocation baseLoc = new ResourceLocation(activeContainer.getModId(), output.getItem().getRegistryName().getResourcePath());
-		ResourceLocation recipeLoc = baseLoc;
-		recipeLoc = new ResourceLocation(activeContainer.getModId(), baseLoc.getResourcePath()+"_"+Integer.toUnsignedString(Arrays.deepToString(input).hashCode(), 32));
+		String resourcePath = output.getItem().getRegistryName().getResourcePath();
+		ResourceLocation recipeLoc = new ResourceLocation(activeContainer.getModId(), resourcePath+"_"+Integer.toUnsignedString(Arrays.deepToString(input).hashCode(), 32));
 		return recipeLoc;
+	}
+
+	//If localization issues ever arise, change the implementation here.
+	public static String smartLocalize(String key, String specialKeyFormat, IOreEntry entry) {
+		String ore = entry.getOreName();
+		if(I18n.canTranslate(String.format(specialKeyFormat, ore))) {
+			return I18n.translateToLocal(String.format(specialKeyFormat, ore)).trim();
+		}
+		String locOre = I18n.canTranslate("jaopca.entry."+ore) ? I18n.translateToLocal("jaopca.entry."+ore) : Utils.toSpaceSeparated(ore);
+		return String.format(I18n.translateToLocal(key), locOre).trim();
 	}
 }

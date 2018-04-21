@@ -75,9 +75,6 @@ public class ItemBlockBase extends ItemBlock implements IItemBlockWithProperty {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		if(I18n.canTranslate(getUnlocalizedNameInefficiently(stack)+'.'+oreEntry.getOreName())) {
-			return I18n.translateToLocal(getUnlocalizedNameInefficiently(stack)+'.'+oreEntry.getOreName());
-		}
-		return String.format(super.getItemStackDisplayName(stack), I18n.canTranslate("jaopca.entry."+oreEntry.getOreName()) ? I18n.translateToLocal("jaopca.entry."+oreEntry.getOreName()) : Utils.toSpaceSeparated(oreEntry.getOreName()));
+		return Utils.smartLocalize(this.getUnlocalizedName()+".name", this.getUnlocalizedName()+".%s.name", this.getOreEntry());
 	}
 }

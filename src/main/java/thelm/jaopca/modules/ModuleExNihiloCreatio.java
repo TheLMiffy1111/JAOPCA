@@ -2,7 +2,6 @@ package thelm.jaopca.modules;
 
 import java.io.File;
 import java.io.FileReader;
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -25,16 +24,16 @@ import exnihilocreatio.items.ore.Ore;
 import exnihilocreatio.json.CustomBlockInfoJson;
 import exnihilocreatio.json.CustomItemInfoJson;
 import exnihilocreatio.json.CustomOreJson;
-import exnihilocreatio.recipes.defaults.IRecipeDefaults;
-import exnihilocreatio.registries.manager.CompatDefaultRecipes;
 import exnihilocreatio.registries.manager.ExNihiloRegistryManager;
 import exnihilocreatio.registries.manager.ISieveDefaultRegistryProvider;
 import exnihilocreatio.registries.registries.SieveRegistry;
 import exnihilocreatio.util.BlockInfo;
 import exnihilocreatio.util.ItemInfo;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
@@ -54,7 +53,7 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 			"Coal", "Lapis", "Diamond", "Emerald", "Quartz", "QuartzBlack", "CertusQuartz", "Redstone", "Glowstone"
 			);
 
-	public static final HashMap<IOreEntry, IBlockState> ORE_SOURCES = Maps.<IOreEntry, IBlockState>newHashMap(); 
+	public static final HashMap<IOreEntry, ItemStack> ORE_SOURCES = Maps.<IOreEntry, ItemStack>newHashMap(); 
 	public static final HashMap<IOreEntry, float[]> SIEVE_CHANCES = Maps.<IOreEntry, float[]>newHashMap();
 
 	@Override
@@ -133,40 +132,40 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("piece")) {
-			IBlockState state = Utils.parseBlockState(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel").setRequiresMcRestart(true).getString());
+			ItemStack stack = Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel").setRequiresMcRestart(true).getString());
 			float[] data = {
-					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", state.getBlock() == Blocks.GRAVEL ? getDropChance(entry, 0.2D) : getDropChance(entry, 0.1D)).setRequiresMcRestart(true).getDouble(),
+					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", Block.getBlockFromItem(stack.getItem()) == Blocks.GRAVEL ? getDropChance(entry, 0.2D) : getDropChance(entry, 0.1D)).setRequiresMcRestart(true).getDouble(),
 					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", getDropChance(entry, 0.2D)).setRequiresMcRestart(true).getDouble(),
-					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", state.getBlock() == Blocks.GRAVEL ? getDropChance(entry, 0.1D) : getDropChance(entry, 0.3D)).setRequiresMcRestart(true).getDouble(),
+					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", Block.getBlockFromItem(stack.getItem()) == Blocks.GRAVEL ? getDropChance(entry, 0.1D) : getDropChance(entry, 0.3D)).setRequiresMcRestart(true).getDouble(),
 			};
-			ORE_SOURCES.put(entry, state);
+			ORE_SOURCES.put(entry, stack);
 			SIEVE_CHANCES.put(entry, data);
 		}
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			switch(entry.getOreType()) {
 			case DUST: {
-				IBlockState state = Utils.parseBlockState(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "exnihilocreatio:block_dust").setRequiresMcRestart(true).getString());
+				ItemStack stack = Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "exnihilocreatio:block_dust").setRequiresMcRestart(true).getString());
 				float[] data = {
 						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCStringChance", 0D).setRequiresMcRestart(true).getDouble(),
 						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", 0D).setRequiresMcRestart(true).getDouble(),
 						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", getDropChance(entry, 0.0625D)).setRequiresMcRestart(true).getDouble(),
 						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", getDropChance(entry, 0.125D)).setRequiresMcRestart(true).getDouble(),
 				};
-				ORE_SOURCES.put(entry, state);
+				ORE_SOURCES.put(entry, stack);
 				SIEVE_CHANCES.put(entry, data);
 				break;
 			}
 			case GEM:
 			default: {
-				IBlockState state = Utils.parseBlockState(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel").setRequiresMcRestart(true).getString());
+				ItemStack stack = Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel").setRequiresMcRestart(true).getString());
 				float[] data = {
 						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCStringChance", 0D).setRequiresMcRestart(true).getDouble(),
 						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", 0D).setRequiresMcRestart(true).getDouble(),
 						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", getDropChance(entry, 0.008D)).setRequiresMcRestart(true).getDouble(),
 						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", getDropChance(entry, 0.016D)).setRequiresMcRestart(true).getDouble(),
 				};
-				ORE_SOURCES.put(entry, state);
+				ORE_SOURCES.put(entry, stack);
 				SIEVE_CHANCES.put(entry, data);
 				break;
 			}
@@ -217,16 +216,16 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 		@Override
 		public void registerRecipeDefaults(SieveRegistry registry) {
 			for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("piece")) {
-				IBlockState state = ORE_SOURCES.get(entry);
+				ItemStack stack = ORE_SOURCES.get(entry);
 				float[] data = SIEVE_CHANCES.get(entry);
 				if(data[0] > 0) {
-					registry.register(state, Utils.getOreStack("piece", entry, 1), data[0], MeshType.FLINT.getID());
+					registry.register(stack, new ItemInfo(Utils.getOreStack("piece", entry, 1)), data[0], MeshType.FLINT.getID());
 				}
 				if(data[1] > 0) {
-					registry.register(state, Utils.getOreStack("piece", entry, 1), data[1], MeshType.IRON.getID());
+					registry.register(stack, new ItemInfo(Utils.getOreStack("piece", entry, 1)), data[1], MeshType.IRON.getID());
 				}
 				if(data[2] > 0) {
-					registry.register(state, Utils.getOreStack("piece", entry, 1), data[2], MeshType.DIAMOND.getID());
+					registry.register(stack, new ItemInfo(Utils.getOreStack("piece", entry, 1)), data[2], MeshType.DIAMOND.getID());
 				}
 			}
 
@@ -235,19 +234,19 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 				if(entry.getOreType() == EnumOreType.DUST) {
 					s = "dust";
 				}
-				IBlockState state = ORE_SOURCES.get(entry);
+				ItemStack stack = ORE_SOURCES.get(entry);
 				float[] data = SIEVE_CHANCES.get(entry);
 				if(data[0] > 0) {
-					registry.register(state, Utils.getOreStack(s, entry, 1), data[0], MeshType.STRING.getID());
+					registry.register(stack, new ItemInfo(Utils.getOreStack(s, entry, 1)), data[0], MeshType.STRING.getID());
 				}
 				if(data[1] > 0) {
-					registry.register(state, Utils.getOreStack(s, entry, 1), data[1], MeshType.FLINT.getID());
+					registry.register(stack, new ItemInfo(Utils.getOreStack(s, entry, 1)), data[1], MeshType.FLINT.getID());
 				}
 				if(data[2] > 0) {
-					registry.register(state, Utils.getOreStack(s, entry, 1), data[2], MeshType.IRON.getID());
+					registry.register(stack, new ItemInfo(Utils.getOreStack(s, entry, 1)), data[2], MeshType.IRON.getID());
 				}
 				if(data[3] > 0) {
-					registry.register(state, Utils.getOreStack(s, entry, 1), data[3], MeshType.DIAMOND.getID());
+					registry.register(stack, new ItemInfo(Utils.getOreStack(s, entry, 1)), data[3], MeshType.DIAMOND.getID());
 				}
 			}
 		}
