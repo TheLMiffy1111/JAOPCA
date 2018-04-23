@@ -58,7 +58,7 @@ repositories {
     }
 }
 
-version = "1.12.2-2.2.6.81"
+version = "1.12.2-2.2.6.82"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -110,7 +110,7 @@ dependencies {
         transitive = false
     }
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.9.285"
-    deobfCompile("exnihilocreatio:exnihilocreatio:1.12-0.2.0.2") {
+    deobfCompile("exnihilocreatio:exnihilocreatio:1.12-0.2.1.8") {
         transitive = false
     }
     deobfCompile "com.enderio.core:EnderCore:1.12.2-0.5.20"

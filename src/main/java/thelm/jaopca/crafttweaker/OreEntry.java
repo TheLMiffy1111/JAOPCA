@@ -15,11 +15,11 @@ import thelm.jaopca.api.utils.Utils;
 
 @ZenClass("mods.jaopca.OreEntry")
 @ZenRegister
-public class OreEntryAccess {
+public class OreEntry {
 
 	private final IOreEntry entry;
 
-	public OreEntryAccess(IOreEntry entry) {
+	public OreEntry(IOreEntry entry) {
 		this.entry = entry;
 	}
 
@@ -59,8 +59,8 @@ public class OreEntryAccess {
 	}
 
 	@ZenGetter("extra")
-	public OreEntryAccess getExtra() {
-		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getExtra().equals(entry.getExtra())).map(OreEntryAccess::new).findAny().orElse(null);
+	public OreEntry getExtra() {
+		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getExtra().equals(entry.getExtra())).map(OreEntry::new).findAny().orElse(null);
 	}
 
 	@ZenGetter("extraName")
@@ -99,8 +99,8 @@ public class OreEntryAccess {
 	}
 
 	@ZenGetter("secondExtra")
-	public OreEntryAccess getSecondExtra() {
-		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getSecondExtra().equals(entry.getSecondExtra())).map(OreEntryAccess::new).findAny().orElse(null);
+	public OreEntry getSecondExtra() {
+		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getSecondExtra().equals(entry.getSecondExtra())).map(OreEntry::new).findAny().orElse(null);
 	}
 
 	@ZenGetter("secondExtraName")
@@ -153,10 +153,10 @@ public class OreEntryAccess {
 		if(obj == null) {
 			return false;
 		}
-		if(!(obj instanceof OreEntryAccess)) {
+		if(!(obj instanceof OreEntry)) {
 			return false;
 		}
-		OreEntryAccess other = (OreEntryAccess)obj;
+		OreEntry other = (OreEntry)obj;
 		return entry == other.entry;
 	}
 
