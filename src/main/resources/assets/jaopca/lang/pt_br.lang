@@ -1,0 +1,82 @@
+itemGroup.jaopca=JAOPCA
+
+#Default
+item.jaopca.dust.name=Pó de %s 
+item.jaopca.nugget.name=Pepita de %s
+tile.jaopca.block.name=Bloco de %s
+fluid.jaopca.molten=%s derretido
+item.jaopca.coin.name=Moeda de %s
+item.jaopca.gear.name=Engrenagem de %s
+item.jaopca.plate.name=Placa de %s
+item.jaopca.stick.name=Graveto de %s
+
+#Mekanism
+item.jaopca.dustDirty.name=Pó sujo de %s
+item.jaopca.clump.name=Aglomerado de %s
+item.jaopca.shard.name=Estilhaço de %s
+item.jaopca.crystal.name=Cristal de %s
+gas.jaopca.slurryClean=Pasta limpa de %s
+gas.jaopca.slurry=Pasta de %s
+
+#IC2
+item.jaopca.crushed.name=Minério de %s triturado
+item.jaopca.crushedPurified.name=Minério purificado de %s triturado
+item.jaopca.dustTiny.name=Pequena pilha de pó de %s
+
+#ExNihiloOmnia
+item.jaopca.oreBroken.name=Minério fragmentado de %s
+item.jaopca.oreNetherBroken.name=Minério fragmentado de %s
+item.jaopca.oreEnderBroken.name=Minério fragmentado de %s
+item.jaopca.oreCrushed.name=Minério de %s triturado
+item.jaopca.orePowdered.nameMinério de %s pulverizado
+tile.jaopca.oreGravel.name=Minério de cascalho de %s 
+tile.jaopca.oreNetherGravel.name=Minério de cascalho de %s do Nether.
+tile.jaopca.oreEnderGravel.name=Minéio de cascalho de %s do Ender.
+tile.jaopca.oreSand.name=Areia de minério de %s
+tile.jaopca.oreFine.name=Pó de minério de %s
+
+#ExNihiloCreatio
+item.jaopca.piece.name=Pedaço de minério de %s
+item.jaopca.hunk.name=Fragmento de minério de %s
+
+#AbyssalCraft
+item.jaopca.crystalFragment.name=Fragmento cristalizado de %s
+item.jaopca.crystalShard.name=Estilhaço cristalizado de %s
+item.jaopca.crystalAbyss.name=%s cristalizado
+tile.jaopca.crystalCluster.name=Aglomerado cristalizado de %s
+
+#TechReborn
+item.jaopca.dustSmall.name=Pequena pilha de pó de %s
+
+#SkyResources
+item.jaopca.dustAlch.name=Pó mágico de minério de %s
+item.jaopca.dirtyGem.name=%s sujo
+
+#Magneticraft
+item.jaopca.rockyChunk.name=Fragmento rochoso de %s 
+item.jaopca.chunk.name=Fragmento de %s
+
+#TeslaPoweredThingies
+item.jaopca.teslaLump.name=Pedaço de %S Teslified
+item.jaopca.augmentedLump.name=Pedaço grande de %s
+
+#Thaumcraft
+item.jaopca.cluster.name=Grupo nativo de %s
+
+#Please refer to zh_CN or zh_TW for all names to localize.
+#Ingots
+jaopca.entry.LiquifiedCoralium=Coralio
+
+#Gems
+jaopca.entry.Lapis=Lápis lazúli
+jaopca.entry.QuartzBlack=Quartzo Preto
+
+#Dusts
+
+#IngotNoOres
+jaopca.entry.Aluminiumbrass=Alumínio
+jaopca.entry.ElvenElementium=Elementio
+jaocpa.entry.Galvanizedsteel=Aço Galvanizado
+jaopca.entry.Stainlesssteel=Aço Inoxidável
+
+#GemNoOres
