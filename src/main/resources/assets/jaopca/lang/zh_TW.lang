@@ -56,6 +56,9 @@ item.jaopca.chunk.name=細塊%s礦
 item.jaopca.teslaLump.name=特斯拉%s碎塊
 item.jaopca.augmentedLump.name=增強%s碎塊
 
+#Thaumcraft
+item.jaopca.cluster.name=原生%s礦簇
+
 #Ingots
 jaopca.entry.Abyssalnite=深淵
 jaopca.entry.Adamantine=亞德曼

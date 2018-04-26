@@ -8,7 +8,6 @@ import hqbanana.SkyCompression.AdditionalProcessRecipesManager;
 import hqbanana.SkyCompression.init.ModBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import scala.Console;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;

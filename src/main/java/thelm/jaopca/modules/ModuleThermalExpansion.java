@@ -6,9 +6,9 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import cofh.thermalexpansion.util.managers.dynamo.NumismaticManager;
-import cofh.thermalexpansion.util.managers.machine.CompactorManager;
-import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import net.minecraft.item.ItemStack;
@@ -52,12 +52,19 @@ public class ModuleThermalExpansion extends ModuleBase {
 		ItemStack richSlag = Utils.getOreStack("crystalSlagRich", 1);
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			if(entry.getOreType()==EnumOreType.INGOT&&!entry.getOreName().equals(entry.getExtra())) {
+			if(entry.getOreType() == EnumOreType.INGOT && entry.hasExtra()) {
 				replacePulverizerRecipe(4000, Utils.getOreStack("ore", entry, 1), Utils.getOreStack("dust", entry, 2), Utils.getOreStackExtra("dust", entry, 1), 10);
 				replaceInductionSmelterRecipe(4000, Utils.getOreStack("ore", entry, 1), cinnabar.copy(), Utils.getOreStack("ingot", entry, 3), Utils.getOreStackExtra("ingot", entry, 1), 100);
 			}
 			if(Loader.isModLoaded("tconstruct")) {
 				addCrucibleRecipes(entry);
+			}
+		}
+		
+		if(JAOPCAApi.isModuleLoaded("thaumcraft")) {
+			for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("cluster")) {
+				boolean hasExtra = entry.hasExtra();
+				addPulverizerRecipe(3000, Utils.getOreStack("cluster", entry, 1), Utils.getOreStack("dust", entry, 3), hasExtra ? Utils.getOreStackExtra("dust", entry, 1) : ItemStack.EMPTY, hasExtra ? 20 : 0);
 			}
 		}
 	}
@@ -108,6 +115,10 @@ public class ModuleThermalExpansion extends ModuleBase {
 		PulverizerManager.removeRecipe(input);
 		PulverizerManager.addRecipe(energy, input, output, bonus, chance);
 	}
+	
+	public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack output, ItemStack bonus, int chance) {
+		PulverizerManager.addRecipe(energy, input, output, bonus, chance);
+	}
 
 	public static void replaceInductionSmelterRecipe(int energy, ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int chance) {
 		SmelterManager.removeRecipe(input1, input2);
@@ -118,15 +129,11 @@ public class ModuleThermalExpansion extends ModuleBase {
 		CrucibleManager.addRecipe(energy, input, output);
 	}
 
-	public static void addPressRecipe(int energy, ItemStack input, ItemStack output) {
-		CompactorManager.addRecipe(energy, input, output, Mode.PRESS);
-	}
-
-	public static void addMintRecipe(int energy, ItemStack input, ItemStack output) {
-		CompactorManager.addRecipe(energy, input, output, Mode.MINT);
-	}
-
 	public static void addNumismaticFuel(ItemStack input, int energy) {
 		NumismaticManager.addFuel(input, energy);
+	}
+	
+	public static void addInsolatorRecipes(int energy, int water, ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int secondaryChanceRich, int secondaryChanceFlux) {
+		InsolatorManager.addDefaultRecipe(energy, water, primaryInput, primaryOutput, secondaryOutput, secondaryChance, secondaryChanceRich, secondaryChanceFlux, Type.STANDARD);
 	}
 }

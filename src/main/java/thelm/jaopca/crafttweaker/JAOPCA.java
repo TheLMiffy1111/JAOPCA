@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import crafttweaker.annotations.ZenRegister;
 import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
 import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.JAOPCAApi;

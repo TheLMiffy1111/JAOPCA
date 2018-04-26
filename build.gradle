@@ -58,7 +58,7 @@ repositories {
     }
 }
 
-version = "1.12.2-2.2.6.82"
+version = "1.12.2-2.2.6.83"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -68,7 +68,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.2.2629"
+    version = "1.12.2-14.23.3.2655"
     runDir = "run"
     mappings = "snapshot_20170624"
     makeObfSourceJar = false
@@ -88,17 +88,17 @@ dependencies {
         transitive = false
     }
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:universal"
-    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.1.5.331:universal"
-    deobfCompile("cofh:CoFHCore:1.12-4.3.6.16:universal") {
+    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.1.7.340:universal"
+    deobfCompile("cofh:CoFHCore:1.12.2-4.4.0.10:universal") {
         transitive = false
     }
-    deobfCompile("cofh:CoFHWorld:1.12-1.0.1.8:universal") {
+    deobfCompile("cofh:CoFHWorld:1.12.2-1.1.1.12:universal") {
         transitive = false
     }
-    deobfCompile("cofh:ThermalFoundation:1.12-2.3.6.16:universal") {
+    deobfCompile("cofh:ThermalFoundation:1.12.2-2.4.0.14:universal") {
         transitive = false
     }
-    deobfCompile("cofh:ThermalExpansion:1.12-5.3.6.20:universal") {
+    deobfCompile("cofh:ThermalExpansion:1.12.2-5.4.0.20:universal") {
         transitive = false
     }
     deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.12-1.9.4-pre-4"

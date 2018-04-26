@@ -21,8 +21,6 @@ import net.ndrei.teslapoweredthingies.common.OreOutput;
 import net.ndrei.teslapoweredthingies.common.SecondaryOreOutput;
 import net.ndrei.teslapoweredthingies.common.SecondaryOutput;
 import net.ndrei.teslapoweredthingies.items.TeslifiedObsidian;
-import net.ndrei.teslapoweredthingies.machines.compoundmaker.CompoundMakerRecipe;
-import net.ndrei.teslapoweredthingies.machines.compoundmaker.CompoundMakerRegistry;
 import net.ndrei.teslapoweredthingies.machines.powdermaker.PowderMakerRecipe;
 import net.ndrei.teslapoweredthingies.machines.powdermaker.PowderMakerRegistry;
 import thelm.jaopca.api.EnumEntryType;

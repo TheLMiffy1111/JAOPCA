@@ -73,13 +73,4 @@ public class ModulePlate extends ModuleBase {
 			}
 		}
 	}
-
-	@Override
-	public void postInit() {
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("plate")) {
-			if(Loader.isModLoaded("thermalexpansion")) {
-				ModuleThermalExpansion.addPressRecipe(Utils.energyI(entry, 4000), Utils.getOreStack("ingot", entry, 1), Utils.getOreStack("plate", entry, 1));
-			}
-		}
-	}
 }

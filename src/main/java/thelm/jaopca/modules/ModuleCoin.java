@@ -47,14 +47,6 @@ public class ModuleCoin extends ModuleBase {
 	public void postInit() {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("coin")) {
 			if(Loader.isModLoaded("thermalexpansion")) {
-				ModuleThermalExpansion.addMintRecipe(Utils.energyI(entry, 4000), Utils.getOreStack("ingot", entry, 1), Utils.getOreStack("coin", entry, 3));
-				if(Utils.doesOreNameExist("nugget"+entry.getOreName())) {
-					ModuleThermalExpansion.addMintRecipe(Utils.energyI(entry, 1000), Utils.getOreStack("nugget", entry, 3), Utils.getOreStack("coin", entry, 1));
-				}
-				if(Utils.doesOreNameExist("block"+entry.getOreName())) {
-					ModuleThermalExpansion.addMintRecipe(Utils.energyI(entry, 32000), Utils.getOreStack("block", entry, 1), Utils.getOreStack("coin", entry, 27));
-				}
-
 				ModuleThermalExpansion.addNumismaticFuel(Utils.getOreStack("coin", entry, 1), TE_NUMISM_VALUES.get(entry));
 			}
 		}

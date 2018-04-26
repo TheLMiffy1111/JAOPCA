@@ -72,5 +72,8 @@ public class RegistryModules {
 		if(Loader.isModLoaded("sc")) {
 			JAOPCAApi.registerModule(new ModuleSkyCompression());
 		}
+		if(Loader.isModLoaded("thaumcraft")) {
+			JAOPCAApi.registerModule(new ModuleThaumcraft());
+		}
 	}
 }
