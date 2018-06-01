@@ -1,0 +1,276 @@
+itemGroup.jaopca=JAOPCA
+
+#Default
+item.jaopca.dust.name=Pó de %s 
+item.jaopca.nugget.name=Pepita de %s
+tile.jaopca.block.name=Bloco de %s
+fluid.jaopca.molten=%s Derretido
+item.jaopca.coin.name=Moeda de %s
+item.jaopca.gear.name=Engrenagem de %s
+item.jaopca.plate.name=Placa de %s
+item.jaopca.stick.name=Graveto de %s
+item.jaopca.dustTiny.name=Pequena Pilha de Pó de %s
+item.jaopca.dustSmall.name=Um Pouco de Pó de %s
+item.jaopca.densePlate.name=Placa Densa de %s
+
+#Mekanism
+item.jaopca.dustDirty.name=Pó de %s Sujo
+item.jaopca.clump.name=Aglomerado de %s
+item.jaopca.shard.name=Estilhaço de %s
+item.jaopca.crystal.name=Cristal de %s
+gas.jaopca.slurryClean=Polpa de %s Pura
+gas.jaopca.slurry=Polpa de %s
+
+#IC2
+item.jaopca.crushed.name=Minério de %s Triturado
+item.jaopca.crushedPurified.name=Minério Purificado de %s Triturado
+
+#ExNihiloOmnia
+item.jaopca.oreBroken.name=Minério Fragmentado de %s
+item.jaopca.oreNetherBroken.name=Minério Fragmentado de %s
+item.jaopca.oreEnderBroken.name=Minério Fragmentado de %s
+item.jaopca.oreCrushed.name=Minério de %s Triturado
+item.jaopca.orePowdered.nameMinério de %s Pulverizado
+tile.jaopca.oreGravel.name=Minério de Cascalho de %s 
+tile.jaopca.oreNetherGravel.name=Minério de Cascalho de %s do Nether
+tile.jaopca.oreEnderGravel.name=Minéio de Cascalho de %s do Ender
+tile.jaopca.oreSand.name=Areia de Minério de %s
+tile.jaopca.oreFine.name=Pó de Minério de %s
+
+#ExNihiloCreatio
+item.jaopca.piece.name=Pedaço de Minério de %s
+item.jaopca.hunk.name=Fragmento de Minério de %s
+
+#AbyssalCraft
+item.jaopca.crystalFragment.name=Fragmento Cristalizado de %s
+item.jaopca.crystalShard.name=Estilhaço Cristalizado de %s
+item.jaopca.crystalAbyss.name=%s Cristalizado
+tile.jaopca.crystalCluster.name=Aglomerado Cristalizado de %s
+
+#SkyResources
+item.jaopca.dustAlch.name=Pó Mágico de Minério de %s
+item.jaopca.dirtyGem.name=%s Sujo
+
+#Magneticraft
+item.jaopca.rockyChunk.name=Fragmento Rochoso de %s 
+item.jaopca.chunk.name=Fragmento de %s
+
+#TeslaPoweredThingies
+item.jaopca.teslaLump.name=Pedaço de %s Teslified
+item.jaopca.augmentedLump.name=Pedaço Grande de %s
+
+#Thaumcraft
+item.jaopca.cluster.name=Aglomerado Nativo de %s
+
+#Ingots
+jaopca.entry.Abyssalnite=Abissalnito
+jaopca.entry.Adamantine=Adamantina
+jaopca.entry.Aluminum=Alumínio
+jaopca.entry.Antimony=Antimônio
+jaopca.entry.Ardite=Ardite
+jaopca.entry.AstralStarmetal=Metal Astral Estrelado
+jaopca.entry.Beryllium=Berílio
+jaopca.entry.Bismuth=Bismuto
+jaopca.entry.Boron=Boro
+jaopca.entry.Cadmium=Cádmio
+jaopca.entry.Carbon=Carbono
+jaopca.entry.Chromium=Crômio
+jaopca.entry.Cobalt=Cobalto
+jaopca.entry.Coldiron=Ferro Frio
+jaopca.entry.Copper=Cobre
+jaopca.entry.DarkIron=Ferro Negro
+jaopca.entry.Desh=Desh
+jaopca.entry.Draconium=Dracônio
+jaopca.entry.Gold=Ouro
+jaopca.entry.Iridium=Irídio
+jaopca.entry.Iron=Ferro
+jaopca.entry.Lead=Chumbo
+jaopca.entry.LiquifiedCoralium=Coralío Derretido
+jaopca.entry.Lithium=Lítio
+jaopca.entry.Magnesium=Magnésio
+jaopca.entry.Manganese=Manganês
+jaopca.entry.Mercury=Mercúrio
+jaopca.entry.MeteoricIron=Ferro Meteórico
+jaopca.entry.Mithril=Mithril
+jaopca.entry.Molybdenum=Molibdênio
+jaopca.entry.Nickel=Níquel
+jaopca.entry.Osmium=Ósmio
+jaopca.entry.Palladium=Paládio
+jaopca.entry.Platinum=Platina
+jaopca.entry.Potassium=Potássio
+jaopca.entry.Rutile=Rutilo
+jaopca.entry.Silver=Prata
+jaopca.entry.Silicon=Silicone
+jaopca.entry.Starsteel=Aço Estrela
+jaopca.entry.Tantalum=Tântalo
+jaopca.entry.Thorium=Tório
+jaopca.entry.Tin=Estanho
+jaopca.entry.Titanium=Titânio
+jaopca.entry.Tungsten=Tungstênio
+jaopca.entry.Uranium=Urânio
+jaopca.entry.Vanadium=Vanádio
+jaopca.entry.Yellorium=Yellório
+jaopca.entry.Zinc=Zinco
+jaopca.entry.Zirconium=Zircônio
+
+#Gems
+jaopca.entry.Agate=Ágata
+jaopca.entry.Alexandrite=Alexandrite
+jaopca.entry.Amber=Âmbar
+jaopca.entry.Amethyst=Ametista
+jaopca.entry.Ametrine=Ametrina
+jaopca.entry.Apatite=Apatita
+jaopca.entry.Aquamarine=Água-Marinha
+jaopca.entry.Beryl=Berilo
+jaopca.entry.BlackDiamond=Diamante Negro
+jaopca.entry.BlueTopaz=Topázio Azul
+jaopca.entry.Carnelian=Cornalina
+jaopca.entry.Chaos=Caos
+jaopca.entry.DimensionalShard=Estilhaço Dimensional
+jaopca.entry.EnderBiotite=Biotita do Ender
+jaopca.entry.EnderEssence=Essência do Ender
+jaopca.entry.CertusQuartz=Quartzo Certus
+jaopca.entry.ChargedCertusQuartz=Quartzo Certus Carregado
+jaopca.entry.Citrine=Citrino
+jaopca.entry.Coal=Carvão
+jaopca.entry.Coralium=Corálio
+jaopca.entry.Dark=Negro
+jaopca.entry.Diamond=Diamante
+jaopca.entry.Emerald=Esmeralda
+jaopca.entry.Garnet=Granada
+jaopca.entry.GoldenBeryl=Berilo Dourado
+jaopca.entry.Heliodor=Heliodor
+jaopca.entry.Indicolite=Indicolite
+jaopca.entry.Iolite=Iolita
+jaopca.entry.Jasper=Jaspe
+jaopca.entry.Lapis=Lápis
+jaopca.entry.Lepidolite=Lepidolita
+jaopca.entry.Malachite=Malaquita
+jaopca.entry.Moldavite=Moldavita
+jaopca.entry.Moonstone=Pedra da Lua
+jaopca.entry.Morganite=Morganita
+jaopca.entry.Onyx=Ônix
+jaopca.entry.Opal=Opala
+jaopca.entry.Peridot=Peridoto
+jaopca.entry.Quartz=Quartzo
+jaopca.entry.QuartzBlack=Quartzo Negro
+jaopca.entry.Ruby=Rubi
+jaopca.entry.Sapphire=Sáfira
+jaopca.entry.Spinel=Espinel
+jaopca.entry.Tanzanite=Tanzanita
+jaopca.entry.Topaz=Topázio
+jaopca.entry.Turqoise=Turquesa
+jaopca.entry.VioletSapphire=Sáfira Violeta
+
+#Dusts
+jaopca.entry.Bauxite=Bauxita
+jaopca.entry.Cinnabar=Cinábrio
+jaopca.entry.Dilithium=Dilítio
+jaopca.entry.Galena=Galena
+jaopca.entry.Niter=Nitro
+jaopca.entry.Phosphorus=Fósforo
+jaopca.entry.Potash=Potassa
+jaopca.entry.Pyrite=Pirita
+jaopca.entry.Redstone=Redstone
+jaopca.entry.Salt=Sal
+jaopca.entry.Saltpeter=Salpeter
+jaopca.entry.Sodalite=Sodalita
+jaopca.entry.Sphalerite=Esfalerita
+jaopca.entry.Sulfur=Enxofre
+
+
+#IngotNoOres
+jaopca.entry.AdvancedAlloy=Liga Avançada
+jaopca.entry.Alubrass=Alubrass
+jaopca.entry.AluminiumBrass= Latão de Alumínio
+jaopca.entry.Alumite=Alumite
+jaopca.entry.Aquarium=Aquarium
+jaopca.entry.BaseEssence=Essência Base
+jaopca.entry.Blutonium=Blutônio
+jaopca.entry.Brass=Latão
+jaopca.entry.Bronze=Bronze
+jaopca.entry.ConductiveIron=Ferro Condutor
+jaopca.entry.Constantan=Constantan
+jaopca.entry.Corrupted=Corrompido
+jaopca.entry.Cupronickel=Cuproníquel
+jaopca.entry.Cyanite=Cianita
+jaopca.entry.DarkSteel=Aço Negro
+jaopca.entry.DemonicMetal=Metal Demoníaco
+jaopca.entry.DraconiumAwakened=Dracônio
+jaopca.entry.Dreadium=Dreadium
+jaopca.entry.Duralumin=Duralumin
+jaopca.entry.ElectricalSteel=Aço Elétrico
+jaopca.entry.Electrum=Electro
+jaopca.entry.ElectrumFlux=Fluxo de Electro
+jaopca.entry.ElvenElementium=ElvenElementium
+jaopca.entry.EnchantedMetal=Metal Encantado
+jaopca.entry.Enderium=Enderium
+jaopca.entry.EnergeticAlloy=Liga Energética
+jaopca.entry.Ethaxium=Ethaxium
+jaopca.entry.EvilMetal=Metal Maligno
+jaopca.entry.Ferroboron=Ferroboro
+jaopca.entry.FrozenIron=Ferro Congelado
+jaopca.entry.GaiaSpirit=Espírito Gaia
+jaopca.entry.GalvanizedSteel=Aço Galvanizado
+jaopca.entry.Graphite=Grafite
+jaopca.entry.HardCarbon=Carbono Duro
+jaopca.entry.HOPGraphite=Grafite HOP
+jaopca.entry.HotTungstensteel=Aço de Tungstênio Quente
+jaopca.entry.Inferium=Inferium
+jaopca.entry.Insanium=Insanium
+jaopca.entry.Intermedium=Intermedium
+jaopca.entry.Invar=Invar
+jaopca.entry.IridiumAlloy=Liga de Irídio
+jaopca.entry.Knightslime=Knightslime
+jaopca.entry.LithiumManganeseDioxide=Dióxido de Manganês de Lítio
+jaopca.entry.Ludicrite=Ludicrite
+jaopca.entry.Lumium=Lumium
+jaopca.entry.MagnesiumDiboride=Diboreto de Magnésio
+jaopca.entry.Manasteel=Aço de Mana
+jaopca.entry.ManganeseDioxide=Dióxido de Manganês
+jaopca.entry.ManganeseOxide=Óxido de Manganês
+jaopca.entry.Manyullyn=Manyullyn
+jaopca.entry.Mirion=Mirion
+jaopca.entry.MixedMetal=Metal Combinado
+jaopca.entry.Moon=Lua
+jaopca.entry.Nichrome=Nicromo
+jaopca.entry.Osgloglas=Osgloglas
+jaopca.entry.Osmiridium=Osmiridium
+jaopca.entry.Pigiron=Pigiron
+jaopca.entry.Pewter=Estanho
+jaopca.entry.Plutonium=Plutônio
+jaopca.entry.Prismarinium=Prismarinium
+jaopca.entry.Prudentium=Prudentium
+jaopca.entry.PulsatingIron=Ferro Pulsante
+jaopca.entry.RedstoneAlloy=Liga de Redstone
+jaopca.entry.RefinedGlowstone=Pedra Luminosa Refinada
+jaopca.entry.RefinedIron=Ferro Refinado
+jaopca.entry.RefinedObsidian=Obsidiana Refinada
+jaopca.entry.Signalum=Signalum
+jaopca.entry.Soularium=Soularium
+jaopca.entry.Soulium=Soulium
+jaopca.entry.StainlessSteel=Aço Inoxidável
+jaopca.entry.Steel=Aço
+jaopca.entry.Superium=Superium
+jaopca.entry.Supremium=Supremium
+jaopca.entry.Terrasteel=Terrasteel
+jaopca.entry.Teslarium=Teslarium
+jaopca.entry.ThoriumOxide=Óxido de Tório
+jaopca.entry.TitaniumAluminide=Alumineto de Titânio
+jaopca.entry.TitaniumIridium=Irídio de Titânio
+jaopca.entry.Tough=Robusto
+jaopca.entry.Tungstensteel=Aço de Tungstênio
+jaopca.entry.UraniumOxide=Óxido de Urânio
+jaopca.entry.VibrantAlloy=Liga Vibrante
+
+#GemNoOres
+jaopca.entry.BoronNitride=Nitreto de Boro
+jaopca.entry.CrystalFlux=Cristal de Flux
+jaopca.entry.Ender=Ender
+jaopca.entry.Fluix=Fluix
+jaopca.entry.Fluorite=Fluorita
+jaopca.entry.Prismarine=Prismarino
+jaopca.entry.RedGarnet=Granada Vermelha
+jaopca.entry.Rhodochrosite=Rodocrosita
+jaopca.entry.Shadow=Sombra
+jaopca.entry.YellowGarnet=Granada Amarela
