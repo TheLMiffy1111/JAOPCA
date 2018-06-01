@@ -9,8 +9,8 @@ item.jaopca.coin.name=Moeda de %s
 item.jaopca.gear.name=Engrenagem de %s
 item.jaopca.plate.name=Placa de %s
 item.jaopca.stick.name=Graveto de %s
-item.jaopca.dustTiny.name=Minúscula Pilha de Pó de %s
-item.jaopca.dustSmall.name=Pequena Pilha de Pó de %s
+item.jaopca.dustTiny.name=Pequena Pilha de Pó de %s
+item.jaopca.dustSmall.name=Um Pouco de Pó de %s
 item.jaopca.densePlate.name=Placa Densa de %s
 
 #Mekanism
@@ -60,7 +60,7 @@ item.jaopca.teslaLump.name=Pedaço de %s Teslified
 item.jaopca.augmentedLump.name=Pedaço Grande de %s
 
 #Thaumcraft
-item.jaopca.cluster.name=Agrupamento de %s
+item.jaopca.cluster.name=Aglomerado Nativo de %s
 
 #Ingots
 jaopca.entry.Abyssalnite=Abissalnito
