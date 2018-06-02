@@ -1,8 +1,5 @@
 package thelm.jaopca.modules;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +7,10 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import futurepack.common.crafting.FPZentrifugeManager;
+import futurepack.common.crafting.ZentrifugeRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.JAOPCAApi;
@@ -35,7 +33,7 @@ public class ModuleFuturePack extends ModuleBase {
 
 	@Override
 	public EnumSet<EnumOreType> getOreTypes() {
-		return EnumSet.<EnumOreType>copyOf(Arrays.asList(EnumOreType.ORE));
+		return Utils.<EnumOreType>enumSetOf(EnumOreType.ORE);
 	}
 
 	@Override
@@ -61,7 +59,7 @@ public class ModuleFuturePack extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			switch(entry.getOreType()) {
 			case DUST: {
-				for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
+				for(ItemStack ore : Utils.getOres("ore"+entry.getOreName())) {
 					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
 							Utils.getOreStack("dust", entry, 12),
 							Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
@@ -71,7 +69,7 @@ public class ModuleFuturePack extends ModuleBase {
 				break;
 			}
 			case GEM: {
-				for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
+				for(ItemStack ore : Utils.getOres("ore"+entry.getOreName())) {
 					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
 							Utils.getOreStack("gem", entry, 12),
 							Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
@@ -81,7 +79,7 @@ public class ModuleFuturePack extends ModuleBase {
 				break;
 			}
 			case INGOT: {
-				for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
+				for(ItemStack ore : Utils.getOres("ore"+entry.getOreName())) {
 					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
 							Utils.getOreStack("dust", entry, 10),
 							Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
@@ -110,19 +108,7 @@ public class ModuleFuturePack extends ModuleBase {
 	}
 
 	public static void addCentrifugeRecipe(ItemStack in, ItemStack[] out, int support, int time) {
-		//FuturePack API makers, I don't know if you'll ever see this, BUT WHY DID YOU NOT PUT METHODS TO ADD CENTRIFUGE RECIPES?
-		try {
-			Class<?> managerClass = Class.forName("futurepack.common.crafting.FPZentrifugeManager");
-			Class<?> recipeClass = Class.forName("futurepack.common.crafting.ZentrifugeRecipe");
-			Field instanceField = managerClass.getField("instance");
-			Method addRecipeMethod = managerClass.getMethod("addZentrifugeRecipe", ItemStack.class, ItemStack[].class, Integer.TYPE);
-			Method setTimeMethod = recipeClass.getMethod("setTime", Integer.TYPE);
-			Object instance = instanceField.get(null);
-			Object recipe = addRecipeMethod.invoke(instance, in, out, support);
-			setTimeMethod.invoke(recipe, time);
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+		ZentrifugeRecipe recipe = FPZentrifugeManager.instance.addZentrifugeRecipe(in, out, support);
+		recipe.setTime(time);
 	}
 }

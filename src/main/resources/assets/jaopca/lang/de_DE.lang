@@ -9,6 +9,8 @@ item.jaopca.coin.name=%smünze
 item.jaopca.gear.name=%szahnrad
 item.jaopca.plate.name=%splatte
 item.jaopca.stick.name=%sstab
+item.jaopca.dustTiny.name=Winziger Haufen %sstaub
+item.jaopca.dustSmall.name=Kleiner Haufen %sstaub
 
 #Mekanism
 item.jaopca.dustDirty.name=Schmutziger %sstaub
@@ -21,7 +23,6 @@ gas.jaopca.slurry=%sschlacke
 #IC2
 item.jaopca.crushed.name=Zerstoßenes %serz
 item.jaopca.crushedPurified.name=Gereinigtes Zerstoßenes %serz
-item.jaopca.dustTiny.name=Winziger Haufen %sstaub
 
 #ExNihiloOmnia
 item.jaopca.oreBroken.name=Zerbrochenes %serz
@@ -44,9 +45,6 @@ item.jaopca.crystalFragment.name=Kristallisiertes %sfragment
 item.jaopca.crystalShard.name=Kristallisierte %sscherbe
 item.jaopca.crystalAbyss.name=Kristallisiertes %s
 tile.jaopca.crystalCluster.name=Kristallisierte %ssanhäufung
-
-#TechReborn
-item.jaopca.dustSmall.name=Kleiner Haufen %sstaub
 
 #SkyResources
 item.jaopca.dustAlch.name=Alchemistischr %serzstaub

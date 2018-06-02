@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
@@ -36,7 +35,7 @@ public class ModuleDust extends ModuleBase {
 			switch(entry.getOreType()) {
 			case INGOT:
 			case INGOT_ORELESS: {
-				for(ItemStack dust : OreDictionary.getOres("dust"+entry.getOreName())) {
+				for(ItemStack dust : Utils.getOres("dust"+entry.getOreName())) {
 					Utils.addSmelting(dust.copy(), Utils.getOreStack("ingot", entry, 1), 0);
 				}
 				break;

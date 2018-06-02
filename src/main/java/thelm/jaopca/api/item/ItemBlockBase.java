@@ -8,7 +8,6 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.block.IBlockWithProperty;

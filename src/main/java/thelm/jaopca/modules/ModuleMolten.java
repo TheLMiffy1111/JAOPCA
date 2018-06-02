@@ -35,7 +35,7 @@ public class ModuleMolten extends ModuleBase {
 	public static final ArrayList<String> MOLTEN_BLACKLIST_TCON = Lists.<String>newArrayList(
 			"Iron", "Cobalt", "Ardite", "Gold", "Copper", "Tin", "Lead", "Nickel", "Silver", "Aluminium", "Zinc", "BrickSeared"
 			);
-	public static final ArrayList<String> MOLTEN_BLOCKLIST_EMBERS = Lists.<String>newArrayList(
+	public static final ArrayList<String> MOLTEN_BLACKLIST_EMBERS = Lists.<String>newArrayList(
 			"Iron", "Gold", "Silver", "Copper", "Lead"
 			);
 
@@ -50,7 +50,7 @@ public class ModuleMolten extends ModuleBase {
 			MOLTEN_ENTRY.blacklist.addAll(MOLTEN_BLACKLIST_TCON);
 		}
 		if(Loader.isModLoaded("embers")) {
-			MOLTEN_ENTRY.blacklist.addAll(MOLTEN_BLOCKLIST_EMBERS);
+			MOLTEN_ENTRY.blacklist.addAll(MOLTEN_BLACKLIST_EMBERS);
 		}
 		return Lists.<ItemEntry>newArrayList(MOLTEN_ENTRY);
 	}

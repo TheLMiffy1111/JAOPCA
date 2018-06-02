@@ -1,7 +1,6 @@
 package thelm.jaopca.modules;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -17,9 +16,7 @@ import mekanism.api.gas.GasStack;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IObjectWithProperty;
@@ -80,7 +77,7 @@ public class ModuleMekanism extends ModuleBase {
 
 	@Override
 	public EnumSet<EnumOreType> getOreTypes() {
-		return EnumSet.<EnumOreType>copyOf(Arrays.asList(EnumOreType.DUSTLESS));
+		return Utils.<EnumOreType>enumSetOf(EnumOreType.DUSTLESS);
 	}
 
 	@Override
@@ -100,43 +97,43 @@ public class ModuleMekanism extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			switch(entry.getOreType()) {
 			case GEM: {
-				for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
+				for(ItemStack ore : Utils.getOres("ore" + entry.getOreName())) {
 					addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("gem", entry, 2));
 				}
 				break;
 			}
 			case GEM_ORELESS: {
-				for(ItemStack ore : OreDictionary.getOres("dust" + entry.getOreName())) {
+				for(ItemStack ore : Utils.getOres("dust" + entry.getOreName())) {
 					addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("gem", entry, 1));
 				}
 
-				for(ItemStack ore : OreDictionary.getOres("gem" + entry.getOreName())) {
+				for(ItemStack ore : Utils.getOres("gem" + entry.getOreName())) {
 					addCrusherRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 1));
 				}
 				break;
 			}
 			case INGOT: {
 				if(!MINOR_COMPAT_BLACKLIST.contains(entry.getOreName())) {
-					for(ItemStack ore : OreDictionary.getOres("dust" + entry.getOreName())) {
+					for(ItemStack ore : Utils.getOres("dust" + entry.getOreName())) {
 						addCombinerRecipe(Utils.resizeStack(ore, 8), Utils.getOreStack("ore", entry, 1));
 					}
 
-					for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
+					for(ItemStack ore : Utils.getOres("ore" + entry.getOreName())) {
 						addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 2));
 					}
 
-					for(ItemStack ore : OreDictionary.getOres("ingot" + entry.getOreName())) {
+					for(ItemStack ore : Utils.getOres("ingot" + entry.getOreName())) {
 						addCrusherRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 1));
 					}
 				}
 
-				for(ItemStack ore : OreDictionary.getOres("dustDirty" + entry.getOreName())) {
+				for(ItemStack ore : Utils.getOres("dustDirty" + entry.getOreName())) {
 					addEnrichmentChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 1));
 				}
 				break;
 			}
 			case INGOT_ORELESS: {
-				for(ItemStack ore : OreDictionary.getOres("ingot" + entry.getOreName())) {
+				for(ItemStack ore : Utils.getOres("ingot" + entry.getOreName())) {
 					addCrusherRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dust", entry, 1));
 				}
 				break;
@@ -147,27 +144,27 @@ public class ModuleMekanism extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustDirty")) {
-			for(ItemStack ore : OreDictionary.getOres("clump" + entry.getOreName())) {
+			for(ItemStack ore : Utils.getOres("clump" + entry.getOreName())) {
 				addCrusherRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dustDirty", entry, 1));
 			}
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("clump")) {
-			for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
+			for(ItemStack ore : Utils.getOres("ore" + entry.getOreName())) {
 				addPurificationChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("clump", entry, 3));
 			}
 
-			for(ItemStack ore : OreDictionary.getOres("shard" + entry.getOreName())) {
+			for(ItemStack ore : Utils.getOres("shard" + entry.getOreName())) {
 				addPurificationChamberRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("clump", entry, 1));
 			}
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("shard")) {
-			for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
+			for(ItemStack ore : Utils.getOres("ore" + entry.getOreName())) {
 				addChemicalInjectionChamberRecipe(Utils.resizeStack(ore, 1), "hydrogenchloride", Utils.getOreStack("shard", entry, 4));
 			}
 
-			for(ItemStack ore : OreDictionary.getOres("crystal" + entry.getOreName())) {
+			for(ItemStack ore : Utils.getOres("crystal" + entry.getOreName())) {
 				addChemicalInjectionChamberRecipe(Utils.resizeStack(ore, 1), "hydrogenchloride", Utils.getOreStack("shard", entry, 1));
 			}
 		}
@@ -185,7 +182,7 @@ public class ModuleMekanism extends ModuleBase {
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("slurry")) {
-			for(ItemStack ore : OreDictionary.getOres("ore" + entry.getOreName())) {
+			for(ItemStack ore : Utils.getOres("ore" + entry.getOreName())) {
 				addChemicalDissolutionChamberRecipe(Utils.resizeStack(ore, 1), new GasStack(GASES_TABLE.get("slurry",entry.getOreName()), 1000));
 			}
 		}

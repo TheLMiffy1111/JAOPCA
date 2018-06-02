@@ -9,17 +9,16 @@ import com.google.common.collect.Lists;
 
 import ic2.api.item.IC2Items;
 import ic2.api.recipe.IRecipeInput;
+import ic2.api.recipe.RecipeInputFluidContainer;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.Recipes;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.EnumEntryType;
-import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
 import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.ItemEntryGroup;
@@ -35,10 +34,6 @@ public class ModuleIndustrialCraft extends ModuleBase {
 	public static final ItemEntry PURIFIED_CRUSHED_ENTRY = new ItemEntry(EnumEntryType.ITEM, "crushedPurified", new ModelResourceLocation("jaopca:crushed_purified#inventory"), ImmutableList.<String>of(
 			"Copper", "Gold", "Iron", "Lead", "Tin", "Silver", "Uranium"
 			));
-	public static final ItemEntry TINY_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustTiny", new ModelResourceLocation("jaopca:dust_tiny#inventory"), ImmutableList.<String>of(
-			"Copper", "Gold", "Iron", "Lead", "Lithium", "Silver", "Tin", "Lapis", "Bronze"
-			)).skipWhenGrouped(Loader.isModLoaded("techreborn")).
-			setOreTypes(EnumOreType.DUSTLESS);
 
 	@Override
 	public String getName() {
@@ -47,12 +42,12 @@ public class ModuleIndustrialCraft extends ModuleBase {
 
 	@Override
 	public List<String> getDependencies() {
-		return Lists.<String>newArrayList("dust");
+		return Lists.<String>newArrayList("dust", "tinydust");
 	}
 
 	@Override
 	public List<ItemEntryGroup> getItemRequests() {
-		return Lists.<ItemEntryGroup>newArrayList(ItemEntryGroup.of(CRUSHED_ENTRY, PURIFIED_CRUSHED_ENTRY), ItemEntryGroup.of(TINY_DUST_ENTRY));
+		return Lists.<ItemEntryGroup>newArrayList(ItemEntryGroup.of(CRUSHED_ENTRY, PURIFIED_CRUSHED_ENTRY));
 	}
 
 	@Override
@@ -70,20 +65,6 @@ public class ModuleIndustrialCraft extends ModuleBase {
 			addCentrifugeRecipe(new RecipeInputOreDict("crushedPurified"+entry.getOreName()), Utils.energyI(entry, 1500), Utils.getOreStack("dust",entry,1), Utils.getOreStackExtra("dustTiny",entry,1));
 			Utils.addSmelting(Utils.getOreStack("crushedPurified", entry, 1), Utils.getOreStack("ingot", entry, 1), 0.2F);
 		}
-
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustTiny")) {
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("dust",entry,1), new Object[] {
-					"dustTiny"+entry.getOreName(),
-					"dustTiny"+entry.getOreName(),
-					"dustTiny"+entry.getOreName(),
-					"dustTiny"+entry.getOreName(),
-					"dustTiny"+entry.getOreName(),
-					"dustTiny"+entry.getOreName(),
-					"dustTiny"+entry.getOreName(),
-					"dustTiny"+entry.getOreName(),
-					"dustTiny"+entry.getOreName(),
-			}));
-		}
 	}
 
 	@Override
@@ -93,93 +74,62 @@ public class ModuleIndustrialCraft extends ModuleBase {
 				);
 	}
 
-	public static void addMaceratorRecipe(Object input, ItemStack output) {
+	public static IRecipeInput getRecipeInput(Object input) {
 		IRecipeInput ri = null;
 		if(input instanceof String) {
 			ri = new RecipeInputOreDict((String)input);
 		}
+		if(input instanceof Pair<?, ?>) {
+			Pair<?, ?> pair = (Pair<?, ?>)input;
+			if(pair.getLeft() instanceof String) {
+				if(pair.getRight() instanceof Integer) {
+					ri = new RecipeInputOreDict((String)pair.getLeft(), (Integer)pair.getRight());
+				}
+			}
+		}
 		if(input instanceof ItemStack) {
 			ri = new RecipeInputItemStack((ItemStack)input);
+		}
+		if(input instanceof Fluid) {
+			ri = new RecipeInputFluidContainer((Fluid)input);
+		}
+		if(input instanceof FluidStack) {
+			FluidStack fs = (FluidStack)input;
+			ri = new RecipeInputFluidContainer(fs.getFluid(), fs.amount);
 		}
 		if(input instanceof IRecipeInput) {
 			ri = (IRecipeInput)input;
 		}
-		Recipes.macerator.addRecipe(ri, null, false, output);
+		return ri;
+	}
+
+	public static void addMaceratorRecipe(Object input, ItemStack output) {
+		Recipes.macerator.addRecipe(getRecipeInput(input), null, false, output);
 	}
 
 	public static void addCentrifugeRecipe(Object input, int minHeat, ItemStack... output) {
-		IRecipeInput ri = null;
-		if(input instanceof String) {
-			ri = new RecipeInputOreDict((String)input);
-		}
-		if(input instanceof ItemStack) {
-			ri = new RecipeInputItemStack((ItemStack)input);
-		}
-		if(input instanceof IRecipeInput) {
-			ri = (IRecipeInput)input;
-		}
 		NBTTagCompound metadata = new NBTTagCompound();
 		metadata.setInteger("minHeat", minHeat);
-		Recipes.centrifuge.addRecipe(ri, metadata, false, output);
+		Recipes.centrifuge.addRecipe(getRecipeInput(input), metadata, false, output);
 	}
 
 	public static void addOreWashingRecipe(Object input, ItemStack... output) {
-		IRecipeInput ri = null;
-		if(input instanceof String) {
-			ri = new RecipeInputOreDict((String)input);
-		}
-		if(input instanceof ItemStack) {
-			ri = new RecipeInputItemStack((ItemStack)input);
-		}
-		if(input instanceof IRecipeInput) {
-			ri = (IRecipeInput)input;
-		}
 		NBTTagCompound metadata = new NBTTagCompound();
 		metadata.setInteger("amount", 1000);
-		Recipes.oreWashing.addRecipe(ri, metadata, false, output);
+		Recipes.oreWashing.addRecipe(getRecipeInput(input), metadata, false, output);
 	}
 
 	public static void addCompressorRecipe(Object input, ItemStack output) {
-		IRecipeInput ri = null;
-		if(input instanceof String) {
-			ri = new RecipeInputOreDict((String)input);
-		}
-		if(input instanceof ItemStack) {
-			ri = new RecipeInputItemStack((ItemStack)input);
-		}
-		if(input instanceof IRecipeInput) {
-			ri = (IRecipeInput)input;
-		}
-		Recipes.compressor.addRecipe(ri, null, false, output);
+		Recipes.compressor.addRecipe(getRecipeInput(input), null, false, output);
 	}
 
 	public static void addRollingRecipe(Object input, ItemStack output) {
-		IRecipeInput ri = null;
-		if(input instanceof String) {
-			ri = new RecipeInputOreDict((String)input);
-		}
-		if(input instanceof ItemStack) {
-			ri = new RecipeInputItemStack((ItemStack)input);
-		}
-		if(input instanceof IRecipeInput) {
-			ri = (IRecipeInput)input;
-		}
-		Recipes.metalformerRolling.addRecipe(ri, null, false, output);
+		Recipes.metalformerRolling.addRecipe(getRecipeInput(input), null, false, output);
 	}
 
 	public static void addBlockCutterRecipe(Object input, int hardness, ItemStack output) {
-		IRecipeInput ri = null;
-		if(input instanceof String) {
-			ri = new RecipeInputOreDict((String)input);
-		}
-		if(input instanceof ItemStack) {
-			ri = new RecipeInputItemStack((ItemStack)input);
-		}
-		if(input instanceof IRecipeInput) {
-			ri = (IRecipeInput)input;
-		}
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("hardness", hardness);
-		Recipes.blockcutter.addRecipe(ri, nbt, false, output);
+		Recipes.blockcutter.addRecipe(getRecipeInput(input), nbt, false, output);
 	}
 }

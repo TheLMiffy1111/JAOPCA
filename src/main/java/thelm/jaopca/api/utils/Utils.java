@@ -1,14 +1,15 @@
 package thelm.jaopca.api.utils;
 
-import java.util.HashMap;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -29,8 +30,8 @@ import thelm.jaopca.api.JAOPCAApi;
 
 public class Utils {
 
-	public static final HashMap<String,ItemStack> CACHE = Maps.<String,ItemStack>newHashMap();
-	public static final HashMap<String,FluidStack> CACHE1 = Maps.<String,FluidStack>newHashMap();
+	public static final ConcurrentMap<String, ItemStack> CACHE = CacheBuilder.newBuilder().maximumSize(200).<String, ItemStack>build().asMap();
+	public static final ConcurrentMap<String, FluidStack> CACHE1 = CacheBuilder.newBuilder().maximumSize(200).<String, FluidStack>build().asMap();
 	public static final LinkedList<String> MOD_IDS = Lists.<String>newLinkedList();
 
 	public static ItemStack getOreStack(String name, int amount) {
@@ -41,8 +42,8 @@ public class Utils {
 		}
 
 		ItemStack ret = null;
-		if(!OreDictionary.getOres(name, false).isEmpty()) {
-			List<ItemStack> list = OreDictionary.getOres(name, false);
+		if(!Utils.getOres(name).isEmpty()) {
+			List<ItemStack> list = Utils.getOres(name);
 			ret = getPreferredStack(list);
 		}
 
@@ -361,6 +362,10 @@ public class Utils {
 		return !OreDictionary.getOres(name, false).isEmpty();
 	}
 
+	public static List<ItemStack> getOres(String name) {
+		return OreDictionary.getOres(name, false);
+	}
+
 	public static ItemStack getPreferredStack(Iterable<ItemStack> itemList) {
 		ItemStack ret = null;
 		int index = Integer.MAX_VALUE;
@@ -473,5 +478,12 @@ public class Utils {
 		}
 		String locOre = I18n.canTranslate("jaopca.entry."+ore) ? I18n.translateToLocal("jaopca.entry."+ore) : Utils.toSpaceSeparated(ore);
 		return String.format(I18n.translateToLocal(key), locOre).trim();
+	}
+
+	public static <E extends Enum<E>> EnumSet<E> enumSetOf(E... elements) {
+		if(elements.length == 0) {
+			throw new IllegalArgumentException("Array must contain at least one element");
+		}
+		return EnumSet.of(elements[0], elements);
 	}
 }

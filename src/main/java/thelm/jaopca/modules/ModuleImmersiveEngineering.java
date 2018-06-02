@@ -1,6 +1,5 @@
 package thelm.jaopca.modules;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class ModuleImmersiveEngineering extends ModuleBase {
 
 	@Override
 	public EnumSet<EnumOreType> getOreTypes() {
-		return EnumSet.<EnumOreType>copyOf(Arrays.asList(EnumOreType.ORE));
+		return Utils.<EnumOreType>enumSetOf(EnumOreType.ORE);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package thelm.jaopca.modules;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -39,7 +37,7 @@ public class ModuleThaumcraft extends ModuleBase {
 
 	@Override
 	public EnumSet<EnumOreType> getOreTypes() {
-		return EnumSet.<EnumOreType>copyOf(Arrays.asList(EnumOreType.ORE));
+		return Utils.<EnumOreType>enumSetOf(EnumOreType.ORE);
 	}
 
 	@Override
@@ -62,7 +60,7 @@ public class ModuleThaumcraft extends ModuleBase {
 				addSmeltingBonus(Utils.getOreStack("cluster", entry, 1), Utils.getOreStack("nugget", entry, 1));
 			}
 			addSmeltingBonus(Utils.getOreStack("cluster", entry, 1), new ItemStack(ItemsTC.nuggets, 1, 10), 0.02F);
-			for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
+			for(ItemStack ore : Utils.getOres("ore"+entry.getOreName())) {
 				addSpecialMiningResult(ore, Utils.getOreStack("cluster", entry, 1), 1F);
 			}
 		}

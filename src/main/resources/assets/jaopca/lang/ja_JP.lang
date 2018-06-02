@@ -1,11 +1,19 @@
 itemGroup.jaopca=JAOPCA
 
+#Note that I did this because I can read Japanese.
+#Most localization entries here are taken from their mods.
+#Help still wanted.
+
 #Default
 item.jaopca.dust.name=%sの粉
-item.jaopca.nugget.name=%sナゲット
+item.jaopca.nugget.name=%s塊
 tile.jaopca.block.name=%sブロック
 fluid.jaopca.molten=溶融%s
+item.jaopca.coin.name=%sのコイン
 item.jaopca.gear.name=%sの歯車
+item.jaopca.plate.name=%s板
+item.jaopca.dustTiny.name=小量%sの粉
+item.jaopca.plateDense.name=高密化%s板
 
 #Mekanism
 item.jaopca.dustDirty.name=汚れた%sの粉
@@ -14,6 +22,13 @@ item.jaopca.shard.name=%sの欠片
 item.jaopca.crystal.name=%sの結晶
 gas.jaopca.slurryClean=純粋な%sの懸濁液
 gas.jaopca.slurry=%sの懸濁液
+
+#IC2
+item.jaopca.crushed.name=破砕%s鉱石
+item.jaopca.crushedPurified.name=洗浄済破砕%s鉱石
+
+#Thaumcraft
+item.jaopca.cluster.name=自然%sクラスター
 
 #Ingots
 jaopca.entry.Aluminium=アルミニウム

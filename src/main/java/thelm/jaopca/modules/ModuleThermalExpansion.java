@@ -43,7 +43,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 
 	@Override
 	public EnumSet<EnumOreType> getOreTypes() {
-		return EnumSet.<EnumOreType>of(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS);
+		return Utils.<EnumOreType>enumSetOf(EnumOreType.INGOTS);
 	}
 
 	@Override

@@ -51,7 +51,7 @@ repositories {
     }
 }
 
-version = "1.10.2-2.0.6.79"
+version = "1.10.2-2.0.7.84"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -87,12 +87,16 @@ dependencies {
     deobfCompile("cofh:ThermalExpansion:1.10.2-5.1.9.24:universal") {
         transitive = false
     }
-    deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.10.2-1.9.4-pre-4"
+    deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.10.2-1.9.4.9"
     deobfCompile "MineTweaker3:MineTweaker3-MC1102-Main:1.10.2-3.0.26.113"
     deobfCompile "com.enderio.core:EnderCore:1.10.2-0.4.1.66-beta"
     deobfCompile("com.enderio:EnderIO:1.10.2-3.1.193") {
         transitive = false
     }
+    deobfCompile("appeng:appliedenergistics2:rv4-stable-1") {
+        transitive = false
+    }
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.17-B31_1.10.2"
 }
 
 processResources
