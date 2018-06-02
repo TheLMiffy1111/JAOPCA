@@ -9,6 +9,9 @@ item.jaopca.coin.name=%s幣
 item.jaopca.gear.name=%s齒輪
 item.jaopca.plate.name=%s板
 item.jaopca.stick.name=%s桿
+item.jaopca.dustTiny.name=小撮%s粉
+item.jaopca.dustSmall.name=小堆%s粉
+item.jaopca.plateDense.name=緻密%s板
 
 #Mekanism
 item.jaopca.dustDirty.name=污濁的%s粉
@@ -21,7 +24,6 @@ gas.jaopca.slurry=%s漿液
 #IC2
 item.jaopca.crushed.name=粉碎%s礦
 item.jaopca.crushedPurified.name=乾淨的粉碎%s礦
-item.jaopca.dustTiny.name=小撮%s粉
 
 #ExNihiloOmnia
 item.jaopca.oreBroken.name=破碎%s礦石
@@ -40,13 +42,14 @@ item.jaopca.piece.name=%s礦石碎片
 item.jaopca.hunk.name=%s礦石塊
 
 #AbyssalCraft
-item.jaopca.crystalFragment.name=結晶%s断片
+item.jaopca.crystalFragment.name=結晶%s斷片
 item.jaopca.crystalShard.name=結晶%s碎片
 item.jaopca.crystalAbyss.name=結晶%s
 tile.jaopca.crystalCluster.name=結晶%s簇
 
-#TechReborn
-item.jaopca.dustSmall.name=小堆%s粉
+#SkyResources
+item.jaopca.dustAlch.name=%s煉金礦粉
+item.jaopca.dirtyGem.name=污濁的%s
 
 #Magneticraft
 item.jaopca.rockyChunk.name=%s礫岩
@@ -59,10 +62,13 @@ item.jaopca.augmentedLump.name=增強%s碎塊
 #Thaumcraft
 item.jaopca.cluster.name=原生%s礦簇
 
+#Foundry
+fluid.jaopca.liquid=液態%s
+
 #Ingots
 jaopca.entry.Abyssalnite=深淵
 jaopca.entry.Adamantine=亞德曼
-jaopca.entry.Aluminum=鋁
+jaopca.entry.Aluminium=鋁
 jaopca.entry.Antimony=銻
 jaopca.entry.Ardite=阿迪特
 jaopca.entry.AstralStarmetal=星輝
@@ -78,6 +84,7 @@ jaopca.entry.Copper=銅
 jaopca.entry.DarkIron=玄鐵
 jaopca.entry.Desh=戴斯
 jaopca.entry.Draconium=龍
+jaopca.entry.Gadolinium=釓
 jaopca.entry.Gold=金
 jaopca.entry.Iridium=銥
 jaopca.entry.Iron=鐵
@@ -85,11 +92,13 @@ jaopca.entry.Lead=鉛
 jaopca.entry.LiquifiedCoralium=珊瑚
 jaopca.entry.Lithium=鋰
 jaopca.entry.Magnesium=鎂
+jaopca.entry.Magnetite=磁鐵礦
 jaopca.entry.Manganese=錳
 jaopca.entry.Mercury=汞
 jaopca.entry.MeteoricIron=隕鐵
 jaopca.entry.Mithril=秘銀
 jaopca.entry.Molybdenum=鉬
+jaopca.entry.Neodymium=釹
 jaopca.entry.Nickel=鎳
 jaopca.entry.Osmium=鋨
 jaopca.entry.Palladium=鈀
@@ -183,6 +192,7 @@ jaopca.entry.Aluminiumbrass=鋁黃銅
 jaopca.entry.Alumite=耐酸鋁
 jaopca.entry.Aquarium=水金
 jaopca.entry.BaseEssence=基礎精華
+jaopca.entry.Bioterium=有機晶
 jaopca.entry.Blutonium=藍鈽
 jaopca.entry.Brass=黃銅
 jaopca.entry.Bronze=青銅
@@ -202,6 +212,7 @@ jaopca.entry.ElectrumFlux=紅石琥珀金
 jaopca.entry.ElvenElementium=源質鋼
 jaopca.entry.EnchantedMetal=附魔
 jaopca.entry.Enderium=末影
+jaopca.entry.EndSteel=末影鋼
 jaopca.entry.EnergeticAlloy=充能合金
 jaopca.entry.Ethaxium=伊桑斯
 jaopca.entry.EvilMetal=惡魔灌注
@@ -210,6 +221,7 @@ jaopca.entry.FrozenIron=冰鐵
 jaopca.entry.GaiaSpirit=蓋亞魂
 jaopca.entry.GalvanizedSteel=鍍鋅鋼
 jaopca.entry.Galvanizedsteel=鍍鋅鋼
+jaopca.entry.Glowtite=螢石晶
 jaopca.entry.Graphite=石墨
 jaopca.entry.HardCarbon=硬碳
 jaopca.entry.HOPGraphite=HOP石墨
@@ -231,6 +243,7 @@ jaopca.entry.Manyullyn=瑪玉靈
 jaopca.entry.Mirion=蘊魔結晶
 jaopca.entry.MixedMetal=合金
 jaopca.entry.Moon=月之石
+jaopca.entry.Neon=氖晶
 jaopca.entry.Nichrome=鎳鉻
 jaopca.entry.Osgloglas=鋨螢晶
 jaopca.entry.Osmiridium=鋨銥
@@ -240,10 +253,13 @@ jaopca.entry.Plutonium=鈽
 jaopca.entry.Prismarinium=海晶石
 jaopca.entry.Prudentium=初級精華
 jaopca.entry.PulsatingIron=脈沖鐵
+jaopca.entry.Quantanium=量子
+jaopca.entry.RareEarthMetal=稀土
 jaopca.entry.RedstoneAlloy=紅石合金
 jaopca.entry.RefinedGlowstone=螢石
 jaopca.entry.RefinedIron=精煉鐵
 jaopca.entry.RefinedObsidian=黑曜石
+jaopca.entry.Retium=紅石晶
 jaopca.entry.Signalum=信素
 jaopca.entry.Soularium=魂金
 jaopca.entry.Soulium=離魂
@@ -254,6 +270,7 @@ jaopca.entry.Superium=高級精華
 jaopca.entry.Supremium=終極精華
 jaopca.entry.Terrasteel=泰拉鋼
 jaopca.entry.Teslarium=特斯拉
+jaopca.entry.Thaumium=靛鐵
 jaopca.entry.ThoriumOxide=氧化釷
 jaopca.entry.TitaniumAluminide=鈦鋁
 jaopca.entry.TitaniumIridium=鈦銥
@@ -261,8 +278,11 @@ jaopca.entry.Tough=高強合金
 jaopca.entry.Tungstensteel=鎢鋼
 jaopca.entry.UraniumOxide=氧化鈾
 jaopca.entry.VibrantAlloy=脈衝合金
+jaopca.entry.Void=虛鋼
+jaopca.entry.Wakurium=充能氖晶
 
 #GemNoOres
+jaopca.entry.Bitripentium=Btp
 jaopca.entry.BoronNitride=氮化硼
 jaopca.entry.CrystalFlux=紅石水晶
 jaopca.entry.Ender=末影

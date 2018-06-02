@@ -5,11 +5,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
@@ -19,22 +17,13 @@ import reborncore.api.recipe.RecipeHandler;
 import techreborn.api.ScrapboxList;
 import techreborn.api.recipe.machines.ImplosionCompressorRecipe;
 import techreborn.api.recipe.machines.IndustrialGrinderRecipe;
-import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
-import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.utils.Utils;
 
 public class ModuleTechReborn extends ModuleBase {
-
-	public static final ItemEntry SMALL_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustSmall", new ModelResourceLocation("jaopca:dust_small#inventory"), ImmutableList.<String>of(
-			"Almandine", "Aluminium", "Andradite", "Ashes", "Basalt", "Bauxite", "Brass", "Bronze", "Calcite", "Chromium", "Cinnabar", "Coal", "Copper",
-			"Diamond", "Electrum", "Emerald", "Galena", "Gold", "Grossular", "Invar", "Iron", "Lazurite", "Lead", "Magnesium", "Manganese",
-			"Nickel", "Peridot", "Phosphorous", "Platinum", "Pyrite", "Pyrope", "RedGarnet", "Ruby", "Saltpeter", "Sapphire", "Silver", "Sodalite",
-			"Spessartine", "Sphalerite", "Steel", "Sulfur", "Tin", "Titanium", "Tungsten", "Uvarovite", "YellowGarnet", "Zinc", "Redstone", "Glowstone"
-			)).setOreTypes(EnumOreType.values());
 
 	public static final HashMap<IOreEntry, boolean[]> GRINDING_FLUIDS = Maps.<IOreEntry, boolean[]>newHashMap();
 
@@ -50,7 +39,7 @@ public class ModuleTechReborn extends ModuleBase {
 
 	@Override
 	public EnumSet<EnumOreType> getOreTypes() {
-		return EnumSet.allOf(EnumOreType.class);
+		return EnumSet.<EnumOreType>allOf(EnumOreType.class);
 	}
 
 	@Override
@@ -61,11 +50,6 @@ public class ModuleTechReborn extends ModuleBase {
 				"CertusQuartz", "ChargedCertusQuartz", "Nickel", "Zinc", "Amethyst", "Topaz", "Tanzanite", "Malachite", "Pitchblende", "Aluminium",
 				"Ardite", "Cobalt", "Osmium", "Teslatite", "Sulfur", "Saltpeter"
 				);
-	}
-
-	@Override
-	public List<ItemEntry> getItemRequests() {
-		return Lists.<ItemEntry>newArrayList(SMALL_DUST_ENTRY);
 	}
 
 	@Override
@@ -94,19 +78,6 @@ public class ModuleTechReborn extends ModuleBase {
 		FluidStack h2o = new FluidStack(FluidRegistry.WATER, 1000);
 		FluidStack hg = FluidRegistry.getFluidStack("fluidmercury", 1000);
 		FluidStack na2s2o8 = FluidRegistry.getFluidStack("fluidsodiumpersulfate", 1000);
-
-		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustSmall")) {
-			Utils.addShapelessOreRecipe(Utils.getOreStack("dust", entry, 1), new Object[] {
-					"dustSmall"+entry.getOreName(),
-					"dustSmall"+entry.getOreName(),
-					"dustSmall"+entry.getOreName(),
-					"dustSmall"+entry.getOreName(),
-			});
-
-			Utils.addShapelessOreRecipe(Utils.getOreStack("dustSmall", entry, 4), new Object[] {
-					"dust"+entry.getOreName(),
-			});
-		}
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			switch(entry.getOreType()) {

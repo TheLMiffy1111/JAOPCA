@@ -16,7 +16,7 @@ import thelm.oredictinit.api.OreDictInitApi;
 public class ConfigHandler {
 
 	public static Configuration configFile;
-	public static Set<String> usedCategories = new HashSet<String>();
+	public static Set<String> usedCategories = new HashSet<>();
 
 	public static void preInit(File file) {
 		configFile = new Configuration(file, true);

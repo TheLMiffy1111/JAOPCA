@@ -11,7 +11,7 @@ public class OreDictInitApi {
 	 * List of ore dict entry compats
 	 */
 	public static final ArrayList<ICompat> ORE_DICT_COMPAT_LIST = Lists.<ICompat>newArrayList();
-	
+
 	public static void addToJAOPCABlacklist(String name) {
 		try {
 			Class<?> oreFinderClass = Class.forName("thelm.jaopca.ore.OreFinder");

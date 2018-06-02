@@ -54,11 +54,14 @@ repositories {
         url = "http://maven.thiakil.com/"
     }
     maven {
+        url = "https://www.mod-buildcraft.com/maven/"
+    }
+    maven {
         url = "https://modmaven.k-4u.nl/" 
     }
 }
 
-version = "1.12.2-2.2.6.83"
+version = "1.12.2-2.2.7.86"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -101,12 +104,12 @@ dependencies {
     deobfCompile("cofh:ThermalExpansion:1.12.2-5.4.0.20:universal") {
         transitive = false
     }
-    deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.12-1.9.4-pre-4"
+    deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.12.2-1.9.4.9"
     deobfCompile "net.shadowfacts:Forgelin:1.6.0"
-    deobfCompile("net.ndrei:tesla-core-lib:1.12-1.0.13.8") {
+    deobfCompile("net.ndrei:tesla-core-lib:1.12.2-1.0.14.10") {
         transitive = false
     }
-    deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.13.12") {
+    deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.15.25") {
         transitive = false
     }
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.9.285"
@@ -114,6 +117,14 @@ dependencies {
         transitive = false
     }
     deobfCompile "com.enderio.core:EnderCore:1.12.2-0.5.20"
+    deobfCompile "com.mod-buildcraft:buildcraft:7.99.15"
+    deobfCompile("net.ndrei:bc-ore-processing:7.99.15-1.2") {
+        transitive = false
+    }
+    deobfCompile("appeng:appliedenergistics2:rv5-stable-11") {
+        transitive = false
+    }
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.25-B40_1.12"
 }
 
 processResources

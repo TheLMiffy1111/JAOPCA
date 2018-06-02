@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
@@ -38,6 +37,7 @@ public class ModuleSkyResources extends ModuleBase {
 			"Iolite", "BlackDiamond", "Chaos", "EnderEssence", "Dark", "Quartz", "Lapis", "QuartzBlack", "CertusQuartz"
 			);
 
+	public static final HashMap<IOreEntry, ItemStack> ORE_CLEAN_BASES = Maps.<IOreEntry, ItemStack>newHashMap();
 	public static final HashMap<IOreEntry, ItemStack> ORE_BASES = Maps.<IOreEntry, ItemStack>newHashMap();
 
 	public static final ItemEntry ALCH_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustAlch", new ModelResourceLocation("jaopca:dust_alch#inventory"), BLACKLIST);
@@ -64,8 +64,11 @@ public class ModuleSkyResources extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyGem")) {
 			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone").setRequiresMcRestart(true).getString()));
 		}
-		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
+		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustAlch")) {
 			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone").setRequiresMcRestart(true).getString()));
+		}
+		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
+			ORE_CLEAN_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesCleanBase", "skyresources:techitemcomponent@0").setRequiresMcRestart(true).getString()));
 		}
 	}
 
@@ -74,8 +77,11 @@ public class ModuleSkyResources extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustAlch")) {
 			int rarity = Utils.rarityI(entry, 6);
 			ItemStack base = ORE_BASES.get(entry);
-			ProcessRecipeManager.condenserRecipes.addRecipe(Utils.getOreStack("ingot", entry, 1), (float)Math.pow(rarity*1.05D, 1.4D), Lists.newArrayList(Utils.getOreStack("dustAlch", entry, 1), new FluidStack(ModFluids.crystalFluid, 1000)));
-			ProcessRecipeManager.condenserRecipes.addRecipe(Utils.getOreStack("ore", entry, 1), (float)Math.pow(rarity*1.05D, 1.8D), Lists.newArrayList(Utils.getOreStack("dustAlch", entry, 1), base));
+			if(Utils.doesOreNameExist("dust"+entry.getOreName())) {
+				ProcessRecipeManager.fusionRecipes.addRecipe(Utils.getOreStack("dustAlch", entry, 1), rarity*0.0021F, Lists.newArrayList("dust"+entry.getOreName(), getOreItemDust(rarity)));
+			}
+			ProcessRecipeManager.condenserRecipes.addRecipe(Utils.getOreStack("ingot", entry, 1), (float)Math.pow(1.4D, rarity)*50, Lists.newArrayList(Utils.getOreStack("dustAlch", entry, 1), new FluidStack(ModFluids.crystalFluid, 1000)));
+			ProcessRecipeManager.condenserRecipes.addRecipe(Utils.getOreStack("ore", entry, 1), (float)Math.pow(1.8D, rarity)*50, Lists.newArrayList(Utils.getOreStack("dustAlch", entry, 1), base));
 		}
 
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyGem")) {
@@ -88,11 +94,10 @@ public class ModuleSkyResources extends ModuleBase {
 
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			int rarity = Utils.rarityI(entry, 6);
-			ItemStack base = ORE_BASES.get(entry);
+			ItemStack base = ORE_CLEAN_BASES.get(entry);
 			if(Utils.doesOreNameExist("dust"+entry.getOreName())) {
-				ProcessRecipeManager.fusionRecipes.addRecipe(Utils.getOreStack("dustAlch", entry, 1), rarity*0.004F, Lists.newArrayList("dust"+entry.getOreName(), getOreItemDust(rarity)));
 				if(base!=null&&!base.isEmpty()) {
-					ProcessRecipeManager.cauldronCleanRecipes.addRecipe(Utils.getOreStack("dust", entry, 1), 1.0F/((float)Math.pow(rarity+2.5F, 3F)*14.4F), new ItemStack(ModItems.techComponent, 1, base.isItemEqual(new ItemStack(Blocks.NETHERRACK)) ? 3 : 0));
+					ProcessRecipeManager.cauldronCleanRecipes.addRecipe(Utils.getOreStack("dust", entry, 1), 1.0F/(float)Math.pow(rarity+2.5F, 3.7F), base);
 				}
 			}
 		}

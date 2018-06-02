@@ -67,7 +67,7 @@ public class ItemEntry implements IItemRequest {
 	public ItemEntry setFluidProperties(FluidProperties fluidProperties) {
 		return setProperties(fluidProperties);
 	}
-	
+
 	public ItemEntry setProperties(IProperties properties) {
 		if(properties.getType() != this.type) {
 			throw new IllegalArgumentException("property type and entry type do not match");

@@ -9,6 +9,9 @@ item.jaopca.coin.name=%s Coin
 item.jaopca.gear.name=%s Gear
 item.jaopca.plate.name=%s Plate
 item.jaopca.stick.name=%s Rod
+item.jaopca.dustTiny.name=Tiny Pile of %s Dust
+item.jaopca.dustSmall.name=Small Pile of %s Dust
+item.jaopca.plateDense.name=Dense %s Plate
 
 #Mekanism
 item.jaopca.dustDirty.name=Dirty %s Dust
@@ -21,7 +24,6 @@ gas.jaopca.slurry=%s Slurry
 #IC2
 item.jaopca.crushed.name=Crushed %s Ore
 item.jaopca.crushedPurified.name=Purified Crushed %s Ore
-item.jaopca.dustTiny.name=Tiny Pile of %s Dust
 
 #ExNihiloOmnia
 item.jaopca.oreBroken.name=Broken %s Ore
@@ -45,9 +47,6 @@ item.jaopca.crystalShard.name=Crystallized %s Shard
 item.jaopca.crystalAbyss.name=Crystallized %s
 tile.jaopca.crystalCluster.name=Crystallized %s Cluster
 
-#TechReborn
-item.jaopca.dustSmall.name=Small Pile of %s Dust
-
 #SkyResources
 item.jaopca.dustAlch.name=%s Alchemical Ore Dust
 item.jaopca.dirtyGem.name=Dirty %s
@@ -62,6 +61,14 @@ item.jaopca.augmentedLump.name=Augmented %s Lump
 
 #Thaumcraft
 item.jaopca.cluster.name=Native %s Cluster
+
+#BuildcraftOreProcessing
+fluid.jaopca.searingMolten=Molten %s (§cSearing§r)
+fluid.jaopca.hotMolten=Molten %s (§6Hot§r)
+fluid.jaopca.coolMolten=Molten %s (§bCool§r)
+
+#Foundry
+fluid.jaopca.liquid=Liquid %s
 
 #Please refer to zh_CN or zh_TW for all names to localize.
 #Ingots

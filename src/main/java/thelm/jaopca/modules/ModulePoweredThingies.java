@@ -2,7 +2,6 @@ package thelm.jaopca.modules;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.oredict.OreDictionary;
 import net.ndrei.teslapoweredthingies.api.PoweredThingiesAPI;
 import net.ndrei.teslapoweredthingies.common.IRecipeOutput;
 import net.ndrei.teslapoweredthingies.common.OreOutput;
@@ -65,7 +63,7 @@ public class ModulePoweredThingies extends ModuleBase {
 
 	@Override
 	public EnumSet<EnumOreType> getOreTypes() {
-		return EnumSet.<EnumOreType>copyOf(Arrays.asList(EnumOreType.ORE));
+		return Utils.<EnumOreType>enumSetOf(EnumOreType.ORE);
 	}
 
 	@Override
@@ -129,7 +127,7 @@ public class ModulePoweredThingies extends ModuleBase {
 			if(entry.hasSecondExtra()) {
 				outputList.add(new SecondaryOreOutput(0.05F, "dust"+entry.getSecondExtra(), 1));
 			}
-			for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreName())) {
+			for(ItemStack ore : Utils.getOres("ore"+entry.getOreName())) {
 				PowderMakerRegistry.INSTANCE.addRecipe(new PowderMakerRecipe(new ResourceLocation("jaopca", ore.getItem().getRegistryName().toString().replace(':', '_')),
 						Lists.newArrayList(ore), outputList), true);
 			}

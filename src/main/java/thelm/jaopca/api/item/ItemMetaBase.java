@@ -15,13 +15,13 @@ import thelm.jaopca.api.ItemEntry;
 public abstract class ItemMetaBase extends ItemBase {
 
 	public String[] prefixes = new String[getMaxMeta()];
-	
+
 	public ItemMetaBase(ItemEntry itemEntry, IOreEntry oreEntry) {
 		super(itemEntry, oreEntry);
 		setHasSubtypes(true);
 		Arrays.fill(prefixes, itemEntry.prefix);
 	}
-	
+
 	public String[] getPrefixes() {
 		return prefixes;
 	}

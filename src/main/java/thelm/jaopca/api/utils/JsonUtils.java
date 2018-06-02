@@ -317,7 +317,7 @@ public class JsonUtils {
 	 * Gets a human-readable description of the given JsonElement's type. For example: "a number (4)"
 	 */
 	public static String toString(JsonElement json) {
-		String s = StringUtils.abbreviateMiddle(String.valueOf((Object)json), "...", 10);
+		String s = StringUtils.abbreviateMiddle(String.valueOf(json), "...", 10);
 
 		if(json == null) {
 			return "null (missing)";

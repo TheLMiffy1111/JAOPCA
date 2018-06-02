@@ -47,7 +47,7 @@ public class ModuleMagneticraft extends ModuleBase {
 
 	@Override
 	public EnumSet<EnumOreType> getOreTypes() {
-		return EnumSet.of(EnumOreType.INGOT_ORELESS, EnumOreType.ORE);
+		return EnumSet.<EnumOreType>of(EnumOreType.INGOT_ORELESS, EnumOreType.ORE);
 	}
 
 	@Override
@@ -130,9 +130,9 @@ public class ModuleMagneticraft extends ModuleBase {
 		IGrinderRecipeManager manager = MagneticraftApi.getGrinderRecipeManager();
 		manager.registerRecipe(manager.createRecipe(input, output, secondary, secondaryChance, duration, true));
 	}
-	
+
 	public static <L, R> kotlin.Pair<L, R> toKotlinPair(Pair<L, R> pair) {
-		return new kotlin.Pair<L, R>(pair.getLeft(), pair.getRight());
+		return new kotlin.Pair<>(pair.getLeft(), pair.getRight());
 	}
 
 	public static void addSluiceBoxRecipe(ItemStack input, ItemStack output) {

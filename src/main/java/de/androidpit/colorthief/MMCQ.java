@@ -192,7 +192,7 @@ public class MMCQ
 	public static class CMap
 	{
 
-		public final ArrayList<VBox> vboxes = new ArrayList<VBox>();
+		public final ArrayList<VBox> vboxes = new ArrayList<>();
 
 		public void push(VBox box)
 		{
@@ -516,7 +516,7 @@ public class MMCQ
 
 		// get the beginning vbox from the colors
 		VBox vbox = vboxFromPixels(pixels, histo);
-		ArrayList<VBox> pq = new ArrayList<VBox>();
+		ArrayList<VBox> pq = new ArrayList<>();
 		pq.add(vbox);
 
 		// Round up to have the same behaviour as in JavaScript

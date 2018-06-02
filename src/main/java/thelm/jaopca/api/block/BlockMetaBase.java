@@ -2,7 +2,6 @@ package thelm.jaopca.api.block;
 
 import java.util.Arrays;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
@@ -17,16 +16,16 @@ import thelm.jaopca.api.ItemEntry;
 import thelm.jaopca.api.utils.JAOPCAStateMap;
 
 public abstract class BlockMetaBase extends BlockBase {
-	
+
 	public final PropertyInteger meta = PropertyInteger.create("meta", 0, getMaxMeta());
 	public String[] prefixes = new String[getMaxMeta()];
-	
+
 	public BlockMetaBase(Material material, MapColor mapColor, ItemEntry itemEntry, IOreEntry oreEntry) {
 		super(material, mapColor, itemEntry, oreEntry);
 		setDefaultState(getBlockState().getBaseState().withProperty(meta, 0));
 		Arrays.fill(prefixes, itemEntry.prefix);
 	}
-	
+
 	public String[] getPrefixes() {
 		return prefixes;
 	}
@@ -35,7 +34,7 @@ public abstract class BlockMetaBase extends BlockBase {
 	public String getPrefix(int meta) {
 		return hasSubtypes() ? getPrefixes()[meta] : super.getPrefix(meta);
 	}
-	
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(this.meta, meta);
@@ -59,6 +58,6 @@ public abstract class BlockMetaBase extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModels() {
-		ModelLoader.setCustomStateMapper((Block)this, new JAOPCAStateMap.Builder(new ResourceLocation(getItemEntry().itemModelLocation.toString().split("#")[0])).build());
+		ModelLoader.setCustomStateMapper(this, new JAOPCAStateMap.Builder(new ResourceLocation(getItemEntry().itemModelLocation.toString().split("#")[0])).build());
 	}
 }

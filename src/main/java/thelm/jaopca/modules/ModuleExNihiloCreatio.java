@@ -52,7 +52,7 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 			"Coal", "Lapis", "Diamond", "Emerald", "Quartz", "QuartzBlack", "CertusQuartz", "Redstone", "Glowstone"
 			);
 
-	public static final HashMap<IOreEntry, ItemStack> ORE_SOURCES = Maps.<IOreEntry, ItemStack>newHashMap(); 
+	public static final HashMap<IOreEntry, ItemStack> ORE_SOURCES = Maps.<IOreEntry, ItemStack>newHashMap();
 	public static final HashMap<IOreEntry, float[]> SIEVE_CHANCES = Maps.<IOreEntry, float[]>newHashMap();
 
 	@Override
@@ -207,7 +207,7 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 			return chance / entry.getRarity();
 		}
 		else {
-			return chance / entry.getRarity() / 100D * (double)ModConfig.world.normalDropPercent;
+			return chance / entry.getRarity() / 100D * ModConfig.world.normalDropPercent;
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraftforge.fml.common.Loader;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.EnumOreType;
 import thelm.jaopca.api.IOreEntry;
@@ -47,6 +48,17 @@ public class ModuleGear extends ModuleBase {
 					'o', s+entry.getOreName(),
 					'i', "ingotIron",
 			});
+
+			if(Loader.isModLoaded("staticpower")) {
+				switch(entry.getOreType()) {
+				case INGOT:
+				case INGOT_ORELESS:
+					ModuleStaticPower.addPlateFormerRecipe(Utils.getOreStack("gear", entry, 1), Utils.getOreStack("ingot", entry, 1));
+					break;
+				default:
+					break;
+				}
+			}
 		}
 	}
 }

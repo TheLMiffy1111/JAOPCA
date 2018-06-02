@@ -17,12 +17,14 @@ import thelm.jaopca.utils.JAOPCAEventHandler;
 		modid = JAOPCA.MOD_ID,
 		name = JAOPCA.NAME,
 		version = JAOPCA.VERSION,
-		dependencies = "required-before:wrapup"
+		dependencies = JAOPCA.DEPENDENCIES
 		)
 public class JAOPCA {
 	public static final String MOD_ID = "jaopca";
 	public static final String NAME = "JAOPCA";
-	public static final String VERSION = "1.12.2-2.2.6.83";
+	public static final String VERSION = "1.12.2-2.2.7.86";
+	public static final String DEPENDENCIES = "required-before:wrapup;"
+			+ "after:appliedenergistics2;";//
 	@Instance(JAOPCA.MOD_ID)
 	public static JAOPCA core;
 	@SidedProxy(clientSide = "thelm.jaopca.proxy.ClientProxy", serverSide = "thelm.jaopca.proxy.CommonProxy", modId = JAOPCA.MOD_ID)

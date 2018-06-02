@@ -43,7 +43,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 
 	@Override
 	public EnumSet<EnumOreType> getOreTypes() {
-		return EnumSet.<EnumOreType>of(EnumOreType.INGOT, EnumOreType.INGOT_ORELESS);
+		return Utils.<EnumOreType>enumSetOf(EnumOreType.INGOTS);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 				addCrucibleRecipes(entry);
 			}
 		}
-		
+
 		if(JAOPCAApi.isModuleLoaded("thaumcraft")) {
 			for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("cluster")) {
 				boolean hasExtra = entry.hasExtra();
@@ -115,7 +115,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 		PulverizerManager.removeRecipe(input);
 		PulverizerManager.addRecipe(energy, input, output, bonus, chance);
 	}
-	
+
 	public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack output, ItemStack bonus, int chance) {
 		PulverizerManager.addRecipe(energy, input, output, bonus, chance);
 	}
@@ -132,7 +132,7 @@ public class ModuleThermalExpansion extends ModuleBase {
 	public static void addNumismaticFuel(ItemStack input, int energy) {
 		NumismaticManager.addFuel(input, energy);
 	}
-	
+
 	public static void addInsolatorRecipes(int energy, int water, ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int secondaryChanceRich, int secondaryChanceFlux) {
 		InsolatorManager.addDefaultRecipe(energy, water, primaryInput, primaryOutput, secondaryOutput, secondaryChance, secondaryChanceRich, secondaryChanceFlux, Type.STANDARD);
 	}

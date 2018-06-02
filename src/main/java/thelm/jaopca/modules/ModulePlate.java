@@ -60,12 +60,26 @@ public class ModulePlate extends ModuleBase {
 					ModuleIndustrialCraft.addMaceratorRecipe("plate"+entry.getOreName(), Utils.getOreStack("dustTiny", entry, 8));
 				}
 			}
-			
+
 			if(Loader.isModLoaded("magneticraft")) {
 				switch(entry.getOreType()) {
 				case INGOT:
 				case INGOT_ORELESS:
 					ModuleMagneticraft.addCrushingTableRecipe(Utils.getOreStack("ingot", entry, 1), Utils.getOreStack("plate", entry, 1));
+					break;
+				default:
+					break;
+				}
+			}
+			
+			if(Loader.isModLoaded("staticpower")) {
+				switch(entry.getOreType()) {
+				case INGOT:
+				case INGOT_ORELESS:
+					ModuleStaticPower.addPlateFormerRecipe(Utils.getOreStack("plate", entry, 2), Utils.getOreStack("ingot", entry, 1));
+					if(Utils.doesOreNameExist("block"+entry.getOreName())) {
+						ModuleStaticPower.addPlateFormerRecipe(Utils.getOreStack("plate", entry, 18), Utils.getOreStack("block", entry, 1));
+					}
 					break;
 				default:
 					break;
