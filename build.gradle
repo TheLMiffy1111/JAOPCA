@@ -50,6 +50,12 @@ repositories {
         url = "http://maven.shadowfacts.net/"
     }
     maven {
+        url = "https://maven.mcmoddev.com/"
+    }
+    maven {
+        url = "http://maven.thiakil.com/"
+    }
+    maven {
         url = "https://www.mod-buildcraft.com/maven/"
     }
     maven {
@@ -57,7 +63,7 @@ repositories {
     }
 }
 
-version = "1.11.2-2.1.6.80"
+version = "1.11.2-2.1.7.85"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -94,12 +100,14 @@ dependencies {
     deobfCompile("cofh:ThermalExpansion:1.11.2-5.2.6.23:universal") {
         transitive = false
     }
-    deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.11.2-1.9.4-pre-4"
+    deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.11.2-1.9.4.9"
     deobfCompile("net.shadowfacts:Forgelin:1.5.1") {
         transitive = false
     }
     deobfCompile "com.mod-buildcraft:buildcraft:7.99.7"
     deobfCompile "MineTweaker3:MineTweaker3-MC1112-Main:1.11.2-3.0.26.113"
+    deobfCompile "appeng:applied-llamagistics-1.11.2:rv5-beta-10"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.22-B37_1.11"
 }
 
 processResources

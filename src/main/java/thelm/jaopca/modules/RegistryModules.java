@@ -1,61 +1,64 @@
 package thelm.jaopca.modules;
 
-import net.minecraftforge.fml.common.Loader;
-import thelm.jaopca.api.JAOPCAApi;
+import static net.minecraftforge.fml.common.Loader.isModLoaded;
+import static thelm.jaopca.api.JAOPCAApi.registerModule;
 
 public class RegistryModules {
 
 	public static void preInit() {
-		JAOPCAApi.registerModule(new ModuleDust());
-		JAOPCAApi.registerModule(new ModuleNugget());
-		JAOPCAApi.registerModule(new ModuleBlock());
-		JAOPCAApi.registerModule(new ModuleMolten());
-		JAOPCAApi.registerModule(new ModuleCoin());
-		JAOPCAApi.registerModule(new ModuleGear());
-		JAOPCAApi.registerModule(new ModulePlate());
-		JAOPCAApi.registerModule(new ModuleStick());
-		if(Loader.isModLoaded("mekanism")) {
-			JAOPCAApi.registerModule(new ModuleMekanism());
+		registerModule(new ModuleDust());
+		registerModule(new ModuleNugget());
+		registerModule(new ModuleBlock());
+		registerModule(new ModuleMolten());
+		registerModule(new ModuleCoin());
+		registerModule(new ModuleGear());
+		registerModule(new ModulePlate());
+		registerModule(new ModuleStick());
+		registerModule(new ModuleTinyDust());
+		registerModule(new ModuleSmallDust());
+		registerModule(new ModuleDensePlate());
+		if(isModLoaded("mekanism")) {
+			registerModule(new ModuleMekanism());
 		}
-		if(Loader.isModLoaded("tconstruct")) {
-			JAOPCAApi.registerModule(new ModuleTinkersConstruct());
+		if(isModLoaded("tconstruct")) {
+			registerModule(new ModuleTinkersConstruct());
 		}
-		if(Loader.isModLoaded("ic2")) {
-			JAOPCAApi.registerModule(new ModuleIndustrialCraft());
+		if(isModLoaded("ic2")) {
+			registerModule(new ModuleIndustrialCraft());
 		}
-		if(Loader.isModLoaded("appliedenergistics2")) {
-			JAOPCAApi.registerModule(new ModuleAppliedEnergistics());
+		if(isModLoaded("appliedenergistics2")) {
+			registerModule(new ModuleAppliedEnergistics());
 		}
-		if(Loader.isModLoaded("thermalexpansion")) {
-			JAOPCAApi.registerModule(new ModuleThermalExpansion());
+		if(isModLoaded("thermalexpansion")) {
+			registerModule(new ModuleThermalExpansion());
 		}
-		if(Loader.isModLoaded("exnihiloadscensio")) {
-			JAOPCAApi.registerModule(new ModuleExNihiloAdscensio());
+		if(isModLoaded("exnihiloadscensio")) {
+			registerModule(new ModuleExNihiloAdscensio());
 		}
-		if(Loader.isModLoaded("immersiveengineering")) {
-			JAOPCAApi.registerModule(new ModuleImmersiveEngineering());
+		if(isModLoaded("immersiveengineering")) {
+			registerModule(new ModuleImmersiveEngineering());
 		}
-		if(Loader.isModLoaded("railcraft")) {
+		if(isModLoaded("railcraft")) {
 			//should remove itself if industrialcraft is not loaded
-			JAOPCAApi.registerModule(new ModuleRailcraft());
+			registerModule(new ModuleRailcraft());
 		}
-		if(Loader.isModLoaded("embers")) {
-			JAOPCAApi.registerModule(new ModuleEmbers());
+		if(isModLoaded("embers")) {
+			registerModule(new ModuleEmbers());
 		}
-		if(Loader.isModLoaded("fp")) {
-			JAOPCAApi.registerModule(new ModuleFuturePack());
+		if(isModLoaded("fp")) {
+			registerModule(new ModuleFuturePack());
 		}
-		if(Loader.isModLoaded("abyssalcraft")) {
-			JAOPCAApi.registerModule(new ModuleAbyssalCraft());
+		if(isModLoaded("abyssalcraft")) {
+			registerModule(new ModuleAbyssalCraft());
 		}
-		if(Loader.isModLoaded("techreborn")) {
-			JAOPCAApi.registerModule(new ModuleTechReborn());
+		if(isModLoaded("techreborn")) {
+			registerModule(new ModuleTechReborn());
 		}
-		if(Loader.isModLoaded("skyresources")) {
-			JAOPCAApi.registerModule(new ModuleSkyResources());
+		if(isModLoaded("skyresources")) {
+			registerModule(new ModuleSkyResources());
 		}
-		if(Loader.isModLoaded("bcoreprocessing")) {
-			JAOPCAApi.registerModule(new ModuleBuildcraftOreProcessing());
+		if(isModLoaded("bcoreprocessing")) {
+			registerModule(new ModuleBuildcraftOreProcessing());
 		}
 	}
 }

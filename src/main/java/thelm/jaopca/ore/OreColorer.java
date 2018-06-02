@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
+import thelm.jaopca.api.utils.Utils;
 
 /**
  * Code partially taken from mezz's JEI
@@ -36,7 +37,7 @@ public class OreColorer {
 			return DEFAULT_COLORS.get(oreName);
 		}
 
-		List<ItemStack> ores = OreDictionary.getOres(prefix+oreName, false);
+		List<ItemStack> ores = Utils.getOres(prefix+oreName);
 		if(ores.isEmpty()) {
 			return Color.WHITE;
 		}

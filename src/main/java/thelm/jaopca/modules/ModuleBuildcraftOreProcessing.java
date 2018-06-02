@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 import net.ndrei.bcoreprocessing.api.recipes.IFluidProcessorRecipeManager;
 import net.ndrei.bcoreprocessing.api.recipes.IOreProcessorRecipeManager;
 import net.ndrei.bcoreprocessing.api.recipes.OreProcessingRecipes;
@@ -79,7 +78,7 @@ public class ModuleBuildcraftOreProcessing extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("searingMolten")) {
 			rManager.addCoolableRecipe(Utils.getFluidStack("searingMolten", entry, 1000), Utils.getFluidStack("hotMolten", entry, 1000), 2, 1);
 
-			for(ItemStack ore : OreDictionary.getOres("ore"+entry.getOreType())) {
+			for(ItemStack ore : Utils.getOres("ore"+entry.getOreName())) {
 				oManager.registerSimpleRecipe(ore, TuplesKt.to(FluidRegistry.getFluidStack("searing_molten_"+entry.getOreName(), 1000), new FluidStack(gasLava, 125)), 40);
 			}
 

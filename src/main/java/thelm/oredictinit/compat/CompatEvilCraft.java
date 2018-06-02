@@ -14,7 +14,7 @@ public class CompatEvilCraft implements ICompat {
 
 	@Override
 	public void register() {
-		for(ItemStack item : OreDictionary.getOres("gemDarkCrushed")) {
+		for(ItemStack item : OreDictionary.getOres("gemDarkCrushed", false)) {
 			OreDictionary.registerOre("dustDark", item);
 		}
 		OreDictInitApi.addToJAOPCABlacklist("DarkCrushed");
