@@ -60,5 +60,8 @@ public class RegistryModules {
 		if(isModLoaded("bcoreprocessing")) {
 			registerModule(new ModuleBuildcraftOreProcessing());
 		}
+		if(isModLoaded("advancedrocketry")) {
+			registerModule(new ModuleAdvancedRocketry());
+		}
 	}
 }

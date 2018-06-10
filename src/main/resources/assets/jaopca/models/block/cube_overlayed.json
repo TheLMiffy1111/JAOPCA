@@ -3,7 +3,7 @@
     "textures": {
         "base": "#base",
         "overlay": "#overlay",
-        "particle": "#base"
+        "particle": "#overlay"
     },
     "elements": [
         {

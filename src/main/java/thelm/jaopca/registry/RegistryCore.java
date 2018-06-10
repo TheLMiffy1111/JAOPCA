@@ -58,6 +58,7 @@ public class RegistryCore {
 
 	public static void preInit(FMLPreInitializationEvent event) {
 		JAOPCAConfig.init(new File(event.getModConfigurationDirectory(), "JAOPCA.cfg"));
+		initPrefixBlacklist();
 		OreFinder.findOres();
 
 		JAOPCAConfig.preInitModulewiseConfigs();
@@ -96,6 +97,12 @@ public class RegistryCore {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private static void initPrefixBlacklist() {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+			OreFinder.PREFIX_BLACKLIST.addAll(module.addToPrefixBlacklist());
 		}
 	}
 

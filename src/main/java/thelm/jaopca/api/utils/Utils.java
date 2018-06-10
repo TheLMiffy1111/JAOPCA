@@ -188,7 +188,49 @@ public class Utils {
 		return getOreStackSecondExtra(fallback, entry, amount);
 	}
 
+	public static ItemStack getOreStackThirdExtra(String prefix, IOreEntry entry, int amount) {
+		if(CACHE.containsKey(prefix+entry.getThirdExtra())) {
+			ItemStack ret = CACHE.get(prefix+entry.getThirdExtra()).copy();
+			ret.setCount(amount);
+			return ret;
+		}
 
+		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getThirdExtra())) {
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getThirdExtra());
+			CACHE.put(prefix+entry.getThirdExtra(), new ItemStack(b, 1, 0));
+			return new ItemStack(b, amount, 0);
+		}
+
+		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getThirdExtra())) {
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getThirdExtra());
+			CACHE.put(prefix+entry.getThirdExtra(), new ItemStack(i, 1, 0));
+			return new ItemStack(i, amount, 0);
+		}
+
+		return getOreStack(prefix+entry.getThirdExtra(), amount);
+	}
+
+	public static ItemStack getJAOPCAOrOreStackThirdExtra(String prefix, String fallback, IOreEntry entry, int amount) {
+		if(CACHE.containsKey(prefix+entry.getThirdExtra())) {
+			ItemStack ret = CACHE.get(prefix+entry.getThirdExtra()).copy();
+			ret.setCount(amount);
+			return ret;
+		}
+
+		if(JAOPCAApi.BLOCKS_TABLE.contains(prefix, entry.getThirdExtra())) {
+			Block b = JAOPCAApi.BLOCKS_TABLE.get(prefix, entry.getThirdExtra());
+			CACHE.put(prefix+entry.getThirdExtra(), new ItemStack(b, 1, 0));
+			return new ItemStack(b, amount, 0);
+		}
+
+		if(JAOPCAApi.ITEMS_TABLE.contains(prefix, entry.getThirdExtra())) {
+			Item i = JAOPCAApi.ITEMS_TABLE.get(prefix, entry.getThirdExtra());
+			CACHE.put(prefix+entry.getThirdExtra(), new ItemStack(i, 1, 0));
+			return new ItemStack(i, amount, 0);
+		}
+
+		return getOreStackThirdExtra(fallback, entry, amount);
+	}
 
 	public static FluidStack getFluidStack(String name, int amount) {
 		if(CACHE1.containsKey(name)) {
@@ -260,6 +302,24 @@ public class Utils {
 		return getFluidStack(s, amount);
 	}
 
+	public static FluidStack getFluidStackThirdExtra(String prefix, IOreEntry entry, int amount) {
+		String s = (prefix.isEmpty()?"":toLowerCase(prefix)+'_')+to_under_score(entry.getThirdExtra());
+
+		if(CACHE1.containsKey(s)) {
+			FluidStack ret = CACHE1.get(s).copy();
+			ret.amount = amount;
+			return ret;
+		}
+
+		if(JAOPCAApi.FLUIDS_TABLE.contains(prefix, entry.getThirdExtra())) {
+			Fluid f = JAOPCAApi.FLUIDS_TABLE.get(prefix, entry.getThirdExtra());
+			CACHE1.put(s, new FluidStack(f, 1));
+			return new FluidStack(f, amount);
+		}
+
+		return getFluidStack(s, amount);
+	}
+
 	public static FluidStack getJAOPCAOrFluidStack(String prefix, String fallback, IOreEntry entry, int amount) {
 		String s = (prefix.isEmpty()?"":toLowerCase(prefix)+'_')+to_under_score(entry.getOreName());
 
@@ -312,6 +372,24 @@ public class Utils {
 		}
 
 		return getFluidStackSecondExtra(fallback, entry, amount);
+	}
+
+	public static FluidStack getJAOPCAOrFluidStackThirdExtra(String prefix, String fallback, IOreEntry entry, int amount) {
+		String s = (prefix.isEmpty()?"":toLowerCase(prefix)+'_')+to_under_score(entry.getThirdExtra());
+
+		if(CACHE1.containsKey(s)) {
+			FluidStack ret = CACHE1.get(s).copy();
+			ret.amount = amount;
+			return ret;
+		}
+
+		if(JAOPCAApi.FLUIDS_TABLE.contains(prefix, entry.getThirdExtra())) {
+			Fluid f = JAOPCAApi.FLUIDS_TABLE.get(prefix, entry.getThirdExtra());
+			CACHE1.put(s, new FluidStack(f, 1));
+			return new FluidStack(f, amount);
+		}
+
+		return getFluidStackThirdExtra(fallback, entry, amount);
 	}
 
 	public static int energyI(IOreEntry entry, double energy) {
