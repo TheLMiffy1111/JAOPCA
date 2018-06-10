@@ -53,7 +53,6 @@ public class ModuleGear extends ModuleBase {
 				switch(entry.getOreType()) {
 				case INGOT:
 				case INGOT_ORELESS:
-					ModuleStaticPower.addPlateFormerRecipe(Utils.getOreStack("gear", entry, 1), Utils.getOreStack("ingot", entry, 1));
 					break;
 				default:
 					break;

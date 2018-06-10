@@ -17,6 +17,9 @@ public class RegistryModules {
 		registerModule(new ModuleTinyDust());
 		registerModule(new ModuleSmallDust());
 		registerModule(new ModuleDensePlate());
+		if(isModLoaded("gregtech")) {
+			registerModule(new ModuleGregTech());
+		}
 		if(isModLoaded("mekanism")) {
 			registerModule(new ModuleMekanism());
 		}
@@ -92,6 +95,9 @@ public class RegistryModules {
 		}
 		if(isModLoaded("charcoal_pit")) {
 			registerModule(new ModuleCharcoalPit());
+		}
+		if(isModLoaded("advancedrocketry")) {
+			registerModule(new ModuleAdvancedRocketry());
 		}
 	}
 }

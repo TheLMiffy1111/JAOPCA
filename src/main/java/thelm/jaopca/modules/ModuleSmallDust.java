@@ -20,23 +20,18 @@ public class ModuleSmallDust extends ModuleBase {
 	public static final ItemEntry SMALL_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustSmall", new ModelResourceLocation("jaopca:dust_small#inventory")).
 			setOreTypes(EnumOreType.values());
 
-	public static final ArrayList<String> TECH_REBORN_BLACKLIST = Lists.<String>newArrayList(
-			"Almandine", "Aluminium", "Andradite", "Ashes", "Basalt", "Bauxite", "Brass", "Bronze", "Calcite", "Chromium", "Cinnabar", "Coal", "Copper",
-			"Diamond", "Electrum", "Emerald", "Galena", "Gold", "Grossular", "Invar", "Iron", "Lazurite", "Lead", "Magnesium", "Manganese",
-			"Nickel", "Peridot", "Phosphorous", "Platinum", "Pyrite", "Pyrope", "RedGarnet", "Ruby", "Saltpeter", "Sapphire", "Silver", "Sodalite",
-			"Spessartine", "Sphalerite", "Steel", "Sulfur", "Tin", "Titanium", "Tungsten", "Uvarovite", "YellowGarnet", "Zinc", "Redstone", "Glowstone"
-			);
-
 	@Override
 	public String getName() {
 		return "smalldust";
 	}
 
 	@Override
+	public List<String> getDependencies() {
+		return Lists.newArrayList("dust");
+	}
+
+	@Override
 	public List<ItemEntry> getItemRequests() {
-		if(Loader.isModLoaded("techreborn")) {
-			SMALL_DUST_ENTRY.blacklist.addAll(TECH_REBORN_BLACKLIST);
-		}
 		return Lists.<ItemEntry>newArrayList(SMALL_DUST_ENTRY);
 	}
 
@@ -50,9 +45,18 @@ public class ModuleSmallDust extends ModuleBase {
 					"dustSmall"+entry.getOreName(),
 			});
 
-			Utils.addShapelessOreRecipe(Utils.getOreStack("dustSmall", entry, 4), new Object[] {
-					"dust"+entry.getOreName(),
-			});
+			if(Utils.doesOreNameExist("dustTiny"+entry.getOreName())) {
+				Utils.addShapedOreRecipe(Utils.getOreStack("dustSmall", entry, 4), new Object[] {
+						"  ",
+						" D",
+						'D', "dust"+entry.getOreName(),
+				});
+			}
+			else {
+				Utils.addShapelessOreRecipe(Utils.getOreStack("dustSmall", entry, 4), new Object[] {
+						"dust"+entry.getOreName(),
+				});
+			}
 		}
 	}
 }

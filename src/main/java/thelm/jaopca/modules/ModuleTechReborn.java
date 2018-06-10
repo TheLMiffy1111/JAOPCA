@@ -34,7 +34,7 @@ public class ModuleTechReborn extends ModuleBase {
 
 	@Override
 	public List<String> getDependencies() {
-		return Lists.<String>newArrayList("dust");
+		return Lists.<String>newArrayList("dust", "smalldust");
 	}
 
 	@Override

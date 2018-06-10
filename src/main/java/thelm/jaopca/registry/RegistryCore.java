@@ -63,6 +63,7 @@ public class RegistryCore {
 	}
 
 	public static void preInit1() {
+		initPrefixBlacklist();
 		OreFinder.findOres();
 
 		JAOPCAConfig.preInitModulewiseConfigs();
@@ -97,6 +98,12 @@ public class RegistryCore {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private static void initPrefixBlacklist() {
+		for(ModuleBase module : JAOPCAApi.MODULE_LIST) {
+			OreFinder.PREFIX_BLACKLIST.addAll(module.addToPrefixBlacklist());
 		}
 	}
 

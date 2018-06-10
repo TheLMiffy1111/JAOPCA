@@ -14,7 +14,7 @@ public class CompatTheBetweenlands implements ICompat {
 	@Override
 	public void register() {
 		try {
-			Class<?> recipeClass = Class.forName("thebetweenlands.common.registries.RecipeRegistry ");
+			Class<?> recipeClass = Class.forName("thebetweenlands.common.registries.RecipeRegistry");
 			Method oreMethod = recipeClass.getDeclaredMethod("registerOreDictionary");
 			oreMethod.setAccessible(true);
 			oreMethod.invoke(null);

@@ -39,7 +39,7 @@ public class ModuleIndustrialCraft extends ModuleBase {
 
 	@Override
 	public List<String> getDependencies() {
-		return Lists.<String>newArrayList("dust");
+		return Lists.<String>newArrayList("dust", "tinydust");
 	}
 
 	@Override

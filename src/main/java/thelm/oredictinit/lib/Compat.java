@@ -8,8 +8,10 @@ import thelm.oredictinit.compat.CompatCalculator;
 import thelm.oredictinit.compat.CompatDraconicEvolution;
 import thelm.oredictinit.compat.CompatEvilCraft;
 import thelm.oredictinit.compat.CompatExtremeReactors;
+import thelm.oredictinit.compat.CompatFrogCraftRebirth;
 import thelm.oredictinit.compat.CompatGalacticraftCore;
 import thelm.oredictinit.compat.CompatGalacticraftPlanets;
+import thelm.oredictinit.compat.CompatGregTech;
 import thelm.oredictinit.compat.CompatMekanism;
 import thelm.oredictinit.compat.CompatMinecraft;
 import thelm.oredictinit.compat.CompatNamingNonsense;
@@ -65,6 +67,12 @@ public class Compat {
 		}
 		if(Loader.isModLoaded("appliedenergistics2")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatAppliedEnergistics());
+		}
+		if(Loader.isModLoaded("gregtech")) {
+			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatGregTech());
+		}
+		if(Loader.isModLoaded("frogcraftrebirth")) {
+			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatFrogCraftRebirth());
 		}
 	}
 }

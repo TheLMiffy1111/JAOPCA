@@ -70,6 +70,17 @@ fluid.jaopca.coolMolten=Molten %s (§bCool§r)
 #Foundry
 fluid.jaopca.liquid=Liquid %s
 
+#GregTech
+item.jaopca.crushedGreg.name=Crushed %s Ore
+item.jaopca.crushedPurifiedGreg.name=Purified %s Ore
+item.jaopca.crushedCentrifuged.name=Centrifuged %s Ore
+item.jaopca.dustImpure.name=Impure Pile of %s Dust
+item.jaopca.dustPure.name=Purified Pile of %s Dust
+item.jaopca.gemChipped.name=Chipped %s
+item.jaopca.gemFlawed.name=Flawed %s
+item.jaopca.gemFlawless.name=Flawless %s
+item.jaopca.gemExquisite.name=Exquisite %s
+
 #Please refer to zh_CN or zh_TW for all names to localize.
 #Ingots
 jaopca.entry.LiquifiedCoralium=Coralium

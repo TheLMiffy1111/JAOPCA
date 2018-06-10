@@ -19,6 +19,8 @@ public interface IOreEntry {
 
 	public String getSecondExtra();
 
+	public String getThirdExtra();
+
 	/**
 	 *
 	 * @return The energy modifier of processing
@@ -49,5 +51,9 @@ public interface IOreEntry {
 
 	default boolean hasSecondExtra() {
 		return !getSecondExtra().equals(getOreName()) && !getSecondExtra().equals(getExtra());
+	}
+
+	default boolean hasThirdExtra() {
+		return !getThirdExtra().equals(getOreName()) && !getThirdExtra().equals(getExtra()) && !getThirdExtra().equals(getSecondExtra());
 	}
 }

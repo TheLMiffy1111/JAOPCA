@@ -343,13 +343,13 @@ public class ColorThief
 			int rgb = sourceImage.getRGB(col, row);
 
 			r = rgb >> 16 & 0xFF;
-			g = rgb >> 8 & 0xFF;
-			b = rgb & 0xFF;
-			if (!(ignoreWhite && r > 250 && r > 250 && r > 250))
-			{
-				res[numUsedPixels] = new int[] {r, g, b};
-				numUsedPixels++;
-			}
+		g = rgb >> 8 & 0xFF;
+		b = rgb & 0xFF;
+		if (!(ignoreWhite && r > 250 && r > 250 && r > 250))
+		{
+			res[numUsedPixels] = new int[] {r, g, b};
+			numUsedPixels++;
+		}
 		}
 
 		return Arrays.copyOfRange(res, 0, numUsedPixels);

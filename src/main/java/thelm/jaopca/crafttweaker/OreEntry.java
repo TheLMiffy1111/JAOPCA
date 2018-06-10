@@ -132,6 +132,46 @@ public class OreEntry {
 		return (ILiquidStack)CraftTweakerMC.getIIngredient(Utils.getJAOPCAOrFluidStackSecondExtra(name, prefix, entry, 1));
 	}
 
+	@ZenGetter("hasThirdExtra")
+	public boolean hasThirdExtra() {
+		return entry.hasThirdExtra();
+	}
+
+	@ZenGetter("thirdExtra")
+	public OreEntry getThirdExtra() {
+		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getThirdExtra().equals(entry.getThirdExtra())).map(OreEntry::new).findAny().orElse(null);
+	}
+
+	@ZenGetter("thirdExtraName")
+	public String getThirdExtraName() {
+		return entry.getThirdExtra();
+	}
+
+	@ZenMethod
+	public IOreDictEntry getOreDictEntryThirdExtra(String prefix) {
+		return CraftTweakerMC.getOreDict(prefix+entry.getThirdExtra());
+	}
+
+	@ZenMethod
+	public IItemStack getItemStackThirdExtra(String prefix) {
+		return CraftTweakerMC.getIItemStack(Utils.getOreStackThirdExtra(prefix, entry, 1));
+	}
+
+	@ZenMethod
+	public IItemStack getItemStackThirdExtra(String name, String prefix) {
+		return CraftTweakerMC.getIItemStack(Utils.getJAOPCAOrOreStackThirdExtra(name, prefix, entry, 1));
+	}
+
+	@ZenMethod
+	public ILiquidStack getLiquidStackThirdExtra(String prefix) {
+		return (ILiquidStack)CraftTweakerMC.getIIngredient(Utils.getFluidStackThirdExtra(prefix, entry, 1));
+	}
+
+	@ZenMethod
+	public ILiquidStack getLiquidStackThirdExtra(String name, String prefix) {
+		return (ILiquidStack)CraftTweakerMC.getIIngredient(Utils.getJAOPCAOrFluidStackThirdExtra(name, prefix, entry, 1));
+	}
+
 	@ZenGetter("energyModifier")
 	public double getEnergyModifier() {
 		return entry.getEnergyModifier();
