@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.LinkedHashSet;
+import java.util.TreeSet;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -25,7 +25,7 @@ public class ItemEntry implements IItemRequest {
 	public EnumEntryType type;
 	public EnumSet<EnumOreType> oreTypes = EnumSet.<EnumOreType>of(EnumOreType.INGOT);
 	public ModelResourceLocation itemModelLocation;
-	public final LinkedHashSet<String> blacklist = Sets.<String>newLinkedHashSet();
+	public final TreeSet<String> blacklist = Sets.<String>newTreeSet(String.CASE_INSENSITIVE_ORDER);
 	public final ArrayList<ModuleBase> moduleList = Lists.<ModuleBase>newArrayList();
 
 	public IProperties properties;

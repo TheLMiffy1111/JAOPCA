@@ -30,6 +30,10 @@ public abstract class ModuleBase {
 		return Lists.<String>newArrayList();
 	}
 
+	public List<String> addToPrefixBlacklist() {
+		return Lists.<String>newArrayList();
+	}
+
 	public EnumSet<EnumOreType> getOreTypes() {
 		return EnumSet.<EnumOreType>of(EnumOreType.INGOT);
 	}

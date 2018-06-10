@@ -19,6 +19,7 @@ public class OreEntry implements IOreEntry {
 	protected final String oreName;
 	protected String extra;
 	protected String extra2;
+	protected String extra3;
 	protected double energy = 1D;
 	protected double rarity = 1D;
 	protected ArrayList<String> moduleBlacklist = Lists.<String>newArrayList();
@@ -30,6 +31,7 @@ public class OreEntry implements IOreEntry {
 		this.oreName = oreName;
 		this.extra = oreName;
 		this.extra2 = oreName;
+		this.extra3 = oreName;
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
 			String s = "ingot";
 			switch(type) {
@@ -60,6 +62,11 @@ public class OreEntry implements IOreEntry {
 	@Override
 	public String getSecondExtra() {
 		return extra2;
+	}
+
+	@Override
+	public String getThirdExtra() {
+		return extra3;
 	}
 
 	@Override
@@ -120,6 +127,10 @@ public class OreEntry implements IOreEntry {
 
 	public void setSecondExtra(String extra2) {
 		this.extra2 = extra2;
+	}
+
+	public void setThirdExtra(String extra3) {
+		this.extra3 = extra3;
 	}
 
 	public void setEnergyModifier(double energyModifier) {

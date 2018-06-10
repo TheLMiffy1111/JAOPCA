@@ -20,12 +20,13 @@ import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.ModuleBase;
 import thelm.jaopca.api.utils.Utils;
 import thelm.jaopca.ore.OreEntry;
+import thelm.jaopca.ore.OreFinder;
 
 public class JAOPCAConfig {
 
 	public static Configuration configFile;
-	public static ArrayList<String> usedCategories = Lists.<String>newArrayList();
-	public static TreeMultiset<String> moduleBlacklist = TreeMultiset.<String>create();
+	public static ArrayList<String> usedCategories = Lists.newArrayList();
+	public static TreeMultiset<String> moduleBlacklist = TreeMultiset.create();
 	public static boolean ingot;
 	public static boolean gem;
 	public static boolean dust;
@@ -33,8 +34,11 @@ public class JAOPCAConfig {
 	public static boolean gem_oreless;
 	public static boolean reloadColors;
 
-	public static final ArrayList<String> FRONT_MOD_IDS = Lists.<String>newArrayList("minecraft");
-	public static final ArrayList<String> BACK_MOD_IDS = Lists.<String>newArrayList("exnihiloomnia", "exnihiloadscensio", "jaopca");
+	public static final ArrayList<String> FRONT_MOD_IDS = Lists.newArrayList("minecraft");
+	public static final ArrayList<String> BACK_MOD_IDS = Lists.newArrayList("exnihiloomnia", "exnihiloadscensio", "jaopca");
+
+	public static final String[] DEFAULT_SHOULD_BE_GEM = {"Coal", "Lapis", "Diamond", "Emerald", "Quartz"};
+	public static final String[] DEFAULT_SHOULD_BE_DUST = {"Redstone"};
 
 	public static void init(File file) {
 		configFile = new Configuration(file);
@@ -44,7 +48,7 @@ public class JAOPCAConfig {
 	public static void initModConfigs() {
 		String name = "jaopca";
 
-		Collections.<String>addAll(Utils.MOD_IDS, configFile.get(name, "orePreference", new String[0]).setRequiresMcRestart(true).getStringList());
+		Collections.addAll(Utils.MOD_IDS, configFile.get(name, "orePreference", new String[0]).setRequiresMcRestart(true).getStringList());
 		Utils.MOD_IDS.addAll(FRONT_MOD_IDS);
 		for(ModContainer mod : Loader.instance().getActiveModList()) {
 			String modId = mod.getModId();
@@ -54,10 +58,14 @@ public class JAOPCAConfig {
 		}
 		Utils.MOD_IDS.addAll(BACK_MOD_IDS);
 
-		Collections.<String>addAll(moduleBlacklist, configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList());
+		Collections.addAll(moduleBlacklist, configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList());
 		int count = moduleBlacklist.count("*");
 		JAOPCAApi.NAME_TO_MODULE_MAP.keySet().forEach(s->moduleBlacklist.add(s, count));
 		moduleBlacklist.remove("*", count);
+
+		Collections.addAll(OreFinder.SHOULD_BE_GEMS, configFile.get(name, "oreShouldBeGem", DEFAULT_SHOULD_BE_GEM).setRequiresMcRestart(true).getStringList());
+		Collections.addAll(OreFinder.SHOULD_BE_DUSTS, configFile.get(name, "oreShouldBeDust", DEFAULT_SHOULD_BE_DUST).setRequiresMcRestart(true).getStringList());
+		Collections.addAll(OreFinder.CONFLICT_PRECEDENCE, configFile.get(name, "oreConflictPrecedence", new String[0]).setRequiresMcRestart(true).getStringList());
 
 		ingot = configFile.get(name, "ingot", true).setRequiresMcRestart(true).getBoolean();
 		gem = configFile.get(name, "gem", true).setRequiresMcRestart(true).getBoolean();
@@ -96,7 +104,7 @@ public class JAOPCAConfig {
 					entry.setExtra(originalExtra);
 				}
 
-				String originalExtra2 = entry.getExtra();
+				String originalExtra2 = entry.getSecondExtra();
 				String configExtra2 = configFile.get(name, "extra2", originalExtra2).setRequiresMcRestart(true).getString();
 				boolean doesOreExist2 = Utils.doesOreNameExist("ore"+configExtra2);
 
@@ -106,7 +114,20 @@ public class JAOPCAConfig {
 				else {
 					JAOPCAApi.LOGGER.warn("Found invalid second extra name in ore entry "+entry.getOreName()+", replacing");
 					configFile.getCategory(name).get("extra2").setToDefault();
-					entry.setExtra(originalExtra2);
+					entry.setSecondExtra(originalExtra2);
+				}
+
+				String originalExtra3 = entry.getThirdExtra();
+				String configExtra3 = configFile.get(name, "extra3", originalExtra3).setRequiresMcRestart(true).getString();
+				boolean doesOreExist3 = Utils.doesOreNameExist("ore"+configExtra3);
+
+				if(doesOreExist2) {
+					entry.setThirdExtra(configExtra2);
+				}
+				else {
+					JAOPCAApi.LOGGER.warn("Found invalid third extra name in ore entry "+entry.getOreName()+", replacing");
+					configFile.getCategory(name).get("extra3").setToDefault();
+					entry.setThirdExtra(originalExtra3);
 				}
 			}
 
@@ -114,7 +135,7 @@ public class JAOPCAConfig {
 			entry.setRarity(configFile.get(name, "rarity", entry.getRarity()).setRequiresMcRestart(true).getDouble());
 			entry.setHasEffect(configFile.get(name, "hasEffect", entry.getHasEffect()).setRequiresMcRestart(true).getBoolean());
 
-			TreeMultiset<String> blacklist = TreeMultiset.<String>create(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
+			TreeMultiset<String> blacklist = TreeMultiset.create(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
 			int count = blacklist.count("*");
 			JAOPCAApi.NAME_TO_MODULE_MAP.keySet().forEach(s->blacklist.add(s, count));
 			blacklist.remove("*", count);

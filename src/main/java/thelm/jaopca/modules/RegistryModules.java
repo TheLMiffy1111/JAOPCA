@@ -78,5 +78,8 @@ public class RegistryModules {
 		if(isModLoaded("foundry")) {
 			registerModule(new ModuleFoundry());
 		}
+		if(isModLoaded("advancedRocketry")) {
+			registerModule(new ModuleAdvancedRocketry());
+		}
 	}
 }

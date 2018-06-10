@@ -6,8 +6,10 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.EnumOreType;
@@ -22,13 +24,18 @@ public class ModuleTinyDust extends ModuleBase {
 
 	public static final ItemEntry TINY_DUST_ENTRY = new ItemEntry(EnumEntryType.ITEM, "dustTiny", new ModelResourceLocation("jaopca:dust_tiny#inventory")).
 			skipWhenGrouped(Loader.isModLoaded("techreborn")).
-			setOreTypes(EnumOreType.DUSTLESS);
+			setOreTypes(EnumOreType.values());
 
 	public static final ArrayList<String> IC2_BLACKLIST = Lists.newArrayList("Copper", "Gold", "Iron", "Lead", "Lithium", "Silver", "Tin", "Lapis", "Bronze");
 
 	@Override
 	public String getName() {
 		return "tinydust";
+	}
+
+	@Override
+	public List<String> getDependencies() {
+		return Lists.newArrayList("dust");
 	}
 
 	@Override
@@ -53,6 +60,19 @@ public class ModuleTinyDust extends ModuleBase {
 					"dustTiny"+entry.getOreName(),
 					"dustTiny"+entry.getOreName(),
 			}));
+
+			if(Utils.doesOreNameExist("dustSmall"+entry.getOreName())) {
+				GameRegistry.addRecipe(new ShapedOreRecipe(Utils.getOreStack("dustTiny", entry, 9), new Object[] {
+						"D ",
+						"  ",
+						'D', "dust"+entry.getOreName(),
+				}));
+			}
+			else {
+				GameRegistry.addRecipe(new ShapelessOreRecipe(Utils.getOreStack("dustTiny", entry, 9), new Object[] {
+						"dust"+entry.getOreName(),
+				}));
+			}
 		}
 	}
 }
