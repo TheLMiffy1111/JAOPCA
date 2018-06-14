@@ -1,0 +1,101 @@
+itemGroup.jaopca=JAOPCA
+
+#Default
+item.jaopca.dust.name=%s Tozu
+item.jaopca.nugget.name=%s ParÃ§asÄ±
+tile.jaopca.block.name=%s BloÄŸu
+fluid.jaopca.molten=ErimiÅŸ %s
+item.jaopca.coin.name=%s Para
+item.jaopca.gear.name=%s DiÅŸli
+item.jaopca.plate.name=%s Plaka
+item.jaopca.stick.name=%s Ã‡ubuk
+item.jaopca.dustTiny.name=Minik %s Tozu
+item.jaopca.dustSmall.name=KÃ¼Ã§Ã¼k %s Tozu
+item.jaopca.plateDense.name=YoÄŸun %s Plaka
+
+#Mekanism
+item.jaopca.dustDirty.name=Kirli %s Tozu
+item.jaopca.clump.name=%s KÃ¼mesi
+item.jaopca.shard.name=%s ParÃ§asÄ±
+item.jaopca.crystal.name=%s Kristal
+gas.jaopca.slurryClean=Temiz %s HarcÄ±
+gas.jaopca.slurry=%s HarÃ§
+
+#IC2
+item.jaopca.crushed.name=EzilmiÅŸ %s Cevheri
+item.jaopca.crushedPurified.name=EzilmiÅŸ SaflaÅŸtÄ±rÄ±lmÄ±ÅŸ %s Cevheri
+
+#ExNihiloOmnia
+item.jaopca.oreBroken.name=KÄ±rÄ±lmÄ±ÅŸ %s Cevheri
+item.jaopca.oreNetherBroken.name=KÄ±rÄ±lmÄ±ÅŸ %s Cevheri
+item.jaopca.oreEnderBroken.name=KÄ±rÄ±lmÄ±ÅŸ %s Cevheri
+item.jaopca.oreCrushed.name=EzilmiÅŸ %s Cevheri
+item.jaopca.orePowdered.name=TozlaÅŸmÄ±ÅŸ %s Cevheri
+tile.jaopca.oreGravel.name=%s Cevher Ã‡akÄ±lÄ±
+tile.jaopca.oreNetherGravel.name=Nether %s Cevher Ã‡akÄ±lÄ±
+tile.jaopca.oreEnderGravel.name=Ender %s Cevher Ã‡akÄ±lÄ±
+tile.jaopca.oreSand.name=%s Cevher Kumu
+tile.jaopca.oreFine.name=%s Cevher Tozu
+
+#ExNihiloCreatio
+item.jaopca.piece.name=%s Cevher ParÃ§asÄ±
+item.jaopca.hunk.name=%s Cevher YÄ±ÄŸÄ±nÄ±
+
+#AbyssalCraft
+item.jaopca.crystalFragment.name=KristalleÅŸtirilmiÅŸ %s ParÃ§acÄ±ÄŸÄ±
+item.jaopca.crystalShard.name=KristalleÅŸtirilmiÅŸ %s ParÃ§asÄ±
+item.jaopca.crystalAbyss.name=KristalleÅŸtirilmiÅŸ %s
+tile.jaopca.crystalCluster.name=KristalleÅŸtirilmiÅŸ %s KÃ¼mesi
+
+#SkyResources
+item.jaopca.dustAlch.name=Simyasal %s Cevher Tozu
+item.jaopca.dirtyGem.name=Kirli %s
+
+#Magneticraft
+item.jaopca.rockyChunk.name=TaÅŸlÄ± %s YÄ±ÄŸÄ±nÄ±
+item.jaopca.chunk.name=%s YÄ±ÄŸÄ±nÄ±
+
+#TeslaPoweredThingies
+item.jaopca.teslaLump.name=Teslified %s Yumrusu
+item.jaopca.augmentedLump.name=ArtÄ±rÄ±lmÄ±ÅŸ %s Yumru
+
+#Thaumcraft
+item.jaopca.cluster.name=Yerli %s Yumrusu
+
+#BuildcraftOreProcessing
+fluid.jaopca.searingMolten=ErimiÅŸ %s (Â§cAÅŸÄ±rÄ± SÄ±cakÂ§r)
+fluid.jaopca.hotMolten=ErimiÅŸ %s (Â§6SÄ±cakÂ§r)
+fluid.jaopca.coolMolten=ErimiÅŸ %s (Â§bSoÄŸukÂ§r)
+
+#Foundry
+fluid.jaopca.liquid=SÄ±vÄ± %s
+
+#GregTech
+item.jaopca.crushedGreg.name=EzilmiÅŸ %s Cevheri
+item.jaopca.crushedPurifiedGreg.name=SaflaÅŸtÄ±rÄ±lmÄ±ÅŸ %s Cevheri
+item.jaopca.crushedCentrifuged.name=SantrifÃ¼jlenmiÅŸ %s Cevheri
+item.jaopca.dustImpure.name=Saf Olmayan %s YÄ±ÄŸÄ±n Tozu
+item.jaopca.dustPure.name=SaflaÅŸtÄ±rÄ±lmÄ±ÅŸ %s YÄ±ÄŸÄ±n Tozu
+item.jaopca.gemChipped.name=ParÃ§alanmÄ±ÅŸ %s
+item.jaopca.gemFlawed.name=Kusurlu %s
+item.jaopca.gemFlawless.name=Kusursuz %s
+item.jaopca.gemExquisite.name=MÃ¼kemmel %s
+
+#Please refer to zh_CN or zh_TW for all names to localize.
+#Ingots
+jaopca.entry.LiquifiedCoralium=Coralium
+
+#Gems
+jaopca.entry.Lapis=Lapis Lazuli
+jaopca.entry.QuartzBlack=Siyah Kuvars
+
+#Dusts
+
+#IngotNoOres
+jaopca.entry.Aluminiumbrass=AlÃ¼minyum PirinÃ§
+jaopca.entry.ElvenElementium=Elementium
+jaocpa.entry.Galvanizedsteel=KaplamalÄ± Ã‡elik
+jaopca.entry.Stainlesssteel=Paslanmaz Ã‡elik
+
+#GemNoOres
+jaopca.entry.BoronNitride=Bor Nitrat
