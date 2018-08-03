@@ -125,14 +125,14 @@ public class ModuleEnderIO extends ModuleBase {
 		case INGOT_ORELESS:
 			FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_INGOT_DUST, ore, energy, ore, ore));
 			if(Utils.doesOreNameExist("block"+entry.getOreName())) {
-				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energy, ore, ore));
+				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energyBlock, ore, ore));
 			}
 			break;
 		case GEM:
 		case GEM_ORELESS:
 			FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_GEM_DUST, ore, energy, ore, ore));
 			if(Utils.doesOreNameExist("block"+entry.getOreName())) {
-				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energy, ore, ore));
+				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energyBlock, ore, ore));
 			}
 			break;
 		default:
