@@ -125,14 +125,14 @@ public class ModuleEnderIO extends ModuleBase {
 		case INGOT_ORELESS:
 			FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_INGOT_DUST, ore, energy, ore, ore));
 			if(Utils.doesOreNameExist("block"+entry.getOreName())) {
-				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energy, ore, ore));
+				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energyBlock, " bonus=\"none\"", ore, ore));
 			}
 			break;
 		case GEM:
 		case GEM_ORELESS:
 			FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_GEM_DUST, ore, energy, ore, ore));
 			if(Utils.doesOreNameExist("block"+entry.getOreName())) {
-				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energy, ore, ore));
+				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energy, "", ore, ore));
 			}
 			break;
 		default:
@@ -221,7 +221,7 @@ public class ModuleEnderIO extends ModuleBase {
 	public static final String XML_MESSAGE_GEM_DUST = "" +
 			"<recipes>" +
 			"<recipe name=\"Sagmill: %s Dust\" required=\"true\" disabled=\"false\">" +
-			"<sagmilling energy=\"%d\" bonus=\"none\">" +
+			"<sagmilling energy=\"%d\">" +
 			"<input name=\"gem%s\" />" +
 			"<output name=\"dust%s\" />" +
 			"</sagmilling>" +
@@ -230,7 +230,7 @@ public class ModuleEnderIO extends ModuleBase {
 	public static final String XML_MESSAGE_BLOCK_DUST = "" +
 			"<recipes>" +
 			"<recipe name=\"Sagmill: %s Block Dust\" required=\"true\" disabled=\"false\">" +
-			"<sagmilling energy=\"%d\" bonus=\"none\">" +
+			"<sagmilling energy=\"%d\"%s>" +
 			"<input name=\"block%s\" />" +
 			"<output name=\"dust%s\" amount=\"9\" />" +
 			"</sagmilling>" +
