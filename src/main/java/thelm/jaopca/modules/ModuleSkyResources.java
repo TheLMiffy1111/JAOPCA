@@ -62,13 +62,13 @@ public class ModuleSkyResources extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dirtyGem")) {
-			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone").setRequiresMcRestart(true).getString()));
+			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone", "The block used to create the ore. (Sky Resources)").setRequiresMcRestart(true).getString()));
 		}
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustAlch")) {
-			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone").setRequiresMcRestart(true).getString()));
+			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesBase", "minecraft:stone", "The block to grind for the material. (Sky Resources)").setRequiresMcRestart(true).getString()));
 		}
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			ORE_CLEAN_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesCleanBase", "skyresources:techitemcomponent@0").setRequiresMcRestart(true).getString()));
+			ORE_CLEAN_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "skyResourcesCleanBase", "skyresources:techitemcomponent@0", "The item that can be cleaned for this material. (Sky Resources)").setRequiresMcRestart(true).getString()));
 		}
 	}
 

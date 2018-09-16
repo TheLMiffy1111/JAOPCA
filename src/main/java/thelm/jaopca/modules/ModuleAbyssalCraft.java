@@ -43,7 +43,7 @@ public class ModuleAbyssalCraft extends ModuleBase {
 	public static final ArrayList<String> BLACKLIST = Lists.<String>newArrayList(
 			"Iron", "Gold", "Carbon", "Potassium", "Abyssalnite", "LiquifiedCoralium", "Dreadium", "Tin", "Copper", "Silicon", "Magnesium", "Aluminium", "Zinc", "Calcium", "Beryllium"
 			);
-	
+
 	public static final ItemProperties CRYSTAL_PROPERTIES = new ItemProperties().
 			setItemClass(ItemUnlockableBase.class);
 	public static final BlockProperties CRYSTAL_CLUSTER_PROPERTIES = new BlockProperties().
@@ -185,10 +185,14 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			if(fuel.getItem() instanceof ItemBase) {
 				ItemBase item = (ItemBase)fuel.getItem();
 				String prefix = item.itemEntry.prefix;
-				return prefix.equals("crystalCluster") ? 12150 :
-					prefix.equals("crystal") ? 1350 :
-						prefix.equals("crystalShard") ? 150 :
-							prefix.equals("crystalFragment") ? 17 : 0;
+				return prefix.equals("crystal") ? 1350 :
+					prefix.equals("crystalShard") ? 150 :
+						prefix.equals("crystalFragment") ? 17 : 0;
+			}
+			else if(fuel.getItem() instanceof ItemBlockBase) {
+				ItemBlockBase item = (ItemBlockBase)fuel.getItem();
+				String prefix = item.itemEntry.prefix;
+				return prefix.equals("crystalCluster") ? 12150 : 0;
 			}
 			return 0;
 		}

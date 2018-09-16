@@ -34,8 +34,8 @@ public class ModuleMinestrappolation extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			ORE_EXTRAS.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "minestrappExtra", "minestrapp:m_chunks@1").setRequiresMcRestart(true).getString()));
-			ORE_CHANCES.put(entry, config.get(Utils.to_under_score(entry.getOreName()), "minestrappExtraChance", 40).setRequiresMcRestart(true).getInt());
+			ORE_EXTRAS.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "minestrappExtra", "minestrapp:m_chunks@1", "The byproduct of the ore in the crusher. (Minestrappolation)").setRequiresMcRestart(true).getString()));
+			ORE_CHANCES.put(entry, config.get(Utils.to_under_score(entry.getOreName()), "minestrappExtraChance", 40, "The chance of the byproduct in the crusher. (Minestrappolation)").setRequiresMcRestart(true).getInt());
 		}
 	}
 

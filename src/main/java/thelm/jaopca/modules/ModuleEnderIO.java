@@ -63,7 +63,7 @@ public class ModuleEnderIO extends ModuleBase {
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			if(ArrayUtils.contains(EnumOreType.ORE, entry.getOreType()) && !ORE_BLACKLIST.contains(entry.getOreName())) {
-				String value = config.get(Utils.to_under_score(entry.getOreName()), "enderIOByproductXml", "name=\"oredict:cobblestone\" amount=\"1\" chance=\"0.15\"").setRequiresMcRestart(true).getString();
+				String value = config.get(Utils.to_under_score(entry.getOreName()), "enderIOByproductXml", "name=\"oredict:cobblestone\" amount=\"1\" chance=\"0.15\"", "The byproduct XML string for this ore in the SAG Mill. Refer to Ender IO. (Ender IO)").setRequiresMcRestart(true).getString();
 				ORE_BYPRODUCTS.put(entry, value);
 			}
 		}
@@ -125,14 +125,14 @@ public class ModuleEnderIO extends ModuleBase {
 		case INGOT_ORELESS:
 			FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_INGOT_DUST, ore, energy, ore, ore));
 			if(Utils.doesOreNameExist("block"+entry.getOreName())) {
-				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energy, ore, ore));
+				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energyBlock, ore, ore));
 			}
 			break;
 		case GEM:
 		case GEM_ORELESS:
 			FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_GEM_DUST, ore, energy, ore, ore));
 			if(Utils.doesOreNameExist("block"+entry.getOreName())) {
-				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energy, ore, ore));
+				FMLInterModComms.sendMessage("enderio", "recipe:xml", String.format(XML_MESSAGE_BLOCK_DUST, ore, energyBlock, ore, ore));
 			}
 			break;
 		default:

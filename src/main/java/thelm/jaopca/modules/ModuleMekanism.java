@@ -100,7 +100,7 @@ public class ModuleMekanism extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		JAOPCAApi.MODULE_TO_ORES_MAP.get(this).stream().filter(entry->entry.getOreType() == EnumOreType.INGOT && !MINOR_COMPAT_BLACKLIST.contains(entry.getOreName())).forEach(entry->{
-			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "mekanismBase", "minecraft:cobblestone").setRequiresMcRestart(true).getString()));
+			ORE_BASES.put(entry, Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "mekanismBase", "minecraft:cobblestone", "Item to use when recreating the ore. (Mekanism)").setRequiresMcRestart(true).getString()));
 		});
 	}
 

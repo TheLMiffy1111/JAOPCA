@@ -61,7 +61,7 @@ repositories {
     }
 }
 
-version = "1.12.2-2.2.8.89"
+version = "1.12.2-2.2.8.94"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -71,7 +71,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.4.2705"
+    version = "1.12.2-14.23.4.2758"
     runDir = "run"
     mappings = "snapshot_20170624"
     makeObfSourceJar = false
@@ -90,18 +90,21 @@ dependencies {
     deobfCompile("TechReborn:TechReborn-1.12.2:2.12.4.496:universal") {
         transitive = false
     }
-    deobfCompile "cofh:RedstoneFlux:1.12-2.0.1.2:universal"
-    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.1.7.340:universal"
-    deobfCompile("cofh:CoFHCore:1.12.2-4.4.0.10:universal") {
+    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.1.351:universal"
+    deobfCompile "cofh:RedstoneFlux:1.12-2.0.2.3:universal"
+    deobfCompile("cofh:CoFHCore:1.12.2-4.5.3.20:universal") {
         transitive = false
     }
-    deobfCompile("cofh:CoFHWorld:1.12.2-1.1.1.12:universal") {
+    deobfCompile("cofh:CoFHWorld:1.12.2-1.2.0.5:universal") {
         transitive = false
     }
-    deobfCompile("cofh:ThermalFoundation:1.12.2-2.4.0.14:universal") {
+    deobfCompile("cofh:ThermalFoundation:1.12.2-2.5.0.19:universal") {
         transitive = false
     }
-    deobfCompile("cofh:ThermalExpansion:1.12.2-5.4.0.20:universal") {
+    deobfCompile("cofh:ThermalExpansion:1.12.2-5.5.0.29:universal") {
+        transitive = false
+    }
+    deobfCompile("cofh:ThermalDynamics:1.12.2-2.5.1.14:universal") {
         transitive = false
     }
     deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.12.2-1.9.4.9"
@@ -112,8 +115,8 @@ dependencies {
     deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.15.25") {
         transitive = false
     }
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.0.9.285"
-    deobfCompile("exnihilocreatio:exnihilocreatio:1.12-0.2.1.8") {
+	deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.2.397"
+    deobfCompile("exnihilocreatio:exnihilocreatio:1.12-0.3.0.7") {
         transitive = false
     }
     deobfCompile "com.enderio.core:EnderCore:1.12.2-0.5.20"

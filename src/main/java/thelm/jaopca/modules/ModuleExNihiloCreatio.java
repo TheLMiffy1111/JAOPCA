@@ -22,11 +22,13 @@ import exnihilocreatio.blocks.BlockSieve.MeshType;
 import exnihilocreatio.config.ModConfig;
 import exnihilocreatio.items.ore.Ore;
 import exnihilocreatio.json.CustomBlockInfoJson;
+import exnihilocreatio.json.CustomColorJson;
 import exnihilocreatio.json.CustomItemInfoJson;
 import exnihilocreatio.json.CustomOreJson;
 import exnihilocreatio.registries.manager.ExNihiloRegistryManager;
 import exnihilocreatio.registries.manager.ISieveDefaultRegistryProvider;
 import exnihilocreatio.registries.registries.SieveRegistry;
+import exnihilocreatio.texturing.Color;
 import exnihilocreatio.util.BlockInfo;
 import exnihilocreatio.util.ItemInfo;
 import net.minecraft.block.Block;
@@ -80,9 +82,10 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 			//yep, only way i could think of adding the blacklist
 			//should work
 			Gson gson = new GsonBuilder().setPrettyPrinting()
-					.registerTypeAdapter(ItemInfo.class, new CustomItemInfoJson())
-					.registerTypeAdapter(BlockInfo.class, new CustomBlockInfoJson())
-					.registerTypeAdapter(Ore.class, new CustomOreJson()).create();
+					.registerTypeAdapter(ItemInfo.class, CustomItemInfoJson.INSTANCE)
+					.registerTypeAdapter(BlockInfo.class, CustomBlockInfoJson.INSTANCE)
+					.registerTypeAdapter(Ore.class, CustomOreJson.INSTANCE)
+					.registerTypeAdapter(Color.class, CustomColorJson.INSTANCE).create();
 			ParameterizedType TYPE = new ParameterizedType() {
 				@Override
 				public Type[] getActualTypeArguments() {
@@ -131,11 +134,11 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("piece")) {
-			ItemStack stack = Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel").setRequiresMcRestart(true).getString());
+			ItemStack stack = Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel", "Block to sift for this material. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getString());
 			float[] data = {
-					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", Block.getBlockFromItem(stack.getItem()) == Blocks.GRAVEL ? getDropChance(entry, 0.2D) : getDropChance(entry, 0.1D)).setRequiresMcRestart(true).getDouble(),
-					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", getDropChance(entry, 0.2D)).setRequiresMcRestart(true).getDouble(),
-					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", Block.getBlockFromItem(stack.getItem()) == Blocks.GRAVEL ? getDropChance(entry, 0.1D) : getDropChance(entry, 0.3D)).setRequiresMcRestart(true).getDouble(),
+					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", Block.getBlockFromItem(stack.getItem()) == Blocks.GRAVEL ? getDropChance(entry, 0.2D) : getDropChance(entry, 0.1D), "Chance using flint mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
+					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", getDropChance(entry, 0.2D), "Chance using iron mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
+					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", Block.getBlockFromItem(stack.getItem()) == Blocks.GRAVEL ? getDropChance(entry, 0.1D) : getDropChance(entry, 0.3D), "Chance using diamond mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
 			};
 			ORE_SOURCES.put(entry, stack);
 			SIEVE_CHANCES.put(entry, data);
@@ -144,12 +147,12 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			switch(entry.getOreType()) {
 			case DUST: {
-				ItemStack stack = Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "exnihilocreatio:block_dust").setRequiresMcRestart(true).getString());
+				ItemStack stack = Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "exnihilocreatio:block_dust", "Block to sift for this material. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getString());
 				float[] data = {
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCStringChance", 0D).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", 0D).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", getDropChance(entry, 0.0625D)).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", getDropChance(entry, 0.125D)).setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCStringChance", 0D, "Chance using string mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", 0D, "Chance using flint mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", getDropChance(entry, 0.0625D), "Chance using iron mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", getDropChance(entry, 0.125D), "Chance using diamond mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
 				};
 				ORE_SOURCES.put(entry, stack);
 				SIEVE_CHANCES.put(entry, data);
@@ -157,12 +160,12 @@ public class ModuleExNihiloCreatio extends ModuleBase {
 			}
 			case GEM:
 			default: {
-				ItemStack stack = Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel").setRequiresMcRestart(true).getString());
+				ItemStack stack = Utils.parseItemStack(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel", "Block to sift for this material. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getString());
 				float[] data = {
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCStringChance", 0D).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", 0D).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", getDropChance(entry, 0.008D)).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", getDropChance(entry, 0.016D)).setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCStringChance", 0D, "Chance using string mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", 0D, "Chance using flint mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", getDropChance(entry, 0.008D), "Chance using iron mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", getDropChance(entry, 0.016D), "Chance using diamond mesh. (Ex Nihilo Creatio)").setRequiresMcRestart(true).getDouble(),
 				};
 				ORE_SOURCES.put(entry, stack);
 				SIEVE_CHANCES.put(entry, data);

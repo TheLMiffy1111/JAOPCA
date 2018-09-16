@@ -89,7 +89,7 @@ public class ModuleFoundry extends ModuleBase {
 		try {
 			Field registryField = LiquidMetalRegistry.class.getDeclaredField("registry");
 			registryField.setAccessible(true);
-			registry = (Map<String, FluidLiquidMetal>)registryField.get(LiquidMetalRegistry.instance);
+			registry = (Map<String, FluidLiquidMetal>)registryField.get(LiquidMetalRegistry.INSTANCE);
 		}
 		catch(NoSuchFieldException | SecurityException | IllegalAccessException e) {
 			e.printStackTrace();

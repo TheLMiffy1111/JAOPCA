@@ -1,7 +1,6 @@
 package thelm.jaopca.ore;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.TreeMap;
@@ -9,6 +8,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -23,6 +23,7 @@ import thelm.jaopca.utils.JAOPCAConfig;
 
 public class OreFinder {
 
+	public static final HashMultimap<String, String> DEFAULT_ORE_SYNONYMS = HashMultimap.create();
 	public static final TreeMap<String, String> DEFAULT_EXTRAS = Maps.newTreeMap(String.CASE_INSENSITIVE_ORDER);
 	public static final TreeMap<String, String> DEFAULT_SECOND_EXTRAS = Maps.newTreeMap(String.CASE_INSENSITIVE_ORDER);
 	public static final TreeMap<String, String> DEFAULT_THIRD_EXTRAS = Maps.newTreeMap(String.CASE_INSENSITIVE_ORDER);
@@ -34,6 +35,7 @@ public class OreFinder {
 			"Chrome",
 			"Cesium",
 			"Wolfram", "Wolframium",
+			"Saltpeter",
 
 			"Brick"
 			);
@@ -43,6 +45,12 @@ public class OreFinder {
 	public static final HashSet<String> CONFLICT_PRECEDENCE = Sets.newHashSet();
 
 	static {
+		DEFAULT_ORE_SYNONYMS.put("Aluminium", "Aluminum");
+		DEFAULT_ORE_SYNONYMS.put("Sulfur", "Sulphur");
+		DEFAULT_ORE_SYNONYMS.put("Chromium", "Chrome");
+		DEFAULT_ORE_SYNONYMS.put("Caesium", "Cesium");
+		DEFAULT_ORE_SYNONYMS.put("Niter", "Saltpeter");
+
 		DEFAULT_EXTRAS.put("Cobalt", "Iron");
 		DEFAULT_EXTRAS.put("Ardite", "Gold");
 		DEFAULT_EXTRAS.put("Aluminium", "Iron");
@@ -70,12 +78,15 @@ public class OreFinder {
 		allOres.addAll(ingotOres);
 		if(JAOPCAConfig.ingot) {
 			main:for(String name : ingotOres) {
-				for(String nonsense : CONTAINING_BLACKLIST) {
-					if(name.contains(nonsense)) {
+				for(String ignored : CONTAINING_BLACKLIST) {
+					if(name.contains(ignored)) {
 						continue main;
 					}
 				}
 				OreEntry entry = new OreEntry(name);
+				if(DEFAULT_ORE_SYNONYMS.containsKey(name)) {
+					entry.setOreNameSynonyms(DEFAULT_ORE_SYNONYMS.get(name));
+				}
 				if(DEFAULT_EXTRAS.containsKey(name) && Utils.doesOreNameExist("ore"+DEFAULT_EXTRAS.get(name))) {
 					entry.setExtra(DEFAULT_EXTRAS.get(name));
 				}
@@ -99,13 +110,16 @@ public class OreFinder {
 		allOres.addAll(gemOres);
 		if(JAOPCAConfig.gem) {
 			main:for(String name : gemOres) {
-				for(String nonsense : CONTAINING_BLACKLIST) {
-					if(name.contains(nonsense)) {
+				for(String ignored : CONTAINING_BLACKLIST) {
+					if(name.contains(ignored)) {
 						continue main;
 					}
 				}
 				OreEntry entry = new OreEntry(name);
 				entry.setOreType(EnumOreType.GEM);
+				if(DEFAULT_ORE_SYNONYMS.containsKey(name)) {
+					entry.setOreNameSynonyms(DEFAULT_ORE_SYNONYMS.get(name));
+				}
 				if(DEFAULT_EXTRAS.containsKey(name) && Utils.doesOreNameExist("ore"+DEFAULT_EXTRAS.get(name))) {
 					entry.setExtra(DEFAULT_EXTRAS.get(name));
 				}
@@ -128,12 +142,15 @@ public class OreFinder {
 		allOres.addAll(dustOres);
 		if(JAOPCAConfig.dust) {
 			main:for(String name : dustOres) {
-				for(String nonsense : CONTAINING_BLACKLIST) {
-					if(name.contains(nonsense)) {
+				for(String ignored : CONTAINING_BLACKLIST) {
+					if(name.contains(ignored)) {
 						continue main;
 					}
 				}
 				OreEntry entry = new OreEntry(name);
+				if(DEFAULT_ORE_SYNONYMS.containsKey(name)) {
+					entry.setOreNameSynonyms(DEFAULT_ORE_SYNONYMS.get(name));
+				}
 				entry.setOreType(EnumOreType.DUST);
 				if(DEFAULT_EXTRAS.containsKey(name) && Utils.doesOreNameExist("ore"+DEFAULT_EXTRAS.get(name))) {
 					entry.setExtra(DEFAULT_EXTRAS.get(name));
@@ -161,15 +178,21 @@ public class OreFinder {
 		allOres.addAll(ingotNoOres);
 		if(JAOPCAConfig.ingot_oreless) {
 			main:for(String name : ingotNoOres) {
-				for(String nonsense : CONTAINING_BLACKLIST) {
-					if(name.contains(nonsense)) {
+				for(String ignored : CONTAINING_BLACKLIST) {
+					if(name.contains(ignored)) {
 						continue main;
 					}
 				}
 				OreEntry entry = new OreEntry(name);
 				entry.setOreType(EnumOreType.INGOT_ORELESS);
+				if(DEFAULT_ORE_SYNONYMS.containsKey(name)) {
+					entry.setOreNameSynonyms(DEFAULT_ORE_SYNONYMS.get(name));
+				}
 				if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {
 					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
+				}
+				if(DEFAULT_RARITIES.containsKey(name)) {
+					entry.setRarity(DEFAULT_RARITIES.get(name));
 				}
 				allEntries.add(entry);
 				JAOPCAApi.LOGGER.debug("Found ingot "+name);
@@ -181,15 +204,21 @@ public class OreFinder {
 		allOres.addAll(gemNoOres);
 		if(JAOPCAConfig.gem_oreless) {
 			main:for(String name : gemNoOres) {
-				for(String nonsense : CONTAINING_BLACKLIST) {
-					if(name.contains(nonsense)) {
+				for(String ignored : CONTAINING_BLACKLIST) {
+					if(name.contains(ignored)) {
 						continue main;
 					}
 				}
 				OreEntry entry = new OreEntry(name);
 				entry.setOreType(EnumOreType.GEM_ORELESS);
+				if(DEFAULT_ORE_SYNONYMS.containsKey(name)) {
+					entry.setOreNameSynonyms(DEFAULT_ORE_SYNONYMS.get(name));
+				}
 				if(DEFAULT_ENERGY_MODIFIERS.containsKey(name)) {
 					entry.setEnergyModifier(DEFAULT_ENERGY_MODIFIERS.get(name));
+				}
+				if(DEFAULT_RARITIES.containsKey(name)) {
+					entry.setRarity(DEFAULT_RARITIES.get(name));
 				}
 				allEntries.add(entry);
 				JAOPCAApi.LOGGER.debug("Found gem "+name);
@@ -294,5 +323,7 @@ public class OreFinder {
 				}
 			}
 		}
+		DEFAULT_ORE_SYNONYMS.put(suffix1, suffix2);
+		DEFAULT_ORE_SYNONYMS.put(suffix2, suffix1);
 	}
 }

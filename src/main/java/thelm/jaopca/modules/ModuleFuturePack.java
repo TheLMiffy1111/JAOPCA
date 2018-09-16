@@ -49,7 +49,7 @@ public class ModuleFuturePack extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			String value = config.get(Utils.to_under_score(entry.getOreName()), "futurePackSecondary", "minecraft:cobblestone@0x3").setRequiresMcRestart(true).getString();
+			String value = config.get(Utils.to_under_score(entry.getOreName()), "futurePackSecondary", "minecraft:cobblestone@0x3", "Secondary output of this ore using the centrifuge. (FuturePack)").setRequiresMcRestart(true).getString();
 			ORE_SECONDARIES.put(entry, value);
 		}
 	}

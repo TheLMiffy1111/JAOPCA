@@ -141,14 +141,14 @@ public class ModuleGregTech extends ModuleBase {
 				RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().
 				input("ore"+entry.getOreName(), 1).
 				outputs(Utils.getJAOPCAOrOreStack("crushedGreg", "crushed", entry, 1)).
-				duration(40).EUt(16).
+				duration(40).EUt(6).
 				buildAndRegister();
 
 				RecipeMaps.MACERATOR_RECIPES.recipeBuilder().
 				input("ore"+entry.getOreName(), 1).
 				outputs(Utils.getJAOPCAOrOreStack("crushedGreg", "crushed", entry, 2)).
 				chancedOutput(Utils.getOreStack("dust", entry, 1), 1000).
-				duration(200).EUt(24).
+				duration(200).EUt(12).
 				buildAndRegister();
 
 				if(entry.getOreType() == EnumOreType.INGOT) {
@@ -175,6 +175,24 @@ public class ModuleGregTech extends ModuleBase {
 						OreDictUnifier.get(OrePrefix.dust, Materials.Stone)).
 				duration(300).
 				buildAndRegister();
+
+				RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().
+				input("crushedPurified"+entry.getOreName(), 1).
+				outputs(Utils.getOreStack("dust", entry, 1)).
+				duration(20).EUt(8).
+				buildAndRegister();
+
+				RecipeMaps.MACERATOR_RECIPES.recipeBuilder().
+				input("crushedPurified"+entry.getOreName(), 1).
+				outputs(Utils.getOreStack("dust", entry, 1)).
+				chancedOutput(Utils.getOreStackSecondExtra("dust", entry, 1), 1000).
+				duration(40).EUt(12).
+				buildAndRegister();
+
+				Utils.addShapelessOreRecipe(Utils.getOreStack("dust", entry, 1), new Object[] {
+						getToolNameByCharacter('h'),
+						"crushedPurified"+entry.getOreName(),
+				});
 
 				if(entry.getOreType() == EnumOreType.INGOT) {
 					Utils.addSmelting(Utils.getJAOPCAOrOreStack("crushedPurifiedGreg", "crushedPurified", entry, 1), Utils.getOreStack("nugget", entry, 7), 0F);
@@ -203,14 +221,14 @@ public class ModuleGregTech extends ModuleBase {
 				RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().
 				input("crushedCentrifuged"+entry.getOreName(), 1).
 				outputs(Utils.getOreStack("dust", entry, 1)).
-				duration(20).EUt(16).
+				duration(20).EUt(8).
 				buildAndRegister();
 
 				RecipeMaps.MACERATOR_RECIPES.recipeBuilder().
 				input("crushedCentrifuged"+entry.getOreName(), 1).
 				outputs(Utils.getOreStack("dust", entry, 1)).
 				chancedOutput(Utils.getOreStackThirdExtra("dustSmall", entry, 1), 1000).
-				duration(40).EUt(16).
+				duration(40).EUt(12).
 				buildAndRegister();
 
 				Utils.addShapelessOreRecipe(Utils.getOreStack("dust", entry, 1), new Object[] {
@@ -229,14 +247,14 @@ public class ModuleGregTech extends ModuleBase {
 				RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder().
 				input("crushed"+entry.getOreName(), 1).
 				outputs(Utils.getOreStack("dustImpure", entry, 1)).
-				duration(10).EUt(16).
+				duration(20).EUt(8).
 				buildAndRegister();
 
 				RecipeMaps.MACERATOR_RECIPES.recipeBuilder().
 				input("crushed"+entry.getOreName(), 1).
 				outputs(Utils.getOreStack("dustImpure", entry, 1)).
 				chancedOutput(Utils.getOreStackExtra("dust", entry, 1), 1000).
-				duration(100).EUt(24).
+				duration(100).EUt(12).
 				buildAndRegister();
 
 				Utils.addShapelessOreRecipe(Utils.getOreStack("dustImpure", entry, 1), new Object[] {

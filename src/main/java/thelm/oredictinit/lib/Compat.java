@@ -2,6 +2,7 @@ package thelm.oredictinit.lib;
 
 import net.minecraftforge.fml.common.Loader;
 import thelm.oredictinit.api.OreDictInitApi;
+import thelm.oredictinit.compat.CompatAlternativeNaming;
 import thelm.oredictinit.compat.CompatAppliedEnergistics;
 import thelm.oredictinit.compat.CompatAstralSorcery;
 import thelm.oredictinit.compat.CompatCalculator;
@@ -14,7 +15,6 @@ import thelm.oredictinit.compat.CompatGalacticraftPlanets;
 import thelm.oredictinit.compat.CompatGregTech;
 import thelm.oredictinit.compat.CompatMekanism;
 import thelm.oredictinit.compat.CompatMinecraft;
-import thelm.oredictinit.compat.CompatNamingNonsense;
 import thelm.oredictinit.compat.CompatNuclearCraft;
 import thelm.oredictinit.compat.CompatQuark;
 import thelm.oredictinit.compat.CompatRFTools;
@@ -25,7 +25,7 @@ public class Compat {
 
 	public static void init() {
 		OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMinecraft());
-		OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatNamingNonsense());
+		OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatAlternativeNaming());
 		if(Loader.isModLoaded("mekanism")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMekanism());
 		}

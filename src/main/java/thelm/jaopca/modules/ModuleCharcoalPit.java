@@ -36,7 +36,7 @@ public class ModuleCharcoalPit extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			ADVANCED_ORE.put(entry, config.get(Utils.to_under_score(entry.getOreName()), "charcoalPitAdvanced", false).setRequiresMcRestart(true).getBoolean());
+			ADVANCED_ORE.put(entry, config.get(Utils.to_under_score(entry.getOreName()), "charcoalPitAdvanced", false, "Does this ore require the bloomery. (Charcoal Pit)").setRequiresMcRestart(true).getBoolean());
 		}
 	}
 

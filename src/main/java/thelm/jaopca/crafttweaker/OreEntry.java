@@ -1,5 +1,9 @@
 package thelm.jaopca.crafttweaker;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.item.IItemStack;
 import crafttweaker.api.liquid.ILiquidStack;
@@ -25,6 +29,11 @@ public class OreEntry {
 	@ZenGetter("oreName")
 	public String getOreName() {
 		return entry.getOreName();
+	}
+
+	@ZenGetter("oreNameSynonyms")
+	public List<String> getOreNameSynonyms() {
+		return Lists.newArrayList(entry.getOreNameSynonyms());	
 	}
 
 	@ZenMethod

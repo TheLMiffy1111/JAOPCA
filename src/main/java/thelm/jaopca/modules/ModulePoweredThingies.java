@@ -92,7 +92,7 @@ public class ModulePoweredThingies extends ModuleBase {
 			if(entry.hasSecondExtra()) {
 				outputList.add(new SecondaryOreOutput(0.05F, "dust"+entry.getSecondExtra(), 1));
 			}
-			IRecipeOutput[] outputs = outputList.toArray(new IRecipeOutput[0]);
+			IRecipeOutput[] outputs = outputList.toArray(new IRecipeOutput[outputList.size()]);
 			try {
 				Method addDefaultMethod = PowderMakerRegistry.class.getDeclaredMethod("addDefaultOreRecipe", String.class, String.class, Integer.TYPE, IRecipeOutput[].class);
 				addDefaultMethod.setAccessible(true);

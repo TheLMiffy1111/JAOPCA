@@ -91,7 +91,7 @@ public class ModuleThaumcraft extends ModuleBase {
 			ResearchStage stage = ResearchCategories.getResearch("METALPURIFICATION").getStages()[0];
 			ArrayList<ResourceLocation> recipes = Lists.<ResourceLocation>newArrayList(stage.getRecipes());
 			recipes.addAll(addedRecipes);
-			stage.setRecipes(recipes.toArray(new ResourceLocation[0]));
+			stage.setRecipes(recipes.toArray(new ResourceLocation[recipes.size()]));
 		}
 		catch(Exception e) {
 			e.printStackTrace();
