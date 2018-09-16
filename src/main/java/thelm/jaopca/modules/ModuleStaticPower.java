@@ -104,7 +104,7 @@ public class ModuleStaticPower extends ModuleBase {
 	}
 
 	public static void addGrinderRecipe(ItemStack input, List<Pair<ItemStack, Float>> outputs) {
-		RegisterHelper.registerGrinderRecipe(input, Lists.transform(outputs, pair->new GrinderOutput(pair.getLeft(), pair.getRight())).toArray(new GrinderOutput[0]));
+		RegisterHelper.registerGrinderRecipe(input, Lists.transform(outputs, pair->new GrinderOutput(pair.getLeft(), pair.getRight())).toArray(new GrinderOutput[outputs.size()]));
 	}
 
 	public static void addGrinderRecipe(ItemStack input, ItemStack output, float chance) {

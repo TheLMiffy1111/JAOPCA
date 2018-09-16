@@ -285,6 +285,9 @@ public class RegistryCore {
 				for(int i = 0; i <= block.getMaxMeta(); ++i) {
 					if(block.hasMeta(i)) {
 						OreDictionary.registerOre(block.getPrefix(i)+ore.getOreName(), new ItemStack((Block)block, 1, i));
+						for(String synonym : ore.getOreNameSynonyms()) {
+							OreDictionary.registerOre(block.getPrefix(i)+synonym, new ItemStack((Block)block, 1, i));
+						}
 					}
 				}
 				JAOPCAApi.BLOCKS_TABLE.put(entry.name, ore.getOreName(), (Block)block);
@@ -317,6 +320,9 @@ public class RegistryCore {
 				for(int i = 0; i <= item.getMaxMeta(); ++i) {
 					if(item.hasMeta(i)) {
 						OreDictionary.registerOre(item.getPrefix(i)+ore.getOreName(), new ItemStack((Item)item, 1, i));
+						for(String synonym : ore.getOreNameSynonyms()) {
+							OreDictionary.registerOre(item.getPrefix(i)+synonym, new ItemStack((Item)item, 1, i));
+						}
 					}
 				}
 				JAOPCAApi.ITEMS_TABLE.put(entry.name, ore.getOreName(), (Item)item);

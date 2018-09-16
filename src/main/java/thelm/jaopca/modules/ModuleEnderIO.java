@@ -144,7 +144,7 @@ public class ModuleEnderIO extends ModuleBase {
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			if(ArrayUtils.contains(EnumOreType.ORE, entry.getOreType()) && !ORE_BLACKLIST.contains(entry.getOreName())) {
-				String value = config.get(Utils.to_under_score(entry.getOreName()), "enderIOSecondaryXml", "modID=\"minecraft\" itemName=\"cobblestone\" number=\"1\" chance=\"0.15\"").setRequiresMcRestart(true).getString();
+				String value = config.get(Utils.to_under_score(entry.getOreName()), "enderIOSecondaryXml", "modID=\"minecraft\" itemName=\"cobblestone\" number=\"1\" chance=\"0.15\"", "The byproduct XML string for this ore in the SAG Mill. Refer to Ender IO. (Ender IO)").setRequiresMcRestart(true).getString();
 				ORE_SECONDARIES.put(entry, value);
 			}
 		}

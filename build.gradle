@@ -51,7 +51,7 @@ repositories {
     }
 }
 
-version = "1.10.2-2.0.8.87"
+version = "1.10.2-2.0.8.92"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -85,6 +85,9 @@ dependencies {
         transitive = false
     }
     deobfCompile("cofh:ThermalExpansion:1.10.2-5.1.9.24:universal") {
+        transitive = false
+    }
+    deobfCompile("cofh:ThermalDynamics:1.10.2-2.0.11.19:universal") {
         transitive = false
     }
     deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.10.2-1.9.4.9"

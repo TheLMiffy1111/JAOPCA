@@ -11,7 +11,7 @@ import thelm.oredictinit.compat.CompatGalacticraftCore;
 import thelm.oredictinit.compat.CompatGalacticraftPlanets;
 import thelm.oredictinit.compat.CompatMekanism;
 import thelm.oredictinit.compat.CompatMinecraft;
-import thelm.oredictinit.compat.CompatNamingNonsense;
+import thelm.oredictinit.compat.CompatAlternativeNaming;
 import thelm.oredictinit.compat.CompatNuclearCraft;
 import thelm.oredictinit.compat.CompatQuark;
 import thelm.oredictinit.compat.CompatRFTools;
@@ -21,7 +21,7 @@ public class Compat {
 
 	public static void init() {
 		OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMinecraft());
-		OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatNamingNonsense());
+		OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatAlternativeNaming());
 		if(Loader.isModLoaded("Mekanism")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatMekanism());
 		}

@@ -10,6 +10,8 @@ public interface IOreEntry {
 	 */
 	public String getOreName();
 
+	public List<String> getOreNameSynonyms();
+
 	/**
 	 *
 	 * @return The name of the extra of the ore

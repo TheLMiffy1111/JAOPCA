@@ -33,9 +33,10 @@ public class JAOPCAConfig {
 	public static boolean ingot_oreless;
 	public static boolean gem_oreless;
 	public static boolean reloadColors;
+	public static int colorMode;
 
 	public static final ArrayList<String> FRONT_MOD_IDS = Lists.newArrayList("minecraft");
-	public static final ArrayList<String> BACK_MOD_IDS = Lists.newArrayList("exnihiloomnia", "exnihiloadscensio", "jaopca");
+	public static final ArrayList<String> BACK_MOD_IDS = Lists.newArrayList("exnihiloomnia", "exnihiloadscensio", "exnihilocreatio", "jaopca");
 
 	public static final String[] DEFAULT_SHOULD_BE_GEM = {"Coal", "Lapis", "Diamond", "Emerald", "Quartz"};
 	public static final String[] DEFAULT_SHOULD_BE_DUST = {"Redstone"};
@@ -48,7 +49,7 @@ public class JAOPCAConfig {
 	public static void initModConfigs() {
 		String name = "jaopca";
 
-		Collections.addAll(Utils.MOD_IDS, configFile.get(name, "orePreference", new String[0]).setRequiresMcRestart(true).getStringList());
+		Collections.addAll(Utils.MOD_IDS, configFile.get(name, "orePreference", new String[0], "Mods that are preferred for their items.").setRequiresMcRestart(true).getStringList());
 		Utils.MOD_IDS.addAll(FRONT_MOD_IDS);
 		for(ModContainer mod : Loader.instance().getActiveModList()) {
 			String modId = mod.getModId();
@@ -58,22 +59,23 @@ public class JAOPCAConfig {
 		}
 		Utils.MOD_IDS.addAll(BACK_MOD_IDS);
 
-		Collections.addAll(moduleBlacklist, configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList());
+		Collections.addAll(moduleBlacklist, configFile.get(name, "moduleBlacklist", new String[0], "The global module blacklist. * will mean all modules. Along with material module blacklists, if a module name occurs an odd number of times for a material, then the module is disabled for the material.").setRequiresMcRestart(true).getStringList());
 		int count = moduleBlacklist.count("*");
 		JAOPCAApi.NAME_TO_MODULE_MAP.keySet().forEach(s->moduleBlacklist.add(s, count));
 		moduleBlacklist.remove("*", count);
 
-		Collections.addAll(OreFinder.SHOULD_BE_GEMS, configFile.get(name, "oreShouldBeGem", DEFAULT_SHOULD_BE_GEM).setRequiresMcRestart(true).getStringList());
-		Collections.addAll(OreFinder.SHOULD_BE_DUSTS, configFile.get(name, "oreShouldBeDust", DEFAULT_SHOULD_BE_DUST).setRequiresMcRestart(true).getStringList());
-		Collections.addAll(OreFinder.CONFLICT_PRECEDENCE, configFile.get(name, "oreConflictPrecedence", new String[0]).setRequiresMcRestart(true).getStringList());
+		Collections.addAll(OreFinder.SHOULD_BE_GEMS, configFile.get(name, "oreShouldBeGem", DEFAULT_SHOULD_BE_GEM, "List of materials that should be gems.").setRequiresMcRestart(true).getStringList());
+		Collections.addAll(OreFinder.SHOULD_BE_DUSTS, configFile.get(name, "oreShouldBeDust", DEFAULT_SHOULD_BE_DUST, "List of materials that should be dusts.").setRequiresMcRestart(true).getStringList());
+		Collections.addAll(OreFinder.CONFLICT_PRECEDENCE, configFile.get(name, "oreConflictPrecedence", new String[0], "List of material names that should take precedence when a naming conflict occurs.").setRequiresMcRestart(true).getStringList());
 
-		ingot = configFile.get(name, "ingot", true).setRequiresMcRestart(true).getBoolean();
-		gem = configFile.get(name, "gem", true).setRequiresMcRestart(true).getBoolean();
-		dust = configFile.get(name, "dust", true).setRequiresMcRestart(true).getBoolean();
-		ingot_oreless = configFile.get(name, "ingot_oreless", false).setRequiresMcRestart(true).getBoolean();
-		gem_oreless = configFile.get(name, "gem_oreless", false).setRequiresMcRestart(true).getBoolean();
+		ingot = configFile.get(name, "ingot", true, "Enables the finding of ingot ores.").setRequiresMcRestart(true).getBoolean();
+		gem = configFile.get(name, "gem", true, "Enables the finding of gem ores.").setRequiresMcRestart(true).getBoolean();
+		dust = configFile.get(name, "dust", true, "Enables the finding of dust ores.").setRequiresMcRestart(true).getBoolean();
+		ingot_oreless = configFile.get(name, "ingot_oreless", false, "Enables the finding of ingots with no ores.").setRequiresMcRestart(true).getBoolean();
+		gem_oreless = configFile.get(name, "gem_oreless", false, "Enables the finding of gems with no ores.").setRequiresMcRestart(true).getBoolean();
 
 		reloadColors = configFile.get(name, "reloadColorConfigs", false, "Set to true to reload color configs.").setRequiresMcRestart(true).getBoolean();
+		colorMode = configFile.get(name, "colorMode", 0, "Mode for average color calculation. 0 is Color RMS, 1 is ColorThief.").getInt();
 
 		if(reloadColors) {
 			configFile.getCategory(name).get("reloadColorConfigs").setToDefault();
@@ -90,9 +92,12 @@ public class JAOPCAConfig {
 		for(OreEntry entry : allOres) {
 			String name = Utils.to_under_score(entry.getOreName());
 
+			String[] synonyms = entry.getOreNameSynonyms().toArray(new String[entry.getOreNameSynonyms().size()]);
+			entry.setOreNameSynonyms(Arrays.asList(configFile.get(name, "synonyms", synonyms, "The synonyms for this ore to use for Ore Dictionary registration.").setRequiresMcRestart(true).getStringList()));
+
 			if(entry.getOreType().ordinal() < 3) {
 				String originalExtra = entry.getExtra();
-				String configExtra = configFile.get(name, "extra", originalExtra).setRequiresMcRestart(true).getString();
+				String configExtra = configFile.get(name, "extra", originalExtra, "The main byproduct material for this material.").setRequiresMcRestart(true).getString();
 				boolean doesOreExist = Utils.doesOreNameExist("ore"+configExtra);
 
 				if(doesOreExist) {
@@ -105,7 +110,7 @@ public class JAOPCAConfig {
 				}
 
 				String originalExtra2 = entry.getSecondExtra();
-				String configExtra2 = configFile.get(name, "extra2", originalExtra2).setRequiresMcRestart(true).getString();
+				String configExtra2 = configFile.get(name, "extra2", originalExtra2, "The secondary byproduct material for this material.").setRequiresMcRestart(true).getString();
 				boolean doesOreExist2 = Utils.doesOreNameExist("ore"+configExtra2);
 
 				if(doesOreExist2) {
@@ -118,7 +123,7 @@ public class JAOPCAConfig {
 				}
 
 				String originalExtra3 = entry.getThirdExtra();
-				String configExtra3 = configFile.get(name, "extra3", originalExtra3).setRequiresMcRestart(true).getString();
+				String configExtra3 = configFile.get(name, "extra3", originalExtra3, "The tertiary byproduct material for this material.").setRequiresMcRestart(true).getString();
 				boolean doesOreExist3 = Utils.doesOreNameExist("ore"+configExtra3);
 
 				if(doesOreExist2) {
@@ -131,11 +136,11 @@ public class JAOPCAConfig {
 				}
 			}
 
-			entry.setEnergyModifier(configFile.get(name, "energyModifier", entry.getEnergyModifier()).setRequiresMcRestart(true).getDouble());
-			entry.setRarity(configFile.get(name, "rarity", entry.getRarity()).setRequiresMcRestart(true).getDouble());
-			entry.setHasEffect(configFile.get(name, "hasEffect", entry.getHasEffect()).setRequiresMcRestart(true).getBoolean());
+			entry.setEnergyModifier(configFile.get(name, "energyModifier", entry.getEnergyModifier(), "The energy modifier of this material. Used to calculated energy costs.").setRequiresMcRestart(true).getDouble());
+			entry.setRarity(configFile.get(name, "rarity", entry.getRarity(), "The rarity of this material. Used to calculate default chances.").setRequiresMcRestart(true).getDouble());
+			entry.setHasEffect(configFile.get(name, "hasEffect", entry.getHasEffect(), "Does this material have a enchanted glow.").setRequiresMcRestart(true).getBoolean());
 
-			TreeMultiset<String> blacklist = TreeMultiset.create(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0]).setRequiresMcRestart(true).getStringList()));
+			TreeMultiset<String> blacklist = TreeMultiset.create(Arrays.asList(configFile.get(name, "moduleBlacklist", new String[0], "The module blacklist for this material. * will mean all modules.").setRequiresMcRestart(true).getStringList()));
 			int count = blacklist.count("*");
 			JAOPCAApi.NAME_TO_MODULE_MAP.keySet().forEach(s->blacklist.add(s, count));
 			blacklist.remove("*", count);
@@ -177,7 +182,7 @@ public class JAOPCAConfig {
 			configFile.getCategory(name).remove("color");
 		}
 
-		entry.setColor(Color.decode(configFile.get(name, "color", "0x"+Integer.toHexString(entry.getColor() & 0xFFFFFF)).getString()));
+		entry.setColor(Color.decode(configFile.get(name, "color", "0x"+Integer.toHexString(entry.getColor() & 0xFFFFFF), "The color for this material.").getString()));
 
 		if(configFile.hasChanged()) {
 			configFile.save();

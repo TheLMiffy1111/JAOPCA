@@ -80,7 +80,7 @@ public class ModuleThaumcraft extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("cluster")) {
 			recipes.add(new CrucibleRecipe("METALPURIFICATION", Utils.getOreStack("cluster", entry, 1), "ore"+entry.getOreName(), new AspectList().merge(Aspect.METAL, 5).merge(Aspect.ORDER, 5)));
 		}
-		ThaumcraftApi.getCraftingRecipes().put("thaumcraft:metal_purification", (CrucibleRecipe[])recipes.toArray(new CrucibleRecipe[0]));
+		ThaumcraftApi.getCraftingRecipes().put("thaumcraft:metal_purification", (CrucibleRecipe[])recipes.toArray(new CrucibleRecipe[recipes.size()]));
 	}
 
 	public static void addSmeltingBonus(Object in, ItemStack out) {

@@ -1,5 +1,9 @@
 package thelm.jaopca.minetweaker;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.liquid.ILiquidStack;
 import minetweaker.api.minecraft.MineTweakerMC;
@@ -23,6 +27,11 @@ public class OreEntry {
 	@ZenGetter("oreName")
 	public String getOreName() {
 		return entry.getOreName();
+	}
+
+	@ZenGetter("oreNameSynonyms")
+	public List<String> getOreNameSynonyms() {
+		return Lists.newArrayList(entry.getOreNameSynonyms());	
 	}
 
 	@ZenMethod

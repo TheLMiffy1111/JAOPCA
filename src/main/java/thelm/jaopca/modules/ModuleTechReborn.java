@@ -56,16 +56,16 @@ public class ModuleTechReborn extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			if(entry.getOreType()==EnumOreType.INGOT) {
 				boolean[] data = {
-						config.get(Utils.to_under_score(entry.getOreName()), "techRebornH2O", true).getBoolean(),
-						config.get(Utils.to_under_score(entry.getOreName()), "techRebornNa2S2O8", true).getBoolean(),
-						config.get(Utils.to_under_score(entry.getOreName()), "techRebornHg", true).getBoolean(),
+						config.get(Utils.to_under_score(entry.getOreName()), "techRebornH2O", true, "Can this ore be grinded using water. (Tech Reborn)").getBoolean(),
+						config.get(Utils.to_under_score(entry.getOreName()), "techRebornNa2S2O8", true, "Can this ore be grinded using sodium persulfate. (Tech Reborn)").getBoolean(),
+						config.get(Utils.to_under_score(entry.getOreName()), "techRebornHg", true, "Can this ore be grinded using mercury. (Tech Reborn)").getBoolean(),
 				};
 				GRINDING_FLUIDS.put(entry, data);
 			}
 			if(entry.getOreType()==EnumOreType.DUST) {
 				boolean[] data = {
-						config.get(Utils.to_under_score(entry.getOreName()), "techRebornH2O", true).getBoolean(),
-						config.get(Utils.to_under_score(entry.getOreName()), "techRebornNa2S2O8", true).getBoolean(),
+						config.get(Utils.to_under_score(entry.getOreName()), "techRebornH2O", true, "Can this ore be grinded using water. (Tech Reborn)").getBoolean(),
+						config.get(Utils.to_under_score(entry.getOreName()), "techRebornNa2S2O8", true, "Can this ore be grinded using sodium persulfate. (Tech Reborn)").getBoolean(),
 				};
 				GRINDING_FLUIDS.put(entry, data);
 			}

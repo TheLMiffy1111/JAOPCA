@@ -17,6 +17,7 @@ import thelm.jaopca.utils.JAOPCAConfig;
 public class OreEntry implements IOreEntry {
 
 	protected final String oreName;
+	protected List<String> oreNameSynonyms = Lists.<String>newArrayList();
 	protected String extra;
 	protected String extra2;
 	protected String extra3;
@@ -52,6 +53,11 @@ public class OreEntry implements IOreEntry {
 	@Override
 	public String getOreName() {
 		return oreName;
+	}
+
+	@Override
+	public List<String> getOreNameSynonyms() {
+		return oreNameSynonyms;
 	}
 
 	@Override
@@ -119,6 +125,11 @@ public class OreEntry implements IOreEntry {
 		}
 
 		return color.getRGB() & 0xFFFFFF;
+	}
+
+	public void setOreNameSynonyms(Collection<String> synonyms) {
+		this.oreNameSynonyms.clear();
+		this.oreNameSynonyms.addAll(synonyms);
 	}
 
 	public void setExtra(String extra) {

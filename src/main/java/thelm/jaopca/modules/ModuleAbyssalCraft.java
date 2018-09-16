@@ -185,10 +185,14 @@ public class ModuleAbyssalCraft extends ModuleBase {
 			if(fuel.getItem() instanceof ItemBase) {
 				ItemBase item = (ItemBase)fuel.getItem();
 				String prefix = item.itemEntry.prefix;
-				return prefix.equals("crystalCluster") ? 12150 :
-					prefix.equals("crystal") ? 1350 :
-						prefix.equals("crystalShard") ? 150 :
-							prefix.equals("crystalFragment") ? 17 : 0;
+				return prefix.equals("crystal") ? 1350 :
+					prefix.equals("crystalShard") ? 150 :
+						prefix.equals("crystalFragment") ? 17 : 0;
+			}
+			else if(fuel.getItem() instanceof ItemBlockBase) {
+				ItemBlockBase item = (ItemBlockBase)fuel.getItem();
+				String prefix = item.itemEntry.prefix;
+				return prefix.equals("crystalCluster") ? 12150 : 0;
 			}
 			return 0;
 		}
