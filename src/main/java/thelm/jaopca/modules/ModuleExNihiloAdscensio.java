@@ -80,11 +80,11 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 	@Override
 	public void registerConfigs(Configuration config) {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("piece")) {
-			IBlockState state = Utils.parseBlockState(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel").setRequiresMcRestart(true).getString());
+			IBlockState state = Utils.parseBlockState(config.get(Utils.to_under_score(entry.getOreName()), "eNASource", "minecraft:gravel", "Block to sift for this material. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getString());
 			float[] data = {
-					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAFlintChance", 0.2D/entry.getRarity()).setRequiresMcRestart(true).getDouble(),
-					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAIronChance", 0.2D/entry.getRarity()).setRequiresMcRestart(true).getDouble(),
-					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNADiamondChance", 0.1D/entry.getRarity()).setRequiresMcRestart(true).getDouble(),
+					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAFlintChance", 0.2D/entry.getRarity(), "Chance using flint mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
+					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAIronChance", 0.2D/entry.getRarity(), "Chance using iron mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
+					(float)config.get(Utils.to_under_score(entry.getOreName()), "eNADiamondChance", 0.1D/entry.getRarity(), "Chance using diamond mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
 			};
 			ORE_SOURCES.put(entry, state);
 			SIEVE_CHANCES.put(entry, data);
@@ -93,12 +93,12 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			switch(entry.getOreType()) {
 			case DUST: {
-				IBlockState state = Utils.parseBlockState(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "exnihilocreatio:block_dust").setRequiresMcRestart(true).getString());
+				IBlockState state = Utils.parseBlockState(config.get(Utils.to_under_score(entry.getOreName()), "eNASource", "exnihiloadscensio:blockdust", "Block to sift for this material. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getString());
 				float[] data = {
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCStringChance", 0D).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", 0D).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", 0.0625D/entry.getRarity()).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", 0.125D/entry.getRarity()).setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAStringChance", 0D, "Chance using string mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAFlintChance", 0D, "Chance using flint mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAIronChance", 0.0625D/entry.getRarity(), "Chance using iron mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNADiamondChance", 0.125D/entry.getRarity(), "Chance using diamond mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
 				};
 				ORE_SOURCES.put(entry, state);
 				SIEVE_CHANCES.put(entry, data);
@@ -106,12 +106,12 @@ public class ModuleExNihiloAdscensio extends ModuleBase {
 			}
 			case GEM:
 			default: {
-				IBlockState state = Utils.parseBlockState(config.get(Utils.to_under_score(entry.getOreName()), "eNCSource", "minecraft:gravel").setRequiresMcRestart(true).getString());
+				IBlockState state = Utils.parseBlockState(config.get(Utils.to_under_score(entry.getOreName()), "eNASource", "minecraft:gravel", "Block to sift for this material. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getString());
 				float[] data = {
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCStringChance", 0D).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCFlintChance", 0D).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCIronChance", 0.008D/entry.getRarity()).setRequiresMcRestart(true).getDouble(),
-						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNCDiamondChance", 0.016D/entry.getRarity()).setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAStringChance", 0D, "Chance using string mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAFlintChance", 0D, "Chance using flint mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNAIronChance", 0.008D/entry.getRarity(), "Chance using iron mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
+						(float)config.get(Utils.to_under_score(entry.getOreName()), "eNADiamondChance", 0.016D/entry.getRarity(), "Chance using diamond mesh. (Ex Nihilo Adscensio)").setRequiresMcRestart(true).getDouble(),
 				};
 				ORE_SOURCES.put(entry, state);
 				SIEVE_CHANCES.put(entry, data);

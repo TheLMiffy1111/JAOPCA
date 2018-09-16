@@ -20,6 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.utils.Utils;
+import thelm.jaopca.utils.JAOPCAConfig;
 
 /**
  * Code partially taken from mezz's JEI
@@ -48,40 +49,97 @@ public class OreColorer {
 			if(quads.isEmpty()) {
 				continue;
 			}
-			int colorMultiplier = getColorMultiplier(stack, quads.get(0));
 			for(BakedQuad quad : quads) {
+				int colorMultiplier = getColorMultiplier(stack, quad);
 				BufferedImage texture = getBufferedImage(quad.getSprite());
 				if(texture == null) {
 					continue;
 				}
-				int[][] texColors = ColorThief.getPalette(texture, 4);
-				if(texColors == null) {
+				int pixelCount = getPixelCount(texture);
+				if(pixelCount == 0) {
 					continue;
 				}
-				int[] texColor = texColors[0];
+				int[] texColor = getTextureColor(texture);
 				if(texColor == null) {
 					continue;
 				}
-				texColor[0] = (int)MathHelper.clamp(texColor[0]*(colorMultiplier>>16&0xFF)/255D, 0, 255);
-				texColor[1] = (int)MathHelper.clamp(texColor[1]*(colorMultiplier>> 8&0xFF)/255D, 0, 255);
-				texColor[2] = (int)MathHelper.clamp(texColor[2]*(colorMultiplier    &0xFF)/255D, 0, 255);
-				colors.add(texColor);
+				int[] colorAndCount = new int[4];
+				colorAndCount[0] = (int)Math.round(MathHelper.clamp(texColor[0]*(colorMultiplier>>16&0xFF)/255D, 0, 255));
+				colorAndCount[1] = (int)Math.round(MathHelper.clamp(texColor[1]*(colorMultiplier>> 8&0xFF)/255D, 0, 255));
+				colorAndCount[2] = (int)Math.round(MathHelper.clamp(texColor[2]*(colorMultiplier    &0xFF)/255D, 0, 255));
+				colorAndCount[3] = pixelCount;
+				colors.add(colorAndCount);
 			}
 		}
 
-		double count = colors.size();
+		if(colors.size() == 0) {
+			return Color.WHITE;
+		}
+		double count = 0;
+		long red = 0, green = 0, blue = 0;
+		for(int[] c : colors) {
+			red += c[0]*c[0]*c[3];
+			green += c[1]*c[1]*c[3];
+			blue += c[2]*c[2]*c[3];
+			count += c[3];
+		}
+		return new Color((int)Math.round(MathHelper.clamp(Math.sqrt(red/count), 0, 255)),
+				(int)Math.round(MathHelper.clamp(Math.sqrt(green/count), 0, 255)),
+				(int)Math.round(MathHelper.clamp(Math.sqrt(blue/count), 0, 255)));
+	}
+
+	private static int[] getTextureColor(BufferedImage image) {
+		switch(JAOPCAConfig.colorMode) {
+		case 0:
+		default: {
+			Color color = getAverageColorFromTexture(image);
+			return new int[] {color.getRed(), color.getGreen(), color.getBlue()};
+		}
+		case 1: {
+			int[][] texColors = ColorThief.getPalette(image, 4);
+			if(texColors == null) {
+				return null;
+			}
+			return texColors[0];
+		}
+		}
+	}
+
+	private static int getPixelCount(BufferedImage image) {
+		int count = 0;
+		for(int i = 0; i < image.getWidth(); i++) {
+			for(int j = 0; j < image.getHeight(); j++) {
+				Color color = new Color(image.getRGB(i, j), true);
+				if(color.getAlpha() < 50) {
+					continue;
+				}
+				count++;
+			}
+		}
+		return count;
+	}
+
+	private static Color getAverageColorFromTexture(BufferedImage image) {
+		long red = 0, green = 0, blue = 0;
+		double count = 0;
+		for(int i = 0; i < image.getWidth(); i++) {
+			for(int j = 0; j < image.getHeight(); j++) {
+				Color color = new Color(image.getRGB(i, j), true);
+				if(color.getAlpha() < 50) {
+					continue;
+				}
+				red += color.getRed()*color.getRed();
+				green += color.getGreen()*color.getGreen();
+				blue += color.getBlue()*color.getBlue();
+				count++;
+			}
+		}
 		if(count == 0) {
 			return Color.WHITE;
 		}
-		long red = 0;
-		long green = 0;
-		long blue = 0;
-		for(int[] c : colors) {
-			red += c[0]*c[0];
-			green += c[1]*c[1];
-			blue += c[2]*c[2];
-		}
-		return new Color((int)Math.sqrt(red/count), (int)Math.sqrt(green/count), (int)Math.sqrt(blue/count));
+		return new Color((int)MathHelper.clamp(Math.sqrt(red/count), 0, 255),
+				(int)MathHelper.clamp(Math.sqrt(green/count), 0, 255),
+				(int)MathHelper.clamp(Math.sqrt(blue/count), 0, 255)).brighter();
 	}
 
 	private static BufferedImage getBufferedImage(TextureAtlasSprite textureAtlasSprite) {

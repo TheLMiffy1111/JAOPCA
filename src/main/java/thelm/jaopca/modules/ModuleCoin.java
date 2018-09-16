@@ -38,7 +38,7 @@ public class ModuleCoin extends ModuleBase {
 	public void registerConfigs(Configuration config) {
 		if(Loader.isModLoaded("thermalexpansion")) {
 			for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("coin")) {
-				TE_NUMISM_VALUES.put(entry, config.get(Utils.to_under_score(entry.getOreName()), "teNumismValue", 32000).setRequiresMcRestart(true).getInt());
+				TE_NUMISM_VALUES.put(entry, config.get(Utils.to_under_score(entry.getOreName()), "teNumismValue", 32000, "Energy generated when the coin of this material is used in the Numismatic Dynamo. (Coin, Thermal Expansion)").setRequiresMcRestart(true).getInt());
 			}
 		}
 	}
