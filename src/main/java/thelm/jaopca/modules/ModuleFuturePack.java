@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 
 import futurepack.common.crafting.FPZentrifugeManager;
 import futurepack.common.crafting.ZentrifugeRecipe;
+import futurepack.depend.api.OreDictPredicate;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import thelm.jaopca.api.EnumOreType;
@@ -19,7 +20,7 @@ import thelm.jaopca.api.utils.Utils;
 
 public class ModuleFuturePack extends ModuleBase {
 
-	public static final HashMap<IOreEntry,String> ORE_SECONDARIES = Maps.<IOreEntry,String>newHashMap();
+	public static final HashMap<IOreEntry, String> ORE_SECONDARIES = Maps.<IOreEntry, String>newHashMap();
 
 	@Override
 	public String getName() {
@@ -59,33 +60,27 @@ public class ModuleFuturePack extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
 			switch(entry.getOreType()) {
 			case DUST: {
-				for(ItemStack ore : Utils.getOres("ore"+entry.getOreName())) {
-					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
-							Utils.getOreStack("dust", entry, 12),
-							Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
-							getExtraStack(entry)
-					}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
-				}
+				addCentrifugeRecipe("ore"+entry.getOreName(), 4, new ItemStack[] {
+						Utils.getOreStack("dust", entry, 12),
+						Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
+						getExtraStack(entry)
+				}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
 				break;
 			}
 			case GEM: {
-				for(ItemStack ore : Utils.getOres("ore"+entry.getOreName())) {
-					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
-							Utils.getOreStack("gem", entry, 12),
-							Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
-							getExtraStack(entry)
-					}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
-				}
+				addCentrifugeRecipe("ore"+entry.getOreName(), 4, new ItemStack[] {
+						Utils.getOreStack("gem", entry, 12),
+						Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
+						getExtraStack(entry)
+				}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
 				break;
 			}
 			case INGOT: {
-				for(ItemStack ore : Utils.getOres("ore"+entry.getOreName())) {
-					addCentrifugeRecipe(Utils.resizeStack(ore, 4), new ItemStack[] {
-							Utils.getOreStack("dust", entry, 10),
-							Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
-							getExtraStack(entry)
-					}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
-				}
+				addCentrifugeRecipe("ore"+entry.getOreName(), 4, new ItemStack[] {
+						Utils.getOreStack("dust", entry, 10),
+						Utils.parseItemStack(ORE_SECONDARIES.get(entry)),
+						getExtraStack(entry)
+				}, Utils.energyI(entry, 6), Utils.energyI(entry, 200));
 				break;
 			}
 			default:
@@ -108,7 +103,12 @@ public class ModuleFuturePack extends ModuleBase {
 	}
 
 	public static void addCentrifugeRecipe(ItemStack in, ItemStack[] out, int support, int time) {
-		ZentrifugeRecipe recipe = FPZentrifugeManager.instance.addZentrifugeRecipe(in, out, support);
+		ZentrifugeRecipe recipe = FPZentrifugeManager.addRecipe(in, out, support);
+		recipe.setTime(time);
+	}
+
+	public static void addCentrifugeRecipe(String in, int size, ItemStack[] out, int support, int time) {
+		ZentrifugeRecipe recipe = FPZentrifugeManager.addRecipe(new OreDictPredicate(in, size), out, support);
 		recipe.setTime(time);
 	}
 }

@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Lists;
 
 import exter.foundry.fluid.FluidLiquidMetal;
-import exter.foundry.fluid.LiquidMetalRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -35,6 +34,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindClassException;
+import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldException;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thelm.jaopca.api.EnumEntryType;
@@ -87,11 +89,14 @@ public class ModuleFoundry extends ModuleBase {
 	public void preInit() {
 		Map<String, FluidLiquidMetal> registry;
 		try {
-			Field registryField = LiquidMetalRegistry.class.getDeclaredField("registry");
+			Class<?> registryClass = ReflectionHelper.getClass(this.getClass().getClassLoader(), "exter.foundry.fluid.LiquidMetalRegistry", "exter.foundry.fluid.FoundryFluidRegistry");
+			Field registryField = ReflectionHelper.findField(registryClass, "registry", "map");
 			registryField.setAccessible(true);
-			registry = (Map<String, FluidLiquidMetal>)registryField.get(LiquidMetalRegistry.INSTANCE);
+			Field instanceField = registryClass.getDeclaredField("INSTANCE");
+			Object instance = instanceField.get(null);
+			registry = (Map<String, FluidLiquidMetal>)registryField.get(instance);
 		}
-		catch(NoSuchFieldException | SecurityException | IllegalAccessException e) {
+		catch(UnableToFindClassException | UnableToFindFieldException | SecurityException | IllegalAccessException | NoSuchFieldException e) {
 			e.printStackTrace();
 			return;
 		}

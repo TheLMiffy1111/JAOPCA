@@ -142,7 +142,7 @@ public class ModuleEnderIO extends ModuleBase {
 
 	public static final String XML_MESSAGE_INGOT_DUST_ORE = "" +
 			"<recipes>" +
-			"<recipe name=\"Sagmill: %s Ore\" required=\"true\" disabled=\"false\">" +
+			"<recipe name=\"Sagmill: %s Ore JAOPCA\" required=\"true\" disabled=\"false\">" +
 			"<sagmilling energy=\"%d\">" +
 			"<input name=\"ore%s\" />" +
 			"<output name=\"dust%s\" amount=\"2\" />" +
@@ -152,7 +152,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"</recipes>";
 	public static final String XML_MESSAGE_INGOT_DUST_ORE_EXTRA = "" +
 			"<recipes>" +
-			"<recipe name=\"Sagmill: %s Ore\" required=\"true\" disabled=\"false\">" +
+			"<recipe name=\"Sagmill: %s Ore JAOPCA\" required=\"true\" disabled=\"false\">" +
 			"<sagmilling energy=\"%d\">" +
 			"<input name=\"ore%s\" />" +
 			"<output name=\"dust%s\" amount=\"2\" />" +
@@ -163,7 +163,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"</recipes>";
 	public static final String XML_MESSAGE_GEM_ORE = "" +
 			"<recipes>" +
-			"<recipe name=\"Sagmill: %s Ore\" required=\"true\" disabled=\"false\">" +
+			"<recipe name=\"Sagmill: %s Ore JAOPCA\" required=\"true\" disabled=\"false\">" +
 			"<sagmilling energy=\"%d\">" +
 			"<input name=\"ore%s\" />" +
 			"<output name=\"gem%s\" amount=\"2\" />" +
@@ -174,7 +174,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"</recipes>";
 	public static final String XML_MESSAGE_GEM_ORE_EXTRA = "" +
 			"<recipes>" +
-			"<recipe name=\"Sagmill: %s Ore\" required=\"true\" disabled=\"false\">" +
+			"<recipe name=\"Sagmill: %s Ore JAOPCA\" required=\"true\" disabled=\"false\">" +
 			"<sagmilling energy=\"%d\">" +
 			"<input name=\"ore%s\" />" +
 			"<output name=\"gem%s\" amount=\"2\" />" +
@@ -186,7 +186,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"</recipes>";
 	public static final String XML_MESSAGE_GEM_ORE_UNSTACKABLE = "" +
 			"<recipes>" +
-			"<recipe name=\"Sagmill: %s Ore\" required=\"true\" disabled=\"false\">" +
+			"<recipe name=\"Sagmill: %s Ore JAOPCA\" required=\"true\" disabled=\"false\">" +
 			"<sagmilling energy=\"%d\">" +
 			"<input name=\"ore%s\" />" +
 			"<output name=\"gem%s\" />" +
@@ -198,7 +198,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"</recipes>";
 	public static final String XML_MESSAGE_GEM_ORE_EXTRA_UNSTACKABLE = "" +
 			"<recipes>" +
-			"<recipe name=\"Sagmill: %s Ore\" required=\"true\" disabled=\"false\">" +
+			"<recipe name=\"Sagmill: %s Ore JAOPCA\" required=\"true\" disabled=\"false\">" +
 			"<sagmilling energy=\"%d\">" +
 			"<input name=\"ore%s\" />" +
 			"<output name=\"gem%s\" />" +
@@ -211,7 +211,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"</recipes>";
 	public static final String XML_MESSAGE_INGOT_DUST = "" +
 			"<recipes>" +
-			"<recipe name=\"Sagmill: %s Dust\" required=\"true\" disabled=\"false\">" +
+			"<recipe name=\"Sagmill: %s Dust JAOPCA\" required=\"true\" disabled=\"false\">" +
 			"<sagmilling energy=\"%d\" bonus=\"none\">" +
 			"<input name=\"ingot%s\" />" +
 			"<output name=\"dust%s\" />" +
@@ -220,7 +220,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"</recipes>";
 	public static final String XML_MESSAGE_GEM_DUST = "" +
 			"<recipes>" +
-			"<recipe name=\"Sagmill: %s Dust\" required=\"true\" disabled=\"false\">" +
+			"<recipe name=\"Sagmill: %s Dust JAOPCA\" required=\"true\" disabled=\"false\">" +
 			"<sagmilling energy=\"%d\" bonus=\"none\">" +
 			"<input name=\"gem%s\" />" +
 			"<output name=\"dust%s\" />" +
@@ -229,7 +229,7 @@ public class ModuleEnderIO extends ModuleBase {
 			"</recipes>";
 	public static final String XML_MESSAGE_BLOCK_DUST = "" +
 			"<recipes>" +
-			"<recipe name=\"Sagmill: %s Block Dust\" required=\"true\" disabled=\"false\">" +
+			"<recipe name=\"Sagmill: %s Block Dust JAOPCA\" required=\"true\" disabled=\"false\">" +
 			"<sagmilling energy=\"%d\" bonus=\"none\">" +
 			"<input name=\"block%s\" />" +
 			"<output name=\"dust%s\" amount=\"9\" />" +
