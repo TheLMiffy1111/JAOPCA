@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import thelm.jaopca.api.EnumEntryType;
 import thelm.jaopca.api.EnumOreType;
@@ -158,6 +159,9 @@ public class ModuleMekanism extends ModuleBase {
 		for(IOreEntry entry : JAOPCAApi.ENTRY_NAME_TO_ORES_MAP.get("dustDirty")) {
 			for(ItemStack ore : Utils.getOres("clump" + entry.getOreName())) {
 				addCrusherRecipe(Utils.resizeStack(ore, 1), Utils.getOreStack("dustDirty", entry, 1));
+			}
+			if(Loader.isModLoaded("ic2")) {
+				ModuleIndustrialCraft.addMaceratorRecipe("clump" + entry.getOreName(), Utils.getOreStack("dustDirty", entry, 1));
 			}
 		}
 

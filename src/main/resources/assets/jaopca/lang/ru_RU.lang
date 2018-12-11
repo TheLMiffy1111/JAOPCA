@@ -1,0 +1,299 @@
+itemGroup.jaopca=JAOPCA
+#Выражение "Расплав" используется для унификации падежей, т.к. в материалах указано к пр. "золота" (пыль золота и расплав золота), а не "золото" (пыль золото? и жидкое золото)
+
+#Default
+item.jaopca.dust.name=Пыль %s 
+item.jaopca.nugget.name=Самородок %s 
+tile.jaopca.block.name=Блок %s
+fluid.jaopca.molten=Расплав %s
+item.jaopca.coin.name=Монета из %s
+item.jaopca.gear.name=Шестерёнка из %s
+item.jaopca.plate.name=Пластина %s
+item.jaopca.stick.name= Стержень из %s
+item.jaopca.dustTiny.name=Кучка пыли %s
+item.jaopca.dustSmall.name=Горсть пыли %s
+item.jaopca.plateDense.name=Плотная пластина из %s
+
+#Mekanism
+item.jaopca.dustDirty.name=Загрязненная пыль %s
+item.jaopca.clump.name=Глыба %s
+item.jaopca.shard.name=Осколок %s
+item.jaopca.crystal.name=Кристалл %s
+gas.jaopca.slurryClean=Очищенная взвесь %s
+gas.jaopca.slurry=Взвесь %s
+
+#IC2
+item.jaopca.crushed.name=Измельчённая руда %s
+item.jaopca.crushedPurified.name=Очищенная измельчённая руда %s
+
+#ExNihiloOmnia
+item.jaopca.oreBroken.name=Разрушенная руда %s
+item.jaopca.oreNetherBroken.name=Разрушенная руда %s
+item.jaopca.oreEnderBroken.name=Разрушенная руда %s
+item.jaopca.oreCrushed.name=Измельчённая руда %s
+item.jaopca.orePowdered.name=Пыль руды %s 
+tile.jaopca.oreGravel.name=Гравийная руда %s
+tile.jaopca.oreNetherGravel.name=Гравийная руда %s (Незер)
+tile.jaopca.oreEnderGravel.name=Гравийная руда %s (Край)
+tile.jaopca.oreSand.name=Песочная руда %s
+tile.jaopca.oreFine.name=Пыль руды %s
+
+#ExNihiloCreatio
+item.jaopca.piece.name=Кусок руды %s
+item.jaopca.hunk.name=Толстый кусок руды %s
+
+#AbyssalCraft
+item.jaopca.crystalFragment.name=Кристаллизованный фрагмент %s
+item.jaopca.crystalShard.name=Кристаллизованный осколок %s
+item.jaopca.crystalAbyss.name=Кристалл %s
+tile.jaopca.crystalCluster.name=Кристаллизованное скопление %s
+
+#SkyResources
+item.jaopca.dustAlch.name=Алхимическая рудная пыль %s
+item.jaopca.dirtyGem.name=Грязный %s
+
+#Magneticraft
+item.jaopca.rockyChunk.name=Каменистый кусок %s
+item.jaopca.chunk.name=Кусок %s
+
+#TeslaPoweredThingies
+#(?)
+item.jaopca.teslaLump.name=Теслифицированный кусок %s
+item.jaopca.augmentedLump.name=Обогащённый кусок %s
+
+#Thaumcraft
+item.jaopca.cluster.name=Скопление %s
+
+#BuildcraftOreProcessing
+fluid.jaopca.searingMolten=Расплав %s (§cЖгучий§r)
+fluid.jaopca.hotMolten=Расплав %s (§6Горячий§r)
+fluid.jaopca.coolMolten=Расплав %s (§bПрохладный§r)
+
+#Foundry
+fluid.jaopca.liquid=Расплав %s
+
+#GregTech
+item.jaopca.crushedGreg.name=Измельчённая руда %s
+item.jaopca.crushedPurifiedGreg.name=Очищенная измельчённая руда %s
+item.jaopca.crushedCentrifuged.name=Прогнанная на центрифуге измельчённая руда %s
+item.jaopca.dustImpure.name=Грязная кучка %s
+item.jaopca.dustPure.name=Чистая кучка %s
+item.jaopca.gemChipped.name=Разбитый %s
+item.jaopca.gemFlawed.name=%s с изъяном
+item.jaopca.gemFlawless.name=Безупречный %s
+item.jaopca.gemExquisite.name=Совершенный %s
+
+jaopca.entry.Abyssalnite=абиссалнита
+jaopca.entry.Adamantine=адамантия
+jaopca.entry.Aluminum=алюминия
+jaopca.entry.Antimony=сурьмы
+jaopca.entry.Ardite=ардита
+jaopca.entry.AstralStarmetal=звёздного металла
+jaopca.entry.Beryllium=бериллия
+jaopca.entry.Bismuth=висмута
+jaopca.entry.Boron=бора
+jaopca.entry.Cadmium=кадмия
+jaopca.entry.Carbon=углерода
+jaopca.entry.Chromium=хрома
+jaopca.entry.Cobalt=кобальта
+jaopca.entry.Coldiron=холодного железа
+jaopca.entry.Copper=меди
+jaopca.entry.DarkIron=тёмного железа
+jaopca.entry.Desh=дэш
+jaopca.entry.Draconium=дракония
+jaopca.entry.Gold=золота
+jaopca.entry.Iridium=иридия
+jaopca.entry.Iron=железа
+jaopca.entry.Lead=свинца
+jaopca.entry.LiquifiedCoralium=жидкого кораллиума
+jaopca.entry.Lithium=лития
+jaopca.entry.Magnesium=магния
+jaopca.entry.Manganese=марганца
+jaopca.entry.Mercury=меркурия
+jaopca.entry.MeteoricIron=метеоритного железа
+jaopca.entry.Mithril=мифрила
+jaopca.entry.Molybdenum=молибдена
+jaopca.entry.Nickel=никеля
+jaopca.entry.Osmium=осмия
+jaopca.entry.Palladium=палладия
+jaopca.entry.Platinum=платины
+jaopca.entry.Potassium=калия
+jaopca.entry.Rutile= рутила
+jaopca.entry.Silver=серебра
+jaopca.entry.Silicon=кремния
+jaopca.entry.Starsteel=звёздной стали
+jaopca.entry.Tantalum=тантала
+jaopca.entry.Thorium=тория
+jaopca.entry.Tin=олова
+jaopca.entry.Titanium=титана
+jaopca.entry.Tungsten=вольфрама
+jaopca.entry.Uranium=урана
+jaopca.entry.Vanadium=ванадия
+jaopca.entry.Yellorium=йеллориума
+jaopca.entry.Zinc=цинка
+jaopca.entry.Zirconium=цирконий
+
+#Gems
+jaopca.entry.Agate=Агат
+jaopca.entry.Alexandrite=Александрит
+jaopca.entry.Amber=Янтарь
+jaopca.entry.Amethyst=Аметист
+jaopca.entry.Ametrine=Ametrina
+jaopca.entry.Apatite=Апатит
+jaopca.entry.Aquamarine=Аквамарин
+jaopca.entry.Beryl=Берилл
+jaopca.entry.BlackDiamond=Чёрный алмаз
+jaopca.entry.BlueTopaz=Голубой топаз
+jaopca.entry.Carnelian=Сердолик
+jaopca.entry.Chaos=Хаос
+jaopca.entry.DimensionalShard=Осколок измерения
+jaopca.entry.EnderBiotite=Биотит из Края
+jaopca.entry.EnderEssence=Эссенция из Края
+jaopca.entry.CertusQuartz=Истинный кварц
+jaopca.entry.ChargedCertusQuartz=Заряженный истинный кварц
+jaopca.entry.Citrine=Цитрин
+jaopca.entry.Coal=Уголь
+jaopca.entry.Coralium=Кораллиум
+jaopca.entry.Dark=Тьма
+jaopca.entry.Diamond=Алмаз
+jaopca.entry.Emerald=Изумруд
+jaopca.entry.Garnet=Гранат
+jaopca.entry.GoldenBeryl=Золотой берилл 
+jaopca.entry.Heliodor=Гелиодор
+jaopca.entry.Indicolite=Индиголит
+jaopca.entry.Iolite=Кордиелит
+jaopca.entry.Jasper=Яшма
+jaopca.entry.Lapis=Лазурит
+jaopca.entry.Lepidolite=Лепидолит
+jaopca.entry.Malachite=Малахит
+jaopca.entry.Moldavite=Молдавит
+jaopca.entry.Moonstone=Лунный камень
+jaopca.entry.Morganite=Морганит
+jaopca.entry.Onyx=Оникс
+jaopca.entry.Opal=Опал
+jaopca.entry.Peridot=Перидот
+jaopca.entry.Quartz=Кварц
+jaopca.entry.QuartzBlack=Чёрный кварц
+jaopca.entry.Ruby=Рубин
+jaopca.entry.Sapphire=Сапфир
+jaopca.entry.Spinel=Шпинель
+jaopca.entry.Tanzanite=Танзанит
+jaopca.entry.Topaz=Топаз
+jaopca.entry.Turqoise=Бирюза
+jaopca.entry.VioletSapphire=Фиолетовый сапфир
+
+#Dusts
+jaopca.entry.Bauxite=боксита
+jaopca.entry.Cinnabar=ртути
+jaopca.entry.Dilithium=дилития
+jaopca.entry.Galena=галенита
+jaopca.entry.Niter=азота
+jaopca.entry.Phosphorus=фосфора
+jaopca.entry.Potash=поташа
+jaopca.entry.Pyrite=пирита
+jaopca.entry.Redstone=редстоуна 
+#(не красного камня)
+jaopca.entry.Salt=cоли
+jaopca.entry.Saltpeter=каменной соли
+jaopca.entry.Sodalite=содалита
+jaopca.entry.Sphalerite=сфалерита
+jaopca.entry.Sulfur=серы
+
+#IngotNoOres
+jaopca.entry.AdvancedAlloy=улучшенного сплава
+jaopca.entry.Alubrass=алюминиевой латуни
+jaopca.entry.AluminiumBrass=алюминиевой латуни
+jaopca.entry.Alumite=алюмита
+jaopca.entry.Aquarium=аквариума
+jaopca.entry.BaseEssence=базовой эссенции
+jaopca.entry.Blutonium=блутониума
+jaopca.entry.Brass=латуни
+jaopca.entry.Bronze=бронзы
+jaopca.entry.ConductiveIron=проводящего железа
+#?
+jaopca.entry.Constantan=константана
+jaopca.entry.Corrupted=искажённого металла
+#а как ещё перевести?
+jaopca.entry.Cupronickel=купроникеля
+jaopca.entry.Cyanite=Cianita
+jaopca.entry.DarkSteel=тёмной стали
+jaopca.entry.DemonicMetal=демонита
+jaopca.entry.DraconiumAwakened=пробуждённого дракониума
+jaopca.entry.Dreadium=дриадия
+jaopca.entry.Duralumin=дюралюминия
+jaopca.entry.ElectricalSteel=электросталь
+jaopca.entry.Electrum=электрума
+jaopca.entry.ElectrumFlux=электро-флакса
+jaopca.entry.ElvenElementium=элементиума эльфов
+jaopca.entry.EnchantedMetal=зачарованного металла
+jaopca.entry.Enderium=эндериума
+jaopca.entry.EnergeticAlloy=энергетического сплава
+jaopca.entry.Ethaxium=этаксиума
+jaopca.entry.EvilMetal=металла злобы
+jaopca.entry.Ferroboron=ферробора
+jaopca.entry.FrozenIron=замороженного железа
+jaopca.entry.GaiaSpirit=духа Гайи
+jaopca.entry.GalvanizedSteel=гальванизированной стали
+jaopca.entry.Graphite=графита
+jaopca.entry.HardCarbon=твёрдого углепластика
+jaopca.entry.HOPGraphite=HOP-графита
+jaopca.entry.HotTungstensteel=горячей вольфрамовой стали
+jaopca.entry.Inferium=инфериума
+jaopca.entry.Insanium=инсаниума
+jaopca.entry.Intermedium=интермедиума
+jaopca.entry.Invar=инвара
+jaopca.entry.IridiumAlloy=иридиевого сплава
+jaopca.entry.Knightslime=слизестали
+jaopca.entry.LithiumManganeseDioxide=диоксида лития марганца
+jaopca.entry.Ludicrite=людикрита
+jaopca.entry.Lumium=люмиума
+jaopca.entry.MagnesiumDiboride=диборита марганца
+jaopca.entry.Manasteel=манастали
+jaopca.entry.ManganeseDioxide=диоксида марганца
+jaopca.entry.ManganeseOxide=оксида марганца
+jaopca.entry.Manyullyn=мануллина
+jaopca.entry.Mirion=мириона
+jaopca.entry.MixedMetal=сплава
+jaopca.entry.Moon=луны
+jaopca.entry.Nichrome=нихрома
+jaopca.entry.Osgloglas=осглогласа
+#Похоже, выдуманный металл
+jaopca.entry.Osmiridium=осмиридия
+jaopca.entry.Pigiron=свиностали
+jaopca.entry.Pewter=оловянного сплава
+jaopca.entry.Plutonium=плутония
+jaopca.entry.Prismarinium=призмарина
+jaopca.entry.Prudentium=прудентиума
+jaopca.entry.PulsatingIron=вибро-железа
+jaopca.entry.RedstoneAlloy=красного сплава
+jaopca.entry.RefinedGlowstone=закалённого светокамня
+jaopca.entry.RefinedIron=закалённого железа
+jaopca.entry.RefinedObsidian=закалённого обсидиана
+jaopca.entry.Signalum=синала
+jaopca.entry.Soularium=соулярия
+jaopca.entry.Soulium=соулиума
+jaopca.entry.StainlessSteel=нержавеющей стали
+jaopca.entry.Steel=стали
+jaopca.entry.Superium=супериума
+jaopca.entry.Supremium=супремиума
+jaopca.entry.Terrasteel=террастали
+jaopca.entry.Teslarium=теслариума
+jaopca.entry.ThoriumOxide=оксид тория
+jaopca.entry.TitaniumAluminide=алюминит титана
+jaopca.entry.TitaniumIridium=иридитана
+jaopca.entry.Tough=Robusto
+jaopca.entry.Tungstensteel=вольфрамовой стали
+jaopca.entry.UraniumOxide=оксида урана
+jaopca.entry.VibrantAlloy=вибро-слава
+
+#GemNoOres
+jaopca.entry.BoronNitride=Нитрит бора
+jaopca.entry.CrystalFlux=Изменчивый кристалл
+jaopca.entry.Ender=Край
+jaopca.entry.Fluix=Кристалл
+jaopca.entry.Fluorite=Флюорит
+jaopca.entry.Prismarine=Призмарин
+jaopca.entry.RedGarnet=Красный гранат
+jaopca.entry.Rhodochrosite=Родокрозит
+jaopca.entry.Shadow=Тень
+jaopca.entry.YellowGarnet=Жёлтый гранат

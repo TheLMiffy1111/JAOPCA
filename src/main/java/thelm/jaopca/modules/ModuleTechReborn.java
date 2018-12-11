@@ -1,6 +1,7 @@
 package thelm.jaopca.modules;
 
 import java.security.InvalidParameterException;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -144,6 +145,7 @@ public class ModuleTechReborn extends ModuleBase {
 	}
 
 	public static void addIndustrialGrinderRecipe(ItemStack input, FluidStack fluid, int ticks, int euPerTick, ItemStack... outputs) {
+		outputs = Arrays.stream(outputs).filter(is->is != null && !is.isEmpty()).toArray(i->new ItemStack[i]);
 		if(outputs.length == 4) {
 			RecipeHandler.addRecipe(new IndustrialGrinderRecipe(input, fluid, outputs[0], outputs[1], outputs[2], outputs[3], ticks, euPerTick));
 		}

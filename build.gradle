@@ -61,7 +61,7 @@ repositories {
     }
 }
 
-version = "1.12.2-2.2.8.96"
+version = "1.12.2-2.2.8.100"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -78,16 +78,19 @@ minecraft {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.12.2:4.9.2.196" 
+    deobfCompile "mezz.jei:jei_1.12.2:4.13.1.225" 
     deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.2.24"
     deobfCompile "slimeknights:TConstruct:1.12.2-2.9.1.65"
     deobfCompile "net.industrial-craft:industrialcraft-2:2.8.62-ex112"
     deobfCompile "blusunrize:ImmersiveEngineering:0.12-69-197"
     deobfCompile "MCMultiPart2:MCMultiPart-exp:2.2.2_37"
-    deobfCompile("RebornCore:RebornCore-1.12.2:3.6.9.216:universal") {
+    deobfCompile("RebornCore:RebornCore-1.12.2:3.12.0.378:universal") {
         transitive = false
     }
-    deobfCompile("TechReborn:TechReborn-1.12.2:2.12.4.496:universal") {
+    deobfCompile("TechReborn:TechReborn-1.12.2:2.19.0.870:universal") {
+        transitive = false
+    }
+    deobfCompile("TechReborn:TechReborn-ModCompatibility-1.12.2:1.1.0.5:universal") {
         transitive = false
     }
     deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.1.351:universal"
