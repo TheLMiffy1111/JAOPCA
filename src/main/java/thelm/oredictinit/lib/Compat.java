@@ -8,7 +8,6 @@ import thelm.oredictinit.compat.CompatAstralSorcery;
 import thelm.oredictinit.compat.CompatCalculator;
 import thelm.oredictinit.compat.CompatDraconicEvolution;
 import thelm.oredictinit.compat.CompatEvilCraft;
-import thelm.oredictinit.compat.CompatExtremeReactors;
 import thelm.oredictinit.compat.CompatFrogCraftRebirth;
 import thelm.oredictinit.compat.CompatGalacticraftCore;
 import thelm.oredictinit.compat.CompatGalacticraftPlanets;
@@ -46,9 +45,6 @@ public class Compat {
 		}
 		if(Loader.isModLoaded("calculator")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatCalculator());
-		}
-		if(Loader.isModLoaded("bigreactors")) {
-			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatExtremeReactors());
 		}
 		if(Loader.isModLoaded("tconstruct")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatTinkersConstruct());

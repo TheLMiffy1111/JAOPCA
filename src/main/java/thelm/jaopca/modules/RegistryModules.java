@@ -50,10 +50,6 @@ public class RegistryModules {
 		if(isModLoaded("immersiveengineering")) {
 			registerModule(new ModuleImmersiveEngineering());
 		}
-		if(isModLoaded("railcraft")) {
-			//should remove itself if industrialcraft is not loaded
-			registerModule(new ModuleRailcraft());
-		}
 		if(isModLoaded("embers")) {
 			registerModule(new ModuleEmbers());
 		}
