@@ -361,6 +361,11 @@ public class ModuleMekanism extends ModuleBase {
 		}
 
 		@Override
+		public int getTint() {
+			return oreEntry.getColor();
+		}
+
+		@Override
 		public String getLocalizedName() {
 			return Utils.smartLocalize(this.getUnlocalizedName(), this.getUnlocalizedName()+".%s", this.getOreEntry());
 		}
