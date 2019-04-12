@@ -1,0 +1,9 @@
+{
+    "itemGroup.jaopca": "JAOPCA",
+
+    "block.jaopca.storage_blocks": "Block of %s",
+    "item.jaopca.dusts": "%s Dust",
+    "item.jaopca.nuggets": "%s Nugget",
+    "item.jaopca.tiny_dusts": "Tiny Pile of %s Dust",
+    "item.jaopca.small_dusts": "Small Pile of %s Dust"
+}

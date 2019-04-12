@@ -1,100 +1,113 @@
 package thelm.jaopca.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Supplier;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
+import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
+import thelm.jaopca.api.blocks.IBlockFormType;
+import thelm.jaopca.api.fluids.IFluidFormType;
+import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.forms.IFormRequest;
+import thelm.jaopca.api.forms.IFormType;
+import thelm.jaopca.api.helpers.IMiscHelper;
+import thelm.jaopca.api.items.IItemFormType;
+import thelm.jaopca.api.localization.ILocalizer;
+import thelm.jaopca.api.materialforms.IMaterialFormInfo;
+import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.api.modules.IModule;
 
-/**
- * Contains all lists and maps used by this mod (and other stuff)
- * @author TheLMiffy1111
- */
-public class JAOPCAApi {
+public abstract class JAOPCAApi {
 
-	/**
-	 * Contains all blocks registered by this mod, row = entry name, column = ore name
-	 */
-	public static final HashBasedTable<String,String,Block> BLOCKS_TABLE = HashBasedTable.<String,String,Block>create();
+	private static JAOPCAApi instance;
 
-	/**
-	 * Contains all items registered by this mod, row = entry name, column = ore name
-	 */
-	public static final HashBasedTable<String,String,Item> ITEMS_TABLE = HashBasedTable.<String,String,Item>create();
-
-	/**
-	 * Contains all fluids registered by this mod, row = entry name, column = ore name
-	 */
-	public static final HashBasedTable<String,String,Fluid> FLUIDS_TABLE = HashBasedTable.<String,String,Fluid>create();
-
-	/**
-	 * List of all {@link ItemEntry}s.
-	 */
-	public static final ArrayList<ItemEntry> ITEM_ENTRY_LIST = Lists.<ItemEntry>newArrayList();
-
-	/**
-	 * A map for convenience of all {@link ItemEntry}s.
-	 */
-	public static final HashMap<String,ItemEntry> NAME_TO_ITEM_ENTRY_MAP = Maps.<String,ItemEntry>newHashMap();
-
-	/**
-	 * A map for convenience of all {@link ItemEntry}s.
-	 */
-	public static final LinkedHashMultimap<EnumEntryType,ItemEntry> TYPE_TO_ITEM_ENTRY_MAP = LinkedHashMultimap.<EnumEntryType,ItemEntry>create();
-
-	/**
-	 * List of all {@link IOreEntry}s.
-	 */
-	public static final ArrayList<IOreEntry> ORE_ENTRY_LIST = Lists.<IOreEntry>newArrayList();
-
-	/**
-	 * List of all {@link ModuleBase}s.
-	 */
-	public static final ArrayList<ModuleBase> MODULE_LIST = Lists.<ModuleBase>newArrayList();
-
-	/**
-	 * A map for convenience of all {@link ModuleBase}s.
-	 */
-	public static final HashMap<String,ModuleBase> NAME_TO_MODULE_MAP = Maps.<String,ModuleBase>newHashMap();
-
-	/**
-	 * A {@link ItemEntry} name to {@link IOreEntry} for convenience.
-	 */
-	public static final LinkedHashMultimap<String,IOreEntry> ENTRY_NAME_TO_ORES_MAP = LinkedHashMultimap.<String,IOreEntry>create();
-
-	public static final LinkedHashMultimap<ModuleBase,IOreEntry> MODULE_TO_ORES_MAP = LinkedHashMultimap.<ModuleBase,IOreEntry>create();
-
-	public static final LinkedHashMultimap<EnumOreType,IOreEntry> ORE_TYPE_TO_ORES_MAP = LinkedHashMultimap.<EnumOreType,IOreEntry>create();
-
-	/**
-	 * Set of textures to register
-	 */
-	public static final HashSet<ResourceLocation> TEXTURES = Sets.<ResourceLocation>newHashSet();
-
-	public static final Logger LOGGER = LogManager.getLogger("JAOPCA");
-
-	/**
-	 * Register your {@link ModuleBase}s here.
-	 * @param module The module to register
-	 */
-	public static void registerModule(ModuleBase module) {
-		MODULE_LIST.add(module);
-		NAME_TO_MODULE_MAP.put(module.getName(), module);
+	public static void setInstance(JAOPCAApi api) {
+		if(instance == null) {
+			instance = api;
+		}
 	}
 
-	public static boolean isModuleLoaded(String name) {
-		return NAME_TO_MODULE_MAP.containsKey(name);
+	public static JAOPCAApi instance() {
+		if(instance == null) {
+			throw new IllegalStateException("Got API instance before it is initialized");
+		}
+		return instance;
 	}
+
+	public abstract IBlockFormType blockFormType();
+
+	public abstract IItemFormType itemFormType();
+
+	public abstract IFluidFormType fluidFormType();
+
+	public abstract <I extends IMaterialFormInfo<?>> IFormType<I> getFormType(String name);
+
+	public abstract IForm newForm(IModule module, String name, IFormType<?> type);
+
+	public abstract IFormRequest newFormRequest(IModule module, IForm... forms);
+
+	public abstract IMiscHelper miscHelper();
+
+	public abstract IForm getForm(String name);
+
+	public abstract IMaterial getMaterial(String name);
+
+	public abstract ItemGroup itemGroup();
+
+	public abstract Set<ResourceLocation> getBlockTags();
+
+	public abstract Set<ResourceLocation> getItemTags();
+
+	public abstract Set<ResourceLocation> getFluidTags();
+
+	public abstract Set<ResourceLocation> getRecipes();
+
+	public abstract Set<ResourceLocation> getAdvancements();
+
+	public abstract ILocalizer currentLocalizer();
+
+	public abstract <T extends IFormType<?>> T registerFormType(T type);
+
+	public abstract boolean registerBlockTag(ResourceLocation key, Supplier<Block> blockSupplier);
+
+	public abstract boolean registerBlockTag(ResourceLocation key, Block block);
+
+	public abstract boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey);
+
+	public abstract boolean registerItemTag(ResourceLocation key, Supplier<Item> itemSupplier);
+
+	public abstract boolean registerItemTag(ResourceLocation key, Item item);
+
+	public abstract boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey);
+
+	public abstract boolean registerFluidTag(ResourceLocation key, Supplier<Fluid> fluidSupplier);
+
+	public abstract boolean registerFluidTag(ResourceLocation key, Fluid fluid);
+
+	public abstract boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey);
+
+	public abstract boolean registerRecipe(ResourceLocation key, Supplier<IRecipe> recipeSupplier);
+
+	public abstract boolean registerRecipe(ResourceLocation key, IRecipe recipe);
+
+	public abstract boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input);
+
+	public abstract boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input);
+
+	public abstract boolean registerShapelessRecipe(ResourceLocation key, String group, Object output, int count, Object... input);
+
+	public abstract boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input);
+
+	public abstract boolean registerFurnaceRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerFurnaceRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder);
+
+	public abstract void registerLocalizer(ILocalizer localizer, String... languages);
 }

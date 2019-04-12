@@ -1,0 +1,246 @@
+package thelm.jaopca.utils;
+
+import java.util.Set;
+import java.util.function.Supplier;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Sets;
+
+import net.minecraft.advancements.Advancement;
+import net.minecraft.block.Block;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.IRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
+import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.blocks.IBlockFormType;
+import thelm.jaopca.api.fluids.IFluidFormType;
+import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.forms.IFormRequest;
+import thelm.jaopca.api.forms.IFormType;
+import thelm.jaopca.api.helpers.IMiscHelper;
+import thelm.jaopca.api.items.IItemFormType;
+import thelm.jaopca.api.localization.ILocalizer;
+import thelm.jaopca.api.materialforms.IMaterialFormInfo;
+import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.api.modules.IModule;
+import thelm.jaopca.blocks.BlockFormType;
+import thelm.jaopca.data.DataCollector;
+import thelm.jaopca.data.DataInjector;
+import thelm.jaopca.forms.Form;
+import thelm.jaopca.forms.FormHandler;
+import thelm.jaopca.forms.FormRequest;
+import thelm.jaopca.forms.FormTypeRegistry;
+import thelm.jaopca.items.ItemFormType;
+import thelm.jaopca.localization.LocalizationHandler;
+import thelm.jaopca.materials.MaterialHandler;
+
+public class ApiImpl extends JAOPCAApi {
+
+	private static final Logger LOGGER = LogManager.getLogger();
+	public static final ApiImpl INSTANCE = new ApiImpl();
+
+	private ApiImpl() {}
+
+	public void init() {
+		JAOPCAApi.setInstance(this);
+	}
+
+	@Override
+	public IBlockFormType blockFormType() {
+		return BlockFormType.INSTANCE;
+	}
+
+	@Override
+	public IItemFormType itemFormType() {
+		return ItemFormType.INSTANCE;
+	}
+
+	@Override
+	public IFluidFormType fluidFormType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <I extends IMaterialFormInfo<?>> IFormType<I> getFormType(String name) {
+		return (IFormType<I>)FormTypeRegistry.getFormType(name);
+	}
+
+	@Override
+	public IForm newForm(IModule module, String name, IFormType<?> type) {
+		return new Form(module, name, type);
+	}
+
+	@Override
+	public IFormRequest newFormRequest(IModule module, IForm... forms) {
+		IFormRequest request = new FormRequest(module, forms);
+		for(IForm form : forms) {
+			form.setRequest(request);
+		}
+		return request;
+	}
+
+	@Override
+	public IMiscHelper miscHelper() {
+		return MiscHelper.INSTANCE;
+	}
+
+	@Override
+	public IForm getForm(String name) {
+		return FormHandler.getForm(name);
+	}
+
+	@Override
+	public IMaterial getMaterial(String name) {
+		return MaterialHandler.getMaterial(name);
+	}
+
+	@Override
+	public ItemGroup itemGroup() {
+		return ItemFormType.getItemGroup();
+	}
+
+	@Override
+	public Set<ResourceLocation> getBlockTags() {
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("blocks"), DataInjector.getInjectBlockTags()));
+	}
+
+	@Override
+	public Set<ResourceLocation> getItemTags() {
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("items"), DataInjector.getInjectItemTags()));
+	}
+
+	@Override
+	public Set<ResourceLocation> getFluidTags() {
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("fluids"), DataInjector.getInjectFluidTags()));
+	}
+
+	@Override
+	public Set<ResourceLocation> getRecipes() {
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedRecipes(), DataInjector.getInjectRecipes()));
+	}
+
+	@Override
+	public Set<ResourceLocation> getAdvancements() {
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectAdvancements()));
+	}
+
+	@Override
+	public ILocalizer currentLocalizer() {
+		return LocalizationHandler.getCurrentLocalizer();
+	}
+
+	@Override
+	public <T extends IFormType<?>> T registerFormType(T type) {
+		return FormTypeRegistry.registerFormType(type) ? type : null;
+	}
+
+	@Override
+	public boolean registerBlockTag(ResourceLocation key, Supplier<Block> blockSupplier) {
+		return DataInjector.registerBlockTag(key, blockSupplier);
+	}
+
+	@Override
+	public boolean registerBlockTag(ResourceLocation key, Block block) {
+		return registerBlockTag(key, ()->block);
+	}
+
+	@Override
+	public boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey) {
+		return registerBlockTag(key, ()->ForgeRegistries.BLOCKS.getValue(blockKey));
+	}
+
+	@Override
+	public boolean registerItemTag(ResourceLocation key, Supplier<Item> itemSupplier) {
+		return DataInjector.registerItemTag(key, itemSupplier);
+	}
+
+	@Override
+	public boolean registerItemTag(ResourceLocation key, Item item) {
+		return registerItemTag(key, ()->item);
+	}
+
+	@Override
+	public boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey) {
+		return registerItemTag(key, ()->ForgeRegistries.ITEMS.getValue(itemKey));
+	}
+
+	@Override
+	public boolean registerFluidTag(ResourceLocation key, Supplier<Fluid> fluidSupplier) {
+		return DataInjector.registerFluidTag(key, fluidSupplier);
+	}
+
+	@Override
+	public boolean registerFluidTag(ResourceLocation key, Fluid fluid) {
+		return registerFluidTag(key, ()->fluid);
+	}
+
+	@Override
+	public boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey) {
+		// TODO Change to ForgeRegistries when Forge supports fluids
+		return registerFluidTag(key, ()->IRegistry.FLUID.get(fluidKey));
+	}
+
+	@Override
+	public boolean registerRecipe(ResourceLocation key, Supplier<IRecipe> recipeSupplier) {
+		if(DataCollector.getDefinedRecipes().contains(key)) {
+			return false;
+		}
+		return DataInjector.registerRecipe(key, recipeSupplier);
+	}
+
+	@Override
+	public boolean registerRecipe(ResourceLocation key, IRecipe recipe) {
+		return registerRecipe(key, ()->recipe);
+	}
+
+	@Override
+	public boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
+		return registerRecipe(key, new ShapedRecipeGenerator(key, group, output, count, input));
+	}
+
+	@Override
+	public boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input) {
+		return registerRecipe(key, new ShapedRecipeGenerator(key, output, count, input));
+	}
+
+	@Override
+	public boolean registerShapelessRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
+		return registerRecipe(key, new ShapelessRecipeGenerator(key, group, output, count, input));
+	}
+
+	@Override
+	public boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input) {
+		return registerRecipe(key, new ShapelessRecipeGenerator(key, output, count, input));
+	}
+
+	@Override
+	public boolean registerFurnaceRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new FurnaceRecipeGenerator(key, group, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerFurnaceRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new FurnaceRecipeGenerator(key, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder) {
+		if(DataCollector.getDefinedAdvancements().contains(key)) {
+			return false;
+		}
+		return DataInjector.registerAdvancement(key, advancementBuilder);
+	}
+
+	@Override
+	public void registerLocalizer(ILocalizer translator, String... languages) {
+		LocalizationHandler.registerLocalizer(translator, languages);
+	}
+}

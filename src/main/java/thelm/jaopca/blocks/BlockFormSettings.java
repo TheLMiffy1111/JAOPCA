@@ -1,0 +1,346 @@
+package thelm.jaopca.blocks;
+
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.IntSupplier;
+import java.util.function.Predicate;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
+
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraftforge.common.ToolType;
+import thelm.jaopca.api.blocks.IBlockCreator;
+import thelm.jaopca.api.blocks.IBlockFormSettings;
+import thelm.jaopca.api.blocks.IItemBlockCreator;
+import thelm.jaopca.api.forms.IFormType;
+import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.utils.MiscHelper;
+
+public class BlockFormSettings implements IBlockFormSettings {
+
+	BlockFormSettings() {}
+
+	private IBlockCreator blockCreator = BlockJAOPCA::new;
+	private Function<IMaterial, Material> materialFunction = material->Material.IRON;
+	private Function<IMaterial, MaterialColor> materialColorFunction = material->{
+		int color = material.getColor();
+		Optional<MaterialColor> min = Arrays.stream(MaterialColor.COLORS).
+				min((matColor1, matColor2)->Integer.compare(
+						MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
+						MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue)));
+		return min.orElse(MaterialColor.IRON);
+	};
+	private boolean blocksMovement = true;
+	private Function<IMaterial, SoundType> soundTypeFunction = material->SoundType.METAL;
+	private ToIntFunction<IMaterial> lightValueFunction = material->0;
+	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->5;
+	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->6;
+	private ToDoubleFunction<IMaterial> slipperinessFunction = material->0.6;
+	private boolean isFull = true;
+	private boolean isTopSolid = false;
+	private VoxelShape shape = VoxelShapes.fullCube();
+	private VoxelShape collisionShape = VoxelShapes.fullCube();
+	private VoxelShape raytraceShape = VoxelShapes.empty();
+	private BlockRenderLayer renderLayer = BlockRenderLayer.CUTOUT;
+	private Function<IMaterial, ToolType> harvestToolFunction = material->ToolType.PICKAXE;
+	private ToIntFunction<IMaterial> harvestLevelFunction = material->0;
+	private Predicate<IMaterial> isBeaconBasePredicate = material->false;
+	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
+	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
+	private Predicate<IMaterial> isFireSourcePredicate = material->false;
+
+	private IItemBlockCreator itemBlockCreator = ItemBlockJAOPCA::new;
+	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
+	private Predicate<IMaterial> beaconPaymentFunction = material->false;
+	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
+	private Function<IMaterial, EnumRarity> rarityFunction = material->EnumRarity.COMMON;
+	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
+
+	@Override
+	public IFormType<?> getType() {
+		return BlockFormType.INSTANCE;
+	}
+
+	@Override
+	public IBlockFormSettings setBlockCreator(IBlockCreator blockCreator) {
+		this.blockCreator = blockCreator;
+		return this;
+	}
+
+	@Override
+	public IBlockCreator getBlockCreator() {
+		return blockCreator;
+	}
+
+	@Override
+	public IBlockFormSettings setMaterialFunction(Function<IMaterial, Material> materialFunction) {
+		this.materialFunction = materialFunction;
+		return this;
+	}
+
+	@Override
+	public Function<IMaterial, Material> getMaterialFunction() {
+		return materialFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setMaterialColorFunction(Function<IMaterial, MaterialColor> materialColorFunction) {
+		this.materialColorFunction = materialColorFunction;
+		return this;
+	}
+
+	@Override
+	public Function<IMaterial, MaterialColor> getMaterialColorFunction() {
+		return materialColorFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setBlocksMovement(boolean blocksMovement) {
+		this.blocksMovement = blocksMovement;
+		return this;
+	}
+
+	@Override
+	public boolean getBlocksMovement() {
+		return blocksMovement;
+	}
+
+	@Override
+	public IBlockFormSettings setSoundTypeFunction(Function<IMaterial, SoundType> soundTypeFunction) {
+		this.soundTypeFunction = soundTypeFunction;
+		return this;
+	}
+
+	@Override
+	public Function<IMaterial, SoundType> getSoundTypeFunction() {
+		return soundTypeFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setLightValueFunction(ToIntFunction<IMaterial> lightValueFunction) {
+		this.lightValueFunction = lightValueFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getLightValueFunction() {
+		return lightValueFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setBlockHardnessFunction(ToDoubleFunction<IMaterial> blockHardnessFunction) {
+		this.blockHardnessFunction = blockHardnessFunction;
+		return this;
+	}
+
+	@Override
+	public ToDoubleFunction<IMaterial> getBlockHardnessFunction() {
+		return blockHardnessFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setExplosionResistanceFunction(ToDoubleFunction<IMaterial> explosionResistanceFunction) {
+		this.explosionResistanceFunction = explosionResistanceFunction;
+		return this;
+	}
+
+	@Override
+	public ToDoubleFunction<IMaterial> getExplosionResistanceFunction() {
+		return explosionResistanceFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setSlipperinessFunction(ToDoubleFunction<IMaterial> slipperinessFunction) {
+		this.slipperinessFunction = slipperinessFunction;
+		return this;
+	}
+
+	@Override
+	public ToDoubleFunction<IMaterial> getSlipperinessFunction() {
+		return slipperinessFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setIsFull(boolean isFull) {
+		this.isFull = isFull;
+		return this;
+	}
+
+	@Override
+	public boolean getIsFull() {
+		return isFull;
+	}
+
+	@Override
+	public IBlockFormSettings setShape(VoxelShape shape) {
+		this.shape = shape;
+		collisionShape = shape;
+		return this;
+	}
+
+	@Override
+	public VoxelShape getShape() {
+		return shape;
+	}
+
+	@Override
+	public IBlockFormSettings setRaytraceShape(VoxelShape raytraceShape) {
+		this.raytraceShape = raytraceShape;
+		return this;
+	}
+
+	@Override
+	public VoxelShape getRaytraceShape() {
+		return raytraceShape;
+	}
+
+	@Override
+	public IBlockFormSettings setRenderLayer(BlockRenderLayer renderLayer) {
+		this.renderLayer = renderLayer;
+		return this;
+	}
+
+	@Override
+	public BlockRenderLayer getRenderLayer() {
+		return renderLayer;
+	}
+
+	@Override
+	public IBlockFormSettings setHarvestToolFunction(Function<IMaterial, ToolType> harvestToolFunction) {
+		this.harvestToolFunction = harvestToolFunction;
+		return this;
+	}
+
+	@Override
+	public Function<IMaterial, ToolType> getHarvestToolFunction() {
+		return harvestToolFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setHarvestLevelFunction(ToIntFunction<IMaterial> harvestLevelFunction) {
+		this.harvestLevelFunction = harvestLevelFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getHarvestLevelFunction() {
+		return harvestLevelFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setIsBeaconBasePredicate(Predicate<IMaterial> isBeaconBasePredicate) {
+		this.isBeaconBasePredicate = isBeaconBasePredicate;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getIsBeaconBasePredicate() {
+		return isBeaconBasePredicate;
+	}
+
+	@Override
+	public IBlockFormSettings setFlammabilityFunction(ToIntFunction<IMaterial> flammabilityFunction) {
+		this.flammabilityFunction = flammabilityFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getFlammabilityFunction() {
+		return flammabilityFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setFireSpreadSpeedFunction(ToIntFunction<IMaterial> fireSpreadSpeedFunction) {
+		this.fireSpreadSpeedFunction = fireSpreadSpeedFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getFireSpreadSpeedFunction() {
+		return fireSpreadSpeedFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setIsFireSourcePredicate(Predicate<IMaterial> isFireSourcePredicate) {
+		this.isFireSourcePredicate = isFireSourcePredicate;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getIsFireSourcePredicate() {
+		return isFireSourcePredicate;
+	}
+
+	@Override
+	public IBlockFormSettings setItemBlockCreator(IItemBlockCreator itemBlockCreator) {
+		this.itemBlockCreator = itemBlockCreator;
+		return this;
+	}
+
+	@Override
+	public IItemBlockCreator getItemBlockCreator() {
+		return itemBlockCreator;
+	}
+
+	@Override
+	public IBlockFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction) {
+		this.itemStackLimitFunction = itemStackLimitFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getItemStackLimitFunction() {
+		return itemStackLimitFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setIsBeaconPaymentFunction(Predicate<IMaterial> beaconPaymentFunction) {
+		this.beaconPaymentFunction = beaconPaymentFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getIsBeaconPaymentFunction() {
+		return beaconPaymentFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction) {
+		this.hasEffectFunction = hasEffectFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getHasEffectFunction() {
+		return hasEffectFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setRarityFunction(Function<IMaterial, EnumRarity> rarityFunction) {
+		this.rarityFunction = rarityFunction;
+		return this;
+	}
+
+	@Override
+	public Function<IMaterial, EnumRarity> getRarityFunction() {
+		return rarityFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction) {
+		this.burnTimeFunction = burnTimeFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getBurnTimeFunction() {
+		return burnTimeFunction;
+	}
+}
