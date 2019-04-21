@@ -27,9 +27,9 @@ public interface IItemFormSettings extends IFormSettings {
 
 	Predicate<IMaterial> getHasEffectFunction();
 
-	IItemFormSettings setRarityFunction(Function<IMaterial, EnumRarity> rarityFunction);
+	IItemFormSettings setDisplayRarityFunction(Function<IMaterial, EnumRarity> displayRarityFunction);
 
-	Function<IMaterial, EnumRarity> getRarityFunction();
+	Function<IMaterial, EnumRarity> getDisplayRarityFunction();
 
 	IItemFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction);
 

@@ -1,6 +1,5 @@
 package thelm.jaopca.events;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -18,14 +17,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.IForgeRegistry;
-import thelm.jaopca.JAOPCA;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.data.DataCollector;
 import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormHandler;
+import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
@@ -47,10 +45,11 @@ public class CommonEventHandler {
 		//FluidFormType.init();
 		DataCollector.collectData();
 		ModuleHandler.findModules();
-		File configDir = new File(FMLPaths.CONFIGDIR.get().toFile(), JAOPCA.MOD_ID);
-		ConfigHandler.setupMainConfig(configDir);
+		ConfigHandler.setupMainConfig();
 		MaterialHandler.findMaterials();
 		ConfigHandler.setupMaterialConfigs();
+		FormTypeHandler.setupGson();
+		ConfigHandler.setupCustomFormConfig();
 		ConfigHandler.setupModuleConfigsPre();
 		FormHandler.collectForms();
 		ModuleHandler.computeValidMaterials();
@@ -94,9 +93,8 @@ public class CommonEventHandler {
 			LOGGER.warn("Unable to obtain listener list.", e);
 			return;
 		}
-		DataInjector instance = DataInjector.getNewInstance(server.getNetworkTagManager(), server.getRecipeManager(), server.getAdvancementManager());
-		reloadListeners.add(reloadListeners.indexOf(server.getNetworkTagManager())+1, instance::injectTags);
+		DataInjector instance = DataInjector.getNewInstance(server.getRecipeManager());
 		reloadListeners.add(reloadListeners.indexOf(server.getRecipeManager())+1, instance::injectRecipes);
-		reloadListeners.add(reloadListeners.indexOf(server.getAdvancementManager())+1, instance::injectAdvancements);
+		server.getResourcePacks().addPackFinder(DataInjector.PackFinder.INSTANCE);
 	}
 }

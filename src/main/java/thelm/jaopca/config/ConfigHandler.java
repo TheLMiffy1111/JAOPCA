@@ -1,7 +1,11 @@
 package thelm.jaopca.config;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
@@ -14,11 +18,16 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.loading.FMLPaths;
+import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
+import thelm.jaopca.data.DataCollector;
 import thelm.jaopca.materials.Material;
 import thelm.jaopca.materials.MaterialHandler;
+import thelm.jaopca.modules.ModuleCustom;
 import thelm.jaopca.modules.ModuleData;
 import thelm.jaopca.modules.ModuleHandler;
 
@@ -28,6 +37,7 @@ public class ConfigHandler {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static File configDir;
+	private static File customFormConfigFile;
 	private static File materialConfigDir;
 	private static File moduleConfigDir;
 	private static IDynamicSpecConfig mainConfig;
@@ -50,10 +60,18 @@ public class ConfigHandler {
 	public static final Set<String> CRYSTAL_OVERRIDES = new TreeSet<>();
 	public static final Set<String> DUST_OVERRIDES = new TreeSet<>();
 
+	public static final Set<ResourceLocation> BLOCK_TAG_BLACKLIST = new TreeSet<>();
+	public static final Set<ResourceLocation> ITEM_TAG_BLACKLIST = new TreeSet<>();
+	public static final Set<ResourceLocation> FLUID_TAG_BLACKLIST = new TreeSet<>();
+
+	public static final Set<ResourceLocation> RECIPE_BLACKLIST = new TreeSet<>();
+
+	public static final Set<ResourceLocation> ADVANCEMENT_BLACKLIST = new TreeSet<>();
+
 	public static double gammaValue = 2;
 
-	public static void setupMainConfig(File configDir) {
-		ConfigHandler.configDir = configDir;
+	public static void setupMainConfig() {
+		configDir = new File(FMLPaths.CONFIGDIR.get().toFile(), JAOPCA.MOD_ID);
 		if(!configDir.exists() || !configDir.isDirectory()) {
 			try {
 				if(configDir.exists() && !configDir.isDirectory()) {
@@ -69,7 +87,7 @@ public class ConfigHandler {
 			}
 		}
 
-		mainConfig = new DynamicSpecConfig(CommentedFileConfig.builder(new File(configDir, "main.toml")).sync().autosave().build());
+		mainConfig = new DynamicSpecConfig(CommentedFileConfig.builder(new File(configDir, "main.toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
 
 		mainConfig.setComment("materials", "Configurations related to materials.");
 		ingot = mainConfig.getDefinedBoolean("materials.ingot", ingot, "Should the mod find ingot materials with ores.");
@@ -86,30 +104,59 @@ public class ConfigHandler {
 		CRYSTAL_OVERRIDES.addAll(mainConfig.getDefinedStringList("materialOverrides.crystal", DEFAULT_CRYSTAL_OVERRIDES, "List of materials that should be crystals."));
 		DUST_OVERRIDES.addAll(mainConfig.getDefinedStringList("materialOverrides.dust", DEFAULT_DUST_OVERRIDES, "List of materials that should be dusts."));
 
-		mainConfig.setComment("tags", "Configurations related to tags.");
+		mainConfig.setComment("blockTags", "Configurations related to block tags.");
+		BLOCK_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.blacklist", new ArrayList<>(),
+				"List of block tags that should not be added."), ResourceLocation::new));
+		DataCollector.getDefinedTags("block").addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.customDefined", new ArrayList<>(),
+				"List of block tags that should be considered as defined."), ResourceLocation::new));
+
+		mainConfig.setComment("itemTags", "Configurations related to item tags.");
+		ITEM_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.blacklist", new ArrayList<>(),
+				"List of item tags that should not be added."), ResourceLocation::new));
+		DataCollector.getDefinedTags("item").addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.customDefined", new ArrayList<>(),
+				"List of item tags that should be considered as defined."), ResourceLocation::new));
+
+		mainConfig.setComment("fluidTags", "Configurations related to fluid tags.");
+		FLUID_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.blacklist", new ArrayList<>(),
+				"List of fluid tags that should not be added."), ResourceLocation::new));
+		DataCollector.getDefinedTags("fluid").addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.customDefined", new ArrayList<>(),
+				"List of fluid tags that should be considered as defined."), ResourceLocation::new));
 
 		mainConfig.setComment("recipes", "Configurations related to recipes.");
+		RECIPE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("recipes.blacklist", new ArrayList<>(),
+				"List of recipes that should not be added."), ResourceLocation::new));
 
 		mainConfig.setComment("advancements", "Configurations related to advancements.");
+		ADVANCEMENT_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("advancements.blacklist", new ArrayList<>(),
+				"List of advancements that should not be added."), ResourceLocation::new));
 
 		mainConfig.setComment("colors", "Configurations related to color generation.");
-		gammaValue = mainConfig.getDefinedDouble("colors.gammaValue", gammaValue, "Gamma value used to blend colors.");
+		gammaValue = mainConfig.getDefinedDouble("colors.gammaValue", gammaValue, "The gamma value used to blend colors.");
+	}
+
+	public static void setupCustomFormConfig() {
+		customFormConfigFile = new File(configDir, "custom_forms.json");
+		try {
+			if(!customFormConfigFile.exists()) {
+				FileWriter writer = new FileWriter(customFormConfigFile);
+				writer.close();
+			}
+		}
+		catch(IOException e) {
+			throw new RuntimeException("Could not create config file "+customFormConfigFile, e);
+		}
+		ModuleCustom.instance.setCustomFormConfigFile(customFormConfigFile);
 	}
 
 	public static void setupMaterialConfigs() {
 		materialConfigDir = new File(configDir, "materials");
 		if(!materialConfigDir.exists() || !materialConfigDir.isDirectory()) {
-			try {
-				if(materialConfigDir.exists() && !materialConfigDir.isDirectory()) {
-					LOGGER.warn("Config directory {} is a file, deleting", materialConfigDir);
-					materialConfigDir.delete();
-				}
-				if(!materialConfigDir.mkdir()) {
-					throw new Error("Could not create config directory "+materialConfigDir);
-				}
+			if(materialConfigDir.exists() && !materialConfigDir.isDirectory()) {
+				LOGGER.warn("Config directory {} is a file, deleting", materialConfigDir);
+				materialConfigDir.delete();
 			}
-			catch(SecurityException e) {
-				throw new Error("Could not create config directory "+materialConfigDir, e);
+			if(!materialConfigDir.mkdir()) {
+				throw new RuntimeException("Could not create config directory "+materialConfigDir);
 			}
 		}
 		MATERIAL_CONFIGS.clear();
@@ -117,7 +164,7 @@ public class ConfigHandler {
 			if(material.getType().isNone()) {
 				continue;
 			}
-			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(new File(materialConfigDir, material.getName()+".toml")).sync().autosave().build());
+			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(new File(materialConfigDir, material.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
 			MATERIAL_CONFIGS.put(material, config);
 			material.setConfig(config);
 		}
@@ -126,21 +173,16 @@ public class ConfigHandler {
 	public static void setupModuleConfigsPre() {
 		moduleConfigDir = new File(configDir, "modules");
 		if(!moduleConfigDir.exists() || !moduleConfigDir.isDirectory()) {
-			try {
-				if(moduleConfigDir.exists() && !moduleConfigDir.isDirectory()) {
-					LOGGER.warn("Config directory {} is a file, deleting", moduleConfigDir);
-					moduleConfigDir.delete();
-				}
-				if(!moduleConfigDir.mkdir()) {
-					throw new Error("Could not create config directory "+moduleConfigDir);
-				}
+			if(moduleConfigDir.exists() && !moduleConfigDir.isDirectory()) {
+				LOGGER.warn("Config directory {} is a file, deleting", moduleConfigDir);
+				moduleConfigDir.delete();
 			}
-			catch(SecurityException e) {
-				throw new Error("Could not create config directory "+moduleConfigDir, e);
+			if(!moduleConfigDir.mkdir()) {
+				throw new Error("Could not create config directory "+moduleConfigDir);
 			}
 		}
 		for(IModule module : ModuleHandler.getModules()) {
-			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(new File(moduleConfigDir, module.getName()+".toml")).sync().autosave().build());
+			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(new File(moduleConfigDir, module.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
 			MODULE_CONFIGS.put(module, config);
 			ModuleData data = ModuleHandler.getModuleData(module);
 			data.setConfig(config);

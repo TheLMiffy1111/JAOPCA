@@ -13,13 +13,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.TreeMultiset;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.DistExecutor;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.EnumMaterialType;
@@ -33,6 +32,8 @@ public class Material implements IMaterial {
 	private final String name;
 	private final EnumMaterialType type;
 	private OptionalInt color = OptionalInt.empty();
+	private boolean hasEffect = false;
+	private EnumRarity displayRarity = EnumRarity.COMMON;
 	private final List<String> extras = new ArrayList<>();
 	private final TreeSet<String> configModuleBlacklist = new TreeSet<>();
 	private IDynamicSpecConfig config;
@@ -82,7 +83,12 @@ public class Material implements IMaterial {
 
 	@Override
 	public boolean hasEffect() {
-		return false;
+		return hasEffect;
+	}
+
+	@Override
+	public EnumRarity getDisplayRarity() {
+		return displayRarity;
 	}
 
 	public void setConfig(IDynamicSpecConfig config) {
@@ -97,6 +103,8 @@ public class Material implements IMaterial {
 		ModuleHandler.getModuleMap().keySet().forEach(s->blacklist.add(s, count));
 		blacklist.remove("*", count);
 		configModuleBlacklist.addAll(blacklist.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(e->e.getElement()).collect(Collectors.toList()));
+
+		hasEffect = config.getDefinedBoolean("general.hasEffect", hasEffect, "Should items of this material have the enchanted glow.");
 
 		color = config.getOptionalInt("general.color");
 	}

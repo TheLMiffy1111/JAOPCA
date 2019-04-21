@@ -15,7 +15,6 @@ import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.materials.MaterialHandler;
-import thelm.jaopca.modules.ModuleData;
 import thelm.jaopca.modules.ModuleHandler;
 
 public class FormHandler {

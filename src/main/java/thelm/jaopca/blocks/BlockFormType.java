@@ -4,14 +4,23 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
-import com.google.gson.JsonObject;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.registries.IForgeRegistry;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.blocks.BlockMaterialForm;
@@ -22,8 +31,13 @@ import thelm.jaopca.api.blocks.ItemBlockMaterialForm;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.EnumMaterialType;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
+import thelm.jaopca.custom.json.EnumDeserializer;
+import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
+import thelm.jaopca.custom.json.VoxelShapeDeserializer;
+import thelm.jaopca.custom.utils.BlockDeserializationHelper;
 import thelm.jaopca.data.DataInjector;
-import thelm.jaopca.forms.FormTypeRegistry;
+import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.utils.ApiImpl;
 
 public class BlockFormType implements IBlockFormType {
@@ -37,7 +51,7 @@ public class BlockFormType implements IBlockFormType {
 	private static final TreeBasedTable<IForm, IMaterial, IBlockInfo> BLOCK_INFOS = TreeBasedTable.create();
 
 	public static void init() {
-		FormTypeRegistry.registerFormType(INSTANCE);
+		FormTypeHandler.registerFormType(INSTANCE);
 	}
 
 	@Override
@@ -66,7 +80,7 @@ public class BlockFormType implements IBlockFormType {
 			return true;
 		}
 		ResourceLocation tagLocation = new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName());
-		return !ApiImpl.INSTANCE.getItemTags().contains(tagLocation) && !ApiImpl.INSTANCE.getBlockTags().contains(tagLocation);
+		return !ApiImpl.INSTANCE.getItemTags().contains(tagLocation);
 	}
 
 	@Override
@@ -85,10 +99,23 @@ public class BlockFormType implements IBlockFormType {
 	}
 
 	@Override
-	public IBlockFormSettings deserializeSettings(JsonObject jsonObject) {
-		// TODO Auto-generated method stub
-		IBlockFormSettings ret = new BlockFormSettings();
-		return ret;
+	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
+		return builder.
+				registerTypeAdapter(new TypeToken<Function<IMaterial, Material>>(){}.getType(),
+						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getBlockMaterial,
+								BlockDeserializationHelper.INSTANCE::getBlockMaterialName)).
+				registerTypeAdapter(new TypeToken<Function<IMaterial, SoundType>>(){}.getType(),
+						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getSoundType,
+								BlockDeserializationHelper.INSTANCE::getSoundTypeName)).
+				registerTypeAdapter(new TypeToken<Function<IMaterial, ToolType>>(){}.getType(),
+						new MaterialMappedFunctionDeserializer<>(ToolType::get, ToolType::getName)).
+				registerTypeAdapter(BlockRenderLayer.class, EnumDeserializer.INSTANCE).
+				registerTypeAdapter(VoxelShape.class, VoxelShapeDeserializer.INSTANCE);
+	}
+
+	@Override
+	public IBlockFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context) {
+		return BlockFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
 	public static void registerBlocks(IForgeRegistry<Block> registry) {

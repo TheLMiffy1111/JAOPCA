@@ -13,8 +13,6 @@ import thelm.jaopca.events.CommonEventHandler;
 public class JAOPCA {
 
 	public static final String MOD_ID = "jaopca";
-	public static final String NAME = "JAOPCA";
-	public static final String VERSION = "1.13.2-3.0.0.103";
 	public static JAOPCA core;
 
 	static {

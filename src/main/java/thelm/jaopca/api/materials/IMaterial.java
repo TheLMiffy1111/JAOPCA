@@ -2,6 +2,8 @@ package thelm.jaopca.api.materials;
 
 import java.util.Set;
 
+import net.minecraft.item.EnumRarity;
+
 public interface IMaterial extends Comparable<IMaterial> {
 
 	String getName();
@@ -17,6 +19,8 @@ public interface IMaterial extends Comparable<IMaterial> {
 	int getColor();
 
 	boolean hasEffect();
+
+	EnumRarity getDisplayRarity();
 
 	@Override
 	default int compareTo(IMaterial other) {

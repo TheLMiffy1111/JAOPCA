@@ -3,7 +3,6 @@ package thelm.jaopca.blocks;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
@@ -44,23 +43,21 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->6;
 	private ToDoubleFunction<IMaterial> slipperinessFunction = material->0.6;
 	private boolean isFull = true;
-	private boolean isTopSolid = false;
 	private VoxelShape shape = VoxelShapes.fullCube();
-	private VoxelShape collisionShape = VoxelShapes.fullCube();
 	private VoxelShape raytraceShape = VoxelShapes.empty();
 	private BlockRenderLayer renderLayer = BlockRenderLayer.CUTOUT;
 	private Function<IMaterial, ToolType> harvestToolFunction = material->ToolType.PICKAXE;
 	private ToIntFunction<IMaterial> harvestLevelFunction = material->0;
-	private Predicate<IMaterial> isBeaconBasePredicate = material->false;
+	private Predicate<IMaterial> isBeaconBaseFunction = material->false;
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
-	private Predicate<IMaterial> isFireSourcePredicate = material->false;
+	private Predicate<IMaterial> isFireSourceFunction = material->false;
 
 	private IItemBlockCreator itemBlockCreator = ItemBlockJAOPCA::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
 	private Predicate<IMaterial> beaconPaymentFunction = material->false;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
-	private Function<IMaterial, EnumRarity> rarityFunction = material->EnumRarity.COMMON;
+	private Function<IMaterial, EnumRarity> displayRarityFunction = material->material.getDisplayRarity();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
 
 	@Override
@@ -181,7 +178,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public IBlockFormSettings setShape(VoxelShape shape) {
 		this.shape = shape;
-		collisionShape = shape;
 		return this;
 	}
 
@@ -235,14 +231,14 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setIsBeaconBasePredicate(Predicate<IMaterial> isBeaconBasePredicate) {
-		this.isBeaconBasePredicate = isBeaconBasePredicate;
+	public IBlockFormSettings setIsBeaconBaseFunction(Predicate<IMaterial> isBeaconBaseFunction) {
+		this.isBeaconBaseFunction = isBeaconBaseFunction;
 		return this;
 	}
 
 	@Override
-	public Predicate<IMaterial> getIsBeaconBasePredicate() {
-		return isBeaconBasePredicate;
+	public Predicate<IMaterial> getIsBeaconBaseFunction() {
+		return isBeaconBaseFunction;
 	}
 
 	@Override
@@ -268,14 +264,14 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setIsFireSourcePredicate(Predicate<IMaterial> isFireSourcePredicate) {
-		this.isFireSourcePredicate = isFireSourcePredicate;
+	public IBlockFormSettings setIsFireSourceFunction(Predicate<IMaterial> isFireSourceFunction) {
+		this.isFireSourceFunction = isFireSourceFunction;
 		return this;
 	}
 
 	@Override
-	public Predicate<IMaterial> getIsFireSourcePredicate() {
-		return isFireSourcePredicate;
+	public Predicate<IMaterial> getIsFireSourceFunction() {
+		return isFireSourceFunction;
 	}
 
 	@Override
@@ -323,14 +319,14 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setRarityFunction(Function<IMaterial, EnumRarity> rarityFunction) {
-		this.rarityFunction = rarityFunction;
+	public IBlockFormSettings setDisplayRarityFunction(Function<IMaterial, EnumRarity> displayRarityFunction) {
+		this.displayRarityFunction = displayRarityFunction;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, EnumRarity> getRarityFunction() {
-		return rarityFunction;
+	public Function<IMaterial, EnumRarity> getDisplayRarityFunction() {
+		return displayRarityFunction;
 	}
 
 	@Override

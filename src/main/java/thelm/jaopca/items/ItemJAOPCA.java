@@ -7,8 +7,6 @@ import java.util.function.Supplier;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.ItemMaterialForm;
@@ -79,7 +77,7 @@ public class ItemJAOPCA extends ItemMaterialForm {
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.get().getRarityFunction().apply(material));
+			rarity = Optional.of(settings.get().getDisplayRarityFunction().apply(material));
 		}
 		return rarity.get();
 	}

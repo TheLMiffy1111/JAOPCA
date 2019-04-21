@@ -4,8 +4,14 @@ import java.util.Locale;
 
 public enum EnumMaterialType {
 
-	INGOT("ingots"), GEM("gems"), CRYSTAL("crystals"), DUST("dusts"),
-	INGOT_PLAIN("ingots"), GEM_PLAIN("gems"), CRYSTAL_PLAIN("crystals"), DUST_PLAIN("dusts"),
+	INGOT("ingots"),
+	GEM("gems"),
+	CRYSTAL("crystals"),
+	DUST("dusts"),
+	INGOT_PLAIN("ingots"),
+	GEM_PLAIN("gems"),
+	CRYSTAL_PLAIN("crystals"),
+	DUST_PLAIN("dusts"),
 	NONE("");
 
 	public static final EnumMaterialType[] INGOTS = {INGOT, INGOT_PLAIN};
@@ -31,14 +37,5 @@ public enum EnumMaterialType {
 
 	public boolean isNone() {
 		return this == NONE;
-	}
-
-	public static EnumMaterialType fromName(String name) {
-		for(EnumMaterialType type : values()) {
-			if(type.name().equalsIgnoreCase(name)) {
-				return type;
-			}
-		}
-		return null;
 	}
 }

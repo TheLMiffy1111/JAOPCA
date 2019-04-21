@@ -16,12 +16,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.ToolType;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.BlockMaterialForm;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.forms.IForm;
@@ -214,7 +212,7 @@ public class BlockJAOPCA extends BlockMaterialForm {
 	@Override
 	public boolean isBeaconBase(IBlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
 		if(!isBeaconBase.isPresent()) {
-			isBeaconBase = Optional.of(settings.get().getIsBeaconBasePredicate().test(material));
+			isBeaconBase = Optional.of(settings.get().getIsBeaconBaseFunction().test(material));
 		}
 		return isBeaconBase.get();
 	}
@@ -238,7 +236,7 @@ public class BlockJAOPCA extends BlockMaterialForm {
 	@Override
 	public boolean isFireSource(IBlockState state, IBlockReader world, BlockPos pos, EnumFacing side) {
 		if(!isFireSource.isPresent()) {
-			isFireSource = Optional.of(settings.get().getIsFireSourcePredicate().test(material));
+			isFireSource = Optional.of(settings.get().getIsFireSourceFunction().test(material));
 		}
 		return isFireSource.get();
 	}

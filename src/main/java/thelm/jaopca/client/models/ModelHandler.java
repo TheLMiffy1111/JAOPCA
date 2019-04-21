@@ -15,7 +15,6 @@ import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.blocks.BlockMaterialForm;
 import thelm.jaopca.api.blocks.ItemBlockMaterialForm;
 import thelm.jaopca.api.items.ItemMaterialForm;
-import thelm.jaopca.api.materials.EnumMaterialType;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.items.ItemFormType;
 

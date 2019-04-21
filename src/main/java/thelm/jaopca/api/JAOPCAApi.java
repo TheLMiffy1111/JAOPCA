@@ -1,7 +1,10 @@
 package thelm.jaopca.api;
 
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
+
+import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
@@ -15,6 +18,7 @@ import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormType;
+import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.localization.ILocalizer;
@@ -52,6 +56,16 @@ public abstract class JAOPCAApi {
 	public abstract IFormRequest newFormRequest(IModule module, IForm... forms);
 
 	public abstract IMiscHelper miscHelper();
+
+	public abstract IJsonHelper jsonHelper();
+
+	public abstract JsonDeserializer<Enum<?>> enumDeserializer();
+
+	public abstract JsonDeserializer<Function<IMaterial, Enum<?>>> materialEnumFunctionDeserializer();
+
+	public abstract <T> JsonDeserializer<Function<IMaterial, T>> materialMappedFunctionDeserializer(Function<String, T> stringToValue, Function<T, String> valueToString);
+
+	public abstract JsonDeserializer<Function<IMaterial, ?>> materialFunctionDeserializer();
 
 	public abstract IForm getForm(String name);
 

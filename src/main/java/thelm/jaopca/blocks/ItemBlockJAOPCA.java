@@ -65,7 +65,7 @@ public class ItemBlockJAOPCA extends ItemBlockMaterialForm {
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.get().getRarityFunction().apply(getMaterial()));
+			rarity = Optional.of(settings.get().getDisplayRarityFunction().apply(getMaterial()));
 		}
 		return rarity.get();
 	}

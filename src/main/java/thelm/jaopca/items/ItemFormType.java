@@ -6,9 +6,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.common.collect.TreeBasedTable;
-import com.google.gson.JsonObject;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -20,10 +23,11 @@ import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.items.ItemMaterialForm;
-import thelm.jaopca.api.materials.EnumMaterialType;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.custom.json.EnumDeserializer;
+import thelm.jaopca.custom.json.ItemFormSettingsDeserializer;
 import thelm.jaopca.data.DataInjector;
-import thelm.jaopca.forms.FormTypeRegistry;
+import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.utils.ApiImpl;
 
 public class ItemFormType implements IItemFormType {
@@ -37,7 +41,7 @@ public class ItemFormType implements IItemFormType {
 	private static ItemGroup itemGroup;
 
 	public static void init() {
-		FormTypeRegistry.registerFormType(INSTANCE);
+		FormTypeHandler.registerFormType(INSTANCE);
 	}
 
 	@Override
@@ -85,10 +89,13 @@ public class ItemFormType implements IItemFormType {
 	}
 
 	@Override
-	public IItemFormSettings deserializeSettings(JsonObject jsonObject) {
-		// TODO Auto-generated method stub
-		IItemFormSettings ret = new ItemFormSettings();
-		return ret;
+	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
+		return builder.registerTypeAdapter(EnumRarity.class, EnumDeserializer.INSTANCE);
+	}
+
+	@Override
+	public IItemFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context) {
+		return ItemFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
 	public static void registerItems(IForgeRegistry<Item> registry) {

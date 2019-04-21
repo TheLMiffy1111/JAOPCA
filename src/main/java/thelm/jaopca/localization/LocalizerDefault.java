@@ -4,8 +4,6 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.TreeBasedTable;
-
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.LanguageMap;

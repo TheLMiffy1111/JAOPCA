@@ -1,15 +1,12 @@
 package thelm.jaopca.forms;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.TreeMultimap;
+import com.google.common.base.Preconditions;
 
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -39,6 +36,9 @@ public class Form implements IForm {
 	private final TreeSet<IMaterial> materials = new TreeSet<>();
 
 	public Form(IModule module, String name, IFormType<?> type) {
+		Preconditions.checkNotNull(module);
+		Preconditions.checkNotNull(name);
+		Preconditions.checkNotNull(type);
 		this.module = module;
 		this.name = name;
 		this.type = type;
@@ -89,6 +89,15 @@ public class Form implements IForm {
 	}
 
 	@Override
+	public IForm setMaterialTypes(Collection<EnumMaterialType> materialTypes) {
+		if(!locked) {
+			this.materialTypes.clear();
+			this.materialTypes.addAll(materialTypes);
+		}
+		return this;
+	}
+
+	@Override
 	public IForm setMaterialTypes(EnumMaterialType... materialTypes) {
 		if(!locked) {
 			this.materialTypes.clear();
@@ -100,6 +109,15 @@ public class Form implements IForm {
 	@Override
 	public Set<EnumMaterialType> getMaterialTypes() {
 		return Collections.unmodifiableSet(materialTypes);
+	}
+
+	@Override
+	public IForm setDefaultMaterialBlacklist(Collection<String> defaultMaterialBlacklist) {
+		if(!locked) {
+			this.defaultMaterialBlacklist.clear();
+			this.defaultMaterialBlacklist.addAll(defaultMaterialBlacklist);
+		}
+		return this;
 	}
 
 	@Override

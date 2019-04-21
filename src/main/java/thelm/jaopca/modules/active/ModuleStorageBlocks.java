@@ -10,7 +10,6 @@ import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
-import thelm.jaopca.api.materials.EnumMaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;

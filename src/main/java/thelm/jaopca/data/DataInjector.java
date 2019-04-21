@@ -1,8 +1,5 @@
 package thelm.jaopca.data;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -13,23 +10,25 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.MultimapBuilder;
 
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementList;
-import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.resources.IPackFinder;
 import net.minecraft.resources.IResourceManager;
-import net.minecraft.tags.NetworkTagCollection;
-import net.minecraft.tags.NetworkTagManager;
+import net.minecraft.resources.ResourcePackInfo;
+import net.minecraft.resources.ResourcePackInfo.IFactory;
+import net.minecraft.resources.ResourcePackType;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.IRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.modules.ModuleHandler;
+import thelm.jaopca.resources.InMemoryResourcePack;
 
 public class DataInjector {
 
@@ -81,59 +80,16 @@ public class DataInjector {
 		return ADVANCEMENTS_INJECT.navigableKeySet();
 	}
 
-	public static DataInjector getNewInstance(NetworkTagManager tagManager, RecipeManager recipeManager, AdvancementManager advancementManager) {
-		return instance = new DataInjector(tagManager, recipeManager, advancementManager);
+	public static DataInjector getNewInstance(RecipeManager recipeManager) {
+		return instance = new DataInjector(recipeManager);
 	}
 
-	private final NetworkTagManager tagManager;
 	private final RecipeManager recipeManager;
-	private final AdvancementManager advancementManager;
 
-	private DataInjector(NetworkTagManager tagManager, RecipeManager recipeManager, AdvancementManager advancementManager) {
-		this.tagManager = tagManager;
+	private DataInjector(RecipeManager recipeManager) {
 		this.recipeManager = recipeManager;
-		this.advancementManager = advancementManager;
 	}
 
-	public void injectTags(IResourceManager resourceManager) {
-		NetworkTagCollection<Block> blockTags = tagManager.getBlocks();
-		for(Map.Entry<ResourceLocation, Collection<Supplier<Block>>> entry : BLOCK_TAGS_INJECT.asMap().entrySet()) {
-			Set<Block> blocks = entry.getValue().stream().map(Supplier::get).collect(Collectors.toSet());
-			if(blockTags.get(entry.getKey()) != null) {
-				Tag<Block> blockTag = blockTags.get(entry.getKey());
-				blockTag.getEntries().add(new Tag.ListEntry<>(blocks));
-				blockTag.getAllElements().addAll(blocks);
-			}
-			else {
-				blockTags.register(Tag.Builder.<Block>create().addAll(blocks).build(entry.getKey()));
-			}
-		}
-		NetworkTagCollection<Item> itemTags = tagManager.getItems();
-		for(Map.Entry<ResourceLocation, Collection<Supplier<Item>>> entry : ITEM_TAGS_INJECT.asMap().entrySet()) {
-			Set<Item> items = entry.getValue().stream().map(Supplier::get).collect(Collectors.toSet());
-			if(itemTags.get(entry.getKey()) != null) {
-				Tag<Item> itemTag = itemTags.get(entry.getKey());
-				itemTag.getEntries().add(new Tag.ListEntry<>(items));
-				itemTag.getAllElements().addAll(items);
-			}
-			else {
-				itemTags.register(Tag.Builder.<Item>create().addAll(items).build(entry.getKey()));
-			}
-		}
-		NetworkTagCollection<Fluid> fluidTags = tagManager.getFluids();
-		for(Map.Entry<ResourceLocation, Collection<Supplier<Fluid>>> entry : FLUID_TAGS_INJECT.asMap().entrySet()) {
-			Set<Fluid> fluids = entry.getValue().stream().map(Supplier::get).collect(Collectors.toSet());
-			if(fluidTags.get(entry.getKey()) != null) {
-				Tag<Fluid> fluidTag = fluidTags.get(entry.getKey());
-				fluidTag.getEntries().add(new Tag.ListEntry<>(fluids));
-				fluidTag.getAllElements().addAll(fluids);
-			}
-			else {
-				fluidTags.register(Tag.Builder.<Fluid>create().addAll(fluids).build(entry.getKey()));
-			}
-		}
-	}
-	
 	public void injectRecipes(IResourceManager resourceManager) {
 		for(Map.Entry<ResourceLocation, Supplier<IRecipe>> entry : RECIPES_INJECT.entrySet()) {
 			IRecipe recipe = null;
@@ -159,16 +115,38 @@ public class DataInjector {
 		}
 		ModuleHandler.onRecipeInjectComplete(resourceManager);
 	}
-	
-	public void injectAdvancements(IResourceManager resourceManager) {
-		try {
-			Field advancementListField = Arrays.stream(AdvancementManager.class.getDeclaredFields()).filter(field->field.getType() == AdvancementList.class).findFirst().get();
-			advancementListField.setAccessible(true);
-			AdvancementList advancementList = (AdvancementList)advancementListField.get(advancementManager);
-			advancementList.loadAdvancements(Maps.newTreeMap(ADVANCEMENTS_INJECT));
-		}
-		catch(Exception e) {
-			LOGGER.warn("Unable to inject advancements", e);
+
+	public static class PackFinder implements IPackFinder {
+
+		public static final PackFinder INSTANCE = new PackFinder();
+
+		@Override
+		public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> packList, IFactory<T> factory) {
+			T packInfo = ResourcePackInfo.createResourcePack("inmemory:jaopca", true, ()->{
+				InMemoryResourcePack pack = new InMemoryResourcePack("inmemory:jaopca", true);
+				BLOCK_TAGS_INJECT.asMap().forEach((location, suppliers)->{
+					Set<Block> blocks = suppliers.stream().map(Supplier::get).collect(Collectors.toSet());
+					Tag<Block> tag = Tag.Builder.<Block>create().addAll(blocks).build(location);
+					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/blocks/"+location.getPath()+".json"), tag.serialize(ForgeRegistries.BLOCKS::getKey));
+				});
+				ITEM_TAGS_INJECT.asMap().forEach((location, suppliers)->{
+					Set<Item> items = suppliers.stream().map(Supplier::get).collect(Collectors.toSet());
+					Tag<Item> tag = Tag.Builder.<Item>create().addAll(items).build(location);
+					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/items/"+location.getPath()+".json"), tag.serialize(ForgeRegistries.ITEMS::getKey));
+				});
+				FLUID_TAGS_INJECT.asMap().forEach((location, suppliers)->{
+					Set<Fluid> fluids = suppliers.stream().map(Supplier::get).collect(Collectors.toSet());
+					Tag<Fluid> tag = Tag.Builder.<Fluid>create().addAll(fluids).build(location);
+					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/fluids/"+location.getPath()+".json"), tag.serialize(IRegistry.FLUID::getKey));
+				});
+				ADVANCEMENTS_INJECT.forEach((location, builder)->{
+					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), builder.serialize());
+				});
+				return pack;
+			}, (IFactory<T>)factory, ResourcePackInfo.Priority.BOTTOM);
+			if(packInfo != null) {
+				packList.put("inmemory:jaopca", packInfo);
+			}
 		}
 	}
 }

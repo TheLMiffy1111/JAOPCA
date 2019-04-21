@@ -1,7 +1,6 @@
 package thelm.jaopca.api.blocks;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.IItemProvider;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 

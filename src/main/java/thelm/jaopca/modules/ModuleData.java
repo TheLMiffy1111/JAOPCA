@@ -108,7 +108,10 @@ public class ModuleData implements IModuleData {
 
 	public boolean isMaterialValid(IMaterial material) {
 		return isMaterialModuleValid(material) &&
-				!rejectedMaterials.contains(material);
+				!rejectedMaterials.contains(material) &&
+				(!module.isPassive() ? true :
+					configPassiveMaterialWhitelist.contains(material.getName()) ||
+					requestedMaterials.contains(material));
 	}
 
 	public void addRejectedMaterial(IMaterial material) {

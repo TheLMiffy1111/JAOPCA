@@ -1,7 +1,6 @@
 package thelm.jaopca.api.blocks;
 
 import java.util.function.Function;
-import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
@@ -61,7 +60,7 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setShape(VoxelShape shape);
 
 	VoxelShape getShape();
-
+	
 	IBlockFormSettings setRaytraceShape(VoxelShape raytraceShape);
 
 	VoxelShape getRaytraceShape();
@@ -78,9 +77,9 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	ToIntFunction<IMaterial> getHarvestLevelFunction();
 
-	IBlockFormSettings setIsBeaconBasePredicate(Predicate<IMaterial> isBeaconBasePredicate);
+	IBlockFormSettings setIsBeaconBaseFunction(Predicate<IMaterial> isBeaconBaseFunction);
 
-	Predicate<IMaterial> getIsBeaconBasePredicate();
+	Predicate<IMaterial> getIsBeaconBaseFunction();
 
 	IBlockFormSettings setFlammabilityFunction(ToIntFunction<IMaterial> flammabilityFunction);
 
@@ -90,9 +89,9 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	ToIntFunction<IMaterial> getFireSpreadSpeedFunction();
 
-	IBlockFormSettings setIsFireSourcePredicate(Predicate<IMaterial> isFireSourcePredicate);
+	IBlockFormSettings setIsFireSourceFunction(Predicate<IMaterial> isFireSourceFunction);
 
-	Predicate<IMaterial> getIsFireSourcePredicate();
+	Predicate<IMaterial> getIsFireSourceFunction();
 
 	//IBlockFormSettings setIsWaterLoggable(boolean waterLoggable);
 
@@ -118,9 +117,9 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	Predicate<IMaterial> getHasEffectFunction();
 
-	IBlockFormSettings setRarityFunction(Function<IMaterial, EnumRarity> rarityFunction);
+	IBlockFormSettings setDisplayRarityFunction(Function<IMaterial, EnumRarity> displayRarityFunction);
 
-	Function<IMaterial, EnumRarity> getRarityFunction();
+	Function<IMaterial, EnumRarity> getDisplayRarityFunction();
 
 	IBlockFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction);
 

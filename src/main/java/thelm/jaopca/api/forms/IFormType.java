@@ -2,7 +2,9 @@ package thelm.jaopca.api.forms;
 
 import java.util.Set;
 
-import com.google.gson.JsonObject;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
 
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
@@ -21,7 +23,9 @@ public interface IFormType<I extends IMaterialFormInfo<?>> extends Comparable<IF
 
 	IFormSettings getNewSettings();
 
-	IFormSettings deserializeSettings(JsonObject jsonObject);
+	GsonBuilder configureGsonBuilder(GsonBuilder builder);
+
+	IFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context);
 
 	I getMaterialFormInfo(IForm form, IMaterial material);
 

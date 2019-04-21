@@ -1,6 +1,7 @@
 package thelm.jaopca.utils;
 
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
+import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
@@ -24,6 +26,7 @@ import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormType;
+import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.localization.ILocalizer;
@@ -31,12 +34,17 @@ import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.blocks.BlockFormType;
+import thelm.jaopca.config.ConfigHandler;
+import thelm.jaopca.custom.json.EnumDeserializer;
+import thelm.jaopca.custom.json.MaterialEnumFunctionDeserializer;
+import thelm.jaopca.custom.json.MaterialFunctionDeserializer;
+import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.data.DataCollector;
 import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.Form;
 import thelm.jaopca.forms.FormHandler;
 import thelm.jaopca.forms.FormRequest;
-import thelm.jaopca.forms.FormTypeRegistry;
+import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.localization.LocalizationHandler;
 import thelm.jaopca.materials.MaterialHandler;
@@ -70,7 +78,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public <I extends IMaterialFormInfo<?>> IFormType<I> getFormType(String name) {
-		return (IFormType<I>)FormTypeRegistry.getFormType(name);
+		return (IFormType<I>)FormTypeHandler.getFormType(name);
 	}
 
 	@Override
@@ -90,6 +98,31 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public IMiscHelper miscHelper() {
 		return MiscHelper.INSTANCE;
+	}
+
+	@Override
+	public IJsonHelper jsonHelper() {
+		return JsonHelper.INSTANCE;
+	}
+
+	@Override
+	public JsonDeserializer<Enum<?>> enumDeserializer() {
+		return EnumDeserializer.INSTANCE;
+	}
+
+	@Override
+	public JsonDeserializer<Function<IMaterial, Enum<?>>> materialEnumFunctionDeserializer() {
+		return MaterialEnumFunctionDeserializer.INSTANCE;
+	}
+
+	@Override
+	public <T> JsonDeserializer<Function<IMaterial, T>> materialMappedFunctionDeserializer(Function<String, T> stringToValue, Function<T, String> valueToString) {
+		return new MaterialMappedFunctionDeserializer<>(stringToValue, valueToString);
+	}
+
+	@Override
+	public JsonDeserializer<Function<IMaterial, ?>> materialFunctionDeserializer() {
+		return MaterialFunctionDeserializer.INSTANCE;
 	}
 
 	@Override
@@ -139,11 +172,14 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public <T extends IFormType<?>> T registerFormType(T type) {
-		return FormTypeRegistry.registerFormType(type) ? type : null;
+		return FormTypeHandler.registerFormType(type) ? type : null;
 	}
 
 	@Override
 	public boolean registerBlockTag(ResourceLocation key, Supplier<Block> blockSupplier) {
+		if(ConfigHandler.BLOCK_TAG_BLACKLIST.contains(key)) {
+			return false;
+		}
 		return DataInjector.registerBlockTag(key, blockSupplier);
 	}
 
@@ -159,6 +195,9 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerItemTag(ResourceLocation key, Supplier<Item> itemSupplier) {
+		if(ConfigHandler.ITEM_TAG_BLACKLIST.contains(key)) {
+			return false;
+		}
 		return DataInjector.registerItemTag(key, itemSupplier);
 	}
 
@@ -174,6 +213,9 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerFluidTag(ResourceLocation key, Supplier<Fluid> fluidSupplier) {
+		if(ConfigHandler.FLUID_TAG_BLACKLIST.contains(key)) {
+			return false;
+		}
 		return DataInjector.registerFluidTag(key, fluidSupplier);
 	}
 
@@ -190,7 +232,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerRecipe(ResourceLocation key, Supplier<IRecipe> recipeSupplier) {
-		if(DataCollector.getDefinedRecipes().contains(key)) {
+		if(DataCollector.getDefinedRecipes().contains(key) || ConfigHandler.RECIPE_BLACKLIST.contains(key)) {
 			return false;
 		}
 		return DataInjector.registerRecipe(key, recipeSupplier);
@@ -233,7 +275,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder) {
-		if(DataCollector.getDefinedAdvancements().contains(key)) {
+		if(DataCollector.getDefinedAdvancements().contains(key) || ConfigHandler.ADVANCEMENT_BLACKLIST.contains(key)) {
 			return false;
 		}
 		return DataInjector.registerAdvancement(key, advancementBuilder);

@@ -1,6 +1,7 @@
 package thelm.jaopca.api.items;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
 
 import thelm.jaopca.api.forms.IFormType;
 
@@ -10,5 +11,5 @@ public interface IItemFormType extends IFormType<IItemInfo> {
 	IItemFormSettings getNewSettings();
 
 	@Override
-	IItemFormSettings deserializeSettings(JsonObject jsonObject);
+	IItemFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context);
 }

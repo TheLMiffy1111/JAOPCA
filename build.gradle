@@ -52,8 +52,8 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.13.2-25.0.107'
-    deobf "mezz.jei:jei-1.13.2:5.0.0.11"
+    minecraft 'net.minecraftforge:forge:1.13.2-25.0.149'
+    deobf "mezz.jei:jei-1.13.2:5.0.0.20"
 }
 
 jar {
