@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/crystal_fragment"
+        "layer0": "jaopca:items/crystal_fragment",
+        "layer1": "jaopca:items/crystal_fragment_overlay"
     }
 }

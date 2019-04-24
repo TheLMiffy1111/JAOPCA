@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/dust_alch"
+        "layer0": "jaopca:items/dust_alch",
+        "layer1": "jaopca:items/dust_alch_overlay"
     }
 }

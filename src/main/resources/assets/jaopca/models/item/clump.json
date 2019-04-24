@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/clump"
+        "layer0": "jaopca:items/clump",
+        "layer1": "jaopca:items/clump_overlay"
     }
 }

@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/plate"
+        "layer0": "jaopca:items/plate",
+        "layer1": "jaopca:items/plate_overlay"
     }
 }
