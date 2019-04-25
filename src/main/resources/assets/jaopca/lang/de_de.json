@@ -1,0 +1,9 @@
+{
+    "itemGroup.jaopca": "JAOPCA",
+
+    "block.jaopca.storage_blocks": "%sblock",
+    "item.jaopca.dusts": "%sstaub",
+    "item.jaopca.nuggets": "%sklumpen",
+    "item.jaopca.tiny_dusts": "Winziger Haufen %sstaub",
+    "item.jaopca.small_dusts": "Kleiner Haufen %sstaub"
+}
