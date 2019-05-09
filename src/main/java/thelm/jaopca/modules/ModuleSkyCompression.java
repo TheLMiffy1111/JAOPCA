@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import hqbanana.SkyCompression.AdditionalProcessRecipesManager;
-import hqbanana.SkyCompression.init.ModBlocks;
+import hqbanana.skycompression.AdditionalProcessRecipesManager;
+import hqbanana.skycompression.init.ModBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import thelm.jaopca.api.IOreEntry;

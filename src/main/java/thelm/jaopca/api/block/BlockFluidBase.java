@@ -17,7 +17,7 @@ public class BlockFluidBase extends BlockFluidClassic implements IBlockFluidWith
 		oreEntry = fluid.getOreEntry();
 		itemEntry = fluid.getItemEntry();
 		setRegistryName("jaopca:fluid_"+itemEntry.name+oreEntry.getOreName());
-		setUnlocalizedName("jaopca."+itemEntry.name);
+		setTranslationKey("jaopca."+itemEntry.name);
 	}
 
 	@Override

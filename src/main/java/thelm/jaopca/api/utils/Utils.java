@@ -462,7 +462,7 @@ public class Utils {
 				continue;
 			}
 
-			String modId = stack.getItem().getRegistryName().getResourceDomain();
+			String modId = stack.getItem().getRegistryName().getNamespace();
 			int idex = MOD_IDS.indexOf(modId);
 
 			if(idex < index) {
@@ -593,7 +593,7 @@ public class Utils {
 
 	public static ResourceLocation getNameForRecipe(ItemStack output, Object... input) {
 		ModContainer activeContainer = Loader.instance().activeModContainer();
-		String path = output.getItem().getRegistryName().getResourcePath();
+		String path = output.getItem().getRegistryName().getPath();
 		ResourceLocation recipeLoc = new ResourceLocation(activeContainer.getModId(), path+"_"+getDeepToStringHashBase36(input));
 		return recipeLoc;
 	}

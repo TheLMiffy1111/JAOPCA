@@ -44,7 +44,7 @@ public class BlockProperties implements IProperties {
 	public int harvestLevel = -1;
 	public boolean full = true;
 	public boolean opaque = true;
-	public BlockRenderLayer layer = BlockRenderLayer.CUTOUT;
+	public BlockRenderLayer layer = BlockRenderLayer.TRANSLUCENT;
 	public ToIntFunction<IOreEntry> flammabFunc = entry->0;
 	public ToIntFunction<IOreEntry> fireSpdFunc = entry->0;
 	public boolean fireSource = false;

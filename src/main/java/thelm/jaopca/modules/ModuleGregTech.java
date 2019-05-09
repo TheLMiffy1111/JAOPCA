@@ -147,7 +147,7 @@ public class ModuleGregTech extends ModuleBase {
 				RecipeMaps.MACERATOR_RECIPES.recipeBuilder().
 				input("ore"+entry.getOreName(), 1).
 				outputs(Utils.getJAOPCAOrOreStack("crushedGreg", "crushed", entry, 2)).
-				chancedOutput(Utils.getOreStack("dust", entry, 1), 1000).
+				chancedOutput(Utils.getOreStack("dust", entry, 1), 1400, 850).
 				duration(200).EUt(12).
 				buildAndRegister();
 
@@ -185,7 +185,7 @@ public class ModuleGregTech extends ModuleBase {
 				RecipeMaps.MACERATOR_RECIPES.recipeBuilder().
 				input("crushedPurified"+entry.getOreName(), 1).
 				outputs(Utils.getOreStack("dust", entry, 1)).
-				chancedOutput(Utils.getOreStackSecondExtra("dust", entry, 1), 1000).
+				chancedOutput(Utils.getOreStackSecondExtra("dust", entry, 1), 1400, 850).
 				duration(40).EUt(12).
 				buildAndRegister();
 
@@ -227,7 +227,7 @@ public class ModuleGregTech extends ModuleBase {
 				RecipeMaps.MACERATOR_RECIPES.recipeBuilder().
 				input("crushedCentrifuged"+entry.getOreName(), 1).
 				outputs(Utils.getOreStack("dust", entry, 1)).
-				chancedOutput(Utils.getOreStackThirdExtra("dustSmall", entry, 1), 1000).
+				chancedOutput(Utils.getOreStackThirdExtra("dustSmall", entry, 1), 1400, 850).
 				duration(40).EUt(12).
 				buildAndRegister();
 
@@ -253,7 +253,7 @@ public class ModuleGregTech extends ModuleBase {
 				RecipeMaps.MACERATOR_RECIPES.recipeBuilder().
 				input("crushed"+entry.getOreName(), 1).
 				outputs(Utils.getOreStack("dustImpure", entry, 1)).
-				chancedOutput(Utils.getOreStackExtra("dust", entry, 1), 1000).
+				chancedOutput(Utils.getOreStackExtra("dust", entry, 1), 1400, 850).
 				duration(100).EUt(12).
 				buildAndRegister();
 
@@ -287,7 +287,7 @@ public class ModuleGregTech extends ModuleBase {
 				RecipeMaps.MACERATOR_RECIPES.recipeBuilder().
 				input("crushedPurified"+entry.getOreName(), 1).
 				outputs(Utils.getOreStack("dustPure", entry, 1)).
-				chancedOutput(Utils.getOreStackSecondExtra("dustTiny", entry, 1), 1000).
+				chancedOutput(Utils.getOreStackSecondExtra("dustTiny", entry, 1), 1400, 850).
 				duration(40).EUt(16).
 				buildAndRegister();
 
@@ -314,12 +314,12 @@ public class ModuleGregTech extends ModuleBase {
 			if(!MATERIAL_BLACKLIST.contains(entry.getOreName())) {
 				RecipeMaps.SIFTER_RECIPES.recipeBuilder().
 				input("crushedPurified"+entry.getOreName(), 1).
-				chancedOutput(Utils.getOreStack("gemExquisite", entry, 1), 100).
-				chancedOutput(Utils.getOreStack("gemFlawless", entry, 1), 400).
-				chancedOutput(Utils.getOreStack("gem", entry, 1), 1500).
-				chancedOutput(Utils.getOreStack("gemFlawed", entry, 1), 2000).
-				chancedOutput(Utils.getOreStack("gemChipped", entry, 1), 4000).
-				chancedOutput(Utils.getOreStack("dust", entry, 1), 5000).
+				chancedOutput(Utils.getOreStack("gemExquisite", entry, 1), 100, 30).
+				chancedOutput(Utils.getOreStack("gemFlawless", entry, 1), 400, 70).
+				chancedOutput(Utils.getOreStack("gem", entry, 1), 1500, 300).
+				chancedOutput(Utils.getOreStack("gemFlawed", entry, 1), 2000, 240).
+				chancedOutput(Utils.getOreStack("gemChipped", entry, 1), 4000, 320).
+				chancedOutput(Utils.getOreStack("dust", entry, 1), 5000, 600).
 				duration(800).EUt(16).
 				buildAndRegister();
 
@@ -382,14 +382,14 @@ public class ModuleGregTech extends ModuleBase {
 				RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder().
 				input("dust"+entry.getOreName(), 1).
 				fluidInputs(ModHandler.getWater(200)).
-				chancedOutput(Utils.getOreStack("gem", entry, 1), 7000).
+				chancedOutput(Utils.getOreStack("gem", entry, 1), 7000, 1000).
 				duration(2000).EUt(24).
 				buildAndRegister();
 
 				RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder().
 				input("dust"+entry.getOreName(), 1).
 				fluidInputs(ModHandler.getDistilledWater(200)).
-				chancedOutput(Utils.getOreStack("gem", entry, 1), 9000).
+				chancedOutput(Utils.getOreStack("gem", entry, 1), 8000, 1000).
 				duration(1500).EUt(24).
 				buildAndRegister();
 				break;

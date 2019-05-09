@@ -70,6 +70,6 @@ public class ItemBlockBase extends ItemBlock implements IItemBlockWithProperty {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return Utils.smartLocalize(this.getUnlocalizedName()+".name", this.getUnlocalizedName()+".%s.name", this.getOreEntry());
+		return Utils.smartLocalize(this.getTranslationKey()+".name", this.getTranslationKey()+".%s.name", this.getOreEntry());
 	}
 }

@@ -43,7 +43,7 @@ public class ModuleMinestrappolation extends ModuleBase {
 	public void init() {
 		CrusherRecipes recipes = CrusherRecipes.instance();
 		for(IOreEntry entry : JAOPCAApi.MODULE_TO_ORES_MAP.get(this)) {
-			List<ItemStack> ores = Utils.getOres("ore"+entry.getOreName()).stream().filter(stack->!stack.getItem().getRegistryName().getResourceDomain().equals("minestrapp")).collect(Collectors.toList());
+			List<ItemStack> ores = Utils.getOres("ore"+entry.getOreName()).stream().filter(stack->!stack.getItem().getRegistryName().getNamespace().equals("minestrapp")).collect(Collectors.toList());
 			ItemStack extra = ORE_EXTRAS.get(entry);
 			int chance = ORE_CHANCES.get(entry);
 			switch(entry.getOreType()) {

@@ -174,7 +174,7 @@ public class OreColorer {
 	}
 
 	private static int getColorMultiplier(ItemStack itemStack, BakedQuad quad) {
-		return Minecraft.getMinecraft().getItemColors().getColorFromItemstack(itemStack, quad.getTintIndex());
+		return Minecraft.getMinecraft().getItemColors().colorMultiplier(itemStack, quad.getTintIndex());
 	}
 
 	public static boolean getHasEffect(String prefix, String oreName) {

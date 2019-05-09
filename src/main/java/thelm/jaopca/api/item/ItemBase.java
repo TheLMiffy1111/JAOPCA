@@ -16,7 +16,7 @@ public class ItemBase extends Item implements IItemWithProperty {
 	public boolean hasEffect = false;
 
 	public ItemBase(ItemEntry itemEntry, IOreEntry oreEntry) {
-		setUnlocalizedName("jaopca."+itemEntry.name);
+		setTranslationKey("jaopca."+itemEntry.name);
 		setRegistryName("jaopca:item_"+itemEntry.name+oreEntry.getOreName());
 		this.oreEntry = oreEntry;
 		this.itemEntry = itemEntry;
@@ -68,6 +68,6 @@ public class ItemBase extends Item implements IItemWithProperty {
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return Utils.smartLocalize(this.getUnlocalizedName()+".name", this.getUnlocalizedName()+".%s.name", this.getOreEntry());
+		return Utils.smartLocalize(this.getTranslationKey()+".name", this.getTranslationKey()+".%s.name", this.getOreEntry());
 	}
 }

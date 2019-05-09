@@ -80,10 +80,10 @@ public final class ModelFluidTextured implements IModel {
 
 		@Override
 		public boolean accepts(ResourceLocation modelLocation) {
-			return modelLocation.getResourceDomain().equals(JAOPCA.MOD_ID) && (
-					modelLocation.getResourcePath().equals("fluid") ||
-					modelLocation.getResourcePath().equals("models/block/fluid") ||
-					modelLocation.getResourcePath().equals("models/item/fluid"));
+			return modelLocation.getNamespace().equals(JAOPCA.MOD_ID) && (
+					modelLocation.getPath().equals("fluid") ||
+					modelLocation.getPath().equals("models/block/fluid") ||
+					modelLocation.getPath().equals("models/item/fluid"));
 		}
 
 		@Override
@@ -226,7 +226,7 @@ public final class ModelFluidTextured implements IModel {
 				// sides
 
 				for(int i = 0; i < 4; i++) {
-					side = EnumFacing.getHorizontal((5 - i) % 4);
+					side = EnumFacing.byHorizontalIndex((5 - i) % 4);
 					BakedQuad q[] = new BakedQuad[2];
 
 					for(int k = 0; k < 2; k++) {
@@ -286,7 +286,7 @@ public final class ModelFluidTextured implements IModel {
 					break;
 				}
 				case NORMAL:
-					builder.put(e, side.getFrontOffsetX(), side.getFrontOffsetY(), side.getFrontOffsetZ(), 0f);
+					builder.put(e, side.getXOffset(), side.getYOffset(), side.getZOffset(), 0f);
 					break;
 				default:
 					builder.put(e);

@@ -280,7 +280,7 @@ public class ModuleFoundry extends ModuleBase {
 		}
 
 		@Override
-		public void onEntityCollidedWithBlock(World wWorld, BlockPos pos, IBlockState state, Entity entity) {
+		public void onEntityCollision(World wWorld, BlockPos pos, IBlockState state, Entity entity) {
 			if(entity instanceof EntityLivingBase) {
 				entity.motionX *= 0.5;
 				entity.motionZ *= 0.5;

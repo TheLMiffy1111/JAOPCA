@@ -426,13 +426,13 @@ public class RegistryCore {
 			initRemaps = false;
 		}
 		main:for(Mapping<T> missingMapping : missingMappings) {
-			String[] names = missingMapping.key.getResourcePath().split("_");
+			String[] names = missingMapping.key.getPath().split("_");
 			if(names.length == 2) {
 				for(Pair<String, String> pair : REMAPS) {
 					if(names[1].startsWith(pair.getLeft())) {
 						String oreName = names[1].substring(pair.getLeft().length());
 						if(JAOPCAApi.ORE_ENTRY_LIST.stream().anyMatch(entry->entry.getOreName().equalsIgnoreCase(oreName))) {
-							ResourceLocation remap = new ResourceLocation(missingMapping.key.getResourceDomain(), names[0]+'_'+pair.getRight()+oreName);
+							ResourceLocation remap = new ResourceLocation(missingMapping.key.getNamespace(), names[0]+'_'+pair.getRight()+oreName);
 							//Had to do this because apparently Forge can't find my stuff
 							IForgeRegistry<T> reg = GameRegistry.<T>findRegistry(missingMapping.registry.getRegistrySuperType());
 							if(reg.containsKey(remap)) {

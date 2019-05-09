@@ -64,7 +64,7 @@ repositories {
     }
 }
 
-version = "1.12.2-2.2.8.101"
+version = "1.12.2-2.2.8.102"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -76,7 +76,7 @@ compileJava {
 minecraft {
     version = "1.12.2-14.23.5.2824"
     runDir = "run"
-    mappings = "snapshot_20170624"
+    mappings = "stable_39"
     makeObfSourceJar = false
 }
 
@@ -96,7 +96,7 @@ dependencies {
     deobfCompile("TechReborn:TechReborn-ModCompatibility-1.12.2:1.1.0.5:universal") {
         transitive = false
     }
-    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.1.351:universal"
+    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.2.353:universal"
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.2.3:universal"
     deobfCompile("cofh:CoFHCore:1.12.2-4.5.3.20:universal") {
         transitive = false
@@ -135,7 +135,7 @@ dependencies {
     deobfCompile("net.ndrei:bc-ore-processing:7.99.15-1.2") {
         transitive = false
     }
-    deobfCompile("appeng:appliedenergistics2:rv5-stable-11") {
+    deobfCompile("appeng:appliedenergistics2:rv6-stable-6") {
         transitive = false
     }
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.25-B40_1.12"
@@ -147,12 +147,13 @@ dependencies {
     deobfCompile "embers-rekindled:EmbersRekindled:1.13"
     deobfCompile "ignition-foundry:Foundry:1.12.2:3.3.5"
     deobfCompile "futurepack:Futurepack:1.12.2:26.4.57"
-    deobfCompile "gregtechce:gregtech:1.12.2:1.6.9.382"
+    deobfCompile "gregtechce:gregtech:1.12.2:1.8.1.399"
     deobfCompile "libvulpes:LibVulpes-1.12.2-0.4.0:53:universal"
     deobfCompile "magneticraft:Magneticraft_1.12:2.5.2:dev"
     deobfCompile "mekanism:Mekanism:1.12.2:9.6.7.360"
     deobfCompile "modelloader:modelloader:1.1.5"
     deobfCompile "placebo:Placebo:1.12.2:1.6.0"
+	deobfCompile "sky-compression:Sky:Compression:1.2.2.5"
     deobfCompile "sky-resources:skyresources:2.3.8"
     deobfCompile "static-power:StaticPower:2.0.2.7"
     deobfCompile "thaumcraft:Thaumcraft:1.12.2:6.1.BETA26"

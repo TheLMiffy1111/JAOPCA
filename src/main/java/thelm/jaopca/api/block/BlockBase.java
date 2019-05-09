@@ -28,7 +28,7 @@ public class BlockBase extends Block implements IBlockWithProperty {
 
 	public BlockBase(Material material, MapColor mapColor, ItemEntry itemEntry, IOreEntry oreEntry) {
 		super(material, mapColor);
-		setUnlocalizedName("jaopca."+itemEntry.name);
+		setTranslationKey("jaopca."+itemEntry.name);
 		setRegistryName("jaopca:block_"+itemEntry.name+oreEntry.getOreName());
 		this.oreEntry = oreEntry;
 		this.itemEntry = itemEntry;
@@ -175,7 +175,7 @@ public class BlockBase extends Block implements IBlockWithProperty {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return layer;
 	}
 

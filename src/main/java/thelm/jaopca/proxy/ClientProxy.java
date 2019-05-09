@@ -25,20 +25,15 @@ public class ClientProxy extends CommonProxy {
 
 	public static final CreativeTabs JAOPCA_TAB = new CreativeTabs("jaopca") {
 		@Override
-		public ItemStack getTabIconItem() {
+		public ItemStack createIcon() {
 			return new ItemStack(Items.GLOWSTONE_DUST);
 		}
-
-		@Override
-		public boolean hasSearchBar() {
-			return true;
-		}
-	}.setBackgroundImageName("item_search.png");
+	};
 
 	public static final IItemColor JAOPCA_ITEM_COLOR = new IItemColor() {
 		@Override
-		public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-			if(tintIndex == 0) {
+		public int colorMultiplier(ItemStack stack, int tintIndex) {
+			if(tintIndex == 0 || tintIndex == 2) {
 				if(stack.getItem() instanceof IObjectWithProperty) {
 					return ((IObjectWithProperty)stack.getItem()).getOreEntry().getColor();
 				}
