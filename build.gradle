@@ -11,6 +11,7 @@ buildscript {
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
+apply plugin: "maven"
 
 repositories {
     jcenter()
@@ -56,7 +57,6 @@ minecraft {
 
 dependencies {
     minecraft "net.minecraftforge:forge:1.13.2-25.0.149"
-    deobf("mezz.jei:jei-1.13.2:5.0.0.20")
 }
 
 jar {
