@@ -14,6 +14,7 @@ import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
@@ -43,18 +44,20 @@ public class CommonEventHandler {
 		BlockFormType.init();
 		ItemFormType.init();
 		//FluidFormType.init();
-		DataCollector.collectData();
-		ModuleHandler.findModules();
-		ConfigHandler.setupMainConfig();
-		MaterialHandler.findMaterials();
-		ConfigHandler.setupMaterialConfigs();
-		FormTypeHandler.setupGson();
-		ConfigHandler.setupCustomFormConfig();
-		ConfigHandler.setupModuleConfigsPre();
-		FormHandler.collectForms();
-		ModuleHandler.computeValidMaterials();
-		FormHandler.computeValidMaterials();
-		ConfigHandler.setupModuleConfigs();
+		DeferredWorkQueue.runLater(()->{
+			DataCollector.collectData();
+			ModuleHandler.findModules();
+			ConfigHandler.setupMainConfig();
+			MaterialHandler.findMaterials();
+			ConfigHandler.setupMaterialConfigs();
+			FormTypeHandler.setupGson();
+			ConfigHandler.setupCustomFormConfig();
+			ConfigHandler.setupModuleConfigsPre();
+			FormHandler.collectForms();
+			ModuleHandler.computeValidMaterials();
+			FormHandler.computeValidMaterials();
+			ConfigHandler.setupModuleConfigs();
+		});
 	}
 
 	@SubscribeEvent
@@ -72,7 +75,9 @@ public class CommonEventHandler {
 
 	@SubscribeEvent
 	public void onCommonSetup(FMLCommonSetupEvent event) {
-		ModuleHandler.onCommonSetup(event);
+		DeferredWorkQueue.runLater(()->{
+			ModuleHandler.onCommonSetup(event);
+		});
 	}
 
 	@SubscribeEvent

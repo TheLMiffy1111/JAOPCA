@@ -87,6 +87,12 @@ public abstract class JAOPCAApi {
 
 	public abstract <T extends IFormType<?>> T registerFormType(T type);
 
+	public abstract boolean registerDefinedBlockTag(ResourceLocation key);
+
+	public abstract boolean registerDefinedItemTag(ResourceLocation key);
+
+	public abstract boolean registerDefinedFluidTag(ResourceLocation key);
+
 	public abstract boolean registerBlockTag(ResourceLocation key, Supplier<Block> blockSupplier);
 
 	public abstract boolean registerBlockTag(ResourceLocation key, Block block);

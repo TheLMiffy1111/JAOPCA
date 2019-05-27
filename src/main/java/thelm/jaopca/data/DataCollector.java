@@ -43,6 +43,10 @@ public class DataCollector {
 			ModList.get().getModFiles().stream().
 			map(mf->new ModFileResourcePack(mf.getFile())).
 			forEach(RESOURCE_PACKS::add);
+			/*
+			 * Fabric:
+			 * ModResourcePackUtil.appendModResourcePacks(RESOURCE_PACKS, ResourcePackType.SERVER_DATA);
+			 */
 		}
 		for(ResourceLocation location : getAllDataResourceLocations("tags", name->name.endsWith(".json"))) {
 			String namespace = location.getNamespace();

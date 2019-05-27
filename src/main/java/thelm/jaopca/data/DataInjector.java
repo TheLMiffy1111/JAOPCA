@@ -21,7 +21,6 @@ import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.resources.IPackFinder;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.resources.ResourcePackInfo;
-import net.minecraft.resources.ResourcePackInfo.IFactory;
 import net.minecraft.resources.ResourcePackType;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
@@ -121,7 +120,7 @@ public class DataInjector {
 		public static final PackFinder INSTANCE = new PackFinder();
 
 		@Override
-		public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> packList, IFactory<T> factory) {
+		public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> packList, ResourcePackInfo.IFactory<T> factory) {
 			T packInfo = ResourcePackInfo.createResourcePack("inmemory:jaopca", true, ()->{
 				InMemoryResourcePack pack = new InMemoryResourcePack("inmemory:jaopca", true);
 				BLOCK_TAGS_INJECT.asMap().forEach((location, suppliers)->{
@@ -143,7 +142,7 @@ public class DataInjector {
 					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), builder.serialize());
 				});
 				return pack;
-			}, (IFactory<T>)factory, ResourcePackInfo.Priority.BOTTOM);
+			}, factory, ResourcePackInfo.Priority.BOTTOM);
 			if(packInfo != null) {
 				packList.put("inmemory:jaopca", packInfo);
 			}

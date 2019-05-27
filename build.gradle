@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.0+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.0.115', changing: true
     }
 }
 
@@ -18,6 +18,9 @@ repositories {
         url = "https://dvs1.progwml6.com/files/maven"
     }
     maven {
+        url = "https://jitpack.io"
+    }
+    maven {
         url = "https://minecraft.curseforge.com/api/maven/"
     }
 }
@@ -26,7 +29,7 @@ sourceSets {
     main
 }
 
-version = "3.0.0.103"
+version = "3.0.0.3"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.13.2"
 
@@ -52,8 +55,8 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.13.2-25.0.149'
-    deobf "mezz.jei:jei-1.13.2:5.0.0.20"
+    minecraft "net.minecraftforge:forge:1.13.2-25.0.149"
+    deobf("mezz.jei:jei-1.13.2:5.0.0.20")
 }
 
 jar {

@@ -176,6 +176,21 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerDefinedBlockTag(ResourceLocation key) {
+		return DataCollector.getDefinedTags("block").add(key);
+	}
+
+	@Override
+	public boolean registerDefinedItemTag(ResourceLocation key) {
+		return DataCollector.getDefinedTags("item").add(key);
+	}
+
+	@Override
+	public boolean registerDefinedFluidTag(ResourceLocation key) {
+		return DataCollector.getDefinedTags("fluid").add(key);
+	}
+
+	@Override
 	public boolean registerBlockTag(ResourceLocation key, Supplier<Block> blockSupplier) {
 		if(ConfigHandler.BLOCK_TAG_BLACKLIST.contains(key)) {
 			return false;
