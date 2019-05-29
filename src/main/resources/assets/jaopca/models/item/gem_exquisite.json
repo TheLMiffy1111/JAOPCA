@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/gem_exquisite"
+        "layer0": "jaopca:items/gem_exquisite",
+        "layer1": "jaopca:items/gem_exquisite_overlay"
     }
 }

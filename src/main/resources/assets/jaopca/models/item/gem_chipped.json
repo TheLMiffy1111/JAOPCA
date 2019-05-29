@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/gem_chipped"
+        "layer0": "jaopca:items/gem_chipped",
+        "layer1": "jaopca:items/gem_chipped_overlay"
     }
 }

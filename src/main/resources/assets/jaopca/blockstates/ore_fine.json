@@ -1,9 +1,10 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "jaopca:cube_colored",
+        "model": "jaopca:cube_overlayed",
         "textures": {
-            "base": "jaopca:blocks/ore_dust"
+            "base": "jaopca:blocks/ore_dust",
+            "overlay": "jaopca:blocks/ore_dust_overlay"
         }
     },
     "variants": {

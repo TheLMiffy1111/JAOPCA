@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/crystal_shard"
+        "layer0": "jaopca:items/crystal_shard",
+        "layer1": "jaopca:items/crystal_shard_overlay"
     }
 }

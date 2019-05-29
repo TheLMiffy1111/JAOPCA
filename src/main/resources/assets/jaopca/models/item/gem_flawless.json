@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:items/gem_flawless"
+        "layer0": "jaopca:items/gem_flawless",
+        "layer1": "jaopca:items/gem_flawless_overlay"
     }
 }
