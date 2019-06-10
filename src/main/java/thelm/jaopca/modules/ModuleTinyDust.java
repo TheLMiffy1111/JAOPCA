@@ -100,6 +100,10 @@ public class ModuleTinyDust extends ModuleBase {
 						"dust"+entry.getOreName(),
 				});
 			}
+
+			if(Loader.isModLoaded("ic2")) {
+				ModuleIndustrialCraft.addCompressorRecipe(Utils.getOreStack("dustTiny", entry, 9), Utils.getOreStack("dust", entry, 1));
+			}
 		}
 	}
 }
