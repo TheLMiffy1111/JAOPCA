@@ -122,4 +122,16 @@ public interface IDynamicSpecConfig extends CommentedConfig {
 	char getDefinedChar(String path, char defaultValue, Predicate<Character> validator, String comment);
 
 	char getDefinedChar(List<String> path, char defaultValue, Predicate<Character> validator, String comment);
+
+	<T extends Enum<T>> T getDefinedEnum(List<String> path, Class<T> enumType, T defaultValue, String comment);
+
+	<T extends Enum<T>> T getDefinedEnum(String path, Class<T> enumType, T defaultValue, String comment);
+
+	<T extends Enum<T>> T getDefinedEnum(List<String> path, Class<T> enumType, T defaultValue, Collection<T> validValues, String comment);
+
+	<T extends Enum<T>> T getDefinedEnum(String path, Class<T> enumType, T defaultValue, Collection<T> validValues, String comment);
+
+	<T extends Enum<T>> T getDefinedEnum(List<String> path, Class<T> enumType, T defaultValue, Predicate<T> validator, String comment);
+
+	<T extends Enum<T>> T getDefinedEnum(String path, Class<T> enumType, T defaultValue, Predicate<T> validator, String comment);
 }

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 
 import com.electronwill.nightconfig.core.CommentedConfig;
+import com.electronwill.nightconfig.core.EnumGetMethod;
 import com.electronwill.nightconfig.core.file.FileConfig;
 import com.electronwill.nightconfig.core.utils.CommentedConfigWrapper;
 import com.google.common.base.Predicates;
@@ -371,6 +372,42 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 			config.setComment(path, comment);
 		}
 		return config.getChar(path);
+	}
+
+	@Override
+	public <T extends Enum<T>> T getDefinedEnum(String path, Class<T> enumType, T defaultValue, String comment) {
+		return getDefinedEnum(split(path), enumType, defaultValue, comment);
+	}
+
+	@Override
+	public <T extends Enum<T>> T getDefinedEnum(List<String> path, Class<T> enumType, T defaultValue, String comment) {
+		return getDefinedEnum(path, enumType, defaultValue, Predicates.alwaysTrue(), comment);
+	}
+
+	@Override
+	public <T extends Enum<T>> T getDefinedEnum(String path, Class<T> enumType, T defaultValue, Collection<T> validValues, String comment) {
+		return getDefinedEnum(split(path), enumType, defaultValue, validValues, comment);
+	}
+
+	@Override
+	public <T extends Enum<T>> T getDefinedEnum(List<String> path, Class<T> enumType, T defaultValue, Collection<T> validValues, String comment) {
+		return getDefinedEnum(path, enumType, defaultValue, validValues::contains, comment);
+	}
+
+	@Override
+	public <T extends Enum<T>> T getDefinedEnum(String path, Class<T> enumType, T defaultValue, Predicate<T> validator, String comment) {
+		return getDefinedEnum(split(path), enumType, defaultValue, validator, comment);
+	}
+
+	@Override
+	public <T extends Enum<T>> T getDefinedEnum(List<String> path, Class<T> enumType, T defaultValue, Predicate<T> validator, String comment) {
+		if(!config.contains(path) || !(config.get(path) instanceof CharSequence) || !(config.get(path) instanceof Number) || !validator.test(config.getEnum(path, enumType, EnumGetMethod.ORDINAL_OR_NAME_IGNORECASE))) {
+			config.set(path, defaultValue.name());
+		}
+		if(comment != null) {
+			config.setComment(path, comment);
+		}
+		return config.getEnum(path, enumType, EnumGetMethod.ORDINAL_OR_NAME_IGNORECASE);
 	}
 
 	static List<String> split(String str) {

@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "jaopca:item/nuggets"
+        "layer0": "jaopca:item/nuggets",
+        "layer1": "jaopca:item/nuggets_overlay"
     }
 }

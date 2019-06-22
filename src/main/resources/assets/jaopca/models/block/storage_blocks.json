@@ -1,6 +1,7 @@
 {
-    "parent": "jaopca:block/cube_colored",
+    "parent": "jaopca:block/cube_overlayed",
     "textures": {
         "base": "jaopca:block/storage_blocks"
+        "overlay": "jaopca:block/storage_blocks_overlay"
     }
 }

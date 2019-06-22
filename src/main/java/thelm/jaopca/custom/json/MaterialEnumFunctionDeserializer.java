@@ -39,25 +39,54 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 		if(parameterizedType instanceof Class && ((Class<?>)parameterizedType).isEnum()) {
 			Map<String, Enum<?>> stringToEnum = new TreeMap<>();
 			Map<Enum<?>, String> enumToString = new TreeMap<>();
+			Enum<?>[] values = ((Class<Enum<?>>)parameterizedType).getEnumConstants();
 			for(Enum<?> value : ((Class<Enum<?>>)parameterizedType).getEnumConstants()) {
 				stringToEnum.put(value.name().toLowerCase(Locale.US), value);
-				enumToString.put(value, value.name().toLowerCase(Locale.US));
+				enumToString.put(value, value.name());
 			}
 			JsonObject json = helper.getJsonObject(jsonElement, "object");
-			String defaultString = helper.getString(json, "default");
-			Enum<?> defaultValue = stringToEnum.get(defaultString.toLowerCase(Locale.US));
-			if(defaultValue == null) {
-				throw new JsonSyntaxException("Invalid enum "+defaultString);
+			Enum<?> defaultValue = null;
+			if(helper.isString(json, "default")) {
+				String defaultString = helper.getString(json, "default");
+				Enum<?> value = stringToEnum.get(defaultString.toLowerCase(Locale.US));
+				if(value == null) {
+					throw new JsonSyntaxException("Invalid enum "+defaultString);
+				}
+				defaultValue = value;
+			}
+			else if(helper.isNumber(json, "default")) {
+				int defaultOrdinal = helper.getInt(json, "default");
+				if(defaultOrdinal >= values.length) {
+					throw new JsonSyntaxException("Invalid enum ordinal "+defaultOrdinal);
+				}
+				defaultValue = values[defaultOrdinal];
+			}
+			else {
+				throw new JsonSyntaxException("Unable to deserialize enum");
 			}
 			Object2ObjectMap<IMaterial, Enum<?>> map = new Object2ObjectRBTreeMap<>();
 			map.defaultReturnValue(defaultValue);
 			if(json.has("materialTypes")) {
 				JsonObject materialTypesJson = helper.getJsonObject(json, "materialTypes");
 				for(Map.Entry<String, JsonElement> entry : materialTypesJson.entrySet()) {
-					String materialTypeString = helper.getString(entry.getValue(), "element");
-					Enum<?> materialTypeValue = stringToEnum.get(materialTypeString.toLowerCase(Locale.US));
-					if(materialTypeValue == null) {
-						throw new JsonSyntaxException("Invalid enum "+materialTypeString);
+					Enum<?> materialTypeValue;
+					if(helper.isString(entry.getValue())) {
+						String materialTypeString = helper.getString(entry.getValue(), "element");
+						Enum<?> value = stringToEnum.get(materialTypeString.toLowerCase(Locale.US));
+						if(value == null) {
+							throw new JsonSyntaxException("Invalid enum "+materialTypeString);
+						}
+						materialTypeValue = value;
+					}
+					else if(helper.isNumber(entry.getValue())) {
+						int materialTypeOrdinal = helper.getInt(entry.getValue(), "element");
+						if(materialTypeOrdinal >= values.length) {
+							throw new JsonSyntaxException("Invalid enum ordinal "+materialTypeOrdinal);
+						}
+						materialTypeValue = values[materialTypeOrdinal];
+					}
+					else {
+						throw new JsonSyntaxException("Unable to deserialize enum");
 					}
 					switch(entry.getKey()) {
 					case "ingot":
@@ -87,10 +116,24 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 				JsonObject materialsJson = helper.getJsonObject(json, "materials");
 				for(Map.Entry<String, JsonElement> entry : materialsJson.entrySet()) {
 					if(MaterialHandler.containsMaterial(entry.getKey())) {
-						String materialString = helper.getString(entry.getValue(), "element");
-						Enum<?> materialValue = stringToEnum.get(materialString.toLowerCase(Locale.US));
-						if(materialValue == null) {
-							throw new JsonSyntaxException("Invalid enum "+materialString);
+						Enum<?> materialValue;
+						if(helper.isString(entry.getValue())) {
+							String materialString = helper.getString(entry.getValue(), "element");
+							Enum<?> value = stringToEnum.get(materialString.toLowerCase(Locale.US));
+							if(value == null) {
+								throw new JsonSyntaxException("Invalid enum "+materialString);
+							}
+							materialValue = value;
+						}
+						else if(helper.isNumber(entry.getValue())) {
+							int materialOrdinal = helper.getInt(entry.getValue(), "element");
+							if(materialOrdinal >= values.length) {
+								throw new JsonSyntaxException("Invalid enum ordinal "+materialOrdinal);
+							}
+							materialValue = values[materialOrdinal];
+						}
+						else {
+							throw new JsonSyntaxException("Unable to deserialize enum");
 						}
 						map.put(MaterialHandler.getMaterial(entry.getKey()), materialValue);
 					}
@@ -107,7 +150,7 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 						comment = "";
 					}
 					ModuleCustom.instance.addCustomConfigDefiner((material, config)->{
-						Enum<?> value = stringToEnum.get(config.getDefinedString(path, enumToString.get(map.get(material)), comment).toLowerCase(Locale.US));
+						Enum<?> value = config.getDefinedEnum(path, (Class<Enum>)parameterizedType, (Enum)map.get(material), comment);
 						if(value != null) {
 							map.put(material, value);
 						}

@@ -45,7 +45,7 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private boolean isFull = true;
 	private VoxelShape shape = VoxelShapes.fullCube();
 	private VoxelShape raytraceShape = VoxelShapes.empty();
-	private BlockRenderLayer renderLayer = BlockRenderLayer.CUTOUT;
+	private BlockRenderLayer renderLayer = BlockRenderLayer.TRANSLUCENT;
 	private Function<IMaterial, ToolType> harvestToolFunction = material->ToolType.PICKAXE;
 	private ToIntFunction<IMaterial> harvestLevelFunction = material->0;
 	private Predicate<IMaterial> isBeaconBaseFunction = material->false;

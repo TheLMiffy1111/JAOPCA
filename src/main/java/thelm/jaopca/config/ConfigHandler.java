@@ -107,19 +107,19 @@ public class ConfigHandler {
 		mainConfig.setComment("blockTags", "Configurations related to block tags.");
 		BLOCK_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.blacklist", new ArrayList<>(),
 				"List of block tags that should not be added."), ResourceLocation::new));
-		DataCollector.getDefinedTags("block").addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags("blocks").addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.customDefined", new ArrayList<>(),
 				"List of block tags that should be considered as defined."), ResourceLocation::new));
 
 		mainConfig.setComment("itemTags", "Configurations related to item tags.");
 		ITEM_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.blacklist", new ArrayList<>(),
 				"List of item tags that should not be added."), ResourceLocation::new));
-		DataCollector.getDefinedTags("item").addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags("items").addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.customDefined", new ArrayList<>(),
 				"List of item tags that should be considered as defined."), ResourceLocation::new));
 
 		mainConfig.setComment("fluidTags", "Configurations related to fluid tags.");
 		FLUID_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.blacklist", new ArrayList<>(),
 				"List of fluid tags that should not be added."), ResourceLocation::new));
-		DataCollector.getDefinedTags("fluid").addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags("fluids").addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.customDefined", new ArrayList<>(),
 				"List of fluid tags that should be considered as defined."), ResourceLocation::new));
 
 		mainConfig.setComment("recipes", "Configurations related to recipes.");
