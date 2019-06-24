@@ -23,16 +23,16 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 
 @JAOPCAModule
-public class ModuleCustom implements IModule {
+public class CustomModule implements IModule {
 
 	private static final Logger LOGGER = LogManager.getLogger();
-	public static ModuleCustom instance;
+	public static CustomModule instance;
 
 	private Gson gson = new Gson();
 	private final List<BiConsumer<IMaterial, IDynamicSpecConfig>> customConfigDefiners = new ArrayList<>();
 	private final List<IFormRequest> formRequests = new ArrayList<>();
 
-	public ModuleCustom() {
+	public CustomModule() {
 		if(instance == null) {
 			instance = this;
 		}
@@ -55,7 +55,9 @@ public class ModuleCustom implements IModule {
 		formRequests.clear();
 		try(InputStreamReader reader = new InputStreamReader(new FileInputStream(customFormConfigFile), StandardCharsets.UTF_8)) {
 			IFormRequest[] requests = gson.fromJson(reader, IFormRequest[].class);
-			Collections.addAll(formRequests, requests);
+			if(requests != null) {
+				Collections.addAll(formRequests, requests);
+			}
 		}
 		catch(Exception e) {
 			LOGGER.error("Unable to read custom json", e);

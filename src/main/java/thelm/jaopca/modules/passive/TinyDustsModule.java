@@ -19,13 +19,13 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 
 @JAOPCAModule
-public class ModuleSmallDusts implements IModule {
+public class TinyDustsModule implements IModule {
 
-	private final IForm smallDustForm = JAOPCAApi.instance().newForm(this, "small_dusts", JAOPCAApi.instance().itemFormType());
+	private final IForm tinyDustForm = JAOPCAApi.instance().newForm(this, "tiny_dusts", JAOPCAApi.instance().itemFormType());
 
 	@Override
 	public String getName() {
-		return "small_dusts";
+		return "tiny_dusts";
 	}
 
 	@Override
@@ -42,23 +42,24 @@ public class ModuleSmallDusts implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(smallDustForm.toRequest());
+		return Collections.singletonList(tinyDustForm.toRequest());
 	}
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = JAOPCAApi.instance();
-		for(IMaterial material : smallDustForm.getMaterials()) {
-			if(material.getType().isNone()) {
+		for(IMaterial material : tinyDustForm.getMaterials()) {
+			if(material.getType().isDummy()) {
 				continue;
 			}
 			ResourceLocation dustLocation = api.miscHelper().getTagLocation("dusts", material.getName());
-			IItemInfo smallDustInfo = api.itemFormType().getMaterialFormInfo(smallDustForm, material);
+			IItemInfo tinyDustInfo = api.itemFormType().getMaterialFormInfo(tinyDustForm, material);
 			api.registerShapelessRecipe(
-					new ResourceLocation(JAOPCA.MOD_ID, "small_dusts.to_dust."+material.getName()),
+					new ResourceLocation(JAOPCA.MOD_ID, "tiny_dusts.to_dust."+material.getName()),
 					dustLocation, 1, new Object[] {
-							smallDustInfo, smallDustInfo,
-							smallDustInfo, smallDustInfo,
+							tinyDustInfo, tinyDustInfo, tinyDustInfo,
+							tinyDustInfo, tinyDustInfo, tinyDustInfo,
+							tinyDustInfo, tinyDustInfo, tinyDustInfo,
 					});
 		}
 	}

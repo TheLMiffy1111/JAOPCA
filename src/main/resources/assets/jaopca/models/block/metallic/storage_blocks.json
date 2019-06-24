@@ -1,0 +1,7 @@
+{
+    "parent": "jaopca:block/cube_overlayed",
+    "textures": {
+        "base": "jaopca:block/metallic/storage_blocks",
+        "overlay": "jaopca:block/metallic/storage_blocks_overlay"
+    }
+}

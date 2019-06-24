@@ -6,9 +6,9 @@ import net.minecraft.util.text.ITextComponent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 
-public abstract class ItemMaterialForm extends Item implements IMaterialForm {
+public abstract class MaterialFormItem extends Item implements IMaterialForm {
 
-	public ItemMaterialForm(Item.Properties properties) {
+	public MaterialFormItem(Item.Properties properties) {
 		super(properties);
 	}
 

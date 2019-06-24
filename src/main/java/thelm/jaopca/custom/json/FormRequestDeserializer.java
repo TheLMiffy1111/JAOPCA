@@ -10,7 +10,7 @@ import com.google.gson.JsonParseException;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.forms.FormRequest;
-import thelm.jaopca.modules.ModuleCustom;
+import thelm.jaopca.modules.CustomModule;
 import thelm.jaopca.utils.JsonHelper;
 
 public class FormRequestDeserializer implements JsonDeserializer<IFormRequest> {
@@ -25,7 +25,7 @@ public class FormRequestDeserializer implements JsonDeserializer<IFormRequest> {
 			return context.<IForm>deserialize(jsonElement, IForm.class).toRequest();
 		}
 		else if(jsonElement.isJsonArray()) {
-			return new FormRequest(ModuleCustom.instance, context.<IForm[]>deserialize(jsonElement, IForm.class)).setGrouped(true);
+			return new FormRequest(CustomModule.instance, context.<IForm[]>deserialize(jsonElement, IForm.class)).setGrouped(true);
 		}
 		throw new JsonParseException("Unable to deserialize "+JsonHelper.INSTANCE.toSimpleString(jsonElement)+" into a form request");
 	}

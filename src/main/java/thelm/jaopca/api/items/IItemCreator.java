@@ -7,5 +7,5 @@ import thelm.jaopca.api.materials.IMaterial;
 
 public interface IItemCreator {
 
-	ItemMaterialForm create(IForm form, IMaterial material, Supplier<IItemFormSettings> settings);
+	MaterialFormItem create(IForm form, IMaterial material, Supplier<IItemFormSettings> settings);
 }

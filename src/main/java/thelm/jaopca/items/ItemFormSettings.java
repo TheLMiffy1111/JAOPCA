@@ -5,7 +5,7 @@ import java.util.function.ToIntFunction;
 
 import com.google.common.base.Function;
 
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.items.IItemCreator;
 import thelm.jaopca.api.items.IItemFormSettings;
@@ -15,11 +15,11 @@ public class ItemFormSettings implements IItemFormSettings {
 
 	ItemFormSettings() {}
 	
-	private IItemCreator itemCreator = ItemJAOPCA::new;
+	private IItemCreator itemCreator = JAOPCAItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
 	private Predicate<IMaterial> beaconPaymentFunction = material->false;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
-	private Function<IMaterial, EnumRarity> displayRarityFunction = material->material.getDisplayRarity();
+	private Function<IMaterial, Rarity> displayRarityFunction = material->material.getDisplayRarity();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
 
 	@Override
@@ -72,13 +72,13 @@ public class ItemFormSettings implements IItemFormSettings {
 	}
 
 	@Override
-	public IItemFormSettings setDisplayRarityFunction(Function<IMaterial, EnumRarity> displayRarityFunction) {
+	public IItemFormSettings setDisplayRarityFunction(Function<IMaterial, Rarity> displayRarityFunction) {
 		this.displayRarityFunction = displayRarityFunction;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, EnumRarity> getDisplayRarityFunction() {
+	public Function<IMaterial, Rarity> getDisplayRarityFunction() {
 		return displayRarityFunction;
 	}
 

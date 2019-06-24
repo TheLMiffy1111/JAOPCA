@@ -69,7 +69,7 @@ public class CommonEventHandler {
 	@SubscribeEvent
 	public void onItemRegister(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
-		BlockFormType.registerItemBlocks(registry);
+		BlockFormType.registerBlockItems(registry);
 		ItemFormType.registerItems(registry);
 	}
 

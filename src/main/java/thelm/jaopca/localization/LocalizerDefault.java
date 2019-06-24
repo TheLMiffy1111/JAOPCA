@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.translation.LanguageMap;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.localization.ILocalizer;
@@ -21,7 +21,7 @@ public class LocalizerDefault implements ILocalizer {
 	public ITextComponent localizeMaterialForm(IForm form, IMaterial material, String defaultKey) {
 		LanguageMap languageMap = LanguageMap.getInstance();
 		if(languageMap.exists(defaultKey)) {
-			return new TextComponentTranslation(defaultKey);
+			return new TranslationTextComponent(defaultKey);
 		}
 		String materialName;
 		String materialKey = "jaopca.material."+material.getName();
@@ -31,7 +31,7 @@ public class LocalizerDefault implements ILocalizer {
 		else {
 			materialName = splitAndCapitalize(material.getName());
 		}
-		return new TextComponentTranslation(form.getTranslationKey(), materialName);
+		return new TranslationTextComponent(form.getTranslationKey(), materialName);
 	}
 
 	public static String splitAndCapitalize(String underscore) {

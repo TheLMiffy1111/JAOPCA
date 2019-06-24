@@ -401,7 +401,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public <T extends Enum<T>> T getDefinedEnum(List<String> path, Class<T> enumType, T defaultValue, Predicate<T> validator, String comment) {
-		if(!config.contains(path) || !(config.get(path) instanceof CharSequence) || !(config.get(path) instanceof Number) || !validator.test(config.getEnum(path, enumType, EnumGetMethod.ORDINAL_OR_NAME_IGNORECASE))) {
+		if(!config.contains(path) || !(config.get(path) instanceof CharSequence) ||  !(config.get(path) instanceof Number) ||!validator.test(config.getEnum(path, enumType, EnumGetMethod.ORDINAL_OR_NAME_IGNORECASE))) {
 			config.set(path, defaultValue.name());
 		}
 		if(comment != null) {

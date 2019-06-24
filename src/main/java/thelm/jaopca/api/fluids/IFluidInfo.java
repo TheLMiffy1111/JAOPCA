@@ -1,23 +1,23 @@
 package thelm.jaopca.api.fluids;
 
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucket;
 import net.minecraft.util.IItemProvider;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
-public interface IFluidInfo extends IMaterialFormInfo<FluidMaterialForm>, IItemProvider {
+public interface IFluidInfo extends IMaterialFormInfo<MaterialFormFluid>, IItemProvider {
 
-	FluidMaterialForm getFluid();
+	MaterialFormFluid getFluid();
 
-	ItemBucket getItemBucket();
+	BucketItem getBucketItem();
 
 	@Override
-	default FluidMaterialForm getMaterialForm() {
+	default MaterialFormFluid getMaterialForm() {
 		return getFluid();
 	}
 
 	@Override
 	default Item asItem() {
-		return getItemBucket();
+		return getBucketItem();
 	}
 }

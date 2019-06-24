@@ -14,6 +14,7 @@ import com.google.common.collect.MultimapBuilder;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -24,7 +25,6 @@ import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.resources.ResourcePackType;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.resources.InMemoryResourcePack;
@@ -35,6 +35,7 @@ public class DataInjector {
 	private static final ListMultimap<ResourceLocation, Supplier<Block>> BLOCK_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, Supplier<Item>> ITEM_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, Supplier<Fluid>> FLUID_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
+	private static final ListMultimap<ResourceLocation, Supplier<EntityType>> ENTITY_TYPE_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final TreeMap<ResourceLocation, Supplier<IRecipe>> RECIPES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Advancement.Builder> ADVANCEMENTS_INJECT = new TreeMap<>();
 	private static DataInjector instance;
@@ -49,6 +50,10 @@ public class DataInjector {
 
 	public static boolean registerFluidTag(ResourceLocation location, Supplier<Fluid> fluidSupplier) {
 		return FLUID_TAGS_INJECT.put(location, fluidSupplier);
+	}
+
+	public static boolean registerEntityTypeTag(ResourceLocation location, Supplier<EntityType> entityTypeSupplier) {
+		return ENTITY_TYPE_TAGS_INJECT.put(location, entityTypeSupplier);
 	}
 
 	public static boolean registerRecipe(ResourceLocation location, Supplier<IRecipe> recipeSupplier) {
@@ -69,6 +74,10 @@ public class DataInjector {
 
 	public static Set<ResourceLocation> getInjectFluidTags() {
 		return FLUID_TAGS_INJECT.keySet();
+	}
+
+	public static Set<ResourceLocation> getInjectEntityTypeTags() {
+		return ENTITY_TYPE_TAGS_INJECT.keySet();
 	}
 
 	public static Set<ResourceLocation> getInjectRecipes() {
@@ -105,7 +114,7 @@ public class DataInjector {
 			else if(!recipe.getId().equals(entry.getKey())) {
 				LOGGER.warn("Recipe ID {} and registry key {} do not match", recipe.getId(), entry.getKey());
 			}
-			else if(recipeManager.getIds().contains(entry.getKey())) {
+			else if(recipeManager.func_215378_c().anyMatch(entry.getKey()::equals)) {
 				LOGGER.warn("Duplicate recipe ignored with ID {}", entry.getKey());
 			}
 			else {
@@ -136,7 +145,12 @@ public class DataInjector {
 				FLUID_TAGS_INJECT.asMap().forEach((location, suppliers)->{
 					Set<Fluid> fluids = suppliers.stream().map(Supplier::get).collect(Collectors.toSet());
 					Tag<Fluid> tag = Tag.Builder.<Fluid>create().addAll(fluids).build(location);
-					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/fluids/"+location.getPath()+".json"), tag.serialize(IRegistry.FLUID::getKey));
+					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/fluids/"+location.getPath()+".json"), tag.serialize(ForgeRegistries.FLUIDS::getKey));
+				});
+				ENTITY_TYPE_TAGS_INJECT.asMap().forEach((location, suppliers)->{
+					Set<EntityType> entityTypes = suppliers.stream().map(Supplier::get).collect(Collectors.toSet());
+					Tag<EntityType> tag = Tag.Builder.<EntityType>create().addAll(entityTypes).build(location);
+					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), tag.serialize(ForgeRegistries.ENTITIES::getKey));
 				});
 				ADVANCEMENTS_INJECT.forEach((location, builder)->{
 					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), builder.serialize());

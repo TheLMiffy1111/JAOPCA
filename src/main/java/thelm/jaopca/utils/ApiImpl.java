@@ -13,15 +13,16 @@ import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
+import thelm.jaopca.api.entities.IEntityTypeFormType;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -72,6 +73,12 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public IFluidFormType fluidFormType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IEntityTypeFormType entityTypeFormType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -156,6 +163,11 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public Set<ResourceLocation> getEntityTypeTags() {
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("entity_types"), DataInjector.getInjectEntityTypeTags()));
+	}
+
+	@Override
 	public Set<ResourceLocation> getRecipes() {
 		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedRecipes(), DataInjector.getInjectRecipes()));
 	}
@@ -188,6 +200,11 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerDefinedFluidTag(ResourceLocation key) {
 		return DataCollector.getDefinedTags("fluids").add(key);
+	}
+
+	@Override
+	public boolean registerDefinedEntityTypeTag(ResourceLocation key) {
+		return DataCollector.getDefinedTags("entity_types").add(key);
 	}
 
 	@Override
@@ -241,8 +258,25 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey) {
-		// TODO Change to ForgeRegistries when Forge supports fluids
-		return registerFluidTag(key, ()->IRegistry.FLUID.get(fluidKey));
+		return registerFluidTag(key, ()->ForgeRegistries.FLUIDS.getValue(fluidKey));
+	}
+
+	@Override
+	public boolean registerEntityTypeTag(ResourceLocation key, Supplier<EntityType> entityTypeSupplier) {
+		if(ConfigHandler.ENTITY_TYPE_TAG_BLACKLIST.contains(key)) {
+			return false;
+		}
+		return DataInjector.registerEntityTypeTag(key, entityTypeSupplier);
+	}
+
+	@Override
+	public boolean registerEntityTypeTag(ResourceLocation key, EntityType entityType) {
+		return registerEntityTypeTag(key, ()->entityType);
+	}
+
+	@Override
+	public boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey) {
+		return registerEntityTypeTag(key, ()->ForgeRegistries.ENTITIES.getValue(entityTypeKey));
 	}
 
 	@Override
@@ -260,32 +294,72 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapedRecipeGenerator(key, group, output, count, input));
+		return registerRecipe(key, new ShapedRecipeSupplier(key, group, output, count, input));
 	}
 
 	@Override
 	public boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapedRecipeGenerator(key, output, count, input));
+		return registerRecipe(key, new ShapedRecipeSupplier(key, output, count, input));
 	}
 
 	@Override
 	public boolean registerShapelessRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapelessRecipeGenerator(key, group, output, count, input));
+		return registerRecipe(key, new ShapelessRecipeSupplier(key, group, output, count, input));
 	}
 
 	@Override
 	public boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapelessRecipeGenerator(key, output, count, input));
+		return registerRecipe(key, new ShapelessRecipeSupplier(key, output, count, input));
 	}
 
 	@Override
 	public boolean registerFurnaceRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new FurnaceRecipeGenerator(key, group, input, output, count, experience, time));
+		return registerRecipe(key, new FurnaceRecipeSupplier(key, group, input, output, count, experience, time));
 	}
 
 	@Override
 	public boolean registerFurnaceRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new FurnaceRecipeGenerator(key, input, output, count, experience, time));
+		return registerRecipe(key, new FurnaceRecipeSupplier(key, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerBlastingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new BlastingRecipeSupplier(key, group, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerBlastingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new BlastingRecipeSupplier(key, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerSmokingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new SmokingRecipeSupplier(key, group, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerSmokingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new SmokingRecipeSupplier(key, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerCampfireCookingRecipe(ResourceLocation key, String group, Object input, Object output, int count, int time) {
+		return registerRecipe(key, new CampfireCookingRecipeSupplier(key, group, input, output, count, time));
+	}
+
+	@Override
+	public boolean registerCampfireCookingRecipe(ResourceLocation key, Object input, Object output, int count, int time) {
+		return registerRecipe(key, new CampfireCookingRecipeSupplier(key, input, output, count, time));
+	}
+
+	@Override
+	public boolean registerStonecuttingRecipe(ResourceLocation key, String group, Object input, Object output, int count) {
+		return registerRecipe(key, new StonecuttingRecipeSupplier(key, group, input, output, count));
+	}
+
+	@Override
+	public boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count) {
+		return registerRecipe(key, new StonecuttingRecipeSupplier(key, input, output, count));
 	}
 
 	@Override

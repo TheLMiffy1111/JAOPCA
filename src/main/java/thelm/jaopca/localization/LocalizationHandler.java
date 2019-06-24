@@ -22,7 +22,7 @@ public class LocalizationHandler {
 		language = DistExecutor.callWhenOn(Dist.CLIENT, ()->()->{
 			Minecraft mc = Minecraft.getInstance();
 			if(mc != null) {
-				return mc.getLanguageManager().getCurrentLanguage().getLanguageCode();
+				return mc.getLanguageManager().getCurrentLanguage().getCode();
 			}
 			return "en_us";
 		});

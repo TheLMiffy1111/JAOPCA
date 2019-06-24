@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
@@ -54,7 +54,7 @@ public class ItemFormSettingsDeserializer implements JsonDeserializer<IItemFormS
 			settings.setHasEffectFunction(m->m.hasEffect() || hasEffect);
 		}
 		if(json.has("rarity")) {
-			EnumRarity rarity = helper.deserializeType(json, "rarity", context, EnumRarity.class);
+			Rarity rarity = helper.deserializeType(json, "rarity", context, Rarity.class);
 			settings.setDisplayRarityFunction(m->rarity);
 		}
 		if(json.has("burnTime")) {

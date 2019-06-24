@@ -8,7 +8,7 @@ import java.util.function.ToIntFunction;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.common.ToolType;
@@ -52,10 +52,6 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setSlipperinessFunction(ToDoubleFunction<IMaterial> slipperinessFunction);
 
 	ToDoubleFunction<IMaterial> getSlipperinessFunction();
-
-	IBlockFormSettings setIsFull(boolean isFull);
-
-	boolean getIsFull();
 
 	IBlockFormSettings setShape(VoxelShape shape);
 
@@ -101,9 +97,9 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	//boolean getIsFallable();
 
-	IBlockFormSettings setItemBlockCreator(IItemBlockCreator itemBlockCreator);
+	IBlockFormSettings setItemBlockCreator(IBlockItemCreator itemBlockCreator);
 
-	IItemBlockCreator getItemBlockCreator();
+	IBlockItemCreator getBlockItemCreator();
 
 	IBlockFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction);
 
@@ -117,9 +113,9 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	Predicate<IMaterial> getHasEffectFunction();
 
-	IBlockFormSettings setDisplayRarityFunction(Function<IMaterial, EnumRarity> displayRarityFunction);
+	IBlockFormSettings setDisplayRarityFunction(Function<IMaterial, Rarity> displayRarityFunction);
 
-	Function<IMaterial, EnumRarity> getDisplayRarityFunction();
+	Function<IMaterial, Rarity> getDisplayRarityFunction();
 
 	IBlockFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction);
 

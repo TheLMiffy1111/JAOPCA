@@ -8,12 +8,14 @@ import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.blocks.IBlockFormType;
+import thelm.jaopca.api.entities.IEntityTypeFormType;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -49,6 +51,8 @@ public abstract class JAOPCAApi {
 
 	public abstract IFluidFormType fluidFormType();
 
+	public abstract IEntityTypeFormType entityTypeFormType();
+
 	public abstract <I extends IMaterialFormInfo<?>> IFormType<I> getFormType(String name);
 
 	public abstract IForm newForm(IModule module, String name, IFormType<?> type);
@@ -79,6 +83,8 @@ public abstract class JAOPCAApi {
 
 	public abstract Set<ResourceLocation> getFluidTags();
 
+	public abstract Set<ResourceLocation> getEntityTypeTags();
+
 	public abstract Set<ResourceLocation> getRecipes();
 
 	public abstract Set<ResourceLocation> getAdvancements();
@@ -92,6 +98,8 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerDefinedItemTag(ResourceLocation key);
 
 	public abstract boolean registerDefinedFluidTag(ResourceLocation key);
+
+	public abstract boolean registerDefinedEntityTypeTag(ResourceLocation key);
 
 	public abstract boolean registerBlockTag(ResourceLocation key, Supplier<Block> blockSupplier);
 
@@ -111,6 +119,12 @@ public abstract class JAOPCAApi {
 
 	public abstract boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey);
 
+	public abstract boolean registerEntityTypeTag(ResourceLocation key, Supplier<EntityType> entityTypeSupplier);
+
+	public abstract boolean registerEntityTypeTag(ResourceLocation key, EntityType entityType);
+
+	public abstract boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey);
+
 	public abstract boolean registerRecipe(ResourceLocation key, Supplier<IRecipe> recipeSupplier);
 
 	public abstract boolean registerRecipe(ResourceLocation key, IRecipe recipe);
@@ -126,6 +140,22 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerFurnaceRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time);
 
 	public abstract boolean registerFurnaceRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerBlastingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerBlastingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerSmokingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerSmokingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, String group, Object input, Object output, int count, int time);
+
+	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, Object input, Object output, int count, int time);
+
+	public abstract boolean registerStonecuttingRecipe(ResourceLocation key, String group, Object input, Object output, int count);
+
+	public abstract boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count);
 
 	public abstract boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder);
 

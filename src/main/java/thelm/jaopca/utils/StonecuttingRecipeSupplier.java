@@ -3,34 +3,30 @@ package thelm.jaopca.utils;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.StonecuttingRecipe;
 import net.minecraft.util.ResourceLocation;
 
-public class FurnaceRecipeGenerator implements Supplier<IRecipe> {
+public class StonecuttingRecipeSupplier implements Supplier<IRecipe> {
 
 	public final ResourceLocation key;
 	public final String group;
 	public final Object input;
 	public final Object output;
 	public final int count;
-	public final float experience;
-	public final int time;
-	public FurnaceRecipe recipe;
+	public StonecuttingRecipe recipe;
 
-	public FurnaceRecipeGenerator(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
-		this(key, "", input, output, count, experience, time);
+	public StonecuttingRecipeSupplier(ResourceLocation key, Object input, Object output, int count) {
+		this(key, "", input, output, count);
 	}
 
-	public FurnaceRecipeGenerator(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+	public StonecuttingRecipeSupplier(ResourceLocation key, String group, Object input, Object output, int count) {
 		this.key = key;
 		this.group = group;
 		this.input = input;
 		this.output = output;
 		this.count = count;
-		this.experience = experience;
-		this.time = time;
 	}
 
 	@Override
@@ -46,6 +42,6 @@ public class FurnaceRecipeGenerator implements Supplier<IRecipe> {
 		if(stack == null) {
 			throw new IllegalArgumentException("Invalid recipe output: "+output);
 		}
-		return recipe = new FurnaceRecipe(key, group, ing, stack, experience, time);
+		return recipe = new StonecuttingRecipe(key, group, ing, stack);
 	}
 }

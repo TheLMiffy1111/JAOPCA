@@ -1,7 +1,9 @@
 package thelm.jaopca.materials;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -12,7 +14,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
+import thelm.jaopca.api.materials.TextureType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.utils.ApiImpl;
 
@@ -22,7 +25,7 @@ public class MaterialHandler {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final TreeMap<String, Material> MATERIALS = new TreeMap<>();
-	private static Material noneMaterial;
+	private static ArrayList<Material> dummyMaterials = new ArrayList<>();
 
 	public static Map<String, Material> getMaterialMap() {
 		return MATERIALS;
@@ -36,8 +39,8 @@ public class MaterialHandler {
 		return MATERIALS.get(name);
 	}
 
-	public static Material getNoneMaterial() {
-		return noneMaterial;
+	public static List<Material> getDummyMaterials() {
+		return dummyMaterials;
 	}
 
 	public static boolean containsMaterial(String name) {
@@ -92,46 +95,48 @@ public class MaterialHandler {
 		dustsPlain.removeAll(allMaterials);
 		allMaterials.addAll(dustsPlain);
 
-		noneMaterial = new Material("", EnumMaterialType.NONE);
-		MATERIALS.put("", noneMaterial);
-		LOGGER.debug("Added none material");
+		for(TextureType type : TextureType.values()) {
+			Material material = new Material(type);
+			MATERIALS.put(material.getName(), material);
+			LOGGER.debug("Added dummy material {}", material.getName());
+		}
 		for(String name : ingots) {
-			Material material = new Material(name, EnumMaterialType.INGOT);
+			Material material = new Material(name, MaterialType.INGOT);
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added ingot material {}", name);
 		}
 		for(String name : gems) {
-			Material material = new Material(name, EnumMaterialType.GEM);
+			Material material = new Material(name, MaterialType.GEM);
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added gem material {}", name);
 		}
 		for(String name : crystals) {
-			Material material = new Material(name, EnumMaterialType.CRYSTAL);
+			Material material = new Material(name, MaterialType.CRYSTAL);
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added crystal material {}", name);
 		}
 		for(String name : dusts) {
-			Material material = new Material(name, EnumMaterialType.DUST);
+			Material material = new Material(name, MaterialType.DUST);
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added dust material {}", name);
 		}
 		for(String name : ingotsPlain) {
-			Material material = new Material(name, EnumMaterialType.INGOT_PLAIN);
+			Material material = new Material(name, MaterialType.INGOT_PLAIN);
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added plain ingot material {}", name);
 		}
 		for(String name : gemsPlain) {
-			Material material = new Material(name, EnumMaterialType.GEM_PLAIN);
+			Material material = new Material(name, MaterialType.GEM_PLAIN);
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added plain gem material {}", name);
 		}
 		for(String name : crystalsPlain) {
-			Material material = new Material(name, EnumMaterialType.CRYSTAL_PLAIN);
+			Material material = new Material(name, MaterialType.CRYSTAL_PLAIN);
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added plain crystal material {}", name);
 		}
 		for(String name : dustsPlain) {
-			Material material = new Material(name, EnumMaterialType.DUST_PLAIN);
+			Material material = new Material(name, MaterialType.DUST_PLAIN);
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added plain dust material {}", name);
 		}

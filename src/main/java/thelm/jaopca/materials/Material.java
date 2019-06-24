@@ -13,16 +13,17 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.TreeMultiset;
 
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.item.Rarity;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
-import thelm.jaopca.api.materials.EnumMaterialType;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.api.materials.MaterialType;
+import thelm.jaopca.api.materials.TextureType;
 import thelm.jaopca.client.colors.ColorHandler;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.utils.MiscHelper;
@@ -30,17 +31,24 @@ import thelm.jaopca.utils.MiscHelper;
 public class Material implements IMaterial {
 
 	private final String name;
-	private final EnumMaterialType type;
+	private final MaterialType type;
+	private TextureType textureType = TextureType.METALLIC;
 	private OptionalInt color = OptionalInt.empty();
 	private boolean hasEffect = false;
-	private EnumRarity displayRarity = EnumRarity.COMMON;
+	private Rarity displayRarity = Rarity.COMMON;
 	private final List<String> extras = new ArrayList<>();
 	private final TreeSet<String> configModuleBlacklist = new TreeSet<>();
 	private IDynamicSpecConfig config;
 
-	public Material(String name, EnumMaterialType type) {
+	public Material(String name, MaterialType type) {
 		this.name = name;
 		this.type = type;
+	}
+
+	public Material(TextureType textureType) {
+		name = textureType.getRegistryName();
+		type = MaterialType.DUMMY;
+		this.textureType = textureType;
 	}
 
 	@Override
@@ -49,7 +57,7 @@ public class Material implements IMaterial {
 	}
 
 	@Override
-	public EnumMaterialType getType() {
+	public MaterialType getType() {
 		return type;
 	}
 
@@ -66,6 +74,11 @@ public class Material implements IMaterial {
 	@Override
 	public Set<String> getConfigModuleBlacklist() {
 		return Collections.unmodifiableNavigableSet(configModuleBlacklist);
+	}
+
+	@Override
+	public TextureType getTextureType() {
+		return textureType;
 	}
 
 	@Override
@@ -87,7 +100,7 @@ public class Material implements IMaterial {
 	}
 
 	@Override
-	public EnumRarity getDisplayRarity() {
+	public Rarity getDisplayRarity() {
 		return displayRarity;
 	}
 
@@ -105,6 +118,7 @@ public class Material implements IMaterial {
 		configModuleBlacklist.addAll(blacklist.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(e->e.getElement()).collect(Collectors.toList()));
 
 		hasEffect = config.getDefinedBoolean("general.hasEffect", hasEffect, "Should items of this material have the enchanted glow.");
+		textureType = config.getDefinedEnum("general.textureType", TextureType.class, textureType, "The texture type of the material.");
 
 		color = config.getOptionalInt("general.color");
 	}
@@ -128,7 +142,7 @@ public class Material implements IMaterial {
 		case DUST_PLAIN:
 			path = "dusts/"+name;
 			break;
-		case NONE:
+		case DUMMY:
 		default:
 			break;
 		}

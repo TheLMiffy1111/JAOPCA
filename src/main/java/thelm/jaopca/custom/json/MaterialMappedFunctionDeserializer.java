@@ -18,10 +18,10 @@ import com.google.gson.JsonParseException;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.materials.MaterialHandler;
-import thelm.jaopca.modules.ModuleCustom;
+import thelm.jaopca.modules.CustomModule;
 import thelm.jaopca.utils.JsonHelper;
 
 public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<Function<IMaterial, T>> {
@@ -58,22 +58,22 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 				switch(entry.getKey()) {
 				case "ingot":
 					MaterialHandler.getMaterials().stream().
-					filter(m->ArrayUtils.contains(EnumMaterialType.INGOTS, m.getType())).
+					filter(m->ArrayUtils.contains(MaterialType.INGOTS, m.getType())).
 					forEach(m->map.put(m, materialTypeValue));
 					break;
 				case "gem":
 					MaterialHandler.getMaterials().stream().
-					filter(m->ArrayUtils.contains(EnumMaterialType.GEMS, m.getType())).
+					filter(m->ArrayUtils.contains(MaterialType.GEMS, m.getType())).
 					forEach(m->map.put(m, materialTypeValue));
 					break;
 				case "crystal":
 					MaterialHandler.getMaterials().stream().
-					filter(m->ArrayUtils.contains(EnumMaterialType.CRYSTALS, m.getType())).
+					filter(m->ArrayUtils.contains(MaterialType.CRYSTALS, m.getType())).
 					forEach(m->map.put(m, materialTypeValue));
 					break;
 				case "dust":
 					MaterialHandler.getMaterials().stream().
-					filter(m->ArrayUtils.contains(EnumMaterialType.DUSTS, m.getType())).
+					filter(m->ArrayUtils.contains(MaterialType.DUSTS, m.getType())).
 					forEach(m->map.put(m, materialTypeValue));
 					break;
 				}
@@ -102,7 +102,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 				else {
 					comment = "";
 				}
-				ModuleCustom.instance.addCustomConfigDefiner((material, config)->{
+				CustomModule.instance.addCustomConfigDefiner((material, config)->{
 					T value = stringToValue.apply(config.getDefinedString(path, ""+valueToString.apply(map.get(material)), comment));
 					if(value == null) {
 						LOGGER.warn("Null config value for material "+material.getName());

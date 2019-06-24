@@ -12,7 +12,7 @@ import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.forms.IFormType;
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.modules.ModuleData;
@@ -25,7 +25,7 @@ public class Form implements IForm {
 	private final IFormType<?> type;
 	private String secondaryName;
 	private String translationKey;
-	private final EnumSet<EnumMaterialType> materialTypes = EnumSet.allOf(EnumMaterialType.class);
+	private final EnumSet<MaterialType> materialTypes = EnumSet.allOf(MaterialType.class);
 	private final TreeSet<String> defaultMaterialBlacklist = new TreeSet<>();
 	private final TreeSet<String> materialBlacklist = new TreeSet<>();
 	private final TreeSet<String> materialWhitelist = new TreeSet<>();
@@ -89,7 +89,7 @@ public class Form implements IForm {
 	}
 
 	@Override
-	public IForm setMaterialTypes(Collection<EnumMaterialType> materialTypes) {
+	public IForm setMaterialTypes(Collection<MaterialType> materialTypes) {
 		if(!locked) {
 			this.materialTypes.clear();
 			this.materialTypes.addAll(materialTypes);
@@ -98,7 +98,7 @@ public class Form implements IForm {
 	}
 
 	@Override
-	public IForm setMaterialTypes(EnumMaterialType... materialTypes) {
+	public IForm setMaterialTypes(MaterialType... materialTypes) {
 		if(!locked) {
 			this.materialTypes.clear();
 			Collections.addAll(this.materialTypes, materialTypes);
@@ -107,7 +107,7 @@ public class Form implements IForm {
 	}
 
 	@Override
-	public Set<EnumMaterialType> getMaterialTypes() {
+	public Set<MaterialType> getMaterialTypes() {
 		return Collections.unmodifiableSet(materialTypes);
 	}
 

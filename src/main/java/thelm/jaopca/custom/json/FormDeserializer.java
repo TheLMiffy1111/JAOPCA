@@ -11,10 +11,10 @@ import com.google.gson.JsonParseException;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.helpers.IJsonHelper;
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.forms.Form;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.modules.ModuleCustom;
+import thelm.jaopca.modules.CustomModule;
 import thelm.jaopca.utils.JsonHelper;
 
 public class FormDeserializer implements JsonDeserializer<IForm> {
@@ -29,7 +29,7 @@ public class FormDeserializer implements JsonDeserializer<IForm> {
 		JsonObject json = helper.getJsonObject(jsonElement, "element");
 		String name = helper.getString(json, "name");
 		IFormType<?> type = FormTypeHandler.getFormType(helper.getString(json, "type"));
-		IForm form = new Form(ModuleCustom.instance, name, type);
+		IForm form = new Form(CustomModule.instance, name, type);
 		if(json.has("secondaryName")) {
 			form.setSecondaryName(helper.getString(json, "secondaryName"));
 		}
@@ -37,7 +37,7 @@ public class FormDeserializer implements JsonDeserializer<IForm> {
 			form.setTranslationKey(helper.getString(json, "translationKey"));
 		}
 		if(json.has("materialTypes")) {
-			form.setMaterialTypes(helper.<EnumMaterialType[]>deserializeType(json, "materialTypes", context, EnumMaterialType[].class));
+			form.setMaterialTypes(helper.<MaterialType[]>deserializeType(json, "materialTypes", context, MaterialType[].class));
 		}
 		if(json.has("defaultMaterialBlacklist")) {
 			form.setDefaultMaterialBlacklist(helper.<String[]>deserializeType(json, "defaultMaterialBlacklist", context, String[].class));

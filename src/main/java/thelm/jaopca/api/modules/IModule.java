@@ -14,7 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IFormRequest;
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 
 public interface IModule extends Comparable<IModule> {
@@ -37,7 +37,7 @@ public interface IModule extends Comparable<IModule> {
 		return Collections.emptyList();
 	}
 
-	default Set<EnumMaterialType> getMaterialTypes() {
+	default Set<MaterialType> getMaterialTypes() {
 		return Collections.emptySet();
 	}
 

@@ -9,7 +9,7 @@ import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
-public class ShapelessRecipeGenerator implements Supplier<IRecipe> {
+public class ShapelessRecipeSupplier implements Supplier<IRecipe> {
 
 	public final ResourceLocation key;
 	public final String group;
@@ -18,11 +18,11 @@ public class ShapelessRecipeGenerator implements Supplier<IRecipe> {
 	public final Object[] input;
 	public ShapelessRecipe recipe;
 
-	public ShapelessRecipeGenerator(ResourceLocation key, Object output, int count, Object... input) {
+	public ShapelessRecipeSupplier(ResourceLocation key, Object output, int count, Object... input) {
 		this(key, "", output, count, input);
 	}
 
-	public ShapelessRecipeGenerator(ResourceLocation key, String group, Object output, int count, Object... input) {
+	public ShapelessRecipeSupplier(ResourceLocation key, String group, Object output, int count, Object... input) {
 		this.key = key;
 		this.group = group;
 		this.output = output;

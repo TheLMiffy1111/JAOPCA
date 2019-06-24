@@ -10,14 +10,14 @@ import java.util.function.ToIntFunction;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.blocks.IBlockCreator;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
-import thelm.jaopca.api.blocks.IItemBlockCreator;
+import thelm.jaopca.api.blocks.IBlockItemCreator;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
@@ -26,7 +26,7 @@ public class BlockFormSettings implements IBlockFormSettings {
 
 	BlockFormSettings() {}
 
-	private IBlockCreator blockCreator = BlockJAOPCA::new;
+	private IBlockCreator blockCreator = JAOPCABlock::new;
 	private Function<IMaterial, Material> materialFunction = material->Material.IRON;
 	private Function<IMaterial, MaterialColor> materialColorFunction = material->{
 		int color = material.getColor();
@@ -53,11 +53,11 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
 
-	private IItemBlockCreator itemBlockCreator = ItemBlockJAOPCA::new;
+	private IBlockItemCreator itemBlockCreator = JAOPCABlockItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
 	private Predicate<IMaterial> beaconPaymentFunction = material->false;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
-	private Function<IMaterial, EnumRarity> displayRarityFunction = material->material.getDisplayRarity();
+	private Function<IMaterial, Rarity> displayRarityFunction = material->material.getDisplayRarity();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
 
 	@Override
@@ -165,17 +165,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setIsFull(boolean isFull) {
-		this.isFull = isFull;
-		return this;
-	}
-
-	@Override
-	public boolean getIsFull() {
-		return isFull;
-	}
-
-	@Override
 	public IBlockFormSettings setShape(VoxelShape shape) {
 		this.shape = shape;
 		return this;
@@ -275,13 +264,13 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setItemBlockCreator(IItemBlockCreator itemBlockCreator) {
+	public IBlockFormSettings setItemBlockCreator(IBlockItemCreator itemBlockCreator) {
 		this.itemBlockCreator = itemBlockCreator;
 		return this;
 	}
 
 	@Override
-	public IItemBlockCreator getItemBlockCreator() {
+	public IBlockItemCreator getBlockItemCreator() {
 		return itemBlockCreator;
 	}
 
@@ -319,13 +308,13 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setDisplayRarityFunction(Function<IMaterial, EnumRarity> displayRarityFunction) {
+	public IBlockFormSettings setDisplayRarityFunction(Function<IMaterial, Rarity> displayRarityFunction) {
 		this.displayRarityFunction = displayRarityFunction;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, EnumRarity> getDisplayRarityFunction() {
+	public Function<IMaterial, Rarity> getDisplayRarityFunction() {
 		return displayRarityFunction;
 	}
 

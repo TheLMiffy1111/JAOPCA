@@ -16,7 +16,7 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 
 @JAOPCAModule
-public class ModuleStorageBlocks implements IModule {
+public class StorageBlocksModule implements IModule {
 
 	private final IForm storageBlockForm = JAOPCAApi.instance().newForm(this, "storage_blocks", JAOPCAApi.instance().blockFormType());
 
@@ -34,7 +34,7 @@ public class ModuleStorageBlocks implements IModule {
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = JAOPCAApi.instance();
 		for(IMaterial material : storageBlockForm.getMaterials()) {
-			if(material.getType().isNone()) {
+			if(material.getType().isDummy()) {
 				continue;
 			}
 			ResourceLocation materialLocation = api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName());

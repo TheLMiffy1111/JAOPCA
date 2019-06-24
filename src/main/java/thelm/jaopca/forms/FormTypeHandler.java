@@ -12,7 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormType;
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.FormDeserializer;
@@ -21,7 +21,7 @@ import thelm.jaopca.custom.json.MaterialDoubleFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialIntFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialLongFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialPredicateDeserializer;
-import thelm.jaopca.modules.ModuleCustom;
+import thelm.jaopca.modules.CustomModule;
 
 public class FormTypeHandler {
 
@@ -41,7 +41,7 @@ public class FormTypeHandler {
 		GsonBuilder builder = new GsonBuilder().
 				registerTypeAdapter(IFormRequest.class, FormRequestDeserializer.INSTANCE).
 				registerTypeAdapter(IForm.class, FormDeserializer.INSTANCE).
-				registerTypeAdapter(EnumMaterialType.class, EnumDeserializer.INSTANCE).
+				registerTypeAdapter(MaterialType.class, EnumDeserializer.INSTANCE).
 				registerTypeAdapter(new TypeToken<Predicate<IMaterial>>(){}.getType(), MaterialPredicateDeserializer.INSTANCE).
 				registerTypeAdapter(new TypeToken<ToIntFunction<IMaterial>>(){}.getType(), MaterialIntFunctionDeserializer.INSTANCE).
 				registerTypeAdapter(new TypeToken<ToLongFunction<IMaterial>>(){}.getType(), MaterialLongFunctionDeserializer.INSTANCE).
@@ -49,6 +49,6 @@ public class FormTypeHandler {
 		for(IFormType<?> formType : FORM_TYPES.values()) {
 			builder = formType.configureGsonBuilder(builder);
 		}
-		ModuleCustom.instance.setGson(builder.create());
+		CustomModule.instance.setGson(builder.create());
 	}
 }

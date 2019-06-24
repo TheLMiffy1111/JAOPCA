@@ -3,7 +3,7 @@ package thelm.jaopca.api.forms;
 import java.util.Collection;
 import java.util.Set;
 
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 
@@ -23,11 +23,11 @@ public interface IForm extends Comparable<IForm> {
 
 	String getTranslationKey();
 
-	IForm setMaterialTypes(Collection<EnumMaterialType> materialTypes);
+	IForm setMaterialTypes(Collection<MaterialType> materialTypes);
 
-	IForm setMaterialTypes(EnumMaterialType... materialTypes);
+	IForm setMaterialTypes(MaterialType... materialTypes);
 
-	Set<EnumMaterialType> getMaterialTypes();
+	Set<MaterialType> getMaterialTypes();
 
 	IForm setDefaultMaterialBlacklist(Collection<String> defaultMaterialBlacklist);
 

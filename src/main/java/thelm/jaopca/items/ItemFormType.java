@@ -10,11 +10,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import thelm.jaopca.JAOPCA;
@@ -22,7 +22,7 @@ import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.items.IItemInfo;
-import thelm.jaopca.api.items.ItemMaterialForm;
+import thelm.jaopca.api.items.MaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.ItemFormSettingsDeserializer;
@@ -36,7 +36,7 @@ public class ItemFormType implements IItemFormType {
 
 	public static final ItemFormType INSTANCE = new ItemFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
-	private static final TreeBasedTable<IForm, IMaterial, ItemMaterialForm> ITEMS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, MaterialFormItem> ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IItemInfo> ITEM_INFOS = TreeBasedTable.create();
 	private static ItemGroup itemGroup;
 
@@ -66,7 +66,7 @@ public class ItemFormType implements IItemFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		if(material.getType().isNone()) {
+		if(material.getType().isDummy()) {
 			return true;
 		}
 		ResourceLocation tagLocation = new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName());
@@ -90,7 +90,7 @@ public class ItemFormType implements IItemFormType {
 
 	@Override
 	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
-		return builder.registerTypeAdapter(EnumRarity.class, EnumDeserializer.INSTANCE);
+		return builder.registerTypeAdapter(Rarity.class, EnumDeserializer.INSTANCE);
 	}
 
 	@Override
@@ -102,13 +102,14 @@ public class ItemFormType implements IItemFormType {
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			for(IMaterial material : form.getMaterials()) {
-				boolean isMaterialNone = material.getType().isNone();
-				ItemMaterialForm item = settings.getItemCreator().create(form, material, ()->(IItemFormSettings)form.getSettings());
-				item.setRegistryName(new ResourceLocation(JAOPCA.MOD_ID, form.getName()+(isMaterialNone ? "" : '.'+material.getName())));
+				boolean isMaterialDummy = material.getType().isDummy();
+				MaterialFormItem item = settings.getItemCreator().create(form, material, ()->(IItemFormSettings)form.getSettings());
+				String registryKey = isMaterialDummy ? material.getName()+form.getName() : form.getName()+'.'+material.getName();
+				item.setRegistryName(new ResourceLocation(JAOPCA.MOD_ID, registryKey));
 				registry.register(item);
 				ITEMS.put(form, material, item);
-				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), ()->item);
-				if(!isMaterialNone) {
+				if(!isMaterialDummy) {
+					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), ()->item);
 					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), ()->item);
 				}
 			}
@@ -127,7 +128,7 @@ public class ItemFormType implements IItemFormType {
 		return itemGroup;
 	}
 
-	public static Collection<ItemMaterialForm> getItems() {
+	public static Collection<MaterialFormItem> getItems() {
 		return ITEMS.values();
 	}
 }

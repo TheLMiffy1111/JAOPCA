@@ -11,17 +11,17 @@ import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 
 @JAOPCAModule
-public class ModuleDusts implements IModule {
+public class DustsModule implements IModule {
 
 	private final IForm dustForm = JAOPCAApi.instance().newForm(this, "dusts", JAOPCAApi.instance().itemFormType()).
-			setMaterialTypes(EnumMaterialType.NON_DUSTS);
+			setMaterialTypes(MaterialType.NON_DUSTS);
 
 	@Override
 	public String getName() {
@@ -42,7 +42,7 @@ public class ModuleDusts implements IModule {
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = JAOPCAApi.instance();
 		for(IMaterial material : dustForm.getMaterials()) {
-			if(ArrayUtils.contains(EnumMaterialType.INGOTS, material.getType())) {
+			if(ArrayUtils.contains(MaterialType.INGOTS, material.getType())) {
 				api.registerFurnaceRecipe(
 						new ResourceLocation(JAOPCA.MOD_ID, "dusts.to_material."+material.getName()), 
 						api.itemFormType().getMaterialFormInfo(dustForm, material),

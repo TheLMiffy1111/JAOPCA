@@ -5,7 +5,7 @@ import java.util.function.ToIntFunction;
 
 import com.google.common.base.Function;
 
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
 
@@ -27,9 +27,9 @@ public interface IItemFormSettings extends IFormSettings {
 
 	Predicate<IMaterial> getHasEffectFunction();
 
-	IItemFormSettings setDisplayRarityFunction(Function<IMaterial, EnumRarity> displayRarityFunction);
+	IItemFormSettings setDisplayRarityFunction(Function<IMaterial, Rarity> displayRarityFunction);
 
-	Function<IMaterial, EnumRarity> getDisplayRarityFunction();
+	Function<IMaterial, Rarity> getDisplayRarityFunction();
 
 	IItemFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction);
 

@@ -27,7 +27,7 @@ import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.data.DataCollector;
 import thelm.jaopca.materials.Material;
 import thelm.jaopca.materials.MaterialHandler;
-import thelm.jaopca.modules.ModuleCustom;
+import thelm.jaopca.modules.CustomModule;
 import thelm.jaopca.modules.ModuleData;
 import thelm.jaopca.modules.ModuleHandler;
 
@@ -63,6 +63,7 @@ public class ConfigHandler {
 	public static final Set<ResourceLocation> BLOCK_TAG_BLACKLIST = new TreeSet<>();
 	public static final Set<ResourceLocation> ITEM_TAG_BLACKLIST = new TreeSet<>();
 	public static final Set<ResourceLocation> FLUID_TAG_BLACKLIST = new TreeSet<>();
+	public static final Set<ResourceLocation> ENTITY_TYPE_TAG_BLACKLIST = new TreeSet<>();
 
 	public static final Set<ResourceLocation> RECIPE_BLACKLIST = new TreeSet<>();
 
@@ -122,6 +123,12 @@ public class ConfigHandler {
 		DataCollector.getDefinedTags("fluids").addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.customDefined", new ArrayList<>(),
 				"List of fluid tags that should be considered as defined."), ResourceLocation::new));
 
+		mainConfig.setComment("entityTypeTags", "Configurations related to entity type tags.");
+		ENTITY_TYPE_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("entityTypeTags.blacklist", new ArrayList<>(),
+				"List of entity type tags that should not be added."), ResourceLocation::new));
+		DataCollector.getDefinedTags("entity_types").addAll(Lists.transform(mainConfig.getDefinedStringList("entityTypeTags.customDefined", new ArrayList<>(),
+				"List of entity type tags that should be considered as defined."), ResourceLocation::new));
+
 		mainConfig.setComment("recipes", "Configurations related to recipes.");
 		RECIPE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("recipes.blacklist", new ArrayList<>(),
 				"List of recipes that should not be added."), ResourceLocation::new));
@@ -145,7 +152,7 @@ public class ConfigHandler {
 		catch(IOException e) {
 			throw new RuntimeException("Could not create config file "+customFormConfigFile, e);
 		}
-		ModuleCustom.instance.setCustomFormConfigFile(customFormConfigFile);
+		CustomModule.instance.setCustomFormConfigFile(customFormConfigFile);
 	}
 
 	public static void setupMaterialConfigs() {
@@ -161,7 +168,7 @@ public class ConfigHandler {
 		}
 		MATERIAL_CONFIGS.clear();
 		for(Material material : MaterialHandler.getMaterials()) {
-			if(material.getType().isNone()) {
+			if(material.getType().isDummy()) {
 				continue;
 			}
 			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(new File(materialConfigDir, material.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());

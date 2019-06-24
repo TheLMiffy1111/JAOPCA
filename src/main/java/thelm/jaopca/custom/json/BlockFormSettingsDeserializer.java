@@ -15,7 +15,7 @@ import com.google.gson.reflect.TypeToken;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.common.ToolType;
@@ -88,9 +88,6 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 			}
 			settings.setSlipperinessFunction(helper.deserializeType(json, "slipperiness", context, doubleFunctionType));
 		}
-		if(json.has("isFull")) {
-			settings.setIsFull(helper.getBoolean(json, "isFull"));
-		}
 		if(json.has("shape")) {
 			settings.setShape(helper.deserializeType(json, "shape", context, VoxelShape.class));
 		}
@@ -162,7 +159,7 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 			settings.setHasEffectFunction(m->m.hasEffect() || hasEffect);
 		}
 		if(json.has("rarity")) {
-			EnumRarity rarity = helper.deserializeType(json, "rarity", context, EnumRarity.class);
+			Rarity rarity = helper.deserializeType(json, "rarity", context, Rarity.class);
 			settings.setDisplayRarityFunction(m->rarity);
 		}
 		if(json.has("burnTime")) {

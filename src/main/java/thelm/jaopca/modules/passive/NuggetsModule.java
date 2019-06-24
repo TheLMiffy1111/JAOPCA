@@ -10,17 +10,17 @@ import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.items.IItemInfo;
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 
 @JAOPCAModule
-public class ModuleNuggets implements IModule {
+public class NuggetsModule implements IModule {
 
 	private final IForm nuggetForm = JAOPCAApi.instance().newForm(this, "nuggets", JAOPCAApi.instance().itemFormType()).
-			setMaterialTypes(EnumMaterialType.NON_DUSTS);
+			setMaterialTypes(MaterialType.NON_DUSTS);
 
 	@Override
 	public String getName() {
@@ -41,7 +41,7 @@ public class ModuleNuggets implements IModule {
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = JAOPCAApi.instance();
 		for(IMaterial material : nuggetForm.getMaterials()) {
-			if(material.getType().isNone()) {
+			if(material.getType().isDummy()) {
 				continue;
 			}
 			ResourceLocation materialLocation = api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName());

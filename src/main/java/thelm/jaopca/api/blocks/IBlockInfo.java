@@ -8,7 +8,7 @@ public interface IBlockInfo extends IMaterialFormInfo<BlockMaterialForm>, IItemP
 
 	BlockMaterialForm getBlock();
 
-	ItemBlockMaterialForm getItemBlock();
+	MaterialFormBlockItem getItemBlock();
 
 	@Override
 	default BlockMaterialForm getMaterialForm() {

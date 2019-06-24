@@ -11,7 +11,7 @@ import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
-public class ShapedRecipeGenerator implements Supplier<IRecipe> {
+public class ShapedRecipeSupplier implements Supplier<IRecipe> {
 
 	public final ResourceLocation key;
 	public final String group;
@@ -20,11 +20,11 @@ public class ShapedRecipeGenerator implements Supplier<IRecipe> {
 	public final Object[] input;
 	public ShapedRecipe recipe;
 
-	public ShapedRecipeGenerator(ResourceLocation key, Object output, int count, Object... input) {
+	public ShapedRecipeSupplier(ResourceLocation key, Object output, int count, Object... input) {
 		this(key, "", output, count, input);
 	}
 
-	public ShapedRecipeGenerator(ResourceLocation key, String group, Object output, int count, Object... input) {
+	public ShapedRecipeSupplier(ResourceLocation key, String group, Object output, int count, Object... input) {
 		this.key = key;
 		this.group = group;
 		this.output = output;

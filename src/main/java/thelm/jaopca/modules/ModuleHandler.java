@@ -1,5 +1,7 @@
 package thelm.jaopca.modules;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +17,7 @@ import org.objectweb.asm.Type;
 
 import com.google.common.base.Predicates;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.resources.IResourceManager;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -75,7 +78,14 @@ public class ModuleHandler {
 			try {
 				Class<?> moduleClass = Class.forName(className);
 				Class<? extends IModule> moduleInstanceClass = moduleClass.asSubclass(IModule.class);
-				IModule module = moduleInstanceClass.newInstance();
+				IModule module;
+				try {
+					Method method = moduleClass.getMethod("getInstance");
+					module = (IModule)method.invoke(null);
+				}
+				catch(NoSuchMethodException | InvocationTargetException e) {
+					module = moduleInstanceClass.newInstance();
+				}
 				if(MODULES.putIfAbsent(module.getName(), module) != null) {
 					//throw new IllegalStateException(String.format("Module name conflict: %s for %s and %s", module.getName(), MODULES.get(module.getName()).getClass(), module.getClass()));
 					LOGGER.fatal("Module name conflict: {} for {} and {}", module.getName(), MODULES.get(module.getName()).getClass(), module.getClass());

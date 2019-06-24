@@ -57,7 +57,7 @@ public class FormHandler {
 		for(IFormRequest request : FORM_REQUESTS) {
 			if(request.isGrouped()) {
 				List<IMaterial> materials = MaterialHandler.getMaterials().stream().filter(request::isMaterialGroupValid).collect(Collectors.toList());
-				materials.add(MaterialHandler.getNoneMaterial());
+				materials.addAll(MaterialHandler.getDummyMaterials());
 				for(IForm form : request.getForms()) {
 					form.setMaterials(materials);
 				}
@@ -65,7 +65,7 @@ public class FormHandler {
 			else {
 				for(IForm form : request.getForms()) {
 					List<IMaterial> materials = MaterialHandler.getMaterials().stream().filter(form::isMaterialValid).collect(Collectors.toList());
-					materials.add(MaterialHandler.getNoneMaterial());
+					materials.addAll(MaterialHandler.getDummyMaterials());
 					form.setMaterials(materials);
 				}
 			}

@@ -19,10 +19,10 @@ import com.google.gson.JsonSyntaxException;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
-import thelm.jaopca.api.materials.EnumMaterialType;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.materials.MaterialHandler;
-import thelm.jaopca.modules.ModuleCustom;
+import thelm.jaopca.modules.CustomModule;
 import thelm.jaopca.utils.JsonHelper;
 
 public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Function<IMaterial, Enum<?>>> {
@@ -91,22 +91,22 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 					switch(entry.getKey()) {
 					case "ingot":
 						MaterialHandler.getMaterials().stream().
-						filter(m->ArrayUtils.contains(EnumMaterialType.INGOTS, m.getType())).
+						filter(m->ArrayUtils.contains(MaterialType.INGOTS, m.getType())).
 						forEach(m->map.put(m, materialTypeValue));
 						break;
 					case "gem":
 						MaterialHandler.getMaterials().stream().
-						filter(m->ArrayUtils.contains(EnumMaterialType.GEMS, m.getType())).
+						filter(m->ArrayUtils.contains(MaterialType.GEMS, m.getType())).
 						forEach(m->map.put(m, materialTypeValue));
 						break;
 					case "crystal":
 						MaterialHandler.getMaterials().stream().
-						filter(m->ArrayUtils.contains(EnumMaterialType.CRYSTALS, m.getType())).
+						filter(m->ArrayUtils.contains(MaterialType.CRYSTALS, m.getType())).
 						forEach(m->map.put(m, materialTypeValue));
 						break;
 					case "dust":
 						MaterialHandler.getMaterials().stream().
-						filter(m->ArrayUtils.contains(EnumMaterialType.DUSTS, m.getType())).
+						filter(m->ArrayUtils.contains(MaterialType.DUSTS, m.getType())).
 						forEach(m->map.put(m, materialTypeValue));
 						break;
 					}
@@ -149,7 +149,7 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 					else {
 						comment = "";
 					}
-					ModuleCustom.instance.addCustomConfigDefiner((material, config)->{
+					CustomModule.instance.addCustomConfigDefiner((material, config)->{
 						Enum<?> value = config.getDefinedEnum(path, (Class<Enum>)parameterizedType, (Enum)map.get(material), comment);
 						if(value != null) {
 							map.put(material, value);

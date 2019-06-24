@@ -21,12 +21,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.Tag;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import thelm.jaopca.api.blocks.BlockMaterialForm;
-import thelm.jaopca.api.blocks.ItemBlockMaterialForm;
-import thelm.jaopca.api.items.ItemMaterialForm;
+import thelm.jaopca.api.blocks.MaterialFormBlockItem;
+import thelm.jaopca.api.items.MaterialFormItem;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
@@ -62,10 +62,10 @@ public class ColorHandler {
 		for(BlockMaterialForm block : BlockFormType.getBlocks()) {
 			blockColors.register(BLOCK_COLOR, block);
 		}
-		for(ItemBlockMaterialForm itemBlock : BlockFormType.getItemBlocks()) {
+		for(MaterialFormBlockItem itemBlock : BlockFormType.getBlockItems()) {
 			itemColors.register(ITEM_COLOR, itemBlock);
 		}
-		for(ItemMaterialForm item : ItemFormType.getItems()) {
+		for(MaterialFormItem item : ItemFormType.getItems()) {
 			itemColors.register(ITEM_COLOR, item);
 		}
 	}
@@ -185,9 +185,9 @@ public class ColorHandler {
 	public static List<BakedQuad> getBakedQuads(ItemStack stack) {
 		List<BakedQuad> quads = new ArrayList<>();
 		IBakedModel model = Minecraft.getInstance().getItemRenderer().getModelWithOverrides(stack);
-		model.getQuads(null, null, new Random(0)).stream().filter(quad->quad.getFace() == EnumFacing.SOUTH).forEach(quads::add);
-		for(EnumFacing facing : EnumFacing.values()) {
-			model.getQuads(null, facing, new Random(0)).stream().filter(quad->quad.getFace() == EnumFacing.SOUTH).forEach(quads::add);
+		model.getQuads(null, null, new Random(0)).stream().filter(quad->quad.getFace() == Direction.SOUTH).forEach(quads::add);
+		for(Direction facing : Direction.values()) {
+			model.getQuads(null, facing, new Random(0)).stream().filter(quad->quad.getFace() == Direction.SOUTH).forEach(quads::add);
 		}
 		return quads;
 	}

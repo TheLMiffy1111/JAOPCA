@@ -47,24 +47,27 @@ public class BlockDeserializationHelper {
 		INSTANCE.putBlockMaterial("carpet", Material.CARPET);
 		INSTANCE.putBlockMaterial("plants", Material.PLANTS);
 		INSTANCE.putBlockMaterial("ocean_plant", Material.OCEAN_PLANT);
-		INSTANCE.putBlockMaterial("vine", Material.VINE);
+		INSTANCE.putBlockMaterial("tall_plants", Material.TALL_PLANTS);
 		INSTANCE.putBlockMaterial("sea_grass", Material.SEA_GRASS);
 		INSTANCE.putBlockMaterial("water", Material.WATER);
 		INSTANCE.putBlockMaterial("bubble_column", Material.BUBBLE_COLUMN);
 		INSTANCE.putBlockMaterial("lava", Material.LAVA);
 		INSTANCE.putBlockMaterial("snow", Material.SNOW);
 		INSTANCE.putBlockMaterial("fire", Material.FIRE);
-		INSTANCE.putBlockMaterial("circuits", Material.CIRCUITS);
+		INSTANCE.putBlockMaterial("miscellaneous", Material.MISCELLANEOUS);
 		INSTANCE.putBlockMaterial("web", Material.WEB);
 		INSTANCE.putBlockMaterial("redstone_light", Material.REDSTONE_LIGHT);
 		INSTANCE.putBlockMaterial("clay", Material.CLAY);
-		INSTANCE.putBlockMaterial("ground", Material.GROUND);
-		INSTANCE.putBlockMaterial("grass", Material.GRASS);
+		INSTANCE.putBlockMaterial("earth", Material.EARTH);
+		INSTANCE.putBlockMaterial("organic", Material.ORGANIC);
 		INSTANCE.putBlockMaterial("packed_ice", Material.PACKED_ICE);
 		INSTANCE.putBlockMaterial("sand", Material.SAND);
 		INSTANCE.putBlockMaterial("sponge", Material.SPONGE);
+		INSTANCE.putBlockMaterial("shulker", Material.SHULKER);
 		INSTANCE.putBlockMaterial("wood", Material.WOOD);
-		INSTANCE.putBlockMaterial("cloth", Material.CLOTH);
+		INSTANCE.putBlockMaterial("bamboo_sapling", Material.BAMBOO_SAPLING);
+		INSTANCE.putBlockMaterial("bamboo", Material.BAMBOO);
+		INSTANCE.putBlockMaterial("wool", Material.WOOL);
 		INSTANCE.putBlockMaterial("tnt", Material.TNT);
 		INSTANCE.putBlockMaterial("leaves", Material.LEAVES);
 		INSTANCE.putBlockMaterial("glass", Material.GLASS);
@@ -72,7 +75,7 @@ public class BlockDeserializationHelper {
 		INSTANCE.putBlockMaterial("cactus", Material.CACTUS);
 		INSTANCE.putBlockMaterial("rock", Material.ROCK);
 		INSTANCE.putBlockMaterial("iron", Material.IRON);
-		INSTANCE.putBlockMaterial("crafted_snow", Material.CRAFTED_SNOW);
+		INSTANCE.putBlockMaterial("snow_block", Material.SNOW_BLOCK);
 		INSTANCE.putBlockMaterial("anvil", Material.ANVIL);
 		INSTANCE.putBlockMaterial("barrier", Material.BARRIER);
 		INSTANCE.putBlockMaterial("piston", Material.PISTON);
@@ -95,5 +98,14 @@ public class BlockDeserializationHelper {
 		INSTANCE.putSoundType("slime", SoundType.SLIME);
 		INSTANCE.putSoundType("wet_grass", SoundType.WET_GRASS);
 		INSTANCE.putSoundType("coral", SoundType.CORAL);
+		INSTANCE.putSoundType("bamboo", SoundType.field_222468_o);
+		INSTANCE.putSoundType("bamboo_sapling", SoundType.field_222469_p);
+		INSTANCE.putSoundType("scaffolding", SoundType.field_222470_q);
+		INSTANCE.putSoundType("bush", SoundType.field_222471_r);
+		INSTANCE.putSoundType("crop", SoundType.field_222472_s);
+		INSTANCE.putSoundType("gourd", SoundType.field_222473_t);
+		INSTANCE.putSoundType("nether_wart", SoundType.field_222474_u);
+		INSTANCE.putSoundType("lantern", SoundType.field_222475_v);
+		
 	}
 }

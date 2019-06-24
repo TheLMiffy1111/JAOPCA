@@ -27,9 +27,9 @@ import thelm.jaopca.api.blocks.BlockMaterialForm;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
-import thelm.jaopca.api.blocks.ItemBlockMaterialForm;
+import thelm.jaopca.api.blocks.MaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
-import thelm.jaopca.api.materials.EnumMaterialType;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
 import thelm.jaopca.custom.json.EnumDeserializer;
@@ -47,7 +47,7 @@ public class BlockFormType implements IBlockFormType {
 	public static final BlockFormType INSTANCE = new BlockFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
 	private static final TreeBasedTable<IForm, IMaterial, BlockMaterialForm> BLOCKS = TreeBasedTable.create();
-	private static final TreeBasedTable<IForm, IMaterial, ItemBlockMaterialForm> ITEM_BLOCKS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, MaterialFormBlockItem> BLOCK_ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IBlockInfo> BLOCK_INFOS = TreeBasedTable.create();
 
 	public static void init() {
@@ -76,7 +76,7 @@ public class BlockFormType implements IBlockFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		if(material.getType().isNone()) {
+		if(material.getType().isDummy()) {
 			return true;
 		}
 		ResourceLocation tagLocation = new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName());
@@ -86,8 +86,8 @@ public class BlockFormType implements IBlockFormType {
 	@Override
 	public IBlockInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		IBlockInfo info = BLOCK_INFOS.get(form, material);
-		if(info == null && BLOCKS.contains(form, material) && ITEM_BLOCKS.contains(form, material)) {
-			info = new BlockInfo(BLOCKS.get(form, material), ITEM_BLOCKS.get(form, material));
+		if(info == null && BLOCKS.contains(form, material) && BLOCK_ITEMS.contains(form, material)) {
+			info = new BlockInfo(BLOCKS.get(form, material), BLOCK_ITEMS.get(form, material));
 			BLOCK_INFOS.put(form, material, info);
 		}
 		return info;
@@ -122,33 +122,34 @@ public class BlockFormType implements IBlockFormType {
 		for(IForm form : FORMS) {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			for(IMaterial material : form.getMaterials()) {
-				boolean isMaterialNull = material.getType() == EnumMaterialType.NONE;
+				boolean isMaterialDummy = material.getType().isDummy();
 				BlockMaterialForm block = settings.getBlockCreator().create(form, material, ()->(IBlockFormSettings)form.getSettings());
-				block.setRegistryName(new ResourceLocation(JAOPCA.MOD_ID, form.getName()+(isMaterialNull ? "" : '.'+material.getName())));
+				String registryKey = isMaterialDummy ? material.getName()+form.getName() : form.getName()+'.'+material.getName();
+				block.setRegistryName(new ResourceLocation(JAOPCA.MOD_ID, registryKey));
 				registry.register(block);
 				BLOCKS.put(form, material, block);
-				DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()), ()->block);
-				if(!isMaterialNull) {
+				if(!isMaterialDummy) {
+					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()), ()->block);
 					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), ()->block);
 				}
 			}
 		}
 	}
 
-	public static void registerItemBlocks(IForgeRegistry<Item> registry) {
+	public static void registerBlockItems(IForgeRegistry<Item> registry) {
 		for(Table.Cell<IForm, IMaterial, BlockMaterialForm> cell : BLOCKS.cellSet()) {
 			IForm form = cell.getRowKey();
 			IMaterial material = cell.getColumnKey();
 			BlockMaterialForm block = cell.getValue();
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
-			boolean isMaterialNull = material.getType() == EnumMaterialType.NONE;
-			ItemBlockMaterialForm itemBlock = settings.getItemBlockCreator().create(block, ()->(IBlockFormSettings)form.getSettings());
-			itemBlock.setRegistryName(block.getRegistryName());
-			registry.register(itemBlock);
-			ITEM_BLOCKS.put(form, material, itemBlock);
-			DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), ()->itemBlock);
-			if(!isMaterialNull) {
-				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), ()->itemBlock);
+			boolean isMaterialDummy = material.getType().isDummy();
+			MaterialFormBlockItem blockItem = settings.getBlockItemCreator().create(block, ()->(IBlockFormSettings)form.getSettings());
+			blockItem.setRegistryName(block.getRegistryName());
+			registry.register(blockItem);
+			BLOCK_ITEMS.put(form, material, blockItem);
+			if(!isMaterialDummy) {
+				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), ()->blockItem);
+				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), ()->blockItem);
 			}
 		}
 	}
@@ -157,7 +158,7 @@ public class BlockFormType implements IBlockFormType {
 		return BLOCKS.values();
 	}
 
-	public static Collection<ItemBlockMaterialForm> getItemBlocks() {
-		return ITEM_BLOCKS.values();
+	public static Collection<MaterialFormBlockItem> getBlockItems() {
+		return BLOCK_ITEMS.values();
 	}
 }

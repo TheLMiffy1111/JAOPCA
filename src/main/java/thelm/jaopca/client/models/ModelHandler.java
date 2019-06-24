@@ -7,14 +7,15 @@ import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.blocks.BlockMaterialForm;
-import thelm.jaopca.api.blocks.ItemBlockMaterialForm;
-import thelm.jaopca.api.items.ItemMaterialForm;
+import thelm.jaopca.api.blocks.MaterialFormBlockItem;
+import thelm.jaopca.api.items.MaterialFormItem;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.items.ItemFormType;
 
@@ -22,9 +23,9 @@ public class ModelHandler {
 
 	public static void remapModels(ModelBakeEvent event) {
 		IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
-		Map<ModelResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
+		Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
 		for(BlockMaterialForm block : BlockFormType.getBlocks()) {
-			if(block.getMaterial().getType().isNone()) {
+			if(block.getMaterial().getType().isDummy()) {
 				continue;
 			}
 			ResourceLocation location = block.getRegistryName();
@@ -35,12 +36,13 @@ public class ModelHandler {
 			block.getStateContainer().getValidStates().forEach((state)->{
 				String propertyMapString = BlockModelShapes.getPropertyMapString(state.getValues());
 				ModelResourceLocation modelLocation = new ModelResourceLocation(block.getRegistryName(), propertyMapString);
-				IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(JAOPCA.MOD_ID+':'+block.getForm().getName(), propertyMapString));
+				String defaultModelLocation = JAOPCA.MOD_ID+':'+block.getMaterial().getTextureType().getRegistryName()+block.getForm().getName();
+				IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(defaultModelLocation, propertyMapString));
 				modelRegistry.put(modelLocation, defaultModel);
 			});
 		}
-		for(ItemBlockMaterialForm itemBlock : BlockFormType.getItemBlocks()) {
-			if(itemBlock.getMaterial().getType().isNone()) {
+		for(MaterialFormBlockItem itemBlock : BlockFormType.getBlockItems()) {
+			if(itemBlock.getMaterial().getType().isDummy()) {
 				continue;
 			}
 			//TODO Change if Forge supports using blockstates in item models
@@ -50,11 +52,12 @@ public class ModelHandler {
 				continue;
 			}
 			ModelResourceLocation modelLocation = new ModelResourceLocation(itemBlock.getRegistryName(), "inventory");
-			IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(JAOPCA.MOD_ID+':'+itemBlock.getForm().getName(), "inventory"));
+			String defaultModelLocation = JAOPCA.MOD_ID+':'+itemBlock.getMaterial().getTextureType().getRegistryName()+itemBlock.getForm().getName();
+			IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(defaultModelLocation, "inventory"));
 			modelRegistry.put(modelLocation, defaultModel);
 		}
-		for(ItemMaterialForm item : ItemFormType.getItems()) {
-			if(item.getMaterial().getType().isNone()) {
+		for(MaterialFormItem item : ItemFormType.getItems()) {
+			if(item.getMaterial().getType().isDummy()) {
 				continue;
 			}
 			ResourceLocation location = item.getRegistryName();
@@ -63,7 +66,8 @@ public class ModelHandler {
 				continue;
 			}
 			ModelResourceLocation modelLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
-			IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(JAOPCA.MOD_ID+':'+item.getForm().getName(), "inventory"));
+			String defaultModelLocation = JAOPCA.MOD_ID+':'+item.getMaterial().getTextureType().getRegistryName()+item.getForm().getName();
+			IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(defaultModelLocation, "inventory"));
 			modelRegistry.put(modelLocation, defaultModel);
 		}
 	}
