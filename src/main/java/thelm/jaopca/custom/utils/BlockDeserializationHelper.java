@@ -98,14 +98,14 @@ public class BlockDeserializationHelper {
 		INSTANCE.putSoundType("slime", SoundType.SLIME);
 		INSTANCE.putSoundType("wet_grass", SoundType.WET_GRASS);
 		INSTANCE.putSoundType("coral", SoundType.CORAL);
-		INSTANCE.putSoundType("bamboo", SoundType.field_222468_o);
-		INSTANCE.putSoundType("bamboo_sapling", SoundType.field_222469_p);
-		INSTANCE.putSoundType("scaffolding", SoundType.field_222470_q);
-		INSTANCE.putSoundType("bush", SoundType.field_222471_r);
-		INSTANCE.putSoundType("crop", SoundType.field_222472_s);
-		INSTANCE.putSoundType("gourd", SoundType.field_222473_t);
-		INSTANCE.putSoundType("nether_wart", SoundType.field_222474_u);
-		INSTANCE.putSoundType("lantern", SoundType.field_222475_v);
+		INSTANCE.putSoundType("bamboo", SoundType.BAMBOO);
+		INSTANCE.putSoundType("bamboo_sapling", SoundType.BAMBOO_SAPLING);
+		INSTANCE.putSoundType("scaffolding", SoundType.SCAFFOLDING);
+		INSTANCE.putSoundType("sweet_berry_bush", SoundType.SWEET_BERRY_BUSH);
+		INSTANCE.putSoundType("crop", SoundType.CROP);
+		INSTANCE.putSoundType("stem", SoundType.STEM);
+		INSTANCE.putSoundType("nether_wart", SoundType.NETHER_WART);
+		INSTANCE.putSoundType("lantern", SoundType.LANTERN);
 		
 	}
 }

@@ -121,10 +121,11 @@ public class ModuleHandler {
 
 	public static void computeValidMaterials() {
 		for(ModuleData data : getModuleDatas()) {
-			if(data.getModule().isPassive()) {
-				continue;
-			}
-			List<IMaterial> materials = MaterialHandler.getMaterials().stream().filter(data::isMaterialModuleValid).collect(Collectors.toList());
+			List<IMaterial> materials = MaterialHandler.getMaterials().stream().
+					filter(data.getModule().isPassive() ?
+							material->data.getConfigPassiveMaterialWhitelist().contains(material.getName()) :
+								data::isMaterialModuleValid).
+					collect(Collectors.toList());
 			for(IMaterial material : materials) {
 				if(data.isMaterialDependencyValid(material)) {
 					data.addDependencyRequestedMaterial(material);

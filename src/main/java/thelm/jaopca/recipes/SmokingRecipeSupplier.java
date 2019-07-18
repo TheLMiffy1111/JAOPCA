@@ -1,14 +1,15 @@
-package thelm.jaopca.utils;
+package thelm.jaopca.recipes;
 
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.SmokingRecipe;
 import net.minecraft.util.ResourceLocation;
+import thelm.jaopca.utils.MiscHelper;
 
-public class FurnaceRecipeSupplier implements Supplier<IRecipe> {
+public class SmokingRecipeSupplier implements Supplier<SmokingRecipe> {
 
 	public final ResourceLocation key;
 	public final String group;
@@ -17,13 +18,12 @@ public class FurnaceRecipeSupplier implements Supplier<IRecipe> {
 	public final int count;
 	public final float experience;
 	public final int time;
-	public FurnaceRecipe recipe;
 
-	public FurnaceRecipeSupplier(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+	public SmokingRecipeSupplier(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
 		this(key, "", input, output, count, experience, time);
 	}
 
-	public FurnaceRecipeSupplier(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+	public SmokingRecipeSupplier(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
 		this.key = key;
 		this.group = group;
 		this.input = input;
@@ -34,18 +34,15 @@ public class FurnaceRecipeSupplier implements Supplier<IRecipe> {
 	}
 
 	@Override
-	public IRecipe get() {
-		if(recipe != null) {
-			return recipe;
-		}
+	public SmokingRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing == null) {
-			throw new IllegalArgumentException("Invalid recipe input: "+input);
+		if(ing.hasNoMatchingItems()) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getStack(output, count);
-		if(stack == null) {
-			throw new IllegalArgumentException("Invalid recipe output: "+output);
+		if(stack.isEmpty()) {
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		return recipe = new FurnaceRecipe(key, group, ing, stack, experience, time);
+		return new SmokingRecipe(key, group, ing, stack, experience, time);
 	}
 }

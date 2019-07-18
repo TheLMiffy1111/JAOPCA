@@ -101,33 +101,33 @@ public abstract class JAOPCAApi {
 
 	public abstract boolean registerDefinedEntityTypeTag(ResourceLocation key);
 
-	public abstract boolean registerBlockTag(ResourceLocation key, Supplier<Block> blockSupplier);
+	public abstract boolean registerBlockTag(ResourceLocation key, Supplier<? extends Block> blockSupplier);
 
 	public abstract boolean registerBlockTag(ResourceLocation key, Block block);
 
 	public abstract boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey);
 
-	public abstract boolean registerItemTag(ResourceLocation key, Supplier<Item> itemSupplier);
+	public abstract boolean registerItemTag(ResourceLocation key, Supplier<? extends Item> itemSupplier);
 
 	public abstract boolean registerItemTag(ResourceLocation key, Item item);
 
 	public abstract boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey);
 
-	public abstract boolean registerFluidTag(ResourceLocation key, Supplier<Fluid> fluidSupplier);
+	public abstract boolean registerFluidTag(ResourceLocation key, Supplier<? extends Fluid> fluidSupplier);
 
 	public abstract boolean registerFluidTag(ResourceLocation key, Fluid fluid);
 
 	public abstract boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey);
 
-	public abstract boolean registerEntityTypeTag(ResourceLocation key, Supplier<EntityType> entityTypeSupplier);
+	public abstract boolean registerEntityTypeTag(ResourceLocation key, Supplier<? extends EntityType<?>> entityTypeSupplier);
 
-	public abstract boolean registerEntityTypeTag(ResourceLocation key, EntityType entityType);
+	public abstract boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType);
 
 	public abstract boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey);
 
-	public abstract boolean registerRecipe(ResourceLocation key, Supplier<IRecipe> recipeSupplier);
+	public abstract boolean registerRecipe(ResourceLocation key, Supplier<? extends IRecipe<?>> recipeSupplier);
 
-	public abstract boolean registerRecipe(ResourceLocation key, IRecipe recipe);
+	public abstract boolean registerRecipe(ResourceLocation key, IRecipe<?> recipe);
 
 	public abstract boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input);
 

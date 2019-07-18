@@ -1,6 +1,12 @@
-package thelm.jaopca.utils;
+package thelm.jaopca.recipes;
 
 import java.util.function.Supplier;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -8,15 +14,17 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import thelm.jaopca.utils.MiscHelper;
 
-public class ShapelessRecipeSupplier implements Supplier<IRecipe> {
+public class ShapelessRecipeSupplier implements Supplier<ShapelessRecipe> {
+
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	public final ResourceLocation key;
 	public final String group;
 	public final Object output;
 	public final int count;
 	public final Object[] input;
-	public ShapelessRecipe recipe;
 
 	public ShapelessRecipeSupplier(ResourceLocation key, Object output, int count, Object... input) {
 		this(key, "", output, count, input);
@@ -31,29 +39,21 @@ public class ShapelessRecipeSupplier implements Supplier<IRecipe> {
 	}
 
 	@Override
-	public IRecipe get() {
-		if(recipe != null) {
-			return recipe;
-		}
+	public ShapelessRecipe get() {
 		ItemStack stack = MiscHelper.INSTANCE.getStack(output, count);
-		if(stack == null) {
-			throw new IllegalArgumentException("Invalid recipe output: "+output);
+		if(stack.isEmpty()) {
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		NonNullList<Ingredient> inputList = NonNullList.create();
 		for(Object in : input){
 			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
-			if(ing != null) {
-				inputList.add(ing);
+			if(ing.hasNoMatchingItems()) {
+				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
 			}
 			else {
-				String err = "Invalid shapeless recipe: ";
-				for(Object tmp : input) {
-					err += tmp + ", ";
-				}
-				err += output;
-				throw new IllegalArgumentException(err);
+				inputList.add(ing);
 			}
 		}
-		return recipe = new ShapelessRecipe(key, group, stack, inputList);
+		return new ShapelessRecipe(key, group, stack, inputList);
 	}
 }

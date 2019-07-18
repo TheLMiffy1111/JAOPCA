@@ -98,6 +98,7 @@ public class MaterialHandler {
 		for(TextureType type : TextureType.values()) {
 			Material material = new Material(type);
 			MATERIALS.put(material.getName(), material);
+			dummyMaterials.add(material);
 			LOGGER.debug("Added dummy material {}", material.getName());
 		}
 		for(String name : ingots) {

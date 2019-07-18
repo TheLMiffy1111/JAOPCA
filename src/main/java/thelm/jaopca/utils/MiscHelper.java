@@ -6,10 +6,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -54,7 +56,7 @@ public class MiscHelper implements IMiscHelper {
 		else if(obj instanceof Tag<?>) {
 			return getPreferredStack(((Tag<Item>)obj).getAllElements(), count);
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -86,10 +88,29 @@ public class MiscHelper implements IMiscHelper {
 		else if(obj instanceof IItemProvider[]) {
 			return Ingredient.fromItems((IItemProvider[])obj);
 		}
+		else if(obj instanceof Ingredient.IItemList) {
+			return Ingredient.fromItemListStream(Stream.of((Ingredient.IItemList)obj));
+		}
+		else if(obj instanceof Ingredient.IItemList[]) {
+			return Ingredient.fromItemListStream(Stream.of((Ingredient.IItemList[])obj));
+		}
 		else if(obj instanceof JsonElement) {
 			return Ingredient.deserialize((JsonElement)obj);
 		}
-		return null;
+		return Ingredient.EMPTY;
+	}
+
+	@Override
+	public JsonObject serializeStack(ItemStack stack, boolean writeNBT) {
+		JsonObject json = new JsonObject();
+		json.addProperty("item", stack.getItem().getRegistryName().toString());
+		if(stack.getCount() != 1) {
+			json.addProperty("count", stack.getCount());
+		}
+		if(writeNBT && stack.hasTag()) {
+			json.addProperty("nbt", stack.getTag().toString());
+		}
+		return json;
 	}
 
 	public Tag<Item> makeItemWrapperTag(ResourceLocation location) {

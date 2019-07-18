@@ -1,8 +1,13 @@
-package thelm.jaopca.utils;
+package thelm.jaopca.recipes;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.gson.JsonObject;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -10,15 +15,17 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import thelm.jaopca.utils.MiscHelper;
 
-public class ShapedRecipeSupplier implements Supplier<IRecipe> {
+public class ShapedRecipeSupplier implements Supplier<ShapedRecipe> {
+
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	public final ResourceLocation key;
 	public final String group;
 	public final Object output;
 	public final int count;
 	public final Object[] input;
-	public ShapedRecipe recipe;
 
 	public ShapedRecipeSupplier(ResourceLocation key, Object output, int count, Object... input) {
 		this(key, "", output, count, input);
@@ -33,13 +40,10 @@ public class ShapedRecipeSupplier implements Supplier<IRecipe> {
 	}
 
 	@Override
-	public IRecipe get() {
-		if(recipe != null) {
-			return recipe;
-		}
+	public ShapedRecipe get() {
 		ItemStack stack = MiscHelper.INSTANCE.getStack(output, count);
-		if(stack == null) {
-			throw new IllegalArgumentException("Invalid recipe output: "+output);
+		if(stack.isEmpty()) {
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		int width = 0, height = 0;
 		String shape = "";
@@ -61,12 +65,7 @@ public class ShapedRecipeSupplier implements Supplier<IRecipe> {
 			}
 		}
 		if(width * height != shape.length() || shape.length() == 0) {
-			String err = "Invalid shaped recipe: ";
-			for(Object tmp : input) {
-				err += tmp + ", ";
-			}
-			err += output;
-			throw new IllegalArgumentException(err);
+			throw new IllegalArgumentException("Invalid shape in recipe "+key+": "+shape+","+width+"x"+height);
 		}
 		Map<Character, Ingredient> itemMap = new HashMap<>();
 		itemMap.put(' ', Ingredient.EMPTY);
@@ -75,29 +74,22 @@ public class ShapedRecipeSupplier implements Supplier<IRecipe> {
 			Object in = input[idx+1];
 			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
 			if(' ' == chr.charValue()) {
-				throw new IllegalArgumentException("Invalid key entry: ' ' is a reserved symbol.");
+				throw new IllegalArgumentException("Invalid key entry in recipe "+key+": ' ' is a reserved symbol");
 			}
-			if(ing != null)  {
-				itemMap.put(chr, ing);
+			if(ing.hasNoMatchingItems()) {
+				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
 			}
-			else {
-				String err = "Invalid shaped recipe: ";
-				for(Object tmp : input) {
-					err += tmp + ", ";
-				}
-				err += output;
-				throw new IllegalArgumentException(err);
-			}
+			itemMap.put(chr, ing);
 		}
 		NonNullList<Ingredient> inputList = NonNullList.withSize(width * height, Ingredient.EMPTY);
 		int x = 0;
 		for(char chr : shape.toCharArray()) {
 			Ingredient ing = itemMap.get(chr);
 			if(ing == null) {
-				throw new IllegalArgumentException("Pattern references symbol '" + chr + "' but it's not defined in the key");
+				throw new IllegalArgumentException("Pattern in recipe "+key+" references symbol '"+chr+"' but it's not defined in the key");
 			}
 			inputList.set(x++, ing);
 		}
-		return recipe = new ShapedRecipe(key, group, width, height, inputList, stack);
+		return new ShapedRecipe(key, group, width, height, inputList, stack);
 	}
 }

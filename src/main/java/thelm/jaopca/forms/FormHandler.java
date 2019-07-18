@@ -46,7 +46,8 @@ public class FormHandler {
 				if(FORMS.putIfAbsent(form.getName(), form) != null) {
 					throw new IllegalStateException(String.format("Form name conflict: %s for modules %s and %s",
 							form.getName(), FORMS.get(form.getName()).getModule().getName(), form.getModule().getName()));
-					//LOGGER.fatal("Form name conflict: {} for modules {} and {}", form.getName(), FORMS.get(form.getName()).getModule().getName(), form.getModule().getName());
+					//LOGGER.fatal("Form name conflict: {} for modules {} and {}",
+					//		form.getName(), FORMS.get(form.getName()).getModule().getName(), form.getModule().getName());
 				}
 				form.getType().addForm(form);
 			}

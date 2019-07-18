@@ -1,4 +1,4 @@
-package thelm.jaopca.utils;
+package thelm.jaopca.recipes;
 
 import java.util.function.Supplier;
 
@@ -7,15 +7,15 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.StonecuttingRecipe;
 import net.minecraft.util.ResourceLocation;
+import thelm.jaopca.utils.MiscHelper;
 
-public class StonecuttingRecipeSupplier implements Supplier<IRecipe> {
+public class StonecuttingRecipeSupplier implements Supplier<StonecuttingRecipe> {
 
 	public final ResourceLocation key;
 	public final String group;
 	public final Object input;
 	public final Object output;
 	public final int count;
-	public StonecuttingRecipe recipe;
 
 	public StonecuttingRecipeSupplier(ResourceLocation key, Object input, Object output, int count) {
 		this(key, "", input, output, count);
@@ -30,18 +30,15 @@ public class StonecuttingRecipeSupplier implements Supplier<IRecipe> {
 	}
 
 	@Override
-	public IRecipe get() {
-		if(recipe != null) {
-			return recipe;
-		}
+	public StonecuttingRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing == null) {
-			throw new IllegalArgumentException("Invalid recipe input: "+input);
+		if(ing.hasNoMatchingItems()) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getStack(output, count);
-		if(stack == null) {
-			throw new IllegalArgumentException("Invalid recipe output: "+output);
+		if(stack.isEmpty()) {
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		return recipe = new StonecuttingRecipe(key, group, ing, stack);
+		return new StonecuttingRecipe(key, group, ing, stack);
 	}
 }

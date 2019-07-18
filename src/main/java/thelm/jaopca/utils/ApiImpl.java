@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonObject;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
@@ -49,6 +50,13 @@ import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.localization.LocalizationHandler;
 import thelm.jaopca.materials.MaterialHandler;
+import thelm.jaopca.recipes.BlastingRecipeSupplier;
+import thelm.jaopca.recipes.CampfireCookingRecipeSupplier;
+import thelm.jaopca.recipes.FurnaceRecipeSupplier;
+import thelm.jaopca.recipes.ShapedRecipeSupplier;
+import thelm.jaopca.recipes.ShapelessRecipeSupplier;
+import thelm.jaopca.recipes.SmokingRecipeSupplier;
+import thelm.jaopca.recipes.StonecuttingRecipeSupplier;
 
 public class ApiImpl extends JAOPCAApi {
 
@@ -208,7 +216,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerBlockTag(ResourceLocation key, Supplier<Block> blockSupplier) {
+	public boolean registerBlockTag(ResourceLocation key, Supplier<? extends Block> blockSupplier) {
 		if(ConfigHandler.BLOCK_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -226,7 +234,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerItemTag(ResourceLocation key, Supplier<Item> itemSupplier) {
+	public boolean registerItemTag(ResourceLocation key, Supplier<? extends Item> itemSupplier) {
 		if(ConfigHandler.ITEM_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -244,7 +252,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerFluidTag(ResourceLocation key, Supplier<Fluid> fluidSupplier) {
+	public boolean registerFluidTag(ResourceLocation key, Supplier<? extends Fluid> fluidSupplier) {
 		if(ConfigHandler.FLUID_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -262,7 +270,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerEntityTypeTag(ResourceLocation key, Supplier<EntityType> entityTypeSupplier) {
+	public boolean registerEntityTypeTag(ResourceLocation key, Supplier<? extends EntityType<?>> entityTypeSupplier) {
 		if(ConfigHandler.ENTITY_TYPE_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -270,7 +278,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerEntityTypeTag(ResourceLocation key, EntityType entityType) {
+	public boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType) {
 		return registerEntityTypeTag(key, ()->entityType);
 	}
 
@@ -280,7 +288,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerRecipe(ResourceLocation key, Supplier<IRecipe> recipeSupplier) {
+	public boolean registerRecipe(ResourceLocation key, Supplier<? extends IRecipe<?>> recipeSupplier) {
 		if(DataCollector.getDefinedRecipes().contains(key) || ConfigHandler.RECIPE_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -288,7 +296,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerRecipe(ResourceLocation key, IRecipe recipe) {
+	public boolean registerRecipe(ResourceLocation key, IRecipe<?> recipe) {
 		return registerRecipe(key, ()->recipe);
 	}
 

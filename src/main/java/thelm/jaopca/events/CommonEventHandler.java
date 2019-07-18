@@ -1,15 +1,16 @@
 package thelm.jaopca.events;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.item.Item;
-import net.minecraft.resources.IResourceManagerReloadListener;
+import net.minecraft.profiler.IProfiler;
+import net.minecraft.resources.IFutureReloadListener;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.RegistryEvent;
@@ -88,18 +89,18 @@ public class CommonEventHandler {
 	@SubscribeEvent
 	public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
 		MinecraftServer server = event.getServer();
-		List<IResourceManagerReloadListener> reloadListeners;
-		try {
-			Field reloadListenersField = Arrays.stream(SimpleReloadableResourceManager.class.getDeclaredFields()).filter(field->field.getType() == List.class).findFirst().get();
-			reloadListenersField.setAccessible(true);
-			reloadListeners = (List<IResourceManagerReloadListener>)reloadListenersField.get(server.getResourceManager());
-		}
-		catch(Exception e) {
-			LOGGER.warn("Unable to obtain listener list.", e);
-			return;
-		}
+		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)server.getResourceManager()).reloadListeners;
 		DataInjector instance = DataInjector.getNewInstance(server.getRecipeManager());
-		reloadListeners.add(reloadListeners.indexOf(server.getRecipeManager())+1, instance::injectRecipes);
+		reloadListeners.add(reloadListeners.indexOf(server.getRecipeManager())+1, new ReloadListener<Object>() {
+			@Override
+			protected Object prepare(IResourceManager resourceManager, IProfiler profiler) {
+				return null;
+			}
+			@Override
+			protected void apply(Object splashList, IResourceManager resourceManager, IProfiler profiler) {
+				instance.injectRecipes(resourceManager);
+			}
+		});
 		server.getResourcePacks().addPackFinder(DataInjector.PackFinder.INSTANCE);
 	}
 }
