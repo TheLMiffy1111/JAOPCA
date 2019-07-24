@@ -33,6 +33,7 @@ public class Material implements IMaterial {
 	private final String name;
 	private final MaterialType type;
 	private TextureType textureType = TextureType.METALLIC;
+	private final TreeSet<String> alternativeNames = new TreeSet<>();
 	private OptionalInt color = OptionalInt.empty();
 	private boolean hasEffect = false;
 	private Rarity displayRarity = Rarity.COMMON;
@@ -59,6 +60,11 @@ public class Material implements IMaterial {
 	@Override
 	public MaterialType getType() {
 		return type;
+	}
+
+	@Override
+	public Set<String> getAlternativeNames() {
+		return Collections.unmodifiableNavigableSet(alternativeNames);
 	}
 
 	@Override
@@ -106,15 +112,21 @@ public class Material implements IMaterial {
 
 	public void setConfig(IDynamicSpecConfig config) {
 		this.config = config;
-		extras.clear();
-		extras.addAll(config.getDefinedStringList("general.extras", extras, MaterialHandler::containsMaterial, "The byproducts of this material."));
 
-		configModuleBlacklist.clear();
-		TreeMultiset<String> blacklist = TreeMultiset.create(config.getDefinedStringList("general.moduleBlacklist", new ArrayList<>(),
+		List<String> cfgList = config.getDefinedStringList("general.alternativeNames", new ArrayList<>(alternativeNames), "The alternative names of this material.");
+		alternativeNames.clear();
+		alternativeNames.addAll(cfgList);
+
+		cfgList = config.getDefinedStringList("general.extras", extras, MaterialHandler::containsMaterial, "The byproducts of this material.");
+		extras.clear();
+		extras.addAll(cfgList);
+
+		TreeMultiset<String> blacklist = TreeMultiset.create(config.getDefinedStringList("general.moduleBlacklist", new ArrayList<>(configModuleBlacklist),
 				s->ModuleHandler.getModuleMap().containsKey(s) || "*".equals(s), "The module blacklist of this material."));
 		int count = blacklist.count("*");
 		ModuleHandler.getModuleMap().keySet().forEach(s->blacklist.add(s, count));
 		blacklist.remove("*", count);
+		configModuleBlacklist.clear();
 		configModuleBlacklist.addAll(blacklist.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(e->e.getElement()).collect(Collectors.toList()));
 
 		hasEffect = config.getDefinedBoolean("general.hasEffect", hasEffect, "Should items of this material have the enchanted glow.");

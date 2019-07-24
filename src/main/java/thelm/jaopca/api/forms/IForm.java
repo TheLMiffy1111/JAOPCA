@@ -3,8 +3,8 @@ package thelm.jaopca.api.forms;
 import java.util.Collection;
 import java.util.Set;
 
-import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 
 public interface IForm extends Comparable<IForm> {

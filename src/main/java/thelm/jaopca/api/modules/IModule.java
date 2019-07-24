@@ -14,8 +14,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IFormRequest;
-import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.api.materials.MaterialType;
 
 public interface IModule extends Comparable<IModule> {
 

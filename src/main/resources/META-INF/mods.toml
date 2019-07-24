@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[13,)"
+loaderVersion="[27,)"
 issueTrackerURL="https://github.com/TheLMiffy1111/JAOPCA/issues"
 displayURL="https://minecraft.curseforge.com/projects/jaopca"
 credits="Inspired by AOBD, a mod made by ganymedes01 for Minecraft 1.7"
@@ -13,6 +13,6 @@ description="A mod that aims to make mods with ore processing support more ores.
 [[dependencies.jaopca]]
     modId="forge"
     mandatory=false
-    versionRange="[26.0.43,)"
+    versionRange="[27,)"
     ordering="NONE"
     side="BOTH"

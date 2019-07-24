@@ -10,6 +10,8 @@ public interface IMaterial extends Comparable<IMaterial> {
 
 	MaterialType getType();
 
+	Set<String> getAlternativeNames();
+
 	IMaterial getExtra(int index);
 
 	boolean hasExtra(int index);

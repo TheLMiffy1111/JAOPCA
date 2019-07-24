@@ -1,6 +1,5 @@
 package thelm.jaopca.client.events;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Supplier;
 
 import com.google.common.collect.TreeBasedTable;
 import com.google.gson.GsonBuilder;
@@ -109,8 +110,12 @@ public class ItemFormType implements IItemFormType {
 				registry.register(item);
 				ITEMS.put(form, material, item);
 				if(!isMaterialDummy) {
-					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), ()->item);
-					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), ()->item);
+					Supplier<Item> supplier = ()->item;
+					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), supplier);
+					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), supplier);
+					for(String alternativeName : material.getAlternativeNames()) {
+						DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), supplier);
+					}
 				}
 			}
 		}

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
@@ -29,7 +30,6 @@ import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.blocks.MaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
-import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
 import thelm.jaopca.custom.json.EnumDeserializer;
@@ -129,8 +129,12 @@ public class BlockFormType implements IBlockFormType {
 				registry.register(block);
 				BLOCKS.put(form, material, block);
 				if(!isMaterialDummy) {
-					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()), ()->block);
-					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), ()->block);
+					Supplier<Block> supplier = ()->block;
+					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()), supplier);
+					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), supplier);
+					for(String alternativeName : material.getAlternativeNames()) {
+						DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), supplier);
+					}
 				}
 			}
 		}
@@ -148,8 +152,12 @@ public class BlockFormType implements IBlockFormType {
 			registry.register(blockItem);
 			BLOCK_ITEMS.put(form, material, blockItem);
 			if(!isMaterialDummy) {
-				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), ()->blockItem);
-				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), ()->blockItem);
+				Supplier<Item> supplier = ()->blockItem;
+				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), supplier);
+				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), supplier);
+				for(String alternativeName : material.getAlternativeNames()) {
+					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), supplier);
+				}
 			}
 		}
 	}

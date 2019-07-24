@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonObject;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;

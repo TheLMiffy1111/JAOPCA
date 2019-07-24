@@ -12,8 +12,8 @@ import com.google.gson.JsonElement;
 
 import net.minecraft.resources.IPackFinder;
 import net.minecraft.resources.ResourcePackInfo;
-import net.minecraft.resources.ResourcePackType;
 import net.minecraft.resources.ResourcePackInfo.IFactory;
+import net.minecraft.resources.ResourcePackType;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.resources.InMemoryResourcePack;
 
