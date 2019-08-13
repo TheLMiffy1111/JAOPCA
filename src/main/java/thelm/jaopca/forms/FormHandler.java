@@ -39,7 +39,7 @@ public class FormHandler {
 
 	public static void collectForms() {
 		for(IModule module : ModuleHandler.getModuleMap().values()) {
-			FORM_REQUESTS.addAll(module.getFormRequests());
+			module.getFormRequests().stream().filter(request->request.getModule() == module).forEach(FORM_REQUESTS::add);
 		}
 		for(IFormRequest request : FORM_REQUESTS) {
 			for(IForm form : request.getForms()) {

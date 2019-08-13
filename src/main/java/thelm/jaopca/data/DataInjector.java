@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Supplier;
@@ -49,39 +50,57 @@ public class DataInjector {
 	private static final TreeMap<ResourceLocation, Supplier<? extends InputStream>> INPUT_STREAMS_INJECT = new TreeMap<>();
 
 	public static boolean registerBlockTag(ResourceLocation location, Supplier<? extends Block> blockSupplier) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(blockSupplier);
 		return BLOCK_TAGS_INJECT.put(location, blockSupplier);
 	}
 
 	public static boolean registerItemTag(ResourceLocation location, Supplier<? extends Item> itemSupplier) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(itemSupplier);
 		return ITEM_TAGS_INJECT.put(location, itemSupplier);
 	}
 
 	public static boolean registerFluidTag(ResourceLocation location, Supplier<? extends Fluid> fluidSupplier) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(fluidSupplier);
 		return FLUID_TAGS_INJECT.put(location, fluidSupplier);
 	}
 
 	public static boolean registerEntityTypeTag(ResourceLocation location, Supplier<? extends EntityType<?>> entityTypeSupplier) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(entityTypeSupplier);
 		return ENTITY_TYPE_TAGS_INJECT.put(location, entityTypeSupplier);
 	}
 
 	public static boolean registerRecipe(ResourceLocation location, Supplier<? extends IRecipe<?>> recipeSupplier) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(recipeSupplier);
 		return RECIPES_INJECT.putIfAbsent(location, recipeSupplier) == null;
 	}
 
 	public static boolean registerAdvancement(ResourceLocation location, Advancement.Builder advancementBuilder) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(advancementBuilder);
 		return ADVANCEMENTS_INJECT.putIfAbsent(location, advancementBuilder) == null;
 	}
 
-	public static boolean injectJson(ResourceLocation location, Supplier<? extends JsonElement> supplier) {
-		return JSONS_INJECT.putIfAbsent(location, supplier) == null;
+	public static boolean injectJson(ResourceLocation location, Supplier<? extends JsonElement> jsonSupplier) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(jsonSupplier);
+		return JSONS_INJECT.putIfAbsent(location, jsonSupplier) == null;
 	}
 
-	public static boolean injectString(ResourceLocation location, Supplier<String> supplier) {
-		return STRINGS_INJECT.putIfAbsent(location, supplier) == null;
+	public static boolean injectString(ResourceLocation location, Supplier<String> stringSupplier) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(stringSupplier);
+		return STRINGS_INJECT.putIfAbsent(location, stringSupplier) == null;
 	}
 
-	public static boolean injectInputStream(ResourceLocation location, Supplier<? extends InputStream> supplier) {
-		return INPUT_STREAMS_INJECT.putIfAbsent(location, supplier) == null;
+	public static boolean injectInputStream(ResourceLocation location, Supplier<? extends InputStream> streamSupplier) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(streamSupplier);
+		return INPUT_STREAMS_INJECT.putIfAbsent(location, streamSupplier) == null;
 	}
 
 	public static Set<ResourceLocation> getInjectBlockTags() {
@@ -161,22 +180,22 @@ public class DataInjector {
 			T packInfo = ResourcePackInfo.createResourcePack("inmemory:jaopca", true, ()->{
 				InMemoryResourcePack pack = new InMemoryResourcePack("inmemory:jaopca", true);
 				BLOCK_TAGS_INJECT.asMap().forEach((location, suppliers)->{
-					Block[] blocks = suppliers.stream().map(Supplier::get).toArray(Block[]::new);
+					Block[] blocks = suppliers.stream().map(Supplier::get).distinct().filter(Objects::nonNull).toArray(Block[]::new);
 					Tag<Block> tag = Tag.Builder.<Block>create().add(blocks).build(location);
 					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/blocks/"+location.getPath()+".json"), tag.serialize(ForgeRegistries.BLOCKS::getKey));
 				});
 				ITEM_TAGS_INJECT.asMap().forEach((location, suppliers)->{
-					Item[] items = suppliers.stream().map(Supplier::get).toArray(Item[]::new);
+					Item[] items = suppliers.stream().map(Supplier::get).distinct().filter(Objects::nonNull).toArray(Item[]::new);
 					Tag<Item> tag = Tag.Builder.<Item>create().add(items).build(location);
 					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/items/"+location.getPath()+".json"), tag.serialize(ForgeRegistries.ITEMS::getKey));
 				});
 				FLUID_TAGS_INJECT.asMap().forEach((location, suppliers)->{
-					Fluid[] fluids = suppliers.stream().map(Supplier::get).toArray(Fluid[]::new);
+					Fluid[] fluids = suppliers.stream().map(Supplier::get).distinct().filter(Objects::nonNull).toArray(Fluid[]::new);
 					Tag<Fluid> tag = Tag.Builder.<Fluid>create().add(fluids).build(location);
 					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/fluids/"+location.getPath()+".json"), tag.serialize(ForgeRegistries.FLUIDS::getKey));
 				});
 				ENTITY_TYPE_TAGS_INJECT.asMap().forEach((location, suppliers)->{
-					EntityType<?>[] entityTypes = suppliers.stream().map(Supplier::get).toArray(EntityType<?>[]::new);
+					EntityType<?>[] entityTypes = suppliers.stream().map(Supplier::get).distinct().filter(Objects::nonNull).toArray(EntityType<?>[]::new);
 					Tag<EntityType<?>> tag = Tag.Builder.<EntityType<?>>create().add(entityTypes).build(location);
 					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), tag.serialize(ForgeRegistries.ENTITIES::getKey));
 				});
@@ -190,7 +209,7 @@ public class DataInjector {
 					pack.putString(ResourcePackType.SERVER_DATA, location, supplier.get());
 				});
 				INPUT_STREAMS_INJECT.forEach((location, supplier)->{
-					pack.putInputStream(ResourcePackType.SERVER_DATA, location, supplier.get());
+					pack.putInputStream(ResourcePackType.SERVER_DATA, location, supplier);
 				});
 				return pack;
 			}, factory, ResourcePackInfo.Priority.BOTTOM);

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,22 +33,22 @@ public class InMemoryResourcePack implements IResourcePack {
 	private final String name;
 	private final boolean isHidden;
 	private final JsonObject metadata = (JsonObject)new JsonParser().parse("{\"pack_format\":4,\"description\":\"JAOPCA In Memory Resources\"}");
-	private final TreeMap<String, InputStream> root = new TreeMap<>();
-	private final TreeMap<ResourceLocation, InputStream> assets = new TreeMap<>();
-	private final TreeMap<ResourceLocation, InputStream> data = new TreeMap<>();
+	private final TreeMap<String, Supplier<? extends InputStream>> root = new TreeMap<>();
+	private final TreeMap<ResourceLocation, Supplier<? extends InputStream>> assets = new TreeMap<>();
+	private final TreeMap<ResourceLocation, Supplier<? extends InputStream>> data = new TreeMap<>();
 
 	public InMemoryResourcePack(String name, boolean isHidden) {
 		this.name = name;
 		this.isHidden = isHidden;
 	}
 
-	public InMemoryResourcePack putInputStream(ResourcePackType type, ResourceLocation location, InputStream stream) {
+	public InMemoryResourcePack putInputStream(ResourcePackType type, ResourceLocation location, Supplier<? extends InputStream> streamSupplier) {
 		switch(type) {
 		case CLIENT_RESOURCES:
-			assets.put(location, stream);
+			assets.put(location, streamSupplier);
 			break;
 		case SERVER_DATA:
-			data.put(location, stream);
+			data.put(location, streamSupplier);
 			break;
 		default:
 			break;
@@ -55,7 +56,7 @@ public class InMemoryResourcePack implements IResourcePack {
 		return this;
 	}
 
-	public InMemoryResourcePack putInputStreams(ResourcePackType type, Map<ResourceLocation, InputStream> map) {
+	public InMemoryResourcePack putInputStreams(ResourcePackType type, Map<ResourceLocation, Supplier<? extends InputStream>> map) {
 		switch(type) {
 		case CLIENT_RESOURCES:
 			assets.putAll(map);
@@ -70,11 +71,11 @@ public class InMemoryResourcePack implements IResourcePack {
 	}
 
 	public InMemoryResourcePack putByteArray(ResourcePackType type, ResourceLocation location, byte[] file) {
-		return putInputStream(type, location, new ByteArrayInputStream(file));
+		return putInputStream(type, location, ()->new ByteArrayInputStream(file));
 	}
 
 	public InMemoryResourcePack putByteArrays(ResourcePackType type, Map<ResourceLocation, byte[]> map) {
-		return putInputStreams(type, Maps.transformValues(map, ByteArrayInputStream::new));
+		return putInputStreams(type, Maps.transformValues(map, file->()->new ByteArrayInputStream(file)));
 	}
 
 	public InMemoryResourcePack putString(ResourcePackType type, ResourceLocation location, String str) {
@@ -99,23 +100,23 @@ public class InMemoryResourcePack implements IResourcePack {
 			throw new IllegalArgumentException("Root resources can only be filenames, not paths (no / allowed!)");
 		}
 		if(root.containsKey(fileName)) {
-			return root.get(fileName);
+			return root.get(fileName).get();
 		}
 		throw new FileNotFoundException(fileName);
 	}
 
 	@Override
 	public InputStream getResourceStream(ResourcePackType type, ResourceLocation location) throws IOException {
-		Map<ResourceLocation, InputStream> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
+		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
 		if(map.containsKey(location)) {
-			return map.get(location);
+			return map.get(location).get();
 		}
 		throw new FileNotFoundException(location.toString());
 	}
 
 	@Override
 	public Collection<ResourceLocation> getAllResourceLocations(ResourcePackType type, String pathIn, int maxDepth, Predicate<String> filter) {
-		Map<ResourceLocation, InputStream> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
+		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
 		return map.keySet().stream().filter(rl->StringUtils.countMatches(rl.getPath(), '/') < maxDepth).
 				filter(rl->rl.getPath().startsWith(pathIn)).filter(rl->{
 					String path = rl.getPath();
@@ -126,13 +127,13 @@ public class InMemoryResourcePack implements IResourcePack {
 
 	@Override
 	public boolean resourceExists(ResourcePackType type, ResourceLocation location) {
-		Map<ResourceLocation, InputStream> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
+		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
 		return map.containsKey(location);
 	}
 
 	@Override
 	public Set<String> getResourceNamespaces(ResourcePackType type) {
-		Map<ResourceLocation, InputStream> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
+		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
 		return map.keySet().stream().map(rl->rl.getNamespace()).collect(Collectors.toSet());
 	}
 

@@ -103,9 +103,6 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public IFormRequest newFormRequest(IModule module, IForm... forms) {
 		IFormRequest request = new FormRequest(module, forms);
-		for(IForm form : forms) {
-			form.setRequest(request);
-		}
 		return request;
 	}
 
@@ -190,8 +187,8 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public <T extends IFormType<?>> T registerFormType(T type) {
-		return FormTypeHandler.registerFormType(type) ? type : null;
+	public boolean registerFormType(IFormType<?> type) {
+		return FormTypeHandler.registerFormType(type);
 	}
 
 	@Override

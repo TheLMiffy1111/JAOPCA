@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,6 +30,7 @@ public class DataCollector {
 	private static final int RECIPES_PATH_LENGTH = "recipes/".length();
 	private static final int ADVANCEMENTS_PATH_LENGTH = "advancements/".length();
 	private static final int JSON_EXTENSION_LENGTH = ".json".length();
+	private static final List<Supplier<IResourcePack>> RESOURCE_PACK_SUPPLIERS = new ArrayList<>();
 	private static final List<IResourcePack> RESOURCE_PACKS = new ArrayList<>();
 	private static final TreeMultimap<String, ResourceLocation> DEFINED_TAGS = TreeMultimap.create();
 	private static final TreeSet<ResourceLocation> DEFINED_RECIPES = new TreeSet<>();
@@ -47,6 +49,9 @@ public class DataCollector {
 			 * Fabric:
 			 * ModResourcePackUtil.appendModResourcePacks(RESOURCE_PACKS, ResourcePackType.SERVER_DATA);
 			 */
+			for(Supplier<IResourcePack> supplier : RESOURCE_PACK_SUPPLIERS) {
+				RESOURCE_PACKS.add(supplier.get());
+			}
 		}
 		for(ResourceLocation location : getAllDataResourceLocations("tags", name->name.endsWith(".json"))) {
 			String namespace = location.getNamespace();

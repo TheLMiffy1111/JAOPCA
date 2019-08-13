@@ -2,10 +2,13 @@ package thelm.jaopca.recipes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.common.base.Strings;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -29,11 +32,11 @@ public class ShapedRecipeSupplier implements Supplier<ShapedRecipe> {
 	}
 
 	public ShapedRecipeSupplier(ResourceLocation key, String group, Object output, int count, Object... input) {
-		this.key = key;
-		this.group = group;
+		this.key = Objects.requireNonNull(key);
+		this.group = Strings.nullToEmpty(group);
 		this.output = output;
 		this.count = count;
-		this.input = input;
+		this.input = Objects.requireNonNull(input);
 	}
 
 	@Override

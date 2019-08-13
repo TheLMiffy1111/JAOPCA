@@ -3,6 +3,7 @@ package thelm.jaopca.forms;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -36,12 +37,9 @@ public class Form implements IForm {
 	private final TreeSet<IMaterial> materials = new TreeSet<>();
 
 	public Form(IModule module, String name, IFormType<?> type) {
-		Preconditions.checkNotNull(module);
-		Preconditions.checkNotNull(name);
-		Preconditions.checkNotNull(type);
-		this.module = module;
-		this.name = name;
-		this.type = type;
+		this.module = Objects.requireNonNull(module);
+		this.name = Objects.requireNonNull(name);
+		this.type = Objects.requireNonNull(type);
 		secondaryName = name;
 		translationKey = String.format(type.getTranslationKeyFormat(), name);
 		settings = type.getNewSettings();

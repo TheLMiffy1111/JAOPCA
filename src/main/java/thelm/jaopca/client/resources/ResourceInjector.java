@@ -24,16 +24,16 @@ public class ResourceInjector {
 	private static final TreeMap<ResourceLocation, Supplier<String>> STRINGS_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<? extends InputStream>> INPUT_STREAMS_INJECT = new TreeMap<>();
 
-	public static boolean injectJson(ResourceLocation location, Supplier<? extends JsonElement> supplier) {
-		return JSONS_INJECT.putIfAbsent(location, supplier) == null;
+	public static boolean injectJson(ResourceLocation location, Supplier<? extends JsonElement> jsonSupplier) {
+		return JSONS_INJECT.putIfAbsent(location, jsonSupplier) == null;
 	}
 
-	public static boolean injectString(ResourceLocation location, Supplier<String> supplier) {
-		return STRINGS_INJECT.putIfAbsent(location, supplier) == null;
+	public static boolean injectString(ResourceLocation location, Supplier<String> stringSupplier) {
+		return STRINGS_INJECT.putIfAbsent(location, stringSupplier) == null;
 	}
 
-	public static boolean injectInputStream(ResourceLocation location, Supplier<? extends InputStream> supplier) {
-		return INPUT_STREAMS_INJECT.putIfAbsent(location, supplier) == null;
+	public static boolean injectInputStream(ResourceLocation location, Supplier<? extends InputStream> streamSupplier) {
+		return INPUT_STREAMS_INJECT.putIfAbsent(location, streamSupplier) == null;
 	}
 
 	public static class PackFinder implements IPackFinder {
@@ -51,7 +51,7 @@ public class ResourceInjector {
 					pack.putString(ResourcePackType.SERVER_DATA, location, supplier.get());
 				});
 				INPUT_STREAMS_INJECT.forEach((location, supplier)->{
-					pack.putInputStream(ResourcePackType.SERVER_DATA, location, supplier.get());
+					pack.putInputStream(ResourcePackType.SERVER_DATA, location, supplier);
 				});
 				return pack;
 			}, factory, ResourcePackInfo.Priority.BOTTOM);

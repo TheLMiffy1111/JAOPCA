@@ -2,6 +2,7 @@ package thelm.jaopca.forms;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import com.google.common.collect.ImmutableList;
 
@@ -18,8 +19,14 @@ public class FormRequest implements IFormRequest {
 	private boolean grouped = false;
 
 	public FormRequest(IModule module, IForm... forms) {
-		this.module = module;
-		this.forms = Arrays.stream(forms).map(IForm::lock).collect(ImmutableList.toImmutableList());
+		this.module = Objects.requireNonNull(module);
+		this.forms = Arrays.stream(Objects.requireNonNull(forms)).
+				filter(Objects::nonNull).
+				filter(form->form.getModule() == module).
+				map(IForm::lock).collect(ImmutableList.toImmutableList());
+		for(IForm form : this.forms) {
+			form.setRequest(this);
+		}
 	}
 
 	@Override

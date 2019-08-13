@@ -1,6 +1,9 @@
 package thelm.jaopca.recipes;
 
+import java.util.Objects;
 import java.util.function.Supplier;
+
+import com.google.common.base.Strings;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -21,8 +24,8 @@ public class StonecuttingRecipeSupplier implements Supplier<StonecuttingRecipe> 
 	}
 
 	public StonecuttingRecipeSupplier(ResourceLocation key, String group, Object input, Object output, int count) {
-		this.key = key;
-		this.group = group;
+		this.key = Objects.requireNonNull(key);
+		this.group = Strings.nullToEmpty(group);
 		this.input = input;
 		this.output = output;
 		this.count = count;

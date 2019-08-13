@@ -1,5 +1,6 @@
 package thelm.jaopca.localization;
 
+import java.util.Objects;
 import java.util.TreeMap;
 
 import net.minecraft.client.Minecraft;
@@ -12,7 +13,8 @@ public class LocalizationHandler {
 	private static final TreeMap<String, ILocalizer> LOCALIZERS = new TreeMap<>();
 
 	public static void registerLocalizer(ILocalizer localizer, String... languages) {
-		for(String language : languages) {
+		Objects.requireNonNull(localizer);
+		for(String language : Objects.requireNonNull(languages)) {
 			LOCALIZERS.put(language, localizer);
 		}
 	}

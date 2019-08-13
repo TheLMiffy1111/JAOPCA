@@ -1,13 +1,5 @@
 package thelm.jaopca.compat.modules;
 
-import com.EmosewaPixel.pixellib.materialsystem.lists.Materials;
-import com.EmosewaPixel.pixellib.materialsystem.lists.ObjTypes;
-import com.EmosewaPixel.pixellib.materialsystem.materials.DustMaterial;
-import com.EmosewaPixel.pixellib.materialsystem.types.BlockType;
-import com.EmosewaPixel.pixellib.materialsystem.types.ItemType;
-
-import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.JAOPCAModule;
 
@@ -15,6 +7,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 public class PixelLibModule implements IModule {
 
 	public PixelLibModule() {
+		/*
 		JAOPCAApi api = JAOPCAApi.instance();
 		Materials.getAll().forEach(mat->{
 			ObjTypes.getAll().stream().
@@ -39,6 +32,7 @@ public class PixelLibModule implements IModule {
 				}
 			});
 		});
+		 */
 	}
 
 	@Override

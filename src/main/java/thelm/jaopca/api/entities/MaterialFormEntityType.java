@@ -16,7 +16,7 @@ import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public abstract class MaterialFormEntityType<T extends Entity> extends EntityType<T> implements IMaterialForm {
 
-	public MaterialFormEntityType(IFactory<T> factory, boolean serializable, Type<?> type, Predicate<EntityType<?>> velocityUpdateSupplier, ToIntFunction<EntityType<?>> trackingRangeSupplier, ToIntFunction<EntityType<?>> updateIntervalSupplier, BiFunction<SpawnEntity, World, T> customClientFactory) {
-		super(factory, EntityClassification.MONSTER, serializable, true, false, type, EntitySize.flexible(0, 0), velocityUpdateSupplier, trackingRangeSupplier, updateIntervalSupplier, customClientFactory);
+	public MaterialFormEntityType(IFactory<T> factory, boolean serializable, Predicate<EntityType<?>> velocityUpdateSupplier, ToIntFunction<EntityType<?>> trackingRangeSupplier, ToIntFunction<EntityType<?>> updateIntervalSupplier, BiFunction<SpawnEntity, World, T> customClientFactory) {
+		super(factory, EntityClassification.MONSTER, serializable, true, false, true, EntitySize.flexible(0, 0), velocityUpdateSupplier, trackingRangeSupplier, updateIntervalSupplier, customClientFactory);
 	}
 }

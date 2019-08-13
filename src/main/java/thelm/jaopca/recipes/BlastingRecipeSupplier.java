@@ -1,6 +1,9 @@
 package thelm.jaopca.recipes;
 
+import java.util.Objects;
 import java.util.function.Supplier;
+
+import com.google.common.base.Strings;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.BlastingRecipe;
@@ -23,8 +26,8 @@ public class BlastingRecipeSupplier implements Supplier<BlastingRecipe> {
 	}
 
 	public BlastingRecipeSupplier(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
-		this.key = key;
-		this.group = group;
+		this.key = Objects.requireNonNull(key);
+		this.group = Strings.nullToEmpty(group);
 		this.input = input;
 		this.output = output;
 		this.count = count;

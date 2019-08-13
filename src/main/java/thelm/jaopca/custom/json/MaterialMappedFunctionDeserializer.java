@@ -3,6 +3,7 @@ package thelm.jaopca.custom.json;
 import java.lang.reflect.Type;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -32,8 +33,8 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 	private final Function<T, String> valueToString;
 
 	public MaterialMappedFunctionDeserializer(Function<String, T> stringToValue, Function<T, String> valueToString) {
-		this.stringToValue = stringToValue;
-		this.valueToString = valueToString;
+		this.stringToValue = Objects.requireNonNull(stringToValue);
+		this.valueToString = Objects.requireNonNull(valueToString);
 	}
 
 	@Override

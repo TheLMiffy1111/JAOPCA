@@ -1,5 +1,6 @@
 package thelm.jaopca.forms;
 
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
@@ -30,6 +31,7 @@ public class FormTypeHandler {
 	private static final TreeMap<String, IFormType<?>> FORM_TYPES = new TreeMap<>();
 
 	public static boolean registerFormType(IFormType<?> type) {
+		Objects.requireNonNull(type);
 		return FORM_TYPES.putIfAbsent(type.getName(), type) == null;
 	}
 
