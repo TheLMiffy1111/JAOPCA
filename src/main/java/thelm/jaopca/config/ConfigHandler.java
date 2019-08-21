@@ -203,7 +203,7 @@ public class ConfigHandler {
 			IDynamicSpecConfig config = MODULE_CONFIGS.get(module);
 			ModuleData data = ModuleHandler.getModuleData(module);
 			module.defineModuleConfig(data, config);
-			module.defineMaterialConfig(data, Collections.unmodifiableNavigableMap(Maps.filterKeys(MATERIAL_CONFIGS, data.getMaterials()::contains)));
+			module.defineMaterialConfig(data, Collections.unmodifiableNavigableMap(MATERIAL_CONFIGS));
 		}
 	}
 }

@@ -23,7 +23,7 @@ public class ItemFormSettings implements IItemFormSettings {
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
 
 	@Override
-	public IFormType<?> getType() {
+	public IFormType getType() {
 		return ItemFormType.INSTANCE;
 	}
 

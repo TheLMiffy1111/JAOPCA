@@ -61,7 +61,7 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
 
 	@Override
-	public IFormType<?> getType() {
+	public IFormType getType() {
 		return BlockFormType.INSTANCE;
 	}
 

@@ -5,14 +5,14 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.IItemProvider;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
-public interface IEntityTypeInfo extends IMaterialFormInfo<MaterialFormEntityType<?>>, IItemProvider {
+public interface IEntityTypeInfo extends IMaterialFormInfo, IItemProvider {
 
-	MaterialFormEntityType<?> getEntityType();
+	IMaterialFormEntityType<?> getEntityType();
 
 	SpawnEggItem getSpawnEggItem();
 
 	@Override
-	default MaterialFormEntityType<?> getMaterialForm() {
+	default IMaterialFormEntityType<?> getMaterialForm() {
 		return getEntityType();
 	}
 

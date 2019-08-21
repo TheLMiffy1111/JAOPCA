@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
 
-public interface IFormType<I extends IMaterialFormInfo<?>> extends Comparable<IFormType<?>> {
+public interface IFormType extends Comparable<IFormType> {
 
 	String getName();
 
@@ -27,10 +27,10 @@ public interface IFormType<I extends IMaterialFormInfo<?>> extends Comparable<IF
 
 	IFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context);
 
-	I getMaterialFormInfo(IForm form, IMaterial material);
+	IMaterialFormInfo getMaterialFormInfo(IForm form, IMaterial material);
 
 	@Override
-	default int compareTo(IFormType<?> other) {
+	default int compareTo(IFormType other) {
 		return getName().compareTo(other.getName());
 	}
 }

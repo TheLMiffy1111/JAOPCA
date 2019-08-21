@@ -1,26 +1,28 @@
 package thelm.jaopca.blocks;
 
-import thelm.jaopca.api.blocks.BlockMaterialForm;
+import org.lwjgl.system.CallbackI.B;
+
 import thelm.jaopca.api.blocks.IBlockInfo;
-import thelm.jaopca.api.blocks.MaterialFormBlockItem;
+import thelm.jaopca.api.blocks.IMaterialFormBlock;
+import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 
 public class BlockInfo implements IBlockInfo {
 
-	private final BlockMaterialForm block;
-	private final MaterialFormBlockItem itemBlock;
+	private final IMaterialFormBlock block;
+	private final IMaterialFormBlockItem blockItem;
 
-	BlockInfo(BlockMaterialForm block, MaterialFormBlockItem itemBlock) {
+	BlockInfo(IMaterialFormBlock block, IMaterialFormBlockItem blockItem) {
 		this.block = block;
-		this.itemBlock = itemBlock;
+		this.blockItem = blockItem;
 	}
 
 	@Override
-	public BlockMaterialForm getBlock() {
+	public IMaterialFormBlock getMaterialFormBlock() {
 		return block;
 	}
 
 	@Override
-	public MaterialFormBlockItem getItemBlock() {
-		return itemBlock;
+	public IMaterialFormBlockItem getMaterialFormBlockItem() {
+		return blockItem;
 	}
 }

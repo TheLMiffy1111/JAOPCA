@@ -1,18 +1,18 @@
 package thelm.jaopca.items;
 
 import thelm.jaopca.api.items.IItemInfo;
-import thelm.jaopca.api.items.MaterialFormItem;
+import thelm.jaopca.api.items.IMaterialFormItem;
 
 public class ItemInfo implements IItemInfo {
 
-	private final MaterialFormItem item;
+	private final IMaterialFormItem item;
 
-	ItemInfo(MaterialFormItem item) {
+	ItemInfo(IMaterialFormItem item) {
 		this.item = item;
 	}
 
 	@Override
-	public MaterialFormItem getItem() {
+	public IMaterialFormItem getMaterialFormItem() {
 		return item;
 	}
 }

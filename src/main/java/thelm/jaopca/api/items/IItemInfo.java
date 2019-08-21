@@ -2,15 +2,20 @@ package thelm.jaopca.api.items;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.IItemProvider;
+import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
-public interface IItemInfo extends IMaterialFormInfo<MaterialFormItem>, IItemProvider {
+public interface IItemInfo extends IMaterialFormInfo, IItemProvider {
 
-	MaterialFormItem getItem();
+	IMaterialFormItem getMaterialFormItem();
+
+	default Item getItem() {
+		return getMaterialFormItem().asItem();
+	}
 
 	@Override
-	default MaterialFormItem getMaterialForm() {
-		return getItem();
+	default IMaterialForm getMaterialForm() {
+		return getMaterialFormItem();
 	}
 
 	@Override

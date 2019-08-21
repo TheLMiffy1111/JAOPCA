@@ -28,7 +28,7 @@ public class FormDeserializer implements JsonDeserializer<IForm> {
 		IJsonHelper helper = JsonHelper.INSTANCE;
 		JsonObject json = helper.getJsonObject(jsonElement, "element");
 		String name = helper.getString(json, "name");
-		IFormType<?> type = FormTypeHandler.getFormType(helper.getString(json, "type"));
+		IFormType type = FormTypeHandler.getFormType(helper.getString(json, "type"));
 		IForm form = new Form(CustomModule.instance, name, type);
 		if(json.has("secondaryName")) {
 			form.setSecondaryName(helper.getString(json, "secondaryName"));

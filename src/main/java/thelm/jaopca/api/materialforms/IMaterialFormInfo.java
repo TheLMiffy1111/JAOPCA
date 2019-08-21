@@ -1,6 +1,6 @@
 package thelm.jaopca.api.materialforms;
 
-public interface IMaterialFormInfo<T extends IMaterialForm> {
+public interface IMaterialFormInfo {
 
-	T getMaterialForm();
+	IMaterialForm getMaterialForm();
 }

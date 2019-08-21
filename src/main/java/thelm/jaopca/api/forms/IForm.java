@@ -11,7 +11,7 @@ public interface IForm extends Comparable<IForm> {
 
 	String getName();
 
-	IFormType<?> getType();
+	IFormType getType();
 
 	IModule getModule();
 
@@ -44,6 +44,8 @@ public interface IForm extends Comparable<IForm> {
 	boolean skipGroupedCheck();
 
 	Set<IMaterial> getMaterials();
+
+	Set<IMaterial> getFilteredMaterials();
 
 	IForm lock();
 

@@ -7,12 +7,14 @@ import java.util.function.Supplier;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
+import net.minecraft.util.text.ITextComponent;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
-import thelm.jaopca.api.items.MaterialFormItem;
+import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
 
-public class JAOPCAItem extends MaterialFormItem {
+public class JAOPCAItem extends Item implements IMaterialFormItem {
 
 	private final IForm form;
 	private final IMaterial material;
@@ -88,5 +90,10 @@ public class JAOPCAItem extends MaterialFormItem {
 			burnTime = OptionalInt.of(settings.get().getBurnTimeFunction().applyAsInt(material));
 		}
 		return burnTime.getAsInt();
+	}
+
+	@Override
+	public ITextComponent getDisplayName(ItemStack stack) {
+		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm(getForm(), getMaterial(), getTranslationKey());
 	}
 }

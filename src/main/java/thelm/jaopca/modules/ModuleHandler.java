@@ -68,9 +68,9 @@ public class ModuleHandler {
 				filter(data->JAOPCA_MODULE.equals(data.getAnnotationType())).
 				collect(Collectors.toList());
 		for(AnnotationData aData : annotationData) {
-			String[] deps = (String[])aData.getAnnotationData().get("modDependencies");
+			List<String> deps = (List<String>)aData.getAnnotationData().get("modDependencies");
 			String className = aData.getClassType().getClassName();
-			if(deps != null && Arrays.stream(deps).filter(Predicates.notNull()).anyMatch(ModuleHandler::isModVersionNotLoaded)) {
+			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(ModuleHandler::isModVersionNotLoaded)) {
 				LOGGER.info("Module {} has missing mod dependencies, skipping", className);
 				continue;
 			}
@@ -103,13 +103,13 @@ public class ModuleHandler {
 		ModList modList = ModList.get();
 		int separatorIndex = dep.lastIndexOf('@');
 		String modId = dep.substring(0, separatorIndex == -1 ? dep.length() : separatorIndex);
-		String spec = separatorIndex == -1 ? "" : dep.substring(separatorIndex+1, dep.length()); 
+		String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1, dep.length()); 
 		VersionRange versionRange;
 		try {
 			versionRange = VersionRange.createFromVersionSpec(spec);
 		}
 		catch(InvalidVersionSpecificationException e) {
-			LOGGER.warn("Unable to parse version spec {} for mod id {}", modId, spec, e);
+			LOGGER.warn("Unable to parse version spec {} for mod id {}", spec, modId, e);
 			return true;
 		}
 		if(modList.isLoaded(modId)) {

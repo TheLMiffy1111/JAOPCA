@@ -17,17 +17,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.ToolType;
-import thelm.jaopca.api.blocks.BlockMaterialForm;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
+import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 
-public class JAOPCABlock extends BlockMaterialForm {
+public class JAOPCABlock extends Block implements IMaterialFormBlock {
 
 	private final IForm form;
 	private final IMaterial material;
@@ -231,5 +233,10 @@ public class JAOPCABlock extends BlockMaterialForm {
 			isFireSource = Optional.of(settings.get().getIsFireSourceFunction().test(material));
 		}
 		return isFireSource.get();
+	}
+
+	@Override
+	public ITextComponent getNameTextComponent() {
+		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm(form, material, getTranslationKey());
 	}
 }

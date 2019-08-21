@@ -4,23 +4,37 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.function.Supplier;
 
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.text.ITextComponent;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.blocks.BlockMaterialForm;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
-import thelm.jaopca.api.blocks.MaterialFormBlockItem;
+import thelm.jaopca.api.blocks.IMaterialFormBlock;
+import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
+import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.materialforms.IMaterialForm;
+import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.items.ItemFormType;
 
-public class JAOPCABlockItem extends MaterialFormBlockItem {
+public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem {
 
 	private final Supplier<IBlockFormSettings> settings;
 
-	public JAOPCABlockItem(BlockMaterialForm block, Supplier<IBlockFormSettings> settings) {
-		super(block, new Item.Properties().group(block.getMaterial().getType().isDummy() ? null : ItemFormType.getItemGroup()));
+	public JAOPCABlockItem(IMaterialFormBlock block, Supplier<IBlockFormSettings> settings) {
+		super(block.asBlock(), new Item.Properties().group(block.getMaterial().getType().isDummy() ? null : ItemFormType.getItemGroup()));
 		this.settings = settings;
+	}
+
+	@Override
+	public IForm getForm() {
+		return ((IMaterialForm)getBlock()).getForm();
+	}
+
+	@Override
+	public IMaterial getMaterial() {
+		return ((IMaterialForm)getBlock()).getMaterial();
 	}
 
 	private OptionalInt itemStackLimit = OptionalInt.empty();

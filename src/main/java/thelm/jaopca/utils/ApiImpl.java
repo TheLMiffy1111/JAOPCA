@@ -91,12 +91,12 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public <I extends IMaterialFormInfo<?>> IFormType<I> getFormType(String name) {
-		return (IFormType<I>)FormTypeHandler.getFormType(name);
+	public IFormType getFormType(String name) {
+		return FormTypeHandler.getFormType(name);
 	}
 
 	@Override
-	public IForm newForm(IModule module, String name, IFormType<?> type) {
+	public IForm newForm(IModule module, String name, IFormType type) {
 		return new Form(module, name, type);
 	}
 
@@ -187,7 +187,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerFormType(IFormType<?> type) {
+	public boolean registerFormType(IFormType type) {
 		return FormTypeHandler.registerFormType(type);
 	}
 

@@ -44,7 +44,7 @@ public class DustsModule implements IModule {
 		for(IMaterial material : dustForm.getMaterials()) {
 			if(ArrayUtils.contains(MaterialType.INGOTS, material.getType())) {
 				api.registerFurnaceRecipe(
-						new ResourceLocation(JAOPCA.MOD_ID, "dusts.to_material."+material.getName()), 
+						new ResourceLocation("jaopca", "dusts.to_material."+material.getName()), 
 						api.itemFormType().getMaterialFormInfo(dustForm, material),
 						api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName()), 1, 0.1F, 200);
 			}

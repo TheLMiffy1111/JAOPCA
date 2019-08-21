@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
@@ -24,11 +25,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.registries.IForgeRegistry;
 import thelm.jaopca.JAOPCA;
-import thelm.jaopca.api.blocks.BlockMaterialForm;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
-import thelm.jaopca.api.blocks.MaterialFormBlockItem;
+import thelm.jaopca.api.blocks.IMaterialFormBlock;
+import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
@@ -46,8 +47,8 @@ public class BlockFormType implements IBlockFormType {
 
 	public static final BlockFormType INSTANCE = new BlockFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
-	private static final TreeBasedTable<IForm, IMaterial, BlockMaterialForm> BLOCKS = TreeBasedTable.create();
-	private static final TreeBasedTable<IForm, IMaterial, MaterialFormBlockItem> BLOCK_ITEMS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormBlock> BLOCKS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormBlockItem> BLOCK_ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IBlockInfo> BLOCK_INFOS = TreeBasedTable.create();
 
 	public static void init() {
@@ -123,11 +124,12 @@ public class BlockFormType implements IBlockFormType {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			for(IMaterial material : form.getMaterials()) {
 				boolean isMaterialDummy = material.getType().isDummy();
-				BlockMaterialForm block = settings.getBlockCreator().create(form, material, ()->(IBlockFormSettings)form.getSettings());
+				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, ()->(IBlockFormSettings)form.getSettings());
+				Block block = materialFormBlock.asBlock();
 				String registryKey = isMaterialDummy ? material.getName()+form.getName() : form.getName()+'.'+material.getName();
 				block.setRegistryName(new ResourceLocation(JAOPCA.MOD_ID, registryKey));
 				registry.register(block);
-				BLOCKS.put(form, material, block);
+				BLOCKS.put(form, material, materialFormBlock);
 				if(!isMaterialDummy) {
 					Supplier<Block> supplier = ()->block;
 					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()), supplier);
@@ -141,16 +143,17 @@ public class BlockFormType implements IBlockFormType {
 	}
 
 	public static void registerBlockItems(IForgeRegistry<Item> registry) {
-		for(Table.Cell<IForm, IMaterial, BlockMaterialForm> cell : BLOCKS.cellSet()) {
+		for(Table.Cell<IForm, IMaterial, IMaterialFormBlock> cell : BLOCKS.cellSet()) {
 			IForm form = cell.getRowKey();
 			IMaterial material = cell.getColumnKey();
-			BlockMaterialForm block = cell.getValue();
+			IMaterialFormBlock block = cell.getValue();
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			boolean isMaterialDummy = material.getType().isDummy();
-			MaterialFormBlockItem blockItem = settings.getBlockItemCreator().create(block, ()->(IBlockFormSettings)form.getSettings());
-			blockItem.setRegistryName(block.getRegistryName());
+			IMaterialFormBlockItem materialFormblockItem = settings.getBlockItemCreator().create(block, ()->(IBlockFormSettings)form.getSettings());
+			BlockItem blockItem = materialFormblockItem.asBlockItem();
+			blockItem.setRegistryName(block.asBlock().getRegistryName());
 			registry.register(blockItem);
-			BLOCK_ITEMS.put(form, material, blockItem);
+			BLOCK_ITEMS.put(form, material, materialFormblockItem);
 			if(!isMaterialDummy) {
 				Supplier<Item> supplier = ()->blockItem;
 				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), supplier);
@@ -162,11 +165,11 @@ public class BlockFormType implements IBlockFormType {
 		}
 	}
 
-	public static Collection<BlockMaterialForm> getBlocks() {
+	public static Collection<IMaterialFormBlock> getBlocks() {
 		return BLOCKS.values();
 	}
 
-	public static Collection<MaterialFormBlockItem> getBlockItems() {
+	public static Collection<IMaterialFormBlockItem> getBlockItems() {
 		return BLOCK_ITEMS.values();
 	}
 }

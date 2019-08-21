@@ -94,7 +94,7 @@ public abstract class JAOPCAApi {
 	 * @param name The name of the form type
 	 * @return The form type with the name provided, null if no form type registered has this name
 	 */
-	public abstract <I extends IMaterialFormInfo<?>> IFormType<I> getFormType(String name);
+	public abstract IFormType getFormType(String name);
 
 	/**
 	 * Creates a new {@link IForm} with the specified module, name, and form type. The form type does not need
@@ -104,7 +104,7 @@ public abstract class JAOPCAApi {
 	 * @param type The type of the form
 	 * @return The form with the provided name and type
 	 */
-	public abstract IForm newForm(IModule module, String name, IFormType<?> type);
+	public abstract IForm newForm(IModule module, String name, IFormType type);
 
 	/**
 	 * Creates a form request from a list of forms. Forms that do not have the same module as provided
@@ -241,7 +241,7 @@ public abstract class JAOPCAApi {
 	 * @param type The form type to be registered
 	 * @return true if the form type was successfully registered
 	 */
-	public abstract boolean registerFormType(IFormType<?> type);
+	public abstract boolean registerFormType(IFormType type);
 
 	/**
 	 * Registers a block tag location that may be added externally and should be known to JAOPCA.

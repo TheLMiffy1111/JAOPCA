@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 
 import thelm.jaopca.api.forms.IFormType;
 
-public interface IEntityTypeFormType extends IFormType<IEntityTypeInfo> {
+public interface IEntityTypeFormType extends IFormType {
 
 	@Override
 	IEntityTypeFormSettings getNewSettings();

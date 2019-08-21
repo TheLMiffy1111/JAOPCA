@@ -4,5 +4,5 @@ import java.util.function.Supplier;
 
 public interface IBlockItemCreator {
 
-	MaterialFormBlockItem create(BlockMaterialForm block, Supplier<IBlockFormSettings> settings);
+	IMaterialFormBlockItem create(IMaterialFormBlock block, Supplier<IBlockFormSettings> settings);
 }

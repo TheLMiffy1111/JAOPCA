@@ -55,7 +55,7 @@ public class SmallDustsModule implements IModule {
 			ResourceLocation dustLocation = api.miscHelper().getTagLocation("dusts", material.getName());
 			IItemInfo smallDustInfo = api.itemFormType().getMaterialFormInfo(smallDustForm, material);
 			api.registerShapelessRecipe(
-					new ResourceLocation(JAOPCA.MOD_ID, "small_dusts.to_dust."+material.getName()),
+					new ResourceLocation("jaopca", "small_dusts.to_dust."+material.getName()),
 					dustLocation, 1, new Object[] {
 							smallDustInfo, smallDustInfo,
 							smallDustInfo, smallDustInfo,

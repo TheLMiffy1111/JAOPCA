@@ -7,5 +7,5 @@ import thelm.jaopca.api.materials.IMaterial;
 
 public interface IBlockCreator {
 
-	BlockMaterialForm create(IForm form, IMaterial material, Supplier<IBlockFormSettings> settings);
+	IMaterialFormBlock create(IForm form, IMaterial material, Supplier<IBlockFormSettings> settings);
 }

@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
 
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -23,7 +24,7 @@ public class Form implements IForm {
 
 	private final IModule module;
 	private final String name;
-	private final IFormType<?> type;
+	private final IFormType type;
 	private String secondaryName;
 	private String translationKey;
 	private final EnumSet<MaterialType> materialTypes = EnumSet.allOf(MaterialType.class);
@@ -36,7 +37,7 @@ public class Form implements IForm {
 	private IFormRequest request;
 	private final TreeSet<IMaterial> materials = new TreeSet<>();
 
-	public Form(IModule module, String name, IFormType<?> type) {
+	public Form(IModule module, String name, IFormType type) {
 		this.module = Objects.requireNonNull(module);
 		this.name = Objects.requireNonNull(name);
 		this.type = Objects.requireNonNull(type);
@@ -51,7 +52,7 @@ public class Form implements IForm {
 	}
 
 	@Override
-	public IFormType<?> getType() {
+	public IFormType getType() {
 		return type;
 	}
 
@@ -161,6 +162,11 @@ public class Form implements IForm {
 	@Override
 	public Set<IMaterial> getMaterials() {
 		return Collections.unmodifiableNavigableSet(materials);
+	}
+
+	@Override
+	public Set<IMaterial> getFilteredMaterials() {
+		return Collections.unmodifiableNavigableSet(Sets.filter(materials, m->!m.getType().isDummy()));
 	}
 
 	@Override

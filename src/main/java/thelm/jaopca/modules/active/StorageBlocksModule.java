@@ -40,7 +40,7 @@ public class StorageBlocksModule implements IModule {
 			ResourceLocation materialLocation = api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName());
 			IBlockInfo storageBlockInfo = api.blockFormType().getMaterialFormInfo(storageBlockForm, material);
 			api.registerShapedRecipe(
-					new ResourceLocation(JAOPCA.MOD_ID, "storage_blocks.to_storage_block."+material.getName()),
+					new ResourceLocation("jaopca", "storage_blocks.to_storage_block."+material.getName()),
 					storageBlockInfo, 1, new Object[] {
 							"MMM",
 							"MMM",
@@ -48,7 +48,7 @@ public class StorageBlocksModule implements IModule {
 							'M', materialLocation,
 					});
 			api.registerShapelessRecipe(
-					new ResourceLocation(JAOPCA.MOD_ID, "storage_blocks.to_material."+material.getName()),
+					new ResourceLocation("jaopca", "storage_blocks.to_material."+material.getName()),
 					materialLocation, 9, new Object[] {
 							storageBlockInfo,
 					});

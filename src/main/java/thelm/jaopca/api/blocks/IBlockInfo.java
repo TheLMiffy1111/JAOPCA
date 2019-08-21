@@ -1,22 +1,33 @@
 package thelm.jaopca.api.blocks;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.IItemProvider;
+import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
-public interface IBlockInfo extends IMaterialFormInfo<BlockMaterialForm>, IItemProvider {
+public interface IBlockInfo extends IMaterialFormInfo, IItemProvider {
 
-	BlockMaterialForm getBlock();
+	IMaterialFormBlock getMaterialFormBlock();
 
-	MaterialFormBlockItem getItemBlock();
+	IMaterialFormBlockItem getMaterialFormBlockItem();
+	
+	default Block getBlock() {
+		return getMaterialFormBlock().asBlock();
+	}
+
+	default BlockItem getBlockItem() {
+		return getMaterialFormBlockItem().asBlockItem();
+	}
 
 	@Override
-	default BlockMaterialForm getMaterialForm() {
-		return getBlock();
+	default IMaterialForm getMaterialForm() {
+		return getMaterialFormBlock();
 	}
 
 	@Override
 	default Item asItem() {
-		return getItemBlock();
+		return getBlockItem();
 	}
 }

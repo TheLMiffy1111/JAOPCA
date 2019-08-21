@@ -28,14 +28,14 @@ public class FormTypeHandler {
 
 	private FormTypeHandler() {}
 
-	private static final TreeMap<String, IFormType<?>> FORM_TYPES = new TreeMap<>();
+	private static final TreeMap<String, IFormType> FORM_TYPES = new TreeMap<>();
 
-	public static boolean registerFormType(IFormType<?> type) {
+	public static boolean registerFormType(IFormType type) {
 		Objects.requireNonNull(type);
 		return FORM_TYPES.putIfAbsent(type.getName(), type) == null;
 	}
 
-	public static IFormType<?> getFormType(String name) {
+	public static IFormType getFormType(String name) {
 		return FORM_TYPES.get(name);
 	}
 
@@ -48,7 +48,7 @@ public class FormTypeHandler {
 				registerTypeAdapter(new TypeToken<ToIntFunction<IMaterial>>(){}.getType(), MaterialIntFunctionDeserializer.INSTANCE).
 				registerTypeAdapter(new TypeToken<ToLongFunction<IMaterial>>(){}.getType(), MaterialLongFunctionDeserializer.INSTANCE).
 				registerTypeAdapter(new TypeToken<ToDoubleFunction<IMaterial>>(){}.getType(), MaterialDoubleFunctionDeserializer.INSTANCE);
-		for(IFormType<?> formType : FORM_TYPES.values()) {
+		for(IFormType formType : FORM_TYPES.values()) {
 			builder = formType.configureGsonBuilder(builder);
 		}
 		CustomModule.instance.setGson(builder.create());

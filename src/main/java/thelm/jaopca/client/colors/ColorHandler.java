@@ -24,9 +24,9 @@ import net.minecraft.tags.Tag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
-import thelm.jaopca.api.blocks.BlockMaterialForm;
-import thelm.jaopca.api.blocks.MaterialFormBlockItem;
-import thelm.jaopca.api.items.MaterialFormItem;
+import thelm.jaopca.api.blocks.IMaterialFormBlock;
+import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
+import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
@@ -59,14 +59,14 @@ public class ColorHandler {
 	public static void setup(ColorHandlerEvent.Item event) {
 		BlockColors blockColors = event.getBlockColors();
 		ItemColors itemColors = event.getItemColors();
-		for(BlockMaterialForm block : BlockFormType.getBlocks()) {
-			blockColors.register(BLOCK_COLOR, block);
+		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
+			blockColors.register(BLOCK_COLOR, block.asBlock());
 		}
-		for(MaterialFormBlockItem itemBlock : BlockFormType.getBlockItems()) {
-			itemColors.register(ITEM_COLOR, itemBlock);
+		for(IMaterialFormBlockItem blockItem : BlockFormType.getBlockItems()) {
+			itemColors.register(ITEM_COLOR, blockItem.asBlockItem());
 		}
-		for(MaterialFormItem item : ItemFormType.getItems()) {
-			itemColors.register(ITEM_COLOR, item);
+		for(IMaterialFormItem item : ItemFormType.getItems()) {
+			itemColors.register(ITEM_COLOR, item.asItem());
 		}
 	}
 

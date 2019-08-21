@@ -23,7 +23,7 @@ import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.items.IItemInfo;
-import thelm.jaopca.api.items.MaterialFormItem;
+import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.ItemFormSettingsDeserializer;
@@ -37,7 +37,7 @@ public class ItemFormType implements IItemFormType {
 
 	public static final ItemFormType INSTANCE = new ItemFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
-	private static final TreeBasedTable<IForm, IMaterial, MaterialFormItem> ITEMS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormItem> ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IItemInfo> ITEM_INFOS = TreeBasedTable.create();
 	private static ItemGroup itemGroup;
 
@@ -104,11 +104,12 @@ public class ItemFormType implements IItemFormType {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			for(IMaterial material : form.getMaterials()) {
 				boolean isMaterialDummy = material.getType().isDummy();
-				MaterialFormItem item = settings.getItemCreator().create(form, material, ()->(IItemFormSettings)form.getSettings());
+				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, ()->(IItemFormSettings)form.getSettings());
+				Item item = materialFormItem.asItem();
 				String registryKey = isMaterialDummy ? material.getName()+form.getName() : form.getName()+'.'+material.getName();
 				item.setRegistryName(new ResourceLocation(JAOPCA.MOD_ID, registryKey));
 				registry.register(item);
-				ITEMS.put(form, material, item);
+				ITEMS.put(form, material, materialFormItem);
 				if(!isMaterialDummy) {
 					Supplier<Item> supplier = ()->item;
 					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), supplier);
@@ -133,7 +134,7 @@ public class ItemFormType implements IItemFormType {
 		return itemGroup;
 	}
 
-	public static Collection<MaterialFormItem> getItems() {
+	public static Collection<IMaterialFormItem> getItems() {
 		return ITEMS.values();
 	}
 }
