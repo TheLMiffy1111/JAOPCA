@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
+import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.utils.Utils;
 import thelm.jaopca.utils.JAOPCAConfig;
 
@@ -174,6 +175,9 @@ public class OreColorer {
 	}
 
 	private static int getColorMultiplier(ItemStack itemStack, BakedQuad quad) {
+		if(itemStack.getItem().getCreatorModId(itemStack).contentEquals(JAOPCA.MOD_ID)) {
+			return 0;
+		}
 		return Minecraft.getMinecraft().getItemColors().colorMultiplier(itemStack, quad.getTintIndex());
 	}
 
