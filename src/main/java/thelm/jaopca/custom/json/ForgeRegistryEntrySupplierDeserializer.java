@@ -29,7 +29,7 @@ public class ForgeRegistryEntrySupplierDeserializer implements JsonDeserializer<
 		Type parameterizedType = typeArguments[0];
 		if(parameterizedType instanceof Class && IForgeRegistryEntry.class.isAssignableFrom((Class<?>)parameterizedType)) {
 			if(helper.isString(jsonElement)) {
-				IForgeRegistry<?> registry = RegistryManager.ACTIVE.getRegistry((Class<?>)parameterizedType);
+				IForgeRegistry<?> registry = RegistryManager.ACTIVE.getRegistry((Class<? super IForgeRegistryEntry<?>>)parameterizedType);
 				String valueString = helper.getString(jsonElement, "value");
 				return ()->registry.getValue(new ResourceLocation(valueString));
 			}
