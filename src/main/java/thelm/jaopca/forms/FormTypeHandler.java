@@ -52,8 +52,8 @@ public class FormTypeHandler {
 				registerTypeAdapter(MaterialType.class, EnumDeserializer.INSTANCE).
 				registerTypeAdapter(PREDICATE_TYPE, MaterialPredicateDeserializer.INSTANCE).
 				registerTypeAdapter(INT_FUNCTION_TYPE, MaterialIntFunctionDeserializer.INSTANCE).
-				registerTypeAdapter(DOUBLE_FUNCTION_TYPE, MaterialLongFunctionDeserializer.INSTANCE).
-				registerTypeAdapter(LONG_FUNCTION_TYPE, MaterialDoubleFunctionDeserializer.INSTANCE);
+				registerTypeAdapter(LONG_FUNCTION_TYPE, MaterialLongFunctionDeserializer.INSTANCE).
+				registerTypeAdapter(DOUBLE_FUNCTION_TYPE, MaterialDoubleFunctionDeserializer.INSTANCE);
 		for(IFormType formType : FORM_TYPES.values()) {
 			builder = formType.configureGsonBuilder(builder);
 		}
