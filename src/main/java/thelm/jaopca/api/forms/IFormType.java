@@ -13,8 +13,6 @@ public interface IFormType extends Comparable<IFormType> {
 
 	String getName();
 
-	String getTranslationKeyFormat();
-
 	void addForm(IForm form);
 
 	Set<IForm> getForms();

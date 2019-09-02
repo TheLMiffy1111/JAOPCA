@@ -16,6 +16,8 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
 import net.minecraft.advancements.Advancement;
@@ -32,6 +34,19 @@ import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.resources.ResourcePackType;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.BinomialRange;
+import net.minecraft.world.storage.loot.ConstantRange;
+import net.minecraft.world.storage.loot.IntClamper;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootEntry;
+import net.minecraft.world.storage.loot.LootEntryManager;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.RandomValueRange;
+import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.world.storage.loot.conditions.LootConditionManager;
+import net.minecraft.world.storage.loot.functions.ILootFunction;
+import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.resources.InMemoryResourcePack;
@@ -44,10 +59,23 @@ public class DataInjector {
 	private static final ListMultimap<ResourceLocation, Supplier<? extends Fluid>> FLUID_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, Supplier<? extends EntityType<?>>> ENTITY_TYPE_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final TreeMap<ResourceLocation, Supplier<? extends IRecipe<?>>> RECIPES_INJECT = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, Advancement.Builder> ADVANCEMENTS_INJECT = new TreeMap<>();
+	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
+	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<? extends JsonElement>> JSONS_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<String>> STRINGS_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<? extends InputStream>> INPUT_STREAMS_INJECT = new TreeMap<>();
+	private static final Gson GSON = new GsonBuilder().
+			registerTypeAdapter(RandomValueRange.class, new RandomValueRange.Serializer()).
+			registerTypeAdapter(BinomialRange.class, new BinomialRange.Serializer()).
+			registerTypeAdapter(ConstantRange.class, new ConstantRange.Serializer()).
+			registerTypeAdapter(IntClamper.class, new IntClamper.Serializer()).
+			registerTypeAdapter(LootPool.class, new LootPool.Serializer()).
+			registerTypeAdapter(LootTable.class, new LootTable.Serializer()).
+			registerTypeHierarchyAdapter(LootEntry.class, new LootEntryManager.Serializer()).
+			registerTypeHierarchyAdapter(ILootFunction.class, new LootFunctionManager.Serializer()).
+			registerTypeHierarchyAdapter(ILootCondition.class, new LootConditionManager.Serializer()).
+			registerTypeHierarchyAdapter(LootContext.EntityTarget.class, new LootContext.EntityTarget.Serializer()).
+			create();
 
 	public static boolean registerBlockTag(ResourceLocation location, Supplier<? extends Block> blockSupplier) {
 		Objects.requireNonNull(location);
@@ -79,7 +107,13 @@ public class DataInjector {
 		return RECIPES_INJECT.putIfAbsent(location, recipeSupplier) == null;
 	}
 
-	public static boolean registerAdvancement(ResourceLocation location, Advancement.Builder advancementBuilder) {
+	public static boolean registerLootTable(ResourceLocation location, Supplier<LootTable> lootTableSupplier) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(lootTableSupplier);
+		return LOOT_TABLES_INJECT.putIfAbsent(location, lootTableSupplier) == null;
+	}
+
+	public static boolean registerAdvancement(ResourceLocation location, Supplier<Advancement.Builder> advancementBuilder) {
 		Objects.requireNonNull(location);
 		Objects.requireNonNull(advancementBuilder);
 		return ADVANCEMENTS_INJECT.putIfAbsent(location, advancementBuilder) == null;
@@ -123,6 +157,10 @@ public class DataInjector {
 		return RECIPES_INJECT.navigableKeySet();
 	}
 
+	public static Set<ResourceLocation> getInjectLootTables() {
+		return LOOT_TABLES_INJECT.navigableKeySet();
+	}
+
 	public static Set<ResourceLocation> getInjectAdvancements() {
 		return ADVANCEMENTS_INJECT.navigableKeySet();
 	}
@@ -161,7 +199,7 @@ public class DataInjector {
 				recipesToInject.add(recipe);
 			}
 		}
-		Map<IRecipeType<?>, ImmutableMap.Builder<ResourceLocation, IRecipe<?>>> recipesCopy = 
+		Map<IRecipeType<?>, ImmutableMap.Builder<ResourceLocation, IRecipe<?>>> recipesCopy =
 				recipeManager.recipes.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry->ImmutableMap.<ResourceLocation, IRecipe<?>>builder().putAll(entry.getValue())));
 		for(IRecipe<?> recipe : recipesToInject) {
 			recipesCopy.computeIfAbsent(recipe.getType(), type->ImmutableMap.builder()).put(recipe.getId(), recipe);
@@ -199,8 +237,11 @@ public class DataInjector {
 					Tag<EntityType<?>> tag = Tag.Builder.<EntityType<?>>create().add(entityTypes).build(location);
 					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), tag.serialize(ForgeRegistries.ENTITIES::getKey));
 				});
-				ADVANCEMENTS_INJECT.forEach((location, builder)->{
-					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), builder.serialize());
+				LOOT_TABLES_INJECT.forEach((location, supplier)->{
+					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "loot_tables/"+location.getPath()+".json"), GSON.toJsonTree(supplier.get()));
+				});
+				ADVANCEMENTS_INJECT.forEach((location, supplier)->{
+					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), supplier.get().serialize());
 				});
 				JSONS_INJECT.forEach((location, supplier)->{
 					pack.putJson(ResourcePackType.SERVER_DATA, location, supplier.get());

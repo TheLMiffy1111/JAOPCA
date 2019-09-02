@@ -7,7 +7,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -44,7 +43,7 @@ public class DustsModule implements IModule {
 		for(IMaterial material : dustForm.getMaterials()) {
 			if(ArrayUtils.contains(MaterialType.INGOTS, material.getType())) {
 				api.registerFurnaceRecipe(
-						new ResourceLocation("jaopca", "dusts.to_material."+material.getName()), 
+						new ResourceLocation("jaopca", "dusts.to_material."+material.getName()),
 						api.itemFormType().getMaterialFormInfo(dustForm, material),
 						api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName()), 1, 0.1F, 200);
 			}

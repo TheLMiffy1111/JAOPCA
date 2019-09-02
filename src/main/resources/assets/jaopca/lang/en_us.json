@@ -6,6 +6,8 @@
     "item.jaopca.nuggets": "%s Nugget",
     "item.jaopca.tiny_dusts": "Tiny Pile of %s Dust",
     "item.jaopca.small_dusts": "Small Pile of %s Dust",
+    "fluid.jaopca.molten": "Molten %s",
+    "item.jaopca.molten": "Molten %s Bucket",
 
     "item.jaopca.silents_mechanisms_chunks": "%s Ore Chunks"
 }

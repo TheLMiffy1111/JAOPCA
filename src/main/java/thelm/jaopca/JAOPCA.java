@@ -2,7 +2,6 @@ package thelm.jaopca;
 
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -14,10 +13,6 @@ public class JAOPCA {
 
 	public static final String MOD_ID = "jaopca";
 	public static JAOPCA core;
-
-	static {
-		FluidRegistry.enableUniversalBucket();
-	}
 
 	public JAOPCA() {
 		core = this;

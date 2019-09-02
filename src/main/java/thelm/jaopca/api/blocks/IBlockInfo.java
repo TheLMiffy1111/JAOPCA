@@ -12,7 +12,7 @@ public interface IBlockInfo extends IMaterialFormInfo, IItemProvider {
 	IMaterialFormBlock getMaterialFormBlock();
 
 	IMaterialFormBlockItem getMaterialFormBlockItem();
-	
+
 	default Block getBlock() {
 		return getMaterialFormBlock().asBlock();
 	}

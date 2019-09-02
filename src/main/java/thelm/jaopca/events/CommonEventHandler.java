@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.ReloadListener;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IFutureReloadListener;
@@ -24,6 +25,7 @@ import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.data.DataCollector;
 import thelm.jaopca.data.DataInjector;
+import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.forms.FormHandler;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.items.ItemFormType;
@@ -44,7 +46,7 @@ public class CommonEventHandler {
 		ApiImpl.INSTANCE.init();
 		BlockFormType.init();
 		ItemFormType.init();
-		//FluidFormType.init();
+		FluidFormType.init();
 		DeferredWorkQueue.runLater(()->{
 			DataCollector.collectData();
 			ModuleHandler.findModules();
@@ -65,13 +67,21 @@ public class CommonEventHandler {
 	public void onBlockRegister(RegistryEvent.Register<Block> event) {
 		IForgeRegistry<Block> registry = event.getRegistry();
 		BlockFormType.registerBlocks(registry);
+		FluidFormType.registerBlocks(registry);
 	}
 
 	@SubscribeEvent
 	public void onItemRegister(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
-		BlockFormType.registerBlockItems(registry);
+		BlockFormType.registerItems(registry);
 		ItemFormType.registerItems(registry);
+		FluidFormType.registerItems(registry);
+	}
+
+	@SubscribeEvent
+	public void onFluidRegister(RegistryEvent.Register<Fluid> event) {
+		IForgeRegistry<Fluid> registry = event.getRegistry();
+		FluidFormType.registerFluids(registry);
 	}
 
 	@SubscribeEvent

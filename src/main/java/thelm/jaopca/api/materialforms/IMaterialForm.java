@@ -8,6 +8,4 @@ public interface IMaterialForm {
 	IForm getForm();
 
 	IMaterial getMaterial();
-
-	void settingsChanged();
 }

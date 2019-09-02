@@ -2,7 +2,6 @@ package thelm.jaopca.items;
 
 import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.function.Supplier;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,9 +17,15 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 
 	private final IForm form;
 	private final IMaterial material;
-	private final Supplier<IItemFormSettings> settings;
+	protected final IItemFormSettings settings;
 
-	public JAOPCAItem(IForm form, IMaterial material, Supplier<IItemFormSettings> settings) {
+	protected OptionalInt itemStackLimit = OptionalInt.empty();
+	protected Optional<Boolean> beaconPayment = Optional.empty();
+	protected Optional<Boolean> hasEffect = Optional.empty();
+	protected Optional<Rarity> rarity = Optional.empty();
+	protected OptionalInt burnTime = OptionalInt.empty();
+
+	public JAOPCAItem(IForm form, IMaterial material, IItemFormSettings settings) {
 		super(new Item.Properties().group(material.getType().isDummy() ? null : ItemFormType.getItemGroup()));
 		this.form = form;
 		this.material = material;
@@ -37,25 +42,10 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 		return material;
 	}
 
-	private OptionalInt itemStackLimit = OptionalInt.empty();
-	private Optional<Boolean> beaconPayment = Optional.empty();
-	private Optional<Boolean> hasEffect = Optional.empty();
-	private Optional<Rarity> rarity = Optional.empty();
-	private OptionalInt burnTime = OptionalInt.empty();
-
-	@Override
-	public void settingsChanged() {
-		itemStackLimit = OptionalInt.empty();
-		beaconPayment = Optional.empty();
-		hasEffect = Optional.empty();
-		rarity = Optional.empty();
-		burnTime = OptionalInt.empty();
-	}
-
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
 		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.get().getItemStackLimitFunction().applyAsInt(material));
+			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(material));
 		}
 		return itemStackLimit.getAsInt();
 	}
@@ -63,7 +53,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	@Override
 	public boolean isBeaconPayment(ItemStack stack) {
 		if(!beaconPayment.isPresent()) {
-			beaconPayment = Optional.of(settings.get().getIsBeaconPaymentFunction().test(material));
+			beaconPayment = Optional.of(settings.getIsBeaconPaymentFunction().test(material));
 		}
 		return beaconPayment.get();
 	}
@@ -71,7 +61,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	@Override
 	public boolean hasEffect(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
-			hasEffect = Optional.of(settings.get().getHasEffectFunction().test(material));
+			hasEffect = Optional.of(settings.getHasEffectFunction().test(material));
 		}
 		return hasEffect.get();
 	}
@@ -79,7 +69,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	@Override
 	public Rarity getRarity(ItemStack stack) {
 		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.get().getDisplayRarityFunction().apply(material));
+			rarity = Optional.of(settings.getDisplayRarityFunction().apply(material));
 		}
 		return rarity.get();
 	}
@@ -87,13 +77,13 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	@Override
 	public int getBurnTime(ItemStack itemStack) {
 		if(!burnTime.isPresent()) {
-			burnTime = OptionalInt.of(settings.get().getBurnTimeFunction().applyAsInt(material));
+			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(material));
 		}
 		return burnTime.getAsInt();
 	}
 
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm(getForm(), getMaterial(), getTranslationKey());
+		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm("item.jaopca."+form.getName(), material, getTranslationKey());
 	}
 }

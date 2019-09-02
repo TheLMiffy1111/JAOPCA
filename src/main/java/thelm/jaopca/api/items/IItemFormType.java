@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormType;
-import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
 
 public interface IItemFormType extends IFormType {

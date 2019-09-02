@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -66,6 +65,8 @@ public class ConfigHandler {
 	public static final Set<ResourceLocation> ENTITY_TYPE_TAG_BLACKLIST = new TreeSet<>();
 
 	public static final Set<ResourceLocation> RECIPE_BLACKLIST = new TreeSet<>();
+
+	public static final Set<ResourceLocation> LOOT_TABLE_BLACKLIST = new TreeSet<>();
 
 	public static final Set<ResourceLocation> ADVANCEMENT_BLACKLIST = new TreeSet<>();
 
@@ -132,6 +133,10 @@ public class ConfigHandler {
 		mainConfig.setComment("recipes", "Configurations related to recipes.");
 		RECIPE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("recipes.blacklist", new ArrayList<>(),
 				"List of recipes that should not be added."), ResourceLocation::new));
+
+		mainConfig.setComment("lootTables", "Configurations related to loot tables.");
+		LOOT_TABLE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("lootTables.blacklist", new ArrayList<>(),
+				"List of loot tables that should not be added."), ResourceLocation::new));
 
 		mainConfig.setComment("advancements", "Configurations related to advancements.");
 		ADVANCEMENT_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("advancements.blacklist", new ArrayList<>(),

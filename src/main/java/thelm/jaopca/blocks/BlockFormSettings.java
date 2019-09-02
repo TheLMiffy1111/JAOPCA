@@ -1,7 +1,7 @@
 package thelm.jaopca.blocks;
 
 import java.util.Arrays;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
@@ -14,10 +14,17 @@ import net.minecraft.item.Rarity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.storage.loot.ConstantRange;
+import net.minecraft.world.storage.loot.ItemLootEntry;
+import net.minecraft.world.storage.loot.LootParameterSets;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.conditions.SurvivesExplosion;
 import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.blocks.IBlockCreator;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockItemCreator;
+import thelm.jaopca.api.blocks.IBlockLootTableCreator;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
@@ -30,11 +37,11 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private Function<IMaterial, Material> materialFunction = material->Material.IRON;
 	private Function<IMaterial, MaterialColor> materialColorFunction = material->{
 		int color = material.getColor();
-		Optional<MaterialColor> min = Arrays.stream(MaterialColor.COLORS).
+		return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
 				min((matColor1, matColor2)->Integer.compare(
 						MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
-						MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue)));
-		return min.orElse(MaterialColor.IRON);
+						MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
+				orElse(MaterialColor.IRON);
 	};
 	private boolean blocksMovement = true;
 	private Function<IMaterial, SoundType> soundTypeFunction = material->SoundType.METAL;
@@ -52,6 +59,12 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
+	private IBlockLootTableCreator blockLootTableCreator = (block, settings)->{
+		return LootTable.builder().setParameterSet(LootParameterSets.BLOCK).
+				addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).
+						addEntry(ItemLootEntry.builder(block.asBlock())).
+						acceptCondition(SurvivesExplosion.builder())).build();
+	};
 
 	private IBlockItemCreator itemBlockCreator = JAOPCABlockItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
@@ -261,6 +274,17 @@ public class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public Predicate<IMaterial> getIsFireSourceFunction() {
 		return isFireSourceFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setBlockLootTableCreator(IBlockLootTableCreator blockLootTableCreator) {
+		this.blockLootTableCreator = blockLootTableCreator;
+		return this;
+	}
+
+	@Override
+	public IBlockLootTableCreator getBlockLootTableCreator() {
+		return blockLootTableCreator;
 	}
 
 	@Override

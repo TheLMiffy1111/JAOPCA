@@ -2,7 +2,6 @@ package thelm.jaopca.blocks;
 
 import java.util.Optional;
 import java.util.OptionalInt;
-import java.util.function.Supplier;
 
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -20,9 +19,15 @@ import thelm.jaopca.items.ItemFormType;
 
 public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem {
 
-	private final Supplier<IBlockFormSettings> settings;
+	protected final IBlockFormSettings settings;
 
-	public JAOPCABlockItem(IMaterialFormBlock block, Supplier<IBlockFormSettings> settings) {
+	protected OptionalInt itemStackLimit = OptionalInt.empty();
+	protected Optional<Boolean> beaconPayment = Optional.empty();
+	protected Optional<Boolean> hasEffect = Optional.empty();
+	protected Optional<Rarity> rarity = Optional.empty();
+	protected OptionalInt burnTime = OptionalInt.empty();
+
+	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
 		super(block.asBlock(), new Item.Properties().group(block.getMaterial().getType().isDummy() ? null : ItemFormType.getItemGroup()));
 		this.settings = settings;
 	}
@@ -37,25 +42,10 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 		return ((IMaterialForm)getBlock()).getMaterial();
 	}
 
-	private OptionalInt itemStackLimit = OptionalInt.empty();
-	private Optional<Boolean> beaconPayment = Optional.empty();
-	private Optional<Boolean> hasEffect = Optional.empty();
-	private Optional<Rarity> rarity = Optional.empty();
-	private OptionalInt burnTime = OptionalInt.empty();
-
-	@Override
-	public void settingsChanged() {
-		itemStackLimit = OptionalInt.empty();
-		beaconPayment = Optional.empty();
-		hasEffect = Optional.empty();
-		rarity = Optional.empty();
-		burnTime = OptionalInt.empty();
-	}
-
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
 		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.get().getItemStackLimitFunction().applyAsInt(getMaterial()));
+			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(getMaterial()));
 		}
 		return itemStackLimit.getAsInt();
 	}
@@ -63,7 +53,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	@Override
 	public boolean isBeaconPayment(ItemStack stack) {
 		if(!beaconPayment.isPresent()) {
-			beaconPayment = Optional.of(settings.get().getIsBeaconPaymentFunction().test(getMaterial()));
+			beaconPayment = Optional.of(settings.getIsBeaconPaymentFunction().test(getMaterial()));
 		}
 		return beaconPayment.get();
 	}
@@ -71,7 +61,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	@Override
 	public boolean hasEffect(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
-			hasEffect = Optional.of(settings.get().getHasEffectFunction().test(getMaterial()));
+			hasEffect = Optional.of(settings.getHasEffectFunction().test(getMaterial()));
 		}
 		return hasEffect.get();
 	}
@@ -79,7 +69,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	@Override
 	public Rarity getRarity(ItemStack stack) {
 		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.get().getDisplayRarityFunction().apply(getMaterial()));
+			rarity = Optional.of(settings.getDisplayRarityFunction().apply(getMaterial()));
 		}
 		return rarity.get();
 	}
@@ -87,13 +77,13 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	@Override
 	public int getBurnTime(ItemStack itemStack) {
 		if(!burnTime.isPresent()) {
-			burnTime = OptionalInt.of(settings.get().getBurnTimeFunction().applyAsInt(getMaterial()));
+			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(getMaterial()));
 		}
 		return burnTime.getAsInt();
 	}
 
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm(getForm(), getMaterial(), getTranslationKey());
+		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getTranslationKey());
 	}
 }

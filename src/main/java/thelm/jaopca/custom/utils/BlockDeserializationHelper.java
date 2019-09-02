@@ -106,6 +106,6 @@ public class BlockDeserializationHelper {
 		INSTANCE.putSoundType("stem", SoundType.STEM);
 		INSTANCE.putSoundType("nether_wart", SoundType.NETHER_WART);
 		INSTANCE.putSoundType("lantern", SoundType.LANTERN);
-		
+
 	}
 }

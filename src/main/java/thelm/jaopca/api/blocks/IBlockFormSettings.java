@@ -56,7 +56,7 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setShape(VoxelShape shape);
 
 	VoxelShape getShape();
-	
+
 	IBlockFormSettings setRaytraceShape(VoxelShape raytraceShape);
 
 	VoxelShape getRaytraceShape();
@@ -96,6 +96,10 @@ public interface IBlockFormSettings extends IFormSettings {
 	//IBlockFormSettings setIsFallable(boolean fallable);
 
 	//boolean getIsFallable();
+
+	IBlockFormSettings setBlockLootTableCreator(IBlockLootTableCreator blockLootTableCreator);
+
+	IBlockLootTableCreator getBlockLootTableCreator();
 
 	IBlockFormSettings setItemBlockCreator(IBlockItemCreator itemBlockCreator);
 

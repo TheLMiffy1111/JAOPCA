@@ -14,7 +14,7 @@ import thelm.jaopca.api.materials.IMaterial;
 public class ItemFormSettings implements IItemFormSettings {
 
 	ItemFormSettings() {}
-	
+
 	private IItemCreator itemCreator = JAOPCAItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
 	private Predicate<IMaterial> beaconPaymentFunction = material->false;

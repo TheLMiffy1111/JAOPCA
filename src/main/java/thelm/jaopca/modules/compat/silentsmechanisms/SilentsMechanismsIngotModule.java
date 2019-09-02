@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.apache.commons.lang3.tuple.Triple;
-
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -38,7 +36,7 @@ public class SilentsMechanismsIngotModule implements IModule {
 			Collections.addAll(BLACKLIST, "crimson_iron");
 		}
 	}
-	
+
 	private static final TreeMap<IMaterial, Item> BYPRODUCTS = new TreeMap<>();
 
 	private final IForm chunkForm = JAOPCAApi.instance().newForm(this, "silents_mechanisms_chunks", JAOPCAApi.instance().itemFormType()).

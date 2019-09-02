@@ -12,6 +12,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.Advancement.Builder;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
@@ -19,7 +20,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
@@ -31,17 +34,18 @@ import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.localization.ILocalizer;
-import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.custom.json.EnumDeserializer;
+import thelm.jaopca.custom.json.ForgeRegistryEntrySupplierDeserializer;
 import thelm.jaopca.custom.json.MaterialEnumFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.data.DataCollector;
 import thelm.jaopca.data.DataInjector;
+import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.forms.Form;
 import thelm.jaopca.forms.FormHandler;
 import thelm.jaopca.forms.FormRequest;
@@ -80,8 +84,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public IFluidFormType fluidFormType() {
-		// TODO Auto-generated method stub
-		return null;
+		return FluidFormType.INSTANCE;
 	}
 
 	@Override
@@ -137,6 +140,11 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public JsonDeserializer<Supplier<IForgeRegistryEntry<?>>> forgeRegistryEntrySupplierDeserializer() {
+		return ForgeRegistryEntrySupplierDeserializer.INSTANCE;
+	}
+
+	@Override
 	public IForm getForm(String name) {
 		return FormHandler.getForm(name);
 	}
@@ -174,6 +182,11 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public Set<ResourceLocation> getRecipes() {
 		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedRecipes(), DataInjector.getInjectRecipes()));
+	}
+
+	@Override
+	public Set<ResourceLocation> getLootTables() {
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectAdvancements()));
 	}
 
 	@Override
@@ -367,11 +380,29 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder) {
+	public boolean registerLootTable(ResourceLocation key, Supplier<LootTable> lootTableSupplier) {
+		if(DataCollector.getDefinedLootTables().contains(key) || ConfigHandler.LOOT_TABLE_BLACKLIST.contains(key)) {
+			return false;
+		}
+		return DataInjector.registerLootTable(key, lootTableSupplier);
+	}
+
+	@Override
+	public boolean registerLootTable(ResourceLocation key, LootTable lootTable) {
+		return registerLootTable(key, ()->lootTable);
+	}
+
+	@Override
+	public boolean registerAdvancement(ResourceLocation key, Supplier<Builder> advancementBuilderSupplier) {
 		if(DataCollector.getDefinedAdvancements().contains(key) || ConfigHandler.ADVANCEMENT_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerAdvancement(key, advancementBuilder);
+		return DataInjector.registerAdvancement(key, advancementBuilderSupplier);
+	}
+
+	@Override
+	public boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder) {
+		return registerAdvancement(key, ()->advancementBuilder);
 	}
 
 	@Override

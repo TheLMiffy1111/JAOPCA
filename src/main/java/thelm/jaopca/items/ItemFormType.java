@@ -51,11 +51,6 @@ public class ItemFormType implements IItemFormType {
 	}
 
 	@Override
-	public String getTranslationKeyFormat() {
-		return "item.jaopca.%s";
-	}
-
-	@Override
 	public void addForm(IForm form) {
 		FORMS.add(form);
 	}
@@ -77,7 +72,7 @@ public class ItemFormType implements IItemFormType {
 	@Override
 	public IItemInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		IItemInfo info = ITEM_INFOS.get(form, material);
-		if(info == null && ITEMS.contains(form, material)) {
+		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
 			info = new ItemInfo(ITEMS.get(form, material));
 			ITEM_INFOS.put(form, material, info);
 		}
@@ -99,26 +94,35 @@ public class ItemFormType implements IItemFormType {
 		return ItemFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	public static void registerItems(IForgeRegistry<Item> registry) {
+	private static void createRegistryEntries() {
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			for(IMaterial material : form.getMaterials()) {
 				boolean isMaterialDummy = material.getType().isDummy();
-				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, ()->(IItemFormSettings)form.getSettings());
-				Item item = materialFormItem.asItem();
 				String registryKey = isMaterialDummy ? material.getName()+form.getName() : form.getName()+'.'+material.getName();
-				item.setRegistryName(new ResourceLocation(JAOPCA.MOD_ID, registryKey));
-				registry.register(item);
+				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, registryKey);
+
+				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, settings);
+				Item item = materialFormItem.asItem();
+				item.setRegistryName(registryName);
 				ITEMS.put(form, material, materialFormItem);
+
 				if(!isMaterialDummy) {
-					Supplier<Item> supplier = ()->item;
-					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), supplier);
-					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), supplier);
+					Supplier<Item> itemSupplier = ()->item;
+					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), itemSupplier);
+					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), itemSupplier);
 					for(String alternativeName : material.getAlternativeNames()) {
-						DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), supplier);
+						DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), itemSupplier);
 					}
 				}
 			}
+		}
+	}
+
+	public static void registerItems(IForgeRegistry<Item> registry) {
+		createRegistryEntries();
+		for(IMaterialFormItem item : ITEMS.values()) {
+			registry.register(item.asItem());
 		}
 	}
 

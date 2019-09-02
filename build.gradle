@@ -37,14 +37,14 @@ sourceSets {
     main
 }
 
-version = "3.0.0.6"
+version = "3.0.0.8"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.14.4"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190720-1.14.3'
+    mappings channel: 'snapshot', version: '20190829-1.14.3'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client = {
@@ -63,7 +63,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.14.4-28.0.51"
+    minecraft "net.minecraftforge:forge:1.14.4-28.0.81"
     implementation fg.deobf("mezz.jei:jei-1.14.4:6.0.0.10")
     //TechReborn is on Fabric, need bridge
     //implementation fg.deobf("RebornCore:RebornCore-1.14.4:4.0.6.112")
@@ -72,12 +72,12 @@ dependencies {
     //JitPack
     //PixelLib is stuck on 1.14.3, no releases
     //implementation fg.deobf("com.github.EmosewaPixel:PixelLib:b3c2d504a7")
-	implementation fg.deobf("org.bitbucket.kaneka:planttech2:d19783591c")
+	implementation fg.deobf("org.bitbucket.kaneka:planttech2:ee9643639b")
 
     //CurseMaven
     implementation fg.deobf(curse.resolve("silent-lib", "2756012"))
-    implementation fg.deobf(curse.resolve("silents-mechanisms", "2765718"))
-    implementation fg.deobf(curse.resolve("silents-gems", "2765709"))
+    implementation fg.deobf(curse.resolve("silents-mechanisms", "2774596"))
+    implementation fg.deobf(curse.resolve("silents-gems", "2774041"))
     implementation fg.deobf(curse.resolve("simpleores", "2750442"))
 }
 

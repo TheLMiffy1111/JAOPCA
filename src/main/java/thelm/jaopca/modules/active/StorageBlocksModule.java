@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.forms.IForm;

@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 
 import thelm.jaopca.api.forms.IForm;
@@ -26,7 +25,6 @@ public class Form implements IForm {
 	private final String name;
 	private final IFormType type;
 	private String secondaryName;
-	private String translationKey;
 	private final EnumSet<MaterialType> materialTypes = EnumSet.allOf(MaterialType.class);
 	private final TreeSet<String> defaultMaterialBlacklist = new TreeSet<>();
 	private final TreeSet<String> materialBlacklist = new TreeSet<>();
@@ -42,7 +40,6 @@ public class Form implements IForm {
 		this.name = Objects.requireNonNull(name);
 		this.type = Objects.requireNonNull(type);
 		secondaryName = name;
-		translationKey = String.format(type.getTranslationKeyFormat(), name);
 		settings = type.getNewSettings();
 	}
 
@@ -72,19 +69,6 @@ public class Form implements IForm {
 	@Override
 	public String getSecondaryName() {
 		return secondaryName;
-	}
-
-	@Override
-	public IForm setTranslationKey(String translationKey) {
-		if(!locked) {
-			this.translationKey = translationKey;
-		}
-		return this;
-	}
-
-	@Override
-	public String getTranslationKey() {
-		return translationKey;
 	}
 
 	@Override

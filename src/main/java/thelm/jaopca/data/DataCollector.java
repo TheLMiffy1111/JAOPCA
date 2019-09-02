@@ -28,12 +28,14 @@ public class DataCollector {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final int TAGS_PATH_LENGTH = "tags/".length();
 	private static final int RECIPES_PATH_LENGTH = "recipes/".length();
+	private static final int LOOT_TABLES_PATH_LENGTH = "loot_tables/".length();
 	private static final int ADVANCEMENTS_PATH_LENGTH = "advancements/".length();
 	private static final int JSON_EXTENSION_LENGTH = ".json".length();
 	private static final List<Supplier<IResourcePack>> RESOURCE_PACK_SUPPLIERS = new ArrayList<>();
 	private static final List<IResourcePack> RESOURCE_PACKS = new ArrayList<>();
 	private static final TreeMultimap<String, ResourceLocation> DEFINED_TAGS = TreeMultimap.create();
 	private static final TreeSet<ResourceLocation> DEFINED_RECIPES = new TreeSet<>();
+	private static final TreeSet<ResourceLocation> DEFINED_LOOT_TABLES = new TreeSet<>();
 	private static final TreeSet<ResourceLocation> DEFINED_ADVANCEMENTS = new TreeSet<>();
 
 	public static void collectData() {
@@ -72,10 +74,17 @@ public class DataCollector {
 			}
 		}
 		LOGGER.info("Found {} unique defined recipes", DEFINED_RECIPES.size());
+		for(ResourceLocation location : getAllDataResourceLocations("loot_tables", name->name.endsWith(".json"))) {
+			String namespace = location.getNamespace();
+			String path = location.getPath();
+			path = path.substring(LOOT_TABLES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
+			DEFINED_LOOT_TABLES.add(new ResourceLocation(namespace, path));
+		}
+		LOGGER.info("Found {} unique defined loot tables", DEFINED_LOOT_TABLES.size());
 		for(ResourceLocation location : getAllDataResourceLocations("advancements", name->name.endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
-			path = path.substring(RECIPES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
+			path = path.substring(ADVANCEMENTS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
 			DEFINED_ADVANCEMENTS.add(new ResourceLocation(namespace, path));
 		}
 		LOGGER.info("Found {} unique defined advancements", DEFINED_ADVANCEMENTS.size());
@@ -87,6 +96,10 @@ public class DataCollector {
 
 	public static Set<ResourceLocation> getDefinedRecipes() {
 		return DEFINED_RECIPES;
+	}
+
+	public static Set<ResourceLocation> getDefinedLootTables() {
+		return DEFINED_LOOT_TABLES;
 	}
 
 	public static Set<ResourceLocation> getDefinedAdvancements() {

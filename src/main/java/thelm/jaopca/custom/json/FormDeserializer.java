@@ -33,9 +33,6 @@ public class FormDeserializer implements JsonDeserializer<IForm> {
 		if(json.has("secondaryName")) {
 			form.setSecondaryName(helper.getString(json, "secondaryName"));
 		}
-		if(json.has("translationKey")) {
-			form.setTranslationKey(helper.getString(json, "translationKey"));
-		}
 		if(json.has("materialTypes")) {
 			form.setMaterialTypes(helper.<MaterialType[]>deserializeType(json, "materialTypes", context, MaterialType[].class));
 		}

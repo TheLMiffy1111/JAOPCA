@@ -45,6 +45,6 @@ public class EnumDeserializer implements JsonDeserializer<Enum<?>> {
 				return values[valueOrdinal];
 			}
 		}
-		throw new JsonParseException("Unable to deserialize "+helper.toSimpleString(jsonElement)+" into an enum function");
+		throw new JsonParseException("Unable to deserialize "+helper.toSimpleString(jsonElement)+" into an enum");
 	}
 }

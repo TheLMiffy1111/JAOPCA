@@ -1,6 +1,5 @@
 package thelm.jaopca.api;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -15,6 +14,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
 import thelm.jaopca.api.fluids.IFluidFormType;
@@ -25,7 +26,6 @@ import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.localization.ILocalizer;
-import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 
@@ -55,14 +55,14 @@ public abstract class JAOPCAApi {
 
 	/**
 	 * Returns the implementation instance of the API.
-	 * @return The API instance 
+	 * @return The API instance
 	 * @throws IllegalStateException if the API instance was not set
 	 */
 	public static JAOPCAApi instance() {
 		if(instance == null) {
 			throw new IllegalStateException("Got API instance before it is set");
 		}
-		return instance; 
+		return instance;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public abstract class JAOPCAApi {
 	public abstract IItemFormType itemFormType();
 
 	/**
-	 * Returns the implementation instance of {@link IFluidFormType}. <b>Not yet implemented!</b>
+	 * Returns the implementation instance of {@link IFluidFormType}.
 	 * @return The fluid form type instance
 	 */
 	public abstract IFluidFormType fluidFormType();
@@ -166,6 +166,13 @@ public abstract class JAOPCAApi {
 	public abstract JsonDeserializer<Function<IMaterial, ?>> materialFunctionDeserializer();
 
 	/**
+	 * Returns the forge registry entry supplier JSON deserializer instance used by JAOPCA. The deserializer
+	 * deserializes registry entries with locations.
+	 * @return The forge registry entry deserializer instance
+	 */
+	public abstract JsonDeserializer<Supplier<IForgeRegistryEntry<?>>> forgeRegistryEntrySupplierDeserializer();
+
+	/**
 	 * Gets an {@link IForm} by name.
 	 * @param name The name of the form
 	 * @return The form with the name provided, null if no form registered has this name
@@ -220,6 +227,14 @@ public abstract class JAOPCAApi {
 	 * @return The set of recipe locations known by JAOPCA
 	 */
 	public abstract Set<ResourceLocation> getRecipes();
+
+	/**
+	 * Returns the set of known loot table locations, which is the union of defined loot table locations
+	 * and registered loot table locations. Note that loot tables added by custom data packs may not be
+	 * included.
+	 * @return The set of loot table locations known by JAOPCA
+	 */
+	public abstract Set<ResourceLocation> getLootTables();
 
 	/**
 	 * Returns the set of known advancement locations, which is the union of defined advancement locations
@@ -563,7 +578,31 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count);
 
 	/**
-	 * Registers an advancement builder.
+	 * Registers a loot table supplier to be added by JAOPCA's in memory data pack.
+	 * @param key The id of the advancement
+	 * @param advancementBuilder The advancement builder
+	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
+	 */
+	public abstract boolean registerLootTable(ResourceLocation key, Supplier<LootTable> lootTableSupplier);
+
+	/**
+	 * Registers a loot table to be added by JAOPCA's in memory data pack.
+	 * @param key The id of the advancement
+	 * @param advancementBuilder The advancement builder
+	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
+	 */
+	public abstract boolean registerLootTable(ResourceLocation key, LootTable lootTable);
+
+	/**
+	 * Registers an advancement builder supplier to be added by JAOPCA's in memory data pack.
+	 * @param key The id of the advancement
+	 * @param advancementBuilderSupplier The advancement builder supplier
+	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
+	 */
+	public abstract boolean registerAdvancement(ResourceLocation key, Supplier<Advancement.Builder> advancementBuilderSupplier);
+
+	/**
+	 * Registers an advancement builder to be added by JAOPCA's in memory data pack.
 	 * @param key The id of the advancement
 	 * @param advancementBuilder The advancement builder
 	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken

@@ -2,7 +2,6 @@ package thelm.jaopca.modules;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +102,7 @@ public class ModuleHandler {
 		ModList modList = ModList.get();
 		int separatorIndex = dep.lastIndexOf('@');
 		String modId = dep.substring(0, separatorIndex == -1 ? dep.length() : separatorIndex);
-		String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1, dep.length()); 
+		String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1, dep.length());
 		VersionRange versionRange;
 		try {
 			versionRange = VersionRange.createFromVersionSpec(spec);

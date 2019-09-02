@@ -19,10 +19,6 @@ public interface IForm extends Comparable<IForm> {
 
 	String getSecondaryName();
 
-	IForm setTranslationKey(String translationKey);
-
-	String getTranslationKey();
-
 	IForm setMaterialTypes(Collection<MaterialType> materialTypes);
 
 	IForm setMaterialTypes(MaterialType... materialTypes);

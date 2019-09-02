@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.tuple.Triple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +14,6 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.silentchaos512.mechanisms.crafting.recipe.CrushingRecipe;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.utils.MiscHelper;
 
 public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 

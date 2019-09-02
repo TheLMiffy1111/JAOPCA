@@ -3,7 +3,6 @@ package thelm.jaopca.blocks;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
-import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -18,7 +17,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorldReader;
@@ -33,13 +31,36 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 
 	private final IForm form;
 	private final IMaterial material;
-	private final Supplier<IBlockFormSettings> settings;
+	protected final IBlockFormSettings settings;
 
-	public JAOPCABlock(IForm form, IMaterial material, Supplier<IBlockFormSettings> settings) {
-		super(Block.Properties.create(Material.IRON));
+	protected Optional<Material> blockMaterial = Optional.empty();
+	protected Optional<MaterialColor> materialColor = Optional.empty();
+	protected boolean blocksMovement;
+	protected Optional<SoundType> soundType = Optional.empty();
+	protected OptionalInt lightValue = OptionalInt.empty();
+	protected OptionalDouble blockHardness = OptionalDouble.empty();
+	protected OptionalDouble explosionResistance = OptionalDouble.empty();
+	protected OptionalDouble slipperiness = OptionalDouble.empty();
+	protected VoxelShape shape;
+	protected VoxelShape raytraceShape;
+	protected BlockRenderLayer renderLayer;
+	protected Optional<ToolType> harvestTool = Optional.empty();
+	protected OptionalInt harvestLevel = OptionalInt.empty();
+	protected Optional<Boolean> isBeaconBase = Optional.empty();
+	protected OptionalInt flammability = OptionalInt.empty();
+	protected OptionalInt fireSpreadSpeed = OptionalInt.empty();
+	protected Optional<Boolean> isFireSource = Optional.empty();
+
+	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings) {
+		super(Block.Properties.create(Material.IRON).lightValue(settings.getLightValueFunction().applyAsInt(material)));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
+
+		blocksMovement = settings.getBlocksMovement();
+		shape = settings.getShape();
+		raytraceShape = settings.getRaytraceShape();
+		renderLayer = settings.getRenderLayer();
 	}
 
 	@Override
@@ -52,65 +73,26 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		return material;
 	}
 
-	private Optional<Material> blockMaterial = Optional.empty();
-	private Optional<MaterialColor> materialColor = Optional.empty();
-	private Optional<Boolean> blocksMovement = Optional.empty();
-	private Optional<SoundType> soundType = Optional.empty();
-	private OptionalInt lightValue = OptionalInt.empty();
-	private OptionalDouble blockHardness = OptionalDouble.empty();
-	private OptionalDouble explosionResistance = OptionalDouble.empty();
-	private OptionalDouble slipperiness = OptionalDouble.empty();
-	private Optional<VoxelShape> shape = Optional.empty();
-	private Optional<VoxelShape> raytraceShape = Optional.empty();
-	private Optional<BlockRenderLayer> renderLayer = Optional.empty();
-	private Optional<ToolType> harvestTool = Optional.empty();
-	private OptionalInt harvestLevel = OptionalInt.empty();
-	private Optional<Boolean> isBeaconBase = Optional.empty();
-	private OptionalInt flammability = OptionalInt.empty();
-	private OptionalInt fireSpreadSpeed = OptionalInt.empty();
-	private Optional<Boolean> isFireSource = Optional.empty();
-
 	@Override
-	public void settingsChanged() {
-		blockMaterial = Optional.empty();
-		materialColor = Optional.empty();
-		blocksMovement = Optional.empty();
-		soundType = Optional.empty();
-		lightValue = OptionalInt.empty();
-		blockHardness = OptionalDouble.empty();
-		explosionResistance = OptionalDouble.empty();
-		slipperiness = OptionalDouble.empty();
-		shape = Optional.empty();
-		raytraceShape = Optional.empty();
-		renderLayer = Optional.empty();
-		harvestTool = Optional.empty();
-		harvestLevel = OptionalInt.empty();
-		isBeaconBase = Optional.empty();
-		flammability = OptionalInt.empty();
-		fireSpreadSpeed = OptionalInt.empty();
-		isFireSource = Optional.empty();
-	}
-
-	@Override
-	public Material getMaterial(BlockState state) {
+	public Material getMaterial(BlockState blockState) {
 		if(!blockMaterial.isPresent()) {
-			blockMaterial = Optional.of(settings.get().getMaterialFunction().apply(material));
+			blockMaterial = Optional.of(settings.getMaterialFunction().apply(material));
 		}
 		return blockMaterial.get();
 	}
 
 	@Override
-	public MaterialColor getMaterialColor(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public MaterialColor getMaterialColor(BlockState blockState, IBlockReader world, BlockPos pos) {
 		if(!materialColor.isPresent()) {
-			materialColor = Optional.of(settings.get().getMaterialColorFunction().apply(material));
+			materialColor = Optional.of(settings.getMaterialColorFunction().apply(material));
 		}
 		return materialColor.get();
 	}
 
 	@Override
-	public SoundType getSoundType(BlockState state, IWorldReader world, BlockPos pos, Entity entity) {
+	public SoundType getSoundType(BlockState blockState) {
 		if(!soundType.isPresent()) {
-			soundType = Optional.of(settings.get().getSoundTypeFunction().apply(material));
+			soundType = Optional.of(settings.getSoundTypeFunction().apply(material));
 		}
 		return soundType.get();
 	}
@@ -118,125 +100,110 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	@Override
 	public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
 		if(!lightValue.isPresent()) {
-			lightValue = OptionalInt.of(settings.get().getLightValueFunction().applyAsInt(material));
+			lightValue = OptionalInt.of(settings.getLightValueFunction().applyAsInt(material));
 		}
 		return lightValue.getAsInt();
 	}
 
 	@Override
-	public float getBlockHardness(BlockState blockState, IBlockReader worldIn, BlockPos pos) {
+	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos) {
 		if(!blockHardness.isPresent()) {
-			blockHardness = OptionalDouble.of(settings.get().getBlockHardnessFunction().applyAsDouble(material));
+			blockHardness = OptionalDouble.of(settings.getBlockHardnessFunction().applyAsDouble(material));
 		}
 		return (float)blockHardness.getAsDouble();
 	}
 
 	@Override
-	public float getExplosionResistance(BlockState state, IWorldReader world, BlockPos pos, Entity exploder, Explosion explosion) {
+	public float getExplosionResistance() {
 		if(!explosionResistance.isPresent()) {
-			explosionResistance = OptionalDouble.of(settings.get().getExplosionResistanceFunction().applyAsDouble(material));
+			explosionResistance = OptionalDouble.of(settings.getExplosionResistanceFunction().applyAsDouble(material));
 		}
 		return (float)explosionResistance.getAsDouble();
 	}
 
 	@Override
-	public float getSlipperiness(BlockState state, IWorldReader world, BlockPos pos, Entity entity) {
+	public float getSlipperiness(BlockState blockState, IWorldReader world, BlockPos pos, Entity entity) {
 		if(!slipperiness.isPresent()) {
-			slipperiness = OptionalDouble.of(settings.get().getSlipperinessFunction().applyAsDouble(material));
+			slipperiness = OptionalDouble.of(settings.getSlipperinessFunction().applyAsDouble(material));
 		}
 		return (float)slipperiness.getAsDouble();
 	}
 
 	@Override
-	public boolean isSolid(BlockState state) {
-		if(!blocksMovement.isPresent()) {
-			blocksMovement = Optional.of(settings.get().getBlocksMovement());
-		}
-		return blocksMovement.get() && state.getBlock().getRenderLayer() == BlockRenderLayer.SOLID;
+	public boolean isSolid(BlockState blockState) {
+		return blocksMovement && blockState.getBlock().getRenderLayer() == BlockRenderLayer.SOLID;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		if(!shape.isPresent()) {
-			shape = Optional.of(settings.get().getShape());
-		}
-		return shape.get();
+	public VoxelShape getShape(BlockState blockState, IBlockReader world, BlockPos pos, ISelectionContext context) {
+		return shape;
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		if(!blocksMovement.isPresent()) {
-			blocksMovement = Optional.of(settings.get().getBlocksMovement());
-		}
-		return blocksMovement.get() ? state.getShape(worldIn, pos) : VoxelShapes.empty();
+	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader world, BlockPos pos, ISelectionContext context) {
+		return blocksMovement ? blockState.getShape(world, pos) : VoxelShapes.empty();
 	}
 
 	@Override
-	public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if(!raytraceShape.isPresent()) {
-			raytraceShape = Optional.of(settings.get().getRaytraceShape());
-		}
-		return raytraceShape.get();
+	public VoxelShape getRaytraceShape(BlockState blockState, IBlockReader world, BlockPos pos) {
+		return raytraceShape;
 	}
 
 	@Override
 	public BlockRenderLayer getRenderLayer() {
-		if(!renderLayer.isPresent()) {
-			renderLayer = Optional.of(settings.get().getRenderLayer());
-		}
-		return renderLayer.get();
+		return renderLayer;
 	}
 
 	@Override
-	public ToolType getHarvestTool(BlockState state) {
+	public ToolType getHarvestTool(BlockState blockState) {
 		if(!harvestTool.isPresent()) {
-			harvestTool = Optional.ofNullable(settings.get().getHarvestToolFunction().apply(material));
+			harvestTool = Optional.ofNullable(settings.getHarvestToolFunction().apply(material));
 		}
 		return harvestTool.orElse(null);
 	}
 
 	@Override
-	public int getHarvestLevel(BlockState state) {
+	public int getHarvestLevel(BlockState blockState) {
 		if(!harvestLevel.isPresent()) {
-			harvestLevel = OptionalInt.of(settings.get().getHarvestLevelFunction().applyAsInt(material));
+			harvestLevel = OptionalInt.of(settings.getHarvestLevelFunction().applyAsInt(material));
 		}
 		return harvestLevel.getAsInt();
 	}
 
 	@Override
-	public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
+	public boolean isBeaconBase(BlockState blockState, IWorldReader world, BlockPos pos, BlockPos beacon) {
 		if(!isBeaconBase.isPresent()) {
-			isBeaconBase = Optional.of(settings.get().getIsBeaconBaseFunction().test(material));
+			isBeaconBase = Optional.of(settings.getIsBeaconBaseFunction().test(material));
 		}
 		return isBeaconBase.get();
 	}
 
 	@Override
-	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+	public int getFlammability(BlockState blockState, IBlockReader world, BlockPos pos, Direction face) {
 		if(!flammability.isPresent()) {
-			flammability = OptionalInt.of(settings.get().getFireSpreadSpeedFunction().applyAsInt(material));
+			flammability = OptionalInt.of(settings.getFireSpreadSpeedFunction().applyAsInt(material));
 		}
 		return flammability.getAsInt();
 	}
 
 	@Override
-	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
+	public int getFireSpreadSpeed(BlockState blockState, IBlockReader world, BlockPos pos, Direction face) {
 		if(!fireSpreadSpeed.isPresent()) {
-			fireSpreadSpeed = OptionalInt.of(settings.get().getFlammabilityFunction().applyAsInt(material));
+			fireSpreadSpeed = OptionalInt.of(settings.getFlammabilityFunction().applyAsInt(material));
 		}
 		return fireSpreadSpeed.getAsInt();
 	}
 
 	@Override
-	public boolean isFireSource(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+	public boolean isFireSource(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
 		if(!isFireSource.isPresent()) {
-			isFireSource = Optional.of(settings.get().getIsFireSourceFunction().test(material));
+			isFireSource = Optional.of(settings.getIsFireSourceFunction().test(material));
 		}
 		return isFireSource.get();
 	}
 
 	@Override
 	public ITextComponent getNameTextComponent() {
-		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm(form, material, getTranslationKey());
+		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm("block.jaopca."+form.getName(), material, getTranslationKey());
 	}
 }

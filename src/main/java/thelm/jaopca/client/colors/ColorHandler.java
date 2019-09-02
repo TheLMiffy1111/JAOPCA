@@ -26,10 +26,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
+import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
+import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
 import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
+import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.items.ItemFormType;
 
 public class ColorHandler {
@@ -46,7 +49,7 @@ public class ColorHandler {
 	};
 
 	public static final IItemColor ITEM_COLOR = (stack, tintIndex)->{
-		if(tintIndex == 0) {
+		if(tintIndex == 0 || tintIndex == 2) {
 			Item item = stack.getItem();
 			if(item instanceof IMaterialForm) {
 				IMaterialForm materialForm = (IMaterialForm)item;
@@ -67,6 +70,12 @@ public class ColorHandler {
 		}
 		for(IMaterialFormItem item : ItemFormType.getItems()) {
 			itemColors.register(ITEM_COLOR, item.asItem());
+		}
+		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
+			blockColors.register(BLOCK_COLOR, fluidBlock.asBlock());
+		}
+		for(IMaterialFormBucketItem bucketItem : FluidFormType.getBucketItems()) {
+			itemColors.register(ITEM_COLOR, bucketItem.asItem());
 		}
 	}
 

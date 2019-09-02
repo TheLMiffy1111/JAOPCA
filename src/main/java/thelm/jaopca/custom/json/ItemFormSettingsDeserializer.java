@@ -1,20 +1,17 @@
 package thelm.jaopca.custom.json;
 
 import java.lang.reflect.Type;
-import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
 
 import net.minecraft.item.Rarity;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.items.IItemFormSettings;
-import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.JsonHelper;
 
@@ -32,22 +29,20 @@ public class ItemFormSettingsDeserializer implements JsonDeserializer<IItemFormS
 	public IItemFormSettings deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		IJsonHelper helper = JsonHelper.INSTANCE;
 		JsonObject json = helper.getJsonObject(jsonElement, "settings");
-		Type intFunctionType = new TypeToken<ToIntFunction<IMaterial>>(){}.getType();
-		Type predicateType = new TypeToken<Predicate<IMaterial>>(){}.getType();
 		IItemFormSettings settings = ItemFormType.INSTANCE.getNewSettings();
 		if(json.has("itemStackLimit")) {
 			JsonObject functionJson = helper.getJsonObject(json, "itemStackLimit");
 			if(!functionJson.has("default")) {
 				functionJson.addProperty("default", 64);
 			}
-			settings.setItemStackLimitFunction(helper.deserializeType(json, "itemStackLimit", context, intFunctionType));
+			settings.setItemStackLimitFunction(helper.deserializeType(json, "itemStackLimit", context, FormTypeHandler.INT_FUNCTION_TYPE));
 		}
 		if(json.has("isBeaconPayment")) {
 			JsonObject functionJson = helper.getJsonObject(json, "itemStackLimit");
 			if(!functionJson.has("default")) {
 				functionJson.addProperty("default", false);
 			}
-			settings.setIsBeaconPaymentFunction(helper.deserializeType(json, "isBeaconPayment", context, predicateType));
+			settings.setIsBeaconPaymentFunction(helper.deserializeType(json, "isBeaconPayment", context, FormTypeHandler.PREDICATE_TYPE));
 		}
 		if(json.has("hasEffect")) {
 			boolean hasEffect = helper.getBoolean(json, "hasEffect");
@@ -62,7 +57,7 @@ public class ItemFormSettingsDeserializer implements JsonDeserializer<IItemFormS
 			if(!functionJson.has("default")) {
 				functionJson.addProperty("default", -1);
 			}
-			settings.setBurnTimeFunction(helper.deserializeType(json, "burnTime", context, intFunctionType));
+			settings.setBurnTimeFunction(helper.deserializeType(json, "burnTime", context, FormTypeHandler.INT_FUNCTION_TYPE));
 		}
 		return settings;
 	}

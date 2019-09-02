@@ -1,7 +1,5 @@
 package thelm.jaopca.modules.compat.silentsmechanisms;
 
-import org.apache.commons.lang3.tuple.Triple;
-
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.JAOPCAApi;
 

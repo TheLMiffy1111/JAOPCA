@@ -1,5 +1,6 @@
 package thelm.jaopca.blocks;
 
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -7,7 +8,6 @@ import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -51,6 +51,10 @@ public class BlockFormType implements IBlockFormType {
 	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormBlockItem> BLOCK_ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IBlockInfo> BLOCK_INFOS = TreeBasedTable.create();
 
+	public static final Type MATERIAL_FUNCTION_TYPE = new TypeToken<Function<IMaterial, Material>>(){}.getType();
+	public static final Type SOUND_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, SoundType>>(){}.getType();
+	public static final Type TOOL_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, ToolType>>(){}.getType();
+
 	public static void init() {
 		FormTypeHandler.registerFormType(INSTANCE);
 	}
@@ -58,11 +62,6 @@ public class BlockFormType implements IBlockFormType {
 	@Override
 	public String getName() {
 		return "block";
-	}
-
-	@Override
-	public String getTranslationKeyFormat() {
-		return "block.jaopca.%s";
 	}
 
 	@Override
@@ -87,7 +86,7 @@ public class BlockFormType implements IBlockFormType {
 	@Override
 	public IBlockInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		IBlockInfo info = BLOCK_INFOS.get(form, material);
-		if(info == null && BLOCKS.contains(form, material) && BLOCK_ITEMS.contains(form, material)) {
+		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
 			info = new BlockInfo(BLOCKS.get(form, material), BLOCK_ITEMS.get(form, material));
 			BLOCK_INFOS.put(form, material, info);
 		}
@@ -102,13 +101,13 @@ public class BlockFormType implements IBlockFormType {
 	@Override
 	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
 		return builder.
-				registerTypeAdapter(new TypeToken<Function<IMaterial, Material>>(){}.getType(),
+				registerTypeAdapter(MATERIAL_FUNCTION_TYPE,
 						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getBlockMaterial,
 								BlockDeserializationHelper.INSTANCE::getBlockMaterialName)).
-				registerTypeAdapter(new TypeToken<Function<IMaterial, SoundType>>(){}.getType(),
+				registerTypeAdapter(SOUND_TYPE_FUNCTION_TYPE,
 						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getSoundType,
 								BlockDeserializationHelper.INSTANCE::getSoundTypeName)).
-				registerTypeAdapter(new TypeToken<Function<IMaterial, ToolType>>(){}.getType(),
+				registerTypeAdapter(TOOL_TYPE_FUNCTION_TYPE,
 						new MaterialMappedFunctionDeserializer<>(ToolType::get, ToolType::getName)).
 				registerTypeAdapter(BlockRenderLayer.class, EnumDeserializer.INSTANCE).
 				registerTypeAdapter(VoxelShape.class, VoxelShapeDeserializer.INSTANCE);
@@ -119,49 +118,53 @@ public class BlockFormType implements IBlockFormType {
 		return BlockFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	public static void registerBlocks(IForgeRegistry<Block> registry) {
+	private static void createRegistryEntries() {
 		for(IForm form : FORMS) {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			for(IMaterial material : form.getMaterials()) {
 				boolean isMaterialDummy = material.getType().isDummy();
-				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, ()->(IBlockFormSettings)form.getSettings());
-				Block block = materialFormBlock.asBlock();
 				String registryKey = isMaterialDummy ? material.getName()+form.getName() : form.getName()+'.'+material.getName();
-				block.setRegistryName(new ResourceLocation(JAOPCA.MOD_ID, registryKey));
-				registry.register(block);
+				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, registryKey);
+
+				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
+				Block block = materialFormBlock.asBlock();
+				block.setRegistryName(registryName);
 				BLOCKS.put(form, material, materialFormBlock);
+
+				IMaterialFormBlockItem materialFormBlockItem = settings.getBlockItemCreator().create(materialFormBlock, settings);
+				BlockItem blockItem = materialFormBlockItem.asBlockItem();
+				blockItem.setRegistryName(registryName);
+				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
+
 				if(!isMaterialDummy) {
-					Supplier<Block> supplier = ()->block;
-					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()), supplier);
-					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), supplier);
+					Supplier<Block> blockSupplier = ()->block;
+					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()), blockSupplier);
+					DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), blockSupplier);
 					for(String alternativeName : material.getAlternativeNames()) {
-						DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), supplier);
+						DataInjector.registerBlockTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), blockSupplier);
+					}
+
+					Supplier<Item> itemSupplier = ()->blockItem;
+					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), itemSupplier);
+					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), itemSupplier);
+					for(String alternativeName : material.getAlternativeNames()) {
+						DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), itemSupplier);
 					}
 				}
 			}
 		}
 	}
 
-	public static void registerBlockItems(IForgeRegistry<Item> registry) {
-		for(Table.Cell<IForm, IMaterial, IMaterialFormBlock> cell : BLOCKS.cellSet()) {
-			IForm form = cell.getRowKey();
-			IMaterial material = cell.getColumnKey();
-			IMaterialFormBlock block = cell.getValue();
-			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
-			boolean isMaterialDummy = material.getType().isDummy();
-			IMaterialFormBlockItem materialFormblockItem = settings.getBlockItemCreator().create(block, ()->(IBlockFormSettings)form.getSettings());
-			BlockItem blockItem = materialFormblockItem.asBlockItem();
-			blockItem.setRegistryName(block.asBlock().getRegistryName());
-			registry.register(blockItem);
-			BLOCK_ITEMS.put(form, material, materialFormblockItem);
-			if(!isMaterialDummy) {
-				Supplier<Item> supplier = ()->blockItem;
-				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), supplier);
-				DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), supplier);
-				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), supplier);
-				}
-			}
+	public static void registerBlocks(IForgeRegistry<Block> registry) {
+		createRegistryEntries();
+		for(IMaterialFormBlock block : BLOCKS.values()) {
+			registry.register(block.asBlock());
+		}
+	}
+
+	public static void registerItems(IForgeRegistry<Item> registry) {
+		for(IMaterialFormBlockItem blockItem : BLOCK_ITEMS.values()) {
+			registry.register(blockItem.asBlockItem());
 		}
 	}
 
