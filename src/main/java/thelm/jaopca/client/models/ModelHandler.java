@@ -1,6 +1,10 @@
 package thelm.jaopca.client.models;
 
+import java.util.Collection;
 import java.util.Map;
+
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -12,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
@@ -24,13 +29,11 @@ import thelm.jaopca.items.ItemFormType;
 
 public class ModelHandler {
 
-	public static void remapModels(ModelBakeEvent event) {
+	private static final Multimap<ResourceLocation, ResourceLocation> REMAPS = LinkedHashMultimap.create();
+
+	public static void registerModels() {
 		IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
-		Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
 		for(IMaterialFormBlock materialFormBlock : BlockFormType.getBlocks()) {
-			if(materialFormBlock.getMaterial().getType().isDummy()) {
-				continue;
-			}
 			Block block = materialFormBlock.asBlock();
 			ResourceLocation location = block.getRegistryName();
 			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
@@ -40,9 +43,11 @@ public class ModelHandler {
 			block.getStateContainer().getValidStates().forEach((state)->{
 				String propertyMapString = BlockModelShapes.getPropertyMapString(state.getValues());
 				ModelResourceLocation modelLocation = new ModelResourceLocation(block.getRegistryName(), propertyMapString);
-				String defaultModelLocation = JAOPCA.MOD_ID+':'+materialFormBlock.getMaterial().getTextureType().getRegistryName()+materialFormBlock.getForm().getName();
-				IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(defaultModelLocation, propertyMapString));
-				modelRegistry.put(modelLocation, defaultModel);
+				ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
+						JAOPCA.MOD_ID+':'+materialFormBlock.getMaterial().getModelType()+'/'+materialFormBlock.getForm().getName(),
+						propertyMapString);
+				ModelLoader.addSpecialModel(defaultModelLocation);
+				REMAPS.put(defaultModelLocation, modelLocation);
 			});
 		}
 		for(IMaterialFormBlockItem materialFormBlockItem : BlockFormType.getBlockItems()) {
@@ -57,9 +62,11 @@ public class ModelHandler {
 				continue;
 			}
 			ModelResourceLocation modelLocation = new ModelResourceLocation(blockItem.getRegistryName(), "inventory");
-			String defaultModelLocation = JAOPCA.MOD_ID+':'+materialFormBlockItem.getMaterial().getTextureType().getRegistryName()+materialFormBlockItem.getForm().getName();
-			IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(defaultModelLocation, "inventory"));
-			modelRegistry.put(modelLocation, defaultModel);
+			ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
+					JAOPCA.MOD_ID+':'+materialFormBlockItem.getMaterial().getModelType()+'/'+materialFormBlockItem.getForm().getName(),
+					"inventory");
+			ModelLoader.addSpecialModel(defaultModelLocation);
+			REMAPS.put(defaultModelLocation, modelLocation);
 		}
 		for(IMaterialFormItem materialFormItem : ItemFormType.getItems()) {
 			if(materialFormItem.getMaterial().getType().isDummy()) {
@@ -72,9 +79,11 @@ public class ModelHandler {
 				continue;
 			}
 			ModelResourceLocation modelLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
-			String defaultModelLocation = JAOPCA.MOD_ID+':'+materialFormItem.getMaterial().getTextureType().getRegistryName()+materialFormItem.getForm().getName();
-			IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(defaultModelLocation, "inventory"));
-			modelRegistry.put(modelLocation, defaultModel);
+			ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
+					JAOPCA.MOD_ID+':'+materialFormItem.getMaterial().getModelType()+'/'+materialFormItem.getForm().getName(),
+					"inventory");
+			ModelLoader.addSpecialModel(defaultModelLocation);
+			REMAPS.put(defaultModelLocation, modelLocation);
 		}
 		for(IMaterialFormFluidBlock materialFormFluidBlock : FluidFormType.getFluidBlocks()) {
 			if(materialFormFluidBlock.getMaterial().getType().isDummy()) {
@@ -89,9 +98,11 @@ public class ModelHandler {
 			fluidBlock.getStateContainer().getValidStates().forEach((state)->{
 				String propertyMapString = BlockModelShapes.getPropertyMapString(state.getValues());
 				ModelResourceLocation modelLocation = new ModelResourceLocation(fluidBlock.getRegistryName(), propertyMapString);
-				String defaultModelLocation = JAOPCA.MOD_ID+':'+materialFormFluidBlock.getMaterial().getTextureType().getRegistryName()+materialFormFluidBlock.getForm().getName();
-				IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(defaultModelLocation, propertyMapString));
-				modelRegistry.put(modelLocation, defaultModel);
+				ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
+						JAOPCA.MOD_ID+':'+materialFormFluidBlock.getMaterial().getModelType()+'/'+materialFormFluidBlock.getForm().getName(),
+						propertyMapString);
+				ModelLoader.addSpecialModel(defaultModelLocation);
+				REMAPS.put(defaultModelLocation, modelLocation);
 			});
 		}
 		for(IMaterialFormBucketItem materialFormBucketItem : FluidFormType.getBucketItems()) {
@@ -105,9 +116,23 @@ public class ModelHandler {
 				continue;
 			}
 			ModelResourceLocation modelLocation = new ModelResourceLocation(bucketItem.getRegistryName(), "inventory");
-			String defaultModelLocation = JAOPCA.MOD_ID+':'+materialFormBucketItem.getMaterial().getTextureType().getRegistryName()+materialFormBucketItem.getForm().getName();
-			IBakedModel defaultModel = modelRegistry.get(new ModelResourceLocation(defaultModelLocation, "inventory"));
-			modelRegistry.put(modelLocation, defaultModel);
+			ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
+					JAOPCA.MOD_ID+':'+materialFormBucketItem.getMaterial().getModelType()+'/'+materialFormBucketItem.getForm().getName(),
+					"inventory");
+			ModelLoader.addSpecialModel(defaultModelLocation);
+			REMAPS.put(defaultModelLocation, modelLocation);
+		}
+	}
+
+	public static void remapModels(ModelBakeEvent event) {
+		IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+		Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
+		IBakedModel missingModel = modelRegistry.get(ModelLoader.MODEL_MISSING);
+		for(Map.Entry<ResourceLocation, Collection<ResourceLocation>> entry : REMAPS.asMap().entrySet()) {
+			IBakedModel defaultModel = modelRegistry.getOrDefault(entry.getKey(), missingModel);
+			for(ResourceLocation modelLocation : entry.getValue()) {
+				modelRegistry.put(modelLocation, defaultModel);
+			}
 		}
 	}
 }

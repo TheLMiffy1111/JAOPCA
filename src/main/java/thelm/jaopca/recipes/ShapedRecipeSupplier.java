@@ -41,7 +41,7 @@ public class ShapedRecipeSupplier implements Supplier<ShapedRecipe> {
 
 	@Override
 	public ShapedRecipe get() {
-		ItemStack stack = MiscHelper.INSTANCE.getStack(output, count);
+		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}

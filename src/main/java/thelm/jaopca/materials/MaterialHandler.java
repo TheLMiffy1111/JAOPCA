@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.materials.MaterialType;
-import thelm.jaopca.api.materials.TextureType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.utils.ApiImpl;
 
@@ -95,12 +94,6 @@ public class MaterialHandler {
 		dustsPlain.removeAll(allMaterials);
 		allMaterials.addAll(dustsPlain);
 
-		for(TextureType type : TextureType.values()) {
-			Material material = new Material(type);
-			MATERIALS.put(material.getName(), material);
-			dummyMaterials.add(material);
-			LOGGER.debug("Added dummy material {}", material.getName());
-		}
 		for(String name : ingots) {
 			Material material = new Material(name, MaterialType.INGOT);
 			MATERIALS.put(name, material);

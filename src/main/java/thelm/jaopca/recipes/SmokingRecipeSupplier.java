@@ -41,7 +41,7 @@ public class SmokingRecipeSupplier implements Supplier<SmokingRecipe> {
 		if(ing.hasNoMatchingItems()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		ItemStack stack = MiscHelper.INSTANCE.getStack(output, count);
+		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}

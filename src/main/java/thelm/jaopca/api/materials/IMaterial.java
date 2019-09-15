@@ -18,7 +18,7 @@ public interface IMaterial extends Comparable<IMaterial> {
 
 	Set<String> getConfigModuleBlacklist();
 
-	TextureType getTextureType();
+	String getModelType();
 
 	int getColor();
 

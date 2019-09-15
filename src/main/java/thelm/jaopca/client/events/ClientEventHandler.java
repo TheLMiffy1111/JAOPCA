@@ -2,15 +2,14 @@ package thelm.jaopca.client.events;
 
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.client.colors.ColorHandler;
 import thelm.jaopca.client.models.ModelHandler;
 import thelm.jaopca.client.resources.ResourceInjector;
-import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.modules.ModuleHandler;
 
 public class ClientEventHandler {
@@ -36,6 +35,11 @@ public class ClientEventHandler {
 	}
 
 	@SubscribeEvent
+	public void onModelRegistry(ModelRegistryEvent event) {
+		ModelHandler.registerModels();
+	}
+
+	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		ModelHandler.remapModels(event);
 	}
@@ -47,9 +51,6 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public void onTextureStitchPre(TextureStitchEvent.Pre event) {
-		for(IMaterialFormFluid fluid : FluidFormType.INSTANCE.getFluids()) {
-			event.addSprite(fluid.asFluid().getAttributes().getStillTexture());
-			event.addSprite(fluid.asFluid().getAttributes().getFlowingTexture());
-		}
+
 	}
 }

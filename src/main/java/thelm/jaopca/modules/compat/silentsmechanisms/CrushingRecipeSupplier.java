@@ -52,7 +52,7 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 				chance = (Float)output[i];
 				++i;
 			}
-			ItemStack stack = JAOPCAApi.instance().miscHelper().getStack(out, count);
+			ItemStack stack = JAOPCAApi.instance().miscHelper().getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 			}

@@ -20,25 +20,25 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	private final IFluidFormSettings settings;
 
 	public JAOPCAFluidAttributes(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(FluidAttributes.builder(fluid.asFluid().getRegistryName().toString(),
+		super(FluidAttributes.builder(
 				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-						"fluid/"+fluid.getMaterial().getTextureType().getRegistryName()+fluid.getForm().getName()+"_still"),
+						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still"),
 				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-						"fluid/"+fluid.getMaterial().getTextureType().getRegistryName()+fluid.getForm().getName()+"_flow")).
+						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow")).
 				translationKey(fluid.asFluid().getRegistryName().toString().replace(':', '.')).
 				sound(settings.getFillSoundSupplier().get(), settings.getEmptySoundSupplier().get()).
 				luminosity(settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
 				density(settings.getDensityFunction().applyAsInt(fluid.getMaterial())).
 				viscosity(settings.getViscosityFunction().applyAsInt(fluid.getMaterial())).
 				temperature(settings.getTemperatureFunction().applyAsInt(fluid.getMaterial())).
-				rarity(settings.getDisplayRarityFunction().apply(fluid.getMaterial())));
+				rarity(settings.getDisplayRarityFunction().apply(fluid.getMaterial())), fluid.asFluid());
 		this.fluid = fluid;
 		this.settings = settings;
 	}
 
 	@Override
 	public int getColor() {
-		return 0xFFFFFF & fluid.getMaterial().getColor();
+		return fluid.getMaterial().getColor();
 	}
 
 	@Override

@@ -23,7 +23,6 @@ import net.minecraftforge.fml.DistExecutor;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
-import thelm.jaopca.api.materials.TextureType;
 import thelm.jaopca.client.colors.ColorHandler;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.utils.MiscHelper;
@@ -32,7 +31,7 @@ public class Material implements IMaterial {
 
 	private final String name;
 	private final MaterialType type;
-	private TextureType textureType = TextureType.METALLIC;
+	private String modelType = "metallic";
 	private final TreeSet<String> alternativeNames = new TreeSet<>();
 	private OptionalInt color = OptionalInt.empty();
 	private boolean hasEffect = false;
@@ -44,12 +43,6 @@ public class Material implements IMaterial {
 	public Material(String name, MaterialType type) {
 		this.name = name;
 		this.type = type;
-	}
-
-	public Material(TextureType textureType) {
-		name = textureType.getRegistryName();
-		type = MaterialType.DUMMY;
-		this.textureType = textureType;
 	}
 
 	@Override
@@ -83,8 +76,8 @@ public class Material implements IMaterial {
 	}
 
 	@Override
-	public TextureType getTextureType() {
-		return textureType;
+	public String getModelType() {
+		return modelType;
 	}
 
 	@Override
@@ -130,7 +123,7 @@ public class Material implements IMaterial {
 		configModuleBlacklist.addAll(blacklist.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(e->e.getElement()).collect(Collectors.toList()));
 
 		hasEffect = config.getDefinedBoolean("general.hasEffect", hasEffect, "Should items of this material have the enchanted glow.");
-		textureType = config.getDefinedEnum("general.textureType", TextureType.class, textureType, "The texture type of the material.");
+		modelType = config.getDefinedString("general.modelType", modelType, s->isModelTypeValid(s), "The model type of the material.");
 
 		color = config.getOptionalInt("general.color");
 	}
@@ -164,5 +157,11 @@ public class Material implements IMaterial {
 	@Override
 	public String toString() {
 		return "Material:"+name;
+	}
+
+	private static boolean isModelTypeValid(String modelType) {
+		return modelType.chars().allMatch(c -> c == 95 || c == 45
+				|| (c >= 97 && c <= 122) || (c >= 48 && c <= 57)
+				|| c == 47 || c == 46);
 	}
 }

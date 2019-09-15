@@ -152,7 +152,7 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 	 */
 	@Override
 	protected boolean func_215665_a(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction face) {
-		return false;
+		return face == Direction.DOWN && !isEquivalentTo(fluid);
 	}
 
 	protected int getLevelDecreasePerBlock(IWorldReader world) {
@@ -163,7 +163,7 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	protected FluidAttributes createAttributes(Fluid fluid) {
+	protected FluidAttributes createAttributes() {
 		return settings.getFluidAttributesCreator().create(this, settings);
 	}
 
