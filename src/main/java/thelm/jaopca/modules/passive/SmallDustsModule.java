@@ -48,9 +48,6 @@ public class SmallDustsModule implements IModule {
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = JAOPCAApi.instance();
 		for(IMaterial material : smallDustForm.getMaterials()) {
-			if(material.getType().isDummy()) {
-				continue;
-			}
 			ResourceLocation dustLocation = api.miscHelper().getTagLocation("dusts", material.getName());
 			IItemInfo smallDustInfo = api.itemFormType().getMaterialFormInfo(smallDustForm, material);
 			api.registerShapelessRecipe(

@@ -43,7 +43,7 @@ public class ShapedRecipeSupplier implements Supplier<ShapedRecipe> {
 	public ShapedRecipe get() {
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
+			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
 		int width = 0, height = 0;
 		String shape = "";

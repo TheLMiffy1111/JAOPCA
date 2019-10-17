@@ -51,9 +51,6 @@ public class ModelHandler {
 			});
 		}
 		for(IMaterialFormBlockItem materialFormBlockItem : BlockFormType.getBlockItems()) {
-			if(materialFormBlockItem.getMaterial().getType().isDummy()) {
-				continue;
-			}
 			BlockItem blockItem = materialFormBlockItem.asBlockItem();
 			//TODO Change if Forge supports using blockstates in item models
 			ResourceLocation location = blockItem.getRegistryName();
@@ -69,9 +66,6 @@ public class ModelHandler {
 			REMAPS.put(defaultModelLocation, modelLocation);
 		}
 		for(IMaterialFormItem materialFormItem : ItemFormType.getItems()) {
-			if(materialFormItem.getMaterial().getType().isDummy()) {
-				continue;
-			}
 			Item item = materialFormItem.asItem();
 			ResourceLocation location = item.getRegistryName();
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
@@ -86,9 +80,6 @@ public class ModelHandler {
 			REMAPS.put(defaultModelLocation, modelLocation);
 		}
 		for(IMaterialFormFluidBlock materialFormFluidBlock : FluidFormType.getFluidBlocks()) {
-			if(materialFormFluidBlock.getMaterial().getType().isDummy()) {
-				continue;
-			}
 			Block fluidBlock = materialFormFluidBlock.asBlock();
 			ResourceLocation location = fluidBlock.getRegistryName();
 			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
@@ -106,9 +97,6 @@ public class ModelHandler {
 			});
 		}
 		for(IMaterialFormBucketItem materialFormBucketItem : FluidFormType.getBucketItems()) {
-			if(materialFormBucketItem.getMaterial().getType().isDummy()) {
-				continue;
-			}
 			Item bucketItem = materialFormBucketItem.asItem();
 			ResourceLocation location = bucketItem.getRegistryName();
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");

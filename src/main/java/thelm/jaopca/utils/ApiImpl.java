@@ -150,8 +150,18 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public Set<IForm> getForms() {
+		return ImmutableSortedSet.copyOf(FormHandler.getForms());
+	}
+
+	@Override
 	public IMaterial getMaterial(String name) {
 		return MaterialHandler.getMaterial(name);
+	}
+
+	@Override
+	public Set<IMaterial> getMaterials() {
+		return ImmutableSortedSet.copyOf(MaterialHandler.getMaterials());
 	}
 
 	@Override

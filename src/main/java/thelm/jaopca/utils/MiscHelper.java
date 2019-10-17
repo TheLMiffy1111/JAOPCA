@@ -35,8 +35,23 @@ public class MiscHelper implements IMiscHelper {
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	@Override
+	public ResourceLocation createResourceLocation(String location, String defaultNamespace) {
+		if(StringUtils.contains(location, ':')) {
+			return new ResourceLocation(location);
+		}
+		else {
+			return new ResourceLocation(defaultNamespace, location);
+		}
+	}
+
+	@Override
+	public ResourceLocation createResourceLocation(String location) {
+		return createResourceLocation(location, "forge");
+	}
+
+	@Override
 	public ResourceLocation getTagLocation(String form, String material) {
-		return new ResourceLocation("forge", form+(StringUtils.isEmpty(material) ? "" : '/'+material));
+		return createResourceLocation(form+(StringUtils.isEmpty(material) ? "" : '/'+material));
 	}
 
 	@Override

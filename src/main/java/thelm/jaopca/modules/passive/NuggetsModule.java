@@ -40,9 +40,6 @@ public class NuggetsModule implements IModule {
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = JAOPCAApi.instance();
 		for(IMaterial material : nuggetForm.getMaterials()) {
-			if(material.getType().isDummy()) {
-				continue;
-			}
 			ResourceLocation materialLocation = api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName());
 			IItemInfo nuggetInfo = api.itemFormType().getMaterialFormInfo(nuggetForm, material);
 			api.registerShapelessRecipe(

@@ -6,6 +6,10 @@ import net.minecraft.util.ResourceLocation;
 
 public interface IMiscHelper {
 
+	ResourceLocation createResourceLocation(String location, String defaultNamespace);
+
+	ResourceLocation createResourceLocation(String location);
+
 	ResourceLocation getTagLocation(String form, String material);
 
 	ItemStack getItemStack(Object obj, int count);

@@ -24,7 +24,8 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 @JAOPCAModule(modDependencies = "silents_mechanisms")
 public class SilentsMechanismsModule implements IModule {
 
-	private static final Set<String> BLACKLIST = Sets.newHashSet("coal", "diamond", "emerald", "lapis", "quartz", "redstone");
+	private static final Set<String> BLACKLIST = Sets.newHashSet(
+			"coal", "diamond", "dimensional", "emerald", "lapis", "quartz", "redstone");
 
 	static {
 		if(ModList.get().isLoaded("silentgems")) {
@@ -75,7 +76,7 @@ public class SilentsMechanismsModule implements IModule {
 			ResourceLocation materialLocation = api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName());
 			if(material.getType() != MaterialType.DUST) {
 				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "silents_mechanisms.to_material."+material.getName()), oreLocation, 400, new Object[] {
+						new ResourceLocation("jaopca", "silents_mechanisms.ore_to_material."+material.getName()), oreLocation, 400, new Object[] {
 								materialLocation, 2,
 								materialLocation, 1, 0.1F,
 								BYPRODUCTS.get(material), 1, 0.1F,
@@ -83,7 +84,7 @@ public class SilentsMechanismsModule implements IModule {
 			}
 			else {
 				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "silents_mechanisms.to_material."+material.getName()), oreLocation, 400, new Object[] {
+						new ResourceLocation("jaopca", "silents_mechanisms.ore_to_material."+material.getName()), oreLocation, 400, new Object[] {
 								materialLocation, 6,
 						});
 			}

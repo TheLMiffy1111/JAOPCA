@@ -41,8 +41,6 @@ public interface IForm extends Comparable<IForm> {
 
 	Set<IMaterial> getMaterials();
 
-	Set<IMaterial> getFilteredMaterials();
-
 	IForm lock();
 
 	IFormRequest toRequest();

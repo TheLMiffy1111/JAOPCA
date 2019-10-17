@@ -24,7 +24,6 @@ public class MaterialHandler {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final TreeMap<String, Material> MATERIALS = new TreeMap<>();
-	private static ArrayList<Material> dummyMaterials = new ArrayList<>();
 
 	public static Map<String, Material> getMaterialMap() {
 		return MATERIALS;
@@ -36,10 +35,6 @@ public class MaterialHandler {
 
 	public static Material getMaterial(String name) {
 		return MATERIALS.get(name);
-	}
-
-	public static List<Material> getDummyMaterials() {
-		return dummyMaterials;
 	}
 
 	public static boolean containsMaterial(String name) {

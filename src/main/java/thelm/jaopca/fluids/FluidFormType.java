@@ -33,6 +33,7 @@ import thelm.jaopca.custom.json.ForgeRegistryEntrySupplierDeserializer;
 import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class FluidFormType implements IFluidFormType {
 
@@ -68,10 +69,7 @@ public class FluidFormType implements IFluidFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		if(material.getType().isDummy()) {
-			return true;
-		}
-		ResourceLocation tagLocation = new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName());
+		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName());
 		return !ApiImpl.INSTANCE.getFluidTags().contains(tagLocation);
 	}
 
@@ -101,11 +99,12 @@ public class FluidFormType implements IFluidFormType {
 	}
 
 	private static void createRegistryEntries() {
+		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IFluidFormSettings settings = (IFluidFormSettings)form.getSettings();
+			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				boolean isMaterialDummy = material.getType().isDummy();
-				String registryKey = isMaterialDummy ? material.getName()+form.getName() : form.getName()+'.'+material.getName();
+				String registryKey = form.getName()+'.'+material.getName();
 				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, registryKey);
 
 				IMaterialFormFluid materialFormFluid = settings.getFluidCreator().create(form, material, settings);
@@ -123,13 +122,11 @@ public class FluidFormType implements IFluidFormType {
 				bucketItem.setRegistryName(registryName);
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
 
-				if(!isMaterialDummy) {
-					Supplier<Fluid> fluidSupplier = ()->fluid;
-					DataInjector.registerFluidTag(new ResourceLocation("forge", form.getSecondaryName()), fluidSupplier);
-					DataInjector.registerFluidTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), fluidSupplier);
-					for(String alternativeName : material.getAlternativeNames()) {
-						DataInjector.registerFluidTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), fluidSupplier);
-					}
+				Supplier<Fluid> fluidSupplier = ()->fluid;
+				DataInjector.registerFluidTag(helper.createResourceLocation(secondaryName), fluidSupplier);
+				DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, material.getName()), fluidSupplier);
+				for(String alternativeName : material.getAlternativeNames()) {
+					DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, alternativeName), fluidSupplier);
 				}
 			}
 		}

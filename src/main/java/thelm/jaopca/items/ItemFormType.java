@@ -30,6 +30,7 @@ import thelm.jaopca.custom.json.ItemFormSettingsDeserializer;
 import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class ItemFormType implements IItemFormType {
 
@@ -62,10 +63,7 @@ public class ItemFormType implements IItemFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		if(material.getType().isDummy()) {
-			return true;
-		}
-		ResourceLocation tagLocation = new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName());
+		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName());
 		return !ApiImpl.INSTANCE.getItemTags().contains(tagLocation);
 	}
 
@@ -95,11 +93,12 @@ public class ItemFormType implements IItemFormType {
 	}
 
 	private static void createRegistryEntries() {
+		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
+			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				boolean isMaterialDummy = material.getType().isDummy();
-				String registryKey = isMaterialDummy ? material.getName()+form.getName() : form.getName()+'.'+material.getName();
+				String registryKey = form.getName()+'.'+material.getName();
 				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, registryKey);
 
 				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, settings);
@@ -107,13 +106,11 @@ public class ItemFormType implements IItemFormType {
 				item.setRegistryName(registryName);
 				ITEMS.put(form, material, materialFormItem);
 
-				if(!isMaterialDummy) {
-					Supplier<Item> itemSupplier = ()->item;
-					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()), itemSupplier);
-					DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+material.getName()), itemSupplier);
-					for(String alternativeName : material.getAlternativeNames()) {
-						DataInjector.registerItemTag(new ResourceLocation("forge", form.getSecondaryName()+'/'+alternativeName), itemSupplier);
-					}
+				Supplier<Item> itemSupplier = ()->item;
+				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), itemSupplier);
+				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName()), itemSupplier);
+				for(String alternativeName : material.getAlternativeNames()) {
+					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName), itemSupplier);
 				}
 			}
 		}

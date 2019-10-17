@@ -149,11 +149,6 @@ public class Form implements IForm {
 	}
 
 	@Override
-	public Set<IMaterial> getFilteredMaterials() {
-		return Collections.unmodifiableNavigableSet(Sets.filter(materials, m->!m.getType().isDummy()));
-	}
-
-	@Override
 	public IForm lock() {
 		locked = true;
 		return this;

@@ -29,7 +29,9 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 @JAOPCAModule(modDependencies = "silents_mechanisms")
 public class SilentsMechanismsIngotModule implements IModule {
 
-	private static final Set<String> BLACKLIST = Sets.newHashSet("copper", "gold", "iron", "lead", "nickel", "silver", "tin");
+	private static final Set<String> BLACKLIST = Sets.newHashSet(
+			"aluminum", "bismuth", "copper", "gold", "iron", "lead", "nickel", "platinum", "silver", "super_useless",
+			"tin", "uranium", "useless", "zinc");
 
 	static {
 		if(ModList.get().isLoaded("silentgear")) {
@@ -61,7 +63,7 @@ public class SilentsMechanismsIngotModule implements IModule {
 
 	@Override
 	public void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {
-		for(IMaterial material : chunkForm.getFilteredMaterials()) {
+		for(IMaterial material : chunkForm.getMaterials()) {
 			IDynamicSpecConfig config = configs.get(material);
 			String byproduct = config.getDefinedString("silents_mechanisms.byproduct", "minecraft:cobblestone",
 					s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s)), "The byproduct material to output in Silent's Mechanisms' Crusher.");
@@ -77,16 +79,23 @@ public class SilentsMechanismsIngotModule implements IModule {
 			ResourceLocation oreLocation = api.miscHelper().getTagLocation("ores", material.getName());
 			IItemInfo chunksInfo = api.itemFormType().getMaterialFormInfo(chunkForm, material);
 			ResourceLocation dustLocation = api.miscHelper().getTagLocation("dusts", material.getName());
+			ResourceLocation materialLocation = api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName());
 			helper.registerCrushingRecipe(
-					new ResourceLocation("jaopca", "silents_mechanisms.to_chunks."+material.getName()), oreLocation, 400, new Object[] {
+					new ResourceLocation("jaopca", "silents_mechanisms.ore_to_chunks."+material.getName()), oreLocation, 400, new Object[] {
 							chunksInfo, 2,
 							BYPRODUCTS.get(material), 1, 0.1F,
 					});
 			helper.registerCrushingRecipe(
-					new ResourceLocation("jaopca", "silents_mechanisms.to_dust."+material.getName()), chunksInfo, 300, new Object[] {
+					new ResourceLocation("jaopca", "silents_mechanisms.chunks_to_dust."+material.getName()), chunksInfo, 300, new Object[] {
 							dustLocation, 1,
 							dustLocation, 1, 0.1F,
 					});
+			api.registerFurnaceRecipe(
+					new ResourceLocation("jaopca", "silents_mechanisms.chunks_to_material."+material.getName()),
+					chunksInfo, materialLocation, 1, 0.7F, 200);
+			api.registerBlastingRecipe(
+					new ResourceLocation("jaopca", "silents_mechanisms.chunks_to_material_blasting."+material.getName()),
+					chunksInfo, materialLocation, 1, 0.7F, 100);
 		}
 	}
 }

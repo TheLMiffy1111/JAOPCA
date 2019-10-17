@@ -7,7 +7,7 @@ import net.minecraft.util.IItemProvider;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
-public interface IBlockInfo extends IMaterialFormInfo, IItemProvider {
+public interface IBlockInfo extends IMaterialFormInfo, IBlockProvider, IItemProvider {
 
 	IMaterialFormBlock getMaterialFormBlock();
 
@@ -24,6 +24,11 @@ public interface IBlockInfo extends IMaterialFormInfo, IItemProvider {
 	@Override
 	default IMaterialForm getMaterialForm() {
 		return getMaterialFormBlock();
+	}
+
+	@Override
+	default Block asBlock() {
+		return getBlock();
 	}
 
 	@Override

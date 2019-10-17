@@ -173,9 +173,6 @@ public class ConfigHandler {
 		}
 		MATERIAL_CONFIGS.clear();
 		for(Material material : MaterialHandler.getMaterials()) {
-			if(material.getType().isDummy()) {
-				continue;
-			}
 			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(new File(materialConfigDir, material.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
 			MATERIAL_CONFIGS.put(material, config);
 			material.setConfig(config);

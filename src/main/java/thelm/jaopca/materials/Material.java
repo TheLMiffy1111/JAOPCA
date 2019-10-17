@@ -147,7 +147,6 @@ public class Material implements IMaterial {
 		case DUST_PLAIN:
 			path = "dusts/"+name;
 			break;
-		case DUMMY:
 		default:
 			break;
 		}

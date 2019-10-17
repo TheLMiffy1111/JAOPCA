@@ -33,9 +33,6 @@ public class StorageBlocksModule implements IModule {
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = JAOPCAApi.instance();
 		for(IMaterial material : storageBlockForm.getMaterials()) {
-			if(material.getType().isDummy()) {
-				continue;
-			}
 			ResourceLocation materialLocation = api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName());
 			IBlockInfo storageBlockInfo = api.blockFormType().getMaterialFormInfo(storageBlockForm, material);
 			api.registerShapedRecipe(

@@ -26,7 +26,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	protected OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCAItem(IForm form, IMaterial material, IItemFormSettings settings) {
-		super(new Item.Properties().group(material.getType().isDummy() ? null : ItemFormType.getItemGroup()));
+		super(new Item.Properties().group(ItemFormType.getItemGroup()));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;

@@ -1,5 +1,6 @@
 package thelm.jaopca.api.materials;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 public enum MaterialType {
@@ -11,8 +12,7 @@ public enum MaterialType {
 	INGOT_PLAIN("ingots"),
 	GEM_PLAIN("gems"),
 	CRYSTAL_PLAIN("crystals"),
-	DUST_PLAIN("dusts"),
-	DUMMY("");
+	DUST_PLAIN("dusts");
 
 	public static final MaterialType[] INGOTS = {INGOT, INGOT_PLAIN};
 	public static final MaterialType[] GEMS = {GEM, GEM_PLAIN};
@@ -35,7 +35,7 @@ public enum MaterialType {
 		return formName;
 	}
 
-	public boolean isDummy() {
-		return this == DUMMY;
+	public static MaterialType fromName(String name) {
+		return Arrays.stream(values()).filter(t->t.getName().equalsIgnoreCase(name)).findAny().orElse(null);
 	}
 }

@@ -179,12 +179,16 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract IForm getForm(String name);
 
+	public abstract Set<IForm> getForms();
+
 	/**
 	 * Gets an {@link IMaterial} by name.
 	 * @param name The name of the material
 	 * @return The material with the name provided, null if no material has been found with this name
 	 */
 	public abstract IMaterial getMaterial(String name);
+
+	public abstract Set<IMaterial> getMaterials();
 
 	/**
 	 * Returns the item group used by items added by JAOPCA.

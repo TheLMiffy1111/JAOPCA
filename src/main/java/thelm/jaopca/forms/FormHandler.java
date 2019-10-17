@@ -37,6 +37,10 @@ public class FormHandler {
 		return FORMS.get(name);
 	}
 
+	public static boolean containsForm(String name) {
+		return FORMS.containsKey(name);
+	}
+
 	public static void collectForms() {
 		for(IModule module : ModuleHandler.getModuleMap().values()) {
 			module.getFormRequests().stream().filter(request->request.getModule() == module).forEach(FORM_REQUESTS::add);
@@ -58,7 +62,6 @@ public class FormHandler {
 		for(IFormRequest request : FORM_REQUESTS) {
 			if(request.isGrouped()) {
 				List<IMaterial> materials = MaterialHandler.getMaterials().stream().filter(request::isMaterialGroupValid).collect(Collectors.toList());
-				materials.addAll(MaterialHandler.getDummyMaterials());
 				for(IForm form : request.getForms()) {
 					form.setMaterials(materials);
 				}
@@ -66,7 +69,6 @@ public class FormHandler {
 			else {
 				for(IForm form : request.getForms()) {
 					List<IMaterial> materials = MaterialHandler.getMaterials().stream().filter(form::isMaterialValid).collect(Collectors.toList());
-					materials.addAll(MaterialHandler.getDummyMaterials());
 					form.setMaterials(materials);
 				}
 			}
