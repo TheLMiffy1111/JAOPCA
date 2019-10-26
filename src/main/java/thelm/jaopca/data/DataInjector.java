@@ -48,6 +48,7 @@ import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.ILootFunction;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.resources.InMemoryResourcePack;
 
@@ -61,9 +62,6 @@ public class DataInjector {
 	private static final TreeMap<ResourceLocation, Supplier<? extends IRecipe<?>>> RECIPES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, Supplier<? extends JsonElement>> JSONS_INJECT = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, Supplier<String>> STRINGS_INJECT = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, Supplier<? extends InputStream>> INPUT_STREAMS_INJECT = new TreeMap<>();
 	private static final Gson GSON = new GsonBuilder().
 			registerTypeAdapter(RandomValueRange.class, new RandomValueRange.Serializer()).
 			registerTypeAdapter(BinomialRange.class, new BinomialRange.Serializer()).
@@ -117,24 +115,6 @@ public class DataInjector {
 		Objects.requireNonNull(location);
 		Objects.requireNonNull(advancementBuilder);
 		return ADVANCEMENTS_INJECT.putIfAbsent(location, advancementBuilder) == null;
-	}
-
-	public static boolean injectJson(ResourceLocation location, Supplier<? extends JsonElement> jsonSupplier) {
-		Objects.requireNonNull(location);
-		Objects.requireNonNull(jsonSupplier);
-		return JSONS_INJECT.putIfAbsent(location, jsonSupplier) == null;
-	}
-
-	public static boolean injectString(ResourceLocation location, Supplier<String> stringSupplier) {
-		Objects.requireNonNull(location);
-		Objects.requireNonNull(stringSupplier);
-		return STRINGS_INJECT.putIfAbsent(location, stringSupplier) == null;
-	}
-
-	public static boolean injectInputStream(ResourceLocation location, Supplier<? extends InputStream> streamSupplier) {
-		Objects.requireNonNull(location);
-		Objects.requireNonNull(streamSupplier);
-		return INPUT_STREAMS_INJECT.putIfAbsent(location, streamSupplier) == null;
 	}
 
 	public static Set<ResourceLocation> getInjectBlockTags() {
@@ -243,15 +223,7 @@ public class DataInjector {
 				ADVANCEMENTS_INJECT.forEach((location, supplier)->{
 					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), supplier.get().serialize());
 				});
-				JSONS_INJECT.forEach((location, supplier)->{
-					pack.putJson(ResourcePackType.SERVER_DATA, location, supplier.get());
-				});
-				STRINGS_INJECT.forEach((location, supplier)->{
-					pack.putString(ResourcePackType.SERVER_DATA, location, supplier.get());
-				});
-				INPUT_STREAMS_INJECT.forEach((location, supplier)->{
-					pack.putInputStream(ResourcePackType.SERVER_DATA, location, supplier);
-				});
+				ModuleHandler.onCreateDataPack(pack);
 				return pack;
 			}, factory, ResourcePackInfo.Priority.BOTTOM);
 			if(packInfo != null) {

@@ -40,6 +40,7 @@ import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.items.ItemFormType;
+import thelm.jaopca.utils.ApiImpl;
 
 public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 
@@ -196,6 +197,6 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm("item.jaopca."+getForm().getName(), getMaterial(), getTranslationKey());
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+getForm().getName(), getMaterial(), getTranslationKey());
 	}
 }

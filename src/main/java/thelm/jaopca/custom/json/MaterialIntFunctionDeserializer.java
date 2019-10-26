@@ -17,8 +17,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
+import thelm.jaopca.custom.CustomModule;
 import thelm.jaopca.materials.MaterialHandler;
-import thelm.jaopca.modules.CustomModule;
 import thelm.jaopca.utils.JsonHelper;
 
 public class MaterialIntFunctionDeserializer implements JsonDeserializer<ToIntFunction<IMaterial>> {

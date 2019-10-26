@@ -9,17 +9,13 @@ public interface IItemInfo extends IMaterialFormInfo, IItemProvider {
 
 	IMaterialFormItem getMaterialFormItem();
 
-	default Item getItem() {
+	@Override
+	default Item asItem() {
 		return getMaterialFormItem().asItem();
 	}
 
 	@Override
 	default IMaterialForm getMaterialForm() {
 		return getMaterialFormItem();
-	}
-
-	@Override
-	default Item asItem() {
-		return getItem();
 	}
 }

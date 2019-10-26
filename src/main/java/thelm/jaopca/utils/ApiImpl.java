@@ -1,6 +1,7 @@
 package thelm.jaopca.utils;
 
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -22,6 +23,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
@@ -45,6 +47,7 @@ import thelm.jaopca.custom.json.MaterialFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.data.DataCollector;
 import thelm.jaopca.data.DataInjector;
+import thelm.jaopca.events.CommonEventHandler;
 import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.forms.Form;
 import thelm.jaopca.forms.FormHandler;
@@ -55,7 +58,7 @@ import thelm.jaopca.localization.LocalizationHandler;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.recipes.BlastingRecipeSupplier;
 import thelm.jaopca.recipes.CampfireCookingRecipeSupplier;
-import thelm.jaopca.recipes.FurnaceRecipeSupplier;
+import thelm.jaopca.recipes.SmeltingRecipeSupplier;
 import thelm.jaopca.recipes.ShapedRecipeSupplier;
 import thelm.jaopca.recipes.ShapelessRecipeSupplier;
 import thelm.jaopca.recipes.SmokingRecipeSupplier;
@@ -190,6 +193,11 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public Set<ResourceLocation> getTags(String type) {
+		return ImmutableSortedSet.copyOf(DataCollector.getDefinedTags(type));
+	}
+
+	@Override
 	public Set<ResourceLocation> getRecipes() {
 		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedRecipes(), DataInjector.getInjectRecipes()));
 	}
@@ -212,6 +220,11 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerFormType(IFormType type) {
 		return FormTypeHandler.registerFormType(type);
+	}
+
+	@Override
+	public void registerRegistryEventHandler(Class<?> type, Consumer<IForgeRegistry> handler) {
+		CommonEventHandler.getInstance().registerRegistryEventHandler(type, handler);
 	}
 
 	@Override
@@ -340,13 +353,13 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerFurnaceRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new FurnaceRecipeSupplier(key, group, input, output, count, experience, time));
+	public boolean registerSmeltingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new SmeltingRecipeSupplier(key, group, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerFurnaceRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new FurnaceRecipeSupplier(key, input, output, count, experience, time));
+	public boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new SmeltingRecipeSupplier(key, input, output, count, experience, time));
 	}
 
 	@Override

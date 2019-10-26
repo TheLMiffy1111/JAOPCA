@@ -16,6 +16,7 @@ import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.items.ItemFormType;
+import thelm.jaopca.utils.ApiImpl;
 
 public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem {
 
@@ -84,6 +85,6 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getTranslationKey());
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getTranslationKey());
 	}
 }

@@ -7,8 +7,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.google.common.collect.Sets;
-
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormSettings;

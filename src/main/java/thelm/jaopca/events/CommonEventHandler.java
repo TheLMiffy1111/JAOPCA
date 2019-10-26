@@ -1,9 +1,13 @@
 package thelm.jaopca.events;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.ReloadListener;
@@ -37,9 +41,14 @@ public class CommonEventHandler {
 
 	public static final CommonEventHandler INSTANCE = new CommonEventHandler();
 	private static final Logger LOGGER = LogManager.getLogger();
+	private static final ListMultimap<Class<?>, Consumer<IForgeRegistry>> REGISTRY_EVENT_HANDLERS = MultimapBuilder.hashKeys().arrayListValues().build();
 
 	public static CommonEventHandler getInstance() {
 		return INSTANCE;
+	}
+
+	public void registerRegistryEventHandler(Class<?> type, Consumer<IForgeRegistry> handler) {
+		REGISTRY_EVENT_HANDLERS.put(type, handler);
 	}
 
 	public void onConstruct() {
@@ -47,6 +56,9 @@ public class CommonEventHandler {
 		BlockFormType.init();
 		ItemFormType.init();
 		FluidFormType.init();
+		registerRegistryEventHandler(Block.class, this::onBlockRegister);
+		registerRegistryEventHandler(Item.class, this::onItemRegister);
+		registerRegistryEventHandler(Fluid.class, this::onFluidRegister);
 		DeferredWorkQueue.runLater(()->{
 			DataCollector.collectData();
 			ModuleHandler.findModules();
@@ -64,23 +76,25 @@ public class CommonEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onBlockRegister(RegistryEvent.Register<Block> event) {
-		IForgeRegistry<Block> registry = event.getRegistry();
+	public void onRegister(RegistryEvent.Register event) {
+		IForgeRegistry<?> registry = event.getRegistry();
+		for(Consumer<IForgeRegistry> listener : REGISTRY_EVENT_HANDLERS.get(registry.getRegistrySuperType())) {
+			listener.accept(registry);
+		}
+	}
+
+	public void onBlockRegister(IForgeRegistry<Block> registry) {
 		BlockFormType.registerBlocks(registry);
 		FluidFormType.registerBlocks(registry);
 	}
 
-	@SubscribeEvent
-	public void onItemRegister(RegistryEvent.Register<Item> event) {
-		IForgeRegistry<Item> registry = event.getRegistry();
+	public void onItemRegister(IForgeRegistry<Item> registry) {
 		BlockFormType.registerItems(registry);
 		ItemFormType.registerItems(registry);
 		FluidFormType.registerItems(registry);
 	}
 
-	@SubscribeEvent
-	public void onFluidRegister(RegistryEvent.Register<Fluid> event) {
-		IForgeRegistry<Fluid> registry = event.getRegistry();
+	public void onFluidRegister(IForgeRegistry<Fluid> registry) {
 		FluidFormType.registerFluids(registry);
 	}
 

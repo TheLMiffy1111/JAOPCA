@@ -98,8 +98,7 @@ public class ItemFormType implements IItemFormType {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				String registryKey = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, registryKey);
+				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, form.getName()+'.'+material.getName());
 
 				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, settings);
 				Item item = materialFormItem.asItem();

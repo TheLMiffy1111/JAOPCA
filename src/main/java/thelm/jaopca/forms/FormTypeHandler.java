@@ -16,6 +16,7 @@ import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
+import thelm.jaopca.custom.CustomModule;
 import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.FormDeserializer;
 import thelm.jaopca.custom.json.FormRequestDeserializer;
@@ -23,7 +24,6 @@ import thelm.jaopca.custom.json.MaterialDoubleFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialIntFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialLongFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialPredicateDeserializer;
-import thelm.jaopca.modules.CustomModule;
 
 public class FormTypeHandler {
 

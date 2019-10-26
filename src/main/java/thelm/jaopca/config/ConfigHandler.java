@@ -23,10 +23,10 @@ import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
+import thelm.jaopca.custom.CustomModule;
 import thelm.jaopca.data.DataCollector;
 import thelm.jaopca.materials.Material;
 import thelm.jaopca.materials.MaterialHandler;
-import thelm.jaopca.modules.CustomModule;
 import thelm.jaopca.modules.ModuleData;
 import thelm.jaopca.modules.ModuleHandler;
 

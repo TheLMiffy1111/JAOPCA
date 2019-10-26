@@ -22,12 +22,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.minecraft.resources.IResourcePack;
 import net.minecraft.resources.ResourcePackType;
 import net.minecraft.resources.data.IMetadataSectionSerializer;
 import net.minecraft.util.ResourceLocation;
+import thelm.jaopca.api.resources.IInMemoryResourcePack;
 
-public class InMemoryResourcePack implements IResourcePack {
+public class InMemoryResourcePack implements IInMemoryResourcePack {
 
 	private static final Gson GSON = new GsonBuilder().create();
 	private final String name;
@@ -42,7 +42,8 @@ public class InMemoryResourcePack implements IResourcePack {
 		this.isHidden = isHidden;
 	}
 
-	public InMemoryResourcePack putInputStream(ResourcePackType type, ResourceLocation location, Supplier<? extends InputStream> streamSupplier) {
+	@Override
+	public IInMemoryResourcePack putInputStream(ResourcePackType type, ResourceLocation location, Supplier<? extends InputStream> streamSupplier) {
 		switch(type) {
 		case CLIENT_RESOURCES:
 			assets.put(location, streamSupplier);
@@ -56,7 +57,8 @@ public class InMemoryResourcePack implements IResourcePack {
 		return this;
 	}
 
-	public InMemoryResourcePack putInputStreams(ResourcePackType type, Map<ResourceLocation, Supplier<? extends InputStream>> map) {
+	@Override
+	public IInMemoryResourcePack putInputStreams(ResourcePackType type, Map<ResourceLocation, Supplier<? extends InputStream>> map) {
 		switch(type) {
 		case CLIENT_RESOURCES:
 			assets.putAll(map);
@@ -70,27 +72,33 @@ public class InMemoryResourcePack implements IResourcePack {
 		return this;
 	}
 
-	public InMemoryResourcePack putByteArray(ResourcePackType type, ResourceLocation location, byte[] file) {
+	@Override
+	public IInMemoryResourcePack putByteArray(ResourcePackType type, ResourceLocation location, byte[] file) {
 		return putInputStream(type, location, ()->new ByteArrayInputStream(file));
 	}
 
-	public InMemoryResourcePack putByteArrays(ResourcePackType type, Map<ResourceLocation, byte[]> map) {
+	@Override
+	public IInMemoryResourcePack putByteArrays(ResourcePackType type, Map<ResourceLocation, byte[]> map) {
 		return putInputStreams(type, Maps.transformValues(map, file->()->new ByteArrayInputStream(file)));
 	}
 
-	public InMemoryResourcePack putString(ResourcePackType type, ResourceLocation location, String str) {
+	@Override
+	public IInMemoryResourcePack putString(ResourcePackType type, ResourceLocation location, String str) {
 		return putByteArray(type, location, str.getBytes(StandardCharsets.UTF_8));
 	}
 
-	public InMemoryResourcePack putStrings(ResourcePackType type, Map<ResourceLocation, String> map) {
+	@Override
+	public IInMemoryResourcePack putStrings(ResourcePackType type, Map<ResourceLocation, String> map) {
 		return putByteArrays(type, Maps.transformValues(map, str->str.getBytes(StandardCharsets.UTF_8)));
 	}
 
-	public InMemoryResourcePack putJson(ResourcePackType type, ResourceLocation location, JsonElement json) {
+	@Override
+	public IInMemoryResourcePack putJson(ResourcePackType type, ResourceLocation location, JsonElement json) {
 		return putString(type, location, GSON.toJson(json));
 	}
 
-	public InMemoryResourcePack putJsons(ResourcePackType type, Map<ResourceLocation, ? extends JsonElement> map) {
+	@Override
+	public IInMemoryResourcePack putJsons(ResourcePackType type, Map<ResourceLocation, ? extends JsonElement> map) {
 		return putStrings(type, Maps.transformValues(map, json->GSON.toJson(json)));
 	}
 

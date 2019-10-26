@@ -11,16 +11,20 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
+import thelm.jaopca.items.ItemFormType;
+import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule
 public class SmallDustsModule implements IModule {
 
-	private final IForm smallDustForm = JAOPCAApi.instance().newForm(this, "small_dusts", JAOPCAApi.instance().itemFormType());
+	private final IForm smallDustForm = ApiImpl.INSTANCE.newForm(this, "small_dusts", ItemFormType.INSTANCE);
 
 	@Override
 	public String getName() {
@@ -46,15 +50,16 @@ public class SmallDustsModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = JAOPCAApi.instance();
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : smallDustForm.getMaterials()) {
-			ResourceLocation dustLocation = api.miscHelper().getTagLocation("dusts", material.getName());
-			IItemInfo smallDustInfo = api.itemFormType().getMaterialFormInfo(smallDustForm, material);
-			api.registerShapelessRecipe(
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+			ResourceLocation smallDustLocation = miscHelper.getTagLocation("small_dusts", material.getName());
+			ApiImpl.INSTANCE.registerShapelessRecipe(
 					new ResourceLocation("jaopca", "small_dusts.to_dust."+material.getName()),
 					dustLocation, 1, new Object[] {
-							smallDustInfo, smallDustInfo,
-							smallDustInfo, smallDustInfo,
+							smallDustLocation, smallDustLocation,
+							smallDustLocation, smallDustLocation,
 					});
 		}
 	}

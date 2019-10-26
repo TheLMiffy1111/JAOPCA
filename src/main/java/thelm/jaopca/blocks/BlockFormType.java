@@ -38,6 +38,7 @@ import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.custom.json.VoxelShapeDeserializer;
 import thelm.jaopca.custom.utils.BlockDeserializationHelper;
 import thelm.jaopca.data.DataInjector;
+import thelm.jaopca.events.CommonEventHandler;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
@@ -122,8 +123,7 @@ public class BlockFormType implements IBlockFormType {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				String registryKey = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, registryKey);
+				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, form.getName()+'.'+material.getName());
 
 				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
 				Block block = materialFormBlock.asBlock();

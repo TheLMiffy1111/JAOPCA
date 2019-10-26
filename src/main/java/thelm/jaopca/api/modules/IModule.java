@@ -16,6 +16,8 @@ import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
+import thelm.jaopca.api.resources.IInMemoryResourcePack;
+import thelm.jaopca.modules.ModuleData;
 
 public interface IModule extends Comparable<IModule> {
 
@@ -54,6 +56,10 @@ public interface IModule extends Comparable<IModule> {
 	default void onClientSetup(IModuleData moduleData, FMLClientSetupEvent event) {}
 
 	default void onInterModEnqueue(IModuleData moduleData, InterModEnqueueEvent event) {}
+
+	default void onCreateResourcePack(IModuleData moduleData, IInMemoryResourcePack resourcePack) {}
+
+	default void onCreateDataPack(IModuleData moduleData, IInMemoryResourcePack resourcePack) {}
 
 	default void onRecipeInjectComplete(IModuleData moduleData, IResourceManager resourceManager) {}
 

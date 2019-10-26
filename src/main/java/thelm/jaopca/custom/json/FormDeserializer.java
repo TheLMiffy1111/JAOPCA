@@ -12,9 +12,9 @@ import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.materials.MaterialType;
+import thelm.jaopca.custom.CustomModule;
 import thelm.jaopca.forms.Form;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.modules.CustomModule;
 import thelm.jaopca.utils.JsonHelper;
 
 public class FormDeserializer implements JsonDeserializer<IForm> {

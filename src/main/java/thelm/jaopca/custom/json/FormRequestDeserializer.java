@@ -9,8 +9,8 @@ import com.google.gson.JsonParseException;
 
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
+import thelm.jaopca.custom.CustomModule;
 import thelm.jaopca.forms.FormRequest;
-import thelm.jaopca.modules.CustomModule;
 import thelm.jaopca.utils.JsonHelper;
 
 public class FormRequestDeserializer implements JsonDeserializer<IFormRequest> {

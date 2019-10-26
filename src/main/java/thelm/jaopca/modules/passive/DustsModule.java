@@ -16,11 +16,13 @@ import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
+import thelm.jaopca.items.ItemFormType;
+import thelm.jaopca.utils.ApiImpl;
 
 @JAOPCAModule
 public class DustsModule implements IModule {
 
-	private final IForm dustForm = JAOPCAApi.instance().newForm(this, "dusts", JAOPCAApi.instance().itemFormType()).
+	private final IForm dustForm = ApiImpl.INSTANCE.newForm(this, "dusts", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.NON_DUSTS);
 
 	@Override
@@ -40,12 +42,12 @@ public class DustsModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = JAOPCAApi.instance();
+		JAOPCAApi api = ApiImpl.INSTANCE;
 		for(IMaterial material : dustForm.getMaterials()) {
 			if(ArrayUtils.contains(MaterialType.INGOTS, material.getType())) {
 				IItemInfo dustInfo = api.itemFormType().getMaterialFormInfo(dustForm, material);
 				ResourceLocation materialLocation = api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName());
-				api.registerFurnaceRecipe(
+				api.registerSmeltingRecipe(
 						new ResourceLocation("jaopca", "dusts.to_material."+material.getName()),
 						dustInfo, materialLocation, 1, 0.7F, 200);
 				api.registerBlastingRecipe(

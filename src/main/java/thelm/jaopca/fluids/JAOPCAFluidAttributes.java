@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
+import thelm.jaopca.utils.ApiImpl;
 
 public class JAOPCAFluidAttributes extends FluidAttributes {
 
@@ -25,7 +26,6 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still"),
 				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
 						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow")).
-				translationKey(fluid.asFluid().getRegistryName().toString().replace(':', '.')).
 				sound(settings.getFillSoundSupplier().get(), settings.getEmptySoundSupplier().get()).
 				luminosity(settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
 				density(settings.getDensityFunction().applyAsInt(fluid.getMaterial())).
@@ -72,6 +72,6 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 
 	@Override
 	public ITextComponent getDisplayName(FluidStack stack) {
-		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm("fluid.jaopca."+fluid.getForm().getName(), fluid.getMaterial(), getTranslationKey());
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("fluid.jaopca."+fluid.getForm().getName(), fluid.getMaterial(), getTranslationKey());
 	}
 }

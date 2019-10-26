@@ -104,8 +104,7 @@ public class FluidFormType implements IFluidFormType {
 			IFluidFormSettings settings = (IFluidFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				String registryKey = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, registryKey);
+				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, form.getName()+'.'+material.getName());
 
 				IMaterialFormFluid materialFormFluid = settings.getFluidCreator().create(form, material, settings);
 				Fluid fluid = materialFormFluid.asFluid();

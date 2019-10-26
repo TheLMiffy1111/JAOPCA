@@ -24,6 +24,7 @@ import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.api.helpers.IMiscHelper;
 
 public class MiscHelper implements IMiscHelper {
@@ -135,6 +136,9 @@ public class MiscHelper implements IMiscHelper {
 		}
 		else if(obj instanceof Fluid) {
 			return new FluidStack((Fluid)obj, amount);
+		}
+		else if(obj instanceof IFluidProvider) {
+			return new FluidStack(((IFluidProvider)obj).asFluid(), amount);
 		}
 		else if(obj instanceof String) {
 			return getPreferredFluidStack(makeFluidWrapperTag(new ResourceLocation((String)obj)).getAllElements(), amount);

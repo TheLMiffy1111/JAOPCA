@@ -25,6 +25,7 @@ import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.JAOPCAModule;
+import thelm.jaopca.api.resources.IInMemoryResourcePack;
 import thelm.jaopca.materials.MaterialHandler;
 
 public class ModuleHandler {
@@ -154,6 +155,18 @@ public class ModuleHandler {
 	public static void onInterModEnqueue(InterModEnqueueEvent event) {
 		for(IModule module : getModules()) {
 			module.onInterModEnqueue(getModuleData(module), event);
+		}
+	}
+
+	public static void onCreateResourcePack(IInMemoryResourcePack resourcePack) {
+		for(IModule module : getModules()) {
+			module.onCreateResourcePack(getModuleData(module), resourcePack);
+		}
+	}
+
+	public static void onCreateDataPack(IInMemoryResourcePack resourcePack) {
+		for(IModule module : getModules()) {
+			module.onCreateDataPack(getModuleData(module), resourcePack);
 		}
 	}
 

@@ -12,6 +12,7 @@ import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.utils.ApiImpl;
 
 public class JAOPCAItem extends Item implements IMaterialFormItem {
 
@@ -84,6 +85,6 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		return JAOPCAApi.instance().currentLocalizer().localizeMaterialForm("item.jaopca."+form.getName(), material, getTranslationKey());
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+form.getName(), material, getTranslationKey());
 	}
 }

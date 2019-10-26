@@ -1,6 +1,7 @@
 package thelm.jaopca.api;
 
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -15,6 +16,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
@@ -226,6 +228,14 @@ public abstract class JAOPCAApi {
 	public abstract Set<ResourceLocation> getEntityTypeTags();
 
 	/**
+	 * Returns the set of known tag locations of the supplied type, which is the registered tag locations.
+	 * Note that tags added by custom data packs may not be included.
+	 * @param type The type of the tag
+	 * @return The set of tag locations known by JAOPCA
+	 */
+	public abstract Set<ResourceLocation> getTags(String type);
+
+	/**
 	 * Returns the set of known recipe locations, which is the union of defined recipe locations and
 	 * registered recipe locations. Note that recipes added by custom data packs may not be included.
 	 * @return The set of recipe locations known by JAOPCA
@@ -261,6 +271,8 @@ public abstract class JAOPCAApi {
 	 * @return true if the form type was successfully registered
 	 */
 	public abstract boolean registerFormType(IFormType type);
+
+	public abstract void registerRegistryEventHandler(Class<?> type, Consumer<IForgeRegistry> handler);
 
 	/**
 	 * Registers a block tag location that may be added externally and should be known to JAOPCA.
@@ -473,7 +485,7 @@ public abstract class JAOPCAApi {
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerFurnaceRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmeltingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a furnace recipe supplier that is then registered for injection.
@@ -485,7 +497,7 @@ public abstract class JAOPCAApi {
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerFurnaceRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a blasting recipe supplier that is then registered for injection.
