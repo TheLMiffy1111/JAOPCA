@@ -3,10 +3,13 @@ package thelm.jaopca.modules;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Ordering;
@@ -82,16 +85,20 @@ public class ModuleData implements IModuleData {
 				!configMaterialBlacklist.contains(material.getName());
 	}
 
-	public boolean isMaterialDependencyValid(IMaterial material) {
+	public boolean isMaterialDependencyValid(IMaterial material, Set<Pair<ModuleData, IMaterial>> prev) {
 		return dependencyValidMaterials.computeBooleanIfAbsent(material, mat->{
+			if(prev.contains(Pair.of(ModuleData.this, mat))) {
+				return true;
+			}
 			if(!isMaterialConfigValid(mat)) {
 				return false;
 			}
+			prev.add(Pair.of(ModuleData.this, mat));
 			for(Map.Entry<Integer, Collection<String>> entry : module.getModuleDependencies().asMap().entrySet()) {
 				IMaterial extraMaterial = mat.getExtra(entry.getKey());
 				for(String requestedModule : entry.getValue()) {
 					ModuleData requestedData = ModuleHandler.getModuleData(requestedModule);
-					if(!requestedData.isMaterialDependencyValid(extraMaterial)) {
+					if(!requestedData.isMaterialDependencyValid(extraMaterial, prev)) {
 						return false;
 					}
 				}
@@ -101,7 +108,7 @@ public class ModuleData implements IModuleData {
 	}
 
 	public boolean isMaterialModuleValid(IMaterial material) {
-		return isMaterialDependencyValid(material) &&
+		return isMaterialDependencyValid(material, new HashSet<>()) &&
 				module.getMaterialTypes().contains(material.getType()) &&
 				!module.getDefaultMaterialBlacklist().contains(material.getName());
 	}
@@ -123,7 +130,7 @@ public class ModuleData implements IModuleData {
 			IMaterial extraMaterial = material.getExtra(entry.getKey());
 			for(String requestedModule : entry.getValue()) {
 				ModuleData requestedData = ModuleHandler.getModuleData(requestedModule);
-				if(!requestedData.isMaterialDependencyValid(extraMaterial)) {
+				if(!requestedData.isMaterialDependencyValid(extraMaterial, new HashSet<>())) {
 					throw new IllegalStateException("Module "+module.getName()+" has wrongly accepted material "+material.getName());
 				}
 				requestedData.addRequestedMaterial(extraMaterial);
@@ -132,8 +139,10 @@ public class ModuleData implements IModuleData {
 	}
 
 	public void addRequestedMaterial(IMaterial material) {
-		requestedMaterials.add(material);
-		addDependencyRequestedMaterial(material);
+		if(getModule().isPassive()) {
+			requestedMaterials.add(material);
+			addDependencyRequestedMaterial(material);
+		}
 	}
 
 	public Set<IMaterial> getRejectedMaterials() {

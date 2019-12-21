@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.mekanism.gases;
 
 import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasAttributes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import thelm.jaopca.JAOPCA;
@@ -17,16 +18,15 @@ public class JAOPCAGas extends Gas implements IMaterialFormGas {
 	private final IMaterial material;
 	protected final IGasFormSettings settings;
 
-	protected boolean isVisible;
+	protected boolean isHidden;
 
 	public JAOPCAGas(IForm form, IMaterial material, IGasFormSettings settings) {
-		super(new ResourceLocation(JAOPCA.MOD_ID, form.getName()+'.'+material.getName()),
-				new ResourceLocation(JAOPCA.MOD_ID, "gas/"+material.getModelType()+'/'+form.getName()));
+		super(GasAttributes.builder(new ResourceLocation("jaopca", "gas/"+material.getModelType()+'/'+form.getName())));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
 
-		isVisible = settings.getIsVisible();
+		isHidden = settings.getIsHidden();
 	}
 
 	@Override
@@ -40,8 +40,8 @@ public class JAOPCAGas extends Gas implements IMaterialFormGas {
 	}
 
 	@Override
-	public boolean isVisible() {
-		return isVisible;
+	public boolean isHidden() {
+		return isHidden;
 	}
 
 	@Override

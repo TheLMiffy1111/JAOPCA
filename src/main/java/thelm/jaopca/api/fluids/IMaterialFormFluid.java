@@ -11,7 +11,5 @@ public interface IMaterialFormFluid extends IMaterialForm {
 		return (Fluid)this;
 	}
 
-	IntegerProperty getLevelProperty();
-
 	IFluidState getSourceState();
 }

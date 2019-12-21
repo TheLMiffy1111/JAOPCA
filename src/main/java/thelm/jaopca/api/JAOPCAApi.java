@@ -272,7 +272,7 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerFormType(IFormType type);
 
-	public abstract void registerRegistryEventHandler(Class<?> type, Consumer<IForgeRegistry> handler);
+	public abstract void registerForgeRegistryEntry(IForgeRegistryEntry<?> entry);
 
 	/**
 	 * Registers a block tag location that may be added externally and should be known to JAOPCA.

@@ -3,6 +3,7 @@ package thelm.jaopca.modules;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -126,7 +127,7 @@ public class ModuleHandler {
 								data::isMaterialModuleValid).
 					collect(Collectors.toList());
 			for(IMaterial material : materials) {
-				if(data.isMaterialDependencyValid(material)) {
+				if(data.isMaterialDependencyValid(material, new HashSet<>())) {
 					data.addDependencyRequestedMaterial(material);
 				}
 				else {
@@ -137,6 +138,12 @@ public class ModuleHandler {
 		for(ModuleData data : getModuleDatas()) {
 			List<IMaterial> materials = MaterialHandler.getMaterials().stream().filter(data::isMaterialValid).collect(Collectors.toList());
 			data.setMaterials(materials);
+		}
+	}
+
+	public static void onMaterialComputeComplete() {
+		for(IModule module : getModules()) {
+			module.onMaterialComputeComplete(getModuleData(module));
 		}
 	}
 

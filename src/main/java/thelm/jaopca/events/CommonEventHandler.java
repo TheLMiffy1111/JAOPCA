@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 
@@ -35,31 +36,24 @@ import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
+import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
 
 public class CommonEventHandler {
 
 	public static final CommonEventHandler INSTANCE = new CommonEventHandler();
 	private static final Logger LOGGER = LogManager.getLogger();
-	private static final ListMultimap<Class<?>, Consumer<IForgeRegistry>> REGISTRY_EVENT_HANDLERS = MultimapBuilder.hashKeys().arrayListValues().build();
 
 	public static CommonEventHandler getInstance() {
 		return INSTANCE;
 	}
 
-	public void registerRegistryEventHandler(Class<?> type, Consumer<IForgeRegistry> handler) {
-		REGISTRY_EVENT_HANDLERS.put(type, handler);
-	}
-
 	public void onConstruct() {
 		ApiImpl.INSTANCE.init();
-		BlockFormType.init();
-		ItemFormType.init();
-		FluidFormType.init();
-		registerRegistryEventHandler(Block.class, this::onBlockRegister);
-		registerRegistryEventHandler(Item.class, this::onItemRegister);
-		registerRegistryEventHandler(Fluid.class, this::onFluidRegister);
 		DeferredWorkQueue.runLater(()->{
+			BlockFormType.init();
+			ItemFormType.init();
+			FluidFormType.init();
 			DataCollector.collectData();
 			ModuleHandler.findModules();
 			ConfigHandler.setupMainConfig();
@@ -72,30 +66,16 @@ public class CommonEventHandler {
 			ModuleHandler.computeValidMaterials();
 			FormHandler.computeValidMaterials();
 			ConfigHandler.setupModuleConfigs();
+			BlockFormType.registerEntries();
+			ItemFormType.registerEntries();
+			FluidFormType.registerEntries();
+			ModuleHandler.onMaterialComputeComplete();
 		});
 	}
 
 	@SubscribeEvent
 	public void onRegister(RegistryEvent.Register event) {
-		IForgeRegistry<?> registry = event.getRegistry();
-		for(Consumer<IForgeRegistry> listener : REGISTRY_EVENT_HANDLERS.get(registry.getRegistrySuperType())) {
-			listener.accept(registry);
-		}
-	}
-
-	public void onBlockRegister(IForgeRegistry<Block> registry) {
-		BlockFormType.registerBlocks(registry);
-		FluidFormType.registerBlocks(registry);
-	}
-
-	public void onItemRegister(IForgeRegistry<Item> registry) {
-		BlockFormType.registerItems(registry);
-		ItemFormType.registerItems(registry);
-		FluidFormType.registerItems(registry);
-	}
-
-	public void onFluidRegister(IForgeRegistry<Fluid> registry) {
-		FluidFormType.registerFluids(registry);
+		RegistryHandler.onRegister(event);
 	}
 
 	@SubscribeEvent

@@ -51,6 +51,8 @@ public interface IModule extends Comparable<IModule> {
 
 	default void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {}
 
+	default void onMaterialComputeComplete(IModuleData moduleData) {}
+
 	default void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {}
 
 	default void onClientSetup(IModuleData moduleData, FMLClientSetupEvent event) {}

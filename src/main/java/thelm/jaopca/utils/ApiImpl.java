@@ -22,6 +22,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -63,6 +64,7 @@ import thelm.jaopca.recipes.ShapedRecipeSupplier;
 import thelm.jaopca.recipes.ShapelessRecipeSupplier;
 import thelm.jaopca.recipes.SmokingRecipeSupplier;
 import thelm.jaopca.recipes.StonecuttingRecipeSupplier;
+import thelm.jaopca.registries.RegistryHandler;
 
 public class ApiImpl extends JAOPCAApi {
 
@@ -223,8 +225,8 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public void registerRegistryEventHandler(Class<?> type, Consumer<IForgeRegistry> handler) {
-		CommonEventHandler.getInstance().registerRegistryEventHandler(type, handler);
+	public void registerForgeRegistryEntry(IForgeRegistryEntry<?> entry) {
+		RegistryHandler.registerForgeRegistryEntry(entry);
 	}
 
 	@Override

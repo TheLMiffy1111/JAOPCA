@@ -40,6 +40,7 @@ import thelm.jaopca.custom.utils.BlockDeserializationHelper;
 import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.events.CommonEventHandler;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -117,23 +118,25 @@ public class BlockFormType implements IBlockFormType {
 		return BlockFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	private static void createRegistryEntries() {
+	public static void registerEntries() {
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, form.getName()+'.'+material.getName());
+				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
 
 				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
 				Block block = materialFormBlock.asBlock();
 				block.setRegistryName(registryName);
 				BLOCKS.put(form, material, materialFormBlock);
+				RegistryHandler.registerForgeRegistryEntry(block);
 
 				IMaterialFormBlockItem materialFormBlockItem = settings.getBlockItemCreator().create(materialFormBlock, settings);
 				BlockItem blockItem = materialFormBlockItem.asBlockItem();
 				blockItem.setRegistryName(registryName);
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
+				RegistryHandler.registerForgeRegistryEntry(blockItem);
 
 				Supplier<Block> blockSupplier = ()->block;
 				DataInjector.registerBlockTag(helper.createResourceLocation(secondaryName), blockSupplier);
@@ -149,19 +152,6 @@ public class BlockFormType implements IBlockFormType {
 					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName), itemSupplier);
 				}
 			}
-		}
-	}
-
-	public static void registerBlocks(IForgeRegistry<Block> registry) {
-		createRegistryEntries();
-		for(IMaterialFormBlock block : BLOCKS.values()) {
-			registry.register(block.asBlock());
-		}
-	}
-
-	public static void registerItems(IForgeRegistry<Item> registry) {
-		for(IMaterialFormBlockItem blockItem : BLOCK_ITEMS.values()) {
-			registry.register(blockItem.asBlockItem());
 		}
 	}
 

@@ -25,6 +25,7 @@ import thelm.jaopca.compat.mekanism.api.gases.IGasInfo;
 import thelm.jaopca.compat.mekanism.api.gases.IMaterialFormGas;
 import thelm.jaopca.compat.mekanism.custom.json.GasFormSettingsDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.MiscHelper;
 
 public class GasFormType implements IGasFormType {
@@ -86,18 +87,19 @@ public class GasFormType implements IGasFormType {
 		return GasFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	private static void createRegistryEntries() {
+	public static void registerEntries() {
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IGasFormSettings settings = (IGasFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				String registryKey = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, registryKey);
+				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
 
 				IMaterialFormGas materialFormGas = settings.getGasCreator().create(form, material, settings);
 				Gas gas = materialFormGas.asGas();
+				gas.setRegistryName(registryName);
 				GASES.put(form, material, materialFormGas);
+				RegistryHandler.registerForgeRegistryEntry(gas);
 
 				Supplier<Gas> gasSupplier = ()->gas;
 				MekanismDataInjector.registerGasTag(helper.createResourceLocation(secondaryName), gasSupplier);
@@ -106,13 +108,6 @@ public class GasFormType implements IGasFormType {
 					MekanismDataInjector.registerGasTag(helper.getTagLocation(secondaryName, alternativeName), gasSupplier);
 				}
 			}
-		}
-	}
-
-	public static void registerGases(IForgeRegistry<Gas> registry) {
-		createRegistryEntries();
-		for(IMaterialFormGas gas : GASES.values()) {
-			registry.register(gas.asGas());
 		}
 	}
 

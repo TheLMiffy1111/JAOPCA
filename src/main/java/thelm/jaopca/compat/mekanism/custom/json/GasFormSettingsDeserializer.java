@@ -28,8 +28,8 @@ public class GasFormSettingsDeserializer implements JsonDeserializer<IGasFormSet
 		IJsonHelper helper = JsonHelper.INSTANCE;
 		JsonObject json = helper.getJsonObject(jsonElement, "settings");
 		IGasFormSettings settings = GasFormType.INSTANCE.getNewSettings();
-		if(json.has("isVisible")) {
-			settings.setIsVisible(helper.getBoolean(json, "isVisible"));
+		if(json.has("isHidden")) {
+			settings.setIsHidden(helper.getBoolean(json, "isHidden"));
 		}
 		return settings;
 	}

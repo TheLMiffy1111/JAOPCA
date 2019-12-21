@@ -18,6 +18,7 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule
 public class DustsModule implements IModule {
@@ -45,8 +46,8 @@ public class DustsModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		for(IMaterial material : dustForm.getMaterials()) {
 			if(ArrayUtils.contains(MaterialType.INGOTS, material.getType())) {
-				IItemInfo dustInfo = api.itemFormType().getMaterialFormInfo(dustForm, material);
-				ResourceLocation materialLocation = api.miscHelper().getTagLocation(material.getType().getFormName(), material.getName());
+				IItemInfo dustInfo = ItemFormType.INSTANCE.getMaterialFormInfo(dustForm, material);
+				ResourceLocation materialLocation = MiscHelper.INSTANCE.getTagLocation(material.getType().getFormName(), material.getName());
 				api.registerSmeltingRecipe(
 						new ResourceLocation("jaopca", "dusts.to_material."+material.getName()),
 						dustInfo, materialLocation, 1, 0.7F, 200);

@@ -11,7 +11,7 @@ public class GasFormSettings implements IGasFormSettings {
 	GasFormSettings() {}
 	
 	private IGasCreator gasCreator = JAOPCAGas::new;
-	private boolean isVisible = true;
+	private boolean isHidden = false;
 	
 	@Override
 	public IFormType getType() {
@@ -30,13 +30,13 @@ public class GasFormSettings implements IGasFormSettings {
 	}
 
 	@Override
-	public IGasFormSettings setIsVisible(boolean isVisible) {
-		this.isVisible = isVisible;
+	public IGasFormSettings setIsHidden(boolean isHidden) {
+		this.isHidden = isHidden;
 		return this;
 	}
 
 	@Override
-	public boolean getIsVisible() {
-		return isVisible;
+	public boolean getIsHidden() {
+		return isHidden;
 	}
 }

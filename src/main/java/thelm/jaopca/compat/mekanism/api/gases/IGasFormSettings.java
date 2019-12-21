@@ -8,7 +8,7 @@ public interface IGasFormSettings extends IFormSettings {
 
 	IGasCreator getGasCreator();
 	
-	IGasFormSettings setIsVisible(boolean isVisible);
+	IGasFormSettings setIsHidden(boolean isVisible);
 	
-	boolean getIsVisible();
+	boolean getIsHidden();
 }

@@ -40,7 +40,7 @@ public class MekanismModule implements IModule {
 			"copper", "gold", "iron", "osmium", "tin"));
 
 	public MekanismModule() {
-		MekanismCommonEventHandler.INSTANCE.onConstruct();
+		GasFormType.init();
 	}
 
 	private final IForm dirtyDustForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty_dusts", ItemFormType.INSTANCE).
@@ -53,10 +53,10 @@ public class MekanismModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:crystals").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty_slurry", GasFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:dirty_slurry").setDefaultMaterialBlacklist(BLACKLIST).
-			setSettings(GasFormType.INSTANCE.getNewSettings().setIsVisible(true));
+			setSettings(GasFormType.INSTANCE.getNewSettings().setIsHidden(false));
 	private final IForm cleanSlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_clean_slurry", GasFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:clean_slurry").setDefaultMaterialBlacklist(BLACKLIST).
-			setSettings(GasFormType.INSTANCE.getNewSettings().setIsVisible(true));
+			setSettings(GasFormType.INSTANCE.getNewSettings().setIsHidden(false));
 
 	@Override
 	public String getName() {
@@ -89,6 +89,11 @@ public class MekanismModule implements IModule {
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
 		return BLACKLIST;
+	}
+
+	@Override
+	public void onMaterialComputeComplete(IModuleData moduleData) {
+		GasFormType.registerEntries();
 	}
 
 	@Override

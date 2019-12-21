@@ -29,6 +29,7 @@ import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.ItemFormSettingsDeserializer;
 import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -92,18 +93,19 @@ public class ItemFormType implements IItemFormType {
 		return ItemFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	private static void createRegistryEntries() {
+	public static void registerEntries() {
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				ResourceLocation registryName = new ResourceLocation(JAOPCA.MOD_ID, form.getName()+'.'+material.getName());
+				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
 
 				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, settings);
 				Item item = materialFormItem.asItem();
 				item.setRegistryName(registryName);
 				ITEMS.put(form, material, materialFormItem);
+				RegistryHandler.registerForgeRegistryEntry(item);
 
 				Supplier<Item> itemSupplier = ()->item;
 				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), itemSupplier);
@@ -112,13 +114,6 @@ public class ItemFormType implements IItemFormType {
 					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName), itemSupplier);
 				}
 			}
-		}
-	}
-
-	public static void registerItems(IForgeRegistry<Item> registry) {
-		createRegistryEntries();
-		for(IMaterialFormItem item : ITEMS.values()) {
-			registry.register(item.asItem());
 		}
 	}
 
