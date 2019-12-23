@@ -9,14 +9,10 @@
     "fluid.jaopca.molten": "Molten %s",
     "item.jaopca.molten": "Molten %s Bucket",
 
-    "item.jaopca.silents_mechanisms_chunks": "%s Ore Chunks",
-
     "item.jaopca.mekanism_dirty_dusts": "Dirty %s Dust",
     "item.jaopca.mekanism_clumps": "%s Clump",
     "item.jaopca.mekanism_shards": "%s Shard",
     "item.jaopca.mekanism_crystals": "%s Crystal",
     "gas.jaopca.mekanism_dirty_slurry": "%s Slurry",
-    "gas.jaopca.mekanism_clean_slurry": "Clean %s Slurry",
-
-    "item.jaopca.omegacraft_dirty_dusts": "Dirty %s Dust"
+    "gas.jaopca.mekanism_clean_slurry": "Clean %s Slurry"
 }

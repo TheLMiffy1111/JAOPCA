@@ -123,9 +123,10 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	}
 
 	@Override
-	public Collection<ResourceLocation> getAllResourceLocations(ResourcePackType type, String pathIn, int maxDepth, Predicate<String> filter) {
+	public Collection<ResourceLocation> func_225637_a_(ResourcePackType type, String namespace, String pathIn, int maxDepth, Predicate<String> filter) {
 		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
-		return map.keySet().stream().filter(rl->StringUtils.countMatches(rl.getPath(), '/') < maxDepth).
+		return map.keySet().stream().filter(rl->rl.getNamespace().equals(namespace)).
+				filter(rl->StringUtils.countMatches(rl.getPath(), '/') < maxDepth).
 				filter(rl->rl.getPath().startsWith(pathIn)).filter(rl->{
 					String path = rl.getPath();
 					int lastSlash = path.lastIndexOf('/');

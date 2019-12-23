@@ -6,11 +6,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import javax.vecmath.Point4d;
-import javax.vecmath.Tuple4d;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Vector4f;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -80,42 +78,42 @@ public class ColorHandler {
 	}
 
 	public static int getAverageColor(Tag<Item> tag) {
-		Tuple4d color = weightedAverageColor(tag.getAllElements(), ConfigHandler.gammaValue);
+		Vector4f color = weightedAverageColor(tag.getAllElements(), ConfigHandler.gammaValue);
 		return toColorInt(color);
 	}
 
-	public static Tuple4d weightedAverageColor(Collection<Item> items, double gammaValue) {
+	public static Vector4f weightedAverageColor(Collection<Item> items, double gammaValue) {
 		if(items.isEmpty()) {
-			return new Point4d(1, 1, 1, 0);
+			return new Vector4f(1, 1, 1, 0);
 		}
-		List<Tuple4d> colors = items.stream().map(ItemStack::new).
+		List<Vector4f> colors = items.stream().map(ItemStack::new).
 				map(stack->weightedAverageColor(stack, gammaValue)).
 				collect(Collectors.toList());
 		return weightedAverageColor(colors, gammaValue);
 	}
 
-	public static Tuple4d weightedAverageColor(ItemStack stack, double gammaValue) {
+	public static Vector4f weightedAverageColor(ItemStack stack, double gammaValue) {
 		List<BakedQuad> quads = getBakedQuads(stack);
 		if(quads.isEmpty()) {
-			return new Point4d(1, 1, 1, 0);
+			return new Vector4f(1, 1, 1, 0);
 		}
-		List<Tuple4d> colors = new ArrayList<>();
+		List<Vector4f> colors = new ArrayList<>();
 		for(BakedQuad quad : quads) {
-			Tuple4d color = weightedAverageColor(quad.getSprite(), gammaValue);
+			Vector4f color = weightedAverageColor(quad.getSprite(), gammaValue);
 			color = tintColor(color, getTint(stack, quad));
 			colors.add(color);
 		}
 		return weightedAverageColor(colors, gammaValue);
 	}
 
-	public static Tuple4d weightedAverageColor(TextureAtlasSprite texture, double gammaValue) {
+	public static Vector4f weightedAverageColor(TextureAtlasSprite texture, double gammaValue) {
 		int width = texture.getWidth();
 		int height = texture.getHeight();
 		int frameCount = texture.getFrameCount();
 		if(width <= 0 || height <= 0 || frameCount <= 0) {
-			return new Point4d(1, 1, 1, 0);
+			return new Vector4f(1, 1, 1, 0);
 		}
-		List<Tuple4d> colors = new ArrayList<>();
+		List<Vector4f> colors = new ArrayList<>();
 		for(int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
 			for(int x = 0; x < width; ++x) {
 				for(int y = 0; y < height; ++y) {
@@ -127,16 +125,16 @@ public class ColorHandler {
 		return weightedAverageColor(colors, gammaValue);
 	}
 
-	public static Tuple4d weightedAverageColor(List<Tuple4d> colors, double gammaValue) {
+	public static Vector4f weightedAverageColor(List<Vector4f> colors, double gammaValue) {
 		if(colors.isEmpty()) {
-			return new Point4d(1, 1, 1, 0);
+			return new Vector4f(1, 1, 1, 0);
 		}
 		double weight, r = 0, g = 0, b = 0, totalWeight = 0;
 		if(gammaValue == 0) {
 			r = 1;
 			g = 1;
 			b = 1;
-			for(Tuple4d color : colors) {
+			for(Vector4f color : colors) {
 				totalWeight += weight = color.getW();
 				r *= color.getX()*weight;
 				g *= color.getY()*weight;
@@ -147,7 +145,7 @@ public class ColorHandler {
 			b = Math.pow(b, 1/totalWeight);
 		}
 		else {
-			for(Tuple4d color : colors) {
+			for(Vector4f color : colors) {
 				totalWeight += weight = color.getW();
 				r += Math.pow(color.getX(), gammaValue)*weight;
 				g += Math.pow(color.getY(), gammaValue)*weight;
@@ -157,33 +155,33 @@ public class ColorHandler {
 			g = Math.pow(g/totalWeight, 1/gammaValue);
 			b = Math.pow(b/totalWeight, 1/gammaValue);
 		}
-		return new Point4d(
-				MathHelper.clamp(r, 0, 1),
-				MathHelper.clamp(g, 0, 1),
-				MathHelper.clamp(b, 0, 1),
-				MathHelper.clamp(totalWeight/colors.size(), 0, 1)
+		return new Vector4f(
+				(float)MathHelper.clamp(r, 0, 1),
+				(float)MathHelper.clamp(g, 0, 1),
+				(float)MathHelper.clamp(b, 0, 1),
+				(float)MathHelper.clamp(totalWeight/colors.size(), 0, 1)
 				);
 	}
 
-	public static Tuple4d toColorTuple(int color) {
-		return new Point4d(
-				(color    &0xFF)/255D,
-				(color>> 8&0xFF)/255D,
-				(color>>16&0xFF)/255D,
-				(color>>24&0xFF)/255D
+	public static Vector4f toColorTuple(int color) {
+		return new Vector4f(
+				(color    &0xFF)/255F,
+				(color>> 8&0xFF)/255F,
+				(color>>16&0xFF)/255F,
+				(color>>24&0xFF)/255F
 				);
 	}
 
-	public static Tuple4d tintColor(Tuple4d color, int tint) {
-		return new Point4d(
-				color.getX()*(tint>>16&0xFF)/255D,
-				color.getY()*(tint>> 8&0xFF)/255D,
-				color.getZ()*(tint    &0xFF)/255D,
+	public static Vector4f tintColor(Vector4f color, int tint) {
+		return new Vector4f(
+				color.getX()*(tint>>16&0xFF)/255F,
+				color.getY()*(tint>> 8&0xFF)/255F,
+				color.getZ()*(tint    &0xFF)/255F,
 				color.getW()
 				);
 	}
 
-	public static int toColorInt(Tuple4d color) {
+	public static int toColorInt(Vector4f color) {
 		int ret = 0;
 		ret |= (Math.round(MathHelper.clamp(color.getX()*255, 0, 255))&0xFF)<<16;
 		ret |= (Math.round(MathHelper.clamp(color.getY()*255, 0, 255))&0xFF)<< 8;
@@ -193,7 +191,7 @@ public class ColorHandler {
 
 	public static List<BakedQuad> getBakedQuads(ItemStack stack) {
 		List<BakedQuad> quads = new ArrayList<>();
-		IBakedModel model = Minecraft.getInstance().getItemRenderer().getModelWithOverrides(stack);
+		IBakedModel model = Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(stack, null, null);
 		model.getQuads(null, null, new Random(0)).stream().filter(quad->quad.getFace() == Direction.SOUTH).forEach(quads::add);
 		for(Direction facing : Direction.values()) {
 			model.getQuads(null, facing, new Random(0)).stream().filter(quad->quad.getFace() == Direction.SOUTH).forEach(quads::add);

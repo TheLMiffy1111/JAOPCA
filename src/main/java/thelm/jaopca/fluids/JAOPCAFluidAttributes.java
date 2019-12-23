@@ -5,12 +5,11 @@ import net.minecraft.fluid.IFluidState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.IEnviromentBlockReader;
+import net.minecraft.world.ILightReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.utils.ApiImpl;
@@ -42,7 +41,7 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	}
 
 	@Override
-	public IFluidState getStateForPlacement(IEnviromentBlockReader world, BlockPos pos, FluidStack stack) {
+	public IFluidState getStateForPlacement(ILightReader world, BlockPos pos, FluidStack stack) {
 		return fluid.getSourceState();
 	}
 

@@ -11,7 +11,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.Rarity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.storage.loot.ConstantRange;
@@ -52,7 +51,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private boolean isFull = true;
 	private VoxelShape shape = VoxelShapes.fullCube();
 	private VoxelShape raytraceShape = VoxelShapes.empty();
-	private BlockRenderLayer renderLayer = BlockRenderLayer.TRANSLUCENT;
 	private Function<IMaterial, ToolType> harvestToolFunction = material->ToolType.PICKAXE;
 	private ToIntFunction<IMaterial> harvestLevelFunction = material->0;
 	private Predicate<IMaterial> isBeaconBaseFunction = material->false;
@@ -197,17 +195,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public VoxelShape getRaytraceShape() {
 		return raytraceShape;
-	}
-
-	@Override
-	public IBlockFormSettings setRenderLayer(BlockRenderLayer renderLayer) {
-		this.renderLayer = renderLayer;
-		return this;
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return renderLayer;
 	}
 
 	@Override

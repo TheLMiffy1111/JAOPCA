@@ -1,40 +1,17 @@
 package thelm.jaopca.fluids;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
-import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.entity.Entity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.ILightReader;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
@@ -59,7 +36,7 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 
 	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings) {
 		super(Block.Properties.create(Material.WATER).lightValue(settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
-				doesNotBlockMovement().tickRandomly().noDrops(), (PlaceableFluid)fluid.asFluid(),
+				doesNotBlockMovement().tickRandomly().noDrops().func_226896_b_(), (PlaceableFluid)fluid.asFluid(),
 				settings.getMaxLevelFunction().applyAsInt(fluid.getMaterial()));
 
 		this.fluid = fluid;
@@ -93,7 +70,7 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	}
 
 	@Override
-	public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
+	public int getLightValue(BlockState state, ILightReader world, BlockPos pos) {
 		if(!lightValue.isPresent()) {
 			lightValue = OptionalInt.of(settings.getLightValueFunction().applyAsInt(getMaterial()));
 		}

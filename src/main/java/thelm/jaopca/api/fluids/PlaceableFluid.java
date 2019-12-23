@@ -110,7 +110,7 @@ public abstract class PlaceableFluid extends Fluid {
 	protected Vec3d func_215663_a(IBlockReader world, BlockPos pos, IFluidState state) {
 		double x = 0;
 		double y = 0;
-		try(BlockPos.PooledMutableBlockPos mutablePos = BlockPos.PooledMutableBlockPos.retain()) {
+		try(BlockPos.PooledMutable mutablePos = BlockPos.PooledMutable.retain()) {
 			for(Direction offset : Direction.Plane.HORIZONTAL) {
 				mutablePos.setPos(pos).move(offset);
 				IFluidState offsetState = world.getFluidState(mutablePos);

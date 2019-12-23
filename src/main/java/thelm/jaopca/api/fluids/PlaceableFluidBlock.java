@@ -27,6 +27,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -57,7 +58,7 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 	}
 
 	@Override
-	public void randomTick(BlockState blockState, World world, BlockPos pos, Random random) {
+	public void func_225542_b_(BlockState blockState, ServerWorld world, BlockPos pos, Random random) {
 		world.getFluidState(pos).randomTick(world, pos, random);
 	}
 

@@ -9,8 +9,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -18,10 +19,9 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
+import net.minecraft.world.ILightReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.ToolType;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.forms.IForm;
@@ -44,7 +44,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected OptionalDouble slipperiness = OptionalDouble.empty();
 	protected VoxelShape shape;
 	protected VoxelShape raytraceShape;
-	protected BlockRenderLayer renderLayer;
 	protected Optional<ToolType> harvestTool = Optional.empty();
 	protected OptionalInt harvestLevel = OptionalInt.empty();
 	protected Optional<Boolean> isBeaconBase = Optional.empty();
@@ -53,7 +52,8 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected Optional<Boolean> isFireSource = Optional.empty();
 
 	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings) {
-		super(Block.Properties.create(Material.IRON).lightValue(settings.getLightValueFunction().applyAsInt(material)));
+		super(Block.Properties.create(Material.IRON).lightValue(settings.getLightValueFunction().applyAsInt(material)).
+				func_226896_b_());
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -61,7 +61,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		blocksMovement = settings.getBlocksMovement();
 		shape = settings.getShape();
 		raytraceShape = settings.getRaytraceShape();
-		renderLayer = settings.getRenderLayer();
 	}
 
 	@Override
@@ -99,7 +98,7 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	@Override
-	public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
+	public int getLightValue(BlockState state, ILightReader world, BlockPos pos) {
 		if(!lightValue.isPresent()) {
 			lightValue = OptionalInt.of(settings.getLightValueFunction().applyAsInt(material));
 		}
@@ -131,11 +130,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	@Override
-	public boolean isSolid(BlockState blockState) {
-		return blocksMovement && blockState.getBlock().getRenderLayer() == BlockRenderLayer.SOLID;
-	}
-
-	@Override
 	public VoxelShape getShape(BlockState blockState, IBlockReader world, BlockPos pos, ISelectionContext context) {
 		return shape;
 	}
@@ -148,11 +142,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	@Override
 	public VoxelShape getRaytraceShape(BlockState blockState, IBlockReader world, BlockPos pos) {
 		return raytraceShape;
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return renderLayer;
 	}
 
 	@Override

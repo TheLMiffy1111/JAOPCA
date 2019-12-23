@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import net.minecraft.item.Rarity;
-import net.minecraft.util.BlockRenderLayer;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.blocks.BlockFormType;
@@ -38,9 +37,6 @@ public class FluidFormSettingsDeserializer implements JsonDeserializer<IFluidFor
 				functionJson.addProperty("default", 8);
 			}
 			settings.setMaxLevelFunction(helper.deserializeType(json, "maxLevel", context, FormTypeHandler.INT_FUNCTION_TYPE));
-		}
-		if(json.has("renderLayer")) {
-			settings.setRenderLayer(helper.deserializeType(json, "renderLayer", context, BlockRenderLayer.class));
 		}
 		if(json.has("tickRate")) {
 			JsonObject functionJson = helper.getJsonObject(json, "tickRate");

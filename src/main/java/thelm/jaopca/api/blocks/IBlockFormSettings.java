@@ -9,7 +9,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.Rarity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.forms.IFormSettings;
@@ -60,10 +59,6 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setRaytraceShape(VoxelShape raytraceShape);
 
 	VoxelShape getRaytraceShape();
-
-	IBlockFormSettings setRenderLayer(BlockRenderLayer renderLayer);
-
-	BlockRenderLayer getRenderLayer();
 
 	IBlockFormSettings setHarvestToolFunction(Function<IMaterial, ToolType> harvestToolFunction);
 

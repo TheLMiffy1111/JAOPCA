@@ -2,7 +2,6 @@ package thelm.jaopca.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -107,11 +106,12 @@ public class DataCollector {
 	}
 
 	static Collection<ResourceLocation> getAllDataResourceLocations(String pathIn, Predicate<String> filter) {
-		List<ResourceLocation> list = new ArrayList<>();
+		Set<ResourceLocation> set = new TreeSet<>();
 		for(IResourcePack resourcePack : RESOURCE_PACKS) {
-			list.addAll(resourcePack.getAllResourceLocations(ResourcePackType.SERVER_DATA, pathIn, Integer.MAX_VALUE, filter));
+			for(String namespace : resourcePack.getResourceNamespaces(ResourcePackType.SERVER_DATA)) {
+				set.addAll(resourcePack.func_225637_a_(ResourcePackType.SERVER_DATA, namespace, pathIn, Integer.MAX_VALUE, filter));
+			}
 		}
-		Collections.sort(list);
-		return list;
+		return set;
 	}
 }

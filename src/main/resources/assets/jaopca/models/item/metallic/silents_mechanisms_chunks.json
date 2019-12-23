@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/silents_mechanisms_chunks",
-        "layer1": "jaopca:item/metallic/silents_mechanisms_chunks_overlay"
-    }
-}

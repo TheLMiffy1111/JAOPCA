@@ -19,12 +19,9 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.registries.IForgeRegistry;
-import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
@@ -33,12 +30,10 @@ import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
-import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.custom.json.VoxelShapeDeserializer;
 import thelm.jaopca.custom.utils.BlockDeserializationHelper;
 import thelm.jaopca.data.DataInjector;
-import thelm.jaopca.events.CommonEventHandler;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
@@ -109,7 +104,6 @@ public class BlockFormType implements IBlockFormType {
 								BlockDeserializationHelper.INSTANCE::getSoundTypeName)).
 				registerTypeAdapter(TOOL_TYPE_FUNCTION_TYPE,
 						new MaterialMappedFunctionDeserializer<>(ToolType::get, ToolType::getName)).
-				registerTypeAdapter(BlockRenderLayer.class, EnumDeserializer.INSTANCE).
 				registerTypeAdapter(VoxelShape.class, VoxelShapeDeserializer.INSTANCE);
 	}
 

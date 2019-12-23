@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import net.minecraft.item.Rarity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.shapes.VoxelShape;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.helpers.IJsonHelper;
@@ -79,9 +78,6 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 		}
 		if(json.has("raytraceShape")) {
 			settings.setRaytraceShape(helper.deserializeType(json, "raytraceShape", context, VoxelShape.class));
-		}
-		if(json.has("renderLayer")) {
-			settings.setRenderLayer(helper.deserializeType(json, "renderLayer", context, BlockRenderLayer.class));
 		}
 		if(json.has("harvestTool")) {
 			JsonObject functionJson = helper.getJsonObject(json, "harvestTool");

@@ -30,7 +30,6 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -55,7 +54,6 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	private final IMaterial material;
 	protected final IFluidFormSettings settings;
 
-	protected BlockRenderLayer renderLayer;
 	protected OptionalInt tickRate = OptionalInt.empty();
 	protected OptionalDouble explosionResistance = OptionalDouble.empty();
 	protected Optional<Boolean> canSourcesMultiply = Optional.empty();
@@ -67,8 +65,6 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
-
-		renderLayer = settings.getRenderLayer();
 	}
 
 	@Override
@@ -79,11 +75,6 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	@Override
 	public IMaterial getMaterial() {
 		return material;
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return renderLayer;
 	}
 
 	@Override

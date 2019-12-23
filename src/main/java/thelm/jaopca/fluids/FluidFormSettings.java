@@ -11,7 +11,6 @@ import java.util.function.ToIntFunction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.Rarity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.SoundEvent;
 import thelm.jaopca.api.fluids.IBucketItemCreator;
 import thelm.jaopca.api.fluids.IFluidAttributesCreator;
@@ -28,7 +27,6 @@ public class FluidFormSettings implements IFluidFormSettings {
 
 	private IFluidCreator fluidCreator = JAOPCAFluid::new;
 	private ToIntFunction<IMaterial> maxLevelFunction = material->8;
-	private BlockRenderLayer renderLayer = BlockRenderLayer.TRANSLUCENT;
 	private ToIntFunction<IMaterial> tickRateFunction = material->5;
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->100;
 	private Predicate<IMaterial> canSourcesMultiplyFunction = material->false;
@@ -86,17 +84,6 @@ public class FluidFormSettings implements IFluidFormSettings {
 	@Override
 	public ToIntFunction<IMaterial> getMaxLevelFunction() {
 		return maxLevelFunction;
-	}
-
-	@Override
-	public IFluidFormSettings setRenderLayer(BlockRenderLayer renderLayer) {
-		this.renderLayer = renderLayer;
-		return this;
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return renderLayer;
 	}
 
 	@Override

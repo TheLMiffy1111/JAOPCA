@@ -9,7 +9,6 @@ import java.util.function.ToIntFunction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.Rarity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.SoundEvent;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
@@ -23,10 +22,6 @@ public interface IFluidFormSettings extends IFormSettings {
 	IFluidFormSettings setMaxLevelFunction(ToIntFunction<IMaterial> maxLevelFunction);
 
 	ToIntFunction<IMaterial> getMaxLevelFunction();
-
-	IFluidFormSettings setRenderLayer(BlockRenderLayer renderLayer);
-
-	BlockRenderLayer getRenderLayer();
 
 	IFluidFormSettings setTickRateFunction(ToIntFunction<IMaterial> tickRateFunction);
 
