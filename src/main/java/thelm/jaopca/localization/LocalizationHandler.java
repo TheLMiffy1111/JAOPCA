@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.Language;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import thelm.jaopca.api.localization.ILocalizer;
@@ -24,7 +25,10 @@ public class LocalizationHandler {
 		language = DistExecutor.callWhenOn(Dist.CLIENT, ()->()->{
 			Minecraft mc = Minecraft.getInstance();
 			if(mc != null) {
-				return mc.getLanguageManager().getCurrentLanguage().getCode();
+				Language lang = mc.getLanguageManager().getCurrentLanguage();
+				if(lang != null) {
+					return lang.getCode();
+				}
 			}
 			return "en_us";
 		});
