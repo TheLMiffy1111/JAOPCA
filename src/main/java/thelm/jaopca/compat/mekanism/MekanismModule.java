@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import mekanism.common.MekanismGases;
+import mekanism.common.registries.MekanismGases;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -53,10 +53,10 @@ public class MekanismModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:crystals").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty_slurry", GasFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:dirty_slurry").setDefaultMaterialBlacklist(BLACKLIST).
-			setSettings(GasFormType.INSTANCE.getNewSettings().setIsHidden(false));
+			setSettings(GasFormType.INSTANCE.getNewSettings().setIsHidden(true));
 	private final IForm cleanSlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_clean_slurry", GasFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:clean_slurry").setDefaultMaterialBlacklist(BLACKLIST).
-			setSettings(GasFormType.INSTANCE.getNewSettings().setIsHidden(false));
+			setSettings(GasFormType.INSTANCE.getNewSettings().setIsHidden(true));
 
 	@Override
 	public String getName() {
