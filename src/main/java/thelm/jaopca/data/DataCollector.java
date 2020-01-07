@@ -59,9 +59,14 @@ public class DataCollector {
 			String path = location.getPath();
 			path = path.substring(TAGS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
 			String[] split = path.split("/", 2);
-			String type = split[0];
-			path = split[1];
-			DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
+			if(split.length == 2) {
+				String type = split[0];
+				path = split[1];
+				DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
+			}
+			else {
+				LOGGER.error("Tag {} in namespace {} has no type", path, namespace);
+			}
 		}
 		LOGGER.info("Found {} unique defined tags", DEFINED_TAGS.size());
 		for(ResourceLocation location : getAllDataResourceLocations("recipes", name->name.endsWith(".json"))) {
