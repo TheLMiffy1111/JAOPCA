@@ -101,7 +101,7 @@ public class MekanismModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		IItemFormType itemFormType = ItemFormType.INSTANCE;	
+		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		for(IMaterial material : dirtySlurryForm.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			IGasInfo dirtySlurryInfo = GasFormType.INSTANCE.getMaterialFormInfo(dirtySlurryForm, material);
