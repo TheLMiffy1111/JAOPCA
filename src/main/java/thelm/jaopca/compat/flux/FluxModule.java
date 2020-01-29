@@ -74,7 +74,7 @@ public class FluxModule implements IModule {
 			IItemInfo gritInfo = itemFormType.getMaterialFormInfo(gritForm, material);
 			helper.registerWashingRecipe(
 					new ResourceLocation("jaopca", "flux.ore_to_grit."+material.getName()),
-					oreLocation, 1, gritInfo, 1, 0F, 200);
+					oreLocation, 1, gritInfo, 3, 0F, 200);
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());

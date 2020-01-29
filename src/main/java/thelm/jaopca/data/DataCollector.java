@@ -114,7 +114,7 @@ public class DataCollector {
 		Set<ResourceLocation> set = new TreeSet<>();
 		for(IResourcePack resourcePack : RESOURCE_PACKS) {
 			for(String namespace : resourcePack.getResourceNamespaces(ResourcePackType.SERVER_DATA)) {
-				set.addAll(resourcePack.func_225637_a_(ResourcePackType.SERVER_DATA, namespace, pathIn, Integer.MAX_VALUE, filter));
+				set.addAll(resourcePack.getAllResourceLocations(ResourcePackType.SERVER_DATA, namespace, pathIn, Integer.MAX_VALUE, filter));
 			}
 		}
 		return set;

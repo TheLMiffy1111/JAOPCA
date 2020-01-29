@@ -40,13 +40,13 @@ public class ClientEventHandler {
 			ModuleHandler.onClientSetup(event);
 		});
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
-			RenderTypeLookup.setRenderLayer(block.asBlock(), RenderType.func_228645_f_());
+			RenderTypeLookup.setRenderLayer(block.asBlock(), RenderType.translucent());
 		}
 		for(IMaterialFormFluid fluid : FluidFormType.getFluids()) {
-			RenderTypeLookup.setRenderLayer(fluid.asFluid(), RenderType.func_228645_f_());
+			RenderTypeLookup.setRenderLayer(fluid.asFluid(), RenderType.translucent());
 		}
 		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
-			RenderTypeLookup.setRenderLayer(fluidBlock.asBlock(), RenderType.func_228645_f_());
+			RenderTypeLookup.setRenderLayer(fluidBlock.asBlock(), RenderType.translucent());
 		}
 	}
 

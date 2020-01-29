@@ -82,11 +82,8 @@ public abstract class PlaceableFluid extends Fluid {
 
 	protected abstract boolean canSourcesMultiply();
 
-	/**
-	 * canFluidBeDisplaced
-	 */
 	@Override
-	protected boolean func_215665_a(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction face) {
+	protected boolean canDisplace(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction face) {
 		return face == Direction.DOWN && !isEquivalentTo(fluid);
 	}
 
@@ -107,7 +104,7 @@ public abstract class PlaceableFluid extends Fluid {
 	 * getFlow
 	 */
 	@Override
-	protected Vec3d func_215663_a(IBlockReader world, BlockPos pos, IFluidState state) {
+	protected Vec3d getFlow(IBlockReader world, BlockPos pos, IFluidState state) {
 		double x = 0;
 		double y = 0;
 		try(BlockPos.PooledMutable mutablePos = BlockPos.PooledMutable.retain()) {
@@ -117,22 +114,22 @@ public abstract class PlaceableFluid extends Fluid {
 				if(!isSameOrEmpty(offsetState)) {
 					continue;
 				}
-				float offsetHeight = offsetState.func_223408_f();
+				float offsetHeight = offsetState.getHeight();
 				float heightDiff = 0;
 				if(offsetHeight == 0) {
 					if(!world.getBlockState(mutablePos).getMaterial().blocksMovement()) {
 						BlockPos posDown = mutablePos.down();
 						final IFluidState belowState = world.getFluidState(posDown);
 						if(isSameOrEmpty(belowState)) {
-							offsetHeight = belowState.func_223408_f();
+							offsetHeight = belowState.getHeight();
 							if(offsetHeight > 0) {
-								heightDiff = state.func_223408_f()-(offsetHeight-EIGHT_NINTHS);
+								heightDiff = state.getHeight()-(offsetHeight-EIGHT_NINTHS);
 							}
 						}
 					}
 				}
 				else if(offsetHeight > 0) {
-					heightDiff = state.func_223408_f() - offsetHeight;
+					heightDiff = state.getHeight() - offsetHeight;
 				}
 				if(heightDiff == 0) {
 					continue;
@@ -161,7 +158,7 @@ public abstract class PlaceableFluid extends Fluid {
 		BlockState blockState = world.getBlockState(pos);
 		IFluidState fluidState = world.getFluidState(pos);
 		return !fluidState.getFluid().isEquivalentTo(this) && (face == Direction.UP ||
-				(blockState.getMaterial() != Material.ICE && blockState.func_224755_d(world, pos, face)));
+				(blockState.getMaterial() != Material.ICE && blockState.isSolidSide(world, pos, face)));
 	}
 
 	protected void flowAround(IWorld world, BlockPos pos, IFluidState fluidState) {
@@ -395,7 +392,7 @@ public abstract class PlaceableFluid extends Fluid {
 	}
 
 	protected boolean canFlow(IBlockReader world, BlockPos fromPos, BlockState fromBlockState, Direction direction, BlockPos toPos, BlockState toBlockState, IFluidState toFluidState, Fluid fluid) {
-		return toFluidState.func_215677_a(world, toPos, fluid, direction) && this.doShapesFillSquare(direction, world, fromPos, fromBlockState, toPos, toBlockState) && canFlowIntoBlock(world, toPos, toBlockState, fluid);
+		return toFluidState.canDisplace(world, toPos, fluid, direction) && this.doShapesFillSquare(direction, world, fromPos, fromBlockState, toPos, toBlockState) && canFlowIntoBlock(world, toPos, toBlockState, fluid);
 	}
 
 	protected boolean canFlowSource(IBlockReader world, Fluid fluid, BlockPos fromPos, BlockState fromBlockState, Direction direction, BlockPos toPos, BlockState toBlockState, IFluidState toFluidState) {
@@ -443,19 +440,13 @@ public abstract class PlaceableFluid extends Fluid {
 		return fluidState.getFluid().isEquivalentTo(world.getFluidState(pos.up()).getFluid());
 	}
 
-	/**
-	 * getFluidHeight
-	 */
 	@Override
-	public float func_215662_a(IFluidState fluidState, IBlockReader world, BlockPos pos) {
-		return fluidState.func_223408_f();
+	public float getActualHeight(IFluidState fluidState, IBlockReader world, BlockPos pos) {
+		return fluidState.getHeight();
 	}
 
-	/**
-	 * getFluidHeight
-	 */
 	@Override
-	public float func_223407_a(IFluidState fluidState) {
+	public float getHeight(IFluidState fluidState) {
 		return 0.9F*fluidState.getLevel()/maxLevel;
 	}
 
@@ -471,7 +462,7 @@ public abstract class PlaceableFluid extends Fluid {
 
 	@Override
 	public VoxelShape func_215664_b(IFluidState fluidState, IBlockReader world, BlockPos pos) {
-		return shapeMap.computeIfAbsent(fluidState, s->VoxelShapes.create(0, 0, 0, 1, s.func_215679_a(world, pos), 1));
+		return shapeMap.computeIfAbsent(fluidState, s->VoxelShapes.create(0, 0, 0, 1, s.getActualHeight(world, pos), 1));
 	}
 
 	public static int ceilDiv(int x, int y) {

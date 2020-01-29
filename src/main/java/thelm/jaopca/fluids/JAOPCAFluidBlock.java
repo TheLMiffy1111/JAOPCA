@@ -11,7 +11,6 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.ILightReader;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
@@ -70,7 +69,7 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	}
 
 	@Override
-	public int getLightValue(BlockState state, ILightReader world, BlockPos pos) {
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 		if(!lightValue.isPresent()) {
 			lightValue = OptionalInt.of(settings.getLightValueFunction().applyAsInt(getMaterial()));
 		}

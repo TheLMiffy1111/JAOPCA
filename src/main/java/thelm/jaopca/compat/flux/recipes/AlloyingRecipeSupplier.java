@@ -81,7 +81,7 @@ public class AlloyingRecipeSupplier implements Supplier<AlloyingRecipe> {
 		if(stack.isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
-		builder.itemCost = inputCounts;
+		//builder.itemCost = inputCounts;
 		builder.result = stack;
 		builder.experience = experience;
 		builder.process = time;

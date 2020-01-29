@@ -13,6 +13,6 @@ description="A mod that aims to make mods with ore processing support more ores.
 [[dependencies.jaopca]]
     modId="forge"
     mandatory=false
-    versionRange="[28.0.62,)"
+    versionRange="[30.0.48,)"
     ordering="NONE"
     side="BOTH"

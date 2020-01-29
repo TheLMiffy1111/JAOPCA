@@ -58,7 +58,7 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 	}
 
 	@Override
-	public void func_225542_b_(BlockState blockState, ServerWorld world, BlockPos pos, Random random) {
+	public void randomTick(BlockState blockState, ServerWorld world, BlockPos pos, Random random) {
 		world.getFluidState(pos).randomTick(world, pos, random);
 	}
 
