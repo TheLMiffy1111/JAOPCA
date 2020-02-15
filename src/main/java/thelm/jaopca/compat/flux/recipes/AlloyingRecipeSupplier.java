@@ -15,6 +15,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import szewek.flux.recipe.AlloyingRecipe;
 import szewek.flux.recipe.MachineRecipeSerializer;
+import thelm.jaopca.compat.flux.FluxHelper;
 import thelm.jaopca.utils.MiscHelper;
 
 public class AlloyingRecipeSupplier implements Supplier<AlloyingRecipe> {
@@ -60,28 +61,24 @@ public class AlloyingRecipeSupplier implements Supplier<AlloyingRecipe> {
 	@Override
 	public AlloyingRecipe get() {
 		MachineRecipeSerializer.Builder builder = new MachineRecipeSerializer.Builder();
-		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		IntList inputCounts = new IntArrayList(2);
+		Ingredient ing = FluxHelper.INSTANCE.getCountedIngredient(input, inputCount);
 		if(ing.hasNoMatchingItems()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		builder.ingredients.add(ing);
-		inputCounts.add(inputCount);
 		if(secondInputCount > 0) {
-			Ingredient secondIng = MiscHelper.INSTANCE.getIngredient(secondInput);
+			Ingredient secondIng = FluxHelper.INSTANCE.getCountedIngredient(secondInput, secondInputCount);
 			if(secondIng.hasNoMatchingItems()) {
 				LOGGER.warn("Empty ingredient in recipe {}: {}", key, secondIng);
 			}
 			else {
 				builder.ingredients.add(secondIng);
-				inputCounts.add(secondInputCount);
 			}
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
-		//builder.itemCost = inputCounts;
 		builder.result = stack;
 		builder.experience = experience;
 		builder.process = time;

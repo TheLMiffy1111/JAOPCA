@@ -16,5 +16,9 @@
     "gas.jaopca.mekanism_dirty_slurry": "%s Slurry",
     "gas.jaopca.mekanism_clean_slurry": "Clean %s Slurry",
 
-    "item.jaopca.flux_grits": "%s Grit"
+    "item.jaopca.flux_grits": "%s Grit",
+
+    "item.jaopca.omegacraft_dirty_dusts": "Dirty %s Dust",
+
+    "item.jaopca.silents_mechanisms_chunks": "%s Ore Chunks"
 }
