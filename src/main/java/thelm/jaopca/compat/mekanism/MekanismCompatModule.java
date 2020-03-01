@@ -32,9 +32,9 @@ public class MekanismCompatModule implements IModule {
 			"bronze", "charcoal", "coal", "copper", "diamond", "emerald", "gold", "iron", "lapis", "osmium", "quartz",
 			"refined_glowstone", "refined_obsidian", "steel", "tin"));
 	private static final Set<String> TO_CRYSTAL_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"charcoal", "coal", "diamond", "emerald", "lapis_lazuli", "quartz"));
+			"charcoal", "coal", "diamond", "emerald", "lapis", "quartz"));
 	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"coal", "copper", "diamond", "emerald", "gold", "iron", "lapis_lazuli", "osmium", "quartz", "redstone", "tin"));
+			"coal", "copper", "diamond", "emerald", "gold", "iron", "lapis", "osmium", "quartz", "redstone", "tin"));
 
 	private static final TreeMap<IMaterial, Object> ORE_BASES = new TreeMap<>();
 	private Map<IMaterial, IDynamicSpecConfig> configs;

@@ -19,11 +19,11 @@ public class UsefulMachineryHelper {
 		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, input, output, count, experience, time));
 	}
 
-	public boolean registerCompactingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CompactingRecipeSupplier(key, group, input, output, count));
+	public boolean registerCompactingRecipe(ResourceLocation key, String group, Object input, int inputCount, Object output, int outputCount, float experience, int time, int mode) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CompactingRecipeSupplier(key, group, input, inputCount, output, outputCount, time, mode));
 	}
 
-	public boolean registerCompactingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CompactingRecipeSupplier(key, input, output, count));
+	public boolean registerCompactingRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, float experience, int time, int mode) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CompactingRecipeSupplier(key, input, inputCount, output, outputCount, time, mode));
 	}
 }

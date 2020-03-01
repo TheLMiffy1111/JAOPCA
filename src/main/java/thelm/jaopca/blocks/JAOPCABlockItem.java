@@ -64,7 +64,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 		if(!hasEffect.isPresent()) {
 			hasEffect = Optional.of(settings.getHasEffectFunction().test(getMaterial()));
 		}
-		return hasEffect.get();
+		return hasEffect.get() || super.hasEffect(stack);
 	}
 
 	@Override

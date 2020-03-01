@@ -64,7 +64,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 		if(!hasEffect.isPresent()) {
 			hasEffect = Optional.of(settings.getHasEffectFunction().test(material));
 		}
-		return hasEffect.get();
+		return hasEffect.get() || super.hasEffect(stack);
 	}
 
 	@Override

@@ -132,22 +132,6 @@ public class OmegaCraftModule implements IModule {
 		api.registerItemTag(new ResourceLocation("forge", "plates/cave_magmite"),
 				new ResourceLocation("omegacraft", "plate_cave_magmite"));
 
-		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/copper"),
-				new ResourceLocation("omegacraft", "block_copperb"));
-		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/tin"),
-				new ResourceLocation("omegacraft", "block_tinb"));
-		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/lead"),
-				new ResourceLocation("omegacraft", "block_leadb"));
-		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/silver"),
-				new ResourceLocation("omegacraft", "block_silverb"));
-		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/aluminum"),
-				new ResourceLocation("omegacraft", "block_aluminumb"));
-		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/bronze"),
-				new ResourceLocation("omegacraft", "block_bronzeb"));
-		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/electrum"),
-				new ResourceLocation("omegacraft", "block_electrumb"));
-		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/steel"),
-				new ResourceLocation("omegacraft", "block_steelb"));
 		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/magmite"),
 				new ResourceLocation("omegacraft", "block_magmiteb"));
 		api.registerItemTag(new ResourceLocation("forge", "storage_blocks/cave_magmite"),

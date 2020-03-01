@@ -12,7 +12,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
-import szewek.flux.recipe.CountedIngredient;
+import szewek.fl.recipe.CountedIngredient;
 import thelm.jaopca.compat.flux.recipes.AlloyingRecipeSupplier;
 import thelm.jaopca.compat.flux.recipes.CompactingRecipeSupplier;
 import thelm.jaopca.compat.flux.recipes.GrindingRecipeSupplier;

@@ -93,6 +93,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 		return (float)explosionResistance.getAsDouble();
 	}
 
+	@Override
 	protected boolean canSourcesMultiply() {
 		if(!canSourcesMultiply.isPresent()) {
 			canSourcesMultiply = Optional.of(settings.getCanSourcesMultiplyFunction().test(material));
@@ -100,6 +101,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 		return canSourcesMultiply.get();
 	}
 
+	@Override
 	protected int getLevelDecreasePerBlock(IWorldReader world) {
 		if(!levelDecreasePerBlock.isPresent()) {
 			levelDecreasePerBlock = OptionalInt.of(settings.getLevelDecreasePerBlockFunction().applyAsInt(material));
