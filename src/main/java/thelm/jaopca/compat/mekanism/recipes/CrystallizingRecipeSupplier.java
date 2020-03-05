@@ -10,7 +10,6 @@ import mekanism.api.recipes.inputs.GasStackIngredient;
 import mekanism.common.recipe.impl.ChemicalCrystallizerIRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
 import thelm.jaopca.utils.MiscHelper;
 

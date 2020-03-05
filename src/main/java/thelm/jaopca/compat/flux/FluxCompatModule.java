@@ -1,25 +1,17 @@
 package thelm.jaopca.compat.flux;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.google.common.collect.ImmutableSetMultimap;
-import com.google.common.collect.Multimap;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.forms.IForm;
-import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormType;
-import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
@@ -29,7 +21,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "flux")
+@JAOPCAModule(modDependencies = "flux@[4.8.4,)")
 public class FluxCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(

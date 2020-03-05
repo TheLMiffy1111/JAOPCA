@@ -5,8 +5,8 @@ import java.util.Arrays;
 import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.LanguageMap;
+import net.minecraft.util.text.TranslationTextComponent;
 import thelm.jaopca.api.localization.ILocalizer;
 import thelm.jaopca.api.materials.IMaterial;
 

@@ -9,8 +9,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.objectweb.asm.Type;
@@ -93,6 +95,7 @@ public class ModuleHandler {
 				}
 				ModuleData mData = new ModuleData(module);
 				MODULE_DATAS.put(module, mData);
+				LOGGER.debug("Loaded module {}", module.getName());
 			}
 			catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 				LOGGER.fatal("Unable to load module {}", className, e);
@@ -114,7 +117,14 @@ public class ModuleHandler {
 			return true;
 		}
 		if(modList.isLoaded(modId)) {
-			return !versionRange.containsVersion(modList.getModContainerById(modId).get().getModInfo().getVersion());
+			ArtifactVersion version = modList.getModContainerById(modId).get().getModInfo().getVersion();
+			if(versionRange.containsVersion(version)) {
+				return false;
+			}
+			else {
+				LOGGER.warn("Mod {} in version range {} was requested, was {}", modId, versionRange, version);
+				return true;
+			}
 		}
 		return true;
 	}

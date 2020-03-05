@@ -12,7 +12,6 @@ import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.helpers.IMiscHelper;
-import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;

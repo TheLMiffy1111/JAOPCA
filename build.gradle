@@ -47,7 +47,7 @@ sourceSets {
     main
 }
 
-version = "3.0.0.20"
+version = "3.0.0.21"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.15.2"
 
@@ -85,8 +85,8 @@ dependencies {
     //CurseMaven
     implementation fg.deobf("curse.maven:useful-foundation:2846862")
     implementation fg.deobf("curse.maven:useful-machinery:2886834")
-    implementation fg.deobf("curse.maven:mekanism:2888667")
-    implementation fg.deobf("curse.maven:mekanism-generators:2888669")
+    implementation fg.deobf("curse.maven:mekanism:2894305")
+    implementation fg.deobf("curse.maven:mekanism-generators:2894307")
     implementation fg.deobf("curse.maven:fl:2888950")
     implementation fg.deobf("curse.maven:flux:2891623")
     implementation fg.deobf("curse.maven:themcbros-useless-mod:2886642")

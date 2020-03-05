@@ -11,8 +11,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.MultimapBuilder;
 
 import mekanism.api.MekanismAPI;
-import mekanism.api.gas.Gas;
-import mekanism.api.infuse.InfuseType;
+import mekanism.api.chemical.gas.Gas;
+import mekanism.api.chemical.infuse.InfuseType;
 import net.minecraft.resources.ResourcePackType;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;

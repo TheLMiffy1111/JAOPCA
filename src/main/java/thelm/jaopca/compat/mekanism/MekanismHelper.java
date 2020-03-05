@@ -10,9 +10,9 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 
 import mekanism.api.MekanismAPI;
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.GasTags;
+import mekanism.api.chemical.gas.Gas;
+import mekanism.api.chemical.gas.GasStack;
+import mekanism.api.chemical.gas.GasTags;
 import mekanism.api.providers.IGasProvider;
 import mekanism.api.recipes.inputs.FluidStackIngredient;
 import mekanism.api.recipes.inputs.GasStackIngredient;

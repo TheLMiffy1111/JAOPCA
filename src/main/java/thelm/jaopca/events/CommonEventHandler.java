@@ -1,19 +1,11 @@
 package thelm.jaopca.events;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.MultimapBuilder;
-
-import net.minecraft.block.Block;
 import net.minecraft.client.resources.ReloadListener;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IFutureReloadListener;
 import net.minecraft.resources.IResourceManager;
@@ -25,7 +17,6 @@ import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.data.DataCollector;

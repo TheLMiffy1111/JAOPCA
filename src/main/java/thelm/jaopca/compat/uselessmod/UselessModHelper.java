@@ -1,7 +1,6 @@
 package thelm.jaopca.compat.uselessmod;
 
 import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.compat.uselessmod.recipes.CompressingRecipeSupplier;
 import thelm.jaopca.compat.uselessmod.recipes.CrushingRecipeSupplier;
 import thelm.jaopca.utils.ApiImpl;

@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.silentchaos512.mechanisms.crafting.recipe.CrushingRecipe;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.utils.MiscHelper;
 
 public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {

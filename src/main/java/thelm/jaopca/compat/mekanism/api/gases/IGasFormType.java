@@ -3,8 +3,6 @@ package thelm.jaopca.compat.mekanism.api.gases;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 
-import thelm.jaopca.api.blocks.IBlockFormSettings;
-import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;

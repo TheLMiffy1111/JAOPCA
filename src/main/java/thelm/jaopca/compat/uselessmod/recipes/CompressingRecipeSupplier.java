@@ -11,7 +11,6 @@ import com.google.common.base.Strings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.utils.MiscHelper;
 import tk.themcbros.uselessmod.recipes.CompressorRecipe;
 

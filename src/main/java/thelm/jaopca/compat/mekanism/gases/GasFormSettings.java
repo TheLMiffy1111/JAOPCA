@@ -1,7 +1,5 @@
 package thelm.jaopca.compat.mekanism.gases;
 
-import thelm.jaopca.api.blocks.IBlockCreator;
-import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.compat.mekanism.api.gases.IGasCreator;
 import thelm.jaopca.compat.mekanism.api.gases.IGasFormSettings;

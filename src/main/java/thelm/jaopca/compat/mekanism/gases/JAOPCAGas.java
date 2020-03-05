@@ -1,11 +1,9 @@
 package thelm.jaopca.compat.mekanism.gases;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasAttributes;
+import mekanism.api.chemical.gas.Gas;
+import mekanism.api.chemical.gas.GasAttributes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import thelm.jaopca.JAOPCA;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.api.gases.IGasFormSettings;
