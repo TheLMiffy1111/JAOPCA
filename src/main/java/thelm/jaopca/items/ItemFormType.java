@@ -17,8 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistry;
-import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;

@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.silentchaos512.mechanisms.crafting.recipe.CompressingRecipe;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.utils.MiscHelper;
 
 public class CompressingRecipeSupplier implements Supplier<CompressingRecipe> {

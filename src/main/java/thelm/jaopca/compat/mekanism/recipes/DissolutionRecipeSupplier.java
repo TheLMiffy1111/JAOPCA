@@ -12,7 +12,6 @@ import mekanism.api.recipes.inputs.ItemStackIngredient;
 import mekanism.common.recipe.impl.ItemStackGasToGasIRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
 import thelm.jaopca.utils.MiscHelper;
 

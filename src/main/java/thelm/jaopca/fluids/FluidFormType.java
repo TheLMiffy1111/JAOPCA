@@ -18,8 +18,6 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.registries.IForgeRegistry;
-import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.fluids.IFluidInfo;

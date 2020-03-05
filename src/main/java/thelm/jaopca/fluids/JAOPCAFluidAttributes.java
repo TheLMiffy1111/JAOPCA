@@ -10,7 +10,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.utils.ApiImpl;

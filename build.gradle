@@ -44,14 +44,14 @@ sourceSets {
     main
 }
 
-version = "3.0.0.14"
+version = "3.0.0.22"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.14.4"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190829-1.14.3'
+    mappings channel: 'stable', version: '58-1.14.4'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client = {

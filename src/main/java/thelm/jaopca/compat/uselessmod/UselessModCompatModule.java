@@ -8,8 +8,6 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.google.common.collect.Sets;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;

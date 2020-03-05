@@ -21,7 +21,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.ToolType;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.forms.IForm;

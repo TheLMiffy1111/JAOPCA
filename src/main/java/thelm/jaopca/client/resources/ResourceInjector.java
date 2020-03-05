@@ -1,20 +1,13 @@
 package thelm.jaopca.client.resources;
 
-import java.io.InputStream;
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.JsonElement;
-
 import net.minecraft.resources.IPackFinder;
 import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.resources.ResourcePackInfo.IFactory;
-import net.minecraft.resources.ResourcePackType;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.resources.InMemoryResourcePack;
 

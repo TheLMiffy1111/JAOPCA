@@ -1,6 +1,5 @@
 package thelm.jaopca.data;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,6 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
@@ -48,7 +46,6 @@ import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.ILootFunction;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.resources.InMemoryResourcePack;
 

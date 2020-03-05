@@ -1,7 +1,6 @@
 package thelm.jaopca.compat.silentsmechanisms;
 
 import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.compat.silentsmechanisms.recipes.CompressingRecipeSupplier;
 import thelm.jaopca.compat.silentsmechanisms.recipes.CrushingRecipeSupplier;
 import thelm.jaopca.utils.ApiImpl;

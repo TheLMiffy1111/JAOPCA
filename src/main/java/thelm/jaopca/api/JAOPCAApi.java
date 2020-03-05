@@ -1,7 +1,6 @@
 package thelm.jaopca.api;
 
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -16,7 +15,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTable;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.entities.IEntityTypeFormType;

@@ -2,7 +2,6 @@ package thelm.jaopca.compat;
 
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.utils.ApiImpl;
 
 @JAOPCAModule(modDependencies = "pixellib")
 public class PixelLibModule implements IModule {

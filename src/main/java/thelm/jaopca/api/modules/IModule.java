@@ -17,7 +17,6 @@ import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.resources.IInMemoryResourcePack;
-import thelm.jaopca.modules.ModuleData;
 
 public interface IModule extends Comparable<IModule> {
 

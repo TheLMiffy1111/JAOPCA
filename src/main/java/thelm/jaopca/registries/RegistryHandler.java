@@ -8,9 +8,6 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ArrayListMultimap;
 
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoader;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 

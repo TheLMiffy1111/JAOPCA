@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.text.ITextComponent;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IMaterialFormItem;

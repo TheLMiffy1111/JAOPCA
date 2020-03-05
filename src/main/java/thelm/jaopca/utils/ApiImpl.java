@@ -1,7 +1,6 @@
 package thelm.jaopca.utils;
 
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -22,9 +21,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTable;
-import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
@@ -48,7 +45,6 @@ import thelm.jaopca.custom.json.MaterialFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.data.DataCollector;
 import thelm.jaopca.data.DataInjector;
-import thelm.jaopca.events.CommonEventHandler;
 import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.forms.Form;
 import thelm.jaopca.forms.FormHandler;
@@ -59,9 +55,9 @@ import thelm.jaopca.localization.LocalizationHandler;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.recipes.BlastingRecipeSupplier;
 import thelm.jaopca.recipes.CampfireCookingRecipeSupplier;
-import thelm.jaopca.recipes.SmeltingRecipeSupplier;
 import thelm.jaopca.recipes.ShapedRecipeSupplier;
 import thelm.jaopca.recipes.ShapelessRecipeSupplier;
+import thelm.jaopca.recipes.SmeltingRecipeSupplier;
 import thelm.jaopca.recipes.SmokingRecipeSupplier;
 import thelm.jaopca.recipes.StonecuttingRecipeSupplier;
 import thelm.jaopca.registries.RegistryHandler;

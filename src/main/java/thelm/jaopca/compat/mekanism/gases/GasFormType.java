@@ -13,8 +13,6 @@ import com.google.gson.JsonElement;
 
 import mekanism.api.gas.Gas;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistry;
-import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.MekanismDataInjector;

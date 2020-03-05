@@ -33,7 +33,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
