@@ -44,7 +44,7 @@ sourceSets {
     main
 }
 
-version = "3.0.0.22"
+version = "3.1.0.10"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.14.4"
 
@@ -70,12 +70,14 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.14.4-28.1.96"
+    minecraft "net.minecraftforge:forge:1.14.4-28.2.3"
     implementation fg.deobf("mezz.jei:jei-1.14.4:6.0.0.25")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.14.4:5.0.1.140")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.14.4:5.0.1.166")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:0.14-94-c2172d78")
 
     //JitPack
     implementation fg.deobf("org.bitbucket.kaneka:planttech2:dedaa7838c")
+    implementation fg.deobf("com.github.Creators-of-Create:Create:3371267e79")
 
     //CurseMaven
     implementation fg.deobf("curse.maven:silent-lib:2783899")
@@ -83,6 +85,8 @@ dependencies {
     implementation fg.deobf("curse.maven:silents-gems:2805015")
     implementation fg.deobf("curse.maven:themcbros-useless-mod:2806994")
     implementation fg.deobf("curse.maven:omega-craft-mod:2834535")
+    implementation fg.deobf("curse.maven:immersive-engineering:2909146")
+    implementation fg.deobf("curse.maven:create:2908438")
     implementation fg.deobf("curse.maven:cucumber:2815719")
     implementation fg.deobf("curse.maven:mystical-agriculture:2824832")
     implementation fg.deobf("curse.maven:heaven-paradise-plants:2772016")

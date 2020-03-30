@@ -21,6 +21,10 @@ public class LocalizationHandler {
 	}
 
 	public static ILocalizer getCurrentLocalizer() {
+		return LOCALIZERS.computeIfAbsent(getLanguage(), key->LocalizerDefault.INSTANCE);
+	}
+
+	public static String getLanguage() {
 		String language = "en_us";
 		language = DistExecutor.callWhenOn(Dist.CLIENT, ()->()->{
 			Minecraft mc = Minecraft.getInstance();
@@ -29,9 +33,10 @@ public class LocalizationHandler {
 				if(lang != null) {
 					return lang.getCode();
 				}
+				return mc.gameSettings.language;
 			}
 			return "en_us";
 		});
-		return LOCALIZERS.computeIfAbsent(language, key->LocalizerDefault.INSTANCE);
+		return language;
 	}
 }

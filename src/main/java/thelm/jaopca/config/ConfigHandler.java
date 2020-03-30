@@ -72,8 +72,11 @@ public class ConfigHandler {
 
 	public static double gammaValue = 2;
 
+	public static boolean checkL10nUpdates = true;
+	public static double updateInterval = 3;
+
 	public static void setupMainConfig() {
-		configDir = new File(FMLPaths.CONFIGDIR.get().toFile(), JAOPCA.MOD_ID);
+		configDir = new File(FMLPaths.CONFIGDIR.get().toFile(), "jaopca");
 		if(!configDir.exists() || !configDir.isDirectory()) {
 			try {
 				if(configDir.exists() && !configDir.isDirectory()) {
@@ -144,6 +147,10 @@ public class ConfigHandler {
 
 		mainConfig.setComment("colors", "Configurations related to color generation.");
 		gammaValue = mainConfig.getDefinedDouble("colors.gammaValue", gammaValue, "The gamma value used to blend colors.");
+	
+		mainConfig.setComment("materialLocalization", "Configurations related to material localization.");
+		checkL10nUpdates = mainConfig.getDefinedBoolean("materialLocalization.checkL10nUpdates", checkL10nUpdates, "Should the mod check for material localization updates.");
+		updateInterval = mainConfig.getDefinedDouble("materialLocalization.updateInterval", updateInterval, "The update interval of localization files in days.");
 	}
 
 	public static void setupCustomFormConfig() {

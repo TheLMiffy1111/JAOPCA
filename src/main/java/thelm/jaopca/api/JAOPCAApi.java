@@ -1,5 +1,6 @@
 package thelm.jaopca.api;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -262,6 +263,8 @@ public abstract class JAOPCAApi {
 	 * @return The current localizer based on Minecraft's current language
 	 */
 	public abstract ILocalizer currentLocalizer();
+
+	public abstract Map<String, String> currentMaterialLocalizationMap();
 
 	/**
 	 * Registers an {@link IFormType} to be used in custom form deserialization.
