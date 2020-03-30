@@ -1,7 +1,12 @@
 package thelm.jaopca.client.events;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.resources.ReloadListener;
+import net.minecraft.profiler.IProfiler;
+import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.resources.IResourceManager;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -17,6 +22,7 @@ import thelm.jaopca.client.colors.ColorHandler;
 import thelm.jaopca.client.models.ModelHandler;
 import thelm.jaopca.client.resources.ResourceInjector;
 import thelm.jaopca.fluids.FluidFormType;
+import thelm.jaopca.localization.LocalizationRepoHandler;
 import thelm.jaopca.modules.ModuleHandler;
 
 public class ClientEventHandler {
@@ -35,7 +41,19 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public void onClientSetup(FMLClientSetupEvent event) {
-		event.getMinecraftSupplier().get().getResourcePackList().addPackFinder(ResourceInjector.PackFinder.INSTANCE);
+		Minecraft mc = event.getMinecraftSupplier().get();
+		mc.getResourcePackList().addPackFinder(ResourceInjector.PackFinder.INSTANCE);
+		LocalizationRepoHandler.setup();
+		((IReloadableResourceManager)mc.getResourceManager()).addReloadListener(new ReloadListener<Object>() {
+			@Override
+			protected Object prepare(IResourceManager resourceManager, IProfiler profiler) {
+				return null;
+			}
+			@Override
+			protected void apply(Object splashList, IResourceManager resourceManager, IProfiler profiler) {
+				LocalizationRepoHandler.reload();
+			}
+		});
 		DeferredWorkQueue.runLater(()->{
 			ModuleHandler.onClientSetup(event);
 		});

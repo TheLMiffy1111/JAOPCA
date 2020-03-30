@@ -1,5 +1,6 @@
 package thelm.jaopca.utils;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -52,6 +53,7 @@ import thelm.jaopca.forms.FormRequest;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.localization.LocalizationHandler;
+import thelm.jaopca.localization.LocalizationRepoHandler;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.recipes.BlastingRecipeSupplier;
 import thelm.jaopca.recipes.CampfireCookingRecipeSupplier;
@@ -213,6 +215,11 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public ILocalizer currentLocalizer() {
 		return LocalizationHandler.getCurrentLocalizer();
+	}
+
+	@Override
+	public Map<String, String> currentMaterialLocalizationMap() {
+		return LocalizationRepoHandler.getCurrentLocalizationMap();
 	}
 
 	@Override

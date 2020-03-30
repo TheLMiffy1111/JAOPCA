@@ -33,7 +33,7 @@ public class MiscHelper implements IMiscHelper {
 
 	private MiscHelper() {}
 
-	private final ExecutorService executor = Executors.newSingleThreadExecutor();
+	private final ExecutorService executor = Executors.newSingleThreadExecutor(r->new Thread(r, "JAOPCA Executor Thread"));
 
 	@Override
 	public ResourceLocation createResourceLocation(String location, String defaultNamespace) {
