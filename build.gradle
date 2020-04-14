@@ -47,7 +47,7 @@ sourceSets {
     main
 }
 
-version = "3.2.0.8"
+version = "3.2.0.9"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.15.2"
 
@@ -73,24 +73,24 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.15.2-31.1.30"
+    minecraft "net.minecraftforge:forge:1.15.2-31.1.44"
     implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.15.2:6.0.0.10")
-    implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.15.2:1.0.16")
-    implementation fg.deobf("com.wtbw.mods:wtbw_core-1.15.2:1.0.15")
-    implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.18")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.15.2:6.0.0.15")
+    implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.15.2:1.0.17")
+    implementation fg.deobf("com.wtbw.mods:wtbw_core-1.15.2:1.0.16")
+    implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.19")
 
     //JitPack
 
     //CurseMaven
     implementation fg.deobf("curse.maven:useful-foundation:2846862")
     implementation fg.deobf("curse.maven:useful-machinery:2886834")
-    implementation fg.deobf("curse.maven:mekanism:2913421")
-    implementation fg.deobf("curse.maven:mekanism-generators:2913423")
-    implementation fg.deobf("curse.maven:fl:2911678")
-    implementation fg.deobf("curse.maven:flux:2914676")
+    implementation fg.deobf("curse.maven:mekanism:2928997")
+    implementation fg.deobf("curse.maven:mekanism-generators:2928999")
+    implementation fg.deobf("curse.maven:fl:2924388")
+    implementation fg.deobf("curse.maven:flux:2924823")
     implementation fg.deobf("curse.maven:themcbros-useless-mod:2902375")
-    implementation fg.deobf("curse.maven:omega-craft-mod:2913027")
+    implementation fg.deobf("curse.maven:omega-craft-mod:2919222")
     implementation fg.deobf("curse.maven:silent-lib:2873131")
     implementation fg.deobf("curse.maven:silents-mechanisms:2875059")
     implementation fg.deobf("curse.maven:silents-gems:2874783")

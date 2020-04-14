@@ -1,7 +1,7 @@
 package thelm.jaopca.compat.mekanism.gases;
 
 import mekanism.api.chemical.gas.Gas;
-import mekanism.api.chemical.gas.GasAttributes;
+import mekanism.api.chemical.gas.GasBuilder;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import thelm.jaopca.api.forms.IForm;
@@ -19,7 +19,7 @@ public class JAOPCAGas extends Gas implements IMaterialFormGas {
 	protected boolean isHidden;
 
 	public JAOPCAGas(IForm form, IMaterial material, IGasFormSettings settings) {
-		super(GasAttributes.builder(new ResourceLocation("jaopca", "gas/"+material.getModelType()+'/'+form.getName())));
+		super(GasBuilder.builder(new ResourceLocation("jaopca", "gas/"+material.getModelType()+'/'+form.getName())));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;

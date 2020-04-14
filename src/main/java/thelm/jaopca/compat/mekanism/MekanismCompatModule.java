@@ -25,7 +25,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism@[9.9.14,)")
+@JAOPCAModule(modDependencies = "mekanism@[9.9.20,)")
 public class MekanismCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
