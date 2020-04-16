@@ -49,7 +49,7 @@ public class DustsModule implements IModule {
 				IItemInfo dustInfo = ItemFormType.INSTANCE.getMaterialFormInfo(dustForm, material);
 				ResourceLocation materialLocation = MiscHelper.INSTANCE.getTagLocation(material.getType().getFormName(), material.getName());
 				api.registerSmeltingRecipe(
-						new ResourceLocation("jaopca", "dusts.to_material."+material.getName()),
+						new ResourceLocation("jaopca", "dusts.to_material_smelting."+material.getName()),
 						dustInfo, materialLocation, 1, 0.7F, 200);
 				api.registerBlastingRecipe(
 						new ResourceLocation("jaopca", "dusts.to_material_blasting."+material.getName()),

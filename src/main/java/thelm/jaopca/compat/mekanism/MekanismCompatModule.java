@@ -36,7 +36,6 @@ public class MekanismCompatModule implements IModule {
 	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"coal", "copper", "diamond", "emerald", "gold", "iron", "lapis_lazuli", "osmium", "quartz", "redstone", "tin"));
 
-	private static final TreeMap<IMaterial, Object> ORE_BASES = new TreeMap<>();
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	@Override

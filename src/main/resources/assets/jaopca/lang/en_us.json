@@ -18,5 +18,7 @@
     "gas.jaopca.mekanism_dirty_slurry": "%s Slurry",
     "gas.jaopca.mekanism_clean_slurry": "Clean %s Slurry",
 
-    "item.jaopca.omegacraft_dirty_dusts": "Dirty %s Dust"
+    "item.jaopca.omegacraft_dirty_dusts": "Dirty %s Dust",
+
+    "item.jaopca.create_crushed_ores": "Crushed %s Ore"
 }
