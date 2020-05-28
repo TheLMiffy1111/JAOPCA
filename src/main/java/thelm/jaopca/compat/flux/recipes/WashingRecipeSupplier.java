@@ -80,6 +80,7 @@ public class WashingRecipeSupplier implements Supplier<WashingRecipe> {
 		builder.result = stack;
 		builder.experience = experience;
 		builder.process = time;
-		return new WashingRecipe(key, group, builder);
+		builder.withGroup(group);
+		return new WashingRecipe(key, builder);
 	}
 }

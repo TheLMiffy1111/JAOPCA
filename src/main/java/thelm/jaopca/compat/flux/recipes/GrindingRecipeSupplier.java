@@ -80,6 +80,7 @@ public class GrindingRecipeSupplier implements Supplier<GrindingRecipe> {
 		builder.result = stack;
 		builder.experience = experience;
 		builder.process = time;
-		return new GrindingRecipe(key, group, builder);
+		builder.withGroup(group);
+		return new GrindingRecipe(key, builder);
 	}
 }

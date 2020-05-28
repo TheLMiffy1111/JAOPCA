@@ -20,12 +20,14 @@ import com.google.gson.GsonBuilder;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IPackFinder;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.resources.ResourcePackInfo;
@@ -49,7 +51,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.resources.InMemoryResourcePack;
 
-public class DataInjector {
+public class DataInjector extends ReloadListener<Object> {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final ListMultimap<ResourceLocation, Supplier<? extends Block>> BLOCK_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
@@ -150,6 +152,16 @@ public class DataInjector {
 
 	private DataInjector(RecipeManager recipeManager) {
 		this.recipeManager = recipeManager;
+	}
+
+	@Override
+	protected Object prepare(IResourceManager resourceManager, IProfiler profiler) {
+		return null;
+	}
+
+	@Override
+	protected void apply(Object splashList, IResourceManager resourceManager, IProfiler profiler) {
+		injectRecipes(resourceManager);
 	}
 
 	public void injectRecipes(IResourceManager resourceManager) {

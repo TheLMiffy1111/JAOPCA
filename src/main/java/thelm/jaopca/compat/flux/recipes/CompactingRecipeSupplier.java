@@ -80,6 +80,7 @@ public class CompactingRecipeSupplier implements Supplier<CompactingRecipe> {
 		builder.result = stack;
 		builder.experience = experience;
 		builder.process = time;
-		return new CompactingRecipe(key, group, builder);
+		builder.withGroup(group);
+		return new CompactingRecipe(key, builder);
 	}
 }

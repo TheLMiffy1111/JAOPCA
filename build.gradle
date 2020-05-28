@@ -47,7 +47,7 @@ sourceSets {
     main
 }
 
-version = "3.2.0.9"
+version = "3.2.0.10"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.15.2"
 
@@ -73,27 +73,28 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.15.2-31.1.44"
-    implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.15.2:6.0.0.15")
-    implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.15.2:1.0.17")
-    implementation fg.deobf("com.wtbw.mods:wtbw_core-1.15.2:1.0.16")
-    implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.19")
+    minecraft "net.minecraftforge:forge:1.15.2-31.2.5"
+    implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.0.4")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.15.2:6.0.0.29")
+    implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.15.2:1.0.20")
+    implementation fg.deobf("com.wtbw.mods:wtbw_core-1.15.2:1.0.18")
+    implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.23")
 
     //JitPack
 
     //CurseMaven
     implementation fg.deobf("curse.maven:useful-foundation:2846862")
     implementation fg.deobf("curse.maven:useful-machinery:2886834")
-    implementation fg.deobf("curse.maven:mekanism:2928997")
-    implementation fg.deobf("curse.maven:mekanism-generators:2928999")
-    implementation fg.deobf("curse.maven:fl:2924388")
-    implementation fg.deobf("curse.maven:flux:2924823")
+    implementation fg.deobf("curse.maven:mekanism:2958427")
+    implementation fg.deobf("curse.maven:mekanism-generators:2958429")
+    implementation fg.deobf("curse.maven:fl:2963208")
+    implementation fg.deobf("curse.maven:flux:2966955")
     implementation fg.deobf("curse.maven:themcbros-useless-mod:2902375")
     implementation fg.deobf("curse.maven:omega-craft-mod:2919222")
-    implementation fg.deobf("curse.maven:silent-lib:2873131")
-    implementation fg.deobf("curse.maven:silents-mechanisms:2875059")
-    implementation fg.deobf("curse.maven:silents-gems:2874783")
+    implementation fg.deobf("curse.maven:silent-lib:2946599")
+    implementation fg.deobf("curse.maven:silents-mechanisms:2948946")
+    implementation fg.deobf("curse.maven:silents-gems:2940183")
+    implementation fg.deobf("curse.maven:industrial-reborn:2942538")
 }
 
 jar {

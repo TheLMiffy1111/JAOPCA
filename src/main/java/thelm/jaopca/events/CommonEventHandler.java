@@ -86,16 +86,7 @@ public class CommonEventHandler {
 		MinecraftServer server = event.getServer();
 		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)server.getResourceManager()).reloadListeners;
 		DataInjector instance = DataInjector.getNewInstance(server.getRecipeManager());
-		reloadListeners.add(reloadListeners.indexOf(server.getRecipeManager())+1, new ReloadListener<Object>() {
-			@Override
-			protected Object prepare(IResourceManager resourceManager, IProfiler profiler) {
-				return null;
-			}
-			@Override
-			protected void apply(Object splashList, IResourceManager resourceManager, IProfiler profiler) {
-				instance.injectRecipes(resourceManager);
-			}
-		});
+		reloadListeners.add(reloadListeners.indexOf(server.getRecipeManager())+1, instance);
 		server.getResourcePacks().addPackFinder(DataInjector.PackFinder.INSTANCE);
 	}
 }

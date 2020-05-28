@@ -27,7 +27,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "flux@[4.8.4,)")
+@JAOPCAModule(modDependencies = "flux@[4.16.1,)")
 public class FluxModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(

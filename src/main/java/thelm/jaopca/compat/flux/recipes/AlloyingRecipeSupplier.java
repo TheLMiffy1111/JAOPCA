@@ -80,6 +80,7 @@ public class AlloyingRecipeSupplier implements Supplier<AlloyingRecipe> {
 		builder.result = stack;
 		builder.experience = experience;
 		builder.process = time;
-		return new AlloyingRecipe(key, group, builder);
+		builder.withGroup(group);
+		return new AlloyingRecipe(key, builder);
 	}
 }
