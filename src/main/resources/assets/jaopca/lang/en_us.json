@@ -20,5 +20,7 @@
 
     "item.jaopca.omegacraft_dirty_dusts": "Dirty %s Dust",
 
-    "item.jaopca.silents_mechanisms_chunks": "%s Ore Chunks"
+    "item.jaopca.silents_mechanisms_chunks": "%s Ore Chunks",
+
+    "item.jaopca.create_crushed_ores": "Crushed %s Ore"
 }

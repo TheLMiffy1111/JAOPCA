@@ -47,7 +47,7 @@ sourceSets {
     main
 }
 
-version = "3.2.0.10"
+version = "3.2.0.11"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.15.2"
 
@@ -81,6 +81,7 @@ dependencies {
     implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.23")
 
     //JitPack
+    //implementation fg.deobf("com.github.Creators-of-Create:Create:8cf8dbaf74")
 
     //CurseMaven
     implementation fg.deobf("curse.maven:useful-foundation:2846862")
@@ -95,6 +96,7 @@ dependencies {
     implementation fg.deobf("curse.maven:silents-mechanisms:2948946")
     implementation fg.deobf("curse.maven:silents-gems:2940183")
     implementation fg.deobf("curse.maven:industrial-reborn:2942538")
+    implementation fg.deobf("curse.maven:create:2975674")
 }
 
 jar {
