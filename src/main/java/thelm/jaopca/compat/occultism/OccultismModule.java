@@ -1,9 +1,12 @@
-package thelm.jaopca.compat.uselessmod;
+package thelm.jaopca.compat.occultism;
 
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
+
+import com.google.common.collect.ImmutableSetMultimap;
+import com.google.common.collect.Multimap;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -17,20 +20,27 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "uselessmod")
-public class UselessModNonIngotModule implements IModule {
+@JAOPCAModule(modDependencies = "occultism")
+public class OccultismModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"coal", "diamond", "emerald", "lapis", "quartz", "redstone"));
+			"copper", "gold", "iesnium", "iron", "silver"));
 
 	@Override
 	public String getName() {
-		return "uselessmod_noningot";
+		return "occultism";
+	}
+
+	@Override
+	public Multimap<Integer, String> getModuleDependencies() {
+		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		builder.put(0, "dusts");
+		return builder.build();
 	}
 
 	@Override
 	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.GEM, MaterialType.CRYSTAL, MaterialType.DUST);
+		return EnumSet.of(MaterialType.INGOT);
 	}
 
 	@Override
@@ -41,21 +51,14 @@ public class UselessModNonIngotModule implements IModule {
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		UselessModHelper helper = UselessModHelper.INSTANCE;
+		OccultismHelper helper = OccultismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-			if(material.getType() != MaterialType.DUST) {
-				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "uselessmod.ore_to_material."+material.getName()),
-						oreLocation, materialLocation, 2, 0.5F, 200);
-			}
-			else {
-				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "uselessmod.ore_to_material."+material.getName()),
-						oreLocation, materialLocation, 5, 0, 200);
-			}
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+			helper.registerCrushingRecipe(
+					new ResourceLocation("jaopca", "occultism.ore_to_dust."+material.getName()),
+					oreLocation, dustLocation, 2, 200);
 		}
 	}
 }

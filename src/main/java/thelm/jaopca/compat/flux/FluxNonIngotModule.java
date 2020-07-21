@@ -1,4 +1,4 @@
-package thelm.jaopca.compat.uselessmod;
+package thelm.jaopca.compat.flux;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -17,15 +17,15 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "uselessmod")
-public class UselessModNonIngotModule implements IModule {
+@JAOPCAModule(modDependencies = "flux@[4.16.1,)")
+public class FluxNonIngotModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"coal", "diamond", "emerald", "lapis", "quartz", "redstone"));
+			"coal", "diamond", "emerald", "lapis", "quartz"));
 
 	@Override
 	public String getName() {
-		return "uselessmod_noningot";
+		return "flux_non_ingot";
 	}
 
 	@Override
@@ -41,20 +41,20 @@ public class UselessModNonIngotModule implements IModule {
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		UselessModHelper helper = UselessModHelper.INSTANCE;
+		FluxHelper helper = FluxHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			if(material.getType() != MaterialType.DUST) {
-				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "uselessmod.ore_to_material."+material.getName()),
-						oreLocation, materialLocation, 2, 0.5F, 200);
+				helper.registerWashingRecipe(
+						new ResourceLocation("jaopca", "flux.ore_to_material."+material.getName()),
+						oreLocation, 1, materialLocation, 3, 0F, 200);
 			}
 			else {
-				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "uselessmod.ore_to_material."+material.getName()),
-						oreLocation, materialLocation, 5, 0, 200);
+				helper.registerWashingRecipe(
+						new ResourceLocation("jaopca", "flux.ore_to_material."+material.getName()),
+						oreLocation, 1, materialLocation, 6, 0F, 200);
 			}
 		}
 	}
