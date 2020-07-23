@@ -35,6 +35,9 @@ repositories {
         dirs "libs"
 	}
     maven {
+	    url = "https://repo.spongepowered.org/maven"
+    }
+    maven {
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
@@ -55,7 +58,7 @@ sourceSets {
     main
 }
 
-version = "3.3.0.0"
+version = "3.3.0.1"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.1"
 
@@ -81,33 +84,25 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.1-32.0.70"
-    implementation "com.github.LXGaming:MixinBootstrap:v1.0.3"
+    minecraft "net.minecraftforge:forge:1.16.1-32.0.75"
 
     implementation fg.deobf("mezz.jei:jei-1.16.1:7.0.0.6")
     implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.1:7.0.0.13")
 	implementation fg.deobf("mekanism:Mekanism:1.16.1-10.0.3.426")
 	implementation fg.deobf("mekanism:Mekanism:1.16.1-10.0.3.426:generators")
-    //implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.15.2:1.0.20")
-    //implementation fg.deobf("com.wtbw.mods:wtbw_core-1.15.2:1.0.18")
-    //implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.23")
 
     //JitPack
     implementation fg.deobf("com.github.AlasDiablo:JANOEO:4.4.0.42-experimental")
 
     //CurseMaven
-    //implementation fg.deobf("curse.maven:useful-foundation:2846862")
-    //implementation fg.deobf("curse.maven:useful-machinery:2886834")
-    //implementation fg.deobf("curse.maven:fl:2963208")
-    //implementation fg.deobf("curse.maven:flux:2966955")
-    //implementation fg.deobf("curse.maven:themcbros-useless-mod:2902375")
-    //implementation fg.deobf("curse.maven:omega-craft-mod:2919222")
     implementation fg.deobf("curse.maven:silent-lib:3009162")
     implementation fg.deobf("curse.maven:silents-mechanisms:3011881")
     implementation fg.deobf("curse.maven:silents-gems:3010282")
     implementation fg.deobf("curse.maven:silent-gear:3011289")
     implementation fg.deobf("curse.maven:industrial-reborn:3000553")
-    //implementation fg.deobf("curse.maven:create:2976507")
+    implementation fg.deobf("curse.maven:essentials:3010860")
+    implementation fg.deobf("curse.maven:crossroads-mc:3007253")
+    implementation fg.deobf("curse.maven:charcoal-pit:3010696")
 }
 
 jar {

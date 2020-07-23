@@ -22,7 +22,6 @@ import mekanism.api.recipes.inputs.chemical.GasStackIngredient;
 import mekanism.api.recipes.inputs.chemical.SlurryStackIngredient;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -59,8 +58,8 @@ public class MekanismHelper {
 		else if(obj instanceof ResourceLocation) {
 			return FluidStackIngredient.from(makeFluidWrapperTag((ResourceLocation)obj), amount);
 		}
-		else if(obj instanceof Tag<?>) {
-			return FluidStackIngredient.from((Tag<Fluid>)obj, amount);
+		else if(obj instanceof ITag<?>) {
+			return FluidStackIngredient.from((ITag<Fluid>)obj, amount);
 		}
 		else if(obj instanceof FluidStack) {
 			return FluidStackIngredient.from((FluidStack)obj);
@@ -93,8 +92,8 @@ public class MekanismHelper {
 		else if(obj instanceof ResourceLocation) {
 			return GasStackIngredient.from(getGasTag((ResourceLocation)obj), amount);
 		}
-		else if(obj instanceof Tag<?>) {
-			return GasStackIngredient.from((Tag<Gas>)obj, amount);
+		else if(obj instanceof ITag<?>) {
+			return GasStackIngredient.from((ITag<Gas>)obj, amount);
 		}
 		else if(obj instanceof GasStack) {
 			return GasStackIngredient.from((GasStack)obj);
@@ -127,8 +126,8 @@ public class MekanismHelper {
 		else if(obj instanceof ResourceLocation) {
 			return SlurryStackIngredient.from(getSlurryTag((ResourceLocation)obj), amount);
 		}
-		else if(obj instanceof Tag<?>) {
-			return SlurryStackIngredient.from((Tag<Slurry>)obj, amount);
+		else if(obj instanceof ITag<?>) {
+			return SlurryStackIngredient.from((ITag<Slurry>)obj, amount);
 		}
 		else if(obj instanceof SlurryStack) {
 			return SlurryStackIngredient.from((SlurryStack)obj);
@@ -139,7 +138,7 @@ public class MekanismHelper {
 		else if(obj instanceof ISlurryProvider) {
 			return SlurryStackIngredient.from((ISlurryProvider)obj, amount);
 		}
-		else if(obj instanceof IGasProvider[]) {
+		else if(obj instanceof ISlurryProvider[]) {
 			return SlurryStackIngredient.createMulti(Arrays.stream((ISlurryProvider[])obj).map(g->SlurryStackIngredient.from(g, amount)).toArray(SlurryStackIngredient[]::new));
 		}
 		else if(obj instanceof JsonElement) {
@@ -164,8 +163,8 @@ public class MekanismHelper {
 		else if(obj instanceof ResourceLocation) {
 			return getPreferredGasStack(getGasTag((ResourceLocation)obj).getAllElements(), amount);
 		}
-		else if(obj instanceof Tag<?>) {
-			return getPreferredGasStack(((Tag<Gas>)obj).getAllElements(), amount);
+		else if(obj instanceof ITag<?>) {
+			return getPreferredGasStack(((ITag<Gas>)obj).getAllElements(), amount);
 		}
 		return GasStack.EMPTY;
 	}
@@ -186,8 +185,8 @@ public class MekanismHelper {
 		else if(obj instanceof ResourceLocation) {
 			return getPreferredSlurryStack(getSlurryTag((ResourceLocation)obj).getAllElements(), amount);
 		}
-		else if(obj instanceof Tag<?>) {
-			return getPreferredSlurryStack(((Tag<Slurry>)obj).getAllElements(), amount);
+		else if(obj instanceof ITag<?>) {
+			return getPreferredSlurryStack(((ITag<Slurry>)obj).getAllElements(), amount);
 		}
 		return SlurryStack.EMPTY;
 	}

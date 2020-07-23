@@ -98,7 +98,19 @@ public class MekanismDataInjector {
 		config.setComment("infuseTypeTags", "Configurations related to infuse type tags.");
 		INFUSE_TYPE_TAG_BLACKLIST.addAll(Lists.transform(config.getDefinedStringList("infuseTypeTags.blacklist", new ArrayList<>(),
 				"List of infuse type tags that should not be added."), ResourceLocation::new));
-		DataCollector.getDefinedTags("fluids").addAll(Lists.transform(config.getDefinedStringList("infuseTypeTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags("infuseTypes").addAll(Lists.transform(config.getDefinedStringList("infuseTypeTags.customDefined", new ArrayList<>(),
+				"List of infuse type tags that should be considered as defined."), ResourceLocation::new));
+
+		config.setComment("pigmentTags", "Configurations related to pigment tags.");
+		PIGMENT_TAG_BLACKLIST.addAll(Lists.transform(config.getDefinedStringList("pigmentTags.blacklist", new ArrayList<>(),
+				"List of infuse type tags that should not be added."), ResourceLocation::new));
+		DataCollector.getDefinedTags("pigments").addAll(Lists.transform(config.getDefinedStringList("pigmentTags.customDefined", new ArrayList<>(),
+				"List of infuse type tags that should be considered as defined."), ResourceLocation::new));
+
+		config.setComment("slurryTags", "Configurations related to slurry tags.");
+		SLURRY_TAG_BLACKLIST.addAll(Lists.transform(config.getDefinedStringList("slurryTags.blacklist", new ArrayList<>(),
+				"List of infuse type tags that should not be added."), ResourceLocation::new));
+		DataCollector.getDefinedTags("slurries").addAll(Lists.transform(config.getDefinedStringList("slurryTags.customDefined", new ArrayList<>(),
 				"List of infuse type tags that should be considered as defined."), ResourceLocation::new));
 	}
 
