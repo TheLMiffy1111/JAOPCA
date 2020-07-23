@@ -153,13 +153,6 @@ public class FluidFormSettingsDeserializer implements JsonDeserializer<IFluidFor
 			}
 			settings.setItemStackLimitFunction(helper.deserializeType(json, "itemStackLimit", context, FormTypeHandler.INT_FUNCTION_TYPE));
 		}
-		if(json.has("isBeaconPayment")) {
-			JsonObject functionJson = helper.getJsonObject(json, "itemStackLimit");
-			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", false);
-			}
-			settings.setIsBeaconPaymentFunction(helper.deserializeType(json, "isBeaconPayment", context, FormTypeHandler.PREDICATE_TYPE));
-		}
 		if(json.has("hasEffect")) {
 			boolean hasEffect = helper.getBoolean(json, "hasEffect");
 			settings.setHasEffectFunction(m->m.hasEffect() || hasEffect);

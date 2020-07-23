@@ -17,11 +17,11 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism@[9.9.20,)")
+@JAOPCAModule(modDependencies = "mekanism")
 public class MekanismNonIngotModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"coal", "diamond", "emerald", "lapis", "quartz", "redstone"));
+			"coal", "diamond", "emerald", "fluorite", "lapis", "quartz", "redstone"));
 
 	@Override
 	public String getName() {

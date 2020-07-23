@@ -132,18 +132,16 @@ public class BlockFormType implements IBlockFormType {
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
 				RegistryHandler.registerForgeRegistryEntry(blockItem);
 
-				Supplier<Block> blockSupplier = ()->block;
-				DataInjector.registerBlockTag(helper.createResourceLocation(secondaryName), blockSupplier);
-				DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, material.getName()), blockSupplier);
+				DataInjector.registerBlockTag(helper.createResourceLocation(secondaryName), registryName);
+				DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, alternativeName), blockSupplier);
+					DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
 				}
 
-				Supplier<Item> itemSupplier = ()->blockItem;
-				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), itemSupplier);
-				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName()), itemSupplier);
+				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
+				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName), itemSupplier);
+					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
 				}
 			}
 		}

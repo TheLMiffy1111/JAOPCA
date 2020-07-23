@@ -11,9 +11,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
@@ -25,10 +26,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -49,7 +48,7 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 
 		StateContainer.Builder<Block, BlockState> builder = new StateContainer.Builder<>(this);
 		fillStateContainer(builder);
-		stateContainer = builder.create(BlockState::new);
+		stateContainer = builder.func_235882_a_(Block::getDefaultState, BlockState::new);
 		setDefaultState(stateContainer.getBaseState());
 	}
 
@@ -73,7 +72,7 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 	}
 
 	@Override
-	public IFluidState getFluidState(BlockState blockState) {
+	public FluidState getFluidState(BlockState blockState) {
 		IntegerProperty fluidLevelProperty = fluid.getLevelProperty();
 		int blockLevel = blockState.get(levelProperty);
 		int fluidLevel = blockLevel >= maxLevel ? maxLevel+1 : maxLevel-blockLevel;
@@ -83,7 +82,7 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public boolean isSideInvisible(BlockState blockState, BlockState adjacentBlockState, Direction side) {
-		return adjacentBlockState.getFluidState().getFluid().isEquivalentTo(fluid) || super.isSolid(blockState);
+		return adjacentBlockState.getFluidState().getFluid().isEquivalentTo(fluid);
 	}
 
 	@Override
@@ -102,21 +101,16 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 	}
 
 	@Override
-	public int tickRate(IWorldReader world) {
-		return fluid.getTickRate(world);
-	}
-
-	@Override
 	public void onBlockAdded(BlockState blockState, World world, BlockPos pos, BlockState oldBlockState, boolean isMoving) {
 		if(reactWithNeighbors(world, pos, blockState)) {
-			world.getPendingFluidTicks().scheduleTick(pos, blockState.getFluidState().getFluid(), tickRate(world));
+			world.getPendingFluidTicks().scheduleTick(pos, blockState.getFluidState().getFluid(), fluid.getTickRate(world));
 		}
 	}
 
 	@Override
 	public BlockState updatePostPlacement(BlockState blockState, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 		if(blockState.getFluidState().isSource() || facingState.getFluidState().isSource()) {
-			world.getPendingFluidTicks().scheduleTick(currentPos, blockState.getFluidState().getFluid(), tickRate(world));
+			world.getPendingFluidTicks().scheduleTick(currentPos, blockState.getFluidState().getFluid(), fluid.getTickRate(world));
 		}
 		return super.updatePostPlacement(blockState, facing, facingState, world, currentPos, facingPos);
 	}
@@ -124,7 +118,7 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 	@Override
 	public void neighborChanged(BlockState blockState, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		if(reactWithNeighbors(world, pos, blockState)) {
-			world.getPendingFluidTicks().scheduleTick(pos, blockState.getFluidState().getFluid(), tickRate(world));
+			world.getPendingFluidTicks().scheduleTick(pos, blockState.getFluidState().getFluid(), fluid.getTickRate(world));
 		}
 	}
 

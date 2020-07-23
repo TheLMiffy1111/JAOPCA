@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.LanguageMap;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -20,10 +20,10 @@ public class LocalizerDefault implements ILocalizer {
 	public static final LocalizerDefault INSTANCE = new LocalizerDefault();
 
 	@Override
-	public ITextComponent localizeMaterialForm(String formTranslationKey, IMaterial material, String overrideKey) {
+	public IFormattableTextComponent localizeMaterialForm(String formTranslationKey, IMaterial material, String overrideKey) {
 		LanguageMap languageMap = LanguageMap.getInstance();
 		Map<String, String> locMap = ApiImpl.INSTANCE.currentMaterialLocalizationMap();
-		if(languageMap.exists(overrideKey)) {
+		if(languageMap.func_230506_b_(overrideKey)) {
 			return new TranslationTextComponent(overrideKey);
 		}
 		else if(locMap.containsKey(overrideKey)) {
@@ -31,8 +31,8 @@ public class LocalizerDefault implements ILocalizer {
 		}
 		String materialName;
 		String materialKey = "jaopca.material."+material.getName();
-		if(languageMap.exists(materialKey)) {
-			materialName = languageMap.translateKey(materialKey);
+		if(languageMap.func_230506_b_(materialKey)) {
+			materialName = languageMap.func_230503_a_(materialKey);
 		}
 		else if(locMap.containsKey(materialKey)) {
 			materialName = locMap.get(materialKey);
@@ -40,7 +40,7 @@ public class LocalizerDefault implements ILocalizer {
 		else {
 			materialName = splitAndCapitalize(material.getName());
 		}
-		if(languageMap.exists(formTranslationKey) || !locMap.containsKey(formTranslationKey)) {
+		if(languageMap.func_230506_b_(formTranslationKey) || !locMap.containsKey(formTranslationKey)) {
 			return new TranslationTextComponent(formTranslationKey, materialName);
 		}
 		else {

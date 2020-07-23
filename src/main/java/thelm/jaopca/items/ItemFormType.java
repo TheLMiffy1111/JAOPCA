@@ -106,10 +106,10 @@ public class ItemFormType implements IItemFormType {
 				RegistryHandler.registerForgeRegistryEntry(item);
 
 				Supplier<Item> itemSupplier = ()->item;
-				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), itemSupplier);
-				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName()), itemSupplier);
+				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
+				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName), itemSupplier);
+					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
 				}
 			}
 		}

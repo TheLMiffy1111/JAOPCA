@@ -20,8 +20,8 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.loot.LootTable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.JAOPCAApi;
@@ -253,75 +253,55 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerBlockTag(ResourceLocation key, Supplier<? extends Block> blockSupplier) {
+	public boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey) {
 		if(ConfigHandler.BLOCK_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerBlockTag(key, blockSupplier);
+		return DataInjector.registerBlockTag(key, blockKey);
 	}
 
 	@Override
 	public boolean registerBlockTag(ResourceLocation key, Block block) {
-		return registerBlockTag(key, ()->block);
-	}
-
-	@Override
-	public boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey) {
-		return registerBlockTag(key, ()->ForgeRegistries.BLOCKS.getValue(blockKey));
-	}
-
-	@Override
-	public boolean registerItemTag(ResourceLocation key, Supplier<? extends Item> itemSupplier) {
-		if(ConfigHandler.ITEM_TAG_BLACKLIST.contains(key)) {
-			return false;
-		}
-		return DataInjector.registerItemTag(key, itemSupplier);
-	}
-
-	@Override
-	public boolean registerItemTag(ResourceLocation key, Item item) {
-		return registerItemTag(key, ()->item);
+		return registerBlockTag(key, block.getRegistryName());
 	}
 
 	@Override
 	public boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey) {
-		return registerItemTag(key, ()->ForgeRegistries.ITEMS.getValue(itemKey));
-	}
-
-	@Override
-	public boolean registerFluidTag(ResourceLocation key, Supplier<? extends Fluid> fluidSupplier) {
-		if(ConfigHandler.FLUID_TAG_BLACKLIST.contains(key)) {
+		if(ConfigHandler.ITEM_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerFluidTag(key, fluidSupplier);
+		return DataInjector.registerItemTag(key, itemKey);
 	}
 
 	@Override
-	public boolean registerFluidTag(ResourceLocation key, Fluid fluid) {
-		return registerFluidTag(key, ()->fluid);
+	public boolean registerItemTag(ResourceLocation key, Item item) {
+		return registerItemTag(key, item.getRegistryName());
 	}
 
 	@Override
 	public boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey) {
-		return registerFluidTag(key, ()->ForgeRegistries.FLUIDS.getValue(fluidKey));
-	}
-
-	@Override
-	public boolean registerEntityTypeTag(ResourceLocation key, Supplier<? extends EntityType<?>> entityTypeSupplier) {
-		if(ConfigHandler.ENTITY_TYPE_TAG_BLACKLIST.contains(key)) {
+		if(ConfigHandler.FLUID_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerEntityTypeTag(key, entityTypeSupplier);
+		return DataInjector.registerFluidTag(key, fluidKey);
 	}
 
 	@Override
-	public boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType) {
-		return registerEntityTypeTag(key, ()->entityType);
+	public boolean registerFluidTag(ResourceLocation key, Fluid fluid) {
+		return registerFluidTag(key, fluid.getRegistryName());
 	}
 
 	@Override
 	public boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey) {
-		return registerEntityTypeTag(key, ()->ForgeRegistries.ENTITIES.getValue(entityTypeKey));
+		if(ConfigHandler.ENTITY_TYPE_TAG_BLACKLIST.contains(key)) {
+			return false;
+		}
+		return DataInjector.registerEntityTypeTag(key, entityTypeKey);
+	}
+
+	@Override
+	public boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType) {
+		return registerEntityTypeTag(key, entityType.getRegistryName());
 	}
 
 	@Override

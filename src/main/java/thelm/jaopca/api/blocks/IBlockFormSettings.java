@@ -68,10 +68,6 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	ToIntFunction<IMaterial> getHarvestLevelFunction();
 
-	IBlockFormSettings setIsBeaconBaseFunction(Predicate<IMaterial> isBeaconBaseFunction);
-
-	Predicate<IMaterial> getIsBeaconBaseFunction();
-
 	IBlockFormSettings setFlammabilityFunction(ToIntFunction<IMaterial> flammabilityFunction);
 
 	ToIntFunction<IMaterial> getFlammabilityFunction();
@@ -103,10 +99,6 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction);
 
 	ToIntFunction<IMaterial> getItemStackLimitFunction();
-
-	IBlockFormSettings setIsBeaconPaymentFunction(Predicate<IMaterial> beaconPaymentFunction);
-
-	Predicate<IMaterial> getIsBeaconPaymentFunction();
 
 	IBlockFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction);
 

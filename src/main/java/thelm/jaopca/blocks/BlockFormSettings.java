@@ -11,14 +11,14 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.Rarity;
+import net.minecraft.loot.ConstantRange;
+import net.minecraft.loot.ItemLootEntry;
+import net.minecraft.loot.LootParameterSets;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.conditions.SurvivesExplosion;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.storage.loot.ConstantRange;
-import net.minecraft.world.storage.loot.ItemLootEntry;
-import net.minecraft.world.storage.loot.LootParameterSets;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.conditions.SurvivesExplosion;
 import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.blocks.IBlockCreator;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
@@ -34,14 +34,15 @@ public class BlockFormSettings implements IBlockFormSettings {
 
 	private IBlockCreator blockCreator = JAOPCABlock::new;
 	private Function<IMaterial, Material> materialFunction = material->Material.IRON;
-	private Function<IMaterial, MaterialColor> materialColorFunction = material->{
-		int color = material.getColor();
-		return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
-				min((matColor1, matColor2)->Integer.compare(
-						MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
-						MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
-				orElse(MaterialColor.IRON);
-	};
+	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
+	//material->{
+	//	int color = material.getColor();
+	//	return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
+	//			min((matColor1, matColor2)->Integer.compare(
+	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
+	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
+	//			orElse(MaterialColor.IRON);
+	//};
 	private boolean blocksMovement = true;
 	private Function<IMaterial, SoundType> soundTypeFunction = material->SoundType.METAL;
 	private ToIntFunction<IMaterial> lightValueFunction = material->0;
@@ -53,7 +54,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private VoxelShape raytraceShape = VoxelShapes.empty();
 	private Function<IMaterial, ToolType> harvestToolFunction = material->ToolType.PICKAXE;
 	private ToIntFunction<IMaterial> harvestLevelFunction = material->0;
-	private Predicate<IMaterial> isBeaconBaseFunction = material->false;
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
@@ -66,7 +66,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 
 	private IBlockItemCreator itemBlockCreator = JAOPCABlockItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
-	private Predicate<IMaterial> beaconPaymentFunction = material->false;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private Function<IMaterial, Rarity> displayRarityFunction = material->material.getDisplayRarity();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
@@ -220,17 +219,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setIsBeaconBaseFunction(Predicate<IMaterial> isBeaconBaseFunction) {
-		this.isBeaconBaseFunction = isBeaconBaseFunction;
-		return this;
-	}
-
-	@Override
-	public Predicate<IMaterial> getIsBeaconBaseFunction() {
-		return isBeaconBaseFunction;
-	}
-
-	@Override
 	public IBlockFormSettings setFlammabilityFunction(ToIntFunction<IMaterial> flammabilityFunction) {
 		this.flammabilityFunction = flammabilityFunction;
 		return this;
@@ -294,17 +282,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public ToIntFunction<IMaterial> getItemStackLimitFunction() {
 		return itemStackLimitFunction;
-	}
-
-	@Override
-	public IBlockFormSettings setIsBeaconPaymentFunction(Predicate<IMaterial> beaconPaymentFunction) {
-		this.beaconPaymentFunction = beaconPaymentFunction;
-		return this;
-	}
-
-	@Override
-	public Predicate<IMaterial> getIsBeaconPaymentFunction() {
-		return beaconPaymentFunction;
 	}
 
 	@Override

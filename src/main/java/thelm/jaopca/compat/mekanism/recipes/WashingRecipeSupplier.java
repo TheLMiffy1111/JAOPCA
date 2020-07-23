@@ -6,14 +6,14 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mekanism.api.chemical.gas.GasStack;
+import mekanism.api.chemical.slurry.SlurryStack;
 import mekanism.api.recipes.inputs.FluidStackIngredient;
-import mekanism.api.recipes.inputs.GasStackIngredient;
-import mekanism.common.recipe.impl.FluidGasToGasIRecipe;
+import mekanism.api.recipes.inputs.chemical.SlurryStackIngredient;
+import mekanism.common.recipe.impl.FluidSlurryToSlurryIRecipe;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
 
-public class WashingRecipeSupplier implements Supplier<FluidGasToGasIRecipe> {
+public class WashingRecipeSupplier implements Supplier<FluidSlurryToSlurryIRecipe> {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -36,13 +36,13 @@ public class WashingRecipeSupplier implements Supplier<FluidGasToGasIRecipe> {
 	}
 
 	@Override
-	public FluidGasToGasIRecipe get() {
-		GasStackIngredient gasIng = MekanismHelper.INSTANCE.getGasStackIngredient(gasInput, gasInputCount);
+	public FluidSlurryToSlurryIRecipe get() {
+		SlurryStackIngredient gasIng = MekanismHelper.INSTANCE.getSlurryStackIngredient(gasInput, gasInputCount);
 		FluidStackIngredient fluidIng = MekanismHelper.INSTANCE.getFluidStackIngredient(fluidInput, fluidInputCount);
-		GasStack stack = MekanismHelper.INSTANCE.getGasStack(output, outputCount);
+		SlurryStack stack = MekanismHelper.INSTANCE.getSlurryStack(output, outputCount);
 		if(stack.isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
-		return new FluidGasToGasIRecipe(key, fluidIng, gasIng, stack);
+		return new FluidSlurryToSlurryIRecipe(key, fluidIng, gasIng, stack);
 	}
 }

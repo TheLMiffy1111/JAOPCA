@@ -11,8 +11,8 @@
     "item.jaopca.mekanism_clumps": "%s碎块",
     "item.jaopca.mekanism_shards": "%s碎片",
     "item.jaopca.mekanism_crystals": "%s晶体",
-    "gas.jaopca.mekanism_dirty_slurry": "%s浆液",
-    "gas.jaopca.mekanism_clean_slurry": "纯净%s浆液",
+    "slurry.jaopca.mekanism_dirty": "污浊%s浆液",
+    "slurry.jaopca.mekanism_clean": "纯净%s浆液",
 
     "item.jaopca.create_crushed_ores": "碎%s矿"
 }

@@ -107,10 +107,6 @@ public interface IFluidFormSettings extends IFormSettings {
 
 	ToIntFunction<IMaterial> getItemStackLimitFunction();
 
-	IFluidFormSettings setIsBeaconPaymentFunction(Predicate<IMaterial> beaconPaymentFunction);
-
-	Predicate<IMaterial> getIsBeaconPaymentFunction();
-
 	IFluidFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction);
 
 	Predicate<IMaterial> getHasEffectFunction();

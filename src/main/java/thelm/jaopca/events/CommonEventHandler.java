@@ -5,18 +5,17 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.client.resources.ReloadListener;
-import net.minecraft.profiler.IProfiler;
+import net.minecraft.resources.DataPackRegistries;
 import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.IResourceManager;
+import net.minecraft.resources.ResourcePackInfo;
+import net.minecraft.resources.ResourcePackList;
 import net.minecraft.resources.SimpleReloadableResourceManager;
-import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.data.DataCollector;
@@ -81,12 +80,15 @@ public class CommonEventHandler {
 		ModuleHandler.onInterModEnqueue(event);
 	}
 
+	public void onDataPackDiscovery(ResourcePackList<? extends ResourcePackInfo> resourcePacks) {
+		resourcePacks.addPackFinder(DataInjector.PackFinder.INSTANCE);
+	}
+
 	@SubscribeEvent
-	public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
-		MinecraftServer server = event.getServer();
-		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)server.getResourceManager()).reloadListeners;
-		DataInjector instance = DataInjector.getNewInstance(server.getRecipeManager());
-		reloadListeners.add(reloadListeners.indexOf(server.getRecipeManager())+1, instance);
-		server.getResourcePacks().addPackFinder(DataInjector.PackFinder.INSTANCE);
+	public void onAddReloadListener(AddReloadListenerEvent event) {
+		DataPackRegistries registries = event.getDataPackRegistries();
+		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)registries.func_240970_h_()).reloadListeners;
+		DataInjector instance = DataInjector.getNewInstance(registries.func_240967_e_());
+		reloadListeners.add(reloadListeners.indexOf(registries.func_240967_e_())+1, instance);
 	}
 }

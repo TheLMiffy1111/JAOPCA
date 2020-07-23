@@ -1,6 +1,6 @@
 package thelm.jaopca.api.blocks;
 
-import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.loot.LootTable;
 
 public interface IBlockLootTableCreator {
 

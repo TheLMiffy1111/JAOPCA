@@ -13,7 +13,10 @@ import com.google.common.collect.MultimapBuilder;
 import mekanism.api.MekanismAPI;
 import mekanism.api.chemical.gas.Gas;
 import mekanism.api.chemical.infuse.InfuseType;
+import mekanism.api.chemical.pigment.Pigment;
+import mekanism.api.chemical.slurry.Slurry;
 import net.minecraft.resources.ResourcePackType;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -26,29 +29,63 @@ public class MekanismDataInjector {
 
 	public static final Set<ResourceLocation> GAS_TAG_BLACKLIST = new TreeSet<>();
 	public static final Set<ResourceLocation> INFUSE_TYPE_TAG_BLACKLIST = new TreeSet<>();
-	private static final ListMultimap<ResourceLocation, Supplier<? extends Gas>> GAS_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
-	private static final ListMultimap<ResourceLocation, Supplier<? extends InfuseType>> INFUSE_TYPE_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
+	public static final Set<ResourceLocation> PIGMENT_TAG_BLACKLIST = new TreeSet<>();
+	public static final Set<ResourceLocation> SLURRY_TAG_BLACKLIST = new TreeSet<>();
+	private static final ListMultimap<ResourceLocation, ResourceLocation> GAS_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
+	private static final ListMultimap<ResourceLocation, ResourceLocation> INFUSE_TYPE_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
+	private static final ListMultimap<ResourceLocation, ResourceLocation> PIGMENT_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
+	private static final ListMultimap<ResourceLocation, ResourceLocation> SLURRY_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 
-	public static boolean registerGasTag(ResourceLocation location, Supplier<? extends Gas> gasSupplier) {
+	public static boolean registerGasTag(ResourceLocation location, ResourceLocation gasLocation) {
 		if(GAS_TAG_BLACKLIST.contains(location)) {
 			return false;
 		}
 		Objects.requireNonNull(location);
-		Objects.requireNonNull(gasSupplier);
-		return GAS_TAGS_INJECT.put(location, gasSupplier);
+		Objects.requireNonNull(gasLocation);
+		return GAS_TAGS_INJECT.put(location, gasLocation);
 	}
 
-	public static boolean registerInfuseTypeTag(ResourceLocation location, Supplier<? extends InfuseType> infuseTypeSupplier) {
+	public static boolean registerInfuseTypeTag(ResourceLocation location, ResourceLocation infuseTypeLocation) {
 		if(INFUSE_TYPE_TAG_BLACKLIST.contains(location)) {
 			return false;
 		}
 		Objects.requireNonNull(location);
-		Objects.requireNonNull(infuseTypeSupplier);
-		return INFUSE_TYPE_TAGS_INJECT.put(location, infuseTypeSupplier);
+		Objects.requireNonNull(infuseTypeLocation);
+		return INFUSE_TYPE_TAGS_INJECT.put(location, infuseTypeLocation);
+	}
+
+	public static boolean registerPigmentTag(ResourceLocation location, ResourceLocation pigmentLocation) {
+		if(PIGMENT_TAG_BLACKLIST.contains(location)) {
+			return false;
+		}
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(pigmentLocation);
+		return PIGMENT_TAGS_INJECT.put(location, pigmentLocation);
+	}
+
+	public static boolean registerSlurryTag(ResourceLocation location, ResourceLocation slurryLocation) {
+		if(SLURRY_TAG_BLACKLIST.contains(location)) {
+			return false;
+		}
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(slurryLocation);
+		return SLURRY_TAGS_INJECT.put(location, slurryLocation);
 	}
 
 	public static Set<ResourceLocation> getInjectGasTags() {
 		return GAS_TAGS_INJECT.keySet();
+	}
+
+	public static Set<ResourceLocation> getInjectInfuseTypeTags() {
+		return INFUSE_TYPE_TAGS_INJECT.keySet();
+	}
+
+	public static Set<ResourceLocation> getInjectPigmentTags() {
+		return PIGMENT_TAGS_INJECT.keySet();
+	}
+
+	public static Set<ResourceLocation> getInjectSlurryTags() {
+		return SLURRY_TAGS_INJECT.keySet();
 	}
 
 	static void setupConfig(IDynamicSpecConfig config) {
@@ -66,15 +103,25 @@ public class MekanismDataInjector {
 	}
 
 	static void putJsons(IInMemoryResourcePack pack) {
-		GAS_TAGS_INJECT.asMap().forEach((location, suppliers)->{
-			Gas[] gases = suppliers.stream().map(Supplier::get).distinct().filter(Objects::nonNull).toArray(Gas[]::new);
-			Tag<Gas> tag = Tag.Builder.<Gas>create().add(gases).build(location);
-			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/gases/"+location.getPath()+".json"), tag.serialize(MekanismAPI.GAS_REGISTRY::getKey));
+		GAS_TAGS_INJECT.asMap().forEach((location, locations)->{
+			ITag.Builder builder = ITag.Builder.create();
+			locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
+			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/gases/"+location.getPath()+".json"), builder.serialize());
 		});
-		INFUSE_TYPE_TAGS_INJECT.asMap().forEach((location, suppliers)->{
-			InfuseType[] entityTypes = suppliers.stream().map(Supplier::get).distinct().filter(Objects::nonNull).toArray(InfuseType[]::new);
-			Tag<InfuseType> tag = Tag.Builder.<InfuseType>create().add(entityTypes).build(location);
-			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), tag.serialize(MekanismAPI.INFUSE_TYPE_REGISTRY::getKey));
+		INFUSE_TYPE_TAGS_INJECT.asMap().forEach((location, locations)->{
+			ITag.Builder builder = ITag.Builder.create();
+			locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
+			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/infuse_types/"+location.getPath()+".json"), builder.serialize());
+		});
+		PIGMENT_TAGS_INJECT.asMap().forEach((location, locations)->{
+			ITag.Builder builder = ITag.Builder.create();
+			locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
+			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/pigments/"+location.getPath()+".json"), builder.serialize());
+		});
+		SLURRY_TAGS_INJECT.asMap().forEach((location, locations)->{
+			ITag.Builder builder = ITag.Builder.create();
+			locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
+			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/slurries/"+location.getPath()+".json"), builder.serialize());
 		});
 	}
 }

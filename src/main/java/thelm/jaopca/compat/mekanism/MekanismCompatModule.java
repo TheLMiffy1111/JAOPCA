@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -25,16 +26,18 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism@[9.9.20,)")
+@JAOPCAModule(modDependencies = "mekanism")
 public class MekanismCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"bronze", "charcoal", "coal", "copper", "diamond", "emerald", "gold", "iron", "lapis", "osmium", "quartz",
-			"refined_glowstone", "refined_obsidian", "steel", "tin"));
+			"bronze", "charcoal", "coal", "copper", "diamond", "emerald", "fluorite", "gold", "iron", "lapis",
+			"lead", "netherite", "osmium", "quartz", "refined_glowstone", "refined_obsidian", "steel", "tin",
+			"uranium"));
 	private static final Set<String> TO_CRYSTAL_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"charcoal", "coal", "diamond", "emerald", "lapis", "quartz"));
+			"charcoal", "coal", "diamond", "emerald", "fluorite", "lapis", "quartz"));
 	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"coal", "copper", "diamond", "emerald", "gold", "iron", "lapis", "osmium", "quartz", "redstone", "tin"));
+			"coal", "copper", "diamond", "emerald", "gold", "iron", "lapis", "lead", "netherite", "netherite_scrap",
+			"osmium", "quartz", "redstone", "tin", "uranium"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
@@ -119,7 +122,7 @@ public class MekanismCompatModule implements IModule {
 
 	public Object getTagOrItem(String s) {
 		if(StringUtils.startsWith(s, "#")) {
-			return new ItemTags.Wrapper(new ResourceLocation(s.substring(1)));
+			return TagCollectionManager.func_232928_e_().func_232925_b_().get(new ResourceLocation(s.substring(1)));
 		}
 		else {
 			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(s));

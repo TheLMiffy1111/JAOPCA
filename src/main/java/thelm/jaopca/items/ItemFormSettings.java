@@ -17,7 +17,6 @@ public class ItemFormSettings implements IItemFormSettings {
 
 	private IItemCreator itemCreator = JAOPCAItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
-	private Predicate<IMaterial> beaconPaymentFunction = material->false;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private Function<IMaterial, Rarity> displayRarityFunction = material->material.getDisplayRarity();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
@@ -47,17 +46,6 @@ public class ItemFormSettings implements IItemFormSettings {
 	@Override
 	public ToIntFunction<IMaterial> getItemStackLimitFunction() {
 		return itemStackLimitFunction;
-	}
-
-	@Override
-	public IItemFormSettings setIsBeaconPaymentFunction(Predicate<IMaterial> beaconPaymentFunction) {
-		this.beaconPaymentFunction = beaconPaymentFunction;
-		return this;
-	}
-
-	@Override
-	public Predicate<IMaterial> getIsBeaconPaymentFunction() {
-		return beaconPaymentFunction;
 	}
 
 	@Override

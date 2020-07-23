@@ -6,16 +6,16 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mekanism.api.chemical.gas.GasStack;
-import mekanism.api.recipes.inputs.GasStackIngredient;
+import mekanism.api.chemical.slurry.SlurryStack;
 import mekanism.api.recipes.inputs.ItemStackIngredient;
-import mekanism.common.recipe.impl.ItemStackGasToGasIRecipe;
+import mekanism.api.recipes.inputs.chemical.GasStackIngredient;
+import mekanism.common.recipe.impl.ChemicalDissolutionIRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
 import thelm.jaopca.utils.MiscHelper;
 
-public class DissolutionRecipeSupplier implements Supplier<ItemStackGasToGasIRecipe> {
+public class DissolutionRecipeSupplier implements Supplier<ChemicalDissolutionIRecipe> {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -38,16 +38,16 @@ public class DissolutionRecipeSupplier implements Supplier<ItemStackGasToGasIRec
 	}
 
 	@Override
-	public ItemStackGasToGasIRecipe get() {
+	public ChemicalDissolutionIRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(itemInput);
 		if(ing.hasNoMatchingItems()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+itemInput);
 		}
 		GasStackIngredient gasIng = MekanismHelper.INSTANCE.getGasStackIngredient(gasInput, gasInputCount);
-		GasStack stack = MekanismHelper.INSTANCE.getGasStack(output, outputCount);
+		SlurryStack stack = MekanismHelper.INSTANCE.getSlurryStack(output, outputCount);
 		if(stack.isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
-		return new ItemStackGasToGasIRecipe(key, ItemStackIngredient.from(ing, itemInputCount), gasIng, stack);
+		return new ChemicalDissolutionIRecipe(key, ItemStackIngredient.from(ing, itemInputCount), gasIng, stack);
 	}
 }

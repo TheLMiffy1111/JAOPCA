@@ -14,8 +14,8 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.loot.LootTable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
@@ -304,13 +304,13 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerDefinedEntityTypeTag(ResourceLocation key);
 
 	/**
-	 * Registers a block supplier to be added to a tag by JAOPCA's in memory data pack. Suppliers that
-	 * return null will effectively be ignored by the data pack.
+	 * Registers a block location to be added to a tag by JAOPCA's in memory data pack. Locations that do
+	 * not correspond to a block will effectively be ignored by the data pack.
 	 * @param key The location of the tag
-	 * @param blockSupplier The block supplier to be added
+	 * @param blockKey The block location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerBlockTag(ResourceLocation key, Supplier<? extends Block> blockSupplier);
+	public abstract boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey);
 
 	/**
 	 * Registers a block to be added to a tag by JAOPCA's in memory data pack. Null blocks will
@@ -322,22 +322,13 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerBlockTag(ResourceLocation key, Block block);
 
 	/**
-	 * Registers a block location to be added to a tag by JAOPCA's in memory data pack. Locations that do
-	 * not correspond to a block will effectively be ignored by the data pack.
+	 * Registers an item location to be added to a tag by JAOPCA's in memory data pack. Locations that do
+	 * not correspond to an item will effectively be ignored by the data pack.
 	 * @param key The location of the tag
-	 * @param blockKey The block location to be added
+	 * @param itemKey The item location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey);
-
-	/**
-	 * Registers an item supplier to be added to a tag by JAOPCA's in memory data pack. Suppliers that
-	 * return null will effectively be ignored by the data pack.
-	 * @param key The location of the tag
-	 * @param itemSupplier The item supplier to be added
-	 * @return true if the tag location was not blacklisted in the configuration file
-	 */
-	public abstract boolean registerItemTag(ResourceLocation key, Supplier<? extends Item> itemSupplier);
+	public abstract boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey);
 
 	/**
 	 * Registers an item to be added to a tag by JAOPCA's in memory data pack. Null items will
@@ -349,22 +340,13 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerItemTag(ResourceLocation key, Item item);
 
 	/**
-	 * Registers an item location to be added to a tag by JAOPCA's in memory data pack. Locations that do
-	 * not correspond to an item will effectively be ignored by the data pack.
+	 * Registers a fluid location to be added to a tag by JAOPCA's in memory data pack. Locations that do
+	 * not correspond to a fluid will effectively be ignored by the data pack.
 	 * @param key The location of the tag
-	 * @param itemKey The item location to be added
+	 * @param fluidKey The fluid location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey);
-
-	/**
-	 * Registers a fluid supplier to be added to a tag by JAOPCA's in memory data pack. Suppliers that
-	 * return null will effectively be ignored by the data pack.
-	 * @param key The location of the tag
-	 * @param fluidSupplier The fluid supplier to be added
-	 * @return true if the tag location was not blacklisted in the configuration file
-	 */
-	public abstract boolean registerFluidTag(ResourceLocation key, Supplier<? extends Fluid> fluidSupplier);
+	public abstract boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey);
 
 	/**
 	 * Registers a fluid to be added to a tag by JAOPCA's in memory data pack. Null fluids will
@@ -376,22 +358,13 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerFluidTag(ResourceLocation key, Fluid fluid);
 
 	/**
-	 * Registers a fluid location to be added to a tag by JAOPCA's in memory data pack. Locations that do
-	 * not correspond to a fluid will effectively be ignored by the data pack.
+	 * Registers an entity type location to be added to a tag by JAOPCA's in memory data pack. Locations that
+	 * do not correspond to an entity type will effectively be ignored by the data pack.
 	 * @param key The location of the tag
-	 * @param fluidKey The fluid location to be added
+	 * @param entityTypeKey The entity type location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey);
-
-	/**
-	 * Registers an entity type supplier to be added to a tag by JAOPCA's in memory data pack. Suppliers that
-	 * return null will effectively be ignored by the data pack.
-	 * @param key The location of the tag
-	 * @param entityTypeSupplier The entity type supplier to be added
-	 * @return true if the tag location was not blacklisted in the configuration file
-	 */
-	public abstract boolean registerEntityTypeTag(ResourceLocation key, Supplier<? extends EntityType<?>> entityTypeSupplier);
+	public abstract boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey);
 
 	/**
 	 * Registers an entity type to be added to a tag by JAOPCA's in memory data pack. Null entity types will
@@ -401,15 +374,6 @@ public abstract class JAOPCAApi {
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
 	public abstract boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType);
-
-	/**
-	 * Registers an entity type location to be added to a tag by JAOPCA's in memory data pack. Locations that
-	 * do not correspond to an entity type will effectively be ignored by the data pack.
-	 * @param key The location of the tag
-	 * @param entityTypeKey The entity type location to be added
-	 * @return true if the tag location was not blacklisted in the configuration file
-	 */
-	public abstract boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey);
 
 	/**
 	 * Registers a recipe supplier to be injected by JAOPCA. The returned recipe must have an id that is the

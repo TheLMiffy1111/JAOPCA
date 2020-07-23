@@ -13,8 +13,8 @@
     "item.jaopca.mekanism_clumps": "%s Clump",
     "item.jaopca.mekanism_shards": "%s Shard",
     "item.jaopca.mekanism_crystals": "%s Crystal",
-    "gas.jaopca.mekanism_dirty_slurry": "%s Slurry",
-    "gas.jaopca.mekanism_clean_slurry": "Clean %s Slurry",
+    "slurry.jaopca.mekanism_dirty": "Dirty %s Slurry",
+    "slurry.jaopca.mekanism_clean": "Clean %s Slurry",
 
     "item.jaopca.flux_grits": "%s Grit",
 

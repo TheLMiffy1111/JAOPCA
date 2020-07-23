@@ -58,13 +58,13 @@ public class ClientEventHandler {
 			ModuleHandler.onClientSetup(event);
 		});
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
-			RenderTypeLookup.setRenderLayer(block.asBlock(), RenderType.translucent());
+			RenderTypeLookup.setRenderLayer(block.asBlock(), RenderType.getTranslucent());
 		}
 		for(IMaterialFormFluid fluid : FluidFormType.getFluids()) {
-			RenderTypeLookup.setRenderLayer(fluid.asFluid(), RenderType.translucent());
+			RenderTypeLookup.setRenderLayer(fluid.asFluid(), RenderType.getTranslucent());
 		}
 		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
-			RenderTypeLookup.setRenderLayer(fluidBlock.asBlock(), RenderType.translucent());
+			RenderTypeLookup.setRenderLayer(fluidBlock.asBlock(), RenderType.getTranslucent());
 		}
 	}
 

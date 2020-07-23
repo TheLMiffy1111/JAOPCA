@@ -11,6 +11,7 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
@@ -27,15 +28,18 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	protected Optional<Material> blockMaterial = Optional.empty();
 	protected Optional<MaterialColor> materialColor = Optional.empty();
 	protected OptionalInt lightValue = OptionalInt.empty();
-	protected OptionalDouble blockHardness = OptionalDouble.empty();
+	//protected OptionalDouble blockHardness = OptionalDouble.empty();
 	protected OptionalDouble explosionResistance = OptionalDouble.empty();
 	protected OptionalInt flammability = OptionalInt.empty();
 	protected OptionalInt fireSpreadSpeed = OptionalInt.empty();
 	protected Optional<Boolean> isFireSource = Optional.empty();
 
 	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(Block.Properties.create(Material.WATER).lightValue(settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
-				doesNotBlockMovement().tickRandomly().noDrops().func_226896_b_(), (PlaceableFluid)fluid.asFluid(),
+		super(Block.Properties.create(settings.getMaterialFunction().apply(fluid.getMaterial()),
+				settings.getMaterialColorFunction().apply(fluid.getMaterial())).
+				hardnessAndResistance((float)settings.getBlockHardnessFunction().applyAsDouble(fluid.getMaterial())).
+				setLightLevel(state->settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
+				doesNotBlockMovement().tickRandomly().noDrops().notSolid(), (PlaceableFluid)fluid.asFluid(),
 				settings.getMaxLevelFunction().applyAsInt(fluid.getMaterial()));
 
 		this.fluid = fluid;
@@ -53,22 +57,6 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	}
 
 	@Override
-	public Material getMaterial(BlockState blockState) {
-		if(!blockMaterial.isPresent()) {
-			blockMaterial = Optional.of(settings.getMaterialFunction().apply(getMaterial()));
-		}
-		return blockMaterial.get();
-	}
-
-	@Override
-	public MaterialColor getMaterialColor(BlockState blockState, IBlockReader world, BlockPos pos) {
-		if(!materialColor.isPresent()) {
-			materialColor = Optional.of(settings.getMaterialColorFunction().apply(getMaterial()));
-		}
-		return materialColor.get();
-	}
-
-	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 		if(!lightValue.isPresent()) {
 			lightValue = OptionalInt.of(settings.getLightValueFunction().applyAsInt(getMaterial()));
@@ -76,13 +64,13 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 		return lightValue.getAsInt();
 	}
 
-	@Override
-	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos) {
-		if(!blockHardness.isPresent()) {
-			blockHardness = OptionalDouble.of(settings.getBlockHardnessFunction().applyAsDouble(getMaterial()));
-		}
-		return (float)blockHardness.getAsDouble();
-	}
+	//@Override
+	//public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos) {
+	//	if(!blockHardness.isPresent()) {
+	//		blockHardness = OptionalDouble.of(settings.getBlockHardnessFunction().applyAsDouble(getMaterial()));
+	//	}
+	//	return (float)blockHardness.getAsDouble();
+	//}
 
 	@Override
 	public float getExplosionResistance() {
@@ -109,7 +97,7 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	}
 
 	@Override
-	public boolean isFireSource(BlockState blockState, IBlockReader world, BlockPos pos, Direction side) {
+	public boolean isFireSource(BlockState blockState, IWorldReader world, BlockPos pos, Direction side) {
 		if(!isFireSource.isPresent()) {
 			isFireSource = Optional.of(settings.getIsFireSourceFunction().test(getMaterial()));
 		}

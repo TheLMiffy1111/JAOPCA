@@ -162,5 +162,5 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	}
 
 	@Override
-	public void close() throws IOException {}
+	public void close() {}
 }

@@ -6,6 +6,9 @@ buildscript {
         maven {
             url = "https://plugins.gradle.org/m2/"
         }
+        maven {
+            url = "https://repo.spongepowered.org/maven/"
+        }
         jcenter()
         mavenCentral()
         maven {
@@ -16,6 +19,7 @@ buildscript {
         classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
 		classpath "com.wynprice.cursemaven:CurseMaven:2.1.0"
 		//classpath "com.github.Wyn-Price:CurseMaven:f0d58155e6"
+		classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
     }
 }
 
@@ -23,6 +27,7 @@ apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
 apply plugin: "maven"
 apply plugin: "com.wynprice.cursemaven"
+apply plugin: "org.spongepowered.mixin"
 
 repositories {
     jcenter()
@@ -41,20 +46,23 @@ repositories {
     maven {
         url = "https://jitpack.io/"
     }
+    maven {
+        url = "https://modmaven.k-4u.nl/"
+    }
 }
 
 sourceSets {
     main
 }
 
-version = "3.2.0.12"
+version = "3.3.0.0"
 group = "thelm.jaopca"
-archivesBaseName = "JAOPCA-1.15.2"
+archivesBaseName = "JAOPCA-1.16.1"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200123-1.15.1'
+    mappings channel: 'snapshot', version: '20200707-1.16.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client = {
@@ -73,31 +81,33 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.15.2-31.2.31"
-    implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.2.12")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.15.2:6.0.0.34")
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-35.2")
-    implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.15.2:1.0.20")
-    implementation fg.deobf("com.wtbw.mods:wtbw_core-1.15.2:1.0.18")
-    implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.23")
+    minecraft "net.minecraftforge:forge:1.16.1-32.0.70"
+    implementation "com.github.LXGaming:MixinBootstrap:v1.0.3"
+
+    implementation fg.deobf("mezz.jei:jei-1.16.1:7.0.0.6")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.1:7.0.0.13")
+	implementation fg.deobf("mekanism:Mekanism:1.16.1-10.0.3.426")
+	implementation fg.deobf("mekanism:Mekanism:1.16.1-10.0.3.426:generators")
+    //implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.15.2:1.0.20")
+    //implementation fg.deobf("com.wtbw.mods:wtbw_core-1.15.2:1.0.18")
+    //implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.23")
 
     //JitPack
+    implementation fg.deobf("com.github.AlasDiablo:JANOEO:4.4.0.42-experimental")
 
     //CurseMaven
-    implementation fg.deobf("curse.maven:useful-foundation:2846862")
-    implementation fg.deobf("curse.maven:useful-machinery:2886834")
-    implementation fg.deobf("curse.maven:mekanism:2958427")
-    implementation fg.deobf("curse.maven:mekanism-generators:2958429")
-    implementation fg.deobf("curse.maven:fl:2988805")
-    implementation fg.deobf("curse.maven:flux:2990680")
-    implementation fg.deobf("curse.maven:themcbros-useless-mod:2902375")
-    implementation fg.deobf("curse.maven:omega-craft-mod:2919222")
-    implementation fg.deobf("curse.maven:silent-lib:2946599")
-    implementation fg.deobf("curse.maven:silents-mechanisms:2948946")
-    implementation fg.deobf("curse.maven:silents-gems:2940183")
-    implementation fg.deobf("curse.maven:industrial-reborn:2942538")
-    implementation fg.deobf("curse.maven:create:2979593")
-    implementation fg.deobf("curse.maven:occultism:3003848")
+    //implementation fg.deobf("curse.maven:useful-foundation:2846862")
+    //implementation fg.deobf("curse.maven:useful-machinery:2886834")
+    //implementation fg.deobf("curse.maven:fl:2963208")
+    //implementation fg.deobf("curse.maven:flux:2966955")
+    //implementation fg.deobf("curse.maven:themcbros-useless-mod:2902375")
+    //implementation fg.deobf("curse.maven:omega-craft-mod:2919222")
+    implementation fg.deobf("curse.maven:silent-lib:3009162")
+    implementation fg.deobf("curse.maven:silents-mechanisms:3011881")
+    implementation fg.deobf("curse.maven:silents-gems:3010282")
+    implementation fg.deobf("curse.maven:silent-gear:3011289")
+    implementation fg.deobf("curse.maven:industrial-reborn:3000553")
+    //implementation fg.deobf("curse.maven:create:2976507")
 }
 
 jar {
@@ -109,7 +119,12 @@ jar {
                 "Implementation-Title": "${archivesBaseName}",
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor": "thelm",
-                //"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                //"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+				"MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
         ],)
     }
+}
+
+mixin {
+    add sourceSets.main, "mixins.jaopca.refmap.json"
 }

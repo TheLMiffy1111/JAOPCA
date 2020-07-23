@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Vector4f;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
@@ -18,9 +17,10 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector4f;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
@@ -77,7 +77,7 @@ public class ColorHandler {
 		}
 	}
 
-	public static int getAverageColor(Tag<Item> tag) {
+	public static int getAverageColor(ITag<Item> tag) {
 		Vector4f color = weightedAverageColor(tag.getAllElements(), ConfigHandler.gammaValue);
 		return toColorInt(color);
 	}

@@ -47,7 +47,6 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	private final IFluidFormSettings settings;
 
 	private OptionalInt itemStackLimit = OptionalInt.empty();
-	private Optional<Boolean> beaconPayment = Optional.empty();
 	private Optional<Boolean> hasEffect = Optional.empty();
 	private Optional<Rarity> rarity = Optional.empty();
 	private OptionalInt burnTime = OptionalInt.empty();
@@ -74,14 +73,6 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(getMaterial()));
 		}
 		return itemStackLimit.getAsInt();
-	}
-
-	@Override
-	public boolean isBeaconPayment(ItemStack stack) {
-		if(!beaconPayment.isPresent()) {
-			beaconPayment = Optional.of(settings.getIsBeaconPaymentFunction().test(getMaterial()));
-		}
-		return beaconPayment.get();
 	}
 
 	@Override
@@ -158,7 +149,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		boolean flag1 = blockMaterial.isReplaceable();
 		if(world.isAirBlock(pos) || flag || flag1) {
 			FluidStack stack = new FluidStack(fluid.asFluid(), FluidAttributes.BUCKET_VOLUME);
-			if(world.dimension.doesWaterVaporize() && fluid.asFluid().isIn(FluidTags.WATER)) {
+			if(world.func_230315_m_().func_236040_e_() && fluid.asFluid().isIn(FluidTags.WATER)) {
 				int i = pos.getX();
 				int j = pos.getY();
 				int k = pos.getZ();

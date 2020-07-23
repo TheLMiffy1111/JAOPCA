@@ -63,9 +63,9 @@ public class IndRebNonIngotModule implements IModule {
 			helper.registerCrushingRecipe(
 					new ResourceLocation("jaopca", "indreb.ore_to_material."+material.getName()),
 					oreLocation, 1,
-					materialLocation, 1,
+					materialLocation, 2,
 					byproduct, 1, 50F,
-					180, 8);
+					180, 8, 0.2F);
 		}
 	}
 }

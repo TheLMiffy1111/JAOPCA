@@ -45,7 +45,7 @@ public class SilentsMechanismsNonIngotModule implements IModule {
 
 	@Override
 	public String getName() {
-		return "silents_mechanisms_noningot";
+		return "silents_mechanisms_non_ingot";
 	}
 
 	@Override

@@ -93,13 +93,6 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 			}
 			settings.setHarvestLevelFunction(helper.deserializeType(json, "harvestLevel", context, FormTypeHandler.INT_FUNCTION_TYPE));
 		}
-		if(json.has("isBeaconBase")) {
-			JsonObject functionJson = helper.getJsonObject(json, "isBeaconBase");
-			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", false);
-			}
-			settings.setIsBeaconBaseFunction(helper.deserializeType(json, "isBeaconBase", context, FormTypeHandler.PREDICATE_TYPE));
-		}
 		if(json.has("flammability")) {
 			JsonObject functionJson = helper.getJsonObject(json, "flammability");
 			if(!functionJson.has("default")) {
@@ -127,13 +120,6 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 				functionJson.addProperty("default", 64);
 			}
 			settings.setItemStackLimitFunction(helper.deserializeType(json, "itemStackLimit", context, FormTypeHandler.INT_FUNCTION_TYPE));
-		}
-		if(json.has("isBeaconPayment")) {
-			JsonObject functionJson = helper.getJsonObject(json, "itemStackLimit");
-			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", false);
-			}
-			settings.setIsBeaconPaymentFunction(helper.deserializeType(json, "isBeaconPayment", context, FormTypeHandler.PREDICATE_TYPE));
 		}
 		if(json.has("hasEffect")) {
 			boolean hasEffect = helper.getBoolean(json, "hasEffect");

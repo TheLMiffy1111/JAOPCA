@@ -19,8 +19,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -72,8 +74,8 @@ public class MiscHelper implements IMiscHelper {
 		else if(obj instanceof ResourceLocation) {
 			return getPreferredItemStack(makeItemWrapperTag((ResourceLocation)obj).getAllElements(), count);
 		}
-		else if(obj instanceof Tag<?>) {
-			return getPreferredItemStack(((Tag<Item>)obj).getAllElements(), count);
+		else if(obj instanceof ITag<?>) {
+			return getPreferredItemStack(((ITag<Item>)obj).getAllElements(), count);
 		}
 		return ItemStack.EMPTY;
 	}
@@ -92,8 +94,8 @@ public class MiscHelper implements IMiscHelper {
 		else if(obj instanceof ResourceLocation) {
 			return Ingredient.fromTag(makeItemWrapperTag((ResourceLocation)obj));
 		}
-		else if(obj instanceof Tag<?>) {
-			return Ingredient.fromTag((Tag<Item>)obj);
+		else if(obj instanceof ITag<?>) {
+			return Ingredient.fromTag((ITag<Item>)obj);
 		}
 		else if(obj instanceof ItemStack) {
 			return Ingredient.fromStacks((ItemStack)obj);
@@ -119,8 +121,9 @@ public class MiscHelper implements IMiscHelper {
 		return Ingredient.EMPTY;
 	}
 
-	public Tag<Item> makeItemWrapperTag(ResourceLocation location) {
-		return new ItemTags.Wrapper(location);
+	public ITag<Item> makeItemWrapperTag(ResourceLocation location) {
+		return TagCollectionManager.func_232928_e_().func_232925_b_().getOrCreate(location);
+		//return ItemTags.makeWrapperTag(location.toString());
 	}
 
 	public ItemStack getPreferredItemStack(Collection<Item> collection, int count) {
@@ -141,19 +144,20 @@ public class MiscHelper implements IMiscHelper {
 			return new FluidStack(((IFluidProvider)obj).asFluid(), amount);
 		}
 		else if(obj instanceof String) {
-			return getPreferredFluidStack(makeFluidWrapperTag(new ResourceLocation((String)obj)).getAllElements(), amount);
+			return getPreferredFluidStack(getItemTag(new ResourceLocation((String)obj)).getAllElements(), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return getPreferredFluidStack(makeFluidWrapperTag((ResourceLocation)obj).getAllElements(), amount);
+			return getPreferredFluidStack(getItemTag((ResourceLocation)obj).getAllElements(), amount);
 		}
-		else if(obj instanceof Tag<?>) {
-			return getPreferredFluidStack(((Tag<Fluid>)obj).getAllElements(), amount);
+		else if(obj instanceof ITag<?>) {
+			return getPreferredFluidStack(((ITag<Fluid>)obj).getAllElements(), amount);
 		}
 		return FluidStack.EMPTY;
 	}
 
-	public Tag<Fluid> makeFluidWrapperTag(ResourceLocation location) {
-		return new FluidTags.Wrapper(location);
+	public ITag<Fluid> getItemTag(ResourceLocation location) {
+		return TagCollectionManager.func_232928_e_().func_232926_c_().getOrCreate(location);
+		//return FluidTags.makeWrapperTag(location.toString());
 	}
 
 	public FluidStack getPreferredFluidStack(Collection<Fluid> collection, int amount) {

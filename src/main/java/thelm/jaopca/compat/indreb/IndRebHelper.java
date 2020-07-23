@@ -10,19 +10,19 @@ public class IndRebHelper {
 
 	private IndRebHelper() {}
 
-	public boolean registerCrushingRecipe(ResourceLocation key, String group, Object input, int inputCount, Object output, int count, Object secondOutput, int secondOutputCount, float secondChance, int time, int power) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, group, input, inputCount, output, count, secondOutput, secondOutputCount, secondChance, time, power));
+	public boolean registerCrushingRecipe(ResourceLocation key, String group, Object input, int inputCount, Object output, int count, Object secondOutput, int secondOutputCount, float secondChance, int time, int power, float experience) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, group, input, inputCount, output, count, secondOutput, secondOutputCount, secondChance, time, power, experience));
 	}
 
-	public boolean registerCrushingRecipe(ResourceLocation key, Object input, int inputCount, Object output, int count, Object secondOutput, int secondOutputCount, float secondChance, int time, int power) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, input, inputCount, output, count, secondOutput, secondOutputCount, secondChance, time, power));
+	public boolean registerCrushingRecipe(ResourceLocation key, Object input, int inputCount, Object output, int count, Object secondOutput, int secondOutputCount, float secondChance, int time, int power, float experience) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, input, inputCount, output, count, secondOutput, secondOutputCount, secondChance, time, power, experience));
 	}
 
-	public boolean registerCrushingRecipe(ResourceLocation key, String group, Object input, int inputCount, Object output, int outputCount, int time, int power) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, group, input, inputCount, output, outputCount, time, power));
+	public boolean registerCrushingRecipe(ResourceLocation key, String group, Object input, int inputCount, Object output, int outputCount, int time, int power, float experience) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, group, input, inputCount, output, outputCount, time, power, experience));
 	}
 
-	public boolean registerCrushingRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time, int power) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, input, inputCount, output, outputCount, time, power));
+	public boolean registerCrushingRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time, int power, float experience) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, input, inputCount, output, outputCount, time, power, experience));
 	}
 }

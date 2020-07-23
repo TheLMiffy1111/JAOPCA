@@ -13,8 +13,12 @@ public class JAOPCA {
 
 	public static final String MOD_ID = "jaopca";
 	public static JAOPCA core;
+	public static boolean mixinLoaded = false;
 
 	public JAOPCA() {
+		if(!mixinLoaded) {
+			throw new IllegalStateException("Mixin is not installed!");
+		}
 		core = this;
 		FMLJavaModLoadingContext.get().getModEventBus().register(CommonEventHandler.getInstance());
 		MinecraftForge.EVENT_BUS.register(CommonEventHandler.getInstance());

@@ -20,14 +20,13 @@ import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.compat.uselessmod.UselessModHelper;
 import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "indreb")
 public class IndRebModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"copper", "gold", "iron", "tin"));
+			"copper", "gold", "iron", "netherite", "netherite_scrap", "tin"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
@@ -76,7 +75,7 @@ public class IndRebModule implements IModule {
 					oreLocation, 1,
 					dustLocation, 2,
 					byproduct, 1, 50F,
-					180, 8);
+					180, 8, 0.2F);
 		}
 	}
 }

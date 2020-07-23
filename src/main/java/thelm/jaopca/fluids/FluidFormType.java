@@ -123,11 +123,10 @@ public class FluidFormType implements IFluidFormType {
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
 				RegistryHandler.registerForgeRegistryEntry(bucketItem);
 
-				Supplier<Fluid> fluidSupplier = ()->fluid;
-				DataInjector.registerFluidTag(helper.createResourceLocation(secondaryName), fluidSupplier);
-				DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, material.getName()), fluidSupplier);
+				DataInjector.registerFluidTag(helper.createResourceLocation(secondaryName), registryName);
+				DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, alternativeName), fluidSupplier);
+					DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
 				}
 			}
 		}

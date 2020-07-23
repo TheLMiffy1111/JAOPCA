@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -92,7 +92,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	public IFluidState getSourceState() {
+	public FluidState getSourceState() {
 		return getDefaultState().with(levelProperty, maxLevel);
 	}
 }

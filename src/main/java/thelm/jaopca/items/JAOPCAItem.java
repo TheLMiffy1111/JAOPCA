@@ -20,7 +20,6 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	protected final IItemFormSettings settings;
 
 	protected OptionalInt itemStackLimit = OptionalInt.empty();
-	protected Optional<Boolean> beaconPayment = Optional.empty();
 	protected Optional<Boolean> hasEffect = Optional.empty();
 	protected Optional<Rarity> rarity = Optional.empty();
 	protected OptionalInt burnTime = OptionalInt.empty();
@@ -48,14 +47,6 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(material));
 		}
 		return itemStackLimit.getAsInt();
-	}
-
-	@Override
-	public boolean isBeaconPayment(ItemStack stack) {
-		if(!beaconPayment.isPresent()) {
-			beaconPayment = Optional.of(settings.getIsBeaconPaymentFunction().test(material));
-		}
-		return beaconPayment.get();
 	}
 
 	@Override

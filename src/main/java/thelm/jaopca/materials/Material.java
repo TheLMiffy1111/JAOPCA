@@ -15,9 +15,8 @@ import com.google.common.collect.TreeMultiset;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -128,7 +127,7 @@ public class Material implements IMaterial {
 		color = config.getOptionalInt("general.color");
 	}
 
-	private Tag<Item> getTag() {
+	private ITag<Item> getTag() {
 		String path = "";
 		switch(type) {
 		case INGOT:
@@ -150,7 +149,7 @@ public class Material implements IMaterial {
 		default:
 			break;
 		}
-		return new ItemTags.Wrapper(new ResourceLocation("forge", path));
+		return ItemTags.makeWrapperTag("forge:"+path);
 	}
 
 	@Override

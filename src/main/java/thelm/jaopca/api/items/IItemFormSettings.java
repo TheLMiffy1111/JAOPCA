@@ -19,10 +19,6 @@ public interface IItemFormSettings extends IFormSettings {
 
 	ToIntFunction<IMaterial> getItemStackLimitFunction();
 
-	IItemFormSettings setIsBeaconPaymentFunction(Predicate<IMaterial> beaconPaymentFunction);
-
-	Predicate<IMaterial> getIsBeaconPaymentFunction();
-
 	IItemFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction);
 
 	Predicate<IMaterial> getHasEffectFunction();
