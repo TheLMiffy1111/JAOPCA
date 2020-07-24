@@ -12,8 +12,10 @@ import com.simibubi.create.modules.contraptions.components.press.PressingRecipe;
 import com.simibubi.create.modules.contraptions.processing.ProcessingIngredient;
 import com.simibubi.create.modules.contraptions.processing.ProcessingOutput;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.compat.create.CreateHelper;
+import thelm.jaopca.utils.MiscHelper;
 
 public class PressingRecipeSupplier implements Supplier<PressingRecipe> {
 
@@ -39,14 +41,14 @@ public class PressingRecipeSupplier implements Supplier<PressingRecipe> {
 
 	@Override
 	public PressingRecipe get() {
-		ProcessingIngredient ing = CreateHelper.INSTANCE.getProcessingIngredient(input);
-		if(ing.getIngredient().hasNoMatchingItems()) {
+		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
+		if(ing.hasNoMatchingItems()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		ProcessingOutput stack = CreateHelper.INSTANCE.getProcessingOutput(output, outputCount);
+		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.getStack().isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
-		return new PressingRecipe(key, group, Collections.singletonList(ing), Collections.singletonList(stack), -1);
+		return new PressingRecipe(key, group, Collections.singletonList(new ProcessingIngredient(ing)), Collections.singletonList(new ProcessingOutput(stack, 1F)), -1);
 	}
 }

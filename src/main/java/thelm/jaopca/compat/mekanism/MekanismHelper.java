@@ -2,6 +2,7 @@ package thelm.jaopca.compat.mekanism;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -21,6 +22,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.compat.mekanism.recipes.CombiningRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.CrushingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.CrystallizingRecipeSupplier;
@@ -29,6 +31,7 @@ import thelm.jaopca.compat.mekanism.recipes.EnrichingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.InjectingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.PurifyingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.WashingRecipeSupplier;
+import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.utils.ApiImpl;
 
 public class MekanismHelper {
@@ -168,7 +171,25 @@ public class MekanismHelper {
 	}
 
 	public GasStack getPreferredGasStack(Collection<Gas> collection, int amount) {
-		return new GasStack(collection.stream().findFirst().orElse(MekanismAPI.EMPTY_GAS), amount);
+		return new GasStack(getPreferredEntry(collection).orElse(MekanismAPI.EMPTY_GAS), amount);
+	}
+
+	//Modified from Immersive Engineering
+	public <T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Collection<T> list) {
+		T preferredEntry = null;
+		int currBest = ConfigHandler.PREFERRED_MODS.size();
+		for(T entry : list) {
+			ResourceLocation rl = entry.getRegistryName();
+			if(rl != null) {
+				String modId = rl.getNamespace();
+				int idx = ConfigHandler.PREFERRED_MODS.indexOf(modId);
+				if(preferredEntry == null || idx >= 0 && idx < currBest) {
+					preferredEntry = entry;
+					currBest = idx;
+				}
+			}
+		}
+		return Optional.ofNullable(preferredEntry);
 	}
 
 	public Tag<Fluid> makeFluidWrapperTag(ResourceLocation location) {

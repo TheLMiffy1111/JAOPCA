@@ -11,12 +11,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Strings;
 import com.simibubi.create.modules.contraptions.components.fan.SplashingRecipe;
-import com.simibubi.create.modules.contraptions.components.millstone.MillingRecipe;
 import com.simibubi.create.modules.contraptions.processing.ProcessingIngredient;
 import com.simibubi.create.modules.contraptions.processing.ProcessingOutput;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.compat.create.CreateHelper;
+import thelm.jaopca.utils.MiscHelper;
 
 public class SplashingRecipeSupplier implements Supplier<SplashingRecipe> {
 
@@ -40,8 +41,8 @@ public class SplashingRecipeSupplier implements Supplier<SplashingRecipe> {
 
 	@Override
 	public SplashingRecipe get() {
-		ProcessingIngredient ing = CreateHelper.INSTANCE.getProcessingIngredient(input);
-		if(ing.getIngredient().hasNoMatchingItems()) {
+		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
+		if(ing.hasNoMatchingItems()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		List<ProcessingOutput> results = new ArrayList<>();
@@ -59,12 +60,12 @@ public class SplashingRecipeSupplier implements Supplier<SplashingRecipe> {
 				chance = (Float)output[i];
 				++i;
 			}
-			ProcessingOutput stack = CreateHelper.INSTANCE.getProcessingOutput(out, count, chance);
-			if(stack.getStack().isEmpty()) {
+			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
+			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 			}
-			results.add(stack);
+			results.add(new ProcessingOutput(stack, chance));
 		}
-		return new SplashingRecipe(key, group, Collections.singletonList(ing), results, -1);
+		return new SplashingRecipe(key, group, Collections.singletonList(new ProcessingIngredient(ing)), results, -1);
 	}
 }

@@ -5,10 +5,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.client.resources.ReloadListener;
-import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.IResourceManager;
 import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.RegistryEvent;
@@ -86,16 +83,7 @@ public class CommonEventHandler {
 		MinecraftServer server = event.getServer();
 		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)server.getResourceManager()).reloadListeners;
 		DataInjector instance = DataInjector.getNewInstance(server.getRecipeManager());
-		reloadListeners.add(reloadListeners.indexOf(server.getRecipeManager())+1, new ReloadListener<Object>() {
-			@Override
-			protected Object prepare(IResourceManager resourceManager, IProfiler profiler) {
-				return null;
-			}
-			@Override
-			protected void apply(Object splashList, IResourceManager resourceManager, IProfiler profiler) {
-				instance.injectRecipes(resourceManager);
-			}
-		});
+		reloadListeners.add(reloadListeners.indexOf(server.getRecipeManager())+1, instance);
 		server.getResourcePacks().addPackFinder(DataInjector.PackFinder.INSTANCE);
 	}
 }
