@@ -58,6 +58,9 @@ public class ConfigHandler {
 	public static final Set<String> CRYSTAL_OVERRIDES = new TreeSet<>();
 	public static final Set<String> DUST_OVERRIDES = new TreeSet<>();
 
+	private static final List<String> DEFAULT_PREFERRED_MODS = Lists.newArrayList("minecraft");
+	public static final List<String> PREFERRED_MODS = new ArrayList<>();
+
 	public static final Set<ResourceLocation> BLOCK_TAG_BLACKLIST = new TreeSet<>();
 	public static final Set<ResourceLocation> ITEM_TAG_BLACKLIST = new TreeSet<>();
 	public static final Set<ResourceLocation> FLUID_TAG_BLACKLIST = new TreeSet<>();
@@ -107,6 +110,9 @@ public class ConfigHandler {
 		GEM_OVERRIDES.addAll(mainConfig.getDefinedStringList("materialOverrides.gem", DEFAULT_GEM_OVERRIDES, "List of materials that should be gems."));
 		CRYSTAL_OVERRIDES.addAll(mainConfig.getDefinedStringList("materialOverrides.crystal", DEFAULT_CRYSTAL_OVERRIDES, "List of materials that should be crystals."));
 		DUST_OVERRIDES.addAll(mainConfig.getDefinedStringList("materialOverrides.dust", DEFAULT_DUST_OVERRIDES, "List of materials that should be dusts."));
+
+		mainConfig.setComment("itemSelection", "Configurations related to item selection.");
+		PREFERRED_MODS.addAll(mainConfig.getDefinedStringList("itemSelection.preferredMods", DEFAULT_PREFERRED_MODS, "List of mods that are preferred when selecting items in recipes."));
 
 		mainConfig.setComment("blockTags", "Configurations related to block tags.");
 		BLOCK_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.blacklist", new ArrayList<>(),

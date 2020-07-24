@@ -1,6 +1,7 @@
 package thelm.jaopca.utils;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,23 +12,21 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.JsonElement;
-
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.api.helpers.IMiscHelper;
+import thelm.jaopca.config.ConfigHandler;
 
 public class MiscHelper implements IMiscHelper {
 
@@ -127,7 +126,7 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	public ItemStack getPreferredItemStack(Collection<Item> collection, int count) {
-		return new ItemStack(collection.stream().findFirst().orElse(Items.AIR), count);
+		return new ItemStack(getPreferredEntry(collection).orElse(Items.AIR), count);
 	}
 
 	public FluidStack getFluidStack(Object obj, int amount) {
@@ -161,7 +160,25 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	public FluidStack getPreferredFluidStack(Collection<Fluid> collection, int amount) {
-		return new FluidStack(collection.stream().findFirst().orElse(Fluids.EMPTY), amount);
+		return new FluidStack(getPreferredEntry(collection).orElse(Fluids.EMPTY), amount);
+	}
+
+	//Modified from Immersive Engineering
+	public <T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Collection<T> list) {
+		T preferredEntry = null;
+		int currBest = ConfigHandler.PREFERRED_MODS.size();
+		for(T entry : list) {
+			ResourceLocation rl = entry.getRegistryName();
+			if(rl != null) {
+				String modId = rl.getNamespace();
+				int idx = ConfigHandler.PREFERRED_MODS.indexOf(modId);
+				if(preferredEntry == null || idx >= 0 && idx < currBest) {
+					preferredEntry = entry;
+					currBest = idx;
+				}
+			}
+		}
+		return Optional.ofNullable(preferredEntry);
 	}
 
 	public <T> Future<T> submitAsyncTask(Callable<T> task) {
