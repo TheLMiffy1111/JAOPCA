@@ -1,4 +1,4 @@
-package thelm.jaopca.compat.indreb;
+package thelm.jaopca.compat.crossroads;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -6,13 +6,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.google.common.collect.ImmutableSetMultimap;
-import com.google.common.collect.Multimap;
-
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -20,31 +18,25 @@ import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
+import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "indreb")
-public class IndRebModule implements IModule {
+@JAOPCAModule(modDependencies = "crossroads")
+public class CrossroadsNonIngotModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"copper", "gold", "iron", "tin"));
+			"coal", "diamond", "emerald", "lapis", "quartz", "redstone", "ruby", "void"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	@Override
 	public String getName() {
-		return "indreb";
-	}
-
-	@Override
-	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
-		builder.put(0, "dusts");
-		return builder.build();
+		return "crossroads_non_ingot";
 	}
 
 	@Override
 	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT);
+		return EnumSet.of(MaterialType.GEM, MaterialType.CRYSTAL, MaterialType.DUST);
 	}
 
 	@Override
@@ -59,23 +51,28 @@ public class IndRebModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		IndRebHelper helper = IndRebHelper.INSTANCE;
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		CrossroadsHelper helper = CrossroadsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
 			IDynamicSpecConfig config = configs.get(material);
-			String configByproduct = config.getDefinedString("indreb.byproduct", "minecraft:cobblestone",
-					s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s)), "The byproduct material to output in Industrial Reborn's crushing.");
+			String configByproduct = config.getDefinedString("crossroads.byproduct", "minecraft:sand",
+					s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s)), "The byproduct material to output in Crossroads' Millstone.");
 			Item byproduct = ForgeRegistries.ITEMS.getValue(new ResourceLocation(configByproduct));
 
-			helper.registerCrushingRecipe(
-					new ResourceLocation("jaopca", "indreb.ore_to_dust."+material.getName()),
-					oreLocation, 1,
-					dustLocation, 2,
-					byproduct, 1, 50F,
-					180, 8);
+			if(material.getType() != MaterialType.DUST) {
+				helper.registerMillRecipe(
+						new ResourceLocation("jaopca", "crossroads.ore_to_material."+material.getName()),
+						oreLocation, materialLocation, 2, byproduct, 1);
+			}
+			else {
+				helper.registerMillRecipe(
+						new ResourceLocation("jaopca", "crossroads.ore_to_material."+material.getName()),
+						oreLocation, materialLocation, 5, byproduct, 1);
+			}
 		}
 	}
 }

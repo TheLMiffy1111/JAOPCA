@@ -61,7 +61,7 @@ public abstract class PlaceableFluid extends Fluid {
 		StateContainer.Builder<Fluid, IFluidState> builder = new StateContainer.Builder<>(this);
 		fillStateContainer(builder);
 		stateContainer = builder.create(FluidState::new);
-		setDefaultState(stateContainer.getBaseState());
+		setDefaultState(stateContainer.getBaseState().with(levelProperty, maxLevel));
 	}
 
 	public IntegerProperty getLevelProperty() {

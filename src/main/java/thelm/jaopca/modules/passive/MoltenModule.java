@@ -20,7 +20,7 @@ import thelm.jaopca.utils.ApiImpl;
 public class MoltenModule implements IModule {
 
 	private final IForm moltenForm = ApiImpl.INSTANCE.newForm(this, "molten", FluidFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOTS).setSettings(FluidFormType.INSTANCE.getNewSettings().
+			setMaterialTypes(MaterialType.NON_DUSTS).setSettings(FluidFormType.INSTANCE.getNewSettings().
 					setTickRateFunction(material->50).setDensityFunction(material->2000).
 					setTemperatureFunction(material->1000).setLightValueFunction(material->10).
 					setMaterialFunction(material->Material.LAVA));

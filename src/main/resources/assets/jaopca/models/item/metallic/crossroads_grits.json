@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/metallic/crossroads_grits",
+        "layer1": "jaopca:item/metallic/crossroads_grits_overlay"
+    }
+}

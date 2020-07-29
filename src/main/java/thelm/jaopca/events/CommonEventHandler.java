@@ -5,10 +5,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.client.resources.ReloadListener;
-import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.IResourceManager;
 import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.RegistryEvent;
