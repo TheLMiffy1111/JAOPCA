@@ -20,5 +20,8 @@
 
     "item.jaopca.omegacraft_dirty_dusts": "Dirty %s Dust",
 
-    "item.jaopca.create_crushed_ores": "Crushed %s Ore"
+    "item.jaopca.create_crushed_ores": "Crushed %s Ore",
+
+    "item.jaopca.crossroads_grits": "Raw %s Grit",
+    "item.jaopca.crossroads_clumps": "%s Clumps"
 }

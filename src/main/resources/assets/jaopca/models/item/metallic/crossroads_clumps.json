@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/metallic/crossroads_clumps",
+        "layer1": "jaopca:item/metallic/crossroads_clumps_overlay"
+    }
+}

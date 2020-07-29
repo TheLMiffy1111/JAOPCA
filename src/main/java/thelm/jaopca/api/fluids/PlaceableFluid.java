@@ -61,7 +61,7 @@ public abstract class PlaceableFluid extends Fluid {
 		StateContainer.Builder<Fluid, IFluidState> builder = new StateContainer.Builder<>(this);
 		fillStateContainer(builder);
 		stateContainer = builder.create(FluidState::new);
-		setDefaultState(stateContainer.getBaseState());
+		setDefaultState(stateContainer.getBaseState().with(levelProperty, maxLevel));
 	}
 
 	public IntegerProperty getLevelProperty() {
@@ -97,7 +97,7 @@ public abstract class PlaceableFluid extends Fluid {
 		int blockLevel = fluidLevel > maxLevel ? maxLevel : maxLevel-fluidLevel;
 		return block.getDefaultState().with(blockLevelProperty, blockLevel);
 	}
-	
+
 	protected abstract PlaceableFluidBlock getFluidBlock();
 
 	@Override
