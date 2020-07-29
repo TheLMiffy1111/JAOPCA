@@ -49,7 +49,7 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 		StateContainer.Builder<Block, BlockState> builder = new StateContainer.Builder<>(this);
 		fillStateContainer(builder);
 		stateContainer = builder.func_235882_a_(Block::getDefaultState, BlockState::new);
-		setDefaultState(stateContainer.getBaseState());
+		setDefaultState(stateContainer.getBaseState().with(levelProperty, maxLevel));
 	}
 
 	public IntegerProperty getLevelProperty() {

@@ -1,5 +1,6 @@
 modLoader="javafml"
 loaderVersion="[32,)"
+license="MIT"
 issueTrackerURL="https://github.com/TheLMiffy1111/JAOPCA/issues"
 displayURL="https://minecraft.curseforge.com/projects/jaopca"
 credits="Inspired by AOBD, a mod made by ganymedes01 for Minecraft 1.7"

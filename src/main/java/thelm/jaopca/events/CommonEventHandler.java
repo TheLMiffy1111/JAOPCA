@@ -10,12 +10,15 @@ import net.minecraft.resources.IFutureReloadListener;
 import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.resources.ResourcePackList;
 import net.minecraft.resources.SimpleReloadableResourceManager;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.data.DataCollector;
@@ -39,6 +42,9 @@ public class CommonEventHandler {
 	}
 
 	public void onConstruct() {
+		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+		MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListener);
+		
 		ApiImpl.INSTANCE.init();
 		DeferredWorkQueue.runLater(()->{
 			BlockFormType.init();
@@ -84,7 +90,6 @@ public class CommonEventHandler {
 		resourcePacks.addPackFinder(DataInjector.PackFinder.INSTANCE);
 	}
 
-	@SubscribeEvent
 	public void onAddReloadListener(AddReloadListenerEvent event) {
 		DataPackRegistries registries = event.getDataPackRegistries();
 		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)registries.func_240970_h_()).reloadListeners;

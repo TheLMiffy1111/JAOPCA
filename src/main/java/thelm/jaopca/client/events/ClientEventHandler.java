@@ -11,9 +11,11 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
@@ -34,6 +36,7 @@ public class ClientEventHandler {
 	}
 
 	public void onConstruct() {
+		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 		DeferredWorkQueue.runLater(()->{
 
 		});
@@ -83,7 +86,6 @@ public class ClientEventHandler {
 		ColorHandler.setup(event);
 	}
 
-	@SubscribeEvent
 	public void onTextureStitchPre(TextureStitchEvent.Pre event) {
 
 	}

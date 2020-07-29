@@ -20,12 +20,8 @@ public class JAOPCA {
 			throw new IllegalStateException("Mixin is not installed!");
 		}
 		core = this;
-		FMLJavaModLoadingContext.get().getModEventBus().register(CommonEventHandler.getInstance());
-		MinecraftForge.EVENT_BUS.register(CommonEventHandler.getInstance());
 		CommonEventHandler.getInstance().onConstruct();
 		DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
-			FMLJavaModLoadingContext.get().getModEventBus().register(ClientEventHandler.getInstance());
-			MinecraftForge.EVENT_BUS.register(ClientEventHandler.getInstance());
 			ClientEventHandler.getInstance().onConstruct();
 		});
 	}
