@@ -43,6 +43,11 @@ public class Form {
 		return form.getType().getName();
 	}
 
+	@ZenCodeType.Getter("module")
+	public Module getModule() {
+		return Module.getModuleWrapper(form.getModule());
+	}
+
 	@ZenCodeType.Getter("secondaryName")
 	public String getSecondaryName() {
 		return form.getSecondaryName();
@@ -53,7 +58,7 @@ public class Form {
 		return form.getMaterialTypes().stream().map(MaterialType::getName).toArray(String[]::new);
 	}
 
-	@ZenCodeType.Method
+	@ZenCodeType.Getter("materials")
 	public Material[] getMaterials() {
 		return form.getMaterials().stream().map(Material::getMaterialWrapper).toArray(Material[]::new);
 	}
@@ -88,7 +93,7 @@ public class Form {
 		return MaterialForm.getMaterialFormWrapper(form, material.getInternal());
 	}
 
-	@ZenCodeType.Method
+	@ZenCodeType.Getter("materialForms")
 	public MaterialForm[] getMaterialForms() {
 		return form.getMaterials().stream().map(m->MaterialForm.getMaterialFormWrapper(form, m)).toArray(MaterialForm[]::new);
 	}

@@ -34,6 +34,7 @@ import thelm.jaopca.compat.mekanism.recipes.InjectingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.PurifyingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.WashingRecipeSupplier;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class MekanismHelper {
 
@@ -228,7 +229,7 @@ public class MekanismHelper {
 	}
 
 	public GasStack getPreferredGasStack(Collection<Gas> collection, int amount) {
-		return new GasStack(collection.stream().findFirst().orElse(MekanismAPI.EMPTY_GAS), amount);
+		return new GasStack(MiscHelper.INSTANCE.getPreferredEntry(collection).orElse(MekanismAPI.EMPTY_GAS), amount);
 	}
 
 	public ITag<Slurry> getSlurryTag(ResourceLocation location) {
@@ -236,7 +237,7 @@ public class MekanismHelper {
 	}
 
 	public SlurryStack getPreferredSlurryStack(Collection<Slurry> collection, int amount) {
-		return new SlurryStack(collection.stream().findFirst().orElse(MekanismAPI.EMPTY_SLURRY), amount);
+		return new SlurryStack(MiscHelper.INSTANCE.getPreferredEntry(collection).orElse(MekanismAPI.EMPTY_SLURRY), amount);
 	}
 
 	public ITag<Fluid> makeFluidWrapperTag(ResourceLocation location) {

@@ -16,9 +16,7 @@ public class JAOPCA {
 	public static boolean mixinLoaded = false;
 
 	public JAOPCA() {
-		if(!mixinLoaded) {
-			throw new IllegalStateException("Mixin is not installed!");
-		}
+		assert mixinLoaded;
 		core = this;
 		CommonEventHandler.getInstance().onConstruct();
 		DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{

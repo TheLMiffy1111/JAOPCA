@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.mekanism;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Map;
@@ -39,6 +40,9 @@ public class MekanismCompatModule implements IModule {
 	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"coal", "copper", "diamond", "emerald", "gold", "iron", "lapis", "lead", "netherite", "netherite_scrap",
 			"osmium", "quartz", "redstone", "tin", "uranium"));
+	private static Set<String> configToDustBlacklist = new TreeSet<>();
+	private static Set<String> configToCrystalBlacklist = new TreeSet<>();
+	private static Set<String> configToOreBlacklist = new TreeSet<>();
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
@@ -53,6 +57,23 @@ public class MekanismCompatModule implements IModule {
 	}
 
 	@Override
+	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
+		IMiscHelper helper = MiscHelper.INSTANCE;
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.toDustMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have crushing recipes added."),
+				configToDustBlacklist);
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.toCrystalMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have enriching recipes added."),
+				configToCrystalBlacklist);
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.toOreMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have combining recipes added."),
+				configToOreBlacklist);
+	}
+
+	@Override
 	public void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {
 		this.configs = configs;
 	}
@@ -64,7 +85,9 @@ public class MekanismCompatModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) && !TO_DUST_BLACKLIST.contains(material.getName())) {
+			String name = material.getName();
+			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
+					!TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				if(api.getItemTags().contains(dustLocation)) {
@@ -74,7 +97,7 @@ public class MekanismCompatModule implements IModule {
 				}
 			}
 			if((ArrayUtils.contains(MaterialType.GEMS, type) || ArrayUtils.contains(MaterialType.CRYSTALS, type)) &&
-					!TO_CRYSTAL_BLACKLIST.contains(material.getName())) {
+					!TO_CRYSTAL_BLACKLIST.contains(material.getName()) && !configToCrystalBlacklist.contains(name)) {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				if(api.getItemTags().contains(dustLocation)) {
@@ -83,7 +106,8 @@ public class MekanismCompatModule implements IModule {
 							dustLocation, 1, materialLocation, 1);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.ORE, type) && !TO_ORE_BLACKLIST.contains(material.getName())) {
+			if(ArrayUtils.contains(MaterialType.ORE, type) &&
+					!TO_ORE_BLACKLIST.contains(material.getName()) && !configToOreBlacklist.contains(name)) {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 				if(api.getItemTags().contains(dustLocation)) {

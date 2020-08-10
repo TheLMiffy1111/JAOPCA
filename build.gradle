@@ -58,7 +58,7 @@ sourceSets {
     main
 }
 
-version = "3.3.0.3"
+version = "3.3.0.4"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.1"
 
@@ -71,12 +71,14 @@ minecraft {
         client = {
             properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
             properties 'forge.logging.console.level': 'debug'
+            properties 'mixin.env.disableRefMap': 'true'
             workingDirectory project.file('run').canonicalPath
             source sourceSets.main
         }
         server = {
             properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
             properties 'forge.logging.console.level': 'debug'
+            properties 'mixin.env.disableRefMap': 'true'
             workingDirectory project.file('run').canonicalPath
             source sourceSets.main
         }
@@ -84,12 +86,12 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.1-32.0.88"
+    minecraft "net.minecraftforge:forge:1.16.1-32.0.106"
 
-    implementation fg.deobf("mezz.jei:jei-1.16.1:7.0.0.6")
+    implementation fg.deobf("mezz.jei:jei-1.16.1:7.0.1.9")
     implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.1:7.0.0.14")
-	implementation fg.deobf("mekanism:Mekanism:1.16.1-10.0.5.428")
-	implementation fg.deobf("mekanism:Mekanism:1.16.1-10.0.5.428:generators")
+	implementation fg.deobf("mekanism:Mekanism:1.16.1-10.0.8.431")
+	implementation fg.deobf("mekanism:Mekanism:1.16.1-10.0.8.431:generators")
 
     //JitPack
     implementation fg.deobf("com.github.AlasDiablo:JANOEO:4.4.0.42-experimental")
@@ -97,12 +99,12 @@ dependencies {
     //CurseMaven
     implementation fg.deobf("curse.maven:silent-lib:3009162")
     implementation fg.deobf("curse.maven:silents-mechanisms:3012902")
-    implementation fg.deobf("curse.maven:silents-gems:3013226")
-    implementation fg.deobf("curse.maven:silent-gear:3015532")
+    implementation fg.deobf("curse.maven:silents-gems:3018601")
+    implementation fg.deobf("curse.maven:silent-gear:3027887")
     implementation fg.deobf("curse.maven:industrial-reborn:3002863")
-    implementation fg.deobf("curse.maven:essentials:3013946")
-    implementation fg.deobf("curse.maven:crossroads-mc:3007253")
-    implementation fg.deobf("curse.maven:charcoal-pit:3010696")
+    implementation fg.deobf("curse.maven:essentials:3022327")
+    implementation fg.deobf("curse.maven:crossroads-mc:3018470")
+    implementation fg.deobf("curse.maven:applied-energistics-2:3024462")
 }
 
 jar {

@@ -1,4 +1,4 @@
-package thelm.jaopca.compat.silentsmechanisms;
+package thelm.jaopca.compat.appliedenergistics2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,18 +21,16 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "silents_mechanisms")
-public class SilentsMechanismsCompatModule implements IModule {
+@JAOPCAModule(modDependencies = "appliedenergistics2")
+public class AppliedEnergistics2CompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminum_steel", "bismuth", "bismuth_steel", "brass", "bronze", "coal", "copper", "electrum",
-			"enderium", "gold", "invar", "iron", "lead", "lumium", "nickel", "platinum", "redstone_alloy", "signalum",
-			"silver", "steel", "tin", "uranium", "zinc"));
+			"certus_quartz", "ender", "fluix", "gold", "iron", "quartz"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 
 	@Override
 	public String getName() {
-		return "silents_mechanisms_compat";
+		return "appliedenergistics2_compat";
 	}
 
 	@Override
@@ -45,14 +43,14 @@ public class SilentsMechanismsCompatModule implements IModule {
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.toDustMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have crushing recipes added."),
+						helper.configMaterialPredicate(), "The materials that should not have grinder recipes added."),
 				configToDustBlacklist);
 	}
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		SilentsMechanismsHelper helper = SilentsMechanismsHelper.INSTANCE;
+		AppliedEnergistics2Helper helper = AppliedEnergistics2Helper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
@@ -62,9 +60,9 @@ public class SilentsMechanismsCompatModule implements IModule {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				if(api.getItemTags().contains(dustLocation)) {
-					helper.registerCrushingRecipe(
-							new ResourceLocation("jaopca", "silents_mechanisms.material_to_dust."+material.getName()),
-							materialLocation, 200, dustLocation);
+					helper.registerGrinderRecipe(
+							new ResourceLocation("jaopca", "appliedenergistics2.material_to_dust."+material.getName()),
+							materialLocation, 1, dustLocation, 1, 4);
 				}
 			}
 		}

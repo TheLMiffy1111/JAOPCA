@@ -113,13 +113,11 @@ public class Material implements IMaterial {
 		extras.clear();
 		extras.addAll(cfgList);
 
-		TreeMultiset<String> blacklist = TreeMultiset.create(config.getDefinedStringList("general.moduleBlacklist", new ArrayList<>(configModuleBlacklist),
-				s->ModuleHandler.getModuleMap().containsKey(s) || "*".equals(s), "The module blacklist of this material."));
-		int count = blacklist.count("*");
-		ModuleHandler.getModuleMap().keySet().forEach(s->blacklist.add(s, count));
-		blacklist.remove("*", count);
-		configModuleBlacklist.clear();
-		configModuleBlacklist.addAll(blacklist.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(e->e.getElement()).collect(Collectors.toList()));
+		MiscHelper helper = MiscHelper.INSTANCE;
+		helper.caclulateModuleSet(
+				config.getDefinedStringList("general.moduleBlacklist", new ArrayList<>(configModuleBlacklist),
+						helper.configModulePredicate(), "The module blacklist of this material."),
+				configModuleBlacklist);
 
 		hasEffect = config.getDefinedBoolean("general.hasEffect", hasEffect, "Should items of this material have the enchanted glow.");
 		modelType = config.getDefinedString("general.modelType", modelType, s->isModelTypeValid(s), "The model type of the material.");
