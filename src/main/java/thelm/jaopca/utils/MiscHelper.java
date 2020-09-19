@@ -6,11 +6,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.collect.Multiset;
+import com.google.common.collect.TreeMultiset;
 import com.google.gson.JsonElement;
 
 import net.minecraft.fluid.Fluid;
@@ -29,6 +32,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.config.ConfigHandler;
+import thelm.jaopca.materials.MaterialHandler;
+import thelm.jaopca.modules.ModuleHandler;
 
 public class MiscHelper implements IMiscHelper {
 
@@ -164,6 +169,7 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	//Modified from Immersive Engineering
+	@Override
 	public <T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Collection<T> list) {
 		T preferredEntry = null;
 		int currBest = ConfigHandler.PREFERRED_MODS.size();
@@ -179,6 +185,39 @@ public class MiscHelper implements IMiscHelper {
 			}
 		}
 		return Optional.ofNullable(preferredEntry);
+	}
+
+	@Override
+	public void caclulateMaterialSet(Collection<String> configList, Collection<String> actualSet) {
+		TreeMultiset<String> list = TreeMultiset.create(configList);
+		int listCount = list.count("*");
+		MaterialHandler.getMaterialMap().keySet().forEach(s->list.add(s, listCount));
+		list.remove("*", listCount);
+		actualSet.clear();
+		list.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(Multiset.Entry::getElement).forEach(actualSet::add);
+	}
+
+	@Override
+	public void caclulateModuleSet(Collection<String> configList, Collection<String> actualSet) {
+		TreeMultiset<String> list = TreeMultiset.create(configList);
+		int listCount = list.count("*");
+		ModuleHandler.getModuleMap().keySet().forEach(s->list.add(s, listCount));
+		list.remove("*", listCount);
+		actualSet.clear();
+		list.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(Multiset.Entry::getElement).forEach(actualSet::add);
+	}
+
+	private static final Predicate<String> CONFIG_MATERIAL_PREDICATE = s->"*".equals(s) || MaterialHandler.containsMaterial(s);
+	private static final Predicate<String> CONFIG_MODULE_PREDICATE = s->"*".equals(s) || ModuleHandler.getModuleMap().containsKey(s);
+
+	@Override
+	public Predicate<String> configMaterialPredicate() {
+		return CONFIG_MATERIAL_PREDICATE;
+	}
+
+	@Override
+	public Predicate<String> configModulePredicate() {
+		return CONFIG_MODULE_PREDICATE;
 	}
 
 	public <T> Future<T> submitAsyncTask(Callable<T> task) {

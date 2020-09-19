@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.create;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
@@ -24,6 +26,7 @@ public class CreateCompatModule implements IModule {
 
 	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"brass", "copper", "gold", "iron"));
+	private static Set<String> configToPlateBlacklist = new TreeSet<>();
 
 	@Override
 	public String getName() {
@@ -33,6 +36,15 @@ public class CreateCompatModule implements IModule {
 	@Override
 	public Set<MaterialType> getMaterialTypes() {
 		return EnumSet.allOf(MaterialType.class);
+	}
+
+	@Override
+	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
+		IMiscHelper helper = MiscHelper.INSTANCE;
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.toPlateMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have pressing recipes added."),
+				configToPlateBlacklist);
 	}
 
 	@Override

@@ -7,10 +7,21 @@ import com.blamejared.crafttweaker.api.annotations.ZenRegister;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.forms.FormHandler;
 import thelm.jaopca.materials.MaterialHandler;
+import thelm.jaopca.modules.ModuleHandler;
 
 @ZenRegister
 @ZenCodeType.Name("mods.jaopca.JAOPCA")
 public class JAOPCA {
+
+	@ZenCodeType.Method
+	public static boolean containsModule(String moduleName) {
+		return ModuleHandler.getModuleMap().containsKey(moduleName);
+	}
+
+	@ZenCodeType.Method
+	public static Module getModule(String moduleName) {
+		return Module.getModuleWrapper(ModuleHandler.getModuleMap().get(moduleName));
+	}
 
 	@ZenCodeType.Method
 	public static boolean containsForm(String formName) {

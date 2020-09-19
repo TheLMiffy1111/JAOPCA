@@ -39,6 +39,9 @@ repositories {
         url = "https://maven.latmod.com/"
     }
     maven {
+        url = "https://maven.covers1624.net/"
+    }
+    maven {
         url = "https://jitpack.io/"
     }
 }
@@ -47,7 +50,7 @@ sourceSets {
     main
 }
 
-version = "3.2.0.14"
+version = "3.2.0.15"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.15.2"
 
@@ -73,13 +76,13 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.15.2-31.2.31"
-    implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.2.12")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.15.2:6.0.0.34")
+    minecraft "net.minecraftforge:forge:1.15.2-31.2.37"
+    implementation fg.deobf("mezz.jei:jei-1.15.2:6.0.3.15")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.15.2:6.0.0.44")
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.15.2-1.2-35.2")
-    implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.15.2:1.0.20")
-    implementation fg.deobf("com.wtbw.mods:wtbw_core-1.15.2:1.0.18")
-    implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.23")
+    implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.15.2:1.0.21")
+    implementation fg.deobf("com.wtbw.mods:wtbw_core-1.15.2:1.0.19")
+    implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.15.2:1.0.24")
 
     //JitPack
 
@@ -91,15 +94,19 @@ dependencies {
     implementation fg.deobf("curse.maven:fl:2988805")
     implementation fg.deobf("curse.maven:flux:2990680")
     implementation fg.deobf("curse.maven:themcbros-useless-mod:2902375")
-    implementation fg.deobf("curse.maven:omega-craft-mod:2919222")
-    implementation fg.deobf("curse.maven:silent-lib:2946599")
+    implementation fg.deobf("curse.maven:omega-craft-mod:3047272")
+    implementation fg.deobf("curse.maven:silent-lib:3003984")
     implementation fg.deobf("curse.maven:silents-mechanisms:2948946")
     implementation fg.deobf("curse.maven:silents-gems:2940183")
     implementation fg.deobf("curse.maven:industrial-reborn:2942538")
     implementation fg.deobf("curse.maven:create:2979593")
     implementation fg.deobf("curse.maven:occultism:3003848")
-    implementation fg.deobf("curse.maven:essentials:2989725")
+    implementation fg.deobf("curse.maven:essentials:3022325")
     implementation fg.deobf("curse.maven:crossroads-mc:3010269")
+    implementation fg.deobf("curse.maven:applied-energistics-2:3053152")
+    implementation fg.deobf("curse.maven:cofh-core:3057492")
+    implementation fg.deobf("curse.maven:thermal-foundation:3057541")
+    implementation fg.deobf("curse.maven:thermal-expansion:3057570")
 }
 
 jar {

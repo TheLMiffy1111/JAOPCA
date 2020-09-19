@@ -30,6 +30,7 @@ import thelm.jaopca.compat.mekanism.recipes.InjectingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.PurifyingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.WashingRecipeSupplier;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class MekanismHelper {
 
@@ -168,7 +169,7 @@ public class MekanismHelper {
 	}
 
 	public GasStack getPreferredGasStack(Collection<Gas> collection, int amount) {
-		return new GasStack(collection.stream().findFirst().orElse(MekanismAPI.EMPTY_GAS), amount);
+		return new GasStack(MiscHelper.INSTANCE.getPreferredEntry(collection).orElse(MekanismAPI.EMPTY_GAS), amount);
 	}
 
 	public Tag<Fluid> makeFluidWrapperTag(ResourceLocation location) {

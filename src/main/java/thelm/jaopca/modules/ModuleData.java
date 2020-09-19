@@ -7,13 +7,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Ordering;
-import com.google.common.collect.TreeMultiset;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanRBTreeMap;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -21,6 +19,7 @@ import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.materials.MaterialHandler;
+import thelm.jaopca.utils.MiscHelper;
 
 public class ModuleData implements IModuleData {
 
@@ -63,20 +62,17 @@ public class ModuleData implements IModuleData {
 	public void setConfig(IDynamicSpecConfig config) {
 		this.config = config;
 
-		TreeMultiset<String> blacklist = TreeMultiset.create(config.getDefinedStringList("general.materialBlacklist", new ArrayList<>(),
-				s->"*".equals(s) || MaterialHandler.containsMaterial(s), "The material blacklist of this module."));
-		int blacklistCount = blacklist.count("*");
-		MaterialHandler.getMaterialMap().keySet().forEach(s->blacklist.add(s, blacklistCount));
-		blacklist.remove("*", blacklistCount);
-		configMaterialBlacklist.addAll(blacklist.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(e->e.getElement()).collect(Collectors.toList()));
+		MiscHelper helper = MiscHelper.INSTANCE;
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("general.materialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The material blacklist of this module."),
+				configMaterialBlacklist);
 
 		if(module.isPassive()) {
-			TreeMultiset<String> whitelist = TreeMultiset.create(config.getDefinedStringList("general.passiveMaterialWhitelist", new ArrayList<>(),
-					s->"*".equals(s) || MaterialHandler.containsMaterial(s), "The materials to force generate passive forms for this module."));
-			int whitelistCount = whitelist.count("*");
-			MaterialHandler.getMaterialMap().keySet().forEach(s->whitelist.add(s, whitelistCount));
-			whitelist.remove("*", whitelistCount);
-			configPassiveMaterialWhitelist.addAll(whitelist.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(e->e.getElement()).collect(Collectors.toList()));
+			helper.caclulateMaterialSet(
+					config.getDefinedStringList("general.passiveMaterialWhitelist", new ArrayList<>(),
+							helper.configMaterialPredicate(), "The materials to force generate passive forms for this module."),
+					configPassiveMaterialWhitelist);
 		}
 	}
 
