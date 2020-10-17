@@ -276,7 +276,7 @@ public abstract class PlaceableFluid extends Fluid {
 
 	protected void beforeReplacingBlock(IWorld world, BlockPos pos, BlockState blockState) {
 		TileEntity tile = blockState.hasTileEntity() ? world.getTileEntity(pos) : null;
-		Block.spawnDrops(blockState, world.getWorld(), pos, tile);
+		Block.spawnDrops(blockState, world, pos, tile);
 	}
 
 	protected static short getPosKey(BlockPos pos, BlockPos otherPos) {

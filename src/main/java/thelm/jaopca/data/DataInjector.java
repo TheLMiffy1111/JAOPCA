@@ -19,11 +19,7 @@ import com.google.common.collect.MultimapBuilder;
 import com.google.gson.Gson;
 
 import net.minecraft.advancements.Advancement;
-import net.minecraft.block.Block;
 import net.minecraft.client.resources.ReloadListener;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.item.crafting.RecipeManager;
@@ -36,9 +32,8 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.resources.ResourcePackType;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
+import szewek.flux.F.T;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.resources.InMemoryResourcePack;
 
@@ -183,8 +178,8 @@ public class DataInjector extends ReloadListener<Object> {
 		public static final PackFinder INSTANCE = new PackFinder();
 
 		@Override
-		public <T extends ResourcePackInfo> void func_230230_a_(Consumer<T> packList, ResourcePackInfo.IFactory<T> factory) {
-			T packInfo = ResourcePackInfo.createResourcePack("inmemory:jaopca", true, ()->{
+		public void findPacks(Consumer<ResourcePackInfo> packList, ResourcePackInfo.IFactory factory) {
+			ResourcePackInfo packInfo = ResourcePackInfo.createResourcePack("inmemory:jaopca", true, ()->{
 				InMemoryResourcePack pack = new InMemoryResourcePack("inmemory:jaopca", true);
 				BLOCK_TAGS_INJECT.asMap().forEach((location, locations)->{
 					ITag.Builder builder = ITag.Builder.create();
@@ -214,7 +209,7 @@ public class DataInjector extends ReloadListener<Object> {
 				});
 				ModuleHandler.onCreateDataPack(pack);
 				return pack;
-			}, factory, ResourcePackInfo.Priority.BOTTOM, IPackNameDecorator.field_232626_b_);
+			}, factory, ResourcePackInfo.Priority.BOTTOM, IPackNameDecorator.BUILTIN);
 			if(packInfo != null) {
 				packList.accept(packInfo);
 			}

@@ -13,7 +13,6 @@ import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -86,14 +85,14 @@ public class CommonEventHandler {
 		ModuleHandler.onInterModEnqueue(event);
 	}
 
-	public void onDataPackDiscovery(ResourcePackList<? extends ResourcePackInfo> resourcePacks) {
+	public void onDataPackDiscovery(ResourcePackList resourcePacks) {
 		resourcePacks.addPackFinder(DataInjector.PackFinder.INSTANCE);
 	}
 
 	public void onAddReloadListener(AddReloadListenerEvent event) {
 		DataPackRegistries registries = event.getDataPackRegistries();
-		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)registries.func_240970_h_()).reloadListeners;
-		DataInjector instance = DataInjector.getNewInstance(registries.func_240967_e_());
-		reloadListeners.add(reloadListeners.indexOf(registries.func_240967_e_())+1, instance);
+		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)registries.getResourceManager()).reloadListeners;
+		DataInjector instance = DataInjector.getNewInstance(registries.getRecipeManager());
+		reloadListeners.add(reloadListeners.indexOf(registries.getRecipeManager())+1, instance);
 	}
 }

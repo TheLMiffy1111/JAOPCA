@@ -21,12 +21,12 @@ public class ResourceInjector {
 		public static final PackFinder INSTANCE = new PackFinder();
 
 		@Override
-		public <T extends ResourcePackInfo> void func_230230_a_(Consumer<T> packList, IFactory<T> factory) {
-			T packInfo = ResourcePackInfo.createResourcePack("inmemory:jaopca", true, ()->{
+		public void findPacks(Consumer<ResourcePackInfo> packList, IFactory factory) {
+			ResourcePackInfo packInfo = ResourcePackInfo.createResourcePack("inmemory:jaopca", true, ()->{
 				InMemoryResourcePack pack = new InMemoryResourcePack("inmemory:jaopca", true);
 				ModuleHandler.onCreateResourcePack(pack);
 				return pack;
-			}, factory, ResourcePackInfo.Priority.BOTTOM, IPackNameDecorator.field_232626_b_);
+			}, factory, ResourcePackInfo.Priority.BOTTOM, IPackNameDecorator.BUILTIN);
 			packList.accept(packInfo);
 		}
 	}

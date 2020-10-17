@@ -22,7 +22,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
@@ -74,10 +77,10 @@ public class MiscHelper implements IMiscHelper {
 			return new ItemStack((IItemProvider)obj, count);
 		}
 		else if(obj instanceof String) {
-			return getPreferredItemStack(makeItemWrapperTag(new ResourceLocation((String)obj)).getAllElements(), count);
+			return getPreferredItemStack(getItemTag(new ResourceLocation((String)obj)).getAllElements(), count);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return getPreferredItemStack(makeItemWrapperTag((ResourceLocation)obj).getAllElements(), count);
+			return getPreferredItemStack(getItemTag((ResourceLocation)obj).getAllElements(), count);
 		}
 		else if(obj instanceof ITag<?>) {
 			return getPreferredItemStack(((ITag<Item>)obj).getAllElements(), count);
@@ -94,10 +97,10 @@ public class MiscHelper implements IMiscHelper {
 			return (Ingredient)obj;
 		}
 		else if(obj instanceof String) {
-			return Ingredient.fromTag(makeItemWrapperTag(new ResourceLocation((String)obj)));
+			return Ingredient.fromTag(getItemTag(new ResourceLocation((String)obj)));
 		}
 		else if(obj instanceof ResourceLocation) {
-			return Ingredient.fromTag(makeItemWrapperTag((ResourceLocation)obj));
+			return Ingredient.fromTag(getItemTag((ResourceLocation)obj));
 		}
 		else if(obj instanceof ITag<?>) {
 			return Ingredient.fromTag((ITag<Item>)obj);
@@ -126,9 +129,9 @@ public class MiscHelper implements IMiscHelper {
 		return Ingredient.EMPTY;
 	}
 
-	public ITag<Item> makeItemWrapperTag(ResourceLocation location) {
-		return TagCollectionManager.func_232928_e_().func_232925_b_().getOrCreate(location);
-		//return ItemTags.makeWrapperTag(location.toString());
+	public ITag<Item> getItemTag(ResourceLocation location) {
+		ITag<Item> tag = TagCollectionManager.getManager().getItemTags().get(location);
+		return tag != null ? tag : Tag.getEmptyTag();
 	}
 
 	public ItemStack getPreferredItemStack(Collection<Item> collection, int count) {
@@ -149,10 +152,10 @@ public class MiscHelper implements IMiscHelper {
 			return new FluidStack(((IFluidProvider)obj).asFluid(), amount);
 		}
 		else if(obj instanceof String) {
-			return getPreferredFluidStack(getItemTag(new ResourceLocation((String)obj)).getAllElements(), amount);
+			return getPreferredFluidStack(getFluidTag(new ResourceLocation((String)obj)).getAllElements(), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return getPreferredFluidStack(getItemTag((ResourceLocation)obj).getAllElements(), amount);
+			return getPreferredFluidStack(getFluidTag((ResourceLocation)obj).getAllElements(), amount);
 		}
 		else if(obj instanceof ITag<?>) {
 			return getPreferredFluidStack(((ITag<Fluid>)obj).getAllElements(), amount);
@@ -160,9 +163,9 @@ public class MiscHelper implements IMiscHelper {
 		return FluidStack.EMPTY;
 	}
 
-	public ITag<Fluid> getItemTag(ResourceLocation location) {
-		return TagCollectionManager.func_232928_e_().func_232926_c_().getOrCreate(location);
-		//return FluidTags.makeWrapperTag(location.toString());
+	public ITag<Fluid> getFluidTag(ResourceLocation location) {
+		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().get(location);
+		return tag != null ? tag : Tag.getEmptyTag();
 	}
 
 	public FluidStack getPreferredFluidStack(Collection<Fluid> collection, int amount) {

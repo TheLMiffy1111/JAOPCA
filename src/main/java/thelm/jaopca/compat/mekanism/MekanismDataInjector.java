@@ -4,20 +4,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Supplier;
 
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MultimapBuilder;
 
-import mekanism.api.MekanismAPI;
-import mekanism.api.chemical.gas.Gas;
-import mekanism.api.chemical.infuse.InfuseType;
-import mekanism.api.chemical.pigment.Pigment;
-import mekanism.api.chemical.slurry.Slurry;
 import net.minecraft.resources.ResourcePackType;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.resources.IInMemoryResourcePack;

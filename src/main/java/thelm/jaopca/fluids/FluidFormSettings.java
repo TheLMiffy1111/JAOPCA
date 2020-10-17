@@ -1,7 +1,5 @@
 package thelm.jaopca.fluids;
 
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -19,7 +17,6 @@ import thelm.jaopca.api.fluids.IFluidCreator;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.utils.MiscHelper;
 
 public class FluidFormSettings implements IFluidFormSettings {
 

@@ -149,7 +149,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		boolean flag1 = blockMaterial.isReplaceable();
 		if(world.isAirBlock(pos) || flag || flag1) {
 			FluidStack stack = new FluidStack(fluid.asFluid(), FluidAttributes.BUCKET_VOLUME);
-			if(world.func_230315_m_().func_236040_e_() && fluid.asFluid().isIn(FluidTags.WATER)) {
+			if(world.getDimensionType().isUltrawarm() && fluid.asFluid().isIn(FluidTags.WATER)) {
 				int i = pos.getX();
 				int j = pos.getY();
 				int k = pos.getZ();

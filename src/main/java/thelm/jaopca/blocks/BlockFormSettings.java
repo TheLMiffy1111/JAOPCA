@@ -1,7 +1,5 @@
 package thelm.jaopca.blocks;
 
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
@@ -26,7 +24,6 @@ import thelm.jaopca.api.blocks.IBlockItemCreator;
 import thelm.jaopca.api.blocks.IBlockLootTableCreator;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.utils.MiscHelper;
 
 public class BlockFormSettings implements IBlockFormSettings {
 

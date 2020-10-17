@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import com.google.common.collect.TreeBasedTable;
 import com.google.gson.GsonBuilder;
@@ -18,7 +17,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.common.ToolType;

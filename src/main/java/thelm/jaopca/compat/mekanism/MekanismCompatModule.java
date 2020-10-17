@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -147,7 +148,7 @@ public class MekanismCompatModule implements IModule {
 
 	public Object getTagOrItem(String s) {
 		if(StringUtils.startsWith(s, "#")) {
-			return (Supplier<ITag<Item>>)()->TagCollectionManager.func_232928_e_().func_232925_b_().get(new ResourceLocation(s.substring(1)));
+			return (Supplier<ITag<Item>>)()->MekanismHelper.INSTANCE.getItemTag(new ResourceLocation(s.substring(1)));
 		}
 		else {
 			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(s));

@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.Da_Technomancer.crossroads.items.crafting.recipes.BlastFurnaceRec;
+import com.Da_Technomancer.crossroads.crafting.recipes.BlastFurnaceRec;
 import com.google.common.base.Strings;
 
 import net.minecraft.item.crafting.Ingredient;

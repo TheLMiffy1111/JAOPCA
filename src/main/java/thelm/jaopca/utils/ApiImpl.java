@@ -22,7 +22,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.loot.LootTable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;

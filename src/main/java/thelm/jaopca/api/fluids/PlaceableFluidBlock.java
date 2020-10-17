@@ -148,11 +148,4 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 			return Fluids.EMPTY;
 		}
 	}
-
-	@Override
-	public void onEntityCollision(BlockState blockState, World world, BlockPos pos, Entity entity) {
-		if(fluid.isIn(FluidTags.LAVA)) {
-			entity.setInLava();
-		}
-	}
 }

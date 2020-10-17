@@ -7,11 +7,8 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.collect.TreeMultiset;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
@@ -23,7 +20,6 @@ import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.client.colors.ColorHandler;
-import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.utils.MiscHelper;
 
 public class Material implements IMaterial {

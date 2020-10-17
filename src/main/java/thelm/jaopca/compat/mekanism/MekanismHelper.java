@@ -21,7 +21,9 @@ import mekanism.api.recipes.inputs.FluidStackIngredient;
 import mekanism.api.recipes.inputs.chemical.GasStackIngredient;
 import mekanism.api.recipes.inputs.chemical.SlurryStackIngredient;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
+import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -54,10 +56,10 @@ public class MekanismHelper {
 			return (FluidStackIngredient)obj;
 		}
 		else if(obj instanceof String) {
-			return FluidStackIngredient.from(makeFluidWrapperTag(new ResourceLocation((String)obj)), amount);
+			return FluidStackIngredient.from(getFluidTag(new ResourceLocation((String)obj)), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return FluidStackIngredient.from(makeFluidWrapperTag((ResourceLocation)obj), amount);
+			return FluidStackIngredient.from(getFluidTag((ResourceLocation)obj), amount);
 		}
 		else if(obj instanceof ITag<?>) {
 			return FluidStackIngredient.from((ITag<Fluid>)obj, amount);
@@ -225,7 +227,8 @@ public class MekanismHelper {
 	}
 
 	public ITag<Gas> getGasTag(ResourceLocation location) {
-		return ChemicalTags.gasTag(location);
+		ITag<Gas> tag = ChemicalTags.GAS.getCollection().get(location);
+		return tag != null ? tag : Tag.getEmptyTag();
 	}
 
 	public GasStack getPreferredGasStack(Collection<Gas> collection, int amount) {
@@ -233,14 +236,21 @@ public class MekanismHelper {
 	}
 
 	public ITag<Slurry> getSlurryTag(ResourceLocation location) {
-		return ChemicalTags.slurryTag(location);
+		ITag<Slurry> tag = ChemicalTags.SLURRY.getCollection().get(location);
+		return tag != null ? tag : Tag.getEmptyTag();
 	}
 
 	public SlurryStack getPreferredSlurryStack(Collection<Slurry> collection, int amount) {
 		return new SlurryStack(MiscHelper.INSTANCE.getPreferredEntry(collection).orElse(MekanismAPI.EMPTY_SLURRY), amount);
 	}
 
-	public ITag<Fluid> makeFluidWrapperTag(ResourceLocation location) {
-		return TagCollectionManager.func_232928_e_().func_232926_c_().getOrCreate(location);
+	public ITag<Fluid> getFluidTag(ResourceLocation location) {
+		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().get(location);
+		return tag != null ? tag : Tag.getEmptyTag();
+	}
+
+	public ITag<Item> getItemTag(ResourceLocation location) {
+		ITag<Item> tag = TagCollectionManager.getManager().getItemTags().get(location);
+		return tag != null ? tag : Tag.getEmptyTag();
 	}
 }
