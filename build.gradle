@@ -58,27 +58,25 @@ sourceSets {
     main
 }
 
-version = "3.4.0.0"
+version = "3.4.0.1"
 group = "thelm.jaopca"
-archivesBaseName = "JAOPCA-1.16.3"
+archivesBaseName = "JAOPCA-1.16.4"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200916-1.16.2'
+    mappings channel: 'snapshot', version: '20201028-1.16.3'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client = {
             properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
             properties 'forge.logging.console.level': 'debug'
-            properties 'mixin.env.disableRefMap': 'true'
             workingDirectory project.file('run').canonicalPath
             source sourceSets.main
         }
         server = {
             properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
             properties 'forge.logging.console.level': 'debug'
-            properties 'mixin.env.disableRefMap': 'true'
             workingDirectory project.file('run').canonicalPath
             source sourceSets.main
         }
@@ -86,26 +84,33 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.3-34.1.23"
+    minecraft "net.minecraftforge:forge:1.16.4-35.1.0"
 
-    implementation fg.deobf("mezz.jei:jei-1.16.3:7.6.0.49")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.3:7.0.0.45")
-	implementation fg.deobf("mekanism:Mekanism:1.16.3-10.0.12.437")
-	implementation fg.deobf("mekanism:Mekanism:1.16.3-10.0.12.437:generators")
+    implementation fg.deobf("mezz.jei:jei-1.16.4:7.6.0.58")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.4:7.0.0.63")
+	implementation fg.deobf("mekanism:Mekanism:1.16.4-10.0.17.444")
+	implementation fg.deobf("mekanism:Mekanism:1.16.4-10.0.17.444:generators")
+    implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.16.3:2.0.1")
+    implementation fg.deobf("com.wtbw.mods:wtbw_core-1.16.3:2.0.2")
+    implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.16.3:2.0.1")
 
     //JitPack
     implementation fg.deobf("com.github.AlasDiablo:JANOEO:4.4.0.52-experimental")
 
     //CurseMaven
-    implementation fg.deobf("curse.maven:silent-lib:3068771")
-    implementation fg.deobf("curse.maven:silents-mechanisms:3082062")
-    implementation fg.deobf("curse.maven:silents-gems:3077986")
-    implementation fg.deobf("curse.maven:silent-gear:3077738")
+    implementation fg.deobf("curse.maven:silent-lib:3103851")
+    implementation fg.deobf("curse.maven:silents-mechanisms:3105339")
+    implementation fg.deobf("curse.maven:silents-gems:3103871")
+    implementation fg.deobf("curse.maven:silent-gear:3114754")
     implementation fg.deobf("curse.maven:industrial-reborn:3076845")
-    implementation fg.deobf("curse.maven:essentials:3076386")
-    implementation fg.deobf("curse.maven:crossroads-mc:3077633")
-    implementation fg.deobf("curse.maven:fl:3063246")
-    implementation fg.deobf("curse.maven:flux:3063245")
+    implementation fg.deobf("curse.maven:essentials:3106233")
+    implementation fg.deobf("curse.maven:crossroads-mc:3098416")
+    implementation fg.deobf("curse.maven:fl:3101155")
+    implementation fg.deobf("curse.maven:flux:3101154")
+    implementation fg.deobf("curse.maven:applied-energistics-2:3106770")
+    implementation fg.deobf("curse.maven:cofh-core:3104353")
+    implementation fg.deobf("curse.maven:thermal-foundation:3104383")
+    implementation fg.deobf("curse.maven:thermal-expansion:3104355")
 }
 
 jar {
