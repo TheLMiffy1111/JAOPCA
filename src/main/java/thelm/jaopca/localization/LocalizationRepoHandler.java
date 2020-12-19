@@ -46,11 +46,11 @@ public class LocalizationRepoHandler {
 					langDir.delete();
 				}
 				if(!langDir.mkdir()) {
-					throw new Error("Could not create directory "+langDir);
+					throw new RuntimeException("Could not create directory "+langDir+", please create manually");
 				}
 			}
 			catch(SecurityException e) {
-				throw new Error("Could not create directory "+langDir, e);
+				throw new RuntimeException("Could not create directory "+langDir+", please create manually", e);
 			}
 		}
 		reload();

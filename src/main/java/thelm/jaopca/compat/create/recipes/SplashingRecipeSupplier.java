@@ -1,18 +1,13 @@
 package thelm.jaopca.compat.create.recipes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.base.Strings;
 import com.simibubi.create.content.contraptions.components.fan.SplashingRecipe;
-import com.simibubi.create.content.contraptions.processing.ProcessingIngredient;
-import com.simibubi.create.content.contraptions.processing.ProcessingOutput;
+import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -24,28 +19,23 @@ public class SplashingRecipeSupplier implements Supplier<SplashingRecipe> {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	public final ResourceLocation key;
-	public final String group;
 	public final Object input;
 	public final Object[] output;
 
 	public SplashingRecipeSupplier(ResourceLocation key, Object input, Object... output) {
-		this(key, "", input, output);
-	}
-
-	public SplashingRecipeSupplier(ResourceLocation key, String group, Object input, Object... output) {
 		this.key = Objects.requireNonNull(key);
-		this.group = Strings.nullToEmpty(group);
 		this.input = input;
 		this.output = output;
 	}
 
 	@Override
 	public SplashingRecipe get() {
+		ProcessingRecipeBuilder<SplashingRecipe> builder = new ProcessingRecipeBuilder<>(SplashingRecipe::new, key);
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
 		if(ing.hasNoMatchingItems()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		List<ProcessingOutput> results = new ArrayList<>();
+		builder.require(ing);
 		int i = 0;
 		while(i < output.length) {
 			Object out = output[i];
@@ -64,8 +54,8 @@ public class SplashingRecipeSupplier implements Supplier<SplashingRecipe> {
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 			}
-			results.add(new ProcessingOutput(stack, chance));
+			builder.output(chance, stack);
 		}
-		return new SplashingRecipe(key, group, Collections.singletonList(new ProcessingIngredient(ing)), results, -1);
+		return builder.build();
 	}
 }

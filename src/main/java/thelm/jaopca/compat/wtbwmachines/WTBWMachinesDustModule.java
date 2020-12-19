@@ -23,7 +23,7 @@ import thelm.jaopca.utils.MiscHelper;
 public class WTBWMachinesDustModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"coal", "diamond", "emerald", "gold", "iron", "lapis", "quartz"));
+			"redstone"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
