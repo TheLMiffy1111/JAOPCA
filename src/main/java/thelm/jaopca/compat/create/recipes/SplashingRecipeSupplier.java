@@ -1,49 +1,41 @@
-package thelm.jaopca.compat.thermalexpansion.recipes;
+package thelm.jaopca.compat.create.recipes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import cofh.thermal.expansion.util.recipes.machine.PulverizerRecipe;
+import com.simibubi.create.content.contraptions.components.fan.SplashingRecipe;
+import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import thelm.jaopca.compat.thermalexpansion.ThermalExpansionHelper;
 import thelm.jaopca.utils.MiscHelper;
 
-public class PulverizerRecipeSupplier implements Supplier<PulverizerRecipe> {
+public class SplashingRecipeSupplier implements Supplier<SplashingRecipe> {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	public final ResourceLocation key;
 	public final Object input;
-	public final int inputCount;
 	public final Object[] output;
-	public final int energy;
-	public final float experience;
-	
-	public PulverizerRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object[] output, int energy, float experience) {
+
+	public SplashingRecipeSupplier(ResourceLocation key, Object input, Object... output) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
-		this.inputCount = inputCount;
 		this.output = output;
-		this.energy = energy;
-		this.experience = experience;
 	}
 
 	@Override
-	public PulverizerRecipe get() {
-		Ingredient ing = ThermalExpansionHelper.INSTANCE.getCountedIngredient(input, inputCount);
+	public SplashingRecipe get() {
+		ProcessingRecipeBuilder<SplashingRecipe> builder = new ProcessingRecipeBuilder<>(SplashingRecipe::new, key);
+		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
 		if(ing.hasNoMatchingItems()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		List<ItemStack> outputs = new ArrayList<>();
-		List<Float> chances = new ArrayList<>();
+		builder.require(ing);
 		int i = 0;
 		while(i < output.length) {
 			Object out = output[i];
@@ -53,7 +45,7 @@ public class PulverizerRecipeSupplier implements Supplier<PulverizerRecipe> {
 				count = (Integer)output[i];
 				++i;
 			}
-			Float chance = -1F;
+			Float chance = 1F;
 			if(i < output.length && output[i] instanceof Float) {
 				chance = (Float)output[i];
 				++i;
@@ -62,9 +54,8 @@ public class PulverizerRecipeSupplier implements Supplier<PulverizerRecipe> {
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 			}
-			outputs.add(stack);
-			chances.add(chance);
+			builder.output(chance, stack);
 		}
-		return new PulverizerRecipe(key, energy, experience, Collections.singletonList(ing), Collections.emptyList(), outputs, chances, Collections.emptyList());
+		return builder.build();
 	}
 }

@@ -25,7 +25,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "thermal_expansion")
+@JAOPCAModule(modDependencies = "thermal_expansion@[1.1.1,)")
 public class ThermalExpansionCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
@@ -129,7 +129,7 @@ public class ThermalExpansionCompatModule implements IModule {
 							new ResourceLocation("jaopca", "thermal_expansion.material_to_dust."+material.getName()),
 							materialLocation, 1, new Object[] {
 									dustLocation,
-							}, 2000, 0F, -1);
+							}, 2000, 0F);
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
@@ -142,7 +142,7 @@ public class ThermalExpansionCompatModule implements IModule {
 									dustLocation,
 							}, new Object[] {
 									materialLocation,
-							}, 1600, 0F, -1);
+							}, 1600, 0F);
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
@@ -152,7 +152,7 @@ public class ThermalExpansionCompatModule implements IModule {
 				if(api.getItemTags().contains(plateLocation)) {
 					helper.registerPressRecipe(new ResourceLocation("jaopca", "thermal_expansion.material_to_plate."+material.getName()),
 							materialLocation, 1, plateLocation, 1,
-							2400, 0F, -1);
+							2400, 0F);
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
@@ -162,7 +162,7 @@ public class ThermalExpansionCompatModule implements IModule {
 				if(api.getItemTags().contains(gearLocation)) {
 					helper.registerPressRecipe(new ResourceLocation("jaopca", "thermal_expansion.material_to_gear."+material.getName()),
 							materialLocation, 3, gearDie, 1, gearLocation, 1,
-							2400, 0F, -1);
+							2400, 0F);
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
@@ -173,11 +173,11 @@ public class ThermalExpansionCompatModule implements IModule {
 				if(api.getItemTags().contains(coinLocation)) {
 					helper.registerPressRecipe(new ResourceLocation("jaopca", "thermal_expansion.material_to_coin."+material.getName()),
 							materialLocation, 1, coinDie, 1, coinLocation, 3,
-							2400, 0F, -1);
+							2400, 0F);
 					if(api.getItemTags().contains(nuggetLocation)) {
 						helper.registerPressRecipe(new ResourceLocation("jaopca", "thermal_expansion.nugget_to_coin."+material.getName()),
 								nuggetLocation, 3, coinDie, 1, coinLocation, 1,
-								800, 0F, -1);
+								800, 0F);
 					}
 				}
 			}
@@ -195,7 +195,7 @@ public class ThermalExpansionCompatModule implements IModule {
 										materialLocation, 1F,
 										extraMaterialLocation, 0.2F,
 										richSlag, 0.2F,
-								}, 3200, 0.2F, -1);
+								}, 3200, 0.2F);
 					}
 					else {
 						helper.registerSmelterRecipe(
@@ -204,7 +204,7 @@ public class ThermalExpansionCompatModule implements IModule {
 								}, new Object[] {
 										materialLocation, 1F,
 										richSlag, 0.2F,
-								}, 3200, 0.2F, -1);
+								}, 3200, 0.2F);
 					}
 				}
 			}

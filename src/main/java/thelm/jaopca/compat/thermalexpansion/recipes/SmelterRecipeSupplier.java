@@ -25,15 +25,13 @@ public class SmelterRecipeSupplier implements Supplier<SmelterRecipe> {
 	public final Object[] output;
 	public final int energy;
 	public final float experience;
-	public final int minTime;
 
-	public SmelterRecipeSupplier(ResourceLocation key, Object[] input, Object[] output, int energy, float experience, int minTime) {
+	public SmelterRecipeSupplier(ResourceLocation key, Object[] input, Object[] output, int energy, float experience) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
 		this.energy = energy;
 		this.experience = experience;
-		this.minTime = minTime;
 	}
 
 	@Override
@@ -77,6 +75,6 @@ public class SmelterRecipeSupplier implements Supplier<SmelterRecipe> {
 			outputs.add(stack);
 			chances.add(chance);
 		}
-		return new SmelterRecipe(key, energy, experience, minTime, inputs, Collections.emptyList(), outputs, chances, Collections.emptyList());
+		return new SmelterRecipe(key, energy, experience, inputs, Collections.emptyList(), outputs, chances, Collections.emptyList());
 	}
 }

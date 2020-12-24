@@ -33,17 +33,16 @@ public class PressRecipeSupplier implements Supplier<PressRecipe> {
 	public final int fluidOutputAmount;
 	public final int energy;
 	public final float experience;
-	public final int minTime;
 
-	public PressRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object itemOutput, int itemOutputCount, int energy, float experience, int minTime) {
-		this(key, input, inputCount, null, 0, itemOutput, itemOutputCount, Fluids.EMPTY, 0, energy, experience, minTime);
+	public PressRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object itemOutput, int itemOutputCount, int energy, float experience) {
+		this(key, input, inputCount, null, 0, itemOutput, itemOutputCount, Fluids.EMPTY, 0, energy, experience);
 	}
 
-	public PressRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object secondInput, int secondInputCount, Object itemOutput, int itemOutputCount, int energy, float experience, int minTime) {
-		this(key, input, inputCount, secondInput, secondInputCount, itemOutput, itemOutputCount, Fluids.EMPTY, 0, energy, experience, minTime);
+	public PressRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object secondInput, int secondInputCount, Object itemOutput, int itemOutputCount, int energy, float experience) {
+		this(key, input, inputCount, secondInput, secondInputCount, itemOutput, itemOutputCount, Fluids.EMPTY, 0, energy, experience);
 	}
 
-	public PressRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object secondInput, int secondInputCount, Object itemOutput, int itemOutputCount, Object fluidOutput, int fluidOutputAmount, int energy, float experience, int minTime) {
+	public PressRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object secondInput, int secondInputCount, Object itemOutput, int itemOutputCount, Object fluidOutput, int fluidOutputAmount, int energy, float experience) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.inputCount = inputCount;
@@ -55,7 +54,6 @@ public class PressRecipeSupplier implements Supplier<PressRecipe> {
 		this.fluidOutputAmount = fluidOutputAmount;
 		this.energy = energy;
 		this.experience = experience;
-		this.minTime = minTime;
 	}
 
 	@Override
@@ -84,6 +82,6 @@ public class PressRecipeSupplier implements Supplier<PressRecipe> {
 		if(!fluidStack.isEmpty()) {
 			fluidOutputs = Collections.singletonList(fluidStack);
 		}
-		return new PressRecipe(key, energy, experience, minTime, inputs, Collections.emptyList(), itemOutputs, itemChances, fluidOutputs);
+		return new PressRecipe(key, energy, experience, inputs, Collections.emptyList(), itemOutputs, itemChances, fluidOutputs);
 	}
 }

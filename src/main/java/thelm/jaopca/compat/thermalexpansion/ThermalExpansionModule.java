@@ -27,7 +27,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "thermal_expansion")
+@JAOPCAModule(modDependencies = "thermal_expansion@[1.1.1,)")
 public class ThermalExpansionModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
@@ -92,7 +92,7 @@ public class ThermalExpansionModule implements IModule {
 									dustLocation, 2F,
 									extraDustLocation, 0.1F,
 									Blocks.GRAVEL, 0.2F,
-							}, 4000, 0.2F, -1);
+							}, 4000, 0.2F);
 				}
 				if(!SMELTER_BLACKLIST.contains(material.getName())) {
 					helper.registerSmelterRecipe(
@@ -102,7 +102,7 @@ public class ThermalExpansionModule implements IModule {
 									materialLocation, 1F,
 									extraMaterialLocation, 0.2F,
 									richSlag, 0.2F,
-							}, 3200, 0.2F, -1);
+							}, 3200, 0.2F);
 				}
 			}
 			else {
@@ -111,14 +111,14 @@ public class ThermalExpansionModule implements IModule {
 						oreLocation, 1, new Object[] {
 								dustLocation, 2F,
 								Blocks.GRAVEL, 0.2F,
-						}, 4000, 0.2F, -1);
+						}, 4000, 0.2F);
 				helper.registerSmelterRecipe(
 						new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()), new Object[] {
 								oreLocation,
 						}, new Object[] {
 								materialLocation, 1F,
 								richSlag, 0.2F,
-						}, 3200, 0.2F, -1);
+						}, 3200, 0.2F);
 			}
 		}
 	}
