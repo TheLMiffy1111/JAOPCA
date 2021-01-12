@@ -1,4 +1,6 @@
 {
+    "itemGroup.jaopca": "JAOPCA",
+
     "block.jaopca.storage_blocks": "%s块",
     "item.jaopca.dusts": "%s粉",
     "item.jaopca.nuggets": "%s粒",
@@ -14,5 +16,14 @@
     "slurry.jaopca.mekanism_dirty": "污浊%s浆液",
     "slurry.jaopca.mekanism_clean": "纯净%s浆液",
 
-    "item.jaopca.create_crushed_ores": "碎%s矿"
+    "item.jaopca.flux_grits": "%s砂砾",
+
+    "item.jaopca.omegacraft_dirty_dusts": "污浊%s粉",
+
+    "item.jaopca.silents_mechanisms_chunks": "%s矿石碎块",
+
+    "item.jaopca.create_crushed_ores": "粉碎%s矿石",
+
+    "item.jaopca.crossroads_grits": "未处理的%s矿砂",
+    "item.jaopca.crossroads_clumps": "%s矿簇"
 }
