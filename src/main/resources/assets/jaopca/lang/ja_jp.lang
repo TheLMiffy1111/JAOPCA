@@ -1,0 +1,29 @@
+{
+    "itemGroup.jaopca": "JAOPCA",
+
+    "block.jaopca.storage_blocks": "%s ブロック",
+    "item.jaopca.dusts": "%s の粉",
+    "item.jaopca.nuggets": "%s のナゲット",
+    "item.jaopca.tiny_dusts": "とても小さな %s の粉",
+    "item.jaopca.small_dusts": "小さな %s の粉",
+    "fluid.jaopca.molten": "液体 %s",
+    "item.jaopca.molten": "溶けた %s の入ったバケツ",
+
+    "item.jaopca.mekanism_dirty_dusts": "汚れた %s の粉",
+    "item.jaopca.mekanism_clumps": "%s の塊",
+    "item.jaopca.mekanism_shards": "%s の欠片",
+    "item.jaopca.mekanism_crystals": "%s の結晶",
+    "gas.jaopca.mekanism_dirty_slurry": "%s の懸濁液",
+    "gas.jaopca.mekanism_clean_slurry": "綺麗な %s の懸濁液",
+
+    "item.jaopca.flux_grits": "%s のグリット",
+
+    "item.jaopca.omegacraft_dirty_dusts": "汚れた %s の粉",
+
+    "item.jaopca.silents_mechanisms_chunks": "%s のチャンク",
+
+    "item.jaopca.create_crushed_ores": "砕けた %s の鉱石",
+
+    "item.jaopca.crossroads_grits": "精製していない %s のグリット",
+    "item.jaopca.crossroads_clumps": "%s の塊"
+}
