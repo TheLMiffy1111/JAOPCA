@@ -8,6 +8,8 @@ import com.blamejared.crafttweaker.api.annotations.ZenRegister;
 import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.impl.item.MCItemStack;
 import com.blamejared.crafttweaker.impl.tag.MCTag;
+import com.blamejared.crafttweaker.impl.tag.manager.TagManager;
+import com.blamejared.crafttweaker.impl.tag.manager.TagManagerItem;
 
 import net.minecraft.item.ItemStack;
 import thelm.jaopca.api.forms.IForm;
@@ -70,7 +72,12 @@ public class Form {
 
 	@ZenCodeType.Method
 	public MCTag getTag(String suffix) {
-		return new MCTag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix));
+		return getTag(TagManagerItem.INSTANCE, suffix);
+	}
+
+	@ZenCodeType.Method
+	public MCTag getTag(TagManager manager, String suffix) {
+		return new MCTag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix), manager);
 	}
 
 	@ZenCodeType.Method

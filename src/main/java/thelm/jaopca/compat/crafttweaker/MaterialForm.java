@@ -4,12 +4,14 @@ import org.openzen.zencode.java.ZenCodeType;
 
 import com.blamejared.crafttweaker.api.annotations.ZenRegister;
 import com.blamejared.crafttweaker.api.item.IItemStack;
-import com.blamejared.crafttweaker.impl.blocks.MCBlock;
-import com.blamejared.crafttweaker.impl.blocks.MCBlockState;
 import com.blamejared.crafttweaker.impl.item.MCItemStack;
 import com.blamejared.crafttweaker.impl.tag.MCTag;
+import com.blamejared.crafttweaker.impl.tag.manager.TagManager;
+import com.blamejared.crafttweaker.impl.tag.manager.TagManagerItem;
 import com.google.common.collect.TreeBasedTable;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IItemProvider;
 import thelm.jaopca.api.blocks.IBlockProvider;
@@ -54,8 +56,14 @@ public class MaterialForm {
 
 	@ZenCodeType.Method
 	public MCTag asTag() {
+		return asTag(TagManagerItem.INSTANCE);
+	}
+
+	@ZenCodeType.Method
+	public MCTag asTag(TagManager manager) {
 		return new MCTag(MiscHelper.INSTANCE.getTagLocation(
-				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName()));
+				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName()),
+				manager);
 	}
 
 	@ZenCodeType.Method
@@ -72,18 +80,18 @@ public class MaterialForm {
 	}
 
 	@ZenCodeType.Method
-	public MCBlock asBlock() {
+	public Block asBlock() {
 		if(!(info instanceof IBlockProvider)) {
 			return null;
 		}
-		return new MCBlock(((IBlockProvider)info).asBlock());
+		return ((IBlockProvider)info).asBlock();
 	}
 
 	@ZenCodeType.Method
-	public MCBlockState asBlockState() {
+	public BlockState asBlockState() {
 		if(!(info instanceof IBlockProvider)) {
 			return null;
 		}
-		return new MCBlockState(((IBlockProvider)info).asBlock().getDefaultState());
+		return (((IBlockProvider)info).asBlock().getDefaultState());
 	}
 }

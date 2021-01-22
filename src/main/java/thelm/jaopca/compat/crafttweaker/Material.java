@@ -5,11 +5,16 @@ import java.util.TreeMap;
 import org.openzen.zencode.java.ZenCodeType;
 
 import com.blamejared.crafttweaker.api.annotations.ZenRegister;
+import com.blamejared.crafttweaker.api.fluid.IFluidStack;
 import com.blamejared.crafttweaker.api.item.IItemStack;
+import com.blamejared.crafttweaker.impl.fluid.MCFluidStack;
 import com.blamejared.crafttweaker.impl.item.MCItemStack;
 import com.blamejared.crafttweaker.impl.tag.MCTag;
+import com.blamejared.crafttweaker.impl.tag.manager.TagManager;
+import com.blamejared.crafttweaker.impl.tag.manager.TagManagerItem;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -27,11 +32,11 @@ public class Material {
 	private Material(IMaterial material) {
 		this.material = material;
 	}
-	
+
 	public IMaterial getInternal() {
 		return material;
 	}
-	
+
 	@ZenCodeType.Getter("name")
 	public String getName() {
 		return material.getName();
@@ -59,7 +64,12 @@ public class Material {
 
 	@ZenCodeType.Method
 	public MCTag getTag(String prefix) {
-		return new MCTag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName()));
+		return getTag(TagManagerItem.INSTANCE, prefix);
+	}
+
+	@ZenCodeType.Method
+	public MCTag getTag(TagManager manager, String prefix) {
+		return new MCTag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName()), manager);
 	}
 
 	@ZenCodeType.Method
@@ -74,11 +84,12 @@ public class Material {
 		return getItemStack(prefix, 1);
 	}
 
-	//public IFluidStack getFluidStack(String prefix, int count) {
-	//	MiscHelper helper = MiscHelper.INSTANCE;
-	//	FluidStack stack = helper.getFluidStack(helper.getTagLocation(prefix, material.getName()), count)
-	//	return new MCFluidStack(stack);
-	//}
+	@ZenCodeType.Method
+	public IFluidStack getFluidStack(String prefix, int count) {
+		MiscHelper helper = MiscHelper.INSTANCE;
+		FluidStack stack = helper.getFluidStack(helper.getTagLocation(prefix, material.getName()), count);
+		return new MCFluidStack(stack);
+	}
 
 	@ZenCodeType.Method
 	public MaterialForm getMaterialForm(Form form) {

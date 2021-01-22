@@ -50,6 +50,17 @@ public class DataCollector {
 			 * Fabric:
 			 * ModResourcePackUtil.appendModResourcePacks(RESOURCE_PACKS, ResourcePackType.SERVER_DATA);
 			 */
+			if(ModList.get().isLoaded("kubejs")) {
+				try {
+					RESOURCE_PACKS.add(
+							(IResourcePack)Class.forName("dev.latvian.kubejs.script.data.KubeJSResourcePack").
+							getConstructor(ResourcePackType.class).
+							newInstance(ResourcePackType.SERVER_DATA));
+				}
+				catch(Exception e) {
+					LOGGER.error("KubeJS was found but unable to construct data pack.", e);
+				}
+			}
 			for(Supplier<IResourcePack> supplier : RESOURCE_PACK_SUPPLIERS) {
 				RESOURCE_PACKS.add(supplier.get());
 			}
@@ -92,6 +103,7 @@ public class DataCollector {
 			DEFINED_ADVANCEMENTS.add(new ResourceLocation(namespace, path));
 		}
 		LOGGER.info("Found {} unique defined advancements", DEFINED_ADVANCEMENTS.size());
+		RESOURCE_PACKS.clear();
 	}
 
 	public static Set<ResourceLocation> getDefinedTags(String type) {
