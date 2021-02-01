@@ -64,7 +64,7 @@ sourceSets {
     main
 }
 
-version = "3.4.0.3"
+version = "3.4.0.4"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.4"
 
@@ -106,6 +106,7 @@ dependencies {
     implementation fg.deobf("hellfirepvp.astralsorcery:astralsorcery:1.16.4-1.13.10.v70") {
         transitive = false
     }
+    implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-48")
 
     //JitPack
 
@@ -127,6 +128,7 @@ dependencies {
     implementation fg.deobf("curse.maven:thermal-expansion:3155832")
     implementation fg.deobf("curse.maven:create:3167531")
     implementation fg.deobf("curse.maven:blood-magic:3170548")
+    implementation fg.deobf("curse.maven:occultism:3185945")
 }
 
 jar {
