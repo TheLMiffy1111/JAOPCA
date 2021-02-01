@@ -25,8 +25,7 @@ public class LocalizationHandler {
 	}
 
 	public static String getLanguage() {
-		String language = "en_us";
-		language = DistExecutor.callWhenOn(Dist.CLIENT, ()->()->{
+		return DistExecutor.runForDist(()->()->{
 			Minecraft mc = Minecraft.getInstance();
 			if(mc != null) {
 				Language lang = mc.getLanguageManager().getCurrentLanguage();
@@ -36,7 +35,6 @@ public class LocalizationHandler {
 				return mc.gameSettings.language;
 			}
 			return "en_us";
-		});
-		return language;
+		}, ()->()->"en_us");
 	}
 }

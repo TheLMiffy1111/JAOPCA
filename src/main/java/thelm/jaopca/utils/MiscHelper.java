@@ -180,7 +180,9 @@ public class MiscHelper implements IMiscHelper {
 				int idx = ConfigHandler.PREFERRED_MODS.indexOf(modId);
 				if(preferredEntry == null || idx >= 0 && idx < currBest) {
 					preferredEntry = entry;
-					currBest = idx;
+					if(idx >= 0) {
+						currBest = idx;
+					}
 				}
 			}
 		}
