@@ -39,7 +39,7 @@ public class PressingRecipeSupplier implements Supplier<PressingRecipe> {
 		}
 		builder.require(ing);
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
-		if(stack.getStack().isEmpty()) {
+		if(stack.isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
 		builder.output(stack);

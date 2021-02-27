@@ -17,7 +17,7 @@ buildscript {
     }
     dependencies {
         classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
-		classpath "com.wynprice.cursemaven:CurseMaven:2.1.0"
+		classpath "com.wynprice.cursemaven:CurseMaven:2.1.5"
 		//classpath "com.github.Wyn-Price:CurseMaven:f0d58155e6"
 		classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
     }
@@ -64,9 +64,9 @@ sourceSets {
     main
 }
 
-version = "3.4.0.4"
+version = "3.4.0.5"
 group = "thelm.jaopca"
-archivesBaseName = "JAOPCA-1.16.4"
+archivesBaseName = "JAOPCA-1.16.5"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
@@ -90,12 +90,12 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.4-35.1.37"
+    minecraft "net.minecraftforge:forge:1.16.5-36.0.39"
 
-    implementation fg.deobf("mezz.jei:jei-1.16.4:7.6.1.65")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.4:7.1.0.84")
-	implementation fg.deobf("mekanism:Mekanism:1.16.4-10.0.18.445")
-	implementation fg.deobf("mekanism:Mekanism:1.16.4-10.0.18.445:generators")
+    implementation fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.0.132")
+	implementation fg.deobf("mekanism:Mekanism:1.16.5-10.0.21.448")
+	implementation fg.deobf("mekanism:Mekanism:1.16.5-10.0.21.448:generators")
     implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.16.3:2.0.1")
     implementation fg.deobf("com.wtbw.mods:wtbw_core-1.16.3:2.0.2")
     implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.16.3:2.0.1")
@@ -106,29 +106,31 @@ dependencies {
     implementation fg.deobf("hellfirepvp.astralsorcery:astralsorcery:1.16.4-1.13.10.v70") {
         transitive = false
     }
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-48")
+    implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-50")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.16.5-4.2.1-131")
 
     //JitPack
 
     //CurseMaven
     implementation fg.deobf("curse.maven:ato:3173269")
-    implementation fg.deobf("curse.maven:allthemodium:3171997")
+    implementation fg.deobf("curse.maven:allthemodium:3216041")
     implementation fg.deobf("curse.maven:silent-lib:3165746")
-    implementation fg.deobf("curse.maven:silents-mechanisms:3169768")
-    implementation fg.deobf("curse.maven:silents-gems:3169926")
-    implementation fg.deobf("curse.maven:silent-gear:3171732")
+    implementation fg.deobf("curse.maven:silents-mechanisms:3207372")
+    implementation fg.deobf("curse.maven:silents-gems:3211130")
+    implementation fg.deobf("curse.maven:silent-gear:3215872")
     implementation fg.deobf("curse.maven:industrial-reborn:3076845")
-    implementation fg.deobf("curse.maven:essentials:3172516")
-    implementation fg.deobf("curse.maven:crossroads-mc:3161635")
-    implementation fg.deobf("curse.maven:fl:3101155")
-    implementation fg.deobf("curse.maven:flux:3148862")
-    implementation fg.deobf("curse.maven:applied-energistics-2:3106770")
+    implementation fg.deobf("curse.maven:essentials:3186597")
+    implementation fg.deobf("curse.maven:crossroads-mc:3186601")
+    implementation fg.deobf("curse.maven:fl:3181258")
+    implementation fg.deobf("curse.maven:flux:3203572")
+    implementation fg.deobf("curse.maven:applied-energistics-2:3185882")
     implementation fg.deobf("curse.maven:cofh-core:3155824")
     implementation fg.deobf("curse.maven:thermal-foundation:3155830")
     implementation fg.deobf("curse.maven:thermal-expansion:3155832")
     implementation fg.deobf("curse.maven:create:3167531")
-    implementation fg.deobf("curse.maven:blood-magic:3170548")
-    implementation fg.deobf("curse.maven:occultism:3185945")
+    implementation fg.deobf("curse.maven:blood-magic:3184485")
+    implementation fg.deobf("curse.maven:occultism:3204587")
+    implementation fg.deobf("curse.maven:futurepack:3206477")
 }
 
 jar {
