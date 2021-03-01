@@ -39,7 +39,7 @@ public class SilentsMechanismsModule implements IModule {
 
 	static {
 		if(ModList.get().isLoaded("silentgear")) {
-			Collections.addAll(BLACKLIST, "crimson_iron");
+			Collections.addAll(BLACKLIST, "azure_silver", "crimson_iron");
 		}
 	}
 

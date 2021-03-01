@@ -36,14 +36,17 @@ public class ThermalExpansionModule implements IModule {
 	private static final Set<String> SMELTER_BLACKLIST = new TreeSet<>();
 
 	static {
+		if(ModList.get().isLoaded("create")) {
+			Collections.addAll(BLACKLIST, "zinc");
+		}
+		if(ModList.get().isLoaded("immersiveengineering")) {
+			Collections.addAll(PULVERIZER_BLACKLIST, "aluminum", "uranium");
+		}
 		if(ModList.get().isLoaded("mekanism")) {
 			Collections.addAll(BLACKLIST, "osmium");
 		}
-		if(ModList.get().isLoaded("immersiveengineering")) {
-			Collections.addAll(PULVERIZER_BLACKLIST, "uranium");
-		}
-		if(ModList.get().isLoaded("create")) {
-			Collections.addAll(SMELTER_BLACKLIST, "zinc");
+		if(ModList.get().isLoaded("uselessmod")) {
+			Collections.addAll(BLACKLIST, "super_useless", "useless");
 		}
 	}
 

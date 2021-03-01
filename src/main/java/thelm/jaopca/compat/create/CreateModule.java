@@ -35,7 +35,8 @@ import thelm.jaopca.utils.MiscHelper;
 public class CreateModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"copper", "gold", "iron", "zinc"));
+			"aluminum", "aluminium", "copper", "gold", "iron", "lead", "nickel", "osmium",
+			"platinum", "quicksilver", "silver", "tin", "uranium", "zinc"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 

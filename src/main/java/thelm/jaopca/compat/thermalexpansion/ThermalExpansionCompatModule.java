@@ -47,26 +47,24 @@ public class ThermalExpansionCompatModule implements IModule {
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
 			"nickel", "signalum", "silver", "tin"
 			));
-	private static final Set<String> CREATE_TO_INGOT_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"copper", "gold", "iron", "zinc"
-			));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToIngotBlacklist = new TreeSet<>();
 	private static Set<String> configToPlateBlacklist = new TreeSet<>();
 	private static Set<String> configToGearBlacklist = new TreeSet<>();
 	private static Set<String> configToCoinBlacklist = new TreeSet<>();
-	private static Set<String> configCreateToIngotBlacklist = new TreeSet<>();
 
 	static {
-		if(ModList.get().isLoaded("appliedenergistics2")) {
-			Collections.addAll(TO_DUST_BLACKLIST, "ender_pearl", "fluix");
-		}
 		if(ModList.get().isLoaded("immersiveengineering")) {
 			Collections.addAll(TO_PLATE_BLACKLIST, "uranium");
 		}
 		if(ModList.get().isLoaded("silents_mechanisms")) {
 			Collections.addAll(TO_DUST_BLACKLIST, "brass");
 			Collections.addAll(TO_INGOT_BLACKLIST, "brass");
+		}
+		if(ModList.get().isLoaded("uselessmod")) {
+			Collections.addAll(TO_DUST_BLACKLIST, "super_useless", "useless");
+			Collections.addAll(TO_PLATE_BLACKLIST, "super_useless", "useless");
+			Collections.addAll(TO_GEAR_BLACKLIST, "super_useless", "useless");
 		}
 	}
 
@@ -103,10 +101,6 @@ public class ThermalExpansionCompatModule implements IModule {
 				config.getDefinedStringList("recipes.toCoinMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have press to coin recipes added."),
 				configToCoinBlacklist);
-		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.createToIngotMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have create compat recipes added."),
-				configCreateToIngotBlacklist);
 	}
 
 	@Override
@@ -178,33 +172,6 @@ public class ThermalExpansionCompatModule implements IModule {
 						helper.registerPressRecipe(new ResourceLocation("jaopca", "thermal_expansion.nugget_to_coin."+material.getName()),
 								nuggetLocation, 3, coinDie, 1, coinLocation, 1,
 								800, 0F);
-					}
-				}
-			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!CREATE_TO_INGOT_BLACKLIST.contains(name) && !configCreateToIngotBlacklist.contains(name)) {
-				ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", material.getName());
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation extraMaterialLocation = miscHelper.getTagLocation(material.getExtra(1).getType().getFormName(), material.getExtra(1).getName());
-				if(api.getItemTags().contains(crushedOreLocation)) {
-					if(material.hasExtra(1)) {
-						helper.registerSmelterRecipe(
-								new ResourceLocation("jaopca", "thermal_expansion.create_crushed_ore_to_material."+material.getName()), new Object[] {
-										crushedOreLocation,
-								}, new Object[] {
-										materialLocation, 1F,
-										extraMaterialLocation, 0.2F,
-										richSlag, 0.2F,
-								}, 3200, 0.2F);
-					}
-					else {
-						helper.registerSmelterRecipe(
-								new ResourceLocation("jaopca", "thermal_expansion.create_crushed_ore_to_material."+material.getName()), new Object[] {
-										crushedOreLocation,
-								}, new Object[] {
-										materialLocation, 1F,
-										richSlag, 0.2F,
-								}, 3200, 0.2F);
 					}
 				}
 			}

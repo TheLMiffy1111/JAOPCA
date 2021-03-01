@@ -35,11 +35,11 @@ public class ThermalExpansionNonIngotModule implements IModule {
 	private static final Set<String> SMELTER_BLACKLIST = new TreeSet<>();
 
 	static {
-		if(ModList.get().isLoaded("appliedenergistics2")) {
-			Collections.addAll(PULVERIZER_BLACKLIST, "certus_quartz", "charged_certus_quartz");
-		}
 		if(ModList.get().isLoaded("druidcraft")) {
 			Collections.addAll(PULVERIZER_BLACKLIST, "amber", "fiery_glass", "moonstone", "rockroot");
+		}
+		if(ModList.get().isLoaded("mekanism")) {
+			Collections.addAll(PULVERIZER_BLACKLIST, "fluorite");
 		}
 		if(ModList.get().isLoaded("rftools")) {
 			Collections.addAll(PULVERIZER_BLACKLIST, "dimensional_shard");

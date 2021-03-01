@@ -13,6 +13,7 @@ import com.google.common.collect.Multimap;
 import mekanism.common.registries.MekanismGases;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -38,6 +39,15 @@ public class MekanismModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"copper", "gold", "iron", "lead", "netherite", "netherite_scrap", "osmium", "tin", "uranium"));
+
+	static {
+		if(ModList.get().isLoaded("allthemodium")) {
+			Collections.addAll(BLACKLIST, "allthemodium", "unabtainium", "vibranium");
+		}
+		if(ModList.get().isLoaded("ato")) {
+			Collections.addAll(BLACKLIST, "aluminum", "aluminium", "nickel", "platinum", "silver", "zinc");
+		}
+	}
 
 	public MekanismModule() {
 		SlurryFormType.init();
