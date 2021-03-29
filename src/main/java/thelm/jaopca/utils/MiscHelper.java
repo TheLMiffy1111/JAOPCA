@@ -22,20 +22,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ForgeTagHandler;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
+import thelm.jaopca.tags.EmptyNamedTag;
 
 public class MiscHelper implements IMiscHelper {
 
@@ -131,7 +131,7 @@ public class MiscHelper implements IMiscHelper {
 
 	public ITag<Item> getItemTag(ResourceLocation location) {
 		ITag<Item> tag = TagCollectionManager.getManager().getItemTags().get(location);
-		return tag != null ? tag : Tag.getEmptyTag();
+		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 
 	public ItemStack getPreferredItemStack(Collection<Item> collection, int count) {
@@ -164,8 +164,8 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	public ITag<Fluid> getFluidTag(ResourceLocation location) {
-		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().get(location);
-		return tag != null ? tag : Tag.getEmptyTag();
+		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().getTagByID(location);
+		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 
 	public FluidStack getPreferredFluidStack(Collection<Fluid> collection, int amount) {

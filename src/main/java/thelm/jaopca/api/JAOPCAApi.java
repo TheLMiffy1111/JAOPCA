@@ -375,6 +375,12 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType);
 
+	public abstract void registerDefaultGemOverride(String materialName);
+
+	public abstract void registerDefaultCrystalOverride(String materialName);
+
+	public abstract void registerDefaultDustOverride(String materialName);
+
 	/**
 	 * Registers a recipe supplier to be injected by JAOPCA. The returned recipe must have an id that is the
 	 * same as the id provided for JAOPCA to inject.

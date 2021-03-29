@@ -35,6 +35,7 @@ import thelm.jaopca.compat.mekanism.recipes.EnrichingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.InjectingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.PurifyingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.WashingRecipeSupplier;
+import thelm.jaopca.tags.EmptyNamedTag;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -237,7 +238,7 @@ public class MekanismHelper {
 
 	public ITag<Slurry> getSlurryTag(ResourceLocation location) {
 		ITag<Slurry> tag = ChemicalTags.SLURRY.getCollection().get(location);
-		return tag != null ? tag : Tag.getEmptyTag();
+		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 
 	public SlurryStack getPreferredSlurryStack(Collection<Slurry> collection, int amount) {
@@ -246,11 +247,11 @@ public class MekanismHelper {
 
 	public ITag<Fluid> getFluidTag(ResourceLocation location) {
 		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().get(location);
-		return tag != null ? tag : Tag.getEmptyTag();
+		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 
 	public ITag<Item> getItemTag(ResourceLocation location) {
 		ITag<Item> tag = TagCollectionManager.getManager().getItemTags().get(location);
-		return tag != null ? tag : Tag.getEmptyTag();
+		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 }

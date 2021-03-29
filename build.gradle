@@ -53,6 +53,9 @@ repositories {
         url = "https://maven.hellfiredev.net/"
     }
     maven {
+        url = "https://oss.jfrog.org/artifactory/simple/libs-release/"
+    }
+    maven {
         url = "https://jitpack.io/"
     }
     maven {
@@ -68,29 +71,33 @@ version = "3.4.0.7"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = "1.8"
 
 minecraft {
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    mappings channel: "snapshot", version: "20201028-1.16.3"
+    accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
     runs {
         client = {
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
+            properties "forge.logging.markers": "SCAN,REGISTRIES,REGISTRYDUMP"
+            properties "forge.logging.console.level": "debug"
+            properties "mixin.env.remapRefMap": "true"
+            properties "mixin.env.refMapRemappingFile": "${projectDir}/build/createSrgToMcp/output.srg".toString()
+            workingDirectory project.file("run").canonicalPath
             source sourceSets.main
         }
         server = {
-            properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
-            properties 'forge.logging.console.level': 'debug'
-            workingDirectory project.file('run').canonicalPath
+            properties "forge.logging.markers": "SCAN,REGISTRIES,REGISTRYDUMP"
+            properties "forge.logging.console.level": "debug"
+            properties "mixin.env.remapRefMap": "true"
+            properties "mixin.env.refMapRemappingFile": "${projectDir}/build/createSrgToMcp/output.srg".toString()
+            workingDirectory project.file("run").canonicalPath
             source sourceSets.main
         }
     }
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.5-36.0.39"
+    minecraft "net.minecraftforge:forge:1.16.5-36.0.46"
 
     implementation fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71")
     implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.0.132")
@@ -108,29 +115,43 @@ dependencies {
     }
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-50")
     implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.16.5-4.2.1-131")
+    implementation fg.deobf("org.cyclops.cyclopscore:CyclopsCore:1.16.5-1.11.4-46") {
+        transitive = false
+    }
+    implementation fg.deobf("org.cyclops.commoncapabilities:CommonCapabilities:1.16.5-2.5.7-13") {
+        transitive = false
+    }
+    implementation fg.deobf("org.cyclops.integrateddynamics:IntegratedDynamics:1.16.5-1.6.0-48") {
+        transitive = false
+    }
+    implementation fg.deobf("slimeknights.mantle:Mantle:1.16.5-1.6.79")
 
     //JitPack
 
     //CurseMaven
-    implementation fg.deobf("curse.maven:ato:3173269")
-    implementation fg.deobf("curse.maven:allthemodium:3216041")
-    implementation fg.deobf("curse.maven:silent-lib:3165746")
+    implementation fg.deobf("curse.maven:ato:3238757")
+    implementation fg.deobf("curse.maven:allthemodium:3251449")
+    implementation fg.deobf("curse.maven:silent-lib:3235738")
     implementation fg.deobf("curse.maven:silents-mechanisms:3207372")
-    implementation fg.deobf("curse.maven:silents-gems:3211130")
-    implementation fg.deobf("curse.maven:silent-gear:3215872")
+    implementation fg.deobf("curse.maven:silents-gems:3251205")
+    implementation fg.deobf("curse.maven:silent-gear:3253813")
     implementation fg.deobf("curse.maven:industrial-reborn:3076845")
     implementation fg.deobf("curse.maven:essentials:3186597")
-    implementation fg.deobf("curse.maven:crossroads-mc:3186601")
+    implementation fg.deobf("curse.maven:crossroads-mc:3246384")
     implementation fg.deobf("curse.maven:fl:3181258")
     implementation fg.deobf("curse.maven:flux:3203572")
     implementation fg.deobf("curse.maven:applied-energistics-2:3185882")
-    implementation fg.deobf("curse.maven:cofh-core:3155824")
-    implementation fg.deobf("curse.maven:thermal-foundation:3155830")
-    implementation fg.deobf("curse.maven:thermal-expansion:3155832")
+    implementation fg.deobf("curse.maven:cofh-core:3247581")
+    implementation fg.deobf("curse.maven:thermal-foundation:3247564")
+    implementation fg.deobf("curse.maven:thermal-expansion:3247000")
     implementation fg.deobf("curse.maven:create:3167531")
     implementation fg.deobf("curse.maven:blood-magic:3184485")
     implementation fg.deobf("curse.maven:occultism:3204587")
     implementation fg.deobf("curse.maven:futurepack:3206477")
+    implementation fg.deobf("curse.maven:themcbros-useless-mod:3229154")
+    implementation fg.deobf("curse.maven:electrodynamics:3251208")
+    implementation fg.deobf("curse.maven:libvulpes:3247559")
+    implementation fg.deobf("curse.maven:advanced-rocketry:3247951")
 }
 
 jar {

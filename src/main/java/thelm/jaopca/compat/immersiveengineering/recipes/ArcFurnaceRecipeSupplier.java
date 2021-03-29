@@ -52,8 +52,8 @@ public class ArcFurnaceRecipeSupplier implements Supplier<ArcFurnaceRecipe> {
 			Object in = input[i];
 			++i;
 			Integer count = 1;
-			if(i < output.length && output[i] instanceof Integer) {
-				count = (Integer)output[i];
+			if(i < input.length && input[i] instanceof Integer) {
+				count = (Integer)input[i];
 				++i;
 			}
 			IngredientWithSize is = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(in), count);

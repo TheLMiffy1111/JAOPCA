@@ -34,11 +34,13 @@ public class LocalizationRepoHandler {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final int MAX_HTTP_REDIRECTS = Integer.getInteger("http.maxRedirects", 20);
 
+	private static File configDir;
 	private static File langDir;
 	private static Map<String, String> currentLocalizationMap = ImmutableSortedMap.of();
 
 	public static void setup() {
-		langDir = new File(FMLPaths.CONFIGDIR.get().toFile(), "jaopca/lang");
+		configDir = new File(FMLPaths.CONFIGDIR.get().toFile(), "jaopca");
+		langDir = new File(configDir, "lang");
 		if(!langDir.exists() || !langDir.isDirectory()) {
 			try {
 				if(langDir.exists() && !langDir.isDirectory()) {

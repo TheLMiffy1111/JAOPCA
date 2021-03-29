@@ -42,7 +42,7 @@ public class MekanismModule implements IModule {
 
 	static {
 		if(ModList.get().isLoaded("allthemodium")) {
-			Collections.addAll(BLACKLIST, "allthemodium", "unabtainium", "vibranium");
+			Collections.addAll(BLACKLIST, "allthemodium", "unobtainium", "vibranium");
 		}
 		if(ModList.get().isLoaded("alltheores")) {
 			Collections.addAll(BLACKLIST, "aluminum", "aluminium", "nickel", "platinum", "silver", "zinc");
