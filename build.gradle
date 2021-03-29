@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
-		classpath "com.wynprice.cursemaven:CurseMaven:2.1.0"
+		classpath "com.wynprice.cursemaven:CurseMaven:2.1.5"
 		//classpath "com.github.Wyn-Price:CurseMaven:f0d58155e6"
     }
 }
@@ -53,11 +53,12 @@ sourceSets {
     main
 }
 
-version = "3.2.0.17"
+version = "3.2.0.18"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.15.2"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+compileJava.options.encoding = 'utf-8'
 
 minecraft {
     mappings channel: 'snapshot', version: '20200123-1.15.1'
@@ -95,6 +96,7 @@ dependencies {
     implementation fg.deobf("org.cyclops.integrateddynamics:IntegratedDynamics:1.15.2-1.1.20-1588") {
         transitive = false
     }
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.15.2-4.1.1-125")
 
     //JitPack
 
@@ -119,6 +121,7 @@ dependencies {
     implementation fg.deobf("curse.maven:cofh-core:3104348")
     implementation fg.deobf("curse.maven:thermal-foundation:3104349")
     implementation fg.deobf("curse.maven:thermal-expansion:3104350")
+    implementation fg.deobf("curse.maven:futurepack:3023333")
 }
 
 jar {
