@@ -51,9 +51,9 @@ public class ConfigHandler {
 	public static boolean crystalPlain = true;
 	public static boolean dustPlain = true;
 
-	private static final List<String> DEFAULT_GEM_OVERRIDES = Lists.newArrayList("diamond", "emerald", "lapis", "prismarine", "quartz");
-	private static final List<String> DEFAULT_CRYSTAL_OVERRIDES = Lists.newArrayList();
-	private static final List<String> DEFAULT_DUST_OVERRIDES = Lists.newArrayList("glowstone", "redstone");
+	public static final List<String> DEFAULT_GEM_OVERRIDES = Lists.newArrayList("diamond", "emerald", "lapis", "prismarine", "quartz");
+	public static final List<String> DEFAULT_CRYSTAL_OVERRIDES = Lists.newArrayList();
+	public static final List<String> DEFAULT_DUST_OVERRIDES = Lists.newArrayList("glowstone", "redstone");
 	public static final Set<String> GEM_OVERRIDES = new TreeSet<>();
 	public static final Set<String> CRYSTAL_OVERRIDES = new TreeSet<>();
 	public static final Set<String> DUST_OVERRIDES = new TreeSet<>();

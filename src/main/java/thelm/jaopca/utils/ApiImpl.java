@@ -325,6 +325,21 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public void registerDefaultGemOverride(String materialName) {
+		ConfigHandler.DEFAULT_GEM_OVERRIDES.add(materialName);
+	}
+
+	@Override
+	public void registerDefaultCrystalOverride(String materialName) {
+		ConfigHandler.DEFAULT_CRYSTAL_OVERRIDES.add(materialName);
+	}
+
+	@Override
+	public void registerDefaultDustOverride(String materialName) {
+		ConfigHandler.DEFAULT_DUST_OVERRIDES.add(materialName);
+	}
+
+	@Override
 	public boolean registerRecipe(ResourceLocation key, Supplier<? extends IRecipe<?>> recipeSupplier) {
 		if(DataCollector.getDefinedRecipes().contains(key) || ConfigHandler.RECIPE_BLACKLIST.contains(key)) {
 			return false;
