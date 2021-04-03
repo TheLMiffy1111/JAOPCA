@@ -1,13 +1,25 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            url = "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url = "https://jitpack.io/"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+		classpath "com.wynprice.cursemaven:CurseMaven:2.1.5"
+		//classpath "com.github.Wyn-Price:CurseMaven:f0d58155e6"
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
+
+apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "com.wynprice.cursemaven"
 
 repositories {
     jcenter()
@@ -18,25 +30,19 @@ repositories {
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
-        url = "https://tehnut.info/maven/"
-    }
-    maven {
         url = "https://maven.amadornes.com/"
     }
     maven {
-        url = "http://maven.ic2.player.to/"
+        url = "https://maven.ic2.player.to/"
     }
     maven {
         url = "https://maven.tterrag.com/"
     }
     maven {
-        url = "https://maven2.tterrag.com/"
-    }
-    maven {
         url = "https://maven.chaosfield.at/"
     }
     maven {
-        url = "http://maven.modmuss50.me/"
+        url = "https://maven.modmuss50.me/"
     }
     maven {
         url = "https://maven.covers1624.net/"
@@ -51,20 +57,17 @@ repositories {
         url = "https://maven.mcmoddev.com/"
     }
     maven {
-        url = "http://maven.thiakil.com/"
+        url = "https://maven.thiakil.com/"
     }
     maven {
         url = "https://www.mod-buildcraft.com/maven/"
-    }
-    maven {
-        url = "https://minecraft.curseforge.com/api/maven/"
     }
     maven {
         url = "https://modmaven.k-4u.nl/"
     }
 }
 
-version = "1.12.2-2.2.8.103"
+version = "1.12.2-2.2.8.104"
 group= "thelm.jaopca"
 archivesBaseName = "JAOPCA"
 
@@ -74,7 +77,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2824"
+    version = "1.12.2-14.23.5.2847"
     runDir = "run"
     mappings = "stable_39"
     makeObfSourceJar = false
@@ -96,21 +99,21 @@ dependencies {
     deobfCompile("TechReborn:TechReborn-ModCompatibility-1.12.2:1.1.0.5:universal") {
         transitive = false
     }
-    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.2.353:universal"
-    deobfCompile "cofh:RedstoneFlux:1.12-2.0.2.3:universal"
-    deobfCompile("cofh:CoFHCore:1.12.2-4.5.3.20:universal") {
+    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.3.357:universal"
+    deobfCompile "cofh:RedstoneFlux:1.12-2.1.0.6:universal"
+    deobfCompile("cofh:CoFHCore:1.12.2-4.6.3.27:universal") {
         transitive = false
     }
-    deobfCompile("cofh:CoFHWorld:1.12.2-1.2.0.5:universal") {
+    deobfCompile("cofh:CoFHWorld:1.12.2-1.3.1.7:universal") {
         transitive = false
     }
-    deobfCompile("cofh:ThermalFoundation:1.12.2-2.5.0.19:universal") {
+    deobfCompile("cofh:ThermalFoundation:1.12.2-2.6.3.27:universal") {
         transitive = false
     }
-    deobfCompile("cofh:ThermalExpansion:1.12.2-5.5.0.29:universal") {
+    deobfCompile("cofh:ThermalExpansion:1.12.2-5.5.4.43:universal") {
         transitive = false
     }
-    deobfCompile("cofh:ThermalDynamics:1.12.2-2.5.1.14:universal") {
+    deobfCompile("cofh:ThermalDynamics:1.12.2-2.5.5.21:universal") {
         transitive = false
     }
     deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.12.2-1.9.4.9"
@@ -138,25 +141,24 @@ dependencies {
     deobfCompile("appeng:appliedenergistics2:rv6-stable-6") {
         transitive = false
     }
-    deobfCompile "mcp.mobius.waila:Hwyla:1.8.25-B40_1.12"
-	
-    deobfCompile "wrapup:WrapUp:1.12:1.1.3"
 
-    deobfCompile "advanced-rocketry:AdvancedRocketry-1.12.2-1.5.0:136:universal"
-    deobfCompile "baubles:Baubles:1.12:1.5.2"
-    deobfCompile "embers-rekindled:EmbersRekindled:1.13"
-    deobfCompile "ignition-foundry:Foundry:1.12.2:3.3.5"
-    deobfCompile "futurepack:Futurepack:1.12.2:26.4.57"
-    deobfCompile "gregtechce:gregtech:1.12.2:1.8.1.399"
-    deobfCompile "libvulpes:LibVulpes-1.12.2-0.4.0:53:universal"
-    deobfCompile "magneticraft:Magneticraft_1.12:2.5.2:dev"
-    deobfCompile "mekanism:Mekanism:1.12.2:9.6.7.360"
-    deobfCompile "modelloader:modelloader:1.1.5"
-    deobfCompile "placebo:Placebo:1.12.2:1.6.0"
-	deobfCompile "sky-compression:Sky:Compression:1.2.2.5"
-    deobfCompile "sky-resources:skyresources:2.3.8"
-    deobfCompile "static-power:StaticPower:2.0.2.7"
-    deobfCompile "thaumcraft:Thaumcraft:1.12.2:6.1.BETA26"
+    deobfCompile "curse.maven:wrapup:2486198"
+    deobfCompile "curse.maven:advanced-rocketry:3258285"
+    deobfCompile "curse.maven:baubles:2518667"
+    deobfCompile "curse.maven:embers-rekindled:2697221"
+    deobfCompile "curse.maven:ignition-foundry:2719054"
+    deobfCompile "curse.maven:futurepack:2786639"
+    deobfCompile "curse.maven:gregtechce:2811836"
+    deobfCompile "curse.maven:libvulpes:2809593"
+    deobfCompile "curse.maven:magneticraft:2807901"
+    deobfCompile "curse.maven:mekanism:2835175"
+    deobfCompile "curse.maven:modelloader:2744735"
+    deobfCompile "curse.maven:omega-craft-mod:2670955"
+    deobfCompile "curse.maven:placebo:2830611"
+	deobfCompile "curse.maven:sky-compression:2707173"
+    deobfCompile "curse.maven:sky-resources:2758220"
+    deobfCompile "curse.maven:static-power:2571816"
+    deobfCompile "curse.maven:thaumcraft:2629023"
 }
 
 processResources
