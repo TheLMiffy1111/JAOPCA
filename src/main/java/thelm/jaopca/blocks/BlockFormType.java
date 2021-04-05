@@ -117,6 +117,7 @@ public class BlockFormType implements IBlockFormType {
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
+				ResourceLocation lootLocation = new ResourceLocation("jaopca", "blocks/"+form.getName()+'.'+material.getName());
 
 				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
 				Block block = materialFormBlock.asBlock();
@@ -129,6 +130,8 @@ public class BlockFormType implements IBlockFormType {
 				blockItem.setRegistryName(registryName);
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
 				RegistryHandler.registerForgeRegistryEntry(blockItem);
+
+				DataInjector.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock, settings));
 
 				DataInjector.registerBlockTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
