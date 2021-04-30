@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -145,28 +146,27 @@ public class ModuleTechReborn extends ModuleBase {
 	}
 
 	public static void addIndustrialGrinderRecipe(ItemStack input, FluidStack fluid, int ticks, int euPerTick, ItemStack... outputs) {
-		outputs = Arrays.stream(outputs).filter(is->is != null && !is.isEmpty()).toArray(i->new ItemStack[i]);
-		if(outputs.length == 4) {
-			RecipeHandler.addRecipe(new IndustrialGrinderRecipe(input, fluid, outputs[0], outputs[1], outputs[2], outputs[3], ticks, euPerTick));
+		// I've had enough
+		try {
+			outputs = Arrays.stream(outputs).filter(is->is != null && !is.isEmpty()).toArray(i->new ItemStack[i]);
+			if(outputs.length == 4) {
+				RecipeHandler.addRecipe(new IndustrialGrinderRecipe(input, fluid, outputs[0], outputs[1], outputs[2], outputs[3], ticks, euPerTick));
+			}
+			else if(outputs.length == 3) {
+				RecipeHandler.addRecipe(new IndustrialGrinderRecipe(input, fluid, outputs[0], outputs[1], outputs[2], null, ticks, euPerTick));
+			}
+			else if(outputs.length == 2) {
+				RecipeHandler.addRecipe(new IndustrialGrinderRecipe(input, fluid, outputs[0], outputs[1], null, null, ticks, euPerTick));
+			}
+			else if(outputs.length == 1) {
+				RecipeHandler.addRecipe(new IndustrialGrinderRecipe(input, fluid, outputs[0], null, null, null, ticks, euPerTick));
+			}
 		}
-		else if(outputs.length == 3) {
-			RecipeHandler.addRecipe(new IndustrialGrinderRecipe(input, fluid, outputs[0], outputs[1], outputs[2], null, ticks, euPerTick));
-		}
-		else if(outputs.length == 2) {
-			RecipeHandler.addRecipe(new IndustrialGrinderRecipe(input, fluid, outputs[0], outputs[1], null, null, ticks, euPerTick));
-		}
-		else if(outputs.length == 1) {
-			RecipeHandler.addRecipe(new IndustrialGrinderRecipe(input, fluid, outputs[0], null, null, null, ticks, euPerTick));
-		}
-		else {
-			throw new InvalidParameterException("Invalid industrial grinder inputs: " + outputs);
-		}
+		catch(Exception e) {}
 	}
 
 	public static void addImplosionCompressorRecipe(ItemStack input, ItemStack output, int darkAshes) {
-		if(darkAshes < 1 || darkAshes > 64) {
-			throw new InvalidParameterException("Invalid implosion compressor darkAshes input: " + darkAshes);
-		}
+		darkAshes = MathHelper.clamp(darkAshes, 1, 64);
 		RecipeHandler.addRecipe(new ImplosionCompressorRecipe(input, new ItemStack(Blocks.TNT, 16), output, Utils.getOreStack("dustDarkAshes", darkAshes), 20, 32));
 	}
 

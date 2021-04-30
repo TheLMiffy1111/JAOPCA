@@ -49,7 +49,7 @@ public class ModuleEmbers extends ModuleBase {
 			if(FluidRegistry.isFluidRegistered(Utils.to_under_score(entry.getOreName()))) {
 				RecipeRegistry.meltingRecipes.add(new ItemMeltingRecipe(
 						new OreIngredient("ore"+entry.getOreName()), FluidRegistry.getFluidStack(Utils.to_under_score(entry.getOreName()), 288)).
-						addBonusOutput(FluidRegistry.getFluidStack(Utils.to_under_score(entry.getOreName()), 16)));
+						addBonusOutput(FluidRegistry.getFluidStack(Utils.to_under_score(entry.getExtra()), 16)));
 				RecipeRegistry.meltingRecipes.add(new ItemMeltingRecipe(
 						new OreIngredient("ingot"+entry.getOreName()), FluidRegistry.getFluidStack(Utils.to_under_score(entry.getOreName()), 144)));
 				RecipeRegistry.meltingRecipes.add(new ItemMeltingRecipe(

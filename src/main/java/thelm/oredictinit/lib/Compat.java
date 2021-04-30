@@ -18,7 +18,6 @@ import thelm.oredictinit.compat.CompatNuclearCraft;
 import thelm.oredictinit.compat.CompatQuark;
 import thelm.oredictinit.compat.CompatRFTools;
 import thelm.oredictinit.compat.CompatTheBetweenlands;
-import thelm.oredictinit.compat.CompatTinkersConstruct;
 
 public class Compat {
 
@@ -45,9 +44,6 @@ public class Compat {
 		}
 		if(Loader.isModLoaded("calculator")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatCalculator());
-		}
-		if(Loader.isModLoaded("tconstruct")) {
-			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatTinkersConstruct());
 		}
 		if(Loader.isModLoaded("quark")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatQuark());
