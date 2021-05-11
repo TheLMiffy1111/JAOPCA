@@ -56,10 +56,16 @@ repositories {
         url = "https://oss.jfrog.org/artifactory/simple/libs-release/"
     }
     maven {
+        url = "https://maven.architectury.dev/"
+    }
+    maven {
+        url = "https://maven.latvian.dev/"
+    }
+    maven {
         url = "https://jitpack.io/"
     }
     maven {
-        url = "https://modmaven.k-4u.nl/"
+        url = "https://modmaven.dev/"
     }
 }
 
@@ -67,7 +73,7 @@ sourceSets {
     main
 }
 
-version = "3.4.0.8"
+version = "3.4.0.9"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
@@ -97,61 +103,67 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.5-36.0.46"
+    minecraft "net.minecraftforge:forge:1.16.5-36.1.16"
 
-    implementation fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.0.132")
+    implementation fg.deobf("mezz.jei:jei-1.16.5:7.6.4.90")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.0.281")
 	implementation fg.deobf("mekanism:Mekanism:1.16.5-10.0.21.448")
 	implementation fg.deobf("mekanism:Mekanism:1.16.5-10.0.21.448:generators")
     implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.16.3:2.0.1")
     implementation fg.deobf("com.wtbw.mods:wtbw_core-1.16.3:2.0.2")
     implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.16.3:2.0.1")
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.16.4-4.0.2.1")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
     implementation fg.deobf("hellfirepvp.observerlib:observerlib:1.16.4-1.5.1.v75") {
         transitive = false
     }
     implementation fg.deobf("hellfirepvp.astralsorcery:astralsorcery:1.16.4-1.13.10.v70") {
         transitive = false
     }
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-50")
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.16.5-4.2.1-131")
-    implementation fg.deobf("org.cyclops.cyclopscore:CyclopsCore:1.16.5-1.11.4-46") {
+    implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.16.5-4.2.4-134.1")
+    implementation fg.deobf("org.cyclops.cyclopscore:CyclopsCore:1.16.5-1.11.6-61") {
         transitive = false
     }
-    implementation fg.deobf("org.cyclops.commoncapabilities:CommonCapabilities:1.16.5-2.5.7-13") {
+    implementation fg.deobf("org.cyclops.commoncapabilities:CommonCapabilities:1.16.5-2.7.0-22") {
         transitive = false
     }
-    implementation fg.deobf("org.cyclops.integrateddynamics:IntegratedDynamics:1.16.5-1.6.0-48") {
+    implementation fg.deobf("org.cyclops.integrateddynamics:IntegratedDynamics:1.16.5-1.8.0-76") {
         transitive = false
     }
-    implementation fg.deobf("slimeknights.mantle:Mantle:1.16.5-1.6.79")
+    implementation fg.deobf("slimeknights.mantle:Mantle:1.16.5-1.6.92")
+    implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.16.5-3.0.3.144")
+    implementation fg.deobf("dev.latvian.mods:rhino:1.7.13-build.23")
+    implementation fg.deobf("me.shedaniel:architectury-forge:1.12.150")
+    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1605.3.7-build.192") {
+        transitive = false
+    }
+    implementation fg.deobf("appeng:appliedenergistics2:8.3.1")
 
     //JitPack
 
     //CurseMaven
-    implementation fg.deobf("curse.maven:ato:3238757")
-    implementation fg.deobf("curse.maven:allthemodium:3251449")
+    implementation fg.deobf("curse.maven:ato:3282956")
+    implementation fg.deobf("curse.maven:allthemodium:3305840")
     implementation fg.deobf("curse.maven:silent-lib:3235738")
-    implementation fg.deobf("curse.maven:silents-mechanisms:3207372")
-    implementation fg.deobf("curse.maven:silents-gems:3251205")
-    implementation fg.deobf("curse.maven:silent-gear:3253813")
+    implementation fg.deobf("curse.maven:silents-mechanisms:3272909")
+    implementation fg.deobf("curse.maven:silents-gems:3298798")
+    implementation fg.deobf("curse.maven:silent-gear:3304098")
     implementation fg.deobf("curse.maven:industrial-reborn:3076845")
     implementation fg.deobf("curse.maven:essentials:3186597")
     implementation fg.deobf("curse.maven:crossroads-mc:3246384")
-    implementation fg.deobf("curse.maven:fl:3181258")
-    implementation fg.deobf("curse.maven:flux:3203572")
-    implementation fg.deobf("curse.maven:applied-energistics-2:3185882")
-    implementation fg.deobf("curse.maven:cofh-core:3247581")
-    implementation fg.deobf("curse.maven:thermal-foundation:3247564")
+    implementation fg.deobf("curse.maven:fl:3293009")
+    implementation fg.deobf("curse.maven:flux:3293011")
+    implementation fg.deobf("curse.maven:cofh-core:3249453")
+    implementation fg.deobf("curse.maven:thermal-foundation:3248150")
     implementation fg.deobf("curse.maven:thermal-expansion:3247000")
-    implementation fg.deobf("curse.maven:create:3167531")
+    implementation fg.deobf("curse.maven:create:3278516")
     implementation fg.deobf("curse.maven:blood-magic:3184485")
-    implementation fg.deobf("curse.maven:occultism:3204587")
-    implementation fg.deobf("curse.maven:futurepack:3206477")
-    implementation fg.deobf("curse.maven:themcbros-useless-mod:3229154")
-    implementation fg.deobf("curse.maven:electrodynamics:3251208")
-    implementation fg.deobf("curse.maven:libvulpes:3247559")
-    implementation fg.deobf("curse.maven:advanced-rocketry:3247951")
+    implementation fg.deobf("curse.maven:occultism:3302639")
+    implementation fg.deobf("curse.maven:futurepack:3249118")
+    implementation fg.deobf("curse.maven:themcbros-useless-mod:3304992")
+    implementation fg.deobf("curse.maven:electrodynamics:3269103")
+    implementation fg.deobf("curse.maven:libvulpes:3305524")
+    implementation fg.deobf("curse.maven:advanced-rocketry:3302417")
 }
 
 jar {

@@ -53,9 +53,9 @@ public class DataCollector {
 			if(ModList.get().isLoaded("kubejs")) {
 				try {
 					RESOURCE_PACKS.add(
-							(IResourcePack)Class.forName("dev.latvian.kubejs.script.data.KubeJSResourcePack").
-							getConstructor(ResourcePackType.class).
-							newInstance(ResourcePackType.SERVER_DATA));
+							(IResourcePack)Class.forName("dev.latvian.kubejs.server.KubeJSServerResourcePack").
+							getConstructor().
+							newInstance());
 				}
 				catch(Exception e) {
 					LOGGER.error("KubeJS was found but unable to construct data pack.", e);
