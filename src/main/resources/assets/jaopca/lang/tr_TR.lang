@@ -1,0 +1,101 @@
+itemGroup.jaopca=JAOPCA
+
+#Default
+item.jaopca.dust.name=%s Tozu
+item.jaopca.nugget.name=%s Parçası
+tile.jaopca.block.name=%s Bloğu
+fluid.jaopca.molten=Erimiş %s
+item.jaopca.coin.name=%s Para
+item.jaopca.gear.name=%s Dişli
+item.jaopca.plate.name=%s Plaka
+item.jaopca.stick.name=%s Çubuk
+item.jaopca.dustTiny.name=Minik %s Tozu
+item.jaopca.dustSmall.name=Küçük %s Tozu
+item.jaopca.plateDense.name=Yoğun %s Plaka
+
+#Mekanism
+item.jaopca.dustDirty.name=Kirli %s Tozu
+item.jaopca.clump.name=%s Kümesi
+item.jaopca.shard.name=%s Parçası
+item.jaopca.crystal.name=%s Kristal
+gas.jaopca.slurryClean=Temiz %s Harcı
+gas.jaopca.slurry=%s Harç
+
+#IC2
+item.jaopca.crushed.name=Ezilmiş %s Cevheri
+item.jaopca.crushedPurified.name=Ezilmiş Saflaştırılmış %s Cevheri
+
+#ExNihiloOmnia
+item.jaopca.oreBroken.name=Kırılmış %s Cevheri
+item.jaopca.oreNetherBroken.name=Kırılmış %s Cevheri
+item.jaopca.oreEnderBroken.name=Kırılmış %s Cevheri
+item.jaopca.oreCrushed.name=Ezilmiş %s Cevheri
+item.jaopca.orePowdered.name=Tozlaşmış %s Cevheri
+tile.jaopca.oreGravel.name=%s Cevher Çakılı
+tile.jaopca.oreNetherGravel.name=Nether %s Cevher Çakılı
+tile.jaopca.oreEnderGravel.name=Ender %s Cevher Çakılı
+tile.jaopca.oreSand.name=%s Cevher Kumu
+tile.jaopca.oreFine.name=%s Cevher Tozu
+
+#ExNihiloCreatio
+item.jaopca.piece.name=%s Cevher Parçası
+item.jaopca.hunk.name=%s Cevher Yığını
+
+#AbyssalCraft
+item.jaopca.crystalFragment.name=Kristalleştirilmiş %s Parçacığı
+item.jaopca.crystalShard.name=Kristalleştirilmiş %s Parçası
+item.jaopca.crystalAbyss.name=Kristalleştirilmiş %s
+tile.jaopca.crystalCluster.name=Kristalleştirilmiş %s Kümesi
+
+#SkyResources
+item.jaopca.dustAlch.name=Simyasal %s Cevher Tozu
+item.jaopca.dirtyGem.name=Kirli %s
+
+#Magneticraft
+item.jaopca.rockyChunk.name=Taşlı %s Yığını
+item.jaopca.chunk.name=%s Yığını
+
+#TeslaPoweredThingies
+item.jaopca.teslaLump.name=Teslified %s Yumrusu
+item.jaopca.augmentedLump.name=Artırılmış %s Yumru
+
+#Thaumcraft
+item.jaopca.cluster.name=Yerli %s Yumrusu
+
+#BuildcraftOreProcessing
+fluid.jaopca.searingMolten=Erimiş %s (§cAşırı Sıcak§r)
+fluid.jaopca.hotMolten=Erimiş %s (§6Sıcak§r)
+fluid.jaopca.coolMolten=Erimiş %s (§bSoğuk§r)
+
+#Foundry
+fluid.jaopca.liquid=Sıvı %s
+
+#GregTech
+item.jaopca.crushedGreg.name=Ezilmiş %s Cevheri
+item.jaopca.crushedPurifiedGreg.name=Saflaştırılmış %s Cevheri
+item.jaopca.crushedCentrifuged.name=Santrifüjlenmiş %s Cevheri
+item.jaopca.dustImpure.name=Saf Olmayan %s Yığın Tozu
+item.jaopca.dustPure.name=Saflaştırılmış %s Yığın Tozu
+item.jaopca.gemChipped.name=Parçalanmış %s
+item.jaopca.gemFlawed.name=Kusurlu %s
+item.jaopca.gemFlawless.name=Kusursuz %s
+item.jaopca.gemExquisite.name=Mükemmel %s
+
+#Please refer to zh_CN or zh_TW for all names to localize.
+#Ingots
+jaopca.entry.LiquifiedCoralium=Coralium
+
+#Gems
+jaopca.entry.Lapis=Lapis Lazuli
+jaopca.entry.QuartzBlack=Siyah Kuvars
+
+#Dusts
+
+#IngotNoOres
+jaopca.entry.Aluminiumbrass=Alüminyum Pirinç
+jaopca.entry.ElvenElementium=Elementium
+jaocpa.entry.Galvanizedsteel=Kaplamalı Çelik
+jaopca.entry.Stainlesssteel=Paslanmaz Çelik
+
+#GemNoOres
+jaopca.entry.BoronNitride=Bor Nitrat
