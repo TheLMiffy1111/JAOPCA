@@ -10,7 +10,7 @@ public class OccultismHelper {
 
 	private OccultismHelper() {}
 
-	public boolean registerCrushingRecipe(ResourceLocation key, Object input, Object output, int outputCount, int time) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, input, output, outputCount, time));
+	public boolean registerCrushingRecipe(ResourceLocation key, Object input, Object output, int outputCount, int time, boolean ignoreMultiplier) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSupplier(key, input, output, outputCount, time, ignoreMultiplier));
 	}
 }

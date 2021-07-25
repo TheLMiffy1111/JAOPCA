@@ -22,13 +22,15 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 	public final Object output;
 	public final int outputCount;
 	public final int time;
+	public final boolean ignoreMultiplier;
 
-	public CrushingRecipeSupplier(ResourceLocation key, Object input, Object output, int outputCount, int time) {
+	public CrushingRecipeSupplier(ResourceLocation key, Object input, Object output, int outputCount, int time, boolean ignoreMultiplier) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
 		this.outputCount = outputCount;
 		this.time = time;
+		this.ignoreMultiplier = ignoreMultiplier;
 	}
 
 	@Override
@@ -41,6 +43,6 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 		if(stack.isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
-		return new CrushingRecipe(key, ing, stack, time);
+		return new CrushingRecipe(key, ing, stack, time, ignoreMultiplier);
 	}
 }

@@ -123,6 +123,13 @@ public class MekanismModule implements IModule {
 			helper.registerWashingRecipe(
 					new ResourceLocation("jaopca", "mekanism.dirty_to_clean_slurry."+material.getName()),
 					Fluids.WATER, 5, dirtySlurryLocation, 1, cleanSlurryInfo, 1);
+			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());
+			ResourceLocation crystalLocation = miscHelper.getTagLocation("mekanism:crystals", material.getName());
+			if(!crystalForm.getMaterials().contains(material) && api.getItemTags().contains(crystalLocation)) {
+				helper.registerCrystallizingRecipe(
+						new ResourceLocation("jaopca", "mekanism.clean_slurry_to_crystal."+material.getName()),
+						cleanSlurryLocation, 200, crystalLocation, 1);
+			}
 		}
 		for(IMaterial material : crystalForm.getMaterials()) {
 			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());

@@ -19,7 +19,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "occultism")
+@JAOPCAModule(modDependencies = "occultism@[1.16.5-1.7.0,)")
 public class OccultismCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
@@ -48,7 +48,7 @@ public class OccultismCompatModule implements IModule {
 				if(api.getItemTags().contains(dustLocation)) {
 					helper.registerCrushingRecipe(
 							new ResourceLocation("jaopca", "occultism.material_to_dust."+material.getName()),
-							materialLocation, dustLocation, 1, 200);
+							materialLocation, dustLocation, 1, 200, true);
 				}
 			}
 		}
