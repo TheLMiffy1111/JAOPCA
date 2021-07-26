@@ -3,11 +3,12 @@ package thelm.jaopca.blocks;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.crafting.RecipeType;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
@@ -27,7 +28,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	protected OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
-		super(block.asBlock(), new Item.Properties().group(ItemFormType.getItemGroup()));
+		super(block.asBlock(), new Item.Properties().tab(ItemFormType.getCreativeTab()));
 		this.settings = settings;
 	}
 
@@ -50,11 +51,11 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack stack) {
+	public boolean isFoil(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
 			hasEffect = Optional.of(settings.getHasEffectFunction().test(getMaterial()));
 		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.get() || super.isFoil(stack);
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	}
 
 	@Override
-	public int getBurnTime(ItemStack itemStack) {
+	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
 		if(!burnTime.isPresent()) {
 			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(getMaterial()));
 		}
@@ -74,7 +75,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	}
 
 	@Override
-	public ITextComponent getDisplayName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getTranslationKey());
+	public Component getName(ItemStack stack) {
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getDescriptionId(stack));
 	}
 }

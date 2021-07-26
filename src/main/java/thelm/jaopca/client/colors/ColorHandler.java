@@ -6,21 +6,22 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import net.minecraft.block.Block;
+import com.mojang.math.Vector4f;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector4f;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
@@ -35,7 +36,7 @@ import thelm.jaopca.items.ItemFormType;
 
 public class ColorHandler {
 
-	public static final IBlockColor BLOCK_COLOR = (state, world, pos, tintIndex)->{
+	public static final BlockColor BLOCK_COLOR = (state, world, pos, tintIndex)->{
 		if(tintIndex == 0) {
 			Block block = state.getBlock();
 			if(block instanceof IMaterialForm) {
@@ -46,7 +47,7 @@ public class ColorHandler {
 		return 0xFFFFFFFF;
 	};
 
-	public static final IItemColor ITEM_COLOR = (stack, tintIndex)->{
+	public static final ItemColor ITEM_COLOR = (stack, tintIndex)->{
 		if(tintIndex == 0 || tintIndex == 2) {
 			Item item = stack.getItem();
 			if(item instanceof IMaterialForm) {
@@ -77,8 +78,8 @@ public class ColorHandler {
 		}
 	}
 
-	public static int getAverageColor(ITag<Item> tag) {
-		Vector4f color = weightedAverageColor(tag.getAllElements(), ConfigHandler.gammaValue);
+	public static int getAverageColor(Tag<Item> tag) {
+		Vector4f color = weightedAverageColor(tag.getValues(), ConfigHandler.gammaValue);
 		return toColorInt(color);
 	}
 
@@ -135,10 +136,10 @@ public class ColorHandler {
 			g = 1;
 			b = 1;
 			for(Vector4f color : colors) {
-				totalWeight += weight = color.getW();
-				r *= color.getX()*weight;
-				g *= color.getY()*weight;
-				b *= color.getZ()*weight;
+				totalWeight += weight = color.w();
+				r *= color.x()*weight;
+				g *= color.y()*weight;
+				b *= color.z()*weight;
 			}
 			r = Math.pow(r, 1/totalWeight);
 			g = Math.pow(g, 1/totalWeight);
@@ -146,20 +147,20 @@ public class ColorHandler {
 		}
 		else {
 			for(Vector4f color : colors) {
-				totalWeight += weight = color.getW();
-				r += Math.pow(color.getX(), gammaValue)*weight;
-				g += Math.pow(color.getY(), gammaValue)*weight;
-				b += Math.pow(color.getZ(), gammaValue)*weight;
+				totalWeight += weight = color.w();
+				r += Math.pow(color.x(), gammaValue)*weight;
+				g += Math.pow(color.y(), gammaValue)*weight;
+				b += Math.pow(color.z(), gammaValue)*weight;
 			}
 			r = Math.pow(r/totalWeight, 1/gammaValue);
 			g = Math.pow(g/totalWeight, 1/gammaValue);
 			b = Math.pow(b/totalWeight, 1/gammaValue);
 		}
 		return new Vector4f(
-				(float)MathHelper.clamp(r, 0, 1),
-				(float)MathHelper.clamp(g, 0, 1),
-				(float)MathHelper.clamp(b, 0, 1),
-				(float)MathHelper.clamp(totalWeight/colors.size(), 0, 1)
+				(float)Mth.clamp(r, 0, 1),
+				(float)Mth.clamp(g, 0, 1),
+				(float)Mth.clamp(b, 0, 1),
+				(float)Mth.clamp(totalWeight/colors.size(), 0, 1)
 				);
 	}
 
@@ -174,27 +175,27 @@ public class ColorHandler {
 
 	public static Vector4f tintColor(Vector4f color, int tint) {
 		return new Vector4f(
-				color.getX()*(tint>>16&0xFF)/255F,
-				color.getY()*(tint>> 8&0xFF)/255F,
-				color.getZ()*(tint    &0xFF)/255F,
-				color.getW()
+				color.x()*(tint>>16&0xFF)/255F,
+				color.y()*(tint>> 8&0xFF)/255F,
+				color.z()*(tint    &0xFF)/255F,
+				color.w()
 				);
 	}
 
 	public static int toColorInt(Vector4f color) {
 		int ret = 0;
-		ret |= (Math.round(MathHelper.clamp(color.getX()*255, 0, 255))&0xFF)<<16;
-		ret |= (Math.round(MathHelper.clamp(color.getY()*255, 0, 255))&0xFF)<< 8;
-		ret |= (Math.round(MathHelper.clamp(color.getZ()*255, 0, 255))&0xFF);
+		ret |= (Math.round(Mth.clamp(color.x()*255, 0, 255))&0xFF)<<16;
+		ret |= (Math.round(Mth.clamp(color.y()*255, 0, 255))&0xFF)<< 8;
+		ret |= (Math.round(Mth.clamp(color.z()*255, 0, 255))&0xFF);
 		return ret;
 	}
 
 	public static List<BakedQuad> getBakedQuads(ItemStack stack) {
 		List<BakedQuad> quads = new ArrayList<>();
-		IBakedModel model = Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(stack, null, null);
-		model.getQuads(null, null, new Random(0)).stream().filter(quad->quad.getFace() == Direction.SOUTH).forEach(quads::add);
+		BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(stack, null, null, 0);
+		model.getQuads(null, null, new Random(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
 		for(Direction facing : Direction.values()) {
-			model.getQuads(null, facing, new Random(0)).stream().filter(quad->quad.getFace() == Direction.SOUTH).forEach(quads::add);
+			model.getQuads(null, facing, new Random(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
 		}
 		return quads;
 	}

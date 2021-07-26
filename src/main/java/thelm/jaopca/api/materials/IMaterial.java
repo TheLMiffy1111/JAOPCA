@@ -2,7 +2,7 @@ package thelm.jaopca.api.materials;
 
 import java.util.Set;
 
-import net.minecraft.item.Rarity;
+import net.minecraft.world.item.Rarity;
 
 public interface IMaterial extends Comparable<IMaterial> {
 

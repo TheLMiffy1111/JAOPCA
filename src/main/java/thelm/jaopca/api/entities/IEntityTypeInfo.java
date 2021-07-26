@@ -1,11 +1,11 @@
 package thelm.jaopca.api.entities;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.ItemLike;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
-public interface IEntityTypeInfo extends IMaterialFormInfo, IItemProvider {
+public interface IEntityTypeInfo extends IMaterialFormInfo, ItemLike {
 
 	IMaterialFormEntityType<?> getEntityType();
 

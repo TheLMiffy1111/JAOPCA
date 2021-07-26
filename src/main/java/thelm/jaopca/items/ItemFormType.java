@@ -11,12 +11,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
@@ -39,7 +39,7 @@ public class ItemFormType implements IItemFormType {
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
 	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormItem> ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IItemInfo> ITEM_INFOS = TreeBasedTable.create();
-	private static ItemGroup itemGroup;
+	private static CreativeModeTab creativeTab;
 
 	public static void init() {
 		FormTypeHandler.registerFormType(INSTANCE);
@@ -115,16 +115,16 @@ public class ItemFormType implements IItemFormType {
 		}
 	}
 
-	public static ItemGroup getItemGroup() {
-		if(itemGroup == null) {
-			itemGroup = new ItemGroup("jaopca") {
+	public static CreativeModeTab getCreativeTab() {
+		if(creativeTab == null) {
+			creativeTab = new CreativeModeTab("jaopca") {
 				@Override
-				public ItemStack createIcon() {
+				public ItemStack makeIcon() {
 					return new ItemStack(Items.GLOWSTONE_DUST);
 				}
 			};
 		}
-		return itemGroup;
+		return creativeTab;
 	}
 
 	public static Collection<IMaterialFormItem> getItems() {

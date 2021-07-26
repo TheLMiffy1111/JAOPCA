@@ -8,14 +8,14 @@ import java.util.function.Supplier;
 import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.loot.LootTable;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
@@ -29,6 +29,7 @@ import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.localization.ILocalizer;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
+import thelm.jaopca.api.recipes.IRecipeSerializer;
 
 /**
  * The main API class of JAOPCA, which consists of the main methods that modules use to add content to
@@ -192,10 +193,10 @@ public abstract class JAOPCAApi {
 	public abstract Set<IMaterial> getMaterials();
 
 	/**
-	 * Returns the item group used by items added by JAOPCA.
-	 * @return The item group used by JAOPCA
+	 * Returns the creative tab used by items added by JAOPCA.
+	 * @return The creative tab used by JAOPCA
 	 */
-	public abstract ItemGroup itemGroup();
+	public abstract CreativeModeTab creativeTab();
 
 	/**
 	 * Returns the set of known block tag locations, which is the union of defined block tag locations
@@ -248,14 +249,6 @@ public abstract class JAOPCAApi {
 	 * @return The set of loot table locations known by JAOPCA
 	 */
 	public abstract Set<ResourceLocation> getLootTables();
-
-	/**
-	 * Returns the set of known advancement locations, which is the union of defined advancement locations
-	 * and registered advancement locations. Note that advancements added by custom data packs may not be
-	 * included.
-	 * @return The set of advancement locations known by JAOPCA
-	 */
-	public abstract Set<ResourceLocation> getAdvancements();
 
 	/**
 	 * Returns the current {@link ILocalizer} based on Minecraft's current language. Will always return the
@@ -382,22 +375,12 @@ public abstract class JAOPCAApi {
 	public abstract void registerDefaultDustOverride(String materialName);
 
 	/**
-	 * Registers a recipe supplier to be injected by JAOPCA. The returned recipe must have an id that is the
-	 * same as the id provided for JAOPCA to inject.
+	 * Registers a recipe serializer to be injected by JAOPCA.
 	 * @param key The id of the recipe
-	 * @param recipeSupplier The recipe supplier
+	 * @param recipeSerializer The recipe serializer
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerRecipe(ResourceLocation key, Supplier<? extends IRecipe<?>> recipeSupplier);
-
-	/**
-	 * Registers a recipe to be injected by JAOPCA. The id of the recipe must be the same as the id provided
-	 * for JAOPCA to inject.
-	 * @param key The id of the recipe
-	 * @param recipe The recipe
-	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
-	 */
-	public abstract boolean registerRecipe(ResourceLocation key, IRecipe<?> recipe);
+	public abstract boolean registerRecipe(ResourceLocation key, IRecipeSerializer recipeSerializer);
 
 	/**
 	 * Creates a shaped recipe supplier that is then registered for injection.
@@ -579,22 +562,6 @@ public abstract class JAOPCAApi {
 	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
 	 */
 	public abstract boolean registerLootTable(ResourceLocation key, LootTable lootTable);
-
-	/**
-	 * Registers an advancement builder supplier to be added by JAOPCA's in memory data pack.
-	 * @param key The id of the advancement
-	 * @param advancementBuilderSupplier The advancement builder supplier
-	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
-	 */
-	public abstract boolean registerAdvancement(ResourceLocation key, Supplier<Advancement.Builder> advancementBuilderSupplier);
-
-	/**
-	 * Registers an advancement builder to be added by JAOPCA's in memory data pack.
-	 * @param key The id of the advancement
-	 * @param advancementBuilder The advancement builder
-	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
-	 */
-	public abstract boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder);
 
 	/**
 	 * Registers an {@link ILocalizer} to languages for use by JAOPCA.

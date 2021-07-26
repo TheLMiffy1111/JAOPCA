@@ -8,7 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.item.Rarity;
+import net.minecraft.world.item.Rarity;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.blocks.BlockFormType;

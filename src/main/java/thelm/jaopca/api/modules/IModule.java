@@ -8,7 +8,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.resources.IResourceManager;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -61,8 +61,6 @@ public interface IModule extends Comparable<IModule> {
 	default void onCreateResourcePack(IModuleData moduleData, IInMemoryResourcePack resourcePack) {}
 
 	default void onCreateDataPack(IModuleData moduleData, IInMemoryResourcePack resourcePack) {}
-
-	default void onRecipeInjectComplete(IModuleData moduleData, IResourceManager resourceManager) {}
 
 	@Override
 	default int compareTo(IModule other) {

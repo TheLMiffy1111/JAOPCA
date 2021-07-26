@@ -6,25 +6,25 @@ import java.util.function.Supplier;
 
 import com.google.gson.JsonElement;
 
-import net.minecraft.resources.IResourcePack;
-import net.minecraft.resources.ResourcePackType;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackType;
 
-public interface IInMemoryResourcePack extends IResourcePack {
+public interface IInMemoryResourcePack extends PackResources {
 
-	IInMemoryResourcePack putInputStream(ResourcePackType type, ResourceLocation location, Supplier<? extends InputStream> streamSupplier);
+	IInMemoryResourcePack putInputStream(PackType type, ResourceLocation location, Supplier<? extends InputStream> streamSupplier);
 
-	IInMemoryResourcePack putInputStreams(ResourcePackType type, Map<ResourceLocation, Supplier<? extends InputStream>> map);
+	IInMemoryResourcePack putInputStreams(PackType type, Map<ResourceLocation, Supplier<? extends InputStream>> map);
 
-	IInMemoryResourcePack putByteArray(ResourcePackType type, ResourceLocation location, byte[] file);
+	IInMemoryResourcePack putByteArray(PackType type, ResourceLocation location, byte[] file);
 
-	IInMemoryResourcePack putByteArrays(ResourcePackType type, Map<ResourceLocation, byte[]> map);
+	IInMemoryResourcePack putByteArrays(PackType type, Map<ResourceLocation, byte[]> map);
 
-	IInMemoryResourcePack putString(ResourcePackType type, ResourceLocation location, String str);
+	IInMemoryResourcePack putString(PackType type, ResourceLocation location, String str);
 
-	IInMemoryResourcePack putStrings(ResourcePackType type, Map<ResourceLocation, String> map);
+	IInMemoryResourcePack putStrings(PackType type, Map<ResourceLocation, String> map);
 
-	IInMemoryResourcePack putJson(ResourcePackType type, ResourceLocation location, JsonElement json);
+	IInMemoryResourcePack putJson(PackType type, ResourceLocation location, JsonElement json);
 
-	IInMemoryResourcePack putJsons(ResourcePackType type, Map<ResourceLocation, ? extends JsonElement> map);
+	IInMemoryResourcePack putJsons(PackType type, Map<ResourceLocation, ? extends JsonElement> map);
 }

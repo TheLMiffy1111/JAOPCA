@@ -1,13 +1,13 @@
 package thelm.jaopca.api.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
-public interface IBlockInfo extends IMaterialFormInfo, IBlockProvider, IItemProvider {
+public interface IBlockInfo extends IMaterialFormInfo, IBlockLike, ItemLike {
 
 	IMaterialFormBlock getMaterialFormBlock();
 

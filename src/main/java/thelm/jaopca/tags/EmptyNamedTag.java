@@ -3,7 +3,7 @@ package thelm.jaopca.tags;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.Tags;
 
 public class EmptyNamedTag<T> implements Tags.IOptionalNamedTag<T> {
@@ -20,7 +20,7 @@ public class EmptyNamedTag<T> implements Tags.IOptionalNamedTag<T> {
 	}
 
 	@Override
-	public List<T> getAllElements() {
+	public List<T> getValues() {
 		return Collections.emptyList();
 	}
 

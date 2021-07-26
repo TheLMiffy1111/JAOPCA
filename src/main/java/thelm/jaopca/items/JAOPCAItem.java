@@ -3,10 +3,11 @@ package thelm.jaopca.items;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.crafting.RecipeType;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IMaterialFormItem;
@@ -25,7 +26,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	protected OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCAItem(IForm form, IMaterial material, IItemFormSettings settings) {
-		super(new Item.Properties().group(ItemFormType.getItemGroup()));
+		super(new Item.Properties().tab(ItemFormType.getCreativeTab()));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -50,11 +51,11 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack stack) {
+	public boolean isFoil(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
 			hasEffect = Optional.of(settings.getHasEffectFunction().test(material));
 		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.get() || super.isFoil(stack);
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	}
 
 	@Override
-	public int getBurnTime(ItemStack itemStack) {
+	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
 		if(!burnTime.isPresent()) {
 			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(material));
 		}
@@ -74,7 +75,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	}
 
 	@Override
-	public ITextComponent getDisplayName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+form.getName(), material, getTranslationKey());
+	public Component getName(ItemStack stack) {
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+form.getName(), material, getDescriptionId(stack));
 	}
 }

@@ -5,14 +5,5 @@
     "item.jaopca.tiny_dusts": "小撮%s粉",
     "item.jaopca.small_dusts": "小%s粉",
     "fluid.jaopca.molten": "熔融%s",
-    "item.jaopca.molten": "熔融%s桶",
-
-    "item.jaopca.mekanism_dirty_dusts": "污濁%s粉",
-    "item.jaopca.mekanism_clumps": "%s碎塊",
-    "item.jaopca.mekanism_shards": "%s碎片",
-    "item.jaopca.mekanism_crystals": "%s晶體",
-    "slurry.jaopca.mekanism_dirty": "污濁%s漿液",
-    "slurry.jaopca.mekanism_clean": "純淨%s漿液",
-
-    "item.jaopca.create_crushed_ores": "碎%s礦"
+    "item.jaopca.molten": "熔融%s桶"
 }

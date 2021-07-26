@@ -1,11 +1,11 @@
 package thelm.jaopca.fluids;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.IBlockDisplayReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -41,7 +41,7 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	}
 
 	@Override
-	public FluidState getStateForPlacement(IBlockDisplayReader world, BlockPos pos, FluidStack stack) {
+	public FluidState getStateForPlacement(BlockAndTintGetter world, BlockPos pos, FluidStack stack) {
 		return fluid.getSourceState();
 	}
 
@@ -70,7 +70,7 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	}
 
 	@Override
-	public ITextComponent getDisplayName(FluidStack stack) {
+	public Component getDisplayName(FluidStack stack) {
 		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("fluid.jaopca."+fluid.getForm().getName(), fluid.getMaterial(), getTranslationKey());
 	}
 }

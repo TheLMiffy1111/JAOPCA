@@ -11,23 +11,17 @@ buildscript {
         }
         jcenter()
         mavenCentral()
-        maven {
-            url = "https://jitpack.io/"
-        }
     }
     dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
-		classpath "com.wynprice.cursemaven:CurseMaven:2.1.5"
-		//classpath "com.github.Wyn-Price:CurseMaven:f0d58155e6"
-		classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+		//classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
     }
 }
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
-apply plugin: "maven"
-apply plugin: "com.wynprice.cursemaven"
-apply plugin: "org.spongepowered.mixin"
+apply plugin: "maven-publish"
+//apply plugin: "org.spongepowered.mixin"
 
 repositories {
     jcenter()
@@ -80,22 +74,21 @@ sourceSets {
     main
 }
 
-version = "3.4.0.10"
+version = "4.a.0.0"
 group = "thelm.jaopca"
-archivesBaseName = "JAOPCA-1.16.5"
+archivesBaseName = "JAOPCA-1.17.1"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = "1.8"
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
-    mappings channel: "snapshot", version: "20201028-1.16.3"
-    accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
+    mappings channel: 'official', version: '1.17.1'
     runs {
         client = {
             properties "forge.logging.markers": "SCAN,REGISTRIES,REGISTRYDUMP"
             properties "forge.logging.console.level": "debug"
             properties "mixin.env.remapRefMap": "true"
             properties "mixin.env.refMapRemappingFile": "${projectDir}/build/createSrgToMcp/output.srg".toString()
-            workingDirectory project.file("run").canonicalPath
+            workingDirectory project.file("run")
             source sourceSets.main
         }
         server = {
@@ -103,70 +96,18 @@ minecraft {
             properties "forge.logging.console.level": "debug"
             properties "mixin.env.remapRefMap": "true"
             properties "mixin.env.refMapRemappingFile": "${projectDir}/build/createSrgToMcp/output.srg".toString()
-            workingDirectory project.file("run").canonicalPath
+            workingDirectory project.file("run")
             source sourceSets.main
         }
     }
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.5-36.2.0"
-
-    implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.0.356")
-	implementation fg.deobf("mekanism:Mekanism:1.16.5-10.0.21.448")
-	implementation fg.deobf("mekanism:Mekanism:1.16.5-10.0.21.448:generators")
-    implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.16.3:2.0.1")
-    implementation fg.deobf("com.wtbw.mods:wtbw_core-1.16.3:2.0.2")
-    implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.16.3:2.0.1")
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.2")
-    implementation fg.deobf("hellfirepvp.observerlib:observerlib:1.16.5-1.5.3.v78") {
-        transitive = false
-    }
-    implementation fg.deobf("hellfirepvp.astralsorcery:astralsorcery-1.16:1.16.5-1.13.12.v90") {
-        transitive = false
-    }
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.1")
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.16.5-5.0.2-137")
-    implementation fg.deobf("slimeknights.mantle:Mantle:1.16.5-1.6.115")
-    implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231")
-    implementation fg.deobf("dev.latvian.mods:rhino:1605.1.1-build.20")
-    implementation fg.deobf("me.shedaniel:architectury-forge:1.19.27")
-    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1605.3.12-build.38") {
-        transitive = false
-    }
-    implementation fg.deobf("appeng:appliedenergistics2:8.4.0")
-    implementation fg.deobf("com.jozufozu.flywheel:Flywheel:1.16-0.1.1.26")
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.9'
 
     //JitPack
 
     //CurseMaven
-    implementation fg.deobf("curse.maven:ato:3394539")
-    implementation fg.deobf("curse.maven:allthemodium:3394540")
-    implementation fg.deobf("curse.maven:silent-lib:3235738")
-    implementation fg.deobf("curse.maven:silents-mechanisms:3272909")
-    implementation fg.deobf("curse.maven:silents-gems:3353519")
-    implementation fg.deobf("curse.maven:silent-gear:3386805")
-    implementation fg.deobf("curse.maven:industrial-reborn:3076845")
-    implementation fg.deobf("curse.maven:essentials:3393808")
-    implementation fg.deobf("curse.maven:crossroads-mc:3347113")
-    implementation fg.deobf("curse.maven:fl:3293009")
-    implementation fg.deobf("curse.maven:flux:3293011")
-    implementation fg.deobf("curse.maven:cofh-core:3249453")
-    implementation fg.deobf("curse.maven:thermal-foundation:3248150")
-    implementation fg.deobf("curse.maven:thermal-expansion:3247000")
-    implementation fg.deobf("curse.maven:create:3386319")
-    implementation fg.deobf("curse.maven:blood-magic:3399440")
-    implementation fg.deobf("curse.maven:occultism:3398241")
-    implementation fg.deobf("curse.maven:futurepack:3345232")
-    implementation fg.deobf("curse.maven:themcbros-useless-mod:3364720")
-    implementation fg.deobf("curse.maven:electrodynamics:3328009")
-    implementation fg.deobf("curse.maven:libvulpes:3305524")
-    implementation fg.deobf("curse.maven:advanced-rocketry:3302417")
-    implementation fg.deobf("curse.maven:cyclops-core:3336467")
-    implementation fg.deobf("curse.maven:common-capabilities:3292062")
-    implementation fg.deobf("curse.maven:integrated-dynamics:3376007")
-    implementation fg.deobf("curse.maven:voluminous-energy:3381883")
 }
 
 jar {
@@ -174,16 +115,16 @@ jar {
         attributes([
                 "Specification-Title": "JAOPCA",
                 "Specification-Vendor": "thelm",
-                "Specification-Version": "3",
+                "Specification-Version": "4",
                 "Implementation-Title": "${archivesBaseName}",
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor": "thelm",
                 //"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-				"MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
+				//"MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
         ],)
     }
 }
 
-mixin {
-    add sourceSets.main, "mixins.jaopca.refmap.json"
-}
+//mixin {
+//    add sourceSets.main, "mixins.jaopca.refmap.json"
+//}

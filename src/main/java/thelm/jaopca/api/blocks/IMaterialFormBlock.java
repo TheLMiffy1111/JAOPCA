@@ -1,6 +1,6 @@
 package thelm.jaopca.api.blocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public interface IMaterialFormBlock extends IMaterialForm {

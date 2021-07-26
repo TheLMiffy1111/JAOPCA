@@ -18,7 +18,7 @@ import org.objectweb.asm.Type;
 
 import com.google.common.base.Predicates;
 
-import net.minecraft.resources.IResourceManager;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -67,11 +67,11 @@ public class ModuleHandler {
 		MODULES.clear();
 		List<AnnotationData> annotationData = ModList.get().getAllScanData().stream().
 				flatMap(data->data.getAnnotations().stream()).
-				filter(data->JAOPCA_MODULE.equals(data.getAnnotationType())).
+				filter(data->JAOPCA_MODULE.equals(data.annotationType())).
 				collect(Collectors.toList());
 		for(AnnotationData aData : annotationData) {
-			List<String> deps = (List<String>)aData.getAnnotationData().get("modDependencies");
-			String className = aData.getClassType().getClassName();
+			List<String> deps = (List<String>)aData.annotationData().get("modDependencies");
+			String className = aData.clazz().getClassName();
 			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(ModuleHandler::isModVersionNotLoaded)) {
 				LOGGER.info("Module {} has missing mod dependencies, skipping", className);
 				continue;
@@ -183,12 +183,6 @@ public class ModuleHandler {
 	public static void onCreateDataPack(IInMemoryResourcePack resourcePack) {
 		for(IModule module : getModules()) {
 			module.onCreateDataPack(getModuleData(module), resourcePack);
-		}
-	}
-
-	public static void onRecipeInjectComplete(IResourceManager resourceManager) {
-		for(IModule module : getModules()) {
-			module.onRecipeInjectComplete(getModuleData(module), resourceManager);
 		}
 	}
 }

@@ -16,21 +16,21 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.TreeMultiset;
 import com.google.gson.JsonElement;
 
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.TagCollectionManager;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeTagHandler;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.SerializationTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import thelm.jaopca.api.fluids.IFluidProvider;
+import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.materials.MaterialHandler;
@@ -73,17 +73,17 @@ public class MiscHelper implements IMiscHelper {
 		else if(obj instanceof ItemStack) {
 			return ((ItemStack)obj);
 		}
-		else if(obj instanceof IItemProvider) {
-			return new ItemStack((IItemProvider)obj, count);
+		else if(obj instanceof ItemLike) {
+			return new ItemStack((ItemLike)obj, count);
 		}
 		else if(obj instanceof String) {
-			return getPreferredItemStack(getItemTag(new ResourceLocation((String)obj)).getAllElements(), count);
+			return getPreferredItemStack(getItemTag(new ResourceLocation((String)obj)).getValues(), count);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return getPreferredItemStack(getItemTag((ResourceLocation)obj).getAllElements(), count);
+			return getPreferredItemStack(getItemTag((ResourceLocation)obj).getValues(), count);
 		}
-		else if(obj instanceof ITag<?>) {
-			return getPreferredItemStack(((ITag<Item>)obj).getAllElements(), count);
+		else if(obj instanceof Tag<?>) {
+			return getPreferredItemStack(((Tag<Item>)obj).getValues(), count);
 		}
 		return ItemStack.EMPTY;
 	}
@@ -97,41 +97,40 @@ public class MiscHelper implements IMiscHelper {
 			return (Ingredient)obj;
 		}
 		else if(obj instanceof String) {
-			return Ingredient.fromTag(getItemTag(new ResourceLocation((String)obj)));
+			return Ingredient.of(getItemTag(new ResourceLocation((String)obj)));
 		}
 		else if(obj instanceof ResourceLocation) {
-			return Ingredient.fromTag(getItemTag((ResourceLocation)obj));
+			return Ingredient.of(getItemTag((ResourceLocation)obj));
 		}
-		else if(obj instanceof ITag<?>) {
-			return Ingredient.fromTag((ITag<Item>)obj);
+		else if(obj instanceof Tag<?>) {
+			return Ingredient.of((Tag<Item>)obj);
 		}
 		else if(obj instanceof ItemStack) {
-			return Ingredient.fromStacks((ItemStack)obj);
+			return Ingredient.of((ItemStack)obj);
 		}
 		else if(obj instanceof ItemStack[]) {
-			return Ingredient.fromStacks((ItemStack[])obj);
+			return Ingredient.of((ItemStack[])obj);
 		}
-		else if(obj instanceof IItemProvider) {
-			return Ingredient.fromItems((IItemProvider)obj);
+		else if(obj instanceof ItemLike) {
+			return Ingredient.of((ItemLike)obj);
 		}
-		else if(obj instanceof IItemProvider[]) {
-			return Ingredient.fromItems((IItemProvider[])obj);
+		else if(obj instanceof ItemLike[]) {
+			return Ingredient.of((ItemLike[])obj);
 		}
-		else if(obj instanceof Ingredient.IItemList) {
-			return Ingredient.fromItemListStream(Stream.of((Ingredient.IItemList)obj));
+		else if(obj instanceof Ingredient.Value) {
+			return Ingredient.fromValues(Stream.of((Ingredient.Value)obj));
 		}
-		else if(obj instanceof Ingredient.IItemList[]) {
-			return Ingredient.fromItemListStream(Stream.of((Ingredient.IItemList[])obj));
+		else if(obj instanceof Ingredient.Value[]) {
+			return Ingredient.fromValues(Stream.of((Ingredient.Value[])obj));
 		}
 		else if(obj instanceof JsonElement) {
-			return Ingredient.deserialize((JsonElement)obj);
+			return Ingredient.fromJson((JsonElement)obj);
 		}
 		return Ingredient.EMPTY;
 	}
 
-	public ITag<Item> getItemTag(ResourceLocation location) {
-		ITag<Item> tag = TagCollectionManager.getManager().getItemTags().get(location);
-		return tag != null ? tag : new EmptyNamedTag<>(location);
+	public Tag<Item> getItemTag(ResourceLocation location) {
+		return getTag(Registry.ITEM_REGISTRY, location);
 	}
 
 	public ItemStack getPreferredItemStack(Collection<Item> collection, int count) {
@@ -148,28 +147,32 @@ public class MiscHelper implements IMiscHelper {
 		else if(obj instanceof Fluid) {
 			return new FluidStack((Fluid)obj, amount);
 		}
-		else if(obj instanceof IFluidProvider) {
-			return new FluidStack(((IFluidProvider)obj).asFluid(), amount);
+		else if(obj instanceof IFluidLike) {
+			return new FluidStack(((IFluidLike)obj).asFluid(), amount);
 		}
 		else if(obj instanceof String) {
-			return getPreferredFluidStack(getFluidTag(new ResourceLocation((String)obj)).getAllElements(), amount);
+			return getPreferredFluidStack(getFluidTag(new ResourceLocation((String)obj)).getValues(), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return getPreferredFluidStack(getFluidTag((ResourceLocation)obj).getAllElements(), amount);
+			return getPreferredFluidStack(getFluidTag((ResourceLocation)obj).getValues(), amount);
 		}
-		else if(obj instanceof ITag<?>) {
-			return getPreferredFluidStack(((ITag<Fluid>)obj).getAllElements(), amount);
+		else if(obj instanceof Tag<?>) {
+			return getPreferredFluidStack(((Tag<Fluid>)obj).getValues(), amount);
 		}
 		return FluidStack.EMPTY;
 	}
 
-	public ITag<Fluid> getFluidTag(ResourceLocation location) {
-		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().getTagByID(location);
-		return tag != null ? tag : new EmptyNamedTag<>(location);
+	public Tag<Fluid> getFluidTag(ResourceLocation location) {
+		return getTag(Registry.FLUID_REGISTRY, location);
 	}
 
 	public FluidStack getPreferredFluidStack(Collection<Fluid> collection, int amount) {
 		return new FluidStack(getPreferredEntry(collection).orElse(Fluids.EMPTY), amount);
+	}
+
+	public <T> Tag<T> getTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
+		Tag<T> tag = SerializationTags.getInstance().getOrEmpty(registry).getTag(location);
+		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 
 	//Modified from Immersive Engineering

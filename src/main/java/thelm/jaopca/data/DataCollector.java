@@ -13,12 +13,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.TreeMultimap;
 
-import net.minecraft.resources.IResourcePack;
-import net.minecraft.resources.ResourcePackType;
-import net.minecraft.resources.VanillaPack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.VanillaPackResources;
+import net.minecraft.server.packs.repository.ServerPacksSource;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.packs.ModFileResourcePack;
+import net.minecraftforge.fmllegacy.packs.ModFileResourcePack;
 
 public class DataCollector {
 
@@ -30,8 +31,8 @@ public class DataCollector {
 	private static final int LOOT_TABLES_PATH_LENGTH = "loot_tables/".length();
 	private static final int ADVANCEMENTS_PATH_LENGTH = "advancements/".length();
 	private static final int JSON_EXTENSION_LENGTH = ".json".length();
-	private static final List<Supplier<IResourcePack>> RESOURCE_PACK_SUPPLIERS = new ArrayList<>();
-	private static final List<IResourcePack> RESOURCE_PACKS = new ArrayList<>();
+	private static final List<Supplier<PackResources>> RESOURCE_PACK_SUPPLIERS = new ArrayList<>();
+	private static final List<PackResources> RESOURCE_PACKS = new ArrayList<>();
 	private static final TreeMultimap<String, ResourceLocation> DEFINED_TAGS = TreeMultimap.create();
 	private static final TreeSet<ResourceLocation> DEFINED_RECIPES = new TreeSet<>();
 	private static final TreeSet<ResourceLocation> DEFINED_LOOT_TABLES = new TreeSet<>();
@@ -42,7 +43,7 @@ public class DataCollector {
 		DEFINED_RECIPES.clear();
 		DEFINED_ADVANCEMENTS.clear();
 		if(RESOURCE_PACKS.isEmpty()) {
-			RESOURCE_PACKS.add(new VanillaPack("minecraft"));
+			RESOURCE_PACKS.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
 			ModList.get().getModFiles().stream().
 			map(mf->new ModFileResourcePack(mf.getFile())).
 			forEach(RESOURCE_PACKS::add);
@@ -53,7 +54,7 @@ public class DataCollector {
 			if(ModList.get().isLoaded("kubejs")) {
 				try {
 					RESOURCE_PACKS.add(
-							(IResourcePack)Class.forName("dev.latvian.kubejs.server.KubeJSServerResourcePack").
+							(PackResources)Class.forName("dev.latvian.kubejs.server.KubeJSServerResourcePack").
 							getConstructor().
 							newInstance());
 				}
@@ -61,7 +62,7 @@ public class DataCollector {
 					LOGGER.error("KubeJS was found but unable to construct data pack.", e);
 				}
 			}
-			for(Supplier<IResourcePack> supplier : RESOURCE_PACK_SUPPLIERS) {
+			for(Supplier<PackResources> supplier : RESOURCE_PACK_SUPPLIERS) {
 				RESOURCE_PACKS.add(supplier.get());
 			}
 		}
@@ -124,9 +125,9 @@ public class DataCollector {
 
 	static Collection<ResourceLocation> getAllDataResourceLocations(String pathIn, Predicate<String> filter) {
 		Set<ResourceLocation> set = new TreeSet<>();
-		for(IResourcePack resourcePack : RESOURCE_PACKS) {
-			for(String namespace : resourcePack.getResourceNamespaces(ResourcePackType.SERVER_DATA)) {
-				set.addAll(resourcePack.getAllResourceLocations(ResourcePackType.SERVER_DATA, namespace, pathIn, Integer.MAX_VALUE, filter));
+		for(PackResources resourcePack : RESOURCE_PACKS) {
+			for(String namespace : resourcePack.getNamespaces(PackType.SERVER_DATA)) {
+				set.addAll(resourcePack.getResources(PackType.SERVER_DATA, namespace, pathIn, Integer.MAX_VALUE, filter));
 			}
 		}
 		return set;

@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[34,)"
+loaderVersion="[37,)"
 license="MIT"
 issueTrackerURL="https://github.com/TheLMiffy1111/JAOPCA/issues"
 displayURL="https://minecraft.curseforge.com/projects/jaopca"
@@ -14,6 +14,6 @@ description="A mod that aims to make mods with ore processing support more ores.
 [[dependencies.jaopca]]
     modId="forge"
     mandatory=false
-    versionRange="[34.0.0,)"
+    versionRange="[37.0.0,)"
     ordering="NONE"
     side="BOTH"

@@ -8,8 +8,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.item.Rarity;
-import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.blocks.BlockFormType;
@@ -66,18 +66,18 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 			}
 			settings.setExplosionResistanceFunction(helper.deserializeType(json, "explosionResistance", context, FormTypeHandler.DOUBLE_FUNCTION_TYPE));
 		}
-		if(json.has("slipperiness")) {
-			JsonObject functionJson = helper.getJsonObject(json, "slipperiness");
+		if(json.has("friction")) {
+			JsonObject functionJson = helper.getJsonObject(json, "friction");
 			if(!functionJson.has("default")) {
 				functionJson.addProperty("default", 0.6);
 			}
-			settings.setSlipperinessFunction(helper.deserializeType(json, "slipperiness", context, FormTypeHandler.DOUBLE_FUNCTION_TYPE));
+			settings.setFrictionFunction(helper.deserializeType(json, "friction", context, FormTypeHandler.DOUBLE_FUNCTION_TYPE));
 		}
 		if(json.has("shape")) {
 			settings.setShape(helper.deserializeType(json, "shape", context, VoxelShape.class));
 		}
-		if(json.has("raytraceShape")) {
-			settings.setRaytraceShape(helper.deserializeType(json, "raytraceShape", context, VoxelShape.class));
+		if(json.has("interactionShape")) {
+			settings.setInteractionShape(helper.deserializeType(json, "interactionShape", context, VoxelShape.class));
 		}
 		if(json.has("harvestTool")) {
 			JsonObject functionJson = helper.getJsonObject(json, "harvestTool");

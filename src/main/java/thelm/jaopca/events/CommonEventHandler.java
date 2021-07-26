@@ -1,23 +1,19 @@
 package thelm.jaopca.events;
 
-import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.resources.DataPackRegistries;
-import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.ResourcePackInfo;
-import net.minecraft.resources.ResourcePackList;
-import net.minecraft.resources.SimpleReloadableResourceManager;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
+import com.google.gson.JsonElement;
+
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.data.DataCollector;
@@ -40,12 +36,10 @@ public class CommonEventHandler {
 		return INSTANCE;
 	}
 
-	public void onConstruct() {
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-		MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListener);
-		
+	@SubscribeEvent
+	public void onConstruct(FMLConstructModEvent event) {
 		ApiImpl.INSTANCE.init();
-		DeferredWorkQueue.runLater(()->{
+		event.enqueueWork(()->{
 			BlockFormType.init();
 			ItemFormType.init();
 			FluidFormType.init();
@@ -75,7 +69,7 @@ public class CommonEventHandler {
 
 	@SubscribeEvent
 	public void onCommonSetup(FMLCommonSetupEvent event) {
-		DeferredWorkQueue.runLater(()->{
+		event.enqueueWork(()->{
 			ModuleHandler.onCommonSetup(event);
 		});
 	}
@@ -85,14 +79,11 @@ public class CommonEventHandler {
 		ModuleHandler.onInterModEnqueue(event);
 	}
 
-	public void onDataPackDiscovery(ResourcePackList resourcePacks) {
+	public void onDataPackDiscovery(PackRepository resourcePacks) {
 		resourcePacks.addPackFinder(DataInjector.PackFinder.INSTANCE);
 	}
 
-	public void onAddReloadListener(AddReloadListenerEvent event) {
-		DataPackRegistries registries = event.getDataPackRegistries();
-		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)registries.getResourceManager()).reloadListeners;
-		DataInjector instance = DataInjector.getNewInstance(registries.getRecipeManager());
-		reloadListeners.add(reloadListeners.indexOf(registries.getRecipeManager())+1, instance);
+	public void onReadRecipes(Map<ResourceLocation, JsonElement> recipeMap) {
+		DataInjector.injectRecipes(recipeMap);
 	}
 }

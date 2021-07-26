@@ -1,53 +1,43 @@
 package thelm.jaopca.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.client.resources.ReloadListener;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.loot.LootSerializers;
-import net.minecraft.loot.LootTable;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IPackFinder;
-import net.minecraft.resources.IPackNameDecorator;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.resources.ResourcePackInfo;
-import net.minecraft.resources.ResourcePackType;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ResourceLocation;
-import szewek.flux.F.T;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.server.packs.repository.RepositorySource;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.level.storage.loot.Deserializers;
+import net.minecraft.world.level.storage.loot.LootTable;
+import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.resources.InMemoryResourcePack;
 
-public class DataInjector extends ReloadListener<Object> {
+public class DataInjector {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final ListMultimap<ResourceLocation, ResourceLocation> BLOCK_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, ResourceLocation> ITEM_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, ResourceLocation> FLUID_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, ResourceLocation> ENTITY_TYPE_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
-	private static final TreeMap<ResourceLocation, Supplier<? extends IRecipe<?>>> RECIPES_INJECT = new TreeMap<>();
+	private static final TreeMap<ResourceLocation, IRecipeSerializer> RECIPES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
-	private static final Gson GSON = LootSerializers.func_237388_c_().create();
+	private static final Gson GSON = Deserializers.createLootTableSerializer().create();
 
 	public static boolean registerBlockTag(ResourceLocation location, ResourceLocation blockLocation) {
 		Objects.requireNonNull(location);
@@ -73,7 +63,7 @@ public class DataInjector extends ReloadListener<Object> {
 		return ENTITY_TYPE_TAGS_INJECT.put(location, entityTypeLocation);
 	}
 
-	public static boolean registerRecipe(ResourceLocation location, Supplier<? extends IRecipe<?>> recipeSupplier) {
+	public static boolean registerRecipe(ResourceLocation location, IRecipeSerializer recipeSupplier) {
 		Objects.requireNonNull(location);
 		Objects.requireNonNull(recipeSupplier);
 		return RECIPES_INJECT.putIfAbsent(location, recipeSupplier) == null;
@@ -83,12 +73,6 @@ public class DataInjector extends ReloadListener<Object> {
 		Objects.requireNonNull(location);
 		Objects.requireNonNull(lootTableSupplier);
 		return LOOT_TABLES_INJECT.putIfAbsent(location, lootTableSupplier) == null;
-	}
-
-	public static boolean registerAdvancement(ResourceLocation location, Supplier<Advancement.Builder> advancementBuilder) {
-		Objects.requireNonNull(location);
-		Objects.requireNonNull(advancementBuilder);
-		return ADVANCEMENTS_INJECT.putIfAbsent(location, advancementBuilder) == null;
 	}
 
 	public static Set<ResourceLocation> getInjectBlockTags() {
@@ -115,103 +99,71 @@ public class DataInjector extends ReloadListener<Object> {
 		return LOOT_TABLES_INJECT.navigableKeySet();
 	}
 
-	public static Set<ResourceLocation> getInjectAdvancements() {
-		return ADVANCEMENTS_INJECT.navigableKeySet();
-	}
-
-	public static DataInjector getNewInstance(RecipeManager recipeManager) {
-		return new DataInjector(recipeManager);
-	}
-
-	private final RecipeManager recipeManager;
-
-	private DataInjector(RecipeManager recipeManager) {
-		this.recipeManager = recipeManager;
-	}
-
-	@Override
-	protected Object prepare(IResourceManager resourceManager, IProfiler profiler) {
-		return null;
-	}
-
-	@Override
-	protected void apply(Object splashList, IResourceManager resourceManager, IProfiler profiler) {
-		injectRecipes(resourceManager);
-	}
-
-	public void injectRecipes(IResourceManager resourceManager) {
-		List<IRecipe<?>> recipesToInject = new ArrayList<>();
-		for(Map.Entry<ResourceLocation, Supplier<? extends IRecipe<?>>> entry : RECIPES_INJECT.entrySet()) {
-			IRecipe recipe = null;
+	public static void injectRecipes(Map<ResourceLocation, JsonElement> recipeMap) {
+		Map<ResourceLocation, JsonElement> recipesToInject = new LinkedHashMap<>();
+		RECIPES_INJECT.forEach((key, supplier)->{
+			if(recipeMap.containsKey(key)) {
+				LOGGER.debug("Duplicate recipe ignored with ID {}", key);
+				return;
+			}
+			JsonElement recipe = null;
 			try {
-				recipe = entry.getValue().get();
+				recipe = supplier.get();
 			}
 			catch(IllegalArgumentException e) {
-				LOGGER.warn("Recipe with ID {} received invalid arguments: {}", entry.getKey(), e.getMessage());
-				continue;
+				LOGGER.warn("Recipe with ID {} received invalid arguments: {}", key, e.getMessage());
+				return;
+			}
+			catch(Exception e) {
+				LOGGER.warn("Recipe with ID {} errored: {}", key, e.getMessage());
+				return;
 			}
 			if(recipe == null) {
-				LOGGER.warn("Recipe with ID {} returned null", entry.getKey());
+				LOGGER.warn("Recipe with ID {} returned null", key);
+				return;
 			}
-			else if(!recipe.getId().equals(entry.getKey())) {
-				LOGGER.warn("Recipe ID {} and registry key {} do not match", recipe.getId(), entry.getKey());
-			}
-			else if(recipeManager.getKeys().anyMatch(entry.getKey()::equals)) {
-				LOGGER.warn("Duplicate recipe ignored with ID {}", entry.getKey());
-			}
-			else {
-				recipesToInject.add(recipe);
-			}
-		}
-		Map<IRecipeType<?>, ImmutableMap.Builder<ResourceLocation, IRecipe<?>>> recipesCopy =
-				recipeManager.recipes.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry->ImmutableMap.<ResourceLocation, IRecipe<?>>builder().putAll(entry.getValue())));
-		for(IRecipe<?> recipe : recipesToInject) {
-			recipesCopy.computeIfAbsent(recipe.getType(), type->ImmutableMap.builder()).put(recipe.getId(), recipe);
-		}
-		recipeManager.recipes = recipesCopy.entrySet().stream().collect(ImmutableMap.toImmutableMap(Map.Entry::getKey, entry->entry.getValue().build()));
-		LOGGER.info("Injected {} recipes, {} recipes total", recipesToInject.size(), recipeManager.getKeys().count());
-		ModuleHandler.onRecipeInjectComplete(resourceManager);
+			recipesToInject.put(key, recipe);
+		});
+		recipesToInject.forEach(recipeMap::putIfAbsent);
+		LOGGER.info("Injected {} recipes, {} recipes total", recipesToInject.size(), recipeMap.size());
 	}
 
-	public static class PackFinder implements IPackFinder {
+	public static class PackFinder implements RepositorySource {
 
 		public static final PackFinder INSTANCE = new PackFinder();
 
 		@Override
-		public void findPacks(Consumer<ResourcePackInfo> packList, ResourcePackInfo.IFactory factory) {
-			ResourcePackInfo packInfo = ResourcePackInfo.createResourcePack("inmemory:jaopca", true, ()->{
+		public void loadPacks(Consumer<Pack> packConsumer, Pack.PackConstructor packConstructor) {
+			Pack packInfo = Pack.create("inmemory:jaopca", true, ()->{
 				InMemoryResourcePack pack = new InMemoryResourcePack("inmemory:jaopca", true);
 				BLOCK_TAGS_INJECT.asMap().forEach((location, locations)->{
-					ITag.Builder builder = ITag.Builder.create();
-					locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
-					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/blocks/"+location.getPath()+".json"), builder.serialize());
+					Tag.Builder builder = Tag.Builder.tag();
+					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/blocks/"+location.getPath()+".json"), builder.serializeToJson());
 				});
 				ITEM_TAGS_INJECT.asMap().forEach((location, locations)->{
-					ITag.Builder builder = ITag.Builder.create();
-					locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
-					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/items/"+location.getPath()+".json"), builder.serialize());
+					Tag.Builder builder = Tag.Builder.tag();
+					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/items/"+location.getPath()+".json"), builder.serializeToJson());
 				});
 				FLUID_TAGS_INJECT.asMap().forEach((location, locations)->{
-					ITag.Builder builder = ITag.Builder.create();
-					locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
-					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/fluids/"+location.getPath()+".json"), builder.serialize());
+					Tag.Builder builder = Tag.Builder.tag();
+					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/fluids/"+location.getPath()+".json"), builder.serializeToJson());
 				});
 				ENTITY_TYPE_TAGS_INJECT.asMap().forEach((location, locations)->{
-					ITag.Builder builder = ITag.Builder.create();
-					locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
-					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), builder.serialize());
+					Tag.Builder builder = Tag.Builder.tag();
+					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), builder.serializeToJson());
 				});
 				LOOT_TABLES_INJECT.forEach((location, supplier)->{
-					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "loot_tables/"+location.getPath()+".json"), GSON.toJsonTree(supplier.get()));
-				});
-				ADVANCEMENTS_INJECT.forEach((location, supplier)->{
-					pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), supplier.get().serialize());
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "loot_tables/"+location.getPath()+".json"), GSON.toJsonTree(supplier.get()));
 				});
 				ModuleHandler.onCreateDataPack(pack);
 				return pack;
-			}, factory, ResourcePackInfo.Priority.BOTTOM, IPackNameDecorator.BUILTIN);
+			}, packConstructor, Pack.Position.BOTTOM, PackSource.BUILT_IN);
 			if(packInfo != null) {
-				packList.accept(packInfo);
+				packConsumer.accept(packInfo);
 			}
 		}
 	}

@@ -4,9 +4,9 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
-import net.minecraft.fluid.FluidState;
-import net.minecraft.item.Item;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.fluids.FluidAttributes;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
@@ -45,7 +45,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	public int getTickRate(IWorldReader world) {
+	public int getTickDelay(LevelReader world) {
 		if(!tickRate.isPresent()) {
 			tickRate = OptionalInt.of(settings.getTickRateFunction().applyAsInt(material));
 		}
@@ -61,7 +61,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	protected boolean canSourcesMultiply() {
+	protected boolean canConvertToSource() {
 		if(!canSourcesMultiply.isPresent()) {
 			canSourcesMultiply = Optional.of(settings.getCanSourcesMultiplyFunction().test(material));
 		}
@@ -69,7 +69,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	protected int getLevelDecreasePerBlock(IWorldReader world) {
+	protected int getDropOff(LevelReader world) {
 		if(!levelDecreasePerBlock.isPresent()) {
 			levelDecreasePerBlock = OptionalInt.of(settings.getLevelDecreasePerBlockFunction().applyAsInt(material));
 		}
@@ -82,7 +82,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	public Item getFilledBucket() {
+	public Item getBucket() {
 		return FluidFormType.INSTANCE.getMaterialFormInfo(form, material).getBucketItem();
 	}
 
@@ -93,6 +93,6 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 
 	@Override
 	public FluidState getSourceState() {
-		return getDefaultState().with(levelProperty, maxLevel);
+		return defaultFluidState().setValue(levelProperty, maxLevel);
 	}
 }

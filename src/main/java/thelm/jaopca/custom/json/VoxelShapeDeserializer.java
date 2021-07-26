@@ -9,8 +9,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.utils.JsonHelper;
 
@@ -23,7 +23,7 @@ public class VoxelShapeDeserializer implements JsonDeserializer<VoxelShape> {
 	@Override
 	public VoxelShape deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		IJsonHelper helper = JsonHelper.INSTANCE;
-		VoxelShape shape = VoxelShapes.empty();
+		VoxelShape shape = Shapes.empty();
 		JsonArray jsonArray;
 		if(jsonElement.isJsonArray()) {
 			jsonArray = helper.getJsonArray(jsonElement, "array");
@@ -48,7 +48,7 @@ public class VoxelShapeDeserializer implements JsonDeserializer<VoxelShape> {
 			double xTo = helper.getDouble(jsonArrayFrom.get(0), "xTo");
 			double yTo = helper.getDouble(jsonArrayFrom.get(1), "yTo");
 			double zTo = helper.getDouble(jsonArrayFrom.get(2), "zTo");
-			shape = VoxelShapes.or(shape, VoxelShapes.create(xFrom, yFrom, zFrom, xTo, yTo, zTo));
+			shape = Shapes.or(shape, Shapes.create(xFrom, yFrom, zFrom, xTo, yTo, zTo));
 		}
 		return shape;
 	}

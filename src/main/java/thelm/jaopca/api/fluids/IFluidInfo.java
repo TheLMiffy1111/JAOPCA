@@ -1,13 +1,13 @@
 package thelm.jaopca.api.fluids;
 
-import net.minecraft.block.Block;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.util.IItemProvider;
-import thelm.jaopca.api.blocks.IBlockProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
+import thelm.jaopca.api.blocks.IBlockLike;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
-public interface IFluidInfo extends IMaterialFormInfo, IFluidProvider, IBlockProvider, IItemProvider {
+public interface IFluidInfo extends IMaterialFormInfo, IFluidLike, IBlockLike, ItemLike {
 
 	IMaterialFormFluid getMaterialFormFluid();
 

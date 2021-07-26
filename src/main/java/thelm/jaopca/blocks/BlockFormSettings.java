@@ -5,18 +5,18 @@ import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.item.Rarity;
-import net.minecraft.loot.ConstantRange;
-import net.minecraft.loot.ItemLootEntry;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.conditions.SurvivesExplosion;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.blocks.IBlockCreator;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
@@ -30,7 +30,7 @@ public class BlockFormSettings implements IBlockFormSettings {
 	BlockFormSettings() {}
 
 	private IBlockCreator blockCreator = JAOPCABlock::new;
-	private Function<IMaterial, Material> materialFunction = material->Material.IRON;
+	private Function<IMaterial, Material> materialFunction = material->Material.METAL;
 	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
 	//material->{
 	//	int color = material.getColor();
@@ -45,22 +45,21 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private ToIntFunction<IMaterial> lightValueFunction = material->0;
 	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->5;
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->6;
-	private ToDoubleFunction<IMaterial> slipperinessFunction = material->0.6;
+	private ToDoubleFunction<IMaterial> frictionFunction = material->0.6;
 	private boolean isFull = true;
-	private VoxelShape shape = VoxelShapes.fullCube();
-	private VoxelShape raytraceShape = VoxelShapes.empty();
+	private VoxelShape shape = Shapes.block();
+	private VoxelShape interactionShape = Shapes.empty();
 	private Function<IMaterial, ToolType> harvestToolFunction = material->ToolType.PICKAXE;
 	private ToIntFunction<IMaterial> harvestLevelFunction = material->0;
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
 	private IBlockLootTableCreator blockLootTableCreator = (block, settings)->{
-		return LootTable.builder().setParameterSet(LootParameterSets.BLOCK).
-				addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).
-						addEntry(ItemLootEntry.builder(block.asBlock())).
-						acceptCondition(SurvivesExplosion.builder())).build();
+		return LootTable.lootTable().setParamSet(LootContextParamSets.BLOCK).
+				withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).
+						add(LootItem.lootTableItem(block.asBlock())).
+						when(ExplosionCondition.survivesExplosion())).build();
 	};
-
 	private IBlockItemCreator itemBlockCreator = JAOPCABlockItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
@@ -161,14 +160,14 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setSlipperinessFunction(ToDoubleFunction<IMaterial> slipperinessFunction) {
-		this.slipperinessFunction = slipperinessFunction;
+	public IBlockFormSettings setFrictionFunction(ToDoubleFunction<IMaterial> frictionFunction) {
+		this.frictionFunction = frictionFunction;
 		return this;
 	}
 
 	@Override
-	public ToDoubleFunction<IMaterial> getSlipperinessFunction() {
-		return slipperinessFunction;
+	public ToDoubleFunction<IMaterial> getFrictionFunction() {
+		return frictionFunction;
 	}
 
 	@Override
@@ -183,14 +182,14 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setRaytraceShape(VoxelShape raytraceShape) {
-		this.raytraceShape = raytraceShape;
+	public IBlockFormSettings setInteractionShape(VoxelShape interactionShape) {
+		this.interactionShape = interactionShape;
 		return this;
 	}
 
 	@Override
-	public VoxelShape getRaytraceShape() {
-		return raytraceShape;
+	public VoxelShape getInteractionShape() {
+		return interactionShape;
 	}
 
 	@Override

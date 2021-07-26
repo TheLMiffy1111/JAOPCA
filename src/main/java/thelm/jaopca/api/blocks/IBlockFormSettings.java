@@ -5,11 +5,11 @@ import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
@@ -48,17 +48,17 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	ToDoubleFunction<IMaterial> getExplosionResistanceFunction();
 
-	IBlockFormSettings setSlipperinessFunction(ToDoubleFunction<IMaterial> slipperinessFunction);
+	IBlockFormSettings setFrictionFunction(ToDoubleFunction<IMaterial> frictionFunction);
 
-	ToDoubleFunction<IMaterial> getSlipperinessFunction();
+	ToDoubleFunction<IMaterial> getFrictionFunction();
 
 	IBlockFormSettings setShape(VoxelShape shape);
 
 	VoxelShape getShape();
 
-	IBlockFormSettings setRaytraceShape(VoxelShape raytraceShape);
+	IBlockFormSettings setInteractionShape(VoxelShape interactionShape);
 
-	VoxelShape getRaytraceShape();
+	VoxelShape getInteractionShape();
 
 	IBlockFormSettings setHarvestToolFunction(Function<IMaterial, ToolType> harvestToolFunction);
 

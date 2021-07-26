@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/bloodmagic_gravels",
-        "layer1": "jaopca:item/metallic/bloodmagic_gravels_overlay"
-    }
-}

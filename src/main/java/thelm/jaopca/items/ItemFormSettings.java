@@ -5,7 +5,7 @@ import java.util.function.ToIntFunction;
 
 import com.google.common.base.Function;
 
-import net.minecraft.item.Rarity;
+import net.minecraft.world.item.Rarity;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.items.IItemCreator;
 import thelm.jaopca.api.items.IItemFormSettings;

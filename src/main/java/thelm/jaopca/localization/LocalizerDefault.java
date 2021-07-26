@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.LanguageMap;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import thelm.jaopca.api.localization.ILocalizer;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
@@ -20,19 +20,19 @@ public class LocalizerDefault implements ILocalizer {
 	public static final LocalizerDefault INSTANCE = new LocalizerDefault();
 
 	@Override
-	public IFormattableTextComponent localizeMaterialForm(String formTranslationKey, IMaterial material, String overrideKey) {
-		LanguageMap languageMap = LanguageMap.getInstance();
+	public MutableComponent localizeMaterialForm(String formTranslationKey, IMaterial material, String overrideKey) {
+		Language languageMap = Language.getInstance();
 		Map<String, String> locMap = ApiImpl.INSTANCE.currentMaterialLocalizationMap();
-		if(languageMap.func_230506_b_(overrideKey)) {
-			return new TranslationTextComponent(overrideKey);
+		if(languageMap.has(overrideKey)) {
+			return new TranslatableComponent(overrideKey);
 		}
 		else if(locMap.containsKey(overrideKey)) {
-			return new StringTextComponent(locMap.get(overrideKey));
+			return new TextComponent(locMap.get(overrideKey));
 		}
 		String materialName;
 		String materialKey = "jaopca.material."+material.getName();
-		if(languageMap.func_230506_b_(materialKey)) {
-			materialName = languageMap.func_230503_a_(materialKey);
+		if(languageMap.has(materialKey)) {
+			materialName = languageMap.getOrDefault(materialKey);
 		}
 		else if(locMap.containsKey(materialKey)) {
 			materialName = locMap.get(materialKey);
@@ -40,11 +40,11 @@ public class LocalizerDefault implements ILocalizer {
 		else {
 			materialName = splitAndCapitalize(material.getName());
 		}
-		if(languageMap.func_230506_b_(formTranslationKey) || !locMap.containsKey(formTranslationKey)) {
-			return new TranslationTextComponent(formTranslationKey, materialName);
+		if(languageMap.has(formTranslationKey) || !locMap.containsKey(formTranslationKey)) {
+			return new TranslatableComponent(formTranslationKey, materialName);
 		}
 		else {
-			return new StringTextComponent(String.format(locMap.get(overrideKey), materialName));
+			return new TextComponent(String.format(locMap.get(overrideKey), materialName));
 		}
 	}
 

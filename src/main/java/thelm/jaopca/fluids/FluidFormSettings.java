@@ -6,10 +6,10 @@ import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import thelm.jaopca.api.fluids.IBucketItemCreator;
 import thelm.jaopca.api.fluids.IFluidAttributesCreator;
 import thelm.jaopca.api.fluids.IFluidBlockCreator;

@@ -14,14 +14,14 @@ import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.Advancement.Builder;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.loot.LootTable;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
@@ -36,6 +36,7 @@ import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.localization.ILocalizer;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
+import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.custom.json.EnumDeserializer;
@@ -54,13 +55,13 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.localization.LocalizationHandler;
 import thelm.jaopca.localization.LocalizationRepoHandler;
 import thelm.jaopca.materials.MaterialHandler;
-import thelm.jaopca.recipes.BlastingRecipeSupplier;
-import thelm.jaopca.recipes.CampfireCookingRecipeSupplier;
-import thelm.jaopca.recipes.ShapedRecipeSupplier;
-import thelm.jaopca.recipes.ShapelessRecipeSupplier;
-import thelm.jaopca.recipes.SmeltingRecipeSupplier;
-import thelm.jaopca.recipes.SmokingRecipeSupplier;
-import thelm.jaopca.recipes.StonecuttingRecipeSupplier;
+import thelm.jaopca.recipes.BlastingRecipeSerializer;
+import thelm.jaopca.recipes.CampfireCookingRecipeSerializer;
+import thelm.jaopca.recipes.ShapedRecipeSerializer;
+import thelm.jaopca.recipes.ShapelessRecipeSerializer;
+import thelm.jaopca.recipes.SmeltingRecipeSerializer;
+import thelm.jaopca.recipes.SmokingRecipeSerializer;
+import thelm.jaopca.recipes.StonecuttingRecipeSerializer;
 import thelm.jaopca.registries.RegistryHandler;
 
 public class ApiImpl extends JAOPCAApi {
@@ -167,8 +168,8 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public ItemGroup itemGroup() {
-		return ItemFormType.getItemGroup();
+	public CreativeModeTab creativeTab() {
+		return ItemFormType.getCreativeTab();
 	}
 
 	@Override
@@ -203,12 +204,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public Set<ResourceLocation> getLootTables() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectAdvancements()));
-	}
-
-	@Override
-	public Set<ResourceLocation> getAdvancements() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectAdvancements()));
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectLootTables()));
 	}
 
 	@Override
@@ -319,86 +315,81 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerRecipe(ResourceLocation key, Supplier<? extends IRecipe<?>> recipeSupplier) {
-		if(DataCollector.getDefinedRecipes().contains(key) || ConfigHandler.RECIPE_BLACKLIST.contains(key)) {
+	public boolean registerRecipe(ResourceLocation key, IRecipeSerializer recipeSerializer) {
+		if(ConfigHandler.RECIPE_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerRecipe(key, recipeSupplier);
-	}
-
-	@Override
-	public boolean registerRecipe(ResourceLocation key, IRecipe<?> recipe) {
-		return registerRecipe(key, ()->recipe);
+		return DataInjector.registerRecipe(key, recipeSerializer);
 	}
 
 	@Override
 	public boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapedRecipeSupplier(key, group, output, count, input));
+		return registerRecipe(key, new ShapedRecipeSerializer(key, group, output, count, input));
 	}
 
 	@Override
 	public boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapedRecipeSupplier(key, output, count, input));
+		return registerRecipe(key, new ShapedRecipeSerializer(key, output, count, input));
 	}
 
 	@Override
 	public boolean registerShapelessRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapelessRecipeSupplier(key, group, output, count, input));
+		return registerRecipe(key, new ShapelessRecipeSerializer(key, group, output, count, input));
 	}
 
 	@Override
 	public boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapelessRecipeSupplier(key, output, count, input));
+		return registerRecipe(key, new ShapelessRecipeSerializer(key, output, count, input));
 	}
 
 	@Override
 	public boolean registerSmeltingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new SmeltingRecipeSupplier(key, group, input, output, count, experience, time));
+		return registerRecipe(key, new SmeltingRecipeSerializer(key, group, input, output, count, experience, time));
 	}
 
 	@Override
 	public boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new SmeltingRecipeSupplier(key, input, output, count, experience, time));
+		return registerRecipe(key, new SmeltingRecipeSerializer(key, input, output, count, experience, time));
 	}
 
 	@Override
 	public boolean registerBlastingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new BlastingRecipeSupplier(key, group, input, output, count, experience, time));
+		return registerRecipe(key, new BlastingRecipeSerializer(key, group, input, output, count, experience, time));
 	}
 
 	@Override
 	public boolean registerBlastingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new BlastingRecipeSupplier(key, input, output, count, experience, time));
+		return registerRecipe(key, new BlastingRecipeSerializer(key, input, output, count, experience, time));
 	}
 
 	@Override
 	public boolean registerSmokingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new SmokingRecipeSupplier(key, group, input, output, count, experience, time));
+		return registerRecipe(key, new SmokingRecipeSerializer(key, group, input, output, count, experience, time));
 	}
 
 	@Override
 	public boolean registerSmokingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
-		return registerRecipe(key, new SmokingRecipeSupplier(key, input, output, count, experience, time));
+		return registerRecipe(key, new SmokingRecipeSerializer(key, input, output, count, experience, time));
 	}
 
 	@Override
 	public boolean registerCampfireCookingRecipe(ResourceLocation key, String group, Object input, Object output, int count, int time) {
-		return registerRecipe(key, new CampfireCookingRecipeSupplier(key, group, input, output, count, time));
+		return registerRecipe(key, new CampfireCookingRecipeSerializer(key, group, input, output, count, time));
 	}
 
 	@Override
 	public boolean registerCampfireCookingRecipe(ResourceLocation key, Object input, Object output, int count, int time) {
-		return registerRecipe(key, new CampfireCookingRecipeSupplier(key, input, output, count, time));
+		return registerRecipe(key, new CampfireCookingRecipeSerializer(key, input, output, count, time));
 	}
 
 	@Override
 	public boolean registerStonecuttingRecipe(ResourceLocation key, String group, Object input, Object output, int count) {
-		return registerRecipe(key, new StonecuttingRecipeSupplier(key, group, input, output, count));
+		return registerRecipe(key, new StonecuttingRecipeSerializer(key, group, input, output, count));
 	}
 
 	@Override
 	public boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count) {
-		return registerRecipe(key, new StonecuttingRecipeSupplier(key, input, output, count));
+		return registerRecipe(key, new StonecuttingRecipeSerializer(key, input, output, count));
 	}
 
 	@Override
@@ -412,19 +403,6 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerLootTable(ResourceLocation key, LootTable lootTable) {
 		return registerLootTable(key, ()->lootTable);
-	}
-
-	@Override
-	public boolean registerAdvancement(ResourceLocation key, Supplier<Builder> advancementBuilderSupplier) {
-		if(DataCollector.getDefinedAdvancements().contains(key) || ConfigHandler.ADVANCEMENT_BLACKLIST.contains(key)) {
-			return false;
-		}
-		return DataInjector.registerAdvancement(key, advancementBuilderSupplier);
-	}
-
-	@Override
-	public boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder) {
-		return registerAdvancement(key, ()->advancementBuilder);
 	}
 
 	@Override

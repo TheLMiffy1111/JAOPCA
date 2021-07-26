@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.utils.ApiImpl;

@@ -6,15 +6,15 @@ import java.util.Map;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import thelm.jaopca.JAOPCA;
@@ -32,7 +32,7 @@ public class ModelHandler {
 	private static final Multimap<ResourceLocation, ResourceLocation> REMAPS = LinkedHashMultimap.create();
 
 	public static void registerModels() {
-		IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		for(IMaterialFormBlock materialFormBlock : BlockFormType.getBlocks()) {
 			Block block = materialFormBlock.asBlock();
 			ResourceLocation location = block.getRegistryName();
@@ -40,8 +40,8 @@ public class ModelHandler {
 			if(false || resourceManager.hasResource(location)) {
 				continue;
 			}
-			block.getStateContainer().getValidStates().forEach((state)->{
-				String propertyMapString = BlockModelShapes.getPropertyMapString(state.getValues());
+			block.getStateDefinition().getPossibleStates().forEach((state)->{
+				String propertyMapString = BlockModelShaper.statePropertiesToString(state.getValues());
 				ModelResourceLocation modelLocation = new ModelResourceLocation(block.getRegistryName(), propertyMapString);
 				ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 						JAOPCA.MOD_ID+':'+materialFormBlock.getMaterial().getModelType()+'/'+materialFormBlock.getForm().getName(),
@@ -86,8 +86,8 @@ public class ModelHandler {
 			if(false || resourceManager.hasResource(location)) {
 				continue;
 			}
-			fluidBlock.getStateContainer().getValidStates().forEach((state)->{
-				String propertyMapString = BlockModelShapes.getPropertyMapString(state.getValues());
+			fluidBlock.getStateDefinition().getPossibleStates().forEach((state)->{
+				String propertyMapString = BlockModelShaper.statePropertiesToString(state.getValues());
 				ModelResourceLocation modelLocation = new ModelResourceLocation(fluidBlock.getRegistryName(), propertyMapString);
 				ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 						JAOPCA.MOD_ID+':'+materialFormFluidBlock.getMaterial().getModelType()+'/'+materialFormFluidBlock.getForm().getName(),
@@ -113,11 +113,11 @@ public class ModelHandler {
 	}
 
 	public static void remapModels(ModelBakeEvent event) {
-		IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
-		Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
-		IBakedModel missingModel = modelRegistry.get(ModelLoader.MODEL_MISSING);
+		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+		Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
+		BakedModel missingModel = modelRegistry.get(ModelLoader.MISSING_MODEL_LOCATION);
 		for(Map.Entry<ResourceLocation, Collection<ResourceLocation>> entry : REMAPS.asMap().entrySet()) {
-			IBakedModel defaultModel = modelRegistry.getOrDefault(entry.getKey(), missingModel);
+			BakedModel defaultModel = modelRegistry.getOrDefault(entry.getKey(), missingModel);
 			for(ResourceLocation modelLocation : entry.getValue()) {
 				modelRegistry.put(modelLocation, defaultModel);
 			}

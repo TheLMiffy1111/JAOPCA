@@ -4,31 +4,35 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.Rarity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.ParticleTypes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidAttributes;
@@ -52,7 +56,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	private OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCABucketItem(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(new Item.Properties().containerItem(Items.BUCKET).group(ItemFormType.getItemGroup()));
+		super(new Item.Properties().craftRemainder(Items.BUCKET).tab(ItemFormType.getCreativeTab()));
 		this.fluid = fluid;
 		this.settings = settings;
 	}
@@ -76,11 +80,11 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack stack) {
+	public boolean isFoil(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
 			hasEffect = Optional.of(settings.getHasEffectFunction().test(getMaterial()));
 		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.get() || super.isFoil(stack);
 	}
 
 	@Override
@@ -92,7 +96,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	@Override
-	public int getBurnTime(ItemStack itemStack) {
+	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
 		if(!burnTime.isPresent()) {
 			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(getMaterial()));
 		}
@@ -100,93 +104,106 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
-		RayTraceResult rayTraceResult = rayTrace(world, player, RayTraceContext.FluidMode.NONE);
-		ActionResult<ItemStack> ret = ForgeEventFactory.onBucketUse(player, world, stack, rayTraceResult);
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		BlockHitResult blockHitResult = getPlayerPOVHitResult(world, player, ClipContext.Fluid.NONE);
+		InteractionResultHolder<ItemStack> ret = ForgeEventFactory.onBucketUse(player, world, stack, blockHitResult);
 		if(ret != null) {
 			return ret;
 		}
-		if(rayTraceResult.getType() == RayTraceResult.Type.MISS) {
-			return new ActionResult<>(ActionResultType.PASS, stack);
+		if(blockHitResult.getType() == HitResult.Type.MISS) {
+			return InteractionResultHolder.pass(stack);
 		}
-		else if(rayTraceResult.getType() != RayTraceResult.Type.BLOCK) {
-			return new ActionResult<>(ActionResultType.PASS, stack);
+		else if(blockHitResult.getType() != HitResult.Type.BLOCK) {
+			return InteractionResultHolder.pass(stack);
 		}
 		else {
-			BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTraceResult;
-			BlockPos resultPos = blockRayTraceResult.getPos();
-			if(world.isBlockModifiable(player, resultPos) && player.canPlayerEdit(resultPos, blockRayTraceResult.getFace(), stack)) {
-				BlockPos pos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
-				if(tryPlaceContainedLiquid(player, world, pos, blockRayTraceResult)) {
-					onLiquidPlaced(world, stack, pos);
-					if(player instanceof ServerPlayerEntity) {
-						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, pos, stack);
+			BlockPos resultPos = blockHitResult.getBlockPos();
+			Direction direction = blockHitResult.getDirection();
+			BlockPos offsetPos = resultPos.relative(blockHitResult.getDirection());
+			if(world.mayInteract(player, resultPos) && player.mayUseItemAt(offsetPos, direction, stack)) {
+				BlockState state = world.getBlockState(resultPos);
+				BlockPos placePos = canBlockContainFluid(world, resultPos, state) ? resultPos : offsetPos;
+				if(emptyContents(player, world, placePos, blockHitResult)) {
+					checkExtraContent(player, world, stack, placePos);
+					if(player instanceof ServerPlayer) {
+						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, placePos, stack);
 					}
-					player.addStat(Stats.ITEM_USED.get(this));
-					return new ActionResult<>(ActionResultType.SUCCESS, emptyBucket(stack, player));
+					player.awardStat(Stats.ITEM_USED.get(this));
+					return InteractionResultHolder.sidedSuccess(getEmptySuccessItem(stack, player), world.isClientSide);
 				}
 				else {
-					return new ActionResult<>(ActionResultType.FAIL, stack);
+					return InteractionResultHolder.fail(stack);
 				}
 			}
 			else {
-				return new ActionResult<>(ActionResultType.FAIL, stack);
+				return InteractionResultHolder.fail(stack);
 			}
 		}
 	}
 
-	protected ItemStack emptyBucket(ItemStack stack, PlayerEntity player) {
-		return !player.abilities.isCreativeMode ? new ItemStack(Items.BUCKET) : stack;
+	protected ItemStack getEmptySuccessItem(ItemStack stack, Player player) {
+		return !player.getAbilities().instabuild ? new ItemStack(Items.BUCKET) : stack;
 	}
 
-	public void onLiquidPlaced(World world, ItemStack stack, BlockPos pos) {}
+	public void checkExtraContent(Player player, Level world, ItemStack stack, BlockPos pos) {}
 
-	public boolean tryPlaceContainedLiquid(PlayerEntity player, World world, BlockPos pos, BlockRayTraceResult rayTraceResult) {
+	public boolean emptyContents(Player player, Level world, BlockPos pos, BlockHitResult blockHitResult) {
 		BlockState blockState = world.getBlockState(pos);
+		Block block = blockState.getBlock();
 		Material blockMaterial = blockState.getMaterial();
-		boolean flag = !blockMaterial.isSolid();
-		boolean flag1 = blockMaterial.isReplaceable();
-		if(world.isAirBlock(pos) || flag || flag1) {
-			FluidStack stack = new FluidStack(fluid.asFluid(), FluidAttributes.BUCKET_VOLUME);
-			if(world.getDimensionType().isUltrawarm() && fluid.asFluid().isIn(FluidTags.WATER)) {
-				int i = pos.getX();
-				int j = pos.getY();
-				int k = pos.getZ();
-				world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F+(world.rand.nextFloat()-world.rand.nextFloat())*0.8F);
-				for(int l = 0; l < 8; ++l) {
-					world.addOptionalParticle(ParticleTypes.LARGE_SMOKE, i+Math.random(), j+Math.random(), k+Math.random(), 0, 0, 0);
-				}
-			}
-			else {
-				if(!world.isRemote && (flag || flag1) && !blockMaterial.isLiquid()) {
-					world.destroyBlock(pos, true);
-				}
-				playEmptySound(player, world, pos);
-				world.setBlockState(pos, fluid.asFluid().getAttributes().getStateForPlacement(world, pos, stack).getBlockState(), 11);
+		boolean flag = blockState.canBeReplaced(fluid.asFluid());
+		boolean flag1 = blockState.isAir() || flag || (block instanceof LiquidBlockContainer
+				&& ((LiquidBlockContainer) block).canPlaceLiquid(world, pos, blockState, fluid.asFluid()));
+		if(!flag1) {
+			return blockHitResult != null && emptyContents(player, world, blockHitResult.getBlockPos().relative(blockHitResult.getDirection()), null);
+		}
+		FluidStack stack = new FluidStack(fluid.asFluid(), FluidAttributes.BUCKET_VOLUME);
+		if(world.dimensionType().ultraWarm() && fluid.asFluid().is(FluidTags.WATER)) {
+			int i = pos.getX();
+			int j = pos.getY();
+			int k = pos.getZ();
+			world.playSound(player, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 2.6F+(world.random.nextFloat()-world.random.nextFloat())*0.8F);
+			for(int l = 0; l < 8; ++l) {
+				world.addParticle(ParticleTypes.LARGE_SMOKE, i+Math.random(), j+Math.random(), k+Math.random(), 0, 0, 0);
 			}
 			return true;
 		}
-		else {
-			return rayTraceResult == null ? false : tryPlaceContainedLiquid(player, world, rayTraceResult.getPos().offset(rayTraceResult.getFace()), null);
+		if(block instanceof LiquidBlockContainer && ((LiquidBlockContainer)block).canPlaceLiquid(world, pos, blockState, fluid.asFluid())) {
+			((LiquidBlockContainer) block).placeLiquid(world, pos, blockState, fluid.asFluid().defaultFluidState());
+			playEmptySound(player, world, pos);
+			return true;
 		}
+		if(!world.isClientSide && flag && !blockMaterial.isLiquid()) {
+			world.destroyBlock(pos, true);
+		}
+		if(!world.setBlock(pos, fluid.asFluid().getAttributes().getStateForPlacement(world, pos, stack).createLegacyBlock(), 11) && !blockState.getFluidState().isSource()) {
+			return false;
+		}
+		playEmptySound(player, world, pos);
+		return true;
 	}
 
-	protected void playEmptySound(PlayerEntity player, IWorld world, BlockPos pos) {
+	protected void playEmptySound(Player player, LevelAccessor world, BlockPos pos) {
 		SoundEvent soundEvent = fluid.asFluid().getAttributes().getEmptySound();
 		if(soundEvent == null) {
-			soundEvent = fluid.asFluid().isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
+			soundEvent = fluid.asFluid().is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
 		}
-		world.playSound(player, pos, soundEvent, SoundCategory.BLOCKS, 1, 1);
+		world.playSound(player, pos, soundEvent, SoundSource.BLOCKS, 1, 1);
+		world.gameEvent(player, GameEvent.FLUID_PLACE, pos);
+	}
+
+	protected boolean canBlockContainFluid(Level worldIn, BlockPos posIn, BlockState blockstate) {
+		return blockstate.getBlock() instanceof LiquidBlockContainer && ((LiquidBlockContainer)blockstate.getBlock()).canPlaceLiquid(worldIn, posIn, blockstate, fluid.asFluid());
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundNBT nbt) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		return new JAOPCAFluidHandlerItem(fluid, stack);
 	}
 
 	@Override
-	public ITextComponent getDisplayName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+getForm().getName(), getMaterial(), getTranslationKey());
+	public Component getName(ItemStack stack) {
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+getForm().getName(), getMaterial(), getDescriptionId(stack));
 	}
 }
