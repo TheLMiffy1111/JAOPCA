@@ -5,7 +5,6 @@ import java.util.TreeMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.LanguageInfo;
-import net.minecraft.locale.Language;
 import net.minecraftforge.fml.DistExecutor;
 import thelm.jaopca.api.localization.ILocalizer;
 

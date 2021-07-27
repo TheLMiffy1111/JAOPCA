@@ -70,6 +70,8 @@ public class ConfigHandler {
 
 	public static final Set<ResourceLocation> LOOT_TABLE_BLACKLIST = new TreeSet<>();
 
+	public static final Set<ResourceLocation> ADVANCEMENT_BLACKLIST = new TreeSet<>();
+
 	public static double gammaValue = 2;
 
 	public static boolean checkL10nUpdates = true;
@@ -143,6 +145,10 @@ public class ConfigHandler {
 		mainConfig.setComment("lootTables", "Configurations related to loot tables.");
 		LOOT_TABLE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("lootTables.blacklist", new ArrayList<>(),
 				"List of loot tables that should not be added."), ResourceLocation::new));
+
+		mainConfig.setComment("advancements", "Configurations related to advancements.");
+		ADVANCEMENT_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("advancements.blacklist", new ArrayList<>(),
+				"List of advancements that should not be added."), ResourceLocation::new));
 
 		mainConfig.setComment("colors", "Configurations related to color generation.");
 		gammaValue = mainConfig.getDefinedDouble("colors.gammaValue", gammaValue, "The gamma value used to blend colors.");

@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
@@ -249,6 +248,14 @@ public abstract class JAOPCAApi {
 	 * @return The set of loot table locations known by JAOPCA
 	 */
 	public abstract Set<ResourceLocation> getLootTables();
+
+	/**
+	 * Returns the set of known advancement locations, which is the union of defined advancement locations
+	 * and registered advancement locations. Note that advancements added by custom data packs may not be
+	 * included.
+	 * @return The set of advancement locations known by JAOPCA
+	 */
+	public abstract Set<ResourceLocation> getAdvancements();
 
 	/**
 	 * Returns the current {@link ILocalizer} based on Minecraft's current language. Will always return the
@@ -547,6 +554,8 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count);
 
+	public abstract boolean registerSmithingRecipe(ResourceLocation key, Object base, Object addition, Object output, int count);
+
 	/**
 	 * Registers a loot table supplier to be added by JAOPCA's in memory data pack.
 	 * @param key The id of the loot table
@@ -562,6 +571,22 @@ public abstract class JAOPCAApi {
 	 * @return true if the id of the loot table was not blacklisted in the configuration file and was not taken
 	 */
 	public abstract boolean registerLootTable(ResourceLocation key, LootTable lootTable);
+
+	/**
+	 * Registers an advancement builder supplier to be added by JAOPCA's in memory data pack.
+	 * @param key The id of the advancement
+	 * @param advancementBuilderSupplier The advancement builder supplier
+	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
+	 */
+	public abstract boolean registerAdvancement(ResourceLocation key, Supplier<Advancement.Builder> advancementBuilderSupplier);
+
+	/**
+	 * Registers an advancement builder to be added by JAOPCA's in memory data pack.
+	 * @param key The id of the advancement
+	 * @param advancementBuilder The advancement builder
+	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
+	 */
+	public abstract boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder);
 
 	/**
 	 * Registers an {@link ILocalizer} to languages for use by JAOPCA.

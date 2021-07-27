@@ -18,7 +18,6 @@ import org.objectweb.asm.Type;
 
 import com.google.common.base.Predicates;
 
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;

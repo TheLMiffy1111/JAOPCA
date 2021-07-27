@@ -14,7 +14,6 @@ import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.Advancement.Builder;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
@@ -60,6 +59,7 @@ import thelm.jaopca.recipes.CampfireCookingRecipeSerializer;
 import thelm.jaopca.recipes.ShapedRecipeSerializer;
 import thelm.jaopca.recipes.ShapelessRecipeSerializer;
 import thelm.jaopca.recipes.SmeltingRecipeSerializer;
+import thelm.jaopca.recipes.SmithingRecipeSerializer;
 import thelm.jaopca.recipes.SmokingRecipeSerializer;
 import thelm.jaopca.recipes.StonecuttingRecipeSerializer;
 import thelm.jaopca.registries.RegistryHandler;
@@ -204,7 +204,12 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public Set<ResourceLocation> getLootTables() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectLootTables()));
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedLootTables(), DataInjector.getInjectLootTables()));
+	}
+
+	@Override
+	public Set<ResourceLocation> getAdvancements() {
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectAdvancements()));
 	}
 
 	@Override
@@ -393,6 +398,11 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerSmithingRecipe(ResourceLocation key, Object base, Object addition, Object output, int count) {
+		return registerRecipe(key, new SmithingRecipeSerializer(key, base, addition, output, count));
+	}
+
+	@Override
 	public boolean registerLootTable(ResourceLocation key, Supplier<LootTable> lootTableSupplier) {
 		if(DataCollector.getDefinedLootTables().contains(key) || ConfigHandler.LOOT_TABLE_BLACKLIST.contains(key)) {
 			return false;
@@ -403,6 +413,19 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerLootTable(ResourceLocation key, LootTable lootTable) {
 		return registerLootTable(key, ()->lootTable);
+	}
+
+	@Override
+	public boolean registerAdvancement(ResourceLocation key, Supplier<Builder> advancementBuilderSupplier) {
+		if(DataCollector.getDefinedAdvancements().contains(key) || ConfigHandler.ADVANCEMENT_BLACKLIST.contains(key)) {
+			return false;
+		}
+		return DataInjector.registerAdvancement(key, advancementBuilderSupplier);
+	}
+
+	@Override
+	public boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder) {
+		return registerAdvancement(key, ()->advancementBuilder);
 	}
 
 	@Override

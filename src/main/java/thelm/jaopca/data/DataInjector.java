@@ -1,6 +1,5 @@
 package thelm.jaopca.data;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -16,6 +15,7 @@ import com.google.common.collect.MultimapBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
@@ -37,6 +37,7 @@ public class DataInjector {
 	private static final ListMultimap<ResourceLocation, ResourceLocation> ENTITY_TYPE_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final TreeMap<ResourceLocation, IRecipeSerializer> RECIPES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
+	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
 	private static final Gson GSON = Deserializers.createLootTableSerializer().create();
 
 	public static boolean registerBlockTag(ResourceLocation location, ResourceLocation blockLocation) {
@@ -75,6 +76,12 @@ public class DataInjector {
 		return LOOT_TABLES_INJECT.putIfAbsent(location, lootTableSupplier) == null;
 	}
 
+	public static boolean registerAdvancement(ResourceLocation location, Supplier<Advancement.Builder> advancementBuilder) {
+		Objects.requireNonNull(location);
+		Objects.requireNonNull(advancementBuilder);
+		return ADVANCEMENTS_INJECT.putIfAbsent(location, advancementBuilder) == null;
+	}
+
 	public static Set<ResourceLocation> getInjectBlockTags() {
 		return BLOCK_TAGS_INJECT.keySet();
 	}
@@ -99,8 +106,12 @@ public class DataInjector {
 		return LOOT_TABLES_INJECT.navigableKeySet();
 	}
 
+	public static Set<ResourceLocation> getInjectAdvancements() {
+		return ADVANCEMENTS_INJECT.navigableKeySet();
+	}
+
 	public static void injectRecipes(Map<ResourceLocation, JsonElement> recipeMap) {
-		Map<ResourceLocation, JsonElement> recipesToInject = new LinkedHashMap<>();
+		Map<ResourceLocation, JsonElement> recipesToInject = new TreeMap<>();
 		RECIPES_INJECT.forEach((key, supplier)->{
 			if(recipeMap.containsKey(key)) {
 				LOGGER.debug("Duplicate recipe ignored with ID {}", key);
@@ -158,6 +169,9 @@ public class DataInjector {
 				});
 				LOOT_TABLES_INJECT.forEach((location, supplier)->{
 					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "loot_tables/"+location.getPath()+".json"), GSON.toJsonTree(supplier.get()));
+				});
+				ADVANCEMENTS_INJECT.forEach((location, supplier)->{
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), supplier.get().serializeToJson());
 				});
 				ModuleHandler.onCreateDataPack(pack);
 				return pack;
