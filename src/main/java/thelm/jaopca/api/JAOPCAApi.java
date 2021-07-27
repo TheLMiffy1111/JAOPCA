@@ -554,6 +554,8 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerStonecuttingRecipe(ResourceLocation key, String group, Object input, Object output, int count);
 
+	public abstract boolean registerSmithingRecipe(ResourceLocation key, Object base, Object addition, Object output, int count);
+
 	/**
 	 * Creates a stonecutting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -566,17 +568,17 @@ public abstract class JAOPCAApi {
 
 	/**
 	 * Registers a loot table supplier to be added by JAOPCA's in memory data pack.
-	 * @param key The id of the advancement
-	 * @param advancementBuilder The advancement builder
-	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
+	 * @param key The id of the loot table
+	 * @param lootTableSupplier The loot table builder
+	 * @return true if the id of the loot table was not blacklisted in the configuration file and was not taken
 	 */
 	public abstract boolean registerLootTable(ResourceLocation key, Supplier<LootTable> lootTableSupplier);
 
 	/**
 	 * Registers a loot table to be added by JAOPCA's in memory data pack.
-	 * @param key The id of the advancement
-	 * @param advancementBuilder The advancement builder
-	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
+	 * @param key The id of the loot table
+	 * @param lootTable The loot table
+	 * @return true if the id of the loot table was not blacklisted in the configuration file and was not taken
 	 */
 	public abstract boolean registerLootTable(ResourceLocation key, LootTable lootTable);
 

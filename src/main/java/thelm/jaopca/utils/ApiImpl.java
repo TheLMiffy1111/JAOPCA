@@ -59,6 +59,7 @@ import thelm.jaopca.recipes.CampfireCookingRecipeSupplier;
 import thelm.jaopca.recipes.ShapedRecipeSupplier;
 import thelm.jaopca.recipes.ShapelessRecipeSupplier;
 import thelm.jaopca.recipes.SmeltingRecipeSupplier;
+import thelm.jaopca.recipes.SmithingRecipeSupplier;
 import thelm.jaopca.recipes.SmokingRecipeSupplier;
 import thelm.jaopca.recipes.StonecuttingRecipeSupplier;
 import thelm.jaopca.registries.RegistryHandler;
@@ -203,7 +204,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public Set<ResourceLocation> getLootTables() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectAdvancements()));
+		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedLootTables(), DataInjector.getInjectLootTables()));
 	}
 
 	@Override
@@ -399,6 +400,11 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count) {
 		return registerRecipe(key, new StonecuttingRecipeSupplier(key, input, output, count));
+	}
+
+	@Override
+	public boolean registerSmithingRecipe(ResourceLocation key, Object base, Object addition, Object output, int count) {
+		return registerRecipe(key, new SmithingRecipeSupplier(key, base, addition, output, count));
 	}
 
 	@Override

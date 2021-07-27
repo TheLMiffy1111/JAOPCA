@@ -48,6 +48,7 @@ public class BlockDeserializationHelper {
 		INSTANCE.putBlockMaterial("plants", Material.PLANTS);
 		INSTANCE.putBlockMaterial("ocean_plant", Material.OCEAN_PLANT);
 		INSTANCE.putBlockMaterial("tall_plants", Material.TALL_PLANTS);
+		INSTANCE.putBlockMaterial("nether_plants", Material.NETHER_PLANTS);
 		INSTANCE.putBlockMaterial("sea_grass", Material.SEA_GRASS);
 		INSTANCE.putBlockMaterial("water", Material.WATER);
 		INSTANCE.putBlockMaterial("bubble_column", Material.BUBBLE_COLUMN);
@@ -65,6 +66,7 @@ public class BlockDeserializationHelper {
 		INSTANCE.putBlockMaterial("sponge", Material.SPONGE);
 		INSTANCE.putBlockMaterial("shulker", Material.SHULKER);
 		INSTANCE.putBlockMaterial("wood", Material.WOOD);
+		INSTANCE.putBlockMaterial("nether_wood", Material.NETHER_WOOD);
 		INSTANCE.putBlockMaterial("bamboo_sapling", Material.BAMBOO_SAPLING);
 		INSTANCE.putBlockMaterial("bamboo", Material.BAMBOO);
 		INSTANCE.putBlockMaterial("wool", Material.WOOL);
@@ -96,6 +98,7 @@ public class BlockDeserializationHelper {
 		INSTANCE.putSoundType("ladder", SoundType.LADDER);
 		INSTANCE.putSoundType("anvil", SoundType.ANVIL);
 		INSTANCE.putSoundType("slime", SoundType.SLIME);
+		INSTANCE.putSoundType("honey", SoundType.HONEY);
 		INSTANCE.putSoundType("wet_grass", SoundType.WET_GRASS);
 		INSTANCE.putSoundType("coral", SoundType.CORAL);
 		INSTANCE.putSoundType("bamboo", SoundType.BAMBOO);
@@ -104,8 +107,30 @@ public class BlockDeserializationHelper {
 		INSTANCE.putSoundType("sweet_berry_bush", SoundType.SWEET_BERRY_BUSH);
 		INSTANCE.putSoundType("crop", SoundType.CROP);
 		INSTANCE.putSoundType("stem", SoundType.STEM);
+		INSTANCE.putSoundType("vine", SoundType.VINE);
 		INSTANCE.putSoundType("nether_wart", SoundType.NETHER_WART);
 		INSTANCE.putSoundType("lantern", SoundType.LANTERN);
-
+		INSTANCE.putSoundType("hyphae", SoundType.HYPHAE);
+		INSTANCE.putSoundType("nylium", SoundType.NYLIUM);
+		INSTANCE.putSoundType("fungus", SoundType.FUNGUS);
+		INSTANCE.putSoundType("root", SoundType.ROOT);
+		INSTANCE.putSoundType("shroomlight", SoundType.SHROOMLIGHT);
+		INSTANCE.putSoundType("nether_vine", SoundType.NETHER_VINE);
+		INSTANCE.putSoundType("nether_vine_lower_pitch", SoundType.NETHER_VINE_LOWER_PITCH);
+		INSTANCE.putSoundType("soul_sand", SoundType.SOUL_SAND);
+		INSTANCE.putSoundType("soul_soil", SoundType.SOUL_SOIL);
+		INSTANCE.putSoundType("basalt", SoundType.BASALT);
+		INSTANCE.putSoundType("wart", SoundType.WART);
+		INSTANCE.putSoundType("netherrack", SoundType.NETHERRACK);
+		INSTANCE.putSoundType("nether_brick", SoundType.NETHER_BRICK);
+		INSTANCE.putSoundType("nether_sprout", SoundType.NETHER_SPROUT);
+		INSTANCE.putSoundType("nether_ore", SoundType.NETHER_ORE);
+		INSTANCE.putSoundType("bone", SoundType.BONE);
+		INSTANCE.putSoundType("netherite", SoundType.NETHERITE);
+		INSTANCE.putSoundType("ancient_debris", SoundType.ANCIENT_DEBRIS);
+		INSTANCE.putSoundType("lodestone", SoundType.LODESTONE);
+		INSTANCE.putSoundType("chain", SoundType.CHAIN);
+		INSTANCE.putSoundType("nether_gold", SoundType.NETHER_GOLD);
+		INSTANCE.putSoundType("gilded_blackstone", SoundType.GILDED_BLACKSTONE);
 	}
 }
