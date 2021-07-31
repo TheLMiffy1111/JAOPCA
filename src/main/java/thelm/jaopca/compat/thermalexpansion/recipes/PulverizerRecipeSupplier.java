@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import cofh.thermal.expansion.util.recipes.machine.PulverizerRecipe;
+import cofh.thermal.core.util.recipes.machine.PulverizerRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;

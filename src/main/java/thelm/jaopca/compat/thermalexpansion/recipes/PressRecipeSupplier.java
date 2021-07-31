@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import cofh.thermal.expansion.util.recipes.machine.PressRecipe;
+import cofh.thermal.core.util.recipes.machine.PressRecipe;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
