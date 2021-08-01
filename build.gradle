@@ -80,7 +80,7 @@ sourceSets {
     main
 }
 
-version = "3.4.0.11"
+version = "3.4.0.12B-TEST"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
@@ -152,9 +152,9 @@ dependencies {
     implementation fg.deobf("curse.maven:crossroads-mc:3347113")
     implementation fg.deobf("curse.maven:fl:3293009")
     implementation fg.deobf("curse.maven:flux:3293011")
-    implementation fg.deobf("curse.maven:cofh-core:3249453")
-    implementation fg.deobf("curse.maven:thermal-foundation:3248150")
-    implementation fg.deobf("curse.maven:thermal-expansion:3247000")
+    implementation fg.deobf("curse.maven:cofh-core:3407019")
+    implementation fg.deobf("curse.maven:thermal-foundation:3407024")
+    implementation fg.deobf("curse.maven:thermal-expansion:3404884")
     implementation fg.deobf("curse.maven:create:3386319")
     implementation fg.deobf("curse.maven:blood-magic:3399440")
     implementation fg.deobf("curse.maven:occultism:3398241")
