@@ -74,7 +74,7 @@ sourceSets {
     main
 }
 
-version = "4.a.0.1"
+version = "4.a.0.2"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.17.1"
 
@@ -103,7 +103,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.9'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.33'
 
     //JitPack
 

@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.forms.IForm;
@@ -37,8 +36,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected OptionalDouble friction = OptionalDouble.empty();
 	protected VoxelShape shape;
 	protected VoxelShape interactionShape;
-	protected Optional<ToolType> harvestTool = Optional.empty();
-	protected OptionalInt harvestLevel = OptionalInt.empty();
 	protected OptionalInt flammability = OptionalInt.empty();
 	protected OptionalInt fireSpreadSpeed = OptionalInt.empty();
 	protected Optional<Boolean> isFireSource = Optional.empty();
@@ -126,22 +123,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	@Override
 	public VoxelShape getInteractionShape(BlockState blockState, BlockGetter world, BlockPos pos) {
 		return interactionShape;
-	}
-
-	@Override
-	public ToolType getHarvestTool(BlockState blockState) {
-		if(!harvestTool.isPresent()) {
-			harvestTool = Optional.ofNullable(settings.getHarvestToolFunction().apply(material));
-		}
-		return harvestTool.orElse(null);
-	}
-
-	@Override
-	public int getHarvestLevel(BlockState blockState) {
-		if(!harvestLevel.isPresent()) {
-			harvestLevel = OptionalInt.of(settings.getHarvestLevelFunction().applyAsInt(material));
-		}
-		return harvestLevel.getAsInt();
 	}
 
 	@Override

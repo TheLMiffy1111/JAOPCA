@@ -17,7 +17,6 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.blocks.IBlockCreator;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockItemCreator;
@@ -49,8 +48,8 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private boolean isFull = true;
 	private VoxelShape shape = Shapes.block();
 	private VoxelShape interactionShape = Shapes.empty();
-	private Function<IMaterial, ToolType> harvestToolFunction = material->ToolType.PICKAXE;
-	private ToIntFunction<IMaterial> harvestLevelFunction = material->0;
+	private Function<IMaterial, String> harvestToolTagFunction = material->"minecraft:mineable/pickaxe";
+	private Function<IMaterial, String> harvestTierTagFunction = material->"";
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
@@ -193,25 +192,25 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setHarvestToolFunction(Function<IMaterial, ToolType> harvestToolFunction) {
-		this.harvestToolFunction = harvestToolFunction;
+	public IBlockFormSettings setHarvestToolTagFunction(Function<IMaterial, String> harvestToolTagFunction) {
+		this.harvestToolTagFunction = harvestToolTagFunction;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, ToolType> getHarvestToolFunction() {
-		return harvestToolFunction;
+	public Function<IMaterial, String> getHarvestToolTagFunction() {
+		return harvestToolTagFunction;
 	}
 
 	@Override
-	public IBlockFormSettings setHarvestLevelFunction(ToIntFunction<IMaterial> harvestLevelFunction) {
-		this.harvestLevelFunction = harvestLevelFunction;
+	public IBlockFormSettings setHarvestTierTagFunction(Function<IMaterial, String> harvestTierTagFunction) {
+		this.harvestTierTagFunction = harvestTierTagFunction;
 		return this;
 	}
 
 	@Override
-	public ToIntFunction<IMaterial> getHarvestLevelFunction() {
-		return harvestLevelFunction;
+	public Function<IMaterial, String> getHarvestTierTagFunction() {
+		return harvestTierTagFunction;
 	}
 
 	@Override

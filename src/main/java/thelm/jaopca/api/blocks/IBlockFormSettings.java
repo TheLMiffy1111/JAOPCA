@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
 
@@ -60,13 +59,13 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	VoxelShape getInteractionShape();
 
-	IBlockFormSettings setHarvestToolFunction(Function<IMaterial, ToolType> harvestToolFunction);
+	IBlockFormSettings setHarvestToolTagFunction(Function<IMaterial, String> harvestToolTagFunction);
 
-	Function<IMaterial, ToolType> getHarvestToolFunction();
+	Function<IMaterial, String> getHarvestToolTagFunction();
 
-	IBlockFormSettings setHarvestLevelFunction(ToIntFunction<IMaterial> harvestLevelFunction);
+	IBlockFormSettings setHarvestTierTagFunction(Function<IMaterial, String> harvestTierTagFunction);
 
-	ToIntFunction<IMaterial> getHarvestLevelFunction();
+	Function<IMaterial, String> getHarvestTierTagFunction();
 
 	IBlockFormSettings setFlammabilityFunction(ToIntFunction<IMaterial> flammabilityFunction);
 

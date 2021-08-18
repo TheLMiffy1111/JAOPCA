@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.TreeBasedTable;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
@@ -49,7 +49,6 @@ public class BlockFormType implements IBlockFormType {
 
 	public static final Type MATERIAL_FUNCTION_TYPE = new TypeToken<Function<IMaterial, Material>>(){}.getType();
 	public static final Type SOUND_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, SoundType>>(){}.getType();
-	public static final Type TOOL_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, ToolType>>(){}.getType();
 
 	public static void init() {
 		FormTypeHandler.registerFormType(INSTANCE);
@@ -100,8 +99,6 @@ public class BlockFormType implements IBlockFormType {
 				registerTypeAdapter(SOUND_TYPE_FUNCTION_TYPE,
 						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getSoundType,
 								BlockDeserializationHelper.INSTANCE::getSoundTypeName)).
-				registerTypeAdapter(TOOL_TYPE_FUNCTION_TYPE,
-						new MaterialMappedFunctionDeserializer<>(ToolType::get, ToolType::getName)).
 				registerTypeAdapter(VoxelShape.class, VoxelShapeDeserializer.INSTANCE);
 	}
 
@@ -118,6 +115,8 @@ public class BlockFormType implements IBlockFormType {
 			for(IMaterial material : form.getMaterials()) {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
 				ResourceLocation lootLocation = new ResourceLocation("jaopca", "blocks/"+form.getName()+'.'+material.getName());
+				String toolTag = settings.getHarvestToolTagFunction().apply(material);
+				String tierTag = settings.getHarvestTierTagFunction().apply(material);
 
 				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
 				Block block = materialFormBlock.asBlock();
@@ -137,6 +136,11 @@ public class BlockFormType implements IBlockFormType {
 				DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
 					DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
+				}
+
+				DataInjector.registerBlockTag(new ResourceLocation(toolTag), registryName);
+				if(!Strings.isNullOrEmpty(tierTag)) {
+					DataInjector.registerBlockTag(new ResourceLocation(tierTag), registryName);
 				}
 
 				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);

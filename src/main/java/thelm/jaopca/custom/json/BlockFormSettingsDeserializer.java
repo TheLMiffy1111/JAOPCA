@@ -80,18 +80,18 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 			settings.setInteractionShape(helper.deserializeType(json, "interactionShape", context, VoxelShape.class));
 		}
 		if(json.has("harvestTool")) {
-			JsonObject functionJson = helper.getJsonObject(json, "harvestTool");
+			JsonObject functionJson = helper.getJsonObject(json, "harvestToolTag");
 			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", "pickaxe");
+				functionJson.addProperty("default", "minecraft:mineable/pickaxe");
 			}
-			settings.setHarvestToolFunction(helper.deserializeType(json, "harvestTool", context, BlockFormType.TOOL_TYPE_FUNCTION_TYPE));
+			settings.setHarvestToolTagFunction(helper.deserializeType(json, "harvestToolTag", context, FormTypeHandler.STRING_FUNCTION_TYPE));
 		}
 		if(json.has("harvestLevel")) {
-			JsonObject functionJson = helper.getJsonObject(json, "harvestLevel");
+			JsonObject functionJson = helper.getJsonObject(json, "harvestTierTag");
 			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", 0);
+				functionJson.addProperty("default", "");
 			}
-			settings.setHarvestLevelFunction(helper.deserializeType(json, "harvestLevel", context, FormTypeHandler.INT_FUNCTION_TYPE));
+			settings.setHarvestTierTagFunction(helper.deserializeType(json, "harvestTierTag", context, FormTypeHandler.STRING_FUNCTION_TYPE));
 		}
 		if(json.has("flammability")) {
 			JsonObject functionJson = helper.getJsonObject(json, "flammability");
