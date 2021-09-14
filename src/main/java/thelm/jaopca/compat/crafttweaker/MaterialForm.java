@@ -62,7 +62,8 @@ public class MaterialForm {
 	@ZenCodeType.Method
 	public MCTag asTag(TagManager manager) {
 		return new MCTag(MiscHelper.INSTANCE.getTagLocation(
-				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName()),
+				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName(),
+				info.getMaterialForm().getForm().getTagSeparator()),
 				manager);
 	}
 

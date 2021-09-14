@@ -39,6 +39,10 @@ public interface IForm extends Comparable<IForm> {
 
 	boolean skipGroupedCheck();
 
+	IForm setTagSeparator(String tagSeparator);
+
+	String getTagSeparator();
+
 	Set<IMaterial> getMaterials();
 
 	IForm lock();

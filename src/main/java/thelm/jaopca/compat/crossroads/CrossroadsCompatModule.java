@@ -26,12 +26,12 @@ public class CrossroadsCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"copper", "gold", "iron", "tin"));
-	private static final Set<String> TO_MOLTEN_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"copper", "copshowium", "gold", "iron", "tin"));
-	private static final Set<String> TO_MATERIAL_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> MOLTEN_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"copper", "copshowium", "gold", "iron", "tin"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
-	private static Set<String> configToMoltenBlacklist = new TreeSet<>();
+	private static Set<String> configMaterialToMoltenBlacklist = new TreeSet<>();
+	private static Set<String> configDustToMoltenBlacklist = new TreeSet<>();
+	private static Set<String> configNuggetToMoltenBlacklist = new TreeSet<>();
 	private static Set<String> configToMaterialBlacklist = new TreeSet<>();
 
 	@Override
@@ -52,9 +52,17 @@ public class CrossroadsCompatModule implements IModule {
 						helper.configMaterialPredicate(), "The materials that should not have mill recipes added."),
 				configToDustBlacklist);
 		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.toMoltenMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have crucible recipes added."),
-				configToMoltenBlacklist);
+				config.getDefinedStringList("recipes.materialToMoltenMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have material crucible recipes added."),
+				configMaterialToMoltenBlacklist);
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.dustToMoltenMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have dust crucible recipes added."),
+				configDustToMoltenBlacklist);
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.nuggetToMoltenMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have nugget crucible recipes added."),
+				configNuggetToMoltenBlacklist);
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.toMaterialMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have fluid cooling recipes added."),
@@ -80,30 +88,38 @@ public class CrossroadsCompatModule implements IModule {
 				}
 			}
 			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!TO_MOLTEN_BLACKLIST.contains(name) && !configToMoltenBlacklist.contains(name)) {
+					!MOLTEN_BLACKLIST.contains(name) && !configMaterialToMoltenBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName());
+				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
 				if(api.getFluidTags().contains(moltenLocation)) {
 					helper.registerCrucibleRecipe(
 							new ResourceLocation("jaopca", "crossroads.material_to_molten."+material.getName()),
 							materialLocation, moltenLocation, 144);
-					if(api.getItemTags().contains(dustLocation)) {
-						helper.registerCrucibleRecipe(
-								new ResourceLocation("jaopca", "crossroads.dust_to_molten."+material.getName()),
-								dustLocation, moltenLocation, 144);
-					}
-					if(api.getItemTags().contains(nuggetLocation)) {
-						helper.registerCrucibleRecipe(
-								new ResourceLocation("jaopca", "crossroads.nugget_to_molten."+material.getName()),
-								nuggetLocation, moltenLocation, 16);
-					}
 				}
 			}
 			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!TO_MATERIAL_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
-				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName());
+					!MOLTEN_BLACKLIST.contains(name) && !configDustToMoltenBlacklist.contains(name)) {
+				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
+				if(api.getItemTags().contains(dustLocation) && api.getFluidTags().contains(moltenLocation)) {
+					helper.registerCrucibleRecipe(
+							new ResourceLocation("jaopca", "crossroads.dust_to_molten."+material.getName()),
+							dustLocation, moltenLocation, 144);
+				}
+			}
+			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
+					!MOLTEN_BLACKLIST.contains(name) && !configNuggetToMoltenBlacklist.contains(name)) {
+				ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
+				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
+				if(api.getItemTags().contains(nuggetLocation) && api.getFluidTags().contains(moltenLocation)) {
+					helper.registerCrucibleRecipe(
+							new ResourceLocation("jaopca", "crossroads.nugget_to_molten."+material.getName()),
+							nuggetLocation, moltenLocation, 16);
+				}
+			}
+			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
+					!MOLTEN_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
+				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				if(api.getFluidTags().contains(moltenLocation)) {
 					helper.registerFluidCoolingRecipe(

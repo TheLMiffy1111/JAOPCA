@@ -7,14 +7,12 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.resources.DataPackRegistries;
 import net.minecraft.resources.IFutureReloadListener;
-import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.resources.ResourcePackList;
 import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -45,27 +43,25 @@ public class CommonEventHandler {
 		MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListener);
 		
 		ApiImpl.INSTANCE.init();
-		DeferredWorkQueue.runLater(()->{
-			BlockFormType.init();
-			ItemFormType.init();
-			FluidFormType.init();
-			DataCollector.collectData();
-			ModuleHandler.findModules();
-			ConfigHandler.setupMainConfig();
-			MaterialHandler.findMaterials();
-			ConfigHandler.setupMaterialConfigs();
-			FormTypeHandler.setupGson();
-			ConfigHandler.setupCustomFormConfig();
-			ConfigHandler.setupModuleConfigsPre();
-			FormHandler.collectForms();
-			ModuleHandler.computeValidMaterials();
-			FormHandler.computeValidMaterials();
-			ConfigHandler.setupModuleConfigs();
-			BlockFormType.registerEntries();
-			ItemFormType.registerEntries();
-			FluidFormType.registerEntries();
-			ModuleHandler.onMaterialComputeComplete();
-		});
+		BlockFormType.init();
+		ItemFormType.init();
+		FluidFormType.init();
+		DataCollector.collectData();
+		ModuleHandler.findModules();
+		ConfigHandler.setupMainConfig();
+		MaterialHandler.findMaterials();
+		ConfigHandler.setupMaterialConfigs();
+		FormTypeHandler.setupGson();
+		ConfigHandler.setupCustomFormConfig();
+		ConfigHandler.setupModuleConfigsPre();
+		FormHandler.collectForms();
+		ModuleHandler.computeValidMaterials();
+		FormHandler.computeValidMaterials();
+		ConfigHandler.setupModuleConfigs();
+		BlockFormType.registerEntries();
+		ItemFormType.registerEntries();
+		FluidFormType.registerEntries();
+		ModuleHandler.onMaterialComputeComplete();
 	}
 
 	@SubscribeEvent
@@ -75,9 +71,7 @@ public class CommonEventHandler {
 
 	@SubscribeEvent
 	public void onCommonSetup(FMLCommonSetupEvent event) {
-		DeferredWorkQueue.runLater(()->{
-			ModuleHandler.onCommonSetup(event);
-		});
+		ModuleHandler.onCommonSetup(event);
 	}
 
 	@SubscribeEvent

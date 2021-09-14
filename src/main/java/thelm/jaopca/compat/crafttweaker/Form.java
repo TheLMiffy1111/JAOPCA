@@ -65,6 +65,11 @@ public class Form {
 		return form.getMaterials().stream().map(Material::getMaterialWrapper).toArray(Material[]::new);
 	}
 
+	@ZenCodeType.Getter("tagSeparator")
+	public String getTagSeparator() {
+		return form.getTagSeparator();
+	}
+
 	@ZenCodeType.Method
 	public boolean containsMaterial(Material material) {
 		return form.getMaterials().contains(material.getInternal());
@@ -77,7 +82,7 @@ public class Form {
 
 	@ZenCodeType.Method
 	public MCTag getTag(TagManager manager, String suffix) {
-		return new MCTag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix), manager);
+		return new MCTag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix, form.getTagSeparator()), manager);
 	}
 
 	@ZenCodeType.Method

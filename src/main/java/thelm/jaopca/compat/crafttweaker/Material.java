@@ -64,12 +64,22 @@ public class Material {
 
 	@ZenCodeType.Method
 	public MCTag getTag(String prefix) {
-		return getTag(TagManagerItem.INSTANCE, prefix);
+		return getTag(TagManagerItem.INSTANCE, prefix, "/");
+	}
+
+	@ZenCodeType.Method
+	public MCTag getTag(String prefix, String tagSeperator) {
+		return getTag(TagManagerItem.INSTANCE, prefix, tagSeperator);
 	}
 
 	@ZenCodeType.Method
 	public MCTag getTag(TagManager manager, String prefix) {
-		return new MCTag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName()), manager);
+		return getTag(manager, prefix, "/");
+	}
+
+	@ZenCodeType.Method
+	public MCTag getTag(TagManager manager, String prefix, String tagSeperator) {
+		return new MCTag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator), manager);
 	}
 
 	@ZenCodeType.Method

@@ -12,7 +12,6 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
@@ -36,9 +35,6 @@ public class ClientEventHandler {
 
 	public void onConstruct() {
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-		DeferredWorkQueue.runLater(()->{
-
-		});
 	}
 
 	@SubscribeEvent
@@ -56,9 +52,6 @@ public class ClientEventHandler {
 				LocalizationRepoHandler.reload();
 			}
 		});
-		DeferredWorkQueue.runLater(()->{
-			ModuleHandler.onClientSetup(event);
-		});
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
 			RenderTypeLookup.setRenderLayer(block.asBlock(), RenderType.getTranslucent());
 		}
@@ -68,6 +61,7 @@ public class ClientEventHandler {
 		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
 			RenderTypeLookup.setRenderLayer(fluidBlock.asBlock(), RenderType.getTranslucent());
 		}
+		ModuleHandler.onClientSetup(event);
 	}
 
 	@SubscribeEvent

@@ -26,27 +26,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "immersiveengineering")
 public class ImmersiveEngineeringCompatModule implements IModule {
 
-	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "ardite", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
-			"gold", "invar", "iron", "lead", "manyullyn", "nickel", "osmium", "platinum", "silver", "steel",
-			"tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> TO_INGOT_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "ardite", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
-			"gold", "invar", "iron", "lead", "manyullyn", "nickel", "osmium", "platinum", "silver", "steel",
-			"tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> TO_GEAR_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "ardite", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
-			"gold", "invar", "iron", "lead", "manyullyn", "nickel", "osmium", "platinum", "silver", "steel",
-			"tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "ardite", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
-			"gold", "invar", "iron", "lead", "manyullyn", "nickel", "osmium", "platinum", "silver", "steel",
-			"tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> TO_ROD_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "ardite", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
-			"gold", "invar", "iron", "lead", "manyullyn", "nickel", "osmium", "platinum", "silver", "steel",
-			"tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> TO_WIRE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> GENERAL_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"aluminum", "aluminium", "ardite", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
 			"gold", "invar", "iron", "lead", "manyullyn", "nickel", "osmium", "platinum", "silver", "steel",
 			"tin", "tungsten", "uranium", "zinc"));
@@ -122,7 +102,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
+					!GENERAL_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				if(api.getItemTags().contains(dustLocation)) {
@@ -134,7 +114,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_INGOT_BLACKLIST.contains(name) && !configToIngotBlacklist.contains(name)) {
+					!GENERAL_BLACKLIST.contains(name) && !configToIngotBlacklist.contains(name)) {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				if(api.getItemTags().contains(dustLocation)) {
@@ -148,7 +128,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_GEAR_BLACKLIST.contains(name) && !configToGearBlacklist.contains(name)) {
+					!GENERAL_BLACKLIST.contains(name) && !configToGearBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
 				if(api.getItemTags().contains(gearLocation)) {
@@ -158,7 +138,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
+					!GENERAL_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
 				if(api.getItemTags().contains(plateLocation)) {
@@ -168,7 +148,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_ROD_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
+					!GENERAL_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", material.getName());
 				if(api.getItemTags().contains(rodLocation)) {
@@ -178,7 +158,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_WIRE_BLACKLIST.contains(name) && !configToWireBlacklist.contains(name)) {
+					!GENERAL_BLACKLIST.contains(name) && !configToWireBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation wireLocation = miscHelper.getTagLocation("wires", material.getName());
 				if(api.getItemTags().contains(wireLocation)) {

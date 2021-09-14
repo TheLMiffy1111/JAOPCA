@@ -26,9 +26,7 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeTagHandler;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -62,7 +60,14 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ResourceLocation getTagLocation(String form, String material) {
-		return createResourceLocation(form+(StringUtils.isEmpty(material) ? "" : '/'+material));
+		return getTagLocation(form, material, "/");
+	}
+
+	@Override
+	public ResourceLocation getTagLocation(String form, String material, String separator) {
+		return createResourceLocation(form+
+				(StringUtils.isEmpty(material) ? "" :
+					(StringUtils.isEmpty(separator) ? "/" : separator)+material));
 	}
 
 	@Override

@@ -17,6 +17,8 @@ public interface IMiscHelper {
 
 	ResourceLocation getTagLocation(String form, String material);
 
+	ResourceLocation getTagLocation(String form, String material, String separator);
+
 	ItemStack getItemStack(Object obj, int count);
 
 	Ingredient getIngredient(Object obj);

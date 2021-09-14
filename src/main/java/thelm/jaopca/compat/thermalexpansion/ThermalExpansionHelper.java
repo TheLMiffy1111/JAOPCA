@@ -3,6 +3,7 @@ package thelm.jaopca.compat.thermalexpansion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import thelm.jaopca.compat.thermalexpansion.recipes.ChillerRecipeSupplier;
 import thelm.jaopca.compat.thermalexpansion.recipes.PressRecipeSupplier;
 import thelm.jaopca.compat.thermalexpansion.recipes.PulverizerRecipeSupplier;
 import thelm.jaopca.compat.thermalexpansion.recipes.SmelterRecipeSupplier;
@@ -41,5 +42,9 @@ public class ThermalExpansionHelper {
 
 	public boolean registerPressRecipe(ResourceLocation key, Object input, int inputCount, Object itemOutput, int itemOutputCount, int energy, float experience) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new PressRecipeSupplier(key, input, inputCount, itemOutput, itemOutputCount, energy, experience));
+	}
+
+	public boolean registerChillerRecipe(ResourceLocation key, Object fluidInput, int fluidInputAmount, Object itemInput, int itemInputCount, Object output, int outputCount, int energy, float experience) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new ChillerRecipeSupplier(key, fluidInput, fluidInputAmount, itemInput, itemInputCount, output, outputCount, energy, experience));
 	}
 }

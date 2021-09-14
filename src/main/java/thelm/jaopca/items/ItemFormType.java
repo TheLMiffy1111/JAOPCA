@@ -62,7 +62,7 @@ public class ItemFormType implements IItemFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName());
+		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName(), form.getTagSeparator());
 		return !ApiImpl.INSTANCE.getItemTags().contains(tagLocation);
 	}
 
@@ -96,6 +96,7 @@ public class ItemFormType implements IItemFormType {
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
+			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
 
@@ -107,9 +108,9 @@ public class ItemFormType implements IItemFormType {
 
 				Supplier<Item> itemSupplier = ()->item;
 				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
-				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
+				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
+					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 			}
 		}

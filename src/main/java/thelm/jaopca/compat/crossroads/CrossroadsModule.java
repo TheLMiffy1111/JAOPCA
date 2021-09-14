@@ -38,7 +38,7 @@ public class CrossroadsModule implements IModule {
 			"copper", "gold", "iron", "tin"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
-	
+
 	private final IForm gritForm = ApiImpl.INSTANCE.newForm(this, "crossroads_grits", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("crossroads:grits").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm clumpForm = ApiImpl.INSTANCE.newForm(this, "crossroads_clumps", ItemFormType.INSTANCE).
@@ -108,13 +108,13 @@ public class CrossroadsModule implements IModule {
 			ResourceLocation clumpLocation = miscHelper.getTagLocation("crossroads:clumps", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-			ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName());
+			ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
 
 			IDynamicSpecConfig config = configs.get(material);
 			String configByproduct = config.getDefinedString("crossroads.byproduct", "minecraft:sand",
 					s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s)), "The byproduct material to output in Crossroads' Millstone.");
 			Item byproduct = ForgeRegistries.ITEMS.getValue(new ResourceLocation(configByproduct));
-			
+
 			helper.registerMillRecipe(
 					new ResourceLocation("jaopca", "crossroads.ore_to_dust."+material.getName()),
 					oreLocation, dustLocation, 2, byproduct, 1);

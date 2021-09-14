@@ -30,28 +30,29 @@ public class ThermalExpansionCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"bronze", "constantan", "copper", "diamond", "electrum", "emerald", "enderium", "gold", "invar", "iron",
-			"lapis", "lead", "lumium", "nickel", "quartz", "ruby", "sapphire", "signalum", "silver", "tin"
-			));
+			"lapis", "lead", "lumium", "nickel", "quartz", "ruby", "sapphire", "signalum", "silver", "tin"));
 	private static final Set<String> TO_INGOT_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"copper", "enderium", "lead", "lumium", "nickel", "silver", "tin"
-			));
+			"copper", "enderium", "lead", "lumium", "nickel", "silver", "tin"));
 	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
-			"nickel", "signalum", "silver", "tin"
-			));
+			"nickel", "signalum", "silver", "tin"));
 	private static final Set<String> TO_GEAR_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
-			"nickel", "signalum", "silver", "tin"
-			));
-	private static final Set<String> TO_COIN_BLACKLIST = new TreeSet<>(Arrays.asList(
+			"nickel", "signalum", "silver", "tin"));
+	private static final Set<String> MATERIAL_TO_COIN_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
-			"nickel", "signalum", "silver", "tin"
-			));
+			"nickel", "signalum", "silver", "tin"));
+	private static final Set<String> NUGGET_TO_COIN_BLACKLIST = new TreeSet<>(Arrays.asList(
+			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
+			"nickel", "signalum", "silver", "tin"));
+	private static final Set<String> CHILLER_TO_INGOT_BLACKLIST = new TreeSet<>();
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToIngotBlacklist = new TreeSet<>();
 	private static Set<String> configToPlateBlacklist = new TreeSet<>();
 	private static Set<String> configToGearBlacklist = new TreeSet<>();
-	private static Set<String> configToCoinBlacklist = new TreeSet<>();
+	private static Set<String> configMaterialToCoinBlacklist = new TreeSet<>();
+	private static Set<String> configNuggetToCoinBlacklist = new TreeSet<>();
+	private static Set<String> configChillerToIngotBlacklist = new TreeSet<>();
 
 	static {
 		if(ModList.get().isLoaded("immersiveengineering")) {
@@ -65,6 +66,12 @@ public class ThermalExpansionCompatModule implements IModule {
 			Collections.addAll(TO_DUST_BLACKLIST, "super_useless", "useless");
 			Collections.addAll(TO_PLATE_BLACKLIST, "super_useless", "useless");
 			Collections.addAll(TO_GEAR_BLACKLIST, "super_useless", "useless");
+		}
+		if(ModList.get().isLoaded("tconstruct")) {
+			Collections.addAll(CHILLER_TO_INGOT_BLACKLIST, "bronze", "cobalt", "constantan", "copper", "debris",
+					"electrum", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn", "netherite",
+					"netherite_scrap", "nickel", "pig_iron", "queens_slime", "rose_gold", "silver", "silicon_bronze",
+					"slimesteel", "tin");
 		}
 	}
 
@@ -98,9 +105,17 @@ public class ThermalExpansionCompatModule implements IModule {
 						helper.configMaterialPredicate(), "The materials that should not have press to gear recipes added."),
 				configToGearBlacklist);
 		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.toCoinMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have press to coin recipes added."),
-				configToCoinBlacklist);
+				config.getDefinedStringList("recipes.materialToCoinMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have press material to coin recipes added."),
+				configMaterialToCoinBlacklist);
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.nuggetToCoinMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have press nugget to coin recipes added."),
+				configNuggetToCoinBlacklist);
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.chillerToIngotMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have chiller recipes added."),
+				configChillerToIngotBlacklist);
 	}
 
 	@Override
@@ -111,6 +126,7 @@ public class ThermalExpansionCompatModule implements IModule {
 		Item richSlag = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:rich_slag"));
 		Item gearDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_gear_die"));
 		Item coinDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_coin_die"));
+		Item ingotCast = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:chiller_ingot_cast"));
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
@@ -160,19 +176,33 @@ public class ThermalExpansionCompatModule implements IModule {
 				}
 			}
 			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_COIN_BLACKLIST.contains(name) && !configToCoinBlacklist.contains(name)) {
+					!MATERIAL_TO_COIN_BLACKLIST.contains(name) && !configMaterialToCoinBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
 				ResourceLocation coinLocation = miscHelper.getTagLocation("coins", material.getName());
 				if(api.getItemTags().contains(coinLocation)) {
 					helper.registerPressRecipe(new ResourceLocation("jaopca", "thermal_expansion.material_to_coin."+material.getName()),
 							materialLocation, 1, coinDie, 1, coinLocation, 3,
 							2400, 0F);
-					if(api.getItemTags().contains(nuggetLocation)) {
-						helper.registerPressRecipe(new ResourceLocation("jaopca", "thermal_expansion.nugget_to_coin."+material.getName()),
-								nuggetLocation, 3, coinDie, 1, coinLocation, 1,
-								800, 0F);
-					}
+				}
+			}
+			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
+					!NUGGET_TO_COIN_BLACKLIST.contains(name) && !configNuggetToCoinBlacklist.contains(name)) {
+				ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
+				ResourceLocation coinLocation = miscHelper.getTagLocation("coins", material.getName());
+				if(api.getItemTags().contains(nuggetLocation) && api.getItemTags().contains(coinLocation)) {
+					helper.registerPressRecipe(new ResourceLocation("jaopca", "thermal_expansion.nugget_to_coin."+material.getName()),
+							nuggetLocation, 3, coinDie, 1, coinLocation, 1,
+							800, 0F);
+				}
+			}
+			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
+					!CHILLER_TO_INGOT_BLACKLIST.contains(name) && !configChillerToIngotBlacklist.contains(name)) {
+				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
+				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+				if(api.getFluidTags().contains(moltenLocation)) {
+					helper.registerChillerRecipe(new ResourceLocation("jaopca", "thermal_expansion.molten_to_material."+material.getName()),
+							moltenLocation, 144, ingotCast, 1, materialLocation, 1,
+							5000, 0F);
 				}
 			}
 		}

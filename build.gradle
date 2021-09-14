@@ -80,7 +80,7 @@ sourceSets {
     main
 }
 
-version = "3.4.0.12"
+version = "3.4.1.13"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
@@ -112,8 +112,8 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:1.16.5-36.2.0"
 
-    implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.0.356")
+    implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.121")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.418")
 	implementation fg.deobf("mekanism:Mekanism:1.16.5-10.0.21.448")
 	implementation fg.deobf("mekanism:Mekanism:1.16.5-10.0.21.448:generators")
     implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.16.3:2.0.1")
@@ -127,22 +127,22 @@ dependencies {
         transitive = false
     }
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.1")
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.16.5-5.0.2-137")
-    implementation fg.deobf("slimeknights.mantle:Mantle:1.16.5-1.6.115")
-    implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.16.5-3.1.0.231")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.16.5-5.0.3-138")
+    implementation fg.deobf("slimeknights.mantle:Mantle:1.16.5-1.6.123")
+    implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.16.5-3.1.2.265")
     implementation fg.deobf("dev.latvian.mods:rhino:1605.1.1-build.20")
     implementation fg.deobf("me.shedaniel:architectury-forge:1.19.27")
     implementation fg.deobf("dev.latvian.mods:kubejs-forge:1605.3.12-build.38") {
         transitive = false
     }
     implementation fg.deobf("appeng:appliedenergistics2:8.4.0")
-    implementation fg.deobf("com.jozufozu.flywheel:Flywheel:1.16-0.1.1.26")
+    implementation fg.deobf("com.jozufozu.flywheel:Flywheel:1.16-0.2.3.44")
 
     //JitPack
 
     //CurseMaven
-    implementation fg.deobf("curse.maven:ato:3394539")
-    implementation fg.deobf("curse.maven:allthemodium:3394540")
+    implementation fg.deobf("curse.maven:ato:3405905")
+    implementation fg.deobf("curse.maven:allthemodium:3446105")
     implementation fg.deobf("curse.maven:silent-lib:3235738")
     implementation fg.deobf("curse.maven:silents-mechanisms:3272909")
     implementation fg.deobf("curse.maven:silents-gems:3353519")
@@ -151,21 +151,21 @@ dependencies {
     implementation fg.deobf("curse.maven:essentials:3393808")
     implementation fg.deobf("curse.maven:crossroads-mc:3347113")
     implementation fg.deobf("curse.maven:fl:3293009")
-    implementation fg.deobf("curse.maven:flux:3293011")
+    implementation fg.deobf("curse.maven:flux-machinery:3293011")
     implementation fg.deobf("curse.maven:cofh-core:3407019")
     implementation fg.deobf("curse.maven:thermal-foundation:3407024")
     implementation fg.deobf("curse.maven:thermal-expansion:3404884")
-    implementation fg.deobf("curse.maven:create:3386319")
-    implementation fg.deobf("curse.maven:blood-magic:3399440")
-    implementation fg.deobf("curse.maven:occultism:3398241")
-    implementation fg.deobf("curse.maven:futurepack:3345232")
+    implementation fg.deobf("curse.maven:create:3419412")
+    implementation fg.deobf("curse.maven:blood-magic:3452124")
+    implementation fg.deobf("curse.maven:occultism:3453087")
+    implementation fg.deobf("curse.maven:futurepack:3427287")
     implementation fg.deobf("curse.maven:themcbros-useless-mod:3364720")
     implementation fg.deobf("curse.maven:electrodynamics:3328009")
-    implementation fg.deobf("curse.maven:libvulpes:3305524")
+    implementation fg.deobf("curse.maven:libvulpes:3434862")
     implementation fg.deobf("curse.maven:advanced-rocketry:3302417")
-    implementation fg.deobf("curse.maven:cyclops-core:3336467")
+    implementation fg.deobf("curse.maven:cyclops-core:3443983")
     implementation fg.deobf("curse.maven:common-capabilities:3292062")
-    implementation fg.deobf("curse.maven:integrated-dynamics:3376007")
+    implementation fg.deobf("curse.maven:integrated-dynamics:3443990")
     implementation fg.deobf("curse.maven:voluminous-energy:3381883")
 }
 
