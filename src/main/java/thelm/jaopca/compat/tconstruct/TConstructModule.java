@@ -41,7 +41,17 @@ public class TConstructModule implements IModule {
 			Collections.addAll(BLACKLIST, "allthemodium", "unobtainium", "vibranium");
 		}
 		if(ModList.get().isLoaded("materialis")) {
-			Collections.addAll(BLACKLIST, "cloggrum", "froststeel", "iesnium", "quicksilver", "regalium", "utherium");
+			Collections.addAll(BLACKLIST, "cloggrum", "froststeel", "iesnium", "quicksilver", "regalium", "starmetal", "utherium");
+		}
+		if(ModList.get().isLoaded("bettercompat")) {
+			Collections.addAll(BLACKLIST, "amethyst", "black_opal", "certus_quartz", "moonstone", "thallasium");
+		}
+		if(ModList.get().isLoaded("natureminerals")) {
+			Collections.addAll(BLACKLIST, "astrite", "kunzite", "stibnite", "uvarovite");
+		}
+		if(ModList.get().isLoaded("taiga")) {
+			Collections.addAll(BLACKLIST, "abyssum", "aurorium", "dilithium", "duranite", "eezo", "jauxum", "karmesine",
+					"osram", "ovium", "palladium", "prometheum", "tiberium", "uru", "valyrium", "vibranium");
 		}
 	}
 

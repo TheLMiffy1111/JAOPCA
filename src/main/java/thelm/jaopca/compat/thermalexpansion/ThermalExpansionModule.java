@@ -33,7 +33,8 @@ public class ThermalExpansionModule implements IModule {
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"copper", "gold", "iron", "lead", "nickel", "silver", "tin"));
 	private static final Set<String> PULVERIZER_BLACKLIST = new TreeSet<>();
-	private static final Set<String> SMELTER_BLACKLIST = new TreeSet<>();
+	private static final Set<String> SMELTER_BLACKLIST = new TreeSet<>(Arrays.asList(
+			"netherite", "netherite_scrap"));
 
 	static {
 		if(ModList.get().isLoaded("create")) {
@@ -109,19 +110,23 @@ public class ThermalExpansionModule implements IModule {
 				}
 			}
 			else {
-				helper.registerPulverizerRecipe(
-						new ResourceLocation("jaopca", "thermal_expansion.ore_to_dust."+material.getName()),
-						oreLocation, 1, new Object[] {
-								dustLocation, 2F,
-								Blocks.GRAVEL, 0.2F,
-						}, 4000, 0.2F);
-				helper.registerSmelterRecipe(
-						new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()), new Object[] {
-								oreLocation,
-						}, new Object[] {
-								materialLocation, 1F,
-								richSlag, 0.2F,
-						}, 3200, 0.2F);
+				if(!PULVERIZER_BLACKLIST.contains(material.getName())) {
+					helper.registerPulverizerRecipe(
+							new ResourceLocation("jaopca", "thermal_expansion.ore_to_dust."+material.getName()),
+							oreLocation, 1, new Object[] {
+									dustLocation, 2F,
+									Blocks.GRAVEL, 0.2F,
+							}, 4000, 0.2F);
+				}
+				if(!SMELTER_BLACKLIST.contains(material.getName())) {
+					helper.registerSmelterRecipe(
+							new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()), new Object[] {
+									oreLocation,
+							}, new Object[] {
+									materialLocation, 1F,
+									richSlag, 0.2F,
+							}, 3200, 0.2F);
+				}
 			}
 		}
 	}

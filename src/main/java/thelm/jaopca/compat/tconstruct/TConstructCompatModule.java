@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.ToIntFunction;
@@ -61,6 +62,12 @@ public class TConstructCompatModule implements IModule {
 			"netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime", "rose_gold",
 			"silicon_bronze", "silver", "slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium",
 			"zinc"));
+	private static final Set<String> COIN_BLACKLIST = new TreeSet<>(Arrays.asList(
+			"aluminum", "aluminium", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
+			"gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn", "netherite",
+			"nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime", "rose_gold",
+			"silicon_bronze", "silver", "slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium",
+			"zinc"));
 	private static final Set<String> GENERAL_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"aluminum", "aluminium", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
 			"gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn", "netherite",
@@ -88,18 +95,62 @@ public class TConstructCompatModule implements IModule {
 
 	static {
 		if(ModList.get().isLoaded("allthemodium")) {
-			Collections.addAll(MATERIAL_BLACKLIST, "allthemodium", "unobtainium", "vibranium");
-			Collections.addAll(STORAGE_BLOCK_BLACKLIST, "allthemodium", "unobtainium", "vibranium");
-			Collections.addAll(NUGGET_BLACKLIST, "allthemodium", "unobtainium", "vibranium");
-			Collections.addAll(DUST_BLACKLIST, "allthemodium", "unobtainium", "vibranium");
+			List<String> materials = Arrays.asList("allthemodium", "unobtainium", "vibranium");
+			MATERIAL_BLACKLIST.addAll(materials);
+			STORAGE_BLOCK_BLACKLIST.addAll(materials);
+			NUGGET_BLACKLIST.addAll(materials);
+			DUST_BLACKLIST.addAll(materials);
 		}
 		if(ModList.get().isLoaded("materialis")) {
-			Collections.addAll(MATERIAL_BLACKLIST, "cloggrum", "froststeel", "iesnium", "quicksilver", "regalium", "utherium");
-			Collections.addAll(STORAGE_BLOCK_BLACKLIST, "cloggrum", "froststeel", "iesnium", "quicksilver", "regalium", "utherium");
-			Collections.addAll(NUGGET_BLACKLIST, "cloggrum", "froststeel", "iesnium", "quicksilver", "regalium", "utherium");
-			Collections.addAll(DUST_BLACKLIST, "cloggrum", "froststeel", "iesnium", "quicksilver", "regalium", "utherium");
-			Collections.addAll(PLATE_BLACKLIST, "cloggrum", "froststeel", "iesnium", "quicksilver", "regalium", "utherium");
-			Collections.addAll(GENERAL_BLACKLIST, "cloggrum", "froststeel", "iesnium", "quicksilver", "regalium", "utherium");
+			List<String> materials = Arrays.asList("arcane_gold", "cloggrum", "ebony_psimetal", "fairy",
+					"forgotten_metal", "froststeel", "iesnium", "ivory_psimetal", "neptunium", "pink_slime",
+					"psimetal", "quicksilver", "refined_glowstone", "refined_obsidian", "refined_radiance",
+					"regalium", "shadow_steel", "starmetal", "utherium");
+			MATERIAL_BLACKLIST.addAll(materials);
+			STORAGE_BLOCK_BLACKLIST.addAll(materials);
+			NUGGET_BLACKLIST.addAll(materials);
+			DUST_BLACKLIST.addAll(materials);
+			PLATE_BLACKLIST.addAll(materials);
+			COIN_BLACKLIST.addAll(materials);
+			GENERAL_BLACKLIST.addAll(materials);
+		}
+		if(ModList.get().isLoaded("bettercompat")) {
+			Collections.addAll(MATERIAL_BLACKLIST, "aeternium", "amethyst", "black_opal", "certus_quartz",
+					"elementium", "endorium", "fluix", "manasteel", "moonstone", "neptunium", "terminite",
+					"terrasteel", "thallasium");
+			Collections.addAll(STORAGE_BLOCK_BLACKLIST, "certus_quartz", "elementium", "endorium", "fluix",
+					"manasteel", "moonstone", "neptunium", "terrasteel");
+			Collections.addAll(NUGGET_BLACKLIST, "endorium", "terminite", "thallasium");
+		}
+		if(ModList.get().isLoaded("tdelight")) {
+			List<String> materials = Arrays.asList("gildedfern", "hamletite", "rosenquartz");
+			MATERIAL_BLACKLIST.addAll(materials);
+			STORAGE_BLOCK_BLACKLIST.addAll(materials);
+			NUGGET_BLACKLIST.addAll(materials);
+			DUST_BLACKLIST.addAll(materials);
+			PLATE_BLACKLIST.addAll(materials);
+			COIN_BLACKLIST.addAll(materials);
+			GENERAL_BLACKLIST.addAll(materials);
+		}
+		if(ModList.get().isLoaded("natureminerals")) {
+			List<String> materials = Arrays.asList("astrite", "kunzite", "stibnite", "thounite", "uvarovite");
+			MATERIAL_BLACKLIST.addAll(materials);
+			STORAGE_BLOCK_BLACKLIST.addAll(materials);
+			NUGGET_BLACKLIST.addAll(materials);
+			DUST_BLACKLIST.addAll(materials);
+			PLATE_BLACKLIST.addAll(materials);
+			GENERAL_BLACKLIST.addAll(materials);
+		}
+		if(ModList.get().isLoaded("taiga")) {
+			List<String> materials = Arrays.asList("abyssum", "adamant", "astrium", "aurorium", "basalt",
+					"dilithium", "duranite", "dyonite", "eezo", "fractum", "ignitz", "imperomite", "iox",
+					"jauxum", "karmesine", "lumix", "meteorite", "nihilite", "niob", "nucleum", "obsidiorite",
+					"osram", "ovium", "palladium", "prometheum", "proxii", "seismum", "solarium", "terrax",
+					"tiberium", "triberium", "tritonite", "uru", "valyrium", "vibranium", "violium", "yrdeen");
+			MATERIAL_BLACKLIST.addAll(materials);
+			STORAGE_BLOCK_BLACKLIST.addAll(materials);
+			NUGGET_BLACKLIST.addAll(materials);
+			DUST_BLACKLIST.addAll(materials);
 		}
 	}
 
@@ -265,7 +316,7 @@ public class TConstructCompatModule implements IModule {
 									tempFunction, getMeltTimeFunction(2F), false);
 						}
 					}
-					if(!GENERAL_BLACKLIST.contains(name) && !configCoinToMoltenBlacklist.contains(name)) {
+					if(!COIN_BLACKLIST.contains(name) && !configCoinToMoltenBlacklist.contains(name)) {
 						ResourceLocation coinLocation = miscHelper.getTagLocation("coins", material.getName());
 						if(api.getItemTags().contains(coinLocation)) {
 							helper.registerMeltingRecipe(
