@@ -62,7 +62,14 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ResourceLocation getTagLocation(String form, String material) {
-		return createResourceLocation(form+(StringUtils.isEmpty(material) ? "" : '/'+material));
+		return getTagLocation(form, material, "/");
+	}
+
+	@Override
+	public ResourceLocation getTagLocation(String form, String material, String separator) {
+		return createResourceLocation(form+
+				(StringUtils.isEmpty(material) ? "" :
+					(StringUtils.isEmpty(separator) ? "/" : separator)+material));
 	}
 
 	@Override

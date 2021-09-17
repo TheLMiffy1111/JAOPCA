@@ -47,9 +47,6 @@ public class ClientEventHandler {
 				LocalizationRepoHandler.reload();
 			}
 		});
-		event.enqueueWork(()->{
-			ModuleHandler.onClientSetup(event);
-		});
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
 			ItemBlockRenderTypes.setRenderLayer(block.asBlock(), RenderType.translucent());
 		}
@@ -59,6 +56,7 @@ public class ClientEventHandler {
 		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
 			ItemBlockRenderTypes.setRenderLayer(fluidBlock.asBlock(), RenderType.translucent());
 		}
+		ModuleHandler.onClientSetup(event);
 	}
 
 	@SubscribeEvent

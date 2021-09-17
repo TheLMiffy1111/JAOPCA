@@ -68,7 +68,7 @@ public class FluidFormType implements IFluidFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName());
+		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName(), form.getTagSeparator());
 		return !ApiImpl.INSTANCE.getFluidTags().contains(tagLocation);
 	}
 
@@ -102,6 +102,7 @@ public class FluidFormType implements IFluidFormType {
 		for(IForm form : FORMS) {
 			IFluidFormSettings settings = (IFluidFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
+			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
 
@@ -124,9 +125,9 @@ public class FluidFormType implements IFluidFormType {
 				RegistryHandler.registerForgeRegistryEntry(bucketItem);
 
 				DataInjector.registerFluidTag(helper.createResourceLocation(secondaryName), registryName);
-				DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
+				DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
+					DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 			}
 		}

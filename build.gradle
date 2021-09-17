@@ -13,15 +13,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-		//classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
+        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
+		classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
     }
 }
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
 apply plugin: "maven-publish"
-//apply plugin: "org.spongepowered.mixin"
+apply plugin: "org.spongepowered.mixin"
 
 repositories {
     jcenter()
@@ -74,11 +74,14 @@ sourceSets {
     main
 }
 
-version = "4.a.0.2"
+version = "4.a.0.3"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.17.1"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+
+eclipseJdtApt.enabled = false
+eclipseFactoryPath.enabled = false
 
 minecraft {
     mappings channel: 'official', version: '1.17.1'
@@ -103,7 +106,10 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.17.1-37.0.33'
+    minecraft "net.minecraftforge:forge:1.17.1-37.0.65"
+    annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
+
+    implementation fg.deobf("mezz.jei:jei-1.17.1:8.0.0.16")
 
     //JitPack
 
@@ -120,11 +126,11 @@ jar {
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor": "thelm",
                 //"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-				//"MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
+				"MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
         ],)
     }
 }
 
-//mixin {
-//    add sourceSets.main, "mixins.jaopca.refmap.json"
-//}
+mixin {
+    add sourceSets.main, "mixins.jaopca.refmap.json"
+}

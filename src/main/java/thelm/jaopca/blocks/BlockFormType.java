@@ -71,7 +71,7 @@ public class BlockFormType implements IBlockFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName());
+		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName(), form.getTagSeparator());
 		return !ApiImpl.INSTANCE.getItemTags().contains(tagLocation);
 	}
 
@@ -112,6 +112,7 @@ public class BlockFormType implements IBlockFormType {
 		for(IForm form : FORMS) {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
+			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
 				ResourceLocation lootLocation = new ResourceLocation("jaopca", "blocks/"+form.getName()+'.'+material.getName());
@@ -133,9 +134,9 @@ public class BlockFormType implements IBlockFormType {
 				DataInjector.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock, settings));
 
 				DataInjector.registerBlockTag(helper.createResourceLocation(secondaryName), registryName);
-				DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
+				DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
+					DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 
 				DataInjector.registerBlockTag(new ResourceLocation(toolTag), registryName);
@@ -144,9 +145,9 @@ public class BlockFormType implements IBlockFormType {
 				}
 
 				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
-				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
+				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
+					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 			}
 		}

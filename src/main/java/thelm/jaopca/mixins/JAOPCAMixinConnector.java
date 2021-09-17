@@ -1,10 +1,15 @@
 package thelm.jaopca.mixins;
 
-public class JAOPCAMixinConnector /*implements IMixinConnector*/ {
+import org.spongepowered.asm.mixin.Mixins;
+import org.spongepowered.asm.mixin.connect.IMixinConnector;
 
-	//@Override
-	//public void connect() {
-	//	JAOPCA.mixinLoaded = true;
-	//	Mixins.addConfiguration("jaopca.mixins.json");
-	//}
+import thelm.jaopca.JAOPCA;
+
+public class JAOPCAMixinConnector implements IMixinConnector {
+
+	@Override
+	public void connect() {
+		JAOPCA.mixinLoaded = true;
+		Mixins.addConfiguration("jaopca.mixins.json");
+	}
 }

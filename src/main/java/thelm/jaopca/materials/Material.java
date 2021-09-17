@@ -26,7 +26,7 @@ public class Material implements IMaterial {
 
 	private final String name;
 	private final MaterialType type;
-	private String modelType = "metallic";
+	private String modelType;
 	private final TreeSet<String> alternativeNames = new TreeSet<>();
 	private OptionalInt color = OptionalInt.empty();
 	private boolean hasEffect = false;
@@ -38,6 +38,13 @@ public class Material implements IMaterial {
 	public Material(String name, MaterialType type) {
 		this.name = name;
 		this.type = type;
+
+		modelType = switch(type) {
+		case INGOT, INGOT_PLAIN -> "metallic";
+		case GEM, GEM_PLAIN, CRYSTAL, CRYSTAL_PLAIN -> "crystal";
+		case DUST, DUST_PLAIN -> "dust";
+		default -> "metallic";
+		};
 	}
 
 	@Override
@@ -152,8 +159,8 @@ public class Material implements IMaterial {
 	}
 
 	private static boolean isModelTypeValid(String modelType) {
-		return modelType.chars().allMatch(c -> c == 95 || c == 45
-				|| (c >= 97 && c <= 122) || (c >= 48 && c <= 57)
-				|| c == 47 || c == 46);
+		return modelType.chars().allMatch(c -> c == '_' || c == '-'
+				|| (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')
+				|| c == '/' || c == '.');
 	}
 }

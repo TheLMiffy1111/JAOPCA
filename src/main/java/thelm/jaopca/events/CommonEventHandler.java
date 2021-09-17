@@ -39,27 +39,25 @@ public class CommonEventHandler {
 	@SubscribeEvent
 	public void onConstruct(FMLConstructModEvent event) {
 		ApiImpl.INSTANCE.init();
-		event.enqueueWork(()->{
-			BlockFormType.init();
-			ItemFormType.init();
-			FluidFormType.init();
-			DataCollector.collectData();
-			ModuleHandler.findModules();
-			ConfigHandler.setupMainConfig();
-			MaterialHandler.findMaterials();
-			ConfigHandler.setupMaterialConfigs();
-			FormTypeHandler.setupGson();
-			ConfigHandler.setupCustomFormConfig();
-			ConfigHandler.setupModuleConfigsPre();
-			FormHandler.collectForms();
-			ModuleHandler.computeValidMaterials();
-			FormHandler.computeValidMaterials();
-			ConfigHandler.setupModuleConfigs();
-			BlockFormType.registerEntries();
-			ItemFormType.registerEntries();
-			FluidFormType.registerEntries();
-			ModuleHandler.onMaterialComputeComplete();
-		});
+		BlockFormType.init();
+		ItemFormType.init();
+		FluidFormType.init();
+		DataCollector.collectData();
+		ModuleHandler.findModules();
+		ConfigHandler.setupMainConfig();
+		MaterialHandler.findMaterials();
+		ConfigHandler.setupMaterialConfigs();
+		FormTypeHandler.setupGson();
+		ConfigHandler.setupCustomFormConfig();
+		ConfigHandler.setupModuleConfigsPre();
+		FormHandler.collectForms();
+		ModuleHandler.computeValidMaterials();
+		FormHandler.computeValidMaterials();
+		ConfigHandler.setupModuleConfigs();
+		BlockFormType.registerEntries();
+		ItemFormType.registerEntries();
+		FluidFormType.registerEntries();
+		ModuleHandler.onMaterialComputeComplete();
 	}
 
 	@SubscribeEvent
@@ -69,9 +67,7 @@ public class CommonEventHandler {
 
 	@SubscribeEvent
 	public void onCommonSetup(FMLCommonSetupEvent event) {
-		event.enqueueWork(()->{
-			ModuleHandler.onCommonSetup(event);
-		});
+		ModuleHandler.onCommonSetup(event);
 	}
 
 	@SubscribeEvent

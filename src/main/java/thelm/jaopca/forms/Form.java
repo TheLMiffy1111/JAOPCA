@@ -29,6 +29,7 @@ public class Form implements IForm {
 	private final TreeSet<String> materialWhitelist = new TreeSet<>();
 	private IFormSettings settings;
 	private boolean skipGroupCheck = false;
+	private String tagSeparator = "/";
 	private boolean locked = false;
 	private IFormRequest request;
 	private final TreeSet<IMaterial> materials = new TreeSet<>();
@@ -139,6 +140,19 @@ public class Form implements IForm {
 	@Override
 	public boolean skipGroupedCheck() {
 		return skipGroupCheck;
+	}
+
+	@Override
+	public IForm setTagSeparator(String tagSeparator) {
+		if(!locked) {
+			this.tagSeparator = tagSeparator;
+		}
+		return this;
+	}
+
+	@Override
+	public String getTagSeparator() {
+		return tagSeparator;
 	}
 
 	@Override

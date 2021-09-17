@@ -136,7 +136,9 @@ public class MaterialHandler {
 		for(String tag : tags) {
 			if(tag.startsWith(path)) {
 				String name = tag.substring(path.length());
-				ret.add(name);
+				if(!name.contains("/")) {
+					ret.add(name);
+				}
 			}
 		}
 		return ret;
@@ -148,7 +150,7 @@ public class MaterialHandler {
 		for(String tag : tags) {
 			if(tag.startsWith(path1)) {
 				String name = tag.substring(path1.length());
-				if(tags.contains(path2+name)) {
+				if(!name.contains("/") && tags.contains(path2+name)) {
 					ret.add(name);
 				}
 			}
