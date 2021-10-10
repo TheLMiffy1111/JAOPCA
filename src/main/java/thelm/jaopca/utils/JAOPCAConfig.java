@@ -126,8 +126,8 @@ public class JAOPCAConfig {
 				String configExtra3 = configFile.get(name, "extra3", originalExtra3, "The tertiary byproduct material for this material.").setRequiresMcRestart(true).getString();
 				boolean doesOreExist3 = Utils.doesOreNameExist("ore"+configExtra3);
 
-				if(doesOreExist2) {
-					entry.setThirdExtra(configExtra2);
+				if(doesOreExist3) {
+					entry.setThirdExtra(configExtra3);
 				}
 				else {
 					JAOPCAApi.LOGGER.warn("Found invalid third extra name in ore entry "+entry.getOreName()+", replacing");

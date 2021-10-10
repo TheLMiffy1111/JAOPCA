@@ -68,7 +68,7 @@ public class OreEntry {
 
 	@ZenGetter("extra")
 	public OreEntry getExtra() {
-		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getExtra().equals(entry.getExtra())).map(OreEntry::new).findAny().orElse(null);
+		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getExtra().equals(entry.getOreName())).map(OreEntry::new).findAny().orElse(null);
 	}
 
 	@ZenGetter("extraName")
@@ -108,7 +108,7 @@ public class OreEntry {
 
 	@ZenGetter("secondExtra")
 	public OreEntry getSecondExtra() {
-		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getSecondExtra().equals(entry.getSecondExtra())).map(OreEntry::new).findAny().orElse(null);
+		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getSecondExtra().equals(entry.getOreName())).map(OreEntry::new).findAny().orElse(null);
 	}
 
 	@ZenGetter("secondExtraName")
@@ -148,7 +148,7 @@ public class OreEntry {
 
 	@ZenGetter("thirdExtra")
 	public OreEntry getThirdExtra() {
-		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getThirdExtra().equals(entry.getThirdExtra())).map(OreEntry::new).findAny().orElse(null);
+		return JAOPCAApi.ORE_ENTRY_LIST.stream().filter(entry->this.entry.getThirdExtra().equals(entry.getOreName())).map(OreEntry::new).findAny().orElse(null);
 	}
 
 	@ZenGetter("thirdExtraName")
