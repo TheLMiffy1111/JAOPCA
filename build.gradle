@@ -80,7 +80,7 @@ sourceSets {
     main
 }
 
-version = "3.4.1.14"
+version = "3.4.1.15"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
@@ -167,6 +167,7 @@ dependencies {
     implementation fg.deobf("curse.maven:common-capabilities:3292062")
     implementation fg.deobf("curse.maven:integrated-dynamics:3443990")
     implementation fg.deobf("curse.maven:voluminous-energy:3381883")
+    implementation fg.deobf("curse.maven:assemblylinemachines:3493402")
 }
 
 jar {

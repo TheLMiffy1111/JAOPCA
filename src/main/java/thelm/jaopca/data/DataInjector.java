@@ -149,6 +149,10 @@ public class DataInjector extends ReloadListener<Object> {
 				LOGGER.warn("Recipe with ID {} received invalid arguments: {}", entry.getKey(), e.getMessage());
 				continue;
 			}
+			catch(Throwable e) {
+				LOGGER.error("Recipe with ID "+entry.getKey()+" errored", e);
+				continue;
+			}
 			if(recipe == null) {
 				LOGGER.warn("Recipe with ID {} returned null", entry.getKey());
 			}

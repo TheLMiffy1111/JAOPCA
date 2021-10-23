@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
@@ -20,9 +22,12 @@ import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.client.colors.ColorHandler;
+import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.utils.MiscHelper;
 
 public class Material implements IMaterial {
+
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	private final String name;
 	private final MaterialType type;
@@ -93,7 +98,12 @@ public class Material implements IMaterial {
 			DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
 				color = OptionalInt.of(0xFFFFFF);
 				MiscHelper.INSTANCE.submitAsyncTask(()->{
-					color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(getTag()), "The color of this material."));
+					try {
+						color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(getTag()), "The color of this material."));
+					}
+					catch(Exception e) {
+						LOGGER.warn("Unable to get color for material "+name, e);
+					}
 				});
 			});
 		}
@@ -130,6 +140,9 @@ public class Material implements IMaterial {
 		hasEffect = config.getDefinedBoolean("general.hasEffect", hasEffect, "Should items of this material have the enchanted glow.");
 		modelType = config.getDefinedString("general.modelType", modelType, s->isModelTypeValid(s), "The model type of the material.");
 
+		if(ConfigHandler.resetColors) {
+			config.remove("general.color");
+		}
 		color = config.getOptionalInt("general.color");
 	}
 

@@ -73,6 +73,7 @@ public class ConfigHandler {
 	public static final Set<ResourceLocation> ADVANCEMENT_BLACKLIST = new TreeSet<>();
 
 	public static double gammaValue = 2;
+	public static boolean resetColors = false;
 
 	public static boolean checkL10nUpdates = true;
 	public static double updateInterval = 3;
@@ -152,6 +153,8 @@ public class ConfigHandler {
 
 		mainConfig.setComment("colors", "Configurations related to color generation.");
 		gammaValue = mainConfig.getDefinedDouble("colors.gammaValue", gammaValue, "The gamma value used to blend colors.");
+		resetColors = mainConfig.getDefinedBoolean("colors.resetColors", false, "Should colors of all materials be reset on next startup.");
+		mainConfig.set("colors.resetColors", false);
 
 		mainConfig.setComment("materialLocalization", "Configurations related to material localization.");
 		checkL10nUpdates = mainConfig.getDefinedBoolean("materialLocalization.checkL10nUpdates", checkL10nUpdates, "Should the mod check for material localization updates.");
