@@ -1,22 +1,13 @@
-package thelm.jaopca.compat.crafttweaker;
+package thelm.jaopca.compat.kubejs.utils;
 
-import org.openzen.zencode.java.ZenCodeType;
-
-import com.blamejared.crafttweaker.api.annotations.ZenRegister;
-import com.blamejared.crafttweaker.api.fluid.IFluidStack;
-import com.blamejared.crafttweaker.api.item.IItemStack;
-import com.blamejared.crafttweaker.impl.fluid.MCFluidStack;
-import com.blamejared.crafttweaker.impl.item.MCItemStack;
-import com.blamejared.crafttweaker.impl.tag.MCTag;
-import com.blamejared.crafttweaker.impl.tag.manager.TagManager;
-import com.blamejared.crafttweaker.impl.tag.manager.TagManagerItem;
 import com.google.common.collect.TreeBasedTable;
 
+import dev.latvian.kubejs.fluid.EmptyFluidStackJS;
+import dev.latvian.kubejs.fluid.FluidStackJS;
+import dev.latvian.kubejs.item.ItemStackJS;
+import dev.latvian.kubejs.item.ingredient.TagIngredientJS;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IItemProvider;
-import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.blocks.IBlockProvider;
 import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.api.forms.IForm;
@@ -24,8 +15,6 @@ import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
 
-@ZenRegister
-@ZenCodeType.Name("mods.jaopca.MaterialForm")
 public class MaterialForm {
 
 	private static final TreeBasedTable<IForm, IMaterial, MaterialForm> MATERIAL_FORM_WRAPPERS = TreeBasedTable.create();
@@ -48,51 +37,36 @@ public class MaterialForm {
 		return info;
 	}
 
-	@ZenCodeType.Getter("form")
 	public Form getForm() {
 		return Form.getFormWrapper(info.getMaterialForm().getForm());
 	}
 
-	@ZenCodeType.Getter("material")
 	public Material getMaterial() {
 		return Material.getMaterialWrapper(info.getMaterialForm().getMaterial());
 	}
 
-	@ZenCodeType.Method
-	public MCTag asTag() {
-		return asTag(TagManagerItem.INSTANCE);
-	}
-
-	@ZenCodeType.Method
-	public MCTag asTag(TagManager manager) {
-		return new MCTag(MiscHelper.INSTANCE.getTagLocation(
+	public TagIngredientJS asTag() {
+		return TagIngredientJS.createTag(MiscHelper.INSTANCE.getTagLocation(
 				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName(),
-				info.getMaterialForm().getForm().getTagSeparator()),
-				manager);
+				info.getMaterialForm().getForm().getTagSeparator()).
+				toString());
 	}
 
-	@ZenCodeType.Method
-	public IItemStack asItemStack(int count) {
-		if(!(info instanceof IItemProvider)) {
-			return null;
-		}
-		return new MCItemStack(new ItemStack((IItemProvider)info, count));
+	public ItemStackJS asItemStack(int count) {
+		return ItemStackJS.of(info);
 	}
 
-	@ZenCodeType.Method
-	public IItemStack asItemStack() {
+	public ItemStackJS asItemStack() {
 		return asItemStack(1);
 	}
 
-	@ZenCodeType.Method
-	public IFluidStack asFluidStack(int amount) {
+	public FluidStackJS asFluidStack(int amount) {
 		if(!(info instanceof IFluidProvider)) {
-			return null;
+			return EmptyFluidStackJS.INSTANCE;
 		}
-		return new MCFluidStack(new FluidStack(((IFluidProvider)info).asFluid(), amount));
+		return FluidStackJS.of(((IFluidProvider)info).asFluid(), amount, null);
 	}
 
-	@ZenCodeType.Method
 	public Block asBlock() {
 		if(!(info instanceof IBlockProvider)) {
 			return null;
@@ -100,7 +74,6 @@ public class MaterialForm {
 		return ((IBlockProvider)info).asBlock();
 	}
 
-	@ZenCodeType.Method
 	public BlockState asBlockState() {
 		if(!(info instanceof IBlockProvider)) {
 			return null;
