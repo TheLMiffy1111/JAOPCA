@@ -6,6 +6,7 @@ import java.util.Locale;
 public enum MaterialType {
 
 	INGOT("ingots"),
+	INGOT_LEGACY("ingots"),
 	GEM("gems"),
 	CRYSTAL("crystals"),
 	DUST("dusts"),
@@ -14,12 +15,12 @@ public enum MaterialType {
 	CRYSTAL_PLAIN("crystals"),
 	DUST_PLAIN("dusts");
 
-	public static final MaterialType[] INGOTS = {INGOT, INGOT_PLAIN};
+	public static final MaterialType[] INGOTS = {INGOT, INGOT_LEGACY, INGOT_PLAIN};
 	public static final MaterialType[] GEMS = {GEM, GEM_PLAIN};
 	public static final MaterialType[] CRYSTALS = {CRYSTAL, CRYSTAL_PLAIN};
 	public static final MaterialType[] DUSTS = {DUST, DUST_PLAIN};
-	public static final MaterialType[] NON_DUSTS = {INGOT, GEM, CRYSTAL, INGOT_PLAIN, GEM_PLAIN, CRYSTAL_PLAIN};
-	public static final MaterialType[] ORE = {INGOT, GEM, CRYSTAL, DUST};
+	public static final MaterialType[] NON_DUSTS = {INGOT, INGOT_LEGACY, GEM, CRYSTAL, INGOT_PLAIN, GEM_PLAIN, CRYSTAL_PLAIN};
+	public static final MaterialType[] ORE = {INGOT, INGOT_LEGACY, GEM, CRYSTAL, DUST};
 
 	private final String formName;
 

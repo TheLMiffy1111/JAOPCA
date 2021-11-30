@@ -43,6 +43,7 @@ public class ConfigHandler {
 	private static final TreeMap<IModule, IDynamicSpecConfig> MODULE_CONFIGS = new TreeMap<>();
 
 	public static boolean ingot = true;
+	public static boolean ingotLegacy = true;
 	public static boolean gem = true;
 	public static boolean crystal = true;
 	public static boolean dust = true;
@@ -73,6 +74,7 @@ public class ConfigHandler {
 	public static final Set<ResourceLocation> ADVANCEMENT_BLACKLIST = new TreeSet<>();
 
 	public static double gammaValue = 2;
+	public static boolean resetColors = false;
 
 	public static boolean checkL10nUpdates = true;
 	public static double updateInterval = 3;
@@ -98,6 +100,7 @@ public class ConfigHandler {
 
 		mainConfig.setComment("materials", "Configurations related to materials.");
 		ingot = mainConfig.getDefinedBoolean("materials.ingot", ingot, "Should the mod find ingot materials with ores.");
+		ingotLegacy = mainConfig.getDefinedBoolean("materials.ingotLegacy", ingot, "Should the mod find ingot materials with ores but without raw ores.");
 		gem = mainConfig.getDefinedBoolean("materials.gem", gem, "Should the mod find gem materials with ores.");
 		crystal = mainConfig.getDefinedBoolean("materials.crystal", crystal, "Should the mod find crystal materials with ores.");
 		dust = mainConfig.getDefinedBoolean("materials.dust", dust, "Should the mod find dust materials with ores.");
@@ -152,6 +155,8 @@ public class ConfigHandler {
 
 		mainConfig.setComment("colors", "Configurations related to color generation.");
 		gammaValue = mainConfig.getDefinedDouble("colors.gammaValue", gammaValue, "The gamma value used to blend colors.");
+		resetColors = mainConfig.getDefinedBoolean("colors.resetColors", false, "Should colors of all materials be reset on next startup.");
+		mainConfig.set("colors.resetColors", false);
 
 		mainConfig.setComment("materialLocalization", "Configurations related to material localization.");
 		checkL10nUpdates = mainConfig.getDefinedBoolean("materialLocalization.checkL10nUpdates", checkL10nUpdates, "Should the mod check for material localization updates.");

@@ -1,0 +1,6 @@
+{
+    "parent": "jaopca:block/cube_colored",
+    "textures": {
+        "base": "jaopca:block/metallic/raw_storage_blocks"
+    }
+}

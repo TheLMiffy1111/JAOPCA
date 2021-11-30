@@ -66,6 +66,12 @@ repositories {
         url = "https://jitpack.io/"
     }
     maven {
+        url = "https://cursemaven.com/"
+		content {
+            includeGroup "curse.maven"
+        }
+    }
+    maven {
         url = "https://modmaven.dev/"
     }
 }
@@ -74,7 +80,7 @@ sourceSets {
     main
 }
 
-version = "4.a.0.3"
+version = "4.a.0.4"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.17.1"
 
@@ -106,14 +112,21 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.17.1-37.0.65"
+    minecraft "net.minecraftforge:forge:1.17.1-37.1.0"
     annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
 
-    implementation fg.deobf("mezz.jei:jei-1.17.1:8.0.0.16")
+    implementation fg.deobf("mezz.jei:jei-1.17.1:8.2.0.37")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.17.1-5.0.1.0")
+    implementation fg.deobf("appeng:appliedenergistics2:9.0.0-beta.2")
 
     //JitPack
 
     //CurseMaven
+    implementation fg.deobf("curse.maven:patchouli-306770:3528319")
+    implementation fg.deobf("curse.maven:ato-405593:3519145")
+    implementation fg.deobf("curse.maven:allthemodium-364466:3519157")
+    implementation fg.deobf("curse.maven:occultism-361026:3539529")
+    implementation fg.deobf("curse.maven:electrodynamics-316867:3529235")
 }
 
 jar {

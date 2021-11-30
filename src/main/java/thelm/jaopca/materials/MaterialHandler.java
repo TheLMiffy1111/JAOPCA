@@ -44,11 +44,18 @@ public class MaterialHandler {
 
 		Set<String> allMaterials = new TreeSet<>();
 
-		Set<String> ingots = ConfigHandler.ingot ? findItemTagNamesWithPaths("forge:ingots/", "forge:ores/") : new LinkedHashSet<>();
+		Set<String> ingots = ConfigHandler.ingot ? findItemTagNamesWithPaths("forge:ingots/", "forge:raw_ores/", "forge:ores/") : new LinkedHashSet<>();
 		ingots.removeAll(ConfigHandler.GEM_OVERRIDES);
 		ingots.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
 		ingots.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(ingots);
+
+		Set<String> ingotsLegacy = ConfigHandler.ingotLegacy ? findItemTagNamesWithPaths("forge:ingots/", "forge:ores/") : new LinkedHashSet<>();
+		ingotsLegacy.removeAll(allMaterials);
+		ingotsLegacy.removeAll(ConfigHandler.GEM_OVERRIDES);
+		ingotsLegacy.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
+		ingotsLegacy.removeAll(ConfigHandler.DUST_OVERRIDES);
+		allMaterials.addAll(ingotsLegacy);
 
 		Set<String> gems = ConfigHandler.gem ? findItemTagNamesWithPaths("forge:gems/", "forge:ores/") : new LinkedHashSet<>();
 		gems.removeAll(allMaterials);
@@ -91,6 +98,11 @@ public class MaterialHandler {
 			Material material = new Material(name, MaterialType.INGOT);
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added ingot material {}", name);
+		}
+		for(String name : ingots) {
+			Material material = new Material(name, MaterialType.INGOT_LEGACY);
+			MATERIALS.put(name, material);
+			LOGGER.debug("Added legacy ingot material {}", name);
 		}
 		for(String name : gems) {
 			Material material = new Material(name, MaterialType.GEM);
@@ -151,6 +163,20 @@ public class MaterialHandler {
 			if(tag.startsWith(path1)) {
 				String name = tag.substring(path1.length());
 				if(!name.contains("/") && tags.contains(path2+name)) {
+					ret.add(name);
+				}
+			}
+		}
+		return ret;
+	}
+
+	protected static Set<String> findItemTagNamesWithPaths(String path1, String path2, String path3) {
+		Set<String> ret = new TreeSet<>();
+		Set<String> tags = ApiImpl.INSTANCE.getItemTags().stream().map(ResourceLocation::toString).collect(Collectors.toCollection(LinkedHashSet::new));
+		for(String tag : tags) {
+			if(tag.startsWith(path1)) {
+				String name = tag.substring(path1.length());
+				if(!name.contains("/") && tags.contains(path2+name) && tags.contains(path3+name)) {
 					ret.add(name);
 				}
 			}

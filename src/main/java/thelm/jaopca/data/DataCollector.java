@@ -26,8 +26,8 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.repository.ServerPacksSource;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fmllegacy.packs.ModFileResourcePack;
 import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
+import net.minecraftforge.resource.PathResourcePack;
 import thelm.jaopca.api.resources.IPackSupplier;
 import thelm.jaopca.api.resources.JAOPCAPackSupplier;
 
@@ -55,7 +55,7 @@ public class DataCollector {
 		if(RESOURCE_PACKS.isEmpty()) {
 			RESOURCE_PACKS.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
 			ModList.get().getModFiles().stream().
-			map(mf->new ModFileResourcePack(mf.getFile())).
+			map(mf->new PathResourcePack(mf.getFile().getFileName(), mf.getFile().getFilePath())).
 			forEach(RESOURCE_PACKS::add);
 			/*
 			 * Fabric:

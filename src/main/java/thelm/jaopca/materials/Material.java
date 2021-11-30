@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
@@ -24,6 +26,8 @@ import thelm.jaopca.utils.MiscHelper;
 
 public class Material implements IMaterial {
 
+	private static final Logger LOGGER = LogManager.getLogger();
+
 	private final String name;
 	private final MaterialType type;
 	private String modelType;
@@ -34,6 +38,7 @@ public class Material implements IMaterial {
 	private final List<String> extras = new ArrayList<>();
 	private final TreeSet<String> configModuleBlacklist = new TreeSet<>();
 	private IDynamicSpecConfig config;
+	private Tag<Item> tag;
 
 	public Material(String name, MaterialType type) {
 		this.name = name;
@@ -86,9 +91,22 @@ public class Material implements IMaterial {
 	public int getColor() {
 		if(!color.isPresent() && config != null) {
 			DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
+				Tag<Item> tag = getTag();
+				try {
+					tag.getValues();
+				}
+				catch(Exception e) {
+					LOGGER.warn("Tried to get color for material "+name+" when tag is not ready", e);
+					return;
+				}
 				color = OptionalInt.of(0xFFFFFF);
 				MiscHelper.INSTANCE.submitAsyncTask(()->{
-					color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(getTag()), "The color of this material."));
+					try {
+						color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(tag), "The color of this material."));
+					}
+					catch(Exception e) {
+						LOGGER.warn("Unable to get color for material "+name, e);
+					}
 				});
 			});
 		}
@@ -129,28 +147,10 @@ public class Material implements IMaterial {
 	}
 
 	private Tag<Item> getTag() {
-		String path = "";
-		switch(type) {
-		case INGOT:
-		case INGOT_PLAIN:
-			path = "ingots/"+name;
-			break;
-		case GEM:
-		case GEM_PLAIN:
-			path = "gems/"+name;
-			break;
-		case CRYSTAL:
-		case CRYSTAL_PLAIN:
-			path = "crystals/"+name;
-			break;
-		case DUST:
-		case DUST_PLAIN:
-			path = "dusts/"+name;
-			break;
-		default:
-			break;
+		if(tag == null) {
+			tag = ItemTags.bind("forge:"+type.getFormName()+'/'+name);
 		}
-		return ItemTags.bind("forge:"+path);
+		return tag;
 	}
 
 	@Override

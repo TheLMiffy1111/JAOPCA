@@ -125,12 +125,12 @@ public class DataInjector {
 				LOGGER.warn("Recipe with ID {} received invalid arguments: {}", key, e.getMessage());
 				return;
 			}
-			catch(Exception e) {
-				LOGGER.warn("Recipe with ID {} errored: {}", key, e.getMessage());
+			catch(Throwable e) {
+				LOGGER.error("Recipe with ID "+key+" errored", e);
 				return;
 			}
 			if(recipe == null) {
-				LOGGER.warn("Recipe with ID {} returned null", key);
+				LOGGER.debug("Recipe with ID {} returned null", key);
 				return;
 			}
 			recipesToInject.put(key, recipe);
