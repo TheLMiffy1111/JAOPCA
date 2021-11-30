@@ -22,6 +22,7 @@ import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.client.colors.ColorHandler;
+import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.utils.MiscHelper;
 
 public class Material implements IMaterial {
@@ -143,6 +144,9 @@ public class Material implements IMaterial {
 		hasEffect = config.getDefinedBoolean("general.hasEffect", hasEffect, "Should items of this material have the enchanted glow.");
 		modelType = config.getDefinedString("general.modelType", modelType, s->isModelTypeValid(s), "The model type of the material.");
 
+		if(ConfigHandler.resetColors) {
+			config.remove("general.color");
+		}
 		color = config.getOptionalInt("general.color");
 	}
 
