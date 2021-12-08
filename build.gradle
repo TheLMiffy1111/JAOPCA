@@ -80,7 +80,7 @@ sourceSets {
     main
 }
 
-version = "3.4.2.16"
+version = "3.4.2.17"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
@@ -162,12 +162,13 @@ dependencies {
     implementation fg.deobf("curse.maven:themcbros-useless-mod:3364720")
     implementation fg.deobf("curse.maven:electrodynamics:3328009")
     implementation fg.deobf("curse.maven:libvulpes:3499785")
-    implementation fg.deobf("curse.maven:advanced-rocketry:3439186")
+    implementation fg.deobf("curse.maven:advanced-rocketry:3302417")
     implementation fg.deobf("curse.maven:cyclops-core:3517568")
     implementation fg.deobf("curse.maven:common-capabilities:3482420")
     implementation fg.deobf("curse.maven:integrated-dynamics:3525658")
     implementation fg.deobf("curse.maven:voluminous-energy:3508860")
     implementation fg.deobf("curse.maven:assemblylinemachines:3493402")
+    implementation fg.deobf("curse.maven:ftb-industrial-contraptions:3546727")
 }
 
 jar {

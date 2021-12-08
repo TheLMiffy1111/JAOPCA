@@ -55,7 +55,7 @@ public class CrushingRecipeSupplier implements Supplier<CrusherRecipe> {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
-		if(secondStack.isEmpty()) {
+		if(secondOutput != ItemStack.EMPTY && secondStack.isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, secondOutput);
 		}
 		try {

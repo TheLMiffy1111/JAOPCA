@@ -154,7 +154,7 @@ public class DataInjector extends ReloadListener<Object> {
 				continue;
 			}
 			if(recipe == null) {
-				LOGGER.warn("Recipe with ID {} returned null", entry.getKey());
+				LOGGER.debug("Recipe with ID {} returned null", entry.getKey());
 			}
 			else if(!recipe.getId().equals(entry.getKey())) {
 				LOGGER.warn("Recipe ID {} and registry key {} do not match", recipe.getId(), entry.getKey());
