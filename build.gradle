@@ -80,7 +80,7 @@ sourceSets {
     main
 }
 
-version = "3.4.2.17"
+version = "3.4.2.18"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
@@ -131,8 +131,8 @@ dependencies {
     implementation fg.deobf("slimeknights.mantle:Mantle:1.16.5-1.6.127")
     implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.16.5-3.2.1.296")
     implementation fg.deobf("dev.latvian.mods:rhino-forge:1605.1.5-build.75")
-    implementation fg.deobf("me.shedaniel:architectury-forge:1.24.35")
-    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1605.3.19-build.178") {
+    implementation fg.deobf("me.shedaniel:architectury-forge:1.26.37")
+    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1605.3.19-build.229") {
         transitive = false
     }
     implementation fg.deobf("appeng:appliedenergistics2:8.4.4")
@@ -152,9 +152,9 @@ dependencies {
     implementation fg.deobf("curse.maven:crossroads-mc:3347113")
     implementation fg.deobf("curse.maven:fl:3476292")
     implementation fg.deobf("curse.maven:flux-machinery:3476290")
-    implementation fg.deobf("curse.maven:cofh-core:3407019")
-    implementation fg.deobf("curse.maven:thermal-foundation:3412300")
-    implementation fg.deobf("curse.maven:thermal-expansion:3404884")
+    implementation fg.deobf("curse.maven:cofh-core:3554750")
+    implementation fg.deobf("curse.maven:thermal-foundation:3555666")
+    implementation fg.deobf("curse.maven:thermal-expansion:3555669")
     implementation fg.deobf("curse.maven:create:3499718")
     implementation fg.deobf("curse.maven:blood-magic:3477631")
     implementation fg.deobf("curse.maven:occultism:3470116")

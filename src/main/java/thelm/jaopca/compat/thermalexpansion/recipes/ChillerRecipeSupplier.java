@@ -9,11 +9,11 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cofh.lib.fluid.FluidIngredient;
 import cofh.thermal.core.util.recipes.machine.ChillerRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.compat.thermalexpansion.ThermalExpansionHelper;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -50,7 +50,7 @@ public class ChillerRecipeSupplier implements Supplier<ChillerRecipe> {
 		if(ing != Ingredient.EMPTY && !ing.hasNoMatchingItems()) {
 			itemInputs.add(ing);
 		}
-		FluidStack fluidIng = MiscHelper.INSTANCE.getFluidStack(fluidInput, fluidInputAmount);
+		FluidIngredient fluidIng = ThermalExpansionHelper.INSTANCE.getFluidIngredient(fluidInput, fluidInputAmount);
 		if(fluidIng.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+fluidInput);
 		}

@@ -25,7 +25,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "thermal_expansion@[1.3.0,)")
+@JAOPCAModule(modDependencies = "thermal_expansion@[1.4.0,)")
 public class ThermalExpansionCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
