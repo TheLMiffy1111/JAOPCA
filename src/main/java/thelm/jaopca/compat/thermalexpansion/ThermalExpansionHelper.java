@@ -42,14 +42,17 @@ public class ThermalExpansionHelper {
 		else if(obj instanceof FluidIngredient) {
 			return (FluidIngredient)obj;
 		}
-		else if(obj instanceof String) {
-			return FluidIngredient.of(getFluidTag(new ResourceLocation((String)obj)), amount);
+		else if(obj instanceof String) { // Tag fluid ingredients are broken right now
+			return FluidIngredient.of(getFluidTag(new ResourceLocation((String)obj)).getAllElements().stream().
+					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof ResourceLocation) {
-			return FluidIngredient.of(getFluidTag((ResourceLocation)obj), amount);
+			return FluidIngredient.of(getFluidTag((ResourceLocation)obj).getAllElements().stream().
+					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof ITag<?>) {
-			return FluidIngredient.of((ITag<Fluid>)obj, amount);
+			return FluidIngredient.of(((ITag<Fluid>)obj).getAllElements().stream().
+					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof FluidStack) {
 			return FluidIngredient.of((FluidStack)obj);
@@ -61,7 +64,8 @@ public class ThermalExpansionHelper {
 			return FluidIngredient.of(new FluidStack((Fluid)obj, amount));
 		}
 		else if(obj instanceof Fluid[]) {
-			return FluidIngredient.of(Arrays.stream((Fluid[])obj).map(g->new FluidStack(g, amount)).toArray(FluidStack[]::new));
+			return FluidIngredient.of(Arrays.stream((Fluid[])obj).
+					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof JsonElement) {
 			return FluidIngredient.fromJson((JsonElement)obj);
