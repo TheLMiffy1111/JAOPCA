@@ -102,7 +102,7 @@ public class Material implements IMaterial {
 					tag.getAllElements();
 				}
 				catch(Exception e) {
-					LOGGER.warn("Tried to get color for material "+name+" when tag is not ready", e);
+					LOGGER.warn("Tried to get color for material {} when tag is not ready", name, e);
 					return;
 				}
 				color = OptionalInt.of(0xFFFFFF);
@@ -111,7 +111,7 @@ public class Material implements IMaterial {
 						color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(tag), "The color of this material."));
 					}
 					catch(Exception e) {
-						LOGGER.warn("Unable to get color for material "+name, e);
+						LOGGER.warn("Unable to get color for material {}", name, e);
 					}
 				});
 			});

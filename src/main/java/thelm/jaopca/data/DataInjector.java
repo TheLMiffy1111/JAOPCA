@@ -150,7 +150,7 @@ public class DataInjector extends ReloadListener<Object> {
 				continue;
 			}
 			catch(Throwable e) {
-				LOGGER.error("Recipe with ID "+entry.getKey()+" errored", e);
+				LOGGER.error("Recipe with ID {} errored", entry.getKey(), e);
 				continue;
 			}
 			if(recipe == null) {

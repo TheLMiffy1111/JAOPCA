@@ -80,7 +80,7 @@ public class LocalizationRepoHandler {
 						LOGGER.info("Unable to download localization file for language {}: File not found", language);
 					}
 					catch(IOException e) {
-						LOGGER.info("Unable to download localization file for language "+language, e);
+						LOGGER.info("Unable to download localization file for language {}", language, e);
 					}
 				}
 			}

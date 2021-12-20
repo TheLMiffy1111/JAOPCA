@@ -44,7 +44,7 @@ public class LocalizerDefault implements ILocalizer {
 			return new TranslationTextComponent(formTranslationKey, materialName);
 		}
 		else {
-			return new StringTextComponent(String.format(locMap.get(overrideKey), materialName));
+			return new StringTextComponent(String.format(locMap.get(formTranslationKey), materialName));
 		}
 	}
 

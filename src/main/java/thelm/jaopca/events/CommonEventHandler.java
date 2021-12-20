@@ -12,6 +12,7 @@ import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -40,8 +41,8 @@ public class CommonEventHandler {
 
 	public void onConstruct() {
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-		MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListener);
-		
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::onAddReloadListener);
+
 		ApiImpl.INSTANCE.init();
 		BlockFormType.init();
 		ItemFormType.init();
@@ -87,6 +88,6 @@ public class CommonEventHandler {
 		DataPackRegistries registries = event.getDataPackRegistries();
 		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)registries.getResourceManager()).reloadListeners;
 		DataInjector instance = DataInjector.getNewInstance(registries.getRecipeManager());
-		reloadListeners.add(reloadListeners.indexOf(registries.getRecipeManager())+1, instance);
+		reloadListeners.add(instance);
 	}
 }
