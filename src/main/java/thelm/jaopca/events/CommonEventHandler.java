@@ -86,8 +86,6 @@ public class CommonEventHandler {
 
 	public void onAddReloadListener(AddReloadListenerEvent event) {
 		DataPackRegistries registries = event.getDataPackRegistries();
-		List<IFutureReloadListener> reloadListeners = ((SimpleReloadableResourceManager)registries.getResourceManager()).reloadListeners;
-		DataInjector instance = DataInjector.getNewInstance(registries.getRecipeManager());
-		reloadListeners.add(instance);
+		event.addListener(DataInjector.getNewInstance(registries.getRecipeManager()));
 	}
 }
