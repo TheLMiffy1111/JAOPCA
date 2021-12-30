@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,6 +68,7 @@ public class ConfigHandler {
 	public static final Set<ResourceLocation> ENTITY_TYPE_TAG_BLACKLIST = new TreeSet<>();
 
 	public static final Set<ResourceLocation> RECIPE_BLACKLIST = new TreeSet<>();
+	public static final List<Pattern> RECIPE_REGEX_BLACKLIST = new ArrayList<>();
 
 	public static final Set<ResourceLocation> LOOT_TABLE_BLACKLIST = new TreeSet<>();
 
@@ -142,6 +144,8 @@ public class ConfigHandler {
 		mainConfig.setComment("recipes", "Configurations related to recipes.");
 		RECIPE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("recipes.blacklist", new ArrayList<>(),
 				"List of recipes that should not be added."), ResourceLocation::new));
+		RECIPE_REGEX_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("recipes.regexBlacklist", new ArrayList<>(),
+				"List of recipes by regex that should not be added."), Pattern::compile));
 
 		mainConfig.setComment("lootTables", "Configurations related to loot tables.");
 		LOOT_TABLE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("lootTables.blacklist", new ArrayList<>(),
