@@ -1,5 +1,6 @@
 package thelm.jaopca.materials;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class MaterialHandler {
 
 		Set<String> allMaterials = new TreeSet<>();
 
-		Set<String> ingots = ConfigHandler.ingot ? findItemTagNamesWithPaths("forge:ingots/", "forge:raw_ores/", "forge:ores/") : new LinkedHashSet<>();
+		Set<String> ingots = ConfigHandler.ingot ? findItemTagNamesWithPaths("forge:ingots/", "forge:raw_materials/", "forge:ores/") : new LinkedHashSet<>();
 		ingots.removeAll(ConfigHandler.GEM_OVERRIDES);
 		ingots.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
 		ingots.removeAll(ConfigHandler.DUST_OVERRIDES);
@@ -72,25 +73,25 @@ public class MaterialHandler {
 		dusts.removeAll(allMaterials);
 		allMaterials.addAll(dusts);
 
-		Set<String> ingotsPlain = ConfigHandler.ingotPlain ? findItemTagNamesWithPath("forge:ingots/") : new LinkedHashSet<>();
+		Set<String> ingotsPlain = ConfigHandler.ingotPlain ? findItemTagNamesWithPaths("forge:ingots/") : new LinkedHashSet<>();
 		ingotsPlain.removeAll(allMaterials);
 		ingotsPlain.removeAll(ConfigHandler.GEM_OVERRIDES);
 		ingotsPlain.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
 		ingotsPlain.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(ingotsPlain);
 
-		Set<String> gemsPlain = ConfigHandler.gemPlain ? findItemTagNamesWithPath("forge:gems/") : new LinkedHashSet<>();
+		Set<String> gemsPlain = ConfigHandler.gemPlain ? findItemTagNamesWithPaths("forge:gems/") : new LinkedHashSet<>();
 		gemsPlain.removeAll(allMaterials);
 		gemsPlain.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
 		gemsPlain.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(gemsPlain);
 
-		Set<String> crystalsPlain = ConfigHandler.crystalPlain ? findItemTagNamesWithPath("forge:crystals/") : new LinkedHashSet<>();
+		Set<String> crystalsPlain = ConfigHandler.crystalPlain ? findItemTagNamesWithPaths("forge:crystals/") : new LinkedHashSet<>();
 		crystalsPlain.removeAll(allMaterials);
 		crystalsPlain.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(crystalsPlain);
 
-		Set<String> dustsPlain = ConfigHandler.dustPlain ? findItemTagNamesWithPath("forge:dusts/") : new LinkedHashSet<>();
+		Set<String> dustsPlain = ConfigHandler.dustPlain ? findItemTagNamesWithPaths("forge:dusts/") : new LinkedHashSet<>();
 		dustsPlain.removeAll(allMaterials);
 		allMaterials.addAll(dustsPlain);
 
@@ -142,41 +143,13 @@ public class MaterialHandler {
 		LOGGER.info("Added {} materials", MATERIALS.size());
 	}
 
-	protected static Set<String> findItemTagNamesWithPath(String path) {
+	protected static Set<String> findItemTagNamesWithPaths(String mainPath, String... paths) {
 		Set<String> ret = new TreeSet<>();
 		Set<String> tags = ApiImpl.INSTANCE.getItemTags().stream().map(ResourceLocation::toString).collect(Collectors.toCollection(LinkedHashSet::new));
 		for(String tag : tags) {
-			if(tag.startsWith(path)) {
-				String name = tag.substring(path.length());
-				if(!name.contains("/")) {
-					ret.add(name);
-				}
-			}
-		}
-		return ret;
-	}
-
-	protected static Set<String> findItemTagNamesWithPaths(String path1, String path2) {
-		Set<String> ret = new TreeSet<>();
-		Set<String> tags = ApiImpl.INSTANCE.getItemTags().stream().map(ResourceLocation::toString).collect(Collectors.toCollection(LinkedHashSet::new));
-		for(String tag : tags) {
-			if(tag.startsWith(path1)) {
-				String name = tag.substring(path1.length());
-				if(!name.contains("/") && tags.contains(path2+name)) {
-					ret.add(name);
-				}
-			}
-		}
-		return ret;
-	}
-
-	protected static Set<String> findItemTagNamesWithPaths(String path1, String path2, String path3) {
-		Set<String> ret = new TreeSet<>();
-		Set<String> tags = ApiImpl.INSTANCE.getItemTags().stream().map(ResourceLocation::toString).collect(Collectors.toCollection(LinkedHashSet::new));
-		for(String tag : tags) {
-			if(tag.startsWith(path1)) {
-				String name = tag.substring(path1.length());
-				if(!name.contains("/") && tags.contains(path2+name) && tags.contains(path3+name)) {
+			if(tag.startsWith(mainPath)) {
+				String name = tag.substring(mainPath.length());
+				if(!name.contains("/") && Arrays.stream(paths).map(path->path+name).allMatch(tags::contains)) {
 					ret.add(name);
 				}
 			}
