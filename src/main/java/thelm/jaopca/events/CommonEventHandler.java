@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -75,8 +75,9 @@ public class CommonEventHandler {
 		ModuleHandler.onInterModEnqueue(event);
 	}
 
-	public void onDataPackDiscovery(PackRepository resourcePacks) {
-		resourcePacks.addPackFinder(DataInjector.PackFinder.INSTANCE);
+	@SubscribeEvent
+	public void onAddPackFinders(AddPackFindersEvent event) {
+		event.addRepositorySource(DataInjector.PackFinder.INSTANCE);
 	}
 
 	public void onReadRecipes(Map<ResourceLocation, JsonElement> recipeMap) {

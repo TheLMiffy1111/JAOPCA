@@ -46,7 +46,7 @@ public class Material implements IMaterial {
 		this.type = type;
 
 		modelType = switch(type) {
-		case INGOT, INGOT_PLAIN -> "metallic";
+		case INGOT, INGOT_LEGACY, INGOT_PLAIN -> "metallic";
 		case GEM, GEM_PLAIN, CRYSTAL, CRYSTAL_PLAIN -> "crystal";
 		case DUST, DUST_PLAIN -> "dust";
 		default -> "metallic";

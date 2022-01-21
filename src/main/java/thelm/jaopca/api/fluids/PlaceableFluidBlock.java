@@ -104,14 +104,14 @@ public abstract class PlaceableFluidBlock extends Block implements BucketPickup 
 	@Override
 	public void onPlace(BlockState blockState, Level world, BlockPos pos, BlockState oldBlockState, boolean isMoving) {
 		if(shouldSpreadLiquid(world, pos, blockState)) {
-			world.getLiquidTicks().scheduleTick(pos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
+			world.scheduleTick(pos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
 		}
 	}
 
 	@Override
 	public BlockState updateShape(BlockState blockState, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
 		if(blockState.getFluidState().isSource() || facingState.getFluidState().isSource()) {
-			world.getLiquidTicks().scheduleTick(currentPos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
+			world.scheduleTick(currentPos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
 		}
 		return super.updateShape(blockState, facing, facingState, world, currentPos, facingPos);
 	}
@@ -119,7 +119,7 @@ public abstract class PlaceableFluidBlock extends Block implements BucketPickup 
 	@Override
 	public void neighborChanged(BlockState blockState, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		if(shouldSpreadLiquid(world, pos, blockState)) {
-			world.getLiquidTicks().scheduleTick(pos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
+			world.scheduleTick(pos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
 		}
 	}
 

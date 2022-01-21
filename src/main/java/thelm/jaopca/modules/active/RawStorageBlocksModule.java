@@ -23,7 +23,7 @@ import thelm.jaopca.utils.MiscHelper;
 public class RawStorageBlocksModule implements IModule {
 
 	private final IForm rawStorageBlockForm = ApiImpl.INSTANCE.newForm(this, "raw_storage_blocks", BlockFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT);
+			setMaterialTypes(MaterialType.INGOT).setSecondaryName("storage_blocks/raw").setTagSeparator("_");
 
 	@Override
 	public String getName() {

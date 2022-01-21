@@ -16,7 +16,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
@@ -46,7 +46,7 @@ public class ModelHandler {
 				ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 						JAOPCA.MOD_ID+':'+materialFormBlock.getMaterial().getModelType()+'/'+materialFormBlock.getForm().getName(),
 						propertyMapString);
-				ModelLoader.addSpecialModel(defaultModelLocation);
+				ForgeModelBakery.addSpecialModel(defaultModelLocation);
 				REMAPS.put(defaultModelLocation, modelLocation);
 			});
 		}
@@ -62,7 +62,7 @@ public class ModelHandler {
 			ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 					JAOPCA.MOD_ID+':'+materialFormBlockItem.getMaterial().getModelType()+'/'+materialFormBlockItem.getForm().getName(),
 					"inventory");
-			ModelLoader.addSpecialModel(defaultModelLocation);
+			ForgeModelBakery.addSpecialModel(defaultModelLocation);
 			REMAPS.put(defaultModelLocation, modelLocation);
 		}
 		for(IMaterialFormItem materialFormItem : ItemFormType.getItems()) {
@@ -76,7 +76,7 @@ public class ModelHandler {
 			ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 					JAOPCA.MOD_ID+':'+materialFormItem.getMaterial().getModelType()+'/'+materialFormItem.getForm().getName(),
 					"inventory");
-			ModelLoader.addSpecialModel(defaultModelLocation);
+			ForgeModelBakery.addSpecialModel(defaultModelLocation);
 			REMAPS.put(defaultModelLocation, modelLocation);
 		}
 		for(IMaterialFormFluidBlock materialFormFluidBlock : FluidFormType.getFluidBlocks()) {
@@ -92,7 +92,7 @@ public class ModelHandler {
 				ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 						JAOPCA.MOD_ID+':'+materialFormFluidBlock.getMaterial().getModelType()+'/'+materialFormFluidBlock.getForm().getName(),
 						propertyMapString);
-				ModelLoader.addSpecialModel(defaultModelLocation);
+				ForgeModelBakery.addSpecialModel(defaultModelLocation);
 				REMAPS.put(defaultModelLocation, modelLocation);
 			});
 		}
@@ -107,7 +107,7 @@ public class ModelHandler {
 			ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 					JAOPCA.MOD_ID+':'+materialFormBucketItem.getMaterial().getModelType()+'/'+materialFormBucketItem.getForm().getName(),
 					"inventory");
-			ModelLoader.addSpecialModel(defaultModelLocation);
+			ForgeModelBakery.addSpecialModel(defaultModelLocation);
 			REMAPS.put(defaultModelLocation, modelLocation);
 		}
 	}
@@ -115,7 +115,7 @@ public class ModelHandler {
 	public static void remapModels(ModelBakeEvent event) {
 		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
-		BakedModel missingModel = modelRegistry.get(ModelLoader.MISSING_MODEL_LOCATION);
+		BakedModel missingModel = modelRegistry.get(ForgeModelBakery.MISSING_MODEL_LOCATION);
 		for(Map.Entry<ResourceLocation, Collection<ResourceLocation>> entry : REMAPS.asMap().entrySet()) {
 			BakedModel defaultModel = modelRegistry.getOrDefault(entry.getKey(), missingModel);
 			for(ResourceLocation modelLocation : entry.getValue()) {

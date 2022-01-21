@@ -414,7 +414,7 @@ public abstract class PlaceableFluid extends Fluid {
 				fluidState = newFluidState;
 				BlockState blockState = fluidState.createLegacyBlock();
 				world.setBlock(pos, blockState, 2);
-				world.getLiquidTicks().scheduleTick(pos, fluidState.getType(), delay);
+				world.scheduleTick(pos, fluidState.getType(), delay);
 				world.updateNeighborsAt(pos, blockState.getBlock());
 			}
 		}
