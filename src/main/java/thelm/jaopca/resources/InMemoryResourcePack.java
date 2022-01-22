@@ -25,6 +25,7 @@ import com.google.gson.JsonParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import thelm.jaopca.api.resources.IInMemoryResourcePack;
 
 public class InMemoryResourcePack implements IInMemoryResourcePack {
@@ -32,7 +33,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	private static final Gson GSON = new GsonBuilder().create();
 	private final String name;
 	private final boolean isHidden;
-	private final JsonObject metadata = (JsonObject)new JsonParser().parse("{\"pack_format\":4,\"description\":\"JAOPCA In Memory Resources\"}");
+	private final JsonObject metadata = (JsonObject)JsonParser.parseString("{\"pack_format\":4,\"description\":\"JAOPCA In Memory Resources\"}");
 	private final TreeMap<String, Supplier<? extends InputStream>> root = new TreeMap<>();
 	private final TreeMap<ResourceLocation, Supplier<? extends InputStream>> assets = new TreeMap<>();
 	private final TreeMap<ResourceLocation, Supplier<? extends InputStream>> data = new TreeMap<>();
@@ -148,7 +149,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 
 	@Override
 	public <T> T getMetadataSection(MetadataSectionSerializer<T> deserializer) throws IOException {
-		return deserializer.fromJson(metadata);
+		return deserializer == PackMetadataSection.SERIALIZER ? deserializer.fromJson(metadata) : null;
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package thelm.jaopca.utils;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -8,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +35,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
+import thelm.jaopca.api.ingredients.CompoundIngredientObject;
 import thelm.jaopca.config.ConfigHandler;
+import thelm.jaopca.ingredients.DifferenceIngredient;
+import thelm.jaopca.ingredients.EmptyIngredient;
+import thelm.jaopca.ingredients.IntersectionIngredient;
+import thelm.jaopca.ingredients.UnionIngredient;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.tags.EmptyNamedTag;
@@ -74,109 +82,138 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ItemStack getItemStack(Object obj, int count) {
+		ItemStack ret = ItemStack.EMPTY;
 		if(obj instanceof Supplier<?>) {
-			return getItemStack(((Supplier<?>)obj).get(), count);
+			ret = getItemStack(((Supplier<?>)obj).get(), count);
 		}
 		else if(obj instanceof ItemStack) {
-			return ((ItemStack)obj);
+			ret = ((ItemStack)obj);
 		}
 		else if(obj instanceof ItemLike) {
-			return new ItemStack((ItemLike)obj, count);
+			ret = new ItemStack((ItemLike)obj, count);
 		}
 		else if(obj instanceof String) {
-			return getPreferredItemStack(getItemTag(new ResourceLocation((String)obj)).getValues(), count);
+			ret = getPreferredItemStack(getItemTag(new ResourceLocation((String)obj)).getValues(), count);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return getPreferredItemStack(getItemTag((ResourceLocation)obj).getValues(), count);
+			ret = getPreferredItemStack(getItemTag((ResourceLocation)obj).getValues(), count);
 		}
 		else if(obj instanceof Tag<?>) {
-			return getPreferredItemStack(((Tag<Item>)obj).getValues(), count);
+			ret = getPreferredItemStack(((Tag<Item>)obj).getValues(), count);
 		}
-		return ItemStack.EMPTY;
+		return ret.isEmpty() ? ItemStack.EMPTY : ret;
 	}
 
 	@Override
 	public Ingredient getIngredient(Object obj) {
+		Ingredient ret = EmptyIngredient.INSTANCE;
 		if(obj instanceof Supplier<?>) {
-			return getIngredient(((Supplier<?>)obj).get());
+			ret = getIngredient(((Supplier<?>)obj).get());
+		}
+		else if(obj instanceof CompoundIngredientObject) {
+			CompoundIngredientObject cObj = (CompoundIngredientObject)obj;
+			List<Ingredient> ings = Arrays.stream(cObj.ingredients()).map(this::getIngredient).collect(Collectors.toList());
+			if(ings.size() == 1) {
+				ret = ings.get(0);
+			}
+			else if(ings.size() > 1) {
+				ret = switch(cObj.type()) {
+				case UNION -> UnionIngredient.of(ings);
+				case INTERSECTION -> IntersectionIngredient.of(ings);
+				case DIFFERENCE -> DifferenceIngredient.of(ings.get(0), UnionIngredient.of(ings.subList(1, ings.size())));
+				};
+			}
 		}
 		else if(obj instanceof Ingredient) {
-			return (Ingredient)obj;
+			ret = (Ingredient)obj;
 		}
 		else if(obj instanceof String) {
-			return Ingredient.of(getItemTag(new ResourceLocation((String)obj)));
+			Tag<Item> tag = getItemTag(new ResourceLocation((String)obj));
+			if(!(tag instanceof EmptyNamedTag<?>)) {
+				ret = Ingredient.of(tag);
+			}
 		}
 		else if(obj instanceof ResourceLocation) {
-			return Ingredient.of(getItemTag((ResourceLocation)obj));
+			Tag<Item> tag = getItemTag((ResourceLocation)obj);
+			if(!(tag instanceof EmptyNamedTag<?>)) {
+				ret = Ingredient.of(tag);
+			}
 		}
-		else if(obj instanceof Tag<?>) {
-			return Ingredient.of((Tag<Item>)obj);
+		else if(obj instanceof Tag<?> && !(obj instanceof EmptyNamedTag<?>)) {
+			ret = Ingredient.of((Tag<Item>)obj);
 		}
 		else if(obj instanceof ItemStack) {
-			return Ingredient.of((ItemStack)obj);
+			ret = Ingredient.of((ItemStack)obj);
 		}
 		else if(obj instanceof ItemStack[]) {
-			return Ingredient.of((ItemStack[])obj);
+			ret = Ingredient.of((ItemStack[])obj);
 		}
 		else if(obj instanceof ItemLike) {
-			return Ingredient.of((ItemLike)obj);
+			ret = Ingredient.of((ItemLike)obj);
 		}
 		else if(obj instanceof ItemLike[]) {
-			return Ingredient.of((ItemLike[])obj);
+			ret = Ingredient.of((ItemLike[])obj);
 		}
 		else if(obj instanceof Ingredient.Value) {
-			return Ingredient.fromValues(Stream.of((Ingredient.Value)obj));
+			ret = Ingredient.fromValues(Stream.of((Ingredient.Value)obj));
 		}
 		else if(obj instanceof Ingredient.Value[]) {
-			return Ingredient.fromValues(Stream.of((Ingredient.Value[])obj));
+			ret = Ingredient.fromValues(Stream.of((Ingredient.Value[])obj));
 		}
 		else if(obj instanceof JsonElement) {
-			return Ingredient.fromJson((JsonElement)obj);
+			ret = Ingredient.fromJson((JsonElement)obj);
 		}
-		return Ingredient.EMPTY;
+		return ret.isEmpty() ? EmptyIngredient.INSTANCE : ret;
 	}
 
+	@Override
 	public Tag<Item> getItemTag(ResourceLocation location) {
 		return getTag(Registry.ITEM_REGISTRY, location);
 	}
 
+	@Override
 	public ItemStack getPreferredItemStack(Collection<Item> collection, int count) {
 		return new ItemStack(getPreferredEntry(collection).orElse(Items.AIR), count);
 	}
 
+	@Override
 	public FluidStack getFluidStack(Object obj, int amount) {
+		FluidStack ret = FluidStack.EMPTY;
 		if(obj instanceof Supplier<?>) {
-			return getFluidStack(((Supplier<?>)obj).get(), amount);
+			ret = getFluidStack(((Supplier<?>)obj).get(), amount);
 		}
 		else if(obj instanceof FluidStack) {
-			return ((FluidStack)obj);
+			ret = ((FluidStack)obj);
 		}
 		else if(obj instanceof Fluid) {
-			return new FluidStack((Fluid)obj, amount);
+			ret = new FluidStack((Fluid)obj, amount);
 		}
 		else if(obj instanceof IFluidLike) {
-			return new FluidStack(((IFluidLike)obj).asFluid(), amount);
+			ret = new FluidStack(((IFluidLike)obj).asFluid(), amount);
 		}
 		else if(obj instanceof String) {
-			return getPreferredFluidStack(getFluidTag(new ResourceLocation((String)obj)).getValues(), amount);
+			ret = getPreferredFluidStack(getFluidTag(new ResourceLocation((String)obj)).getValues(), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return getPreferredFluidStack(getFluidTag((ResourceLocation)obj).getValues(), amount);
+			ret = getPreferredFluidStack(getFluidTag((ResourceLocation)obj).getValues(), amount);
 		}
 		else if(obj instanceof Tag<?>) {
-			return getPreferredFluidStack(((Tag<Fluid>)obj).getValues(), amount);
+			ret = getPreferredFluidStack(((Tag<Fluid>)obj).getValues(), amount);
 		}
-		return FluidStack.EMPTY;
+		return ret.isEmpty() ? FluidStack.EMPTY : ret;
 	}
 
+	@Override
 	public Tag<Fluid> getFluidTag(ResourceLocation location) {
 		return getTag(Registry.FLUID_REGISTRY, location);
 	}
 
+	@Override
 	public FluidStack getPreferredFluidStack(Collection<Fluid> collection, int amount) {
 		return new FluidStack(getPreferredEntry(collection).orElse(Fluids.EMPTY), amount);
 	}
 
+	@Override
 	public <T> Tag<T> getTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
 		Tag<T> tag = SerializationTags.getInstance().getOrEmpty(registry).getTag(location);
 		return tag != null ? tag : new EmptyNamedTag<>(location);

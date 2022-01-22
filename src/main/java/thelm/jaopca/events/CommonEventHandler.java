@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,6 +22,7 @@ import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.forms.FormHandler;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.ingredients.IngredientSerializers;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
@@ -42,6 +44,7 @@ public class CommonEventHandler {
 		BlockFormType.init();
 		ItemFormType.init();
 		FluidFormType.init();
+		IngredientSerializers.init();
 		DataCollector.collectData();
 		ModuleHandler.findModules();
 		ConfigHandler.setupMainConfig();
@@ -77,7 +80,9 @@ public class CommonEventHandler {
 
 	@SubscribeEvent
 	public void onAddPackFinders(AddPackFindersEvent event) {
-		event.addRepositorySource(DataInjector.PackFinder.INSTANCE);
+		if(event.getPackType() == PackType.SERVER_DATA) {
+			event.addRepositorySource(DataInjector.PackFinder.INSTANCE);
+		}
 	}
 
 	public void onReadRecipes(Map<ResourceLocation, JsonElement> recipeMap) {

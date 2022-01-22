@@ -97,7 +97,7 @@ sourceSets {
     main
 }
 
-version = "4.b.0.0"
+version = "4.0.0.0"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.18.1"
 
@@ -151,19 +151,20 @@ dependencies {
     //JitPack
 
     //CurseMaven
+    implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3544525")
     implementation fg.deobf("curse.maven:ato-405593:3613846")
     implementation fg.deobf("curse.maven:allthemodium-364466:3615282")
     implementation fg.deobf("curse.maven:industrial-reborn-358877:3595152")
-    implementation fg.deobf("curse.maven:useful-foundation-355245:3604741")
+    implementation fg.deobf("curse.maven:useful-foundation-355245:3617290")
     implementation fg.deobf("curse.maven:useful-machinery-355129:3606044")
     implementation fg.deobf("curse.maven:electrodynamics-316867:3606255")
     implementation fg.deobf("curse.maven:voluminous-energy-416704:3591677")
     implementation fg.deobf("curse.maven:cyclops-core-232758:3614854")
     implementation fg.deobf("curse.maven:common-capabilities-247007:3614900")
     implementation fg.deobf("curse.maven:integrated-dynamics-236307:3614925")
-    implementation fg.deobf("curse.maven:essentials-293752:3580338")
-    implementation fg.deobf("curse.maven:crossroads-mc-250231:3581661")
-    implementation fg.deobf("curse.maven:assemblylinemachines-388282:3596271")
+    implementation fg.deobf("curse.maven:essentials-293752:3616143")
+    implementation fg.deobf("curse.maven:crossroads-mc-250231:3616150")
+    implementation fg.deobf("curse.maven:assemblylinemachines-388282:3616185")
     implementation fg.deobf("curse.maven:occultism-361026:3611830")
 }
 

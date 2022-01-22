@@ -122,11 +122,11 @@ public class DataInjector {
 				recipe = supplier.get();
 			}
 			catch(IllegalArgumentException e) {
-				LOGGER.warn("Recipe with ID {} received invalid arguments: {}", key, e.getMessage());
+				LOGGER.debug("Recipe with ID {} received invalid arguments: {}", key, e.getMessage());
 				return;
 			}
 			catch(Throwable e) {
-				LOGGER.error("Recipe with ID "+key+" errored", e);
+				LOGGER.warn("Recipe with ID "+key+" errored", e);
 				return;
 			}
 			if(recipe == null) {

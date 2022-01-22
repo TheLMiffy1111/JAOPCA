@@ -4,7 +4,7 @@
     "package": "thelm.jaopca.mixins",
     "refmap": "mixins.jaopca.refmap.json",
     "target": "@env(DEFAULT)",
-    "compatibilityLevel": "JAVA_8",
+    "compatibilityLevel": "JAVA_17",
     "mixins": [
         "RecipeManagerMixin"
     ],

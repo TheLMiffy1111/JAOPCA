@@ -4,15 +4,7 @@ import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 
-public class BlockInfo implements IBlockInfo {
-
-	private final IMaterialFormBlock block;
-	private final IMaterialFormBlockItem blockItem;
-
-	BlockInfo(IMaterialFormBlock block, IMaterialFormBlockItem blockItem) {
-		this.block = block;
-		this.blockItem = blockItem;
-	}
+record BlockInfo(IMaterialFormBlock block, IMaterialFormBlockItem blockItem) implements IBlockInfo {
 
 	@Override
 	public IMaterialFormBlock getMaterialFormBlock() {

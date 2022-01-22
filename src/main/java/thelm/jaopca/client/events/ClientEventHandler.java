@@ -3,6 +3,7 @@ package thelm.jaopca.client.events;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -10,7 +11,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
@@ -35,7 +36,6 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public void onClientSetup(FMLClientSetupEvent event) {
 		Minecraft mc = Minecraft.getInstance();
-		mc.getResourcePackRepository().addPackFinder(ResourceInjector.PackFinder.INSTANCE);
 		LocalizationRepoHandler.setup();
 		((ReloadableResourceManager)mc.getResourceManager()).registerReloadListener(new SimplePreparableReloadListener() {
 			@Override
@@ -74,7 +74,10 @@ public class ClientEventHandler {
 		ColorHandler.setup(event);
 	}
 
-	public void onTextureStitchPre(TextureStitchEvent.Pre event) {
-
+	@SubscribeEvent
+	public void onAddPackFinders(AddPackFindersEvent event) {
+		if(event.getPackType() == PackType.CLIENT_RESOURCES) {
+			event.addRepositorySource(ResourceInjector.PackFinder.INSTANCE);
+		}
 	}
 }

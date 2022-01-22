@@ -7,5 +7,10 @@
     "item.jaopca.tiny_dusts": "Tiny Pile of %s Dust",
     "item.jaopca.small_dusts": "Small Pile of %s Dust",
     "fluid.jaopca.molten": "Molten %s",
-    "item.jaopca.molten": "Molten %s Bucket"
+    "item.jaopca.molten": "Molten %s Bucket",
+
+    "item.jaopca.create_crushed_ores": "Crushed %s Ore",
+
+    "item.jaopca.crossroads_grits": "Raw %s Grit",
+    "item.jaopca.crossroads_clumps": "%s Clumps"
 }

@@ -29,6 +29,7 @@ public class EmptyNamedTag<T> implements Tags.IOptionalNamedTag<T> {
 		return name;
 	}
 
+	@Override
 	public boolean isDefaulted() {
 		return false;
 	}

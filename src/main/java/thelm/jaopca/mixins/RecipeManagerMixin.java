@@ -15,7 +15,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.crafting.RecipeManager;
 import thelm.jaopca.events.CommonEventHandler;
 
-@Mixin(value = RecipeManager.class, priority = 1300)
+@Mixin(value = RecipeManager.class, priority = 900)
 public class RecipeManagerMixin {
 
 	@Inject(method = "apply", at = @At("HEAD"))

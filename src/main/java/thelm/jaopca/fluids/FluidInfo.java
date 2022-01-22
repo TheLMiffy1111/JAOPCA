@@ -5,17 +5,7 @@ import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
 
-public class FluidInfo implements IFluidInfo {
-
-	private final IMaterialFormFluid fluid;
-	private final IMaterialFormFluidBlock fluidBlock;
-	private final IMaterialFormBucketItem bucketItem;
-
-	FluidInfo(IMaterialFormFluid fluid, IMaterialFormFluidBlock fluidBlock, IMaterialFormBucketItem bucketItem) {
-		this.fluid = fluid;
-		this.fluidBlock = fluidBlock;
-		this.bucketItem = bucketItem;
-	}
+record FluidInfo(IMaterialFormFluid fluid, IMaterialFormFluidBlock fluidBlock, IMaterialFormBucketItem bucketItem) implements IFluidInfo {
 
 	@Override
 	public IMaterialFormFluid getMaterialFormFluid() {

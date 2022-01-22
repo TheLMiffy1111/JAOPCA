@@ -107,11 +107,11 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 		if(!group.isEmpty()) {
 			json.addProperty("group", group);
 		}
-		JsonArray arr = new JsonArray();
+		JsonArray patternJson = new JsonArray();
 		for(String str : pattern) {
-			arr.add(str);
+			patternJson.add(str);
 		}
-		json.add("pattern", arr);
+		json.add("pattern", patternJson);
 		JsonObject keyJson = new JsonObject();
 		for(Map.Entry<Character, Ingredient> entry : keyMap.entrySet()) {
 			keyJson.add(String.valueOf(entry.getKey()), ((Ingredient)entry.getValue()).toJson());

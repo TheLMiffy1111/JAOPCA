@@ -27,7 +27,12 @@ public class AssemblyLineMachinesCompatModule implements IModule {
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"chromium", "coal", "copper", "diamond", "flerovium", "gold", "iron", "lapis", "netherite",
 			"netherite_scrap", "titanium"));
+	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
+			"attuned_titanium", "chromium", "copper", "energized_gold", "flerovium", "gold", "iron", "mystium",
+			"novasteel", "steel", "titanium"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
+	private static Set<String> configToPlateBlacklist = new TreeSet<>();
+	private static Set<String> configHammerToPlateBlacklist = new TreeSet<>();
 
 	@Override
 	public String getName() {
@@ -46,6 +51,14 @@ public class AssemblyLineMachinesCompatModule implements IModule {
 				config.getDefinedStringList("recipes.toDustMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have grinder to dust recipes added."),
 				configToDustBlacklist);
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.toPlateMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have metal shaper to plate recipes added."),
+				configToPlateBlacklist);
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.toDustMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have hammer to plate recipes added."),
+				configHammerToPlateBlacklist);
 	}
 
 	@Override
@@ -64,6 +77,29 @@ public class AssemblyLineMachinesCompatModule implements IModule {
 					helper.registerGrinderRecipe(
 							new ResourceLocation("jaopca", "assemblylinemachines.material_to_dust."+material.getName()),
 							materialLocation, dustLocation, 1, 5, 2, false, 0);
+				}
+			}
+			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
+					!TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
+				if(api.getItemTags().contains(plateLocation)) {
+					helper.registerMetalRecipe(
+							new ResourceLocation("jaopca", "assemblylinemachines.material_to_plate_metal."+material.getName()),
+							materialLocation, plateLocation, 1, 6);
+				}
+			}
+			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
+					!TO_PLATE_BLACKLIST.contains(name) && !configHammerToPlateBlacklist.contains(name)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
+				ResourceLocation hammerLocation = new ResourceLocation("assemblylinemachines:crafting/hammers");
+				if(api.getItemTags().contains(plateLocation)) {
+					api.registerShapelessRecipe(
+							new ResourceLocation("jaopca", "assemblylinemachines.material_to_plate_hammer."+material.getName()),
+							plateLocation, 1, new Object[] {
+									materialLocation, hammerLocation,
+							});
 				}
 			}
 		}
