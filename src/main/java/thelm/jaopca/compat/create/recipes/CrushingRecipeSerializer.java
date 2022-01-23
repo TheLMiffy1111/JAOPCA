@@ -40,7 +40,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		List<Pair<Float, ItemStack>> outputs = new ArrayList<>();
+		List<Pair<ItemStack, Float>> outputs = new ArrayList<>();
 		int i = 0;
 		while(i < output.length) {
 			Object out = output[i];
@@ -59,7 +59,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 			}
-			outputs.add(Pair.of(chance, stack));
+			outputs.add(Pair.of(stack, chance));
 		}
 
 		JsonObject json = new JsonObject();
@@ -68,11 +68,11 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		ingJson.add(ing.toJson());
 		json.add("ingredients", ingJson);
 		JsonArray resultJson = new JsonArray();
-		for(Pair<Float, ItemStack> pair : outputs) {
+		for(Pair<ItemStack, Float> pair : outputs) {
 			JsonObject outputJson = new JsonObject();
-			outputJson.addProperty("item", pair.getRight().getItem().getRegistryName().toString());
-			outputJson.addProperty("count", pair.getRight().getCount());
-			outputJson.addProperty("chance", pair.getLeft());
+			outputJson.addProperty("item", pair.getLeft().getItem().getRegistryName().toString());
+			outputJson.addProperty("count", pair.getLeft().getCount());
+			outputJson.addProperty("chance", pair.getRight());
 			resultJson.add(outputJson);
 		}
 		json.add("results", resultJson);

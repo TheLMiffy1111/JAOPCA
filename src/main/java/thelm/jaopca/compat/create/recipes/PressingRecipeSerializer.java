@@ -1,10 +1,7 @@
 package thelm.jaopca.compat.create.recipes;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

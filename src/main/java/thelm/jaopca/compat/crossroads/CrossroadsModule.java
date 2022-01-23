@@ -86,9 +86,9 @@ public class CrossroadsModule implements IModule {
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		for(IMaterial material : gritForm.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			IItemInfo gritInfo = itemFormType.getMaterialFormInfo(gritForm, material);
 			if(material.getType() == MaterialType.INGOT) {
+				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerStampMillRecipe(
 						new ResourceLocation("jaopca", "crossroads.raw_material_to_grit."+material.getName()),
 						rawMaterialLocation, gritInfo, 3);
@@ -101,10 +101,10 @@ public class CrossroadsModule implements IModule {
 		}
 		for(IMaterial material : clumpForm.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			ResourceLocation gritLocation = miscHelper.getTagLocation("crossroads:grits", material.getName());
 			IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
 			if(material.getType() == MaterialType.INGOT) {
+				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerOreCleanserRecipe(
 						new ResourceLocation("jaopca", "crossroads.raw_material_to_clump."+material.getName()),
 						rawMaterialLocation, clumpInfo, 2);
@@ -120,7 +120,6 @@ public class CrossroadsModule implements IModule {
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			ResourceLocation gritLocation = miscHelper.getTagLocation("crossroads:grits", material.getName());
 			ResourceLocation clumpLocation = miscHelper.getTagLocation("crossroads:clumps", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
@@ -133,6 +132,7 @@ public class CrossroadsModule implements IModule {
 			Item byproduct = ForgeRegistries.ITEMS.getValue(new ResourceLocation(configByproduct));
 
 			if(material.getType() == MaterialType.INGOT) {
+				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerMillRecipe(
 						new ResourceLocation("jaopca", "crossroads.ore_to_raw_material."+material.getName()),
 						oreLocation, rawMaterialLocation, 2, byproduct, 1);
