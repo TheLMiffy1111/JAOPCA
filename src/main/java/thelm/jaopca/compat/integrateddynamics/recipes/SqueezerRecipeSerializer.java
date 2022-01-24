@@ -72,6 +72,7 @@ public class SqueezerRecipeSerializer implements IRecipeSerializer {
 		FluidStack fluidStack = MiscHelper.INSTANCE.getFluidStack(fluidOutput, fluidOutputAmount);
 
 		JsonObject json = new JsonObject();
+		json.addProperty("type", "integrateddynamics:squeezer");
 		json.add("item", ing.toJson());
 		JsonObject resultJson = new JsonObject();
 		JsonArray itemResultJson = new JsonArray();

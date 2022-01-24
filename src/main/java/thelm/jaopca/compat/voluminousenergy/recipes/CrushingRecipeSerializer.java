@@ -1,11 +1,10 @@
-package thelm.jaopca.compat.indreb.recipes;
+package thelm.jaopca.compat.voluminousenergy.recipes;
 
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -21,43 +20,29 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	public final ResourceLocation key;
-	public final String group;
 	public final Object input;
 	public final int inputCount;
 	public final Object output;
 	public final int outputCount;
 	public final Object secondOutput;
 	public final int secondOutputCount;
-	public final float secondChance;
+	public final float secondOutputChance;
 	public final int time;
-	public final int power;
-	public final float experience;
 
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time, int power, float experience) {
-		this(key, "", input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, time, power, experience);
+	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time) {
+		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, time);
 	}
 
-	public CrushingRecipeSerializer(ResourceLocation key, String group, Object input, int inputCount, Object output, int outputCount, int time, int power, float experience) {
-		this(key, group, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, time, power, experience);
-	}
-
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondCount, float secondChance, int time, int power, float experience) {
-		this(key, "", input, inputCount, output, outputCount, secondOutput, secondCount, secondChance, time, power, experience);
-	}
-
-	public CrushingRecipeSerializer(ResourceLocation key, String group, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondChance, int time, int power, float experience) {
+	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondOutputChance, int time) {
 		this.key = Objects.requireNonNull(key);
-		this.group = Strings.nullToEmpty(group);
 		this.input = input;
 		this.inputCount = inputCount;
 		this.output = output;
 		this.outputCount = outputCount;
 		this.secondOutput = secondOutput;
 		this.secondOutputCount = secondOutputCount;
-		this.secondChance = secondChance;
+		this.secondOutputChance = secondOutputChance;
 		this.time = time;
-		this.power = power;
-		this.experience = experience;
 	}
 
 	@Override
@@ -73,10 +58,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
 
 		JsonObject json = new JsonObject();
-		json.addProperty("type", "indreb:crushing");
-		if(!group.isEmpty()) {
-			json.addProperty("group", group);
-		}
+		json.addProperty("type", "voluminousenergy:crushing");
 		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
 		ingJson.addProperty("count", inputCount);
 		json.add("ingredient", ingJson);
@@ -88,12 +70,10 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 			JsonObject secondJson = new JsonObject();
 			secondJson.addProperty("item", secondStack.getItem().getRegistryName().toString());
 			secondJson.addProperty("count", secondStack.getCount());
-			secondJson.addProperty("chance", secondChance);
-			json.add("bonus_result", secondJson);
+			secondJson.addProperty("chance", secondOutputChance);
+			json.add("rng", secondJson);
 		}
-		json.addProperty("experience", experience);
-		json.addProperty("duration", time);
-		json.addProperty("power_cost", power);
+		json.addProperty("process_time", time);
 
 		return json;
 	}

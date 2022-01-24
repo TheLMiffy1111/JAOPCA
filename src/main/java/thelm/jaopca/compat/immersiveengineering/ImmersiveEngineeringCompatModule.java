@@ -59,11 +59,11 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.toDustMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have crusher recipes added."),
+						helper.configMaterialPredicate(), "The materials that should not have crusher to dust recipes added."),
 				configToDustBlacklist);
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.toIngotMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have arc furnace recipes added."),
+						helper.configMaterialPredicate(), "The materials that should not have arc furnace to ingot recipes added."),
 				configToIngotBlacklist);
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.toGearMaterialBlacklist", new ArrayList<>(),
