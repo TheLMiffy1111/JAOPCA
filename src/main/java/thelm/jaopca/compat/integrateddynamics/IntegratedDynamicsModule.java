@@ -21,8 +21,8 @@ import thelm.jaopca.utils.MiscHelper;
 public class IntegratedDynamicsModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "ardite", "cobalt", "copper", "gold", "iron", "lead", "mithril", "nickel",
-			"osmium", "platinum", "silver", "tin", "uranium", "zinc"));
+			"aluminum", "aluminium", "ardite", "cobalt", "copper", "gold", "iron", "lead", "mithril", "netherite",
+			"netherite_scrap", "nickel", "osmium", "platinum", "silver", "tin", "uranium", "zinc"));
 
 	@Override
 	public String getName() {

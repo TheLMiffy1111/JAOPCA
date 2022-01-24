@@ -78,8 +78,10 @@ public class SqueezerRecipeSerializer implements IRecipeSerializer {
 		JsonArray itemResultJson = new JsonArray();
 		for(Pair<ItemStack, Float> pair : itemResults) {
 			JsonObject outputJson = new JsonObject();
-			outputJson.addProperty("item", pair.getLeft().getItem().getRegistryName().toString());
-			outputJson.addProperty("count", pair.getLeft().getCount());
+			JsonObject itemJson = new JsonObject();
+			itemJson.addProperty("item", pair.getLeft().getItem().getRegistryName().toString());
+			itemJson.addProperty("count", pair.getLeft().getCount());
+			outputJson.add("item", itemJson);
 			outputJson.addProperty("chance", pair.getRight());
 			itemResultJson.add(outputJson);
 		}
