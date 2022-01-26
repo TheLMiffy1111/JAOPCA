@@ -39,8 +39,7 @@ public class ColorHandler {
 	public static final BlockColor BLOCK_COLOR = (state, world, pos, tintIndex)->{
 		if(tintIndex == 0) {
 			Block block = state.getBlock();
-			if(block instanceof IMaterialForm) {
-				IMaterialForm materialForm = (IMaterialForm)block;
+			if(block instanceof IMaterialForm materialForm) {
 				return materialForm.getMaterial().getColor();
 			}
 		}
@@ -50,8 +49,7 @@ public class ColorHandler {
 	public static final ItemColor ITEM_COLOR = (stack, tintIndex)->{
 		if(tintIndex == 0 || tintIndex == 2) {
 			Item item = stack.getItem();
-			if(item instanceof IMaterialForm) {
-				IMaterialForm materialForm = (IMaterialForm)item;
+			if(item instanceof IMaterialForm materialForm) {
 				return materialForm.getMaterial().getColor();
 			}
 		}

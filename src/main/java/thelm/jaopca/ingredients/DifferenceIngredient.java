@@ -69,8 +69,8 @@ public class DifferenceIngredient extends Ingredient {
 	@Override
 	protected void invalidate() {
 		super.invalidate();
-		this.filteredMatchingStacks = null;
-		this.packedMatchingStacks = null;
+		filteredMatchingStacks = null;
+		packedMatchingStacks = null;
 	}
 
 	@Override

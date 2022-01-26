@@ -39,12 +39,12 @@ public class FluidFormSettings implements IFluidFormSettings {
 	private Function<IMaterial, Material> materialFunction = material->Material.WATER;
 	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
 	//material->{
-		//int color = material.getColor();
-		//return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
-		//		min((matColor1, matColor2)->Integer.compare(
-		//				MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
-		//				MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
-		//		orElse(MaterialColor.IRON);
+	//	int color = material.getColor();
+	//	return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
+	//			min((matColor1, matColor2)->Integer.compare(
+	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
+	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
+	//			orElse(MaterialColor.IRON);
 	//};
 	private ToIntFunction<IMaterial> lightValueFunction = material->0;
 	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->100;

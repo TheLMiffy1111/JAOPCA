@@ -33,7 +33,7 @@ import thelm.jaopca.utils.MiscHelper;
 
 public class ItemFormType implements IItemFormType {
 
-	private ItemFormType() {};
+	private ItemFormType() {}
 
 	public static final ItemFormType INSTANCE = new ItemFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();

@@ -1,10 +1,12 @@
-package thelm.jaopca.compat.indreb;
+package thelm.jaopca.compat.voluminousenergy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -19,17 +21,17 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "indreb")
-public class IndRebCompatModule implements IModule {
+@JAOPCAModule(modDependencies = "voluminousenergy")
+public class VoluminousEnergyCompatModule implements IModule {
 
-	private static final Set<String> TO_BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"bone", "brick", "bronze", "coal", "copper", "diamond", "emerald", "glowstone", "gold", "iron", "lapis",
-			"nether_brick", "netherite", "quartz", "redstone", "silver", "steel", "tin"));
-	private static Set<String> configToBlockBlacklist = new TreeSet<>();
+	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
+			"aluminum", "aluminium", "carbon", "solarium", "titanium"));
+	private static Set<String> configToPlateBlacklist = new TreeSet<>();
+
 
 	@Override
 	public String getName() {
-		return "indreb_compat";
+		return "voluminousenergy_compat";
 	}
 
 	@Override
@@ -41,27 +43,27 @@ public class IndRebCompatModule implements IModule {
 	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.toStorageBlockMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have compressor to storage block recipes added."),
-				configToBlockBlacklist);
+				config.getDefinedStringList("recipes.toPlateMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have compressor to plate recipes added."),
+				configToPlateBlacklist);
 	}
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		IndRebHelper helper = IndRebHelper.INSTANCE;
+		VoluminousEnergyHelper helper = VoluminousEnergyHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
+			MaterialType type = material.getType();
 			String name = material.getName();
-			if(!TO_BLOCK_BLACKLIST.contains(name) && !configToBlockBlacklist.contains(name)) {
+			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
+					!TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation storageBlockLocation = miscHelper.getTagLocation("storage_blocks", material.getName());
-				if(api.getItemTags().contains(storageBlockLocation)) {
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
+				if(api.getItemTags().contains(plateLocation)) {
 					helper.registerCompressingRecipe(
-							new ResourceLocation("jaopca", "indreb.material_to_storage_block."+material.getName()),
-							materialLocation, 9,
-							storageBlockLocation, 1,
-							180, 8, 0.3F);
+							new ResourceLocation("jaopca", "voluminousenergy.material_to_plate."+material.getName()),
+							materialLocation, 1, plateLocation, 1, 200);
 				}
 			}
 		}

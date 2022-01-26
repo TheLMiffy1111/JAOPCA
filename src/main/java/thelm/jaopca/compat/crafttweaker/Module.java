@@ -26,7 +26,7 @@ public class Module {
 
 	private Module(IModule module) {
 		this.module = module;
-		this.moduleData = ModuleHandler.getModuleData(module);
+		moduleData = ModuleHandler.getModuleData(module);
 	}
 
 	public IModule getInternal() {
@@ -60,10 +60,9 @@ public class Module {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Module)) {
+		if(!(obj instanceof Module other)) {
 			return false;
 		}
-		Module other = (Module)obj;
 		return module == other.module;
 	}
 

@@ -75,7 +75,7 @@ public class MillRecipeSerializer implements IRecipeSerializer {
 			resultJson.add(outputJson);
 		}
 		json.add("output", resultJson);
-		
+
 		return json;
 	}
 }

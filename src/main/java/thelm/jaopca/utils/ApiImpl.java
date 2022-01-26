@@ -321,7 +321,8 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerRecipe(ResourceLocation key, IRecipeSerializer recipeSerializer) {
-		if(ConfigHandler.RECIPE_BLACKLIST.contains(key)) {
+		if(DataCollector.getDefinedRecipes().contains(key) || ConfigHandler.RECIPE_BLACKLIST.contains(key) ||
+				ConfigHandler.RECIPE_REGEX_BLACKLIST.stream().anyMatch(p->p.matcher(key.toString()).matches())) {
 			return false;
 		}
 		return DataInjector.registerRecipe(key, recipeSerializer);

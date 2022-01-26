@@ -12,5 +12,10 @@
     "item.jaopca.create_crushed_ores": "Crushed %s Ore",
 
     "item.jaopca.crossroads_grits": "Raw %s Grit",
-    "item.jaopca.crossroads_clumps": "%s Clumps"
+    "item.jaopca.crossroads_clumps": "%s Clumps",
+
+    "item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
+    "item.jaopca.electrodynamics_crystals": "%s Sulfate Crystal",
+    "fluid.jaopca.electrodynamics_sulfates": "%s Sulfate",
+    "item.jaopca.electrodynamics_sulfates": "%s Sulfate Bucket"
 }

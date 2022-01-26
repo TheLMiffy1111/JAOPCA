@@ -24,13 +24,15 @@ public class ChemicalCrystallizerRecipeSerializer implements IRecipeSerializer {
 	public final int inputAmount;
 	public final Object output;
 	public final int outputCount;
+	public final double experience;
 
-	public ChemicalCrystallizerRecipeSerializer(ResourceLocation key, Object input, int inputAmount, Object output, int outputCount) {
+	public ChemicalCrystallizerRecipeSerializer(ResourceLocation key, Object input, int inputAmount, Object output, int outputCount, double experience) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.inputAmount = inputAmount;
 		this.output = output;
 		this.outputCount = outputCount;
+		this.experience = experience;
 	}
 
 	@Override
@@ -54,12 +56,14 @@ public class ChemicalCrystallizerRecipeSerializer implements IRecipeSerializer {
 		else if(input instanceof Fluid) {
 			ingJson.addProperty("fluid", ((Fluid)input).getRegistryName().toString());
 		}
+		ingJson.addProperty("amount", inputAmount);
 		fluidInputJson.add("0", ingJson);
 		json.add("fluidinputs", fluidInputJson);
 		JsonObject resultJson = new JsonObject();
 		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
 		resultJson.addProperty("count", stack.getCount());
 		json.add("output", resultJson);
+		json.addProperty("experience", experience);
 
 		return json;
 	}

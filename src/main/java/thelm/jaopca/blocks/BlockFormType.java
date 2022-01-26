@@ -39,7 +39,7 @@ import thelm.jaopca.utils.MiscHelper;
 
 public class BlockFormType implements IBlockFormType {
 
-	private BlockFormType() {};
+	private BlockFormType() {}
 
 	public static final BlockFormType INSTANCE = new BlockFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();

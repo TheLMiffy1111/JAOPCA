@@ -9,6 +9,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -115,7 +116,7 @@ public class ModelHandler {
 	public static void remapModels(ModelBakeEvent event) {
 		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
-		BakedModel missingModel = modelRegistry.get(ForgeModelBakery.MISSING_MODEL_LOCATION);
+		BakedModel missingModel = modelRegistry.get(ModelBakery.MISSING_MODEL_LOCATION);
 		for(Map.Entry<ResourceLocation, Collection<ResourceLocation>> entry : REMAPS.asMap().entrySet()) {
 			BakedModel defaultModel = modelRegistry.getOrDefault(entry.getKey(), missingModel);
 			for(ResourceLocation modelLocation : entry.getValue()) {

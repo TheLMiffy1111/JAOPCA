@@ -119,8 +119,7 @@ public class LocalizationRepoHandler {
 		URL currentUrl = url;
 		for(int redirects = 0; redirects < MAX_HTTP_REDIRECTS; redirects++) {
 			URLConnection c = currentUrl.openConnection();
-			if(c instanceof HttpURLConnection) {
-				HttpURLConnection huc = (HttpURLConnection) c;
+			if(c instanceof HttpURLConnection huc) {
 				huc.setInstanceFollowRedirects(false);
 				int responseCode = huc.getResponseCode();
 				if(responseCode >= 300 && responseCode <= 399) {

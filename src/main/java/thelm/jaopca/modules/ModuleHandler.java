@@ -105,7 +105,7 @@ public class ModuleHandler {
 		ModList modList = ModList.get();
 		int separatorIndex = dep.lastIndexOf('@');
 		String modId = dep.substring(0, separatorIndex == -1 ? dep.length() : separatorIndex);
-		String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1, dep.length());
+		String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1);
 		VersionRange versionRange;
 		try {
 			versionRange = VersionRange.createFromVersionSpec(spec);

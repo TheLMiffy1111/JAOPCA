@@ -26,14 +26,14 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 	public final int outputCount;
 	public final Object secondOutput;
 	public final int secondOutputCount;
-	public final float secondOutputChance;
+	public final float secondChance;
 	public final int time;
 
 	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time) {
 		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, time);
 	}
 
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondOutputChance, int time) {
+	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondChance, int time) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.inputCount = inputCount;
@@ -41,7 +41,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		this.outputCount = outputCount;
 		this.secondOutput = secondOutput;
 		this.secondOutputCount = secondOutputCount;
-		this.secondOutputChance = secondOutputChance;
+		this.secondChance = secondChance;
 		this.time = time;
 	}
 
@@ -66,13 +66,11 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
 		resultJson.addProperty("count", stack.getCount());
 		json.add("result", resultJson);
-		if(!secondStack.isEmpty()) {
-			JsonObject secondJson = new JsonObject();
-			secondJson.addProperty("item", secondStack.getItem().getRegistryName().toString());
-			secondJson.addProperty("count", secondStack.getCount());
-			secondJson.addProperty("chance", secondOutputChance);
-			json.add("rng", secondJson);
-		}
+		JsonObject secondJson = new JsonObject();
+		secondJson.addProperty("item", secondStack.getItem().getRegistryName().toString());
+		secondJson.addProperty("count", secondStack.getCount());
+		secondJson.addProperty("chance", secondChance);
+		json.add("rng", secondJson);
 		json.addProperty("process_time", time);
 
 		return json;

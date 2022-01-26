@@ -11,8 +11,8 @@ public class VoluminousEnergyHelper {
 
 	private VoluminousEnergyHelper() {}
 
-	public boolean registerCrushingRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondOutputChance, int time) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSerializer(key, input, inputCount, output, outputCount, secondOutput, secondOutputCount, secondOutputChance, time));
+	public boolean registerCrushingRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondChance, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSerializer(key, input, inputCount, output, outputCount, secondOutput, secondOutputCount, secondChance, time));
 	}
 
 	public boolean registerCrushingRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time) {

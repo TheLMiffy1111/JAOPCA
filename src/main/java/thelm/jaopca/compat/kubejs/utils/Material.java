@@ -83,10 +83,9 @@ public class Material {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Material)) {
+		if(!(obj instanceof Material other)) {
 			return false;
 		}
-		Material other = (Material)obj;
 		return material == other.material;
 	}
 

@@ -131,7 +131,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 				filter(rl->rl.getPath().startsWith(pathIn)).filter(rl->{
 					String path = rl.getPath();
 					int lastSlash = path.lastIndexOf('/');
-					return filter.test(path.substring(lastSlash < 0 ? 0 : lastSlash, path.length()));
+					return filter.test(path.substring(lastSlash < 0 ? 0 : lastSlash));
 				}).collect(Collectors.toList());
 	}
 

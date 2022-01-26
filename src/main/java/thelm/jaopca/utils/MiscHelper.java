@@ -110,8 +110,7 @@ public class MiscHelper implements IMiscHelper {
 		if(obj instanceof Supplier<?>) {
 			ret = getIngredient(((Supplier<?>)obj).get());
 		}
-		else if(obj instanceof CompoundIngredientObject) {
-			CompoundIngredientObject cObj = (CompoundIngredientObject)obj;
+		else if(obj instanceof CompoundIngredientObject cObj) {
 			List<Ingredient> ings = Arrays.stream(cObj.ingredients()).map(this::getIngredient).collect(Collectors.toList());
 			if(ings.size() == 1) {
 				ret = ings.get(0);

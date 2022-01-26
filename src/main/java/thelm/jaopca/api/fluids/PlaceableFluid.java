@@ -39,7 +39,7 @@ public abstract class PlaceableFluid extends Fluid {
 
 	public static final float EIGHT_NINTHS = 8/9F;
 	private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> OCCLUSION_CACHE = ThreadLocal.withInitial(()->{
-		Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> object2bytelinkedopenhashmap = new Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>(200) {
+		Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> object2bytelinkedopenhashmap = new Object2ByteLinkedOpenHashMap<>(200) {
 			@Override
 			protected void rehash(int newN) {}
 		};

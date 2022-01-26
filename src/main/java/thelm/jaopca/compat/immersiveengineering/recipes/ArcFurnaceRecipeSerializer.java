@@ -96,7 +96,7 @@ public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
 				outputs.add(is);
 			}
 			else {
-				secondary.add(Pair.of(is, chance));	
+				secondary.add(Pair.of(is, chance));
 			}
 		}
 

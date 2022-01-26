@@ -93,13 +93,13 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 			for(int i = 0; i < str.length(); i++) {
 				char c = str.charAt(i);
 				if(!keyMap.containsKey(Character.valueOf(c)) && c != ' ') {
-					throw new IllegalArgumentException("Pattern in recipe "+key+" uses undefined symbol '"+c+"'"); 
+					throw new IllegalArgumentException("Pattern in recipe "+key+" uses undefined symbol '"+c+"'");
 				}
 				set.remove(Character.valueOf(c));
-			} 
-		} 
+			}
+		}
 		if(!set.isEmpty()) {
-			throw new IllegalArgumentException("Ingredients are defined but not used in pattern for recipe "+key); 
+			throw new IllegalArgumentException("Ingredients are defined but not used in pattern for recipe "+key);
 		}
 
 		JsonObject json = new JsonObject();
@@ -114,7 +114,7 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 		json.add("pattern", patternJson);
 		JsonObject keyJson = new JsonObject();
 		for(Map.Entry<Character, Ingredient> entry : keyMap.entrySet()) {
-			keyJson.add(String.valueOf(entry.getKey()), ((Ingredient)entry.getValue()).toJson());
+			keyJson.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
 		}
 		json.add("key", keyJson);
 		JsonObject resultJson = new JsonObject();

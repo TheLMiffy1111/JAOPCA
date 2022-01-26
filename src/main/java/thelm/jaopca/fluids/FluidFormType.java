@@ -36,7 +36,7 @@ import thelm.jaopca.utils.MiscHelper;
 
 public class FluidFormType implements IFluidFormType {
 
-	private FluidFormType() {};
+	private FluidFormType() {}
 
 	public static final FluidFormType INSTANCE = new FluidFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();

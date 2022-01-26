@@ -133,19 +133,19 @@ dependencies {
     annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
 
     implementation fg.deobf("mezz.jei:jei-1.18.1:9.2.3.78")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.18.1:9.0.0+32")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.18.1:9.0.0+33")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.1-5.0.6.0")
-    implementation fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:1.18-0.5.1.45")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:3.0.7")
+    implementation fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:1.18-0.6.0.51")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:3.0.9")
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.1-64")
     implementation fg.deobf("dev.latvian.mods:rhino-forge:1800.1.7-build.94")
     implementation fg.deobf("dev.architectury:architectury-forge:3.4.9")
     implementation fg.deobf("dev.latvian.mods:kubejs-forge:1801.4.1-build.271") {
         transitive = false
     }
-    implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.18.1:11.0.3")
+    implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.18.1:11.0.4")
     implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.18.1-7.1.0-145")
-    implementation fg.deobf("com.simibubi.create:Create:mc1.18.1_v0.4c+64")
+    implementation fg.deobf("com.simibubi.create:Create:mc1.18.1_v0.4d+75")
     implementation fg.deobf("appeng:appliedenergistics2:10.0.1")
 
     //JitPack
@@ -153,18 +153,18 @@ dependencies {
     //CurseMaven
     implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3544525")
     implementation fg.deobf("curse.maven:ato-405593:3613846")
-    implementation fg.deobf("curse.maven:allthemodium-364466:3615282")
+    implementation fg.deobf("curse.maven:allthemodium-364466:3622621")
     implementation fg.deobf("curse.maven:industrial-reborn-358877:3595152")
     implementation fg.deobf("curse.maven:useful-foundation-355245:3617290")
     implementation fg.deobf("curse.maven:useful-machinery-355129:3606044")
-    implementation fg.deobf("curse.maven:electrodynamics-316867:3606255")
+    implementation fg.deobf("curse.maven:electrodynamics-316867:3620519")
     implementation fg.deobf("curse.maven:voluminous-energy-416704:3591677")
     implementation fg.deobf("curse.maven:cyclops-core-232758:3614854")
     implementation fg.deobf("curse.maven:common-capabilities-247007:3614900")
     implementation fg.deobf("curse.maven:integrated-dynamics-236307:3614925")
     implementation fg.deobf("curse.maven:essentials-293752:3616143")
     implementation fg.deobf("curse.maven:crossroads-mc-250231:3616150")
-    implementation fg.deobf("curse.maven:assemblylinemachines-388282:3616185")
+    implementation fg.deobf("curse.maven:assemblylinemachines-388282:3623609")
     implementation fg.deobf("curse.maven:occultism-361026:3611830")
 }
 
