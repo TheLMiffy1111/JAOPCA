@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.occultism;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
@@ -24,6 +26,7 @@ public class OccultismCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"copper", "gold", "iesnium", "iron", "silver"));
+	private static Set<String> configToDustBlacklist = new TreeSet<>();
 
 	@Override
 	public String getName() {
@@ -36,13 +39,24 @@ public class OccultismCompatModule implements IModule {
 	}
 
 	@Override
+	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
+		IMiscHelper helper = MiscHelper.INSTANCE;
+		helper.caclulateMaterialSet(
+				config.getDefinedStringList("recipes.toDustMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have crushing recipes added."),
+				configToDustBlacklist);
+	}
+
+	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		OccultismHelper helper = OccultismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) && !TO_DUST_BLACKLIST.contains(material.getName())) {
+			String name = material.getName();
+			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
+					!TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				if(api.getItemTags().contains(dustLocation)) {

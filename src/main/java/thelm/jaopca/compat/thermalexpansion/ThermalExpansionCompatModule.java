@@ -171,7 +171,7 @@ public class ThermalExpansionCompatModule implements IModule {
 				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
 				if(api.getItemTags().contains(gearLocation)) {
 					helper.registerPressRecipe(new ResourceLocation("jaopca", "thermal_expansion.material_to_gear."+material.getName()),
-							materialLocation, 3, gearDie, 1, gearLocation, 1,
+							materialLocation, 4, gearDie, 1, gearLocation, 1,
 							2400, 0F);
 				}
 			}
