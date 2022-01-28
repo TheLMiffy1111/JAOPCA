@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/metallic/exnihilosequentia_pieces",
+        "layer1": "jaopca:item/metallic/exnihilosequentia_pieces_overlay"
+    }
+}

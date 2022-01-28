@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/metallic/electrodynamics_mineral_fluids",
+        "layer1": "jaopca:item/metallic/electrodynamics_mineral_fluids_overlay"
+    }
+}

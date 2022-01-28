@@ -1,7 +1,10 @@
 buildscript {
     repositories {
         maven {
-            url = "https://files.minecraftforge.net/maven/"
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            url = "https://libraries.minecraft.net/"
         }
         maven {
             url = "https://plugins.gradle.org/m2/"
@@ -11,22 +14,16 @@ buildscript {
         }
         jcenter()
         mavenCentral()
-        maven {
-            url = "https://jitpack.io/"
-        }
     }
     dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "3.+", changing: true
-        classpath "com.wynprice.cursemaven:CurseMaven:2.1.5"
-        //classpath "com.github.Wyn-Price:CurseMaven:f0d58155e6"
+        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
         classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
     }
 }
 
 apply plugin: "net.minecraftforge.gradle"
 apply plugin: "eclipse"
-apply plugin: "maven"
-apply plugin: "com.wynprice.cursemaven"
+apply plugin: "maven-publish"
 apply plugin: "org.spongepowered.mixin"
 
 repositories {
@@ -69,10 +66,13 @@ repositories {
         url = "https://maven.tterrag.com/"
     }
     maven {
-        url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+        url = "https://jitpack.io/"
     }
     maven {
-        url = "https://jitpack.io/"
+        url = "https://cursemaven.com/"
+		content {
+            includeGroup "curse.maven"
+        }
     }
     maven {
         url = "https://modmaven.dev/"
@@ -83,11 +83,14 @@ sourceSets {
     main
 }
 
-version = "3.4.3.23"
+version = "3.4.3.24"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = "1.8"
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+eclipseJdtApt.enabled = false
+eclipseFactoryPath.enabled = false
 
 minecraft {
     mappings channel: "snapshot", version: "20201028-1.16.3"
@@ -145,35 +148,35 @@ dependencies {
     //JitPack
 
     //CurseMaven
-    implementation fg.deobf("curse.maven:ato:3405905")
-    implementation fg.deobf("curse.maven:allthemodium:3529763")
-    implementation fg.deobf("curse.maven:silent-lib:3235738")
-    implementation fg.deobf("curse.maven:silents-mechanisms:3272909")
-    implementation fg.deobf("curse.maven:silents-gems:3353519")
-    implementation fg.deobf("curse.maven:silent-gear:3386805")
-    implementation fg.deobf("curse.maven:industrial-reborn:3076845")
-    implementation fg.deobf("curse.maven:essentials:3393808")
-    implementation fg.deobf("curse.maven:crossroads-mc:3347113")
-    implementation fg.deobf("curse.maven:fl:3476292")
-    implementation fg.deobf("curse.maven:flux-machinery:3476290")
-    implementation fg.deobf("curse.maven:cofh-core:3621734")
-    implementation fg.deobf("curse.maven:thermal-foundation:3621736")
-    implementation fg.deobf("curse.maven:thermal-expansion:3607549")
-    implementation fg.deobf("curse.maven:create:3536025")
-    implementation fg.deobf("curse.maven:blood-magic:3568763")
-    implementation fg.deobf("curse.maven:occultism:3470116")
-    implementation fg.deobf("curse.maven:futurepack:3603244")
-    implementation fg.deobf("curse.maven:themcbros-useless-mod:3364720")
-    implementation fg.deobf("curse.maven:electrodynamics:3605071")
-    implementation fg.deobf("curse.maven:libvulpes:3499785")
-    implementation fg.deobf("curse.maven:advanced-rocketry:3302417")
-    implementation fg.deobf("curse.maven:cyclops-core:3517568")
-    implementation fg.deobf("curse.maven:common-capabilities:3482420")
-    implementation fg.deobf("curse.maven:integrated-dynamics:3546747")
-    implementation fg.deobf("curse.maven:voluminous-energy:3508860")
-    implementation fg.deobf("curse.maven:assemblylinemachines:3493402")
-    implementation fg.deobf("curse.maven:ftb-industrial-contraptions-forge:3609158")
-    implementation fg.deobf("curse.maven:ex-nihilo-sequentia:3607063")
+    implementation fg.deobf("curse.maven:ato-405593:3405905")
+    implementation fg.deobf("curse.maven:allthemodium-364466:3529763")
+    implementation fg.deobf("curse.maven:silent-lib-242998:3235738")
+    implementation fg.deobf("curse.maven:silents-mechanisms-326258:3272909")
+    implementation fg.deobf("curse.maven:silents-gems-220311:3353519")
+    implementation fg.deobf("curse.maven:silent-gear-297039:3386805")
+    implementation fg.deobf("curse.maven:industrial-reborn-358877:3076845")
+    implementation fg.deobf("curse.maven:essentials-293752:3393808")
+    implementation fg.deobf("curse.maven:crossroads-mc-250231:3347113")
+    implementation fg.deobf("curse.maven:fl-262385:3476292")
+    implementation fg.deobf("curse.maven:flux-machinery-248942:3476290")
+    implementation fg.deobf("curse.maven:cofh-core-69162:3621734")
+    implementation fg.deobf("curse.maven:thermal-foundation-222880:3621736")
+    implementation fg.deobf("curse.maven:thermal-expansion-69163:3607549")
+    implementation fg.deobf("curse.maven:create-328085:3536025")
+    implementation fg.deobf("curse.maven:blood-magic-224791:3568763")
+    implementation fg.deobf("curse.maven:occultism-361026:3470116")
+    implementation fg.deobf("curse.maven:futurepack-237333:3603244")
+    implementation fg.deobf("curse.maven:themcbros-useless-mod-322455:3364720")
+    implementation fg.deobf("curse.maven:electrodynamics-316867:3605071")
+    implementation fg.deobf("curse.maven:libvulpes-236541:3499785")
+    implementation fg.deobf("curse.maven:advanced-rocketry-236542:3302417")
+    implementation fg.deobf("curse.maven:cyclops-core-232758:3517568")
+    implementation fg.deobf("curse.maven:common-capabilities-247007:3482420")
+    implementation fg.deobf("curse.maven:integrated-dynamics-236307:3546747")
+    implementation fg.deobf("curse.maven:voluminous-energy-416704:3508860")
+    implementation fg.deobf("curse.maven:assemblylinemachines-388282:3493402")
+    implementation fg.deobf("curse.maven:ftb-industrial-contraptions-forge-539097:3609158")
+    implementation fg.deobf("curse.maven:ex-nihilo-sequentia-400012:3607063")
 }
 
 jar {

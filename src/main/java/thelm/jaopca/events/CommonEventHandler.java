@@ -1,14 +1,10 @@
 package thelm.jaopca.events;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.resources.DataPackRegistries;
-import net.minecraft.resources.IFutureReloadListener;
 import net.minecraft.resources.ResourcePackList;
-import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegistryEvent;

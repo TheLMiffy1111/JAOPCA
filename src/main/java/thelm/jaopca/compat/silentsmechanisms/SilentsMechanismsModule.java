@@ -34,8 +34,8 @@ import thelm.jaopca.utils.MiscHelper;
 public class SilentsMechanismsModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "bismuth", "copper", "gold", "iron", "lead", "nickel", "platinum", "silver", "super_useless",
-			"tin", "uranium", "useless", "zinc"));
+			"aluminum", "aluminium", "bismuth", "copper", "gold", "iron", "lead", "nickel", "platinum", "silver",
+			"super_useless", "tin", "uranium", "useless", "zinc"));
 
 	static {
 		if(ModList.get().isLoaded("silentgear")) {

@@ -25,9 +25,9 @@ import thelm.jaopca.utils.MiscHelper;
 public class SilentsMechanismsCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminum_steel", "bismuth", "bismuth_steel", "brass", "bronze", "coal", "copper", "electrum",
-			"enderium", "gold", "invar", "iron", "lead", "lumium", "nickel", "platinum", "redstone_alloy", "signalum",
-			"silver", "steel", "tin", "uranium", "zinc"));
+			"aluminum", "aluminium", "aluminum_steel", "aluminium_steel", "bismuth", "bismuth_steel", "brass", "bronze",
+			"coal", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium", "nickel", "platinum",
+			"redstone_alloy", "signalum", "silver", "steel", "tin", "uranium", "zinc"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 
 	@Override

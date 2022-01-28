@@ -14,5 +14,18 @@
     "slurry.jaopca.mekanism_dirty": "污濁%s漿液",
     "slurry.jaopca.mekanism_clean": "純淨%s漿液",
 
-    "item.jaopca.create_crushed_ores": "碎%s礦"
+    "item.jaopca.flux_grits": "%s礦砂",
+
+    "item.jaopca.silents_mechanisms_chunks": "%s礦碎塊",
+
+    "item.jaopca.create_crushed_ores": "碎%s礦",
+
+    "item.jaopca.crossroads_grits": "粗%s砂",
+    "item.jaopca.crossroads_clumps": "%s團塊",
+
+    "item.jaopca.bloodmagic_gravels": "%s礦礫石",
+    "item.jaopca.bloodmagic_fragments": "%s礦碎片",
+
+    "item.jaopca.exnihilosequentia_pieces": "%s礦碎粒",
+    "item.jaopca.exnihilosequentia_chunks": "%s礦碎塊"
 }
