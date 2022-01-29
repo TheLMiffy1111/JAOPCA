@@ -83,7 +83,7 @@ sourceSets {
     main
 }
 
-version = "3.4.3.24"
+version = "3.4.3.25"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
@@ -117,6 +117,7 @@ minecraft {
 
 dependencies {
     minecraft "net.minecraftforge:forge:1.16.5-36.2.23"
+    annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
 
     implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.145")
     implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.489")
