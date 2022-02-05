@@ -65,8 +65,7 @@ public class UsefulMachineryCompatModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(!ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!GENERAL_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
+			if(!type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
 				if(api.getItemTags().contains(plateLocation)) {
@@ -75,8 +74,7 @@ public class UsefulMachineryCompatModule implements IModule {
 							materialLocation, 1, plateLocation, 1, 200, 0);
 				}
 			}
-			if(!ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!GENERAL_BLACKLIST.contains(name) && !configToGearBlacklist.contains(name)) {
+			if(!type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToGearBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
 				if(api.getItemTags().contains(gearLocation)) {
@@ -85,8 +83,7 @@ public class UsefulMachineryCompatModule implements IModule {
 							materialLocation, 4, gearLocation, 1, 200, 0);
 				}
 			}
-			if(!ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!GENERAL_BLACKLIST.contains(name) && !configToBlockBlacklist.contains(name)) {
+			if(!type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToBlockBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation storageBlockLocation = miscHelper.getTagLocation("storage_blocks", material.getName());
 				if(api.getItemTags().contains(storageBlockLocation)) {

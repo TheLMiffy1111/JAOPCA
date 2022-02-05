@@ -45,7 +45,7 @@ public class DustsModule implements IModule {
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		for(IMaterial material : dustForm.getMaterials()) {
-			if(ArrayUtils.contains(MaterialType.INGOTS, material.getType())) {
+			if(material.getType().isIngot()) {
 				IItemInfo dustInfo = ItemFormType.INSTANCE.getMaterialFormInfo(dustForm, material);
 				ResourceLocation materialLocation = MiscHelper.INSTANCE.getTagLocation(material.getType().getFormName(), material.getName());
 				api.registerSmeltingRecipe(

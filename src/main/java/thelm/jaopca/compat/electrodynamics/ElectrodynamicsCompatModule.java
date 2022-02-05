@@ -71,8 +71,7 @@ public class ElectrodynamicsCompatModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
+			if(type.isIngot() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				if(api.getItemTags().contains(dustLocation)) {
@@ -81,8 +80,7 @@ public class ElectrodynamicsCompatModule implements IModule {
 							materialLocation, 1, dustLocation, 1, 0.1);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
+			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
 				if(api.getItemTags().contains(plateLocation)) {
@@ -91,8 +89,7 @@ public class ElectrodynamicsCompatModule implements IModule {
 							materialLocation, 1, plateLocation, 1, 0.1);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_ROD_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
+			if(type.isIngot() && !TO_ROD_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", material.getName());
 				ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());

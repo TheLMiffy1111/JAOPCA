@@ -3,6 +3,8 @@ package thelm.jaopca.api.materials;
 import java.util.Arrays;
 import java.util.Locale;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 public enum MaterialType {
 
 	INGOT("ingots"),
@@ -34,6 +36,30 @@ public enum MaterialType {
 
 	public String getFormName() {
 		return formName;
+	}
+
+	public boolean isIngot() {
+		return ArrayUtils.contains(INGOTS, this);
+	}
+
+	public boolean isGem() {
+		return ArrayUtils.contains(GEMS, this);
+	}
+
+	public boolean isCrystal() {
+		return ArrayUtils.contains(CRYSTALS, this);
+	}
+
+	public boolean isCrystalline() {
+		return isGem() || isCrystal();
+	}
+
+	public boolean isDust() {
+		return ArrayUtils.contains(DUSTS, this);
+	}
+
+	public boolean isOre() {
+		return ArrayUtils.contains(ORE, this);
 	}
 
 	public static MaterialType fromName(String name) {

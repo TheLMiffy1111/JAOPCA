@@ -41,22 +41,22 @@ public class MaterialDoubleFunctionDeserializer implements JsonDeserializer<ToDo
 				switch(entry.getKey()) {
 				case "ingot":
 					MaterialHandler.getMaterials().stream().
-					filter(m->ArrayUtils.contains(MaterialType.INGOTS, m.getType())).
+					filter(m->m.getType().isIngot()).
 					forEach(m->map.put(m, materialTypeValue));
 					break;
 				case "gem":
 					MaterialHandler.getMaterials().stream().
-					filter(m->ArrayUtils.contains(MaterialType.GEMS, m.getType())).
+					filter(m->m.getType().isGem()).
 					forEach(m->map.put(m, materialTypeValue));
 					break;
 				case "crystal":
 					MaterialHandler.getMaterials().stream().
-					filter(m->ArrayUtils.contains(MaterialType.CRYSTALS, m.getType())).
+					filter(m->m.getType().isCrystal()).
 					forEach(m->map.put(m, materialTypeValue));
 					break;
 				case "dust":
 					MaterialHandler.getMaterials().stream().
-					filter(m->ArrayUtils.contains(MaterialType.DUSTS, m.getType())).
+					filter(m->m.getType().isDust()).
 					forEach(m->map.put(m, materialTypeValue));
 					break;
 				}

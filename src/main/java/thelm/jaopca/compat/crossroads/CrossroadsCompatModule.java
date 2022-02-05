@@ -6,8 +6,6 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -77,8 +75,8 @@ public class CrossroadsCompatModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
+			boolean isIngot = type.isIngot();
+			if(!type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				if(api.getItemTags().contains(dustLocation)) {
@@ -87,44 +85,38 @@ public class CrossroadsCompatModule implements IModule {
 							materialLocation, dustLocation, 1);
 				}
 			}
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!MOLTEN_BLACKLIST.contains(name) && !configMaterialToMoltenBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+			if(!type.isDust()) {
 				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
+				int baseAmount = material.getType().isIngot() ? 90 : 100;
 				if(api.getFluidTags().contains(moltenLocation)) {
-					helper.registerCrucibleRecipe(
-							new ResourceLocation("jaopca", "crossroads.material_to_molten."+material.getName()),
-							materialLocation, moltenLocation, 90);
+					if(!MOLTEN_BLACKLIST.contains(name) && !configMaterialToMoltenBlacklist.contains(name)) {
+						ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+						helper.registerCrucibleRecipe(
+								new ResourceLocation("jaopca", "crossroads.material_to_molten."+material.getName()),
+								materialLocation, moltenLocation, baseAmount);
+					}
 				}
-			}
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!MOLTEN_BLACKLIST.contains(name) && !configDustToMoltenBlacklist.contains(name)) {
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
-				if(api.getItemTags().contains(dustLocation) && api.getFluidTags().contains(moltenLocation)) {
-					helper.registerCrucibleRecipe(
-							new ResourceLocation("jaopca", "crossroads.dust_to_molten."+material.getName()),
-							dustLocation, moltenLocation, 90);
+				if(!type.isDust() && !MOLTEN_BLACKLIST.contains(name) && !configDustToMoltenBlacklist.contains(name)) {
+					ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+					if(api.getItemTags().contains(dustLocation)) {
+						helper.registerCrucibleRecipe(
+								new ResourceLocation("jaopca", "crossroads.dust_to_molten."+material.getName()),
+								dustLocation, moltenLocation, baseAmount);
+					}
 				}
-			}
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!MOLTEN_BLACKLIST.contains(name) && !configNuggetToMoltenBlacklist.contains(name)) {
-				ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
-				if(api.getItemTags().contains(nuggetLocation) && api.getFluidTags().contains(moltenLocation)) {
-					helper.registerCrucibleRecipe(
-							new ResourceLocation("jaopca", "crossroads.nugget_to_molten."+material.getName()),
-							nuggetLocation, moltenLocation, 10);
+				if(!MOLTEN_BLACKLIST.contains(name) && !configNuggetToMoltenBlacklist.contains(name)) {
+					ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
+					if(api.getItemTags().contains(nuggetLocation)) {
+						helper.registerCrucibleRecipe(
+								new ResourceLocation("jaopca", "crossroads.nugget_to_molten."+material.getName()),
+								nuggetLocation, moltenLocation, (int)Math.floor(baseAmount/9F));
+					}
 				}
-			}
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!MOLTEN_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
-				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				if(api.getFluidTags().contains(moltenLocation)) {
+				if(!MOLTEN_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
+					ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 					helper.registerFluidCoolingRecipe(
 							new ResourceLocation("jaopca", "crossroads.molten_to_material."+material.getName()),
-							moltenLocation, 90, materialLocation, 1, 1500, 100);
+							moltenLocation, baseAmount, materialLocation, 1, 1500, 100);
 				}
 			}
 		}

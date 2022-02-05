@@ -6,8 +6,6 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -101,8 +99,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!GENERAL_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
+			if(!type.isDust() && !GENERAL_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				if(api.getItemTags().contains(dustLocation)) {
@@ -113,8 +110,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 							}, 3000);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!GENERAL_BLACKLIST.contains(name) && !configToIngotBlacklist.contains(name)) {
+			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToIngotBlacklist.contains(name)) {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				if(api.getItemTags().contains(dustLocation)) {
@@ -127,8 +123,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 							}, 100, 51200);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!GENERAL_BLACKLIST.contains(name) && !configToGearBlacklist.contains(name)) {
+			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToGearBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
 				if(api.getItemTags().contains(gearLocation)) {
@@ -137,8 +132,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 							materialLocation, 4, gearMold, gearLocation, 1, 2400);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!GENERAL_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
+			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
 				if(api.getItemTags().contains(plateLocation)) {
@@ -147,8 +141,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 							materialLocation, 1, plateMold, plateLocation, 1, 2400);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!GENERAL_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
+			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", material.getName());
 				if(api.getItemTags().contains(rodLocation)) {
@@ -157,8 +150,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 							materialLocation, 1, rodMold, rodLocation, 2, 2400);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!GENERAL_BLACKLIST.contains(name) && !configToWireBlacklist.contains(name)) {
+			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToWireBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation wireLocation = miscHelper.getTagLocation("wires", material.getName());
 				if(api.getItemTags().contains(wireLocation)) {
@@ -167,8 +159,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 							materialLocation, 1, wireMold, wireLocation, 2, 2400);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!HAMMER_TO_PLATE_BLACKLIST.contains(name) && !configHammerToPlateBlacklist.contains(name)) {
+			if(type.isIngot() && !HAMMER_TO_PLATE_BLACKLIST.contains(name) && !configHammerToPlateBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
 				if(api.getItemTags().contains(plateLocation)) {
@@ -179,8 +170,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 							});
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!WIRECUTTER_TO_WIRE_BLACKLIST.contains(name) && !configWirecutterToWireBlacklist.contains(name)) {
+			if(type.isIngot() && !WIRECUTTER_TO_WIRE_BLACKLIST.contains(name) && !configWirecutterToWireBlacklist.contains(name)) {
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
 				ResourceLocation wireLocation = miscHelper.getTagLocation("wires", material.getName());
 				if(api.getItemTags().contains(plateLocation) && api.getItemTags().contains(wireLocation)) {

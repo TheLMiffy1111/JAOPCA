@@ -40,20 +40,20 @@ public class RawStorageBlocksModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : rawStorageBlockForm.getMaterials()) {
-			ResourceLocation rawOreLocation = miscHelper.getTagLocation("raw_ores", material.getName());
+			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			IBlockInfo rawStorageBlockInfo = BlockFormType.INSTANCE.getMaterialFormInfo(rawStorageBlockForm, material);
-			ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("raw_storage_blocks", material.getName());
+			ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 			api.registerShapedRecipe(
 					new ResourceLocation("jaopca", "raw_storage_blocks.to_raw_storage_block."+material.getName()),
 					rawStorageBlockInfo, 1, new Object[] {
 							"MMM",
 							"MMM",
 							"MMM",
-							'M', rawOreLocation,
+							'M', rawMaterialLocation,
 					});
 			api.registerShapelessRecipe(
-					new ResourceLocation("jaopca", "raw_storage_blocks.to_raw_ore."+material.getName()),
-					rawOreLocation, 9, new Object[] {
+					new ResourceLocation("jaopca", "raw_storage_blocks.to_raw_material."+material.getName()),
+					rawMaterialLocation, 9, new Object[] {
 							rawStorageBlockLocation,
 					});
 		}
