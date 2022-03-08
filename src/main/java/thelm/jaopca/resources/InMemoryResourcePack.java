@@ -24,6 +24,7 @@ import com.google.gson.JsonParser;
 
 import net.minecraft.resources.ResourcePackType;
 import net.minecraft.resources.data.IMetadataSectionSerializer;
+import net.minecraft.resources.data.PackMetadataSection;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.resources.IInMemoryResourcePack;
 
@@ -148,7 +149,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 
 	@Override
 	public <T> T getMetadata(IMetadataSectionSerializer<T> deserializer) throws IOException {
-		return deserializer.deserialize(metadata);
+		return deserializer == PackMetadataSection.SERIALIZER ? deserializer.deserialize(metadata) : null;
 	}
 
 	@Override
