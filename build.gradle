@@ -83,7 +83,7 @@ sourceSets {
     main
 }
 
-version = "3.4.3.25"
+version = "3.4.3.26"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.16.5"
 
@@ -116,13 +116,13 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.16.5-36.2.23"
+    minecraft "net.minecraftforge:forge:1.16.5-36.2.30"
     annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
 
-    implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.145")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.489")
-    implementation fg.deobf("mekanism:Mekanism:1.16.5-10.1.1.456")
-    implementation fg.deobf("mekanism:Mekanism:1.16.5-10.1.1.456:generators")
+    implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.152")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.505")
+    implementation fg.deobf("mekanism:Mekanism:1.16.5-10.1.2.457")
+    implementation fg.deobf("mekanism:Mekanism:1.16.5-10.1.2.457:generators")
     implementation fg.deobf("com.wtbw.mods:wtbw_lib-1.16.3:2.0.1")
     implementation fg.deobf("com.wtbw.mods:wtbw_core-1.16.3:2.0.2")
     implementation fg.deobf("com.wtbw.mods:wtbw_machines-1.16.3:2.0.1")
@@ -135,11 +135,11 @@ dependencies {
     }
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.16.4-53.2")
     implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.16.5-5.0.7-143")
-    implementation fg.deobf("slimeknights.mantle:Mantle:1.16.5-1.6.152")
-    implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.16.5-3.3.2.324")
+    implementation fg.deobf("slimeknights.mantle:Mantle:1.16.5-1.6.157")
+    implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.16.5-3.3.3.332")
     implementation fg.deobf("dev.latvian.mods:rhino-forge:1605.1.5-build.75")
-    implementation fg.deobf("me.shedaniel:architectury-forge:1.28.48")
-    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1605.3.19-build.258") {
+    implementation fg.deobf("me.shedaniel:architectury-forge:1.30.55")
+    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1605.3.19-build.299") {
         transitive = false
     }
     implementation fg.deobf("appeng:appliedenergistics2:8.4.7")
@@ -173,11 +173,11 @@ dependencies {
     implementation fg.deobf("curse.maven:advanced-rocketry-236542:3302417")
     implementation fg.deobf("curse.maven:cyclops-core-232758:3517568")
     implementation fg.deobf("curse.maven:common-capabilities-247007:3482420")
-    implementation fg.deobf("curse.maven:integrated-dynamics-236307:3546747")
+    implementation fg.deobf("curse.maven:integrated-dynamics-236307:3640128")
     implementation fg.deobf("curse.maven:voluminous-energy-416704:3508860")
     implementation fg.deobf("curse.maven:assemblylinemachines-388282:3493402")
     implementation fg.deobf("curse.maven:ftb-industrial-contraptions-forge-539097:3609158")
-    implementation fg.deobf("curse.maven:ex-nihilo-sequentia-400012:3607063")
+    implementation fg.deobf("curse.maven:ex-nihilo-sequentia-400012:3636875")
 }
 
 jar {

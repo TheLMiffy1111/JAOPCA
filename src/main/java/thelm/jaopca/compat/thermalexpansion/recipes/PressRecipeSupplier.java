@@ -82,6 +82,9 @@ public class PressRecipeSupplier implements Supplier<PressRecipe> {
 		if(!fluidStack.isEmpty()) {
 			fluidOutputs = Collections.singletonList(fluidStack);
 		}
+		if(itemOutputs.isEmpty() && fluidOutputs.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+itemOutput+", "+fluidOutput);
+		}
 		return new PressRecipe(key, energy, experience, inputs, Collections.emptyList(), itemOutputs, itemChances, fluidOutputs);
 	}
 }

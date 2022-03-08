@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.thermalexpansion.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -64,6 +65,9 @@ public class PulverizerRecipeSupplier implements Supplier<PulverizerRecipe> {
 			}
 			outputs.add(stack);
 			chances.add(chance);
+		}
+		if(outputs.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.toString(output));
 		}
 		return new PulverizerRecipe(key, energy, experience, Collections.singletonList(ing), Collections.emptyList(), outputs, chances, Collections.emptyList());
 	}
