@@ -31,47 +31,48 @@ import thelm.jaopca.utils.MiscHelper;
 public class TConstructCompatModule implements IModule {
 
 	private static final Set<String> MATERIAL_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "amethyst", "brass", "brick", "bronze", "cobalt", "constantan", "copper",
-			"debris", "diamond", "electrum", "emerald", "gold", "hepatizon", "invar", "iron", "knightslime",
-			"lead", "manyullyn", "netherite", "netherite_scrap", "nickel", "osmium", "pewter", "pig_iron",
-			"platinum", "quartz", "queens_slime", "rose_gold", "silicon_bronze", "silver", "slimesteel",
-			"soulsteel", "steel", "tin", "tungsten", "uranium", "zinc"));
+			"aluminum", "aluminium", "amethyst", "amethyst_bronze", "brass", "brick", "bronze", "cobalt",
+			"constantan", "copper", "debris", "diamond", "electrum", "emerald", "enderium", "gold", "hepatizon",
+			"invar", "iron", "knightslime", "lead", "lumium", "manyullyn", "netherite", "netherite_scrap",
+			"nickel", "osmium", "pewter", "pig_iron", "platinum", "quartz", "queens_slime", "refined_glowstone",
+			"refined_obsidian", "rose_gold", "signalum", "silver", "slimesteel", "soulsteel", "steel", "tin",
+			"tungsten", "uranium", "zinc"));
 	private static final Set<String> STORAGE_BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "amethyst", "brass", "bronze", "cobalt", "constantan", "copper",
-			"diamond", "electrum", "emerald", "gold", "hepatizon", "invar", "iron", "knightslime", "lead",
-			"manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "quartz",
-			"queens_slime", "rose_gold", "silicon_bronze", "silver", "slimesteel", "soulsteel", "steel",
-			"tin", "tungsten", "uranium", "zinc"));
+			"aluminum", "aluminium", "amethyst", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan",
+			"copper", "diamond", "electrum", "emerald", "enderium", "gold", "hepatizon", "invar", "iron",
+			"knightslime", "lead", "lumium", "manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron",
+			"platinum", "quartz", "queens_slime", "refined_glowstone", "refined_obsidian", "rose_gold", "signalum",
+			"silver", "slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium", "zinc"));
 	private static final Set<String> NUGGET_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "brass", "bronze", "cobalt", "constantan", "copper", "debris",
-			"electrum", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn",
-			"netherite", "netherite_scrap", "nickel", "osmium", "pewter", "pig_iron", "platinum",
-			"queens_slime", "rose_gold", "silicon_bronze", "silver", "slimesteel", "soulsteel", "steel",
-			"tin", "tungsten", "uranium", "zinc"));
+			"aluminum", "aluminium", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan", "copper",
+			"debris", "electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
+			"manyullyn", "netherite", "netherite_scrap", "nickel", "osmium", "pewter", "pig_iron", "platinum",
+			"queens_slime", "refined_glowstone", "refined_obsidian", "rose_gold", "signalum", "silver",
+			"slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium", "zinc"));
 	private static final Set<String> DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
-			"gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn", "netherite",
-			"nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime", "rose_gold",
-			"silicon_bronze", "silver", "slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium",
-			"zinc"));
+			"aluminum", "aluminium", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan", "copper",
+			"electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
+			"manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime",
+			"refined_glowstone", "refined_obsidian", "rose_gold", "signalum", "silver", "slimesteel", "soulsteel",
+			"steel", "tin", "tungsten", "uranium", "zinc"));
 	private static final Set<String> PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "brass", "brick", "bronze", "cobalt", "constantan", "copper",
-			"electrum", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn",
-			"netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime", "rose_gold",
-			"silicon_bronze", "silver", "slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium",
-			"zinc"));
+			"aluminum", "aluminium", "amethyst_bronze", "brass", "brick", "bronze", "cobalt", "constantan",
+			"copper", "electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
+			"manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime",
+			"rose_gold", "signalum", "refined_glowstone", "refined_obsidian", "silver", "slimesteel", "soulsteel",
+			"steel", "tin", "tungsten", "uranium", "zinc"));
 	private static final Set<String> COIN_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
-			"gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn", "netherite",
-			"nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime", "rose_gold",
-			"silicon_bronze", "silver", "slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium",
-			"zinc"));
+			"aluminum", "aluminium", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan", "copper",
+			"electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
+			"manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime",
+			"rose_gold", "signalum", "refined_glowstone", "refined_obsidian", "silver", "slimesteel", "soulsteel",
+			"steel", "tin", "tungsten", "uranium", "zinc"));
 	private static final Set<String> GENERAL_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
-			"gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn", "netherite",
-			"nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime", "rose_gold",
-			"silicon_bronze", "silver", "slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium",
-			"zinc"));
+			"aluminum", "aluminium", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan", "copper",
+			"electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
+			"manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime",
+			"rose_gold", "signalum", "refined_glowstone", "refined_obsidian", "silver", "slimesteel", "soulsteel",
+			"steel", "tin", "tungsten", "uranium", "zinc"));
 	private static Set<String> configMaterialToMoltenBlacklist = new TreeSet<>();
 	private static Set<String> configStorageBlockToMoltenBlacklist = new TreeSet<>();
 	private static Set<String> configNuggetToMoltenBlacklist = new TreeSet<>();

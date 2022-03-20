@@ -34,9 +34,9 @@ import thelm.jaopca.utils.MiscHelper;
 public class TConstructModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"aluminum", "aluminium", "cobalt", "copper", "debris", "diamond", "emerald", "gold", "iron",
-			"lead", "netherite", "netherite_scrap", "nickel", "osmium", "platinum", "quartz", "silver",
-			"tin", "tungsten", "uranium", "zinc"));
+			"aluminum", "aluminium", "amethyst", "cobalt", "copper", "debris", "diamond", "emerald", "gold", "iron",
+			"lead", "netherite", "netherite_scrap", "nickel", "osmium", "platinum", "quartz", "silver", "tin",
+			"tungsten", "uranium", "zinc"));
 
 	private static boolean jaopcaOnly = true;
 
@@ -48,7 +48,7 @@ public class TConstructModule implements IModule {
 			Collections.addAll(BLACKLIST, "cloggrum", "froststeel", "iesnium", "quicksilver", "regalium", "starmetal", "utherium");
 		}
 		if(ModList.get().isLoaded("bettercompat")) {
-			Collections.addAll(BLACKLIST, "amethyst", "black_opal", "certus_quartz", "moonstone", "thallasium");
+			Collections.addAll(BLACKLIST, "black_opal", "certus_quartz", "moonstone", "thallasium");
 		}
 		if(ModList.get().isLoaded("natureminerals")) {
 			Collections.addAll(BLACKLIST, "astrite", "kunzite", "stibnite", "uvarovite");
