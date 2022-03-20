@@ -73,6 +73,7 @@ public class CrusherRecipeSerializer implements IRecipeSerializer {
 		JsonObject energyJson = new JsonObject();
 		energyJson.addProperty("ticks", time);
 		energyJson.addProperty("rfpertick", power);
+		json.add("energy", energyJson);
 
 		return json;
 	}
