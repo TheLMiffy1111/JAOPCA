@@ -11,9 +11,12 @@ import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.tag.MCTag;
 import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
+import com.blamejared.crafttweaker.api.tag.manager.TagManagerFluid;
 import com.blamejared.crafttweaker.api.tag.manager.TagManagerItem;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
@@ -63,23 +66,33 @@ public class Material {
 	}
 
 	@ZenCodeType.Method
-	public MCTag getTag(String prefix) {
+	public MCTag<Item> getItemTag(String prefix) {
 		return getTag(TagManagerItem.INSTANCE, prefix, "/");
 	}
 
 	@ZenCodeType.Method
-	public MCTag getTag(String prefix, String tagSeperator) {
+	public MCTag<Item> getItemTag(String prefix, String tagSeperator) {
 		return getTag(TagManagerItem.INSTANCE, prefix, tagSeperator);
 	}
 
 	@ZenCodeType.Method
-	public MCTag getTag(ITagManager manager, String prefix) {
+	public MCTag<Fluid> getFluidTag(String prefix) {
+		return getTag(TagManagerFluid.INSTANCE, prefix, "/");
+	}
+
+	@ZenCodeType.Method
+	public MCTag<Fluid> getFluidTag(String prefix, String tagSeperator) {
+		return getTag(TagManagerFluid.INSTANCE, prefix, tagSeperator);
+	}
+
+	@ZenCodeType.Method
+	public <T> MCTag<T> getTag(ITagManager<T> manager, String prefix) {
 		return getTag(manager, prefix, "/");
 	}
 
 	@ZenCodeType.Method
-	public MCTag getTag(ITagManager manager, String prefix, String tagSeperator) {
-		return new MCTag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator), manager);
+	public <T> MCTag<T> getTag(ITagManager<T> manager, String prefix, String tagSeperator) {
+		return new MCTag<>(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator), manager);
 	}
 
 	@ZenCodeType.Method

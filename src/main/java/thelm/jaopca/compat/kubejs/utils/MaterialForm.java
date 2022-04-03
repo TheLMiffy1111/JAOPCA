@@ -45,11 +45,11 @@ public class MaterialForm {
 		return Material.getMaterialWrapper(info.getMaterialForm().getMaterial());
 	}
 
-	public TagIngredientJS asTag() {
-		return TagIngredientJS.createTag(MiscHelper.INSTANCE.getTagLocation(
+	public String asTag() {
+		return MiscHelper.INSTANCE.getTagLocation(
 				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName(),
 				info.getMaterialForm().getForm().getTagSeparator()).
-				toString());
+				toString();
 	}
 
 	public ItemStackJS asItemStack(int count) {

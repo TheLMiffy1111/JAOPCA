@@ -9,13 +9,16 @@ import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.tag.MCTag;
 import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
+import com.blamejared.crafttweaker.api.tag.manager.TagManagerFluid;
 import com.blamejared.crafttweaker.api.tag.manager.TagManagerItem;
 import com.google.common.collect.TreeBasedTable;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.blocks.IBlockLike;
 import thelm.jaopca.api.fluids.IFluidLike;
@@ -59,13 +62,18 @@ public class MaterialForm {
 	}
 
 	@ZenCodeType.Method
-	public MCTag asTag() {
+	public MCTag<Item> asItemTag() {
 		return asTag(TagManagerItem.INSTANCE);
 	}
 
 	@ZenCodeType.Method
-	public MCTag asTag(ITagManager manager) {
-		return new MCTag(MiscHelper.INSTANCE.getTagLocation(
+	public MCTag<Fluid> asFluidTag() {
+		return asTag(TagManagerFluid.INSTANCE);
+	}
+
+	@ZenCodeType.Method
+	public <T> MCTag<T> asTag(ITagManager<T> manager) {
+		return new MCTag<>(MiscHelper.INSTANCE.getTagLocation(
 				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName(),
 				info.getMaterialForm().getForm().getTagSeparator()),
 				manager);
