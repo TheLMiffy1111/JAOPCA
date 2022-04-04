@@ -52,45 +52,46 @@ public class DataCollector {
 		DEFINED_TAGS.clear();
 		DEFINED_RECIPES.clear();
 		DEFINED_ADVANCEMENTS.clear();
-		if(RESOURCE_PACKS.isEmpty()) {
-			RESOURCE_PACKS.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
-			ModList.get().getModFiles().stream().
-			map(ResourcePackLoader::createPackForMod).
-			forEach(RESOURCE_PACKS::add);
-			/*
-			 * Fabric:
-			 * ModResourcePackUtil.appendModResourcePacks(RESOURCE_PACKS, ResourcePackType.SERVER_DATA);
-			 */
-			List<AnnotationData> annotationData = ModList.get().getAllScanData().stream().
-					flatMap(data->data.getAnnotations().stream()).
-					filter(data->JAOPCA_PACK_SUPPLIER.equals(data.annotationType())).
-					collect(Collectors.toList());
-			for(AnnotationData aData : annotationData) {
-				List<String> deps = (List<String>)aData.annotationData().get("modDependencies");
-				String className = aData.clazz().getClassName();
-				if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(DataCollector::isModVersionNotLoaded)) {
-					LOGGER.info("Pack supplier {} has missing mod dependencies, skipping", className);
-					continue;
-				}
+		RESOURCE_PACKS.clear();
+
+		RESOURCE_PACKS.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
+		ModList.get().getModFiles().stream().
+		map(ResourcePackLoader::createPackForMod).
+		forEach(RESOURCE_PACKS::add);
+		/*
+		 * Fabric:
+		 * ModResourcePackUtil.appendModResourcePacks(RESOURCE_PACKS, ResourcePackType.SERVER_DATA);
+		 */
+		List<AnnotationData> annotationData = ModList.get().getAllScanData().stream().
+				flatMap(data->data.getAnnotations().stream()).
+				filter(data->JAOPCA_PACK_SUPPLIER.equals(data.annotationType())).
+				collect(Collectors.toList());
+		for(AnnotationData aData : annotationData) {
+			List<String> deps = (List<String>)aData.annotationData().get("modDependencies");
+			String className = aData.clazz().getClassName();
+			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(DataCollector::isModVersionNotLoaded)) {
+				LOGGER.info("Pack supplier {} has missing mod dependencies, skipping", className);
+				continue;
+			}
+			try {
+				Class<?> supplierClass = Class.forName(className);
+				Class<? extends IPackSupplier> supplierInstanceClass = supplierClass.asSubclass(IPackSupplier.class);
+				IPackSupplier supplier;
 				try {
-					Class<?> supplierClass = Class.forName(className);
-					Class<? extends IPackSupplier> supplierInstanceClass = supplierClass.asSubclass(IPackSupplier.class);
-					IPackSupplier supplier;
-					try {
-						Method method = supplierClass.getMethod("getInstance");
-						supplier = (IPackSupplier)method.invoke(null);
-					}
-					catch(NoSuchMethodException | InvocationTargetException e) {
-						supplier = supplierInstanceClass.newInstance();
-					}
-					supplier.addPacks(RESOURCE_PACKS::add);
-					LOGGER.debug("Loaded pack supplier {}", className);
+					Method method = supplierClass.getMethod("getInstance");
+					supplier = (IPackSupplier)method.invoke(null);
 				}
-				catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-					LOGGER.fatal("Unable to load pack supplier {}", className, e);
+				catch(NoSuchMethodException | InvocationTargetException e) {
+					supplier = supplierInstanceClass.newInstance();
 				}
+				supplier.addPacks(RESOURCE_PACKS::add);
+				LOGGER.debug("Loaded pack supplier {}", className);
+			}
+			catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				LOGGER.fatal("Unable to load pack supplier {}", className, e);
 			}
 		}
+
 		for(ResourceLocation location : getAllDataResourceLocations("tags", name->name.endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
@@ -98,6 +99,15 @@ public class DataCollector {
 			String[] split = path.split("/", 2);
 			if(split.length == 2) {
 				String type = split[0];
+				if(ModList.get().isLoaded(type)) {
+					String[] split0 = split[1].split("/", 2);
+					if(split0.length == 2) {
+						type += ':'+split0[0];
+						path = split0[1];
+						DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
+						continue;
+					}
+				}
 				path = split[1];
 				DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
 			}

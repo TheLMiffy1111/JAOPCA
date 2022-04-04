@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Streams;
 import com.mojang.math.Vector4f;
 
 import net.minecraft.client.Minecraft;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.registries.tags.ITag;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
@@ -76,16 +78,16 @@ public class ColorHandler {
 		}
 	}
 
-	public static int getAverageColor(Tag<Item> tag) {
-		Vector4f color = weightedAverageColor(tag.getValues(), ConfigHandler.gammaValue);
+	public static int getAverageColor(ITag<Item> tag) {
+		Vector4f color = weightedAverageColor(tag, ConfigHandler.gammaValue);
 		return toColorInt(color);
 	}
 
-	public static Vector4f weightedAverageColor(Collection<Item> items, double gammaValue) {
-		if(items.isEmpty()) {
+	public static Vector4f weightedAverageColor(Iterable<Item> items, double gammaValue) {
+		if(!items.iterator().hasNext()) {
 			return new Vector4f(1, 1, 1, 0);
 		}
-		List<Vector4f> colors = items.stream().map(ItemStack::new).
+		List<Vector4f> colors = Streams.stream(items).map(ItemStack::new).
 				map(stack->weightedAverageColor(stack, gammaValue)).
 				collect(Collectors.toList());
 		return weightedAverageColor(colors, gammaValue);

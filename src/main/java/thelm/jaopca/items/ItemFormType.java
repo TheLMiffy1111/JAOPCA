@@ -6,14 +6,16 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
+import com.google.common.base.Suppliers;
+import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
@@ -37,7 +39,7 @@ public class ItemFormType implements IItemFormType {
 
 	public static final ItemFormType INSTANCE = new ItemFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
-	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormItem> ITEMS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormItem>> ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IItemInfo> ITEM_INFOS = TreeBasedTable.create();
 	private static CreativeModeTab creativeTab;
 
@@ -70,7 +72,7 @@ public class ItemFormType implements IItemFormType {
 	public IItemInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		IItemInfo info = ITEM_INFOS.get(form, material);
 		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
-			info = new ItemInfo(ITEMS.get(form, material));
+			info = new ItemInfo(ITEMS.get(form, material).get());
 			ITEM_INFOS.put(form, material, info);
 		}
 		return info;
@@ -98,15 +100,13 @@ public class ItemFormType implements IItemFormType {
 			String secondaryName = form.getSecondaryName();
 			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
-				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
+				String name = form.getName()+'.'+material.getName();
+				ResourceLocation registryName = new ResourceLocation("jaopca", name);
 
-				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, settings);
-				Item item = materialFormItem.asItem();
-				item.setRegistryName(registryName);
+				Supplier<IMaterialFormItem> materialFormItem = Suppliers.memoize(()->settings.getItemCreator().create(form, material, settings));
 				ITEMS.put(form, material, materialFormItem);
-				RegistryHandler.registerForgeRegistryEntry(item);
+				RegistryHandler.registerForgeRegistryEntry(Registry.ITEM_REGISTRY, name, ()->materialFormItem.get().asItem());
 
-				Supplier<Item> itemSupplier = ()->item;
 				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
@@ -129,6 +129,6 @@ public class ItemFormType implements IItemFormType {
 	}
 
 	public static Collection<IMaterialFormItem> getItems() {
-		return ITEMS.values();
+		return Tables.transformValues(ITEMS, Supplier::get).values();
 	}
 }

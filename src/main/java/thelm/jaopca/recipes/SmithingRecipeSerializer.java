@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
+import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class SmithingRecipeSerializer implements IRecipeSerializer {
@@ -35,11 +36,11 @@ public class SmithingRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient baseIng = MiscHelper.INSTANCE.getIngredient(base);
-		if(baseIng.isEmpty()) {
+		if(baseIng == EmptyIngredient.INSTANCE) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+base);
 		}
 		Ingredient additionIng = MiscHelper.INSTANCE.getIngredient(addition);
-		if(additionIng.isEmpty()) {
+		if(additionIng == EmptyIngredient.INSTANCE) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+addition);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);

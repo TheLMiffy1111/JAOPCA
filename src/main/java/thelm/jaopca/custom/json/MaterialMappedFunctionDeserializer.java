@@ -57,26 +57,22 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 					LOGGER.warn("Null value for material type "+entry.getKey()+": "+materialTypeString);
 				}
 				switch(entry.getKey()) {
-				case "ingot":
+				case "ingot" ->
 					MaterialHandler.getMaterials().stream().
 					filter(m->m.getType().isIngot()).
 					forEach(m->map.put(m, materialTypeValue));
-					break;
-				case "gem":
+				case "gem" ->
 					MaterialHandler.getMaterials().stream().
 					filter(m->m.getType().isGem()).
 					forEach(m->map.put(m, materialTypeValue));
-					break;
-				case "crystal":
+				case "crystal" ->
 					MaterialHandler.getMaterials().stream().
 					filter(m->m.getType().isCrystal()).
 					forEach(m->map.put(m, materialTypeValue));
-					break;
-				case "dust":
+				case "dust" ->
 					MaterialHandler.getMaterials().stream().
 					filter(m->m.getType().isDust()).
 					forEach(m->map.put(m, materialTypeValue));
-					break;
 				}
 			}
 		}

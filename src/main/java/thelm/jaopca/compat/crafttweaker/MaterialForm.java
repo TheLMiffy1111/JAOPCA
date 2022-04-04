@@ -7,18 +7,16 @@ import com.blamejared.crafttweaker.api.fluid.IFluidStack;
 import com.blamejared.crafttweaker.api.fluid.MCFluidStack;
 import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
+import com.blamejared.crafttweaker.api.tag.CraftTweakerTagRegistry;
 import com.blamejared.crafttweaker.api.tag.MCTag;
-import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
-import com.blamejared.crafttweaker.api.tag.manager.TagManagerFluid;
-import com.blamejared.crafttweaker.api.tag.manager.TagManagerItem;
 import com.google.common.collect.TreeBasedTable;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.blocks.IBlockLike;
 import thelm.jaopca.api.fluids.IFluidLike;
@@ -62,21 +60,21 @@ public class MaterialForm {
 	}
 
 	@ZenCodeType.Method
-	public MCTag<Item> asItemTag() {
-		return asTag(TagManagerItem.INSTANCE);
+	public MCTag asItemTag() {
+		return asTag(Registry.ITEM_REGISTRY.location());
 	}
 
 	@ZenCodeType.Method
-	public MCTag<Fluid> asFluidTag() {
-		return asTag(TagManagerFluid.INSTANCE);
+	public MCTag asFluidTag() {
+		return asTag(Registry.FLUID_REGISTRY.location());
 	}
 
 	@ZenCodeType.Method
-	public <T> MCTag<T> asTag(ITagManager<T> manager) {
-		return new MCTag<>(MiscHelper.INSTANCE.getTagLocation(
-				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName(),
-				info.getMaterialForm().getForm().getTagSeparator()),
-				manager);
+	public MCTag asTag(ResourceLocation registry) {
+		return CraftTweakerTagRegistry.INSTANCE.tagManager(registry).
+				tag(MiscHelper.INSTANCE.getTagLocation(
+						info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName(),
+						info.getMaterialForm().getForm().getTagSeparator()));
 	}
 
 	@ZenCodeType.Method

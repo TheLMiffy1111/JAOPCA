@@ -78,9 +78,11 @@ public class LocalizationRepoHandler {
 					}
 					catch(FileNotFoundException e) {
 						LOGGER.info("Unable to download localization file for language {}: File not found", language);
+						currentLocalizationMap = ImmutableSortedMap.of();
 					}
 					catch(IOException e) {
 						LOGGER.info("Unable to download localization file for language "+language, e);
+						currentLocalizationMap = ImmutableSortedMap.of();
 					}
 				}
 			}
@@ -106,6 +108,7 @@ public class LocalizationRepoHandler {
 				}
 				catch(Exception e) {
 					LOGGER.info("Unable to read localization file", e);
+					currentLocalizationMap = ImmutableSortedMap.of();
 				}
 			}
 		});

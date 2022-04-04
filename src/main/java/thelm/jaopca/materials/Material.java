@@ -12,12 +12,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.tags.ItemTags;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
@@ -39,7 +43,7 @@ public class Material implements IMaterial {
 	private final List<String> extras = new ArrayList<>();
 	private final TreeSet<String> configModuleBlacklist = new TreeSet<>();
 	private IDynamicSpecConfig config;
-	private Tag<Item> tag;
+	private ITag<Item> tag;
 
 	public Material(String name, MaterialType type) {
 		this.name = name;
@@ -91,12 +95,9 @@ public class Material implements IMaterial {
 	public int getColor() {
 		if(!color.isPresent() && config != null) {
 			DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
-				Tag<Item> tag = getTag();
-				try {
-					tag.getValues();
-				}
-				catch(Exception e) {
-					LOGGER.warn("Tried to get color for material "+name+" when tag is not ready", e);
+				ITag<Item> tag = getTag();
+				if(!tag.isBound()) {
+					LOGGER.warn("Tried to get color for material "+name+" when tag is not bound");
 					return;
 				}
 				color = OptionalInt.of(0xFFFFFF);
@@ -149,9 +150,9 @@ public class Material implements IMaterial {
 		color = config.getOptionalInt("general.color");
 	}
 
-	private Tag<Item> getTag() {
+	private ITag<Item> getTag() {
 		if(tag == null) {
-			tag = ItemTags.bind("forge:"+type.getFormName()+'/'+name);
+			tag = ForgeRegistries.ITEMS.tags().getTag(TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge:"+type.getFormName()+'/'+name)));
 		}
 		return tag;
 	}

@@ -6,17 +6,19 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import com.google.common.base.Strings;
+import com.google.common.base.Suppliers;
+import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -43,8 +45,8 @@ public class BlockFormType implements IBlockFormType {
 
 	public static final BlockFormType INSTANCE = new BlockFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
-	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormBlock> BLOCKS = TreeBasedTable.create();
-	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormBlockItem> BLOCK_ITEMS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormBlock>> BLOCKS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormBlockItem>> BLOCK_ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IBlockInfo> BLOCK_INFOS = TreeBasedTable.create();
 
 	public static final Type MATERIAL_FUNCTION_TYPE = new TypeToken<Function<IMaterial, Material>>(){}.getType();
@@ -79,7 +81,7 @@ public class BlockFormType implements IBlockFormType {
 	public IBlockInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		IBlockInfo info = BLOCK_INFOS.get(form, material);
 		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
-			info = new BlockInfo(BLOCKS.get(form, material), BLOCK_ITEMS.get(form, material));
+			info = new BlockInfo(BLOCKS.get(form, material).get(), BLOCK_ITEMS.get(form, material).get());
 			BLOCK_INFOS.put(form, material, info);
 		}
 		return info;
@@ -114,24 +116,21 @@ public class BlockFormType implements IBlockFormType {
 			String secondaryName = form.getSecondaryName();
 			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
-				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
-				ResourceLocation lootLocation = new ResourceLocation("jaopca", "blocks/"+form.getName()+'.'+material.getName());
+				String name = form.getName()+'.'+material.getName();
+				ResourceLocation registryName = new ResourceLocation("jaopca", name);
+				ResourceLocation lootLocation = new ResourceLocation("jaopca", "blocks/"+name);
 				String toolTag = settings.getHarvestToolTagFunction().apply(material);
 				String tierTag = settings.getHarvestTierTagFunction().apply(material);
 
-				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
-				Block block = materialFormBlock.asBlock();
-				block.setRegistryName(registryName);
+				Supplier<IMaterialFormBlock> materialFormBlock = Suppliers.memoize(()->settings.getBlockCreator().create(form, material, settings));
 				BLOCKS.put(form, material, materialFormBlock);
-				RegistryHandler.registerForgeRegistryEntry(block);
+				RegistryHandler.registerForgeRegistryEntry(Registry.BLOCK_REGISTRY, name, ()->materialFormBlock.get().asBlock());
 
-				IMaterialFormBlockItem materialFormBlockItem = settings.getBlockItemCreator().create(materialFormBlock, settings);
-				BlockItem blockItem = materialFormBlockItem.asBlockItem();
-				blockItem.setRegistryName(registryName);
+				Supplier<IMaterialFormBlockItem> materialFormBlockItem = Suppliers.memoize(()->settings.getBlockItemCreator().create(materialFormBlock.get(), settings));
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
-				RegistryHandler.registerForgeRegistryEntry(blockItem);
+				RegistryHandler.registerForgeRegistryEntry(Registry.ITEM_REGISTRY, name, ()->materialFormBlockItem.get().asBlockItem());
 
-				DataInjector.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock, settings));
+				DataInjector.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock.get(), settings));
 
 				DataInjector.registerBlockTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
@@ -154,10 +153,10 @@ public class BlockFormType implements IBlockFormType {
 	}
 
 	public static Collection<IMaterialFormBlock> getBlocks() {
-		return BLOCKS.values();
+		return Tables.transformValues(BLOCKS, Supplier::get).values();
 	}
 
 	public static Collection<IMaterialFormBlockItem> getBlockItems() {
-		return BLOCK_ITEMS.values();
+		return Tables.transformValues(BLOCK_ITEMS, Supplier::get).values();
 	}
 }

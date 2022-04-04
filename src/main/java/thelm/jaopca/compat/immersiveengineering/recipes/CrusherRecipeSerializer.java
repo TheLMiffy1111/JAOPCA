@@ -38,7 +38,7 @@ public class CrusherRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.isEmpty()) {
+		if(ing == EmptyIngredient.INSTANCE) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		IngredientWithSize result = null;

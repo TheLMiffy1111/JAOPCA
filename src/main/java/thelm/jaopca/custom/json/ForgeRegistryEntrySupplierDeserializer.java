@@ -7,10 +7,10 @@ import java.util.function.Supplier;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryManager;
 import thelm.jaopca.api.helpers.IJsonHelper;
@@ -28,10 +28,11 @@ public class ForgeRegistryEntrySupplierDeserializer implements JsonDeserializer<
 		Type[] typeArguments = ((ParameterizedType)typeOfT).getActualTypeArguments();
 		Type parameterizedType = typeArguments[0];
 		if(parameterizedType instanceof Class && IForgeRegistryEntry.class.isAssignableFrom((Class<?>)parameterizedType)) {
-			if(helper.isString(jsonElement)) {
-				IForgeRegistry<?> registry = RegistryManager.ACTIVE.getRegistry((Class<? super IForgeRegistryEntry<?>>)parameterizedType);
-				String valueString = helper.getString(jsonElement, "value");
-				return ()->registry.getValue(new ResourceLocation(valueString));
+			if(jsonElement.isJsonObject()) {
+				JsonObject jsonObj = helper.getJsonObject(jsonElement, "value");
+				ResourceLocation typeLocation = new ResourceLocation(helper.getString(jsonObj, "type"));
+				ResourceLocation keyLocation = new ResourceLocation(helper.getString(jsonObj, "key"));
+				return ()->RegistryManager.ACTIVE.getRegistry(typeLocation).getValue(keyLocation);
 			}
 		}
 		throw new JsonParseException("Unable to deserialize "+helper.toSimpleString(jsonElement)+" into a forge registry entry");

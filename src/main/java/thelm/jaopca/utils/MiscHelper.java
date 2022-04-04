@@ -2,8 +2,13 @@ package thelm.jaopca.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,16 +19,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSetMultimap;
+import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.SetMultimap;
 import com.google.common.collect.TreeMultiset;
 import com.google.gson.JsonElement;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.SerializationTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
+import net.minecraft.tags.TagManager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -31,19 +41,20 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.crafting.CompoundIngredient;
+import net.minecraftforge.common.crafting.DifferenceIngredient;
+import net.minecraftforge.common.crafting.IntersectionIngredient;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryManager;
 import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.ingredients.CompoundIngredientObject;
 import thelm.jaopca.config.ConfigHandler;
-import thelm.jaopca.ingredients.DifferenceIngredient;
 import thelm.jaopca.ingredients.EmptyIngredient;
-import thelm.jaopca.ingredients.IntersectionIngredient;
-import thelm.jaopca.ingredients.UnionIngredient;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
-import thelm.jaopca.tags.EmptyNamedTag;
 
 public class MiscHelper implements IMiscHelper {
 
@@ -52,6 +63,14 @@ public class MiscHelper implements IMiscHelper {
 	private MiscHelper() {}
 
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(r->new Thread(r, "JAOPCA Executor Thread"));
+
+	private TagManager tagManager;
+	private List<TagManager.LoadResult<?>> lastTagResults = List.of();
+	private Map<ResourceKey<? extends Registry<?>>, SetMultimap<ResourceLocation, Object>> tagMap = new TreeMap<>();
+
+	public void setTagManager(TagManager tagManager) {
+		this.tagManager = tagManager;
+	}
 
 	@Override
 	public ResourceLocation createResourceLocation(String location, String defaultNamespace) {
@@ -93,86 +112,139 @@ public class MiscHelper implements IMiscHelper {
 			ret = new ItemStack((ItemLike)obj, count);
 		}
 		else if(obj instanceof String) {
-			ret = getPreferredItemStack(getItemTag(new ResourceLocation((String)obj)).getValues(), count);
+			ret = getPreferredItemStack(getItemTagValues(new ResourceLocation((String)obj)), count);
 		}
 		else if(obj instanceof ResourceLocation) {
-			ret = getPreferredItemStack(getItemTag((ResourceLocation)obj).getValues(), count);
+			ret = getPreferredItemStack(getItemTagValues((ResourceLocation)obj), count);
 		}
-		else if(obj instanceof Tag<?>) {
-			ret = getPreferredItemStack(((Tag<Item>)obj).getValues(), count);
+		else if(obj instanceof TagKey<?>) {
+			ret = getPreferredItemStack(getItemTagValues(((TagKey<Item>)obj).location()), count);
 		}
 		return ret.isEmpty() ? ItemStack.EMPTY : ret;
 	}
 
 	@Override
 	public Ingredient getIngredient(Object obj) {
-		Ingredient ret = EmptyIngredient.INSTANCE;
+		return getIngredientResolved(obj).getLeft();
+	}
+
+	public Pair<Ingredient, Set<Item>> getIngredientResolved(Object obj) {
+		Ingredient ing = EmptyIngredient.INSTANCE;
+		Set<Item> items = new HashSet<>();
 		if(obj instanceof Supplier<?>) {
-			ret = getIngredient(((Supplier<?>)obj).get());
+			Pair<Ingredient, Set<Item>> pair = getIngredientResolved(((Supplier<?>)obj).get());
+			ing = pair.getLeft();
+			items = pair.getRight();
 		}
 		else if(obj instanceof CompoundIngredientObject cObj) {
-			List<Ingredient> ings = Arrays.stream(cObj.ingredients()).map(this::getIngredient).collect(Collectors.toList());
+			List<Pair<Ingredient, Set<Item>>> ings = Arrays.stream(cObj.ingredients()).map(this::getIngredientResolved).toList();
 			if(ings.size() == 1) {
-				ret = ings.get(0);
+				Pair<Ingredient, Set<Item>> pair = ings.get(0);
+				ing = pair.getLeft();
+				items = pair.getRight();
 			}
 			else if(ings.size() > 1) {
-				ret = switch(cObj.type()) {
-				case UNION -> UnionIngredient.of(ings);
-				case INTERSECTION -> IntersectionIngredient.of(ings);
-				case DIFFERENCE -> DifferenceIngredient.of(ings.get(0), UnionIngredient.of(ings.subList(1, ings.size())));
-				};
+				switch(cObj.type()) {
+				case UNION -> {
+					if(ings.stream().allMatch(p->p.getRight().isEmpty())) {
+						break;
+					}
+					ing = CompoundIngredient.of(ings.stream().map(Pair::getLeft).toArray(Ingredient[]::new));
+					items = ings.stream().map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+						s1.addAll(s2);
+						return s1;
+					});
+				}
+				case INTERSECTION -> {
+					if(ings.stream().anyMatch(p->p.getRight().isEmpty())) {
+						break;
+					}
+					ing = IntersectionIngredient.of(ings.stream().map(Pair::getLeft).toArray(Ingredient[]::new));
+					items = ings.stream().map(Pair::getRight).reduce(new HashSet<>(ForgeRegistries.ITEMS.getValues()), (s1, s2)->{
+						s1.retainAll(s2);
+						return s1;
+					});
+				}
+				case DIFFERENCE -> {
+					Pair<Ingredient, Set<Item>> firstPair = ings.get(0);
+					if(firstPair.getRight().isEmpty()) {
+						break;
+					}
+					ing = DifferenceIngredient.of(firstPair.getLeft(), CompoundIngredient.of(ings.stream().skip(1).map(Pair::getLeft).toArray(Ingredient[]::new)));
+					items = new HashSet<>(firstPair.getRight());
+					items.removeAll(ings.stream().skip(1).map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+						s1.addAll(s2);
+						return s1;
+					}));
+				}
+				}
 			}
 		}
 		else if(obj instanceof Ingredient) {
-			ret = (Ingredient)obj;
+			ing = (Ingredient)obj;
+			// We can't know what items the ingredient can have so assume all
+			items.addAll(ForgeRegistries.ITEMS.getValues());
 		}
 		else if(obj instanceof String) {
-			Tag<Item> tag = getItemTag(new ResourceLocation((String)obj));
-			if(!(tag instanceof EmptyNamedTag<?>)) {
-				ret = Ingredient.of(tag);
-			}
+			ResourceLocation location = new ResourceLocation((String)obj);
+			ing = Ingredient.of(getItemTagKey(location));
+			items = new HashSet<>(getItemTagValues(location));
 		}
-		else if(obj instanceof ResourceLocation) {
-			Tag<Item> tag = getItemTag((ResourceLocation)obj);
-			if(!(tag instanceof EmptyNamedTag<?>)) {
-				ret = Ingredient.of(tag);
-			}
+		else if(obj instanceof ResourceLocation location) {
+			ing = Ingredient.of(getItemTagKey(location));
+			items = new HashSet<>(getItemTagValues(location));
 		}
-		else if(obj instanceof Tag<?> && !(obj instanceof EmptyNamedTag<?>)) {
-			ret = Ingredient.of((Tag<Item>)obj);
+		else if(obj instanceof TagKey key) {
+			ing = Ingredient.of(key);
+			items = new HashSet<>(getItemTagValues(key.location()));
 		}
-		else if(obj instanceof ItemStack) {
-			ret = Ingredient.of((ItemStack)obj);
+		else if(obj instanceof ItemStack stack) {
+			ing = Ingredient.of(stack);
+			items = Collections.singleton(stack.getItem());
 		}
-		else if(obj instanceof ItemStack[]) {
-			ret = Ingredient.of((ItemStack[])obj);
+		else if(obj instanceof ItemStack[] stacks) {
+			ing = Ingredient.of(stacks);
+			items = Arrays.stream(stacks).map(ItemStack::getItem).collect(Collectors.toSet());
 		}
-		else if(obj instanceof ItemLike) {
-			ret = Ingredient.of((ItemLike)obj);
+		else if(obj instanceof ItemLike item) {
+			ing = Ingredient.of(item);
+			items = Collections.singleton(item.asItem());
 		}
-		else if(obj instanceof ItemLike[]) {
-			ret = Ingredient.of((ItemLike[])obj);
+		else if(obj instanceof ItemLike[] itemz) {
+			ing = Ingredient.of(itemz);
+			items = Arrays.stream(itemz).map(ItemLike::asItem).collect(Collectors.toSet());
 		}
 		else if(obj instanceof Ingredient.Value) {
-			ret = Ingredient.fromValues(Stream.of((Ingredient.Value)obj));
+			ing = Ingredient.fromValues(Stream.of((Ingredient.Value)obj));
+			// We can't know what items the ingredient can have so assume all
+			items.addAll(ForgeRegistries.ITEMS.getValues());
 		}
 		else if(obj instanceof Ingredient.Value[]) {
-			ret = Ingredient.fromValues(Stream.of((Ingredient.Value[])obj));
+			ing = Ingredient.fromValues(Stream.of((Ingredient.Value[])obj));
+			// We can't know what items the ingredient can have so assume all
+			items.addAll(ForgeRegistries.ITEMS.getValues());
 		}
 		else if(obj instanceof JsonElement) {
-			ret = Ingredient.fromJson((JsonElement)obj);
+			ing = Ingredient.fromJson((JsonElement)obj);
+			// We can't know what items the ingredient can have so assume all
+			items.addAll(ForgeRegistries.ITEMS.getValues());
 		}
-		return ret.isEmpty() ? EmptyIngredient.INSTANCE : ret;
+		return Pair.of(items.isEmpty() ? EmptyIngredient.INSTANCE : ing, items);
 	}
 
 	@Override
-	public Tag<Item> getItemTag(ResourceLocation location) {
-		return getTag(Registry.ITEM_REGISTRY, location);
+	public TagKey<Item> getItemTagKey(ResourceLocation location) {
+		return getTagKey(Registry.ITEM_REGISTRY, location);
 	}
 
 	@Override
-	public ItemStack getPreferredItemStack(Collection<Item> collection, int count) {
-		return new ItemStack(getPreferredEntry(collection).orElse(Items.AIR), count);
+	public Collection<Item> getItemTagValues(ResourceLocation location) {
+		return getTagValues(Registry.ITEM_REGISTRY, location);
+	}
+
+	@Override
+	public ItemStack getPreferredItemStack(Iterable<Item> iterable, int count) {
+		return new ItemStack(getPreferredEntry(iterable).orElse(Items.AIR), count);
 	}
 
 	@Override
@@ -191,39 +263,74 @@ public class MiscHelper implements IMiscHelper {
 			ret = new FluidStack(((IFluidLike)obj).asFluid(), amount);
 		}
 		else if(obj instanceof String) {
-			ret = getPreferredFluidStack(getFluidTag(new ResourceLocation((String)obj)).getValues(), amount);
+			ret = getPreferredFluidStack(getFluidTagValues(new ResourceLocation((String)obj)), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			ret = getPreferredFluidStack(getFluidTag((ResourceLocation)obj).getValues(), amount);
+			ret = getPreferredFluidStack(getFluidTagValues((ResourceLocation)obj), amount);
 		}
-		else if(obj instanceof Tag<?>) {
-			ret = getPreferredFluidStack(((Tag<Fluid>)obj).getValues(), amount);
+		else if(obj instanceof TagKey<?>) {
+			ret = getPreferredFluidStack(getFluidTagValues(((TagKey<Fluid>)obj).location()), amount);
 		}
 		return ret.isEmpty() ? FluidStack.EMPTY : ret;
 	}
 
 	@Override
-	public Tag<Fluid> getFluidTag(ResourceLocation location) {
-		return getTag(Registry.FLUID_REGISTRY, location);
+	public TagKey<Fluid> getFluidTagKey(ResourceLocation location) {
+		return getTagKey(Registry.FLUID_REGISTRY, location);
 	}
 
 	@Override
-	public FluidStack getPreferredFluidStack(Collection<Fluid> collection, int amount) {
-		return new FluidStack(getPreferredEntry(collection).orElse(Fluids.EMPTY), amount);
+	public Collection<Fluid> getFluidTagValues(ResourceLocation location) {
+		return getTagValues(Registry.FLUID_REGISTRY, location);
 	}
 
 	@Override
-	public <T> Tag<T> getTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
-		Tag<T> tag = SerializationTags.getInstance().getOrEmpty(registry).getTag(location);
-		return tag != null ? tag : new EmptyNamedTag<>(location);
+	public FluidStack getPreferredFluidStack(Iterable<Fluid> iterable, int amount) {
+		return new FluidStack(getPreferredEntry(iterable).orElse(Fluids.EMPTY), amount);
+	}
+
+	@Override
+	public <T extends IForgeRegistryEntry<T>> TagKey<T> getTagKey(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
+		return RegistryManager.ACTIVE.getRegistry(registry).tags().createTagKey(location);
+	}
+
+	@Override
+	public <T extends IForgeRegistryEntry<T>> TagKey<T> getTagKey(ResourceLocation registry, ResourceLocation location) {
+		return RegistryManager.ACTIVE.<T>getRegistry(registry).tags().createTagKey(location);
+	}
+
+	@Override
+	public <T extends IForgeRegistryEntry<T>> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
+		if(tagManager == null) {
+			throw new IllegalStateException("Tag manager not initialized.");
+		}
+		if(tagManager.getResult() != lastTagResults) {
+			lastTagResults = tagManager.getResult();
+			tagMap.clear();
+			if(lastTagResults.isEmpty()) {
+				throw new IllegalStateException("Tags have not been loaded yet.");
+			}
+			lastTagResults.forEach(result->{
+				SetMultimap<ResourceLocation, Object> map = tagMap.computeIfAbsent(result.key(), k->MultimapBuilder.treeKeys().linkedHashSetValues().build());
+				result.tags().forEach((loc, tag)->{
+					tag.getValues().forEach(holder->map.put(loc, holder.value()));
+				});
+			});
+		}
+		return Collections2.transform(tagMap.getOrDefault(registry, ImmutableSetMultimap.of()).asMap().getOrDefault(location, Collections.emptySet()), o->(T)o);
+	}
+
+	@Override
+	public <T extends IForgeRegistryEntry<T>> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location) {
+		return getTagValues(RegistryManager.ACTIVE.<T>getRegistry(registry).getRegistryKey(), location);
 	}
 
 	//Modified from Immersive Engineering
 	@Override
-	public <T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Collection<T> list) {
+	public <T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Iterable<T> iterable) {
 		T preferredEntry = null;
 		int currBest = ConfigHandler.PREFERRED_MODS.size();
-		for(T entry : list) {
+		for(T entry : iterable) {
 			ResourceLocation rl = entry.getRegistryName();
 			if(rl != null) {
 				String modId = rl.getNamespace();

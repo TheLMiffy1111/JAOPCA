@@ -46,14 +46,8 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	@Override
 	public IInMemoryResourcePack putInputStream(PackType type, ResourceLocation location, Supplier<? extends InputStream> streamSupplier) {
 		switch(type) {
-		case CLIENT_RESOURCES:
-			assets.put(location, streamSupplier);
-			break;
-		case SERVER_DATA:
-			data.put(location, streamSupplier);
-			break;
-		default:
-			break;
+		case CLIENT_RESOURCES -> assets.put(location, streamSupplier);
+		case SERVER_DATA -> data.put(location, streamSupplier);
 		}
 		return this;
 	}
@@ -61,14 +55,8 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	@Override
 	public IInMemoryResourcePack putInputStreams(PackType type, Map<ResourceLocation, Supplier<? extends InputStream>> map) {
 		switch(type) {
-		case CLIENT_RESOURCES:
-			assets.putAll(map);
-			break;
-		case SERVER_DATA:
-			data.putAll(map);
-			break;
-		default:
-			break;
+		case CLIENT_RESOURCES -> assets.putAll(map);
+		case SERVER_DATA -> data.putAll(map);
 		}
 		return this;
 	}

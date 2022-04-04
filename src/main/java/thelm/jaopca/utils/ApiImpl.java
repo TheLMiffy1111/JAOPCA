@@ -14,14 +14,18 @@ import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.Advancement.Builder;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryObject;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
@@ -50,6 +54,7 @@ import thelm.jaopca.forms.Form;
 import thelm.jaopca.forms.FormHandler;
 import thelm.jaopca.forms.FormRequest;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.localization.LocalizationHandler;
 import thelm.jaopca.localization.LocalizationRepoHandler;
@@ -223,13 +228,23 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public Ingredient emptyIngredient() {
+		return EmptyIngredient.INSTANCE;
+	}
+
+	@Override
 	public boolean registerFormType(IFormType type) {
 		return FormTypeHandler.registerFormType(type);
 	}
 
 	@Override
-	public void registerForgeRegistryEntry(IForgeRegistryEntry<?> entry) {
-		RegistryHandler.registerForgeRegistryEntry(entry);
+	public <T extends IForgeRegistryEntry<T>, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry) {
+		return RegistryHandler.registerForgeRegistryEntry(registry, name, entry);
+	}
+
+	@Override
+	public <T extends IForgeRegistryEntry<T>, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry) {
+		return RegistryHandler.registerForgeRegistryEntry(registry, name, entry);
 	}
 
 	@Override

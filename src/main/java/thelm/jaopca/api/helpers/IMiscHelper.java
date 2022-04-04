@@ -4,14 +4,17 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -29,19 +32,29 @@ public interface IMiscHelper {
 
 	Ingredient getIngredient(Object obj);
 
-	Tag<Item> getItemTag(ResourceLocation location);
+	TagKey<Item> getItemTagKey(ResourceLocation location);
 
-	ItemStack getPreferredItemStack(Collection<Item> collection, int count);
+	Collection<Item> getItemTagValues(ResourceLocation location);
+
+	ItemStack getPreferredItemStack(Iterable<Item> iterable, int count);
 
 	FluidStack getFluidStack(Object obj, int amount);
 
-	Tag<Fluid> getFluidTag(ResourceLocation location);
+	TagKey<Fluid> getFluidTagKey(ResourceLocation location);
 
-	FluidStack getPreferredFluidStack(Collection<Fluid> collection, int amount);
+	Collection<Fluid> getFluidTagValues(ResourceLocation location);
 
-	<T> Tag<T> getTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation location);
+	FluidStack getPreferredFluidStack(Iterable<Fluid> iterable, int amount);
 
-	<T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Collection<T> list);
+	<T extends IForgeRegistryEntry<T>> TagKey<T> getTagKey(ResourceKey<? extends Registry<T>> registry, ResourceLocation location);
+
+	<T extends IForgeRegistryEntry<T>> TagKey<T> getTagKey(ResourceLocation registry, ResourceLocation location);
+
+	<T extends IForgeRegistryEntry<T>> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, ResourceLocation location);
+
+	<T extends IForgeRegistryEntry<T>> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location);
+
+	<T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Iterable<T> iterable);
 
 	void caclulateMaterialSet(Collection<String> configList, Collection<String> actualSet);
 

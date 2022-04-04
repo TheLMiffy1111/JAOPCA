@@ -78,5 +78,4 @@ public class EmptyIngredient extends Ingredient {
 		@Override
 		public void write(FriendlyByteBuf buffer, EmptyIngredient ingredient) {}
 	}
-
 }

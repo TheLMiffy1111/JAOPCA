@@ -2,12 +2,14 @@
     "itemGroup.jaopca": "JAOPCA",
 
     "block.jaopca.storage_blocks": "Bloco de %s",
+    "block.jaopca.raw_storage_blocks": "Bloco de %s Bruto",
     "item.jaopca.dusts": "Pó de %s",
     "item.jaopca.nuggets": "Pepita de %s",
     "item.jaopca.tiny_dusts": "Pilha Minúscula de Pó de %s",
     "item.jaopca.small_dusts": "Pilha Pequena de Pó de %s",
     "fluid.jaopca.molten": "%s Derretido",
     "item.jaopca.molten": "Balde de %s Derretido",
+
     "item.jaopca.create_crushed_ores": "Minério de %s Triturado",
 
     "item.jaopca.crossroads_grits": "Areia de %s Bruta",

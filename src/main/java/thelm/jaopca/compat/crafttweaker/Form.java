@@ -9,14 +9,12 @@ import com.blamejared.crafttweaker.api.fluid.IFluidStack;
 import com.blamejared.crafttweaker.api.fluid.MCFluidStack;
 import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
+import com.blamejared.crafttweaker.api.tag.CraftTweakerTagRegistry;
 import com.blamejared.crafttweaker.api.tag.MCTag;
-import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
-import com.blamejared.crafttweaker.api.tag.manager.TagManagerFluid;
-import com.blamejared.crafttweaker.api.tag.manager.TagManagerItem;
 
-import net.minecraft.world.item.Item;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.MaterialType;
@@ -82,18 +80,19 @@ public class Form {
 	}
 
 	@ZenCodeType.Method
-	public MCTag<Item> getItemTag(String suffix) {
-		return getTag(TagManagerItem.INSTANCE, suffix);
+	public MCTag getItemTag(String suffix) {
+		return getTag(Registry.ITEM_REGISTRY.location(), suffix);
 	}
 
 	@ZenCodeType.Method
-	public MCTag<Fluid> getFluidTag(String suffix) {
-		return getTag(TagManagerFluid.INSTANCE, suffix);
+	public MCTag getFluidTag(String suffix) {
+		return getTag(Registry.FLUID_REGISTRY.location(), suffix);
 	}
 
 	@ZenCodeType.Method
-	public <T> MCTag<T> getTag(ITagManager<T> manager, String suffix) {
-		return new MCTag<>(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix, form.getTagSeparator()), manager);
+	public MCTag getTag(ResourceLocation registry, String suffix) {
+		return CraftTweakerTagRegistry.INSTANCE.tagManager(registry).
+				tag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix, form.getTagSeparator()));
 	}
 
 	@ZenCodeType.Method
@@ -109,9 +108,9 @@ public class Form {
 	}
 
 	@ZenCodeType.Method
-	public IFluidStack getFluidStack(String suffix, int count) {
+	public IFluidStack getFluidStack(String suffix, int amount) {
 		MiscHelper helper = MiscHelper.INSTANCE;
-		FluidStack stack = helper.getFluidStack(helper.getTagLocation(form.getSecondaryName(), suffix), count);
+		FluidStack stack = helper.getFluidStack(helper.getTagLocation(form.getSecondaryName(), suffix), amount);
 		return new MCFluidStack(stack);
 	}
 

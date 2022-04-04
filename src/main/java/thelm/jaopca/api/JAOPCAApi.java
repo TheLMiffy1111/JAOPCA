@@ -8,14 +8,18 @@ import java.util.function.Supplier;
 import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryObject;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
 import thelm.jaopca.api.fluids.IFluidFormType;
@@ -266,6 +270,8 @@ public abstract class JAOPCAApi {
 
 	public abstract Map<String, String> currentMaterialLocalizationMap();
 
+	public abstract Ingredient emptyIngredient();
+
 	/**
 	 * Registers an {@link IFormType} to be used in custom form deserialization.
 	 * @param type The form type to be registered
@@ -273,7 +279,9 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerFormType(IFormType type);
 
-	public abstract void registerForgeRegistryEntry(IForgeRegistryEntry<?> entry);
+	public abstract <T extends IForgeRegistryEntry<T>, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry);
+
+	public abstract <T extends IForgeRegistryEntry<T>, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry);
 
 	/**
 	 * Registers a block tag location that may be added externally and should be known to JAOPCA.
@@ -439,7 +447,7 @@ public abstract class JAOPCAApi {
 	 * Creates a furnace recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
@@ -451,7 +459,7 @@ public abstract class JAOPCAApi {
 	/**
 	 * Creates a furnace recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
@@ -464,7 +472,7 @@ public abstract class JAOPCAApi {
 	 * Creates a blasting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
@@ -476,7 +484,7 @@ public abstract class JAOPCAApi {
 	/**
 	 * Creates a blasting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
@@ -489,7 +497,7 @@ public abstract class JAOPCAApi {
 	 * Creates a smoking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
@@ -501,7 +509,7 @@ public abstract class JAOPCAApi {
 	/**
 	 * Creates a smoking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
@@ -514,7 +522,7 @@ public abstract class JAOPCAApi {
 	 * Creates a campfire cooking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param time The time required for the recipe in ticks
@@ -525,7 +533,7 @@ public abstract class JAOPCAApi {
 	/**
 	 * Creates a campfire cooking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param time The time required for the recipe in ticks
@@ -537,7 +545,7 @@ public abstract class JAOPCAApi {
 	 * Creates a stonecutting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
@@ -547,7 +555,7 @@ public abstract class JAOPCAApi {
 	/**
 	 * Creates a stonecutting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
-	 * @param input The input of he recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
+	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken

@@ -20,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
+import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class ShapedRecipeSerializer implements IRecipeSerializer {
@@ -79,7 +80,7 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 			if(' ' == chr.charValue()) {
 				throw new IllegalArgumentException("Invalid key entry in recipe "+key+": Symbol ' ' is reserved");
 			}
-			if(ing.isEmpty()) {
+			if(ing == EmptyIngredient.INSTANCE) {
 				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
 			}
 			keyMap.put(chr, ing);

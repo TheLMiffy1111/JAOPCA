@@ -9,8 +9,10 @@ import com.google.gson.JsonElement;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.tags.TagManager;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
@@ -26,8 +28,8 @@ import thelm.jaopca.ingredients.IngredientSerializers;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
-import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class CommonEventHandler {
 
@@ -40,6 +42,7 @@ public class CommonEventHandler {
 
 	@SubscribeEvent
 	public void onConstruct(FMLConstructModEvent event) {
+		MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListener);
 		ApiImpl.INSTANCE.init();
 		BlockFormType.init();
 		ItemFormType.init();
@@ -64,11 +67,6 @@ public class CommonEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onRegister(RegistryEvent.Register event) {
-		RegistryHandler.onRegister(event);
-	}
-
-	@SubscribeEvent
 	public void onCommonSetup(FMLCommonSetupEvent event) {
 		ModuleHandler.onCommonSetup(event);
 	}
@@ -83,6 +81,10 @@ public class CommonEventHandler {
 		if(event.getPackType() == PackType.SERVER_DATA) {
 			event.addRepositorySource(DataInjector.PackFinder.INSTANCE);
 		}
+	}
+
+	public void onAddReloadListener(AddReloadListenerEvent event) {
+		MiscHelper.INSTANCE.setTagManager((TagManager)event.getServerResources().listeners().get(0));
 	}
 
 	public void onReadRecipes(Map<ResourceLocation, JsonElement> recipeMap) {
