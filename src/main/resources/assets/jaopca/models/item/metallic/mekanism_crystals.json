@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/metallic/mekanism_crystals",
+        "layer1": "jaopca:item/metallic/mekanism_crystals_overlay"
+    }
+}

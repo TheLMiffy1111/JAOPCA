@@ -52,10 +52,7 @@ public class CompressingRecipeSerializer implements IRecipeSerializer {
 		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
 		ingJson.addProperty("count", inputCount);
 		json.add("ingredient", ingJson);
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("result", resultJson);
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("process_time", time);
 
 		return json;

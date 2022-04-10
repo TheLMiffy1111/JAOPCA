@@ -20,7 +20,7 @@ public class SmeltingRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation id;
+	public final ResourceLocation key;
 	public final String group;
 	public final Object input;
 	public final Object output;
@@ -28,12 +28,12 @@ public class SmeltingRecipeSerializer implements IRecipeSerializer {
 	public final float experience;
 	public final int time;
 
-	public SmeltingRecipeSerializer(ResourceLocation id, Object input, Object output, int count, float experience, int time) {
-		this(id, "", input, output, count, experience, time);
+	public SmeltingRecipeSerializer(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+		this(key, "", input, output, count, experience, time);
 	}
 
-	public SmeltingRecipeSerializer(ResourceLocation id, String group, Object input, Object output, int count, float experience, int time) {
-		this.id = Objects.requireNonNull(id);
+	public SmeltingRecipeSerializer(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+		this.key = Objects.requireNonNull(key);
 		this.group = Strings.nullToEmpty(group);
 		this.input = input;
 		this.output = output;
@@ -46,11 +46,11 @@ public class SmeltingRecipeSerializer implements IRecipeSerializer {
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
 		if(ing == EmptyIngredient.INSTANCE) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+id+": "+input);
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", id, output);
+			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
 
 		JsonObject json = new JsonObject();
@@ -59,10 +59,7 @@ public class SmeltingRecipeSerializer implements IRecipeSerializer {
 			json.addProperty("group", group);
 		}
 		json.add("ingredient", ing.toJson());
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("result", resultJson);
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("experience", experience);
 		json.addProperty("cookingtime", time);
 

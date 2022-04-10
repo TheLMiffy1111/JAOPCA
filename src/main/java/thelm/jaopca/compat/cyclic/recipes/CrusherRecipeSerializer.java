@@ -60,16 +60,10 @@ public class CrusherRecipeSerializer implements IRecipeSerializer {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "cyclic:crusher");
 		json.add("input", ing.toJson());
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("result", resultJson);
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 		if(!secondStack.isEmpty()) {
 			json.addProperty("percent", secondChance);
-			JsonObject secondJson = new JsonObject();
-			secondJson.addProperty("item", secondStack.getItem().getRegistryName().toString());
-			secondJson.addProperty("count", secondStack.getCount());
-			json.add("bonus", secondJson);
+			json.add("bonus", MiscHelper.INSTANCE.serializeItemStack(secondStack));
 		}
 		JsonObject energyJson = new JsonObject();
 		energyJson.addProperty("ticks", time);

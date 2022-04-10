@@ -70,9 +70,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		json.add("ingredients", ingJson);
 		JsonArray resultJson = new JsonArray();
 		for(Pair<ItemStack, Float> pair : outputs) {
-			JsonObject outputJson = new JsonObject();
-			outputJson.addProperty("item", pair.getLeft().getItem().getRegistryName().toString());
-			outputJson.addProperty("count", pair.getLeft().getCount());
+			JsonObject outputJson = MiscHelper.INSTANCE.serializeItemStack(pair.getLeft());
 			outputJson.addProperty("chance", pair.getRight());
 			resultJson.add(outputJson);
 		}

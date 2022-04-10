@@ -52,10 +52,7 @@ public class SmithingRecipeSerializer implements IRecipeSerializer {
 		json.addProperty("type", "minecraft:smithing");
 		json.add("base", baseIng.toJson());
 		json.add("addition", additionIng.toJson());
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("result", resultJson);
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 
 		return json;
 	}

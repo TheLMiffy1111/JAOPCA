@@ -47,10 +47,7 @@ public class MetalRecipeSerializer implements IRecipeSerializer {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "assemblylinemachines:metal");
 		json.add("input", ing.toJson());
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("output", resultJson);
+		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("time", time);
 
 		return json;

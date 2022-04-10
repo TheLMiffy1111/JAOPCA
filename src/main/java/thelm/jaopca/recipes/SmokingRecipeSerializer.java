@@ -59,10 +59,7 @@ public class SmokingRecipeSerializer implements IRecipeSerializer {
 			json.addProperty("group", group);
 		}
 		json.add("ingredient", ing.toJson());
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("result", resultJson);
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("experience", experience);
 		json.addProperty("cookingtime", time);
 

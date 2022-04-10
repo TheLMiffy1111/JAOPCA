@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import org.apache.commons.lang3.tuple.Pair;
+import com.google.gson.JsonObject;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -14,7 +14,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -59,6 +58,8 @@ public interface IMiscHelper {
 	void caclulateMaterialSet(Collection<String> configList, Collection<String> actualSet);
 
 	void caclulateModuleSet(Collection<String> configList, Collection<String> actualSet);
+
+	JsonObject serializeItemStack(ItemStack stack);
 
 	Predicate<String> configMaterialPredicate();
 

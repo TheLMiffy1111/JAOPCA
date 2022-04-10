@@ -63,13 +63,8 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
 		ingJson.addProperty("count", inputCount);
 		json.add("ingredient", ingJson);
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("result", resultJson);
-		JsonObject secondJson = new JsonObject();
-		secondJson.addProperty("item", secondStack.getItem().getRegistryName().toString());
-		secondJson.addProperty("count", secondStack.getCount());
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
+		JsonObject secondJson = MiscHelper.INSTANCE.serializeItemStack(secondStack);
 		secondJson.addProperty("chance", secondChance);
 		json.add("rng", secondJson);
 		json.addProperty("process_time", time);

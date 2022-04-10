@@ -49,10 +49,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "occultism:crushing");
 		json.add("ingredient", ing.toJson());
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("result", resultJson);
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("crushing_time", time);
 		json.addProperty("ignore_crushing_multiplier", ignoreMultiplier);
 

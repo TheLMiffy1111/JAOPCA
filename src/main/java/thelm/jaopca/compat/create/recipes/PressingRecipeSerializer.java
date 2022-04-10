@@ -49,10 +49,7 @@ public class PressingRecipeSerializer implements IRecipeSerializer {
 		ingJson.add(ing.toJson());
 		json.add("ingredients", ingJson);
 		JsonArray resultJson = new JsonArray();
-		JsonObject outputJson = new JsonObject();
-		outputJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		outputJson.addProperty("count", stack.getCount());
-		resultJson.add(outputJson);
+		resultJson.add(MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.add("results", resultJson);
 
 		return json;

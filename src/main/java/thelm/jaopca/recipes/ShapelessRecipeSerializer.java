@@ -44,13 +44,13 @@ public class ShapelessRecipeSerializer implements IRecipeSerializer {
 	public JsonElement get() {
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
+			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
 		NonNullList<Ingredient> ingredients = NonNullList.create();
 		for(Object in : input) {
 			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
 			if(ing == EmptyIngredient.INSTANCE) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			else {
 				ingredients.add(ing);
@@ -67,10 +67,7 @@ public class ShapelessRecipeSerializer implements IRecipeSerializer {
 			ingJson.add(ingredient.toJson());
 		}
 		json.add("ingredients", ingJson);
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("result", resultJson);
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 
 		return json;
 	}

@@ -28,6 +28,7 @@ import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.TreeMultiset;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -101,25 +102,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ItemStack getItemStack(Object obj, int count) {
-		ItemStack ret = ItemStack.EMPTY;
-		if(obj instanceof Supplier<?>) {
-			ret = getItemStack(((Supplier<?>)obj).get(), count);
-		}
-		else if(obj instanceof ItemStack) {
-			ret = ((ItemStack)obj);
-		}
-		else if(obj instanceof ItemLike) {
-			ret = new ItemStack((ItemLike)obj, count);
-		}
-		else if(obj instanceof String) {
-			ret = getPreferredItemStack(getItemTagValues(new ResourceLocation((String)obj)), count);
-		}
-		else if(obj instanceof ResourceLocation) {
-			ret = getPreferredItemStack(getItemTagValues((ResourceLocation)obj), count);
-		}
-		else if(obj instanceof TagKey<?>) {
-			ret = getPreferredItemStack(getItemTagValues(((TagKey<Item>)obj).location()), count);
-		}
+		ItemStack ret = getPreferredItemStack(getIngredientResolved(obj).getRight(), count);
 		return ret.isEmpty() ? ItemStack.EMPTY : ret;
 	}
 
@@ -364,6 +347,19 @@ public class MiscHelper implements IMiscHelper {
 		list.remove("*", listCount);
 		actualSet.clear();
 		list.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(Multiset.Entry::getElement).forEach(actualSet::add);
+	}
+
+	@Override
+	public JsonObject serializeItemStack(ItemStack stack) {
+		JsonObject json = new JsonObject();
+		json.addProperty("item", stack.getItem().getRegistryName().toString());
+		if(stack.getCount() > 1) {
+			json.addProperty("count", stack.getCount());
+		}
+		if(stack.hasTag()) {
+			json.addProperty("nbt", stack.getTag().toString());
+		}
+		return json;
 	}
 
 	private static final Predicate<String> CONFIG_MATERIAL_PREDICATE = s->"*".equals(s) || MaterialHandler.containsMaterial(s);

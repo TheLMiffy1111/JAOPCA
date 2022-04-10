@@ -81,7 +81,7 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 				throw new IllegalArgumentException("Invalid key entry in recipe "+key+": Symbol ' ' is reserved");
 			}
 			if(ing == EmptyIngredient.INSTANCE) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			keyMap.put(chr, ing);
 		}
@@ -118,10 +118,7 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 			keyJson.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
 		}
 		json.add("key", keyJson);
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("result", resultJson);
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 
 		return json;
 	}

@@ -13,5 +13,12 @@
     "item.jaopca.create_crushed_ores": "Minério de %s Triturado",
 
     "item.jaopca.crossroads_grits": "Areia de %s Bruta",
-    "item.jaopca.crossroads_clumps": "Aglomerado de %s"
+    "item.jaopca.crossroads_clumps": "Aglomerado de %s",
+
+    "item.jaopca.mekanism_dirty_dusts": "Pó de %s Sujo",
+    "item.jaopca.mekanism_clumps": "Aglomerado de %s",
+    "item.jaopca.mekanism_shards": "Fragmento de %s",
+    "item.jaopca.mekanism_crystals": "Cristal de %s",
+    "slurry.jaopca.mekanism_dirty": "Polpa de %s Suja",
+    "slurry.jaopca.mekanism_clean": "Polpa de %s Pura"
 }
