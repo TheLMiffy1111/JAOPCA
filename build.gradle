@@ -97,7 +97,7 @@ sourceSets {
     main
 }
 
-version = "4.1.0.0"
+version = "4.1.1.1"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.18.2"
 
@@ -156,7 +156,7 @@ dependencies {
     //CurseMaven
     implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3544525")
     implementation fg.deobf("curse.maven:ato-405593:3711468")
-    implementation fg.deobf("curse.maven:allthemodium-364466:3711448")
+    implementation fg.deobf("curse.maven:allthemodium-364466:3732365")
     //implementation fg.deobf("curse.maven:industrial-reborn-358877:")
     //implementation fg.deobf("curse.maven:useful-foundation-355245:")
     //implementation fg.deobf("curse.maven:useful-machinery-355129:")
