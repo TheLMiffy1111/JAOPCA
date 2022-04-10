@@ -5,7 +5,6 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.function.Function;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +18,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.utils.JsonHelper;
 

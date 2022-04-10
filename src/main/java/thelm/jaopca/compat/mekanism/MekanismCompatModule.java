@@ -123,26 +123,30 @@ public class MekanismCompatModule implements IModule {
 
 					helper.registerCombiningRecipe(
 							new ResourceLocation("jaopca", "mekanism.material_to_default_ore."+material.getName()),
+							ingLocation, inputCount, oreBase, 1,
 							CompoundIngredientObject.difference(new Object[] {
 									oreLocation,
 									deepslateOreLocation, netherrackOreLocation, endstoneOreLocation,
-							}), inputCount, oreBase, 1, oreLocation, 1);
+							}), 1);
 					helper.registerCombiningRecipe(
 							new ResourceLocation("jaopca", "mekanism.material_to_deepslate_ore."+material.getName()),
-							CompoundIngredientObject.difference(new Object[] {
+							ingLocation, inputCount, cobbledDeepslateLocation, 1,
+							CompoundIngredientObject.intersection(new Object[] {
 									oreLocation, deepslateOreLocation,
-							}), inputCount, cobbledDeepslateLocation, 1, oreLocation, 1);
+							}), 1);
 					helper.registerCombiningRecipe(
 							new ResourceLocation("jaopca", "mekanism.material_to_netherrack_ore."+material.getName()),
-							CompoundIngredientObject.difference(new Object[] {
+							ingLocation, inputCount, netherrackLocation, 1,
+							CompoundIngredientObject.intersection(new Object[] {
 									oreLocation, netherrackOreLocation,
-							}), inputCount, netherrackLocation, 1, oreLocation, 1);
+							}), 1);
 					if(api.getItemTags().contains(endstoneOreLocation)) {
 						helper.registerCombiningRecipe(
 								new ResourceLocation("jaopca", "mekanism.material_to_end_stone_ore."+material.getName()),
-								CompoundIngredientObject.difference(new Object[] {
+								ingLocation, inputCount, endstoneLocation, 1,
+								CompoundIngredientObject.intersection(new Object[] {
 										oreLocation, endstoneOreLocation,
-								}), inputCount, endstoneLocation, 1, oreLocation, 1);
+								}), 1);
 					}
 				}
 			}

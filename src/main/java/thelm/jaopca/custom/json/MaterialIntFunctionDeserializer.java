@@ -4,8 +4,6 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.function.ToIntFunction;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -16,7 +14,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.custom.CustomModule;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.utils.JsonHelper;

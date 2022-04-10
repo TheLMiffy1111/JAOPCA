@@ -10,10 +10,8 @@ import com.google.gson.JsonObject;
 
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient.GasStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
-import mekanism.common.recipe.impl.PurifyingIRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
 import thelm.jaopca.utils.MiscHelper;
