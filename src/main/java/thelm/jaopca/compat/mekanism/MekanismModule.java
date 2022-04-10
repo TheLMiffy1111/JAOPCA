@@ -109,6 +109,7 @@ public class MekanismModule implements IModule {
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
+		ResourceLocation waterLocation = new ResourceLocation("minecraft:water");
 		for(IMaterial material : dirtySlurryForm.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ISlurryInfo dirtySlurryInfo = SlurryFormType.INSTANCE.getMaterialFormInfo(dirtySlurryForm, material);
@@ -127,7 +128,7 @@ public class MekanismModule implements IModule {
 			ISlurryInfo cleanSlurryInfo = SlurryFormType.INSTANCE.getMaterialFormInfo(cleanSlurryForm, material);
 			helper.registerWashingRecipe(
 					new ResourceLocation("jaopca", "mekanism.dirty_to_clean_slurry."+material.getName()),
-					Fluids.WATER, 5, dirtySlurryLocation, 1, cleanSlurryInfo, 1);
+					waterLocation, 5, dirtySlurryLocation, 1, cleanSlurryInfo, 1);
 			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());
 			ResourceLocation crystalLocation = miscHelper.getTagLocation("mekanism:crystals", material.getName());
 			if(!crystalForm.getMaterials().contains(material) && api.getItemTags().contains(crystalLocation)) {

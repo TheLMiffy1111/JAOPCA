@@ -46,6 +46,7 @@ public class CrystallizingRecipeSerializer implements IRecipeSerializer {
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "mekanism:crystallizing");
+		json.addProperty("chemicalType", "slurry");
 		json.add("input", ing.serialize());
 		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
 
