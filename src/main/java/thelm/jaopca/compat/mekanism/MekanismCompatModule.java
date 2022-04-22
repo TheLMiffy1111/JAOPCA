@@ -3,6 +3,7 @@ package thelm.jaopca.compat.mekanism;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -10,6 +11,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.JAOPCAApi;
@@ -39,6 +41,19 @@ public class MekanismCompatModule implements IModule {
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToCrystalBlacklist = new TreeSet<>();
 	private static Set<String> configToOreBlacklist = new TreeSet<>();
+
+	static {
+		if(ModList.get().isLoaded("allthemodium")) {
+			List<String> materials = Arrays.asList("allthemodium", "unobtainium", "vibranium");
+			TO_DUST_BLACKLIST.addAll(materials);
+			TO_ORE_BLACKLIST.addAll(materials);
+		}
+		if(ModList.get().isLoaded("alltheores")) {
+			List<String> materials = Arrays.asList("aluminum", "aluminium", "nickel", "platinum", "silver", "zinc");
+			TO_DUST_BLACKLIST.addAll(materials);
+			TO_ORE_BLACKLIST.addAll(materials);
+		}
+	}
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 

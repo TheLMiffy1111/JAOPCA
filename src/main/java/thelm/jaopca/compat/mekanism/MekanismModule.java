@@ -12,6 +12,7 @@ import com.google.common.collect.Multimap;
 
 import mekanism.common.registries.MekanismGases;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -39,12 +40,12 @@ public class MekanismModule implements IModule {
 			"copper", "gold", "iron", "lead", "netherite", "netherite_scrap", "osmium", "tin", "uranium"));
 
 	static {
-		//if(ModList.get().isLoaded("allthemodium")) {
-		//	Collections.addAll(BLACKLIST, "allthemodium", "unobtainium", "vibranium");
-		//}
-		//if(ModList.get().isLoaded("alltheores")) {
-		//	Collections.addAll(BLACKLIST, "aluminum", "aluminium", "nickel", "platinum", "silver", "zinc");
-		//}
+		if(ModList.get().isLoaded("allthemodium")) {
+			Collections.addAll(BLACKLIST, "allthemodium", "unobtainium", "vibranium");
+		}
+		if(ModList.get().isLoaded("alltheores")) {
+			Collections.addAll(BLACKLIST, "aluminum", "aluminium", "nickel", "platinum", "silver", "zinc");
+		}
 	}
 
 	public MekanismModule() {
