@@ -92,16 +92,15 @@ public class ElectrodynamicsModule implements IModule {
 		IFluidFormType fluidFormType = FluidFormType.INSTANCE;
 		ResourceLocation sulfuricAcidLocation = new ResourceLocation("forge:sulfuric_acid");
 		for(IMaterial material : sulfateForm.getMaterials()) {
+			IFluidInfo sulfateInfo = fluidFormType.getMaterialFormInfo(sulfateForm, material);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
-				IFluidInfo sulfateInfo = fluidFormType.getMaterialFormInfo(sulfateForm, material);
 				helper.registerMineralWasherRecipe(
 						new ResourceLocation("jaopca", "electrodynamics.raw_material_to_sulfate."+material.getName()),
 						rawMaterialLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000, 0);
 			}
 			else {
 				ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-				IFluidInfo sulfateInfo = fluidFormType.getMaterialFormInfo(sulfateForm, material);
 				helper.registerMineralWasherRecipe(
 						new ResourceLocation("jaopca", "electrodynamics.ore_to_sulfate."+material.getName()),
 						oreLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000, 0);
