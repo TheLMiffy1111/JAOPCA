@@ -97,7 +97,7 @@ sourceSets {
     main
 }
 
-version = "4.1.1.2"
+version = "4.1.2.2"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.18.2"
 
@@ -155,13 +155,13 @@ dependencies {
 
     //CurseMaven
     implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3544525")
-    implementation fg.deobf("curse.maven:ato-405593:3750813")
-    implementation fg.deobf("curse.maven:allthemodium-364466:3750162")
+    implementation fg.deobf("curse.maven:ato-405593:3760490")
+    implementation fg.deobf("curse.maven:allthemodium-364466:3759997")
     //implementation fg.deobf("curse.maven:industrial-reborn-358877:")
     //implementation fg.deobf("curse.maven:useful-foundation-355245:")
     //implementation fg.deobf("curse.maven:useful-machinery-355129:")
-    //implementation fg.deobf("curse.maven:electrodynamics-316867:")
-    implementation fg.deobf("curse.maven:voluminous-energy-416704:3706606")
+    implementation fg.deobf("curse.maven:electrodynamics-316867:3751858")
+    implementation fg.deobf("curse.maven:voluminous-energy-416704:3758875")
     //implementation fg.deobf("curse.maven:cyclops-core-232758:")
     //implementation fg.deobf("curse.maven:common-capabilities-247007:")
     //implementation fg.deobf("curse.maven:integrated-dynamics-236307:")
