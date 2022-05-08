@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IntersectionIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
+import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class LatheRecipeSerializer implements IRecipeSerializer {
@@ -48,7 +49,7 @@ public class LatheRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.isEmpty()) {
+		if(ing == EmptyIngredient.INSTANCE) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
@@ -65,16 +66,11 @@ public class LatheRecipeSerializer implements IRecipeSerializer {
 		ingJson.addProperty("count", inputCount);
 		itemInputJson.add("0", ingJson);
 		json.add("iteminputs", itemInputJson);
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
-		json.add("output", resultJson);
+		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
 		if(!secondStack.isEmpty()) {
 			JsonObject secondJson = new JsonObject();
 			secondJson.addProperty("count", 1);
-			JsonObject secondResultJson = new JsonObject();
-			secondResultJson.addProperty("item", secondStack.getItem().getRegistryName().toString());
-			secondResultJson.addProperty("count", secondStack.getCount());
+			JsonObject secondResultJson = MiscHelper.INSTANCE.serializeItemStack(secondStack);
 			secondResultJson.addProperty("chance", secondChance);
 			secondJson.add("0", secondResultJson);
 			json.add("itembi", secondJson);
