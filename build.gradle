@@ -97,7 +97,7 @@ sourceSets {
     main
 }
 
-version = "4.1.3.3"
+version = "4.1.4.4"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.18.2"
 
@@ -138,16 +138,16 @@ dependencies {
     implementation fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:1.18-0.6.2.64")
     implementation fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:3.0.12")
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-66")
-    implementation fg.deobf("slimeknights.mantle:Mantle:1.18.2-1.9.1")
-    implementation fg.deobf("dev.latvian.mods:rhino-forge:1801.1.9-build.135")
-    implementation fg.deobf("dev.architectury:architectury-forge:4.4.59")
-    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.1-build.395") {
+    implementation fg.deobf("slimeknights.mantle:Mantle:1.18.2-1.9.20")
+    implementation fg.deobf("dev.latvian.mods:rhino-forge:1802.1.10-build.147")
+    implementation fg.deobf("dev.architectury:architectury-forge:4.4.60")
+    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.2-build.403") {
         transitive = false
     }
     implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.18.2:12.0.1")
     implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.18.2-8.0.0-146")
     implementation fg.deobf("com.simibubi.create:Create:mc1.18.2_v0.4.1+111")
-    //implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.18.2-3.+")
+    implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.18.2-3.5.0.17")
     implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.0.459")
     implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.0.459:generators")
 
