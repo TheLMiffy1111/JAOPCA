@@ -2,22 +2,7 @@ package thelm.oredictinit.lib;
 
 import net.minecraftforge.fml.common.Loader;
 import thelm.oredictinit.api.OreDictInitApi;
-import thelm.oredictinit.compat.CompatAlternativeNaming;
-import thelm.oredictinit.compat.CompatAppliedEnergistics;
-import thelm.oredictinit.compat.CompatAstralSorcery;
-import thelm.oredictinit.compat.CompatCalculator;
-import thelm.oredictinit.compat.CompatDraconicEvolution;
-import thelm.oredictinit.compat.CompatEvilCraft;
-import thelm.oredictinit.compat.CompatFrogCraftRebirth;
-import thelm.oredictinit.compat.CompatGalacticraftCore;
-import thelm.oredictinit.compat.CompatGalacticraftPlanets;
-import thelm.oredictinit.compat.CompatGregTech;
-import thelm.oredictinit.compat.CompatMekanism;
-import thelm.oredictinit.compat.CompatMinecraft;
-import thelm.oredictinit.compat.CompatNuclearCraft;
-import thelm.oredictinit.compat.CompatQuark;
-import thelm.oredictinit.compat.CompatRFTools;
-import thelm.oredictinit.compat.CompatTheBetweenlands;
+import thelm.oredictinit.compat.*;
 
 public class Compat {
 
@@ -65,6 +50,9 @@ public class Compat {
 		}
 		if(Loader.isModLoaded("frogcraftrebirth")) {
 			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatFrogCraftRebirth());
+		}
+		if(Loader.isModLoaded("aoa3")) {
+			OreDictInitApi.ORE_DICT_COMPAT_LIST.add(new CompatAOA3());
 		}
 	}
 }
