@@ -13,16 +13,18 @@ buildscript {
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
-		classpath "com.wynprice.cursemaven:CurseMaven:2.1.5"
-		//classpath "com.github.Wyn-Price:CurseMaven:f0d58155e6"
+        classpath "com.wynprice.cursemaven:CurseMaven:2.1.5"
+        //classpath "com.github.Wyn-Price:CurseMaven:f0d58155e6"
     }
 }
 
 apply plugin: "net.minecraftforge.gradle.forge"
-apply plugin: "com.wynprice.cursemaven"
+//apply plugin: "com.wynprice.cursemaven"
 
 repositories {
-    jcenter()
+    maven {
+        url 'https://cfa2.cursemaven.com'
+    }
     maven {
         url = "https://maven.blamejared.com/"
     }
@@ -39,7 +41,7 @@ repositories {
         url = "https://maven.tterrag.com/"
     }
     maven {
-        url = "https://maven.chaosfield.at/"
+        url = "https://maven.fabricmc.net/"
     }
     maven {
         url = "https://maven.modmuss50.me/"
@@ -61,6 +63,9 @@ repositories {
     }
     maven {
         url = "https://modmaven.dev/"
+    }
+    maven {
+        url "https://cursemaven.com"
     }
 }
 
@@ -121,7 +126,8 @@ dependencies {
     deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.15.25") {
         transitive = false
     }
-	deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.2.397"
+    compile "CraftTweaker2:CraftTweaker2-API:4.1.20.675"
+    compile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.675"
     deobfCompile("exnihilocreatio:exnihilocreatio:1.12-0.3.0.7") {
         transitive = false
     }
@@ -136,29 +142,29 @@ dependencies {
         transitive = false
     }
 
-    deobfCompile "curse.maven:wrapup:2486198"
-    deobfCompile "curse.maven:advanced-rocketry:3258285"
-    deobfCompile "curse.maven:baubles:2518667"
-    deobfCompile "curse.maven:embers-rekindled:2697221"
-    deobfCompile "curse.maven:ignition-foundry:2719054"
-    deobfCompile "curse.maven:futurepack:2786639"
-    deobfCompile "curse.maven:gregtechce:2811836"
-    deobfCompile "curse.maven:libvulpes:2809593"
-    deobfCompile "curse.maven:magneticraft:2807901"
-    deobfCompile "curse.maven:mekanism:2835175"
-    deobfCompile "curse.maven:modelloader:2744735"
-    deobfCompile "curse.maven:omega-craft-mod:2670955"
-    deobfCompile "curse.maven:placebo:2830611"
-	deobfCompile "curse.maven:sky-compression:2707173"
-    deobfCompile "curse.maven:sky-resources:2758220"
-    deobfCompile "curse.maven:static-power:2571816"
-    deobfCompile "curse.maven:thaumcraft:2629023"
-    deobfCompile "curse.maven:applied-energistics-2:2747063"
+    deobfCompile "curse.maven:wrapup-275153:2486198"
+    deobfCompile "curse.maven:advanced-rocketry-236542:3258285"
+    deobfCompile "curse.maven:baubles-227083:2518667"
+    deobfCompile "curse.maven:embers-rekindled-300777:3695248"
+    deobfCompile "curse.maven:ignition-foundry-283807:2719054"
+    deobfCompile "curse.maven:futurepack-237333:2856874"
+    deobfCompile "curse.maven:gregtechce-293327:3478805"
+    deobfCompile "curse.maven:libvulpes-236541:3775180"
+    deobfCompile "curse.maven:magneticraft-224808:3490351"
+    deobfCompile "curse.maven:mekanism-268560:2835175"
+    deobfCompile "curse.maven:modelloader-277663:2744735"
+    deobfCompile "curse.maven:omega-craft-mod-261442:2670955"
+    deobfCompile "curse.maven:placebo-283644:2694382"
+    deobfCompile "curse.maven:sky-compression-271992:2707173"
+    deobfCompile "curse.maven:sky-resources-243482:2758220"
+    deobfCompile "curse.maven:static-power-247413:2571816"
+    deobfCompile "curse.maven:thaumcraft-223628:2629023"
+    deobfCompile "curse.maven:applied-energistics-2-223794:2747063"
 }
 
 processResources
-{
-}
+        {
+        }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
@@ -168,4 +174,3 @@ task deobfJar(type: Jar) {
 artifacts {
     archives deobfJar
 }
-
