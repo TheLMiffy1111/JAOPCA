@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.immersiveengineering.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,6 +61,7 @@ public class CrusherRecipeSerializer implements IRecipeSerializer {
 			IngredientWithSize is = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(out), count);
 			if(is.hasNoMatchingItems()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			if(result == null) {
 				result = is;
@@ -69,8 +71,7 @@ public class CrusherRecipeSerializer implements IRecipeSerializer {
 			}
 		}
 		if(result == null) {
-			LOGGER.warn("No output in recipe {}", key);
-			result = new IngredientWithSize(EmptyIngredient.INSTANCE, 0);
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 
 		JsonObject json = new JsonObject();

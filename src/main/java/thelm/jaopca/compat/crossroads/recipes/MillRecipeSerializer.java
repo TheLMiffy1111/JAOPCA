@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.crossroads.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,8 +58,12 @@ public class MillRecipeSerializer implements IRecipeSerializer {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			stacks.add(stack);
+		}
+		if(stacks.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 
 		JsonObject json = new JsonObject();

@@ -68,12 +68,9 @@ public class CompressingRecipeSerializer implements IRecipeSerializer {
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
-		if(secondChance > 0 && secondStack.isEmpty()) {
-			LOGGER.warn("Empty non-zero chance second output in recipe {}: {}", key, secondOutput);
-		}
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "indreb:compressing");

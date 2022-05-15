@@ -58,7 +58,7 @@ public class OreMeltingRecipeSerializer implements IRecipeSerializer {
 		}
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, outputAmount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		List<FluidStack> bys = new ArrayList<>();
 		int i = 0;

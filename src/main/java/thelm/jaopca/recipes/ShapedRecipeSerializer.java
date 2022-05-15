@@ -48,7 +48,7 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 	public JsonElement get() {
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		int width = 0;
 		List<String> pattern = new ArrayList<>();

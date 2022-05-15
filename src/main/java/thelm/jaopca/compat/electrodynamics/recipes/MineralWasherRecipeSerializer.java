@@ -43,7 +43,7 @@ public class MineralWasherRecipeSerializer implements IRecipeSerializer {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(itemInput);
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, outputAmount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
 		JsonObject json = new JsonObject();

@@ -48,7 +48,7 @@ public class MetalPressRecipeSerializer implements IRecipeSerializer {
 		}
 		IngredientWithSize outIng = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(output), outputCount);
 		if(outIng.hasNoMatchingItems()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
 		JsonObject json = new JsonObject();

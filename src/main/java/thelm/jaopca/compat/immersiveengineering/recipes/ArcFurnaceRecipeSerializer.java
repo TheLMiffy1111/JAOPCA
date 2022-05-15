@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.immersiveengineering.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,7 +60,7 @@ public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
 			}
 			IngredientWithSize is = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(in), count);
 			if(is.hasNoMatchingItems()) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			if(ing == null) {
 				ing = is;
@@ -68,8 +69,8 @@ public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
 				additives.add(is);
 			}
 		}
-		if(ing == null || ing.hasNoMatchingItems()) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+key);
+		if(ing == null) {
+			throw new IllegalArgumentException("Empty ingredients in recipe "+key+": "+Arrays.toString(input));
 		}
 		IngredientWithSize slagIng = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(slag), slagCount);
 		List<IngredientWithSize> outputs = new ArrayList<>();
@@ -91,6 +92,7 @@ public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
 			IngredientWithSize is = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(out), count);
 			if(is.hasNoMatchingItems()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			if(chance == 1F) {
 				outputs.add(is);
@@ -98,6 +100,9 @@ public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
 			else {
 				secondary.add(Pair.of(is, chance));
 			}
+		}
+		if(outputs.isEmpty() && secondary.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 
 		JsonObject json = new JsonObject();

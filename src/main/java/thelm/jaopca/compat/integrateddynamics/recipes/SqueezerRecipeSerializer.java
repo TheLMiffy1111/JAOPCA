@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.integrateddynamics.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,8 +67,12 @@ public class SqueezerRecipeSerializer implements IRecipeSerializer {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			itemResults.add(Pair.of(stack, chance));
+		}
+		if(itemResults.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(itemOutput));
 		}
 		FluidStack fluidStack = MiscHelper.INSTANCE.getFluidStack(fluidOutput, fluidOutputAmount);
 

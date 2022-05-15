@@ -45,7 +45,7 @@ public class CrucibleRecipeSerializer implements IRecipeSerializer {
 		}
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, amount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
 		JsonObject json = new JsonObject();

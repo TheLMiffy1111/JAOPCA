@@ -19,7 +19,7 @@ public class SmeltingRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation id;
+	public final ResourceLocation key;
 	public final String group;
 	public final Object input;
 	public final Object output;
@@ -27,12 +27,12 @@ public class SmeltingRecipeSerializer implements IRecipeSerializer {
 	public final float experience;
 	public final int time;
 
-	public SmeltingRecipeSerializer(ResourceLocation id, Object input, Object output, int count, float experience, int time) {
-		this(id, "", input, output, count, experience, time);
+	public SmeltingRecipeSerializer(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+		this(key, "", input, output, count, experience, time);
 	}
 
-	public SmeltingRecipeSerializer(ResourceLocation id, String group, Object input, Object output, int count, float experience, int time) {
-		this.id = Objects.requireNonNull(id);
+	public SmeltingRecipeSerializer(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+		this.key = Objects.requireNonNull(key);
 		this.group = Strings.nullToEmpty(group);
 		this.input = input;
 		this.output = output;
@@ -45,11 +45,11 @@ public class SmeltingRecipeSerializer implements IRecipeSerializer {
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
 		if(ing.isEmpty()) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+id+": "+input);
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", id, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
 		JsonObject json = new JsonObject();
