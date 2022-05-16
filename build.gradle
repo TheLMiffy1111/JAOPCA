@@ -20,7 +20,7 @@ buildscript {
     }
     dependencies {
         classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
-		classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
+        classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
         classpath "org.parchmentmc:librarian:1.+"
     }
 }
@@ -36,7 +36,7 @@ repositories {
     mavenCentral()
     flatDir {
         dirs "libs"
-	}
+    }
     maven {
         url = "https://libraries.minecraft.net/"
     }
@@ -44,7 +44,7 @@ repositories {
         url = "https://maven.minecraftforge.net/"
     }
     maven {
-	    url = "https://repo.spongepowered.org/maven"
+        url = "https://repo.spongepowered.org/maven"
     }
     maven {
         url = "https://dvs1.progwml6.com/files/maven/"
@@ -80,11 +80,17 @@ repositories {
         url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
     }
     maven {
+        url = "https://nexus.covers1624.net/repository/cofh-releases/"
+    }
+    maven {
+        url = "https://alcatrazescapee.jfrog.io/artifactory/mods/"
+    }
+    maven {
         url = "https://jitpack.io/"
     }
     maven {
         url = "https://cursemaven.com/"
-		content {
+        content {
             includeGroup "curse.maven"
         }
     }
@@ -97,7 +103,7 @@ sourceSets {
     main
 }
 
-version = "4.1.4.4"
+version = "4.1.5.5"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.18.2"
 
@@ -139,6 +145,7 @@ dependencies {
     implementation fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:3.0.12")
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-66")
     implementation fg.deobf("slimeknights.mantle:Mantle:1.18.2-1.9.20")
+    implementation fg.deobf("com.teamcofh:cofh_core:1.18.2-1.6.0.14")
     implementation fg.deobf("dev.latvian.mods:rhino-forge:1802.1.10-build.147")
     implementation fg.deobf("dev.architectury:architectury-forge:4.4.60")
     implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.2-build.403") {
@@ -150,11 +157,17 @@ dependencies {
     implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.18.2-3.5.0.17")
     implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.0.459")
     implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.0.459:generators")
+    implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1802.1.4-build.139") {
+        transitive = false
+    }
+    implementation fg.deobf("com.teamcofh:thermal_foundation:1.18.2-1.6.0.20")
+    implementation fg.deobf("com.teamcofh:thermal_expansion:1.18.2-1.6.0.8")
 
     //JitPack
 
     //CurseMaven
     implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3759881")
+    implementation fg.deobf("curse.maven:cyanide-forge-541676:3757522")
     implementation fg.deobf("curse.maven:ato-405593:3770993")
     implementation fg.deobf("curse.maven:allthemodium-364466:3780374")
     //implementation fg.deobf("curse.maven:industrial-reborn-358877:")
@@ -182,7 +195,7 @@ jar {
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor": "thelm",
                 //"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-				"MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
+                "MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
         ],)
     }
 }

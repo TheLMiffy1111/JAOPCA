@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -117,14 +116,14 @@ public class MiscHelper implements IMiscHelper {
 		if(obj instanceof Supplier<?>) {
 			Pair<Ingredient, Set<Item>> pair = getIngredientResolved(((Supplier<?>)obj).get());
 			ing = pair.getLeft();
-			items = pair.getRight();
+			items.addAll(pair.getRight());
 		}
 		else if(obj instanceof CompoundIngredientObject cObj) {
 			List<Pair<Ingredient, Set<Item>>> ings = Arrays.stream(cObj.ingredients()).map(this::getIngredientResolved).toList();
 			if(ings.size() == 1) {
 				Pair<Ingredient, Set<Item>> pair = ings.get(0);
 				ing = pair.getLeft();
-				items = pair.getRight();
+				items.addAll(pair.getRight());
 			}
 			else if(ings.size() > 1) {
 				switch(cObj.type()) {
@@ -133,20 +132,20 @@ public class MiscHelper implements IMiscHelper {
 						break;
 					}
 					ing = CompoundIngredient.of(ings.stream().map(Pair::getLeft).toArray(Ingredient[]::new));
-					items = ings.stream().map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+					items.addAll(ings.stream().map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
 						s1.addAll(s2);
 						return s1;
-					});
+					}));
 				}
 				case INTERSECTION -> {
 					if(ings.stream().anyMatch(p->p.getRight().isEmpty())) {
 						break;
 					}
 					ing = IntersectionIngredient.of(ings.stream().map(Pair::getLeft).toArray(Ingredient[]::new));
-					items = ings.stream().map(Pair::getRight).reduce(new HashSet<>(ForgeRegistries.ITEMS.getValues()), (s1, s2)->{
+					items.addAll(ings.stream().map(Pair::getRight).reduce(new HashSet<>(ForgeRegistries.ITEMS.getValues()), (s1, s2)->{
 						s1.retainAll(s2);
 						return s1;
-					});
+					}));
 				}
 				case DIFFERENCE -> {
 					Pair<Ingredient, Set<Item>> firstPair = ings.get(0);
@@ -154,7 +153,7 @@ public class MiscHelper implements IMiscHelper {
 						break;
 					}
 					ing = DifferenceIngredient.of(firstPair.getLeft(), CompoundIngredient.of(ings.stream().skip(1).map(Pair::getLeft).toArray(Ingredient[]::new)));
-					items = new HashSet<>(firstPair.getRight());
+					items.addAll(firstPair.getRight());
 					items.removeAll(ings.stream().skip(1).map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
 						s1.addAll(s2);
 						return s1;
@@ -171,31 +170,31 @@ public class MiscHelper implements IMiscHelper {
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
 			ing = Ingredient.of(getItemTagKey(location));
-			items = new HashSet<>(getItemTagValues(location));
+			items.addAll(getItemTagValues(location));
 		}
 		else if(obj instanceof ResourceLocation location) {
 			ing = Ingredient.of(getItemTagKey(location));
-			items = new HashSet<>(getItemTagValues(location));
+			items.addAll(getItemTagValues(location));
 		}
 		else if(obj instanceof TagKey key) {
 			ing = Ingredient.of(key);
-			items = new HashSet<>(getItemTagValues(key.location()));
+			items.addAll(getItemTagValues(key.location()));
 		}
 		else if(obj instanceof ItemStack stack) {
 			ing = Ingredient.of(stack);
-			items = Collections.singleton(stack.getItem());
+			items.add(stack.getItem());
 		}
 		else if(obj instanceof ItemStack[] stacks) {
 			ing = Ingredient.of(stacks);
-			items = Arrays.stream(stacks).map(ItemStack::getItem).collect(Collectors.toSet());
+			Arrays.stream(stacks).map(ItemStack::getItem).forEach(items::add);
 		}
 		else if(obj instanceof ItemLike item) {
 			ing = Ingredient.of(item);
-			items = Collections.singleton(item.asItem());
+			items.add(item.asItem());
 		}
 		else if(obj instanceof ItemLike[] itemz) {
 			ing = Ingredient.of(itemz);
-			items = Arrays.stream(itemz).map(ItemLike::asItem).collect(Collectors.toSet());
+			Arrays.stream(itemz).map(ItemLike::asItem).forEach(items::add);
 		}
 		else if(obj instanceof Ingredient.Value) {
 			ing = Ingredient.fromValues(Stream.of((Ingredient.Value)obj));
@@ -356,6 +355,17 @@ public class MiscHelper implements IMiscHelper {
 		if(stack.getCount() > 1) {
 			json.addProperty("count", stack.getCount());
 		}
+		if(stack.hasTag()) {
+			json.addProperty("nbt", stack.getTag().toString());
+		}
+		return json;
+	}
+
+	@Override
+	public JsonObject serializeFluidStack(FluidStack stack) {
+		JsonObject json = new JsonObject();
+		json.addProperty("fluid", stack.getFluid().getRegistryName().toString());
+		json.addProperty("amount", stack.getAmount());
 		if(stack.hasTag()) {
 			json.addProperty("nbt", stack.getTag().toString());
 		}

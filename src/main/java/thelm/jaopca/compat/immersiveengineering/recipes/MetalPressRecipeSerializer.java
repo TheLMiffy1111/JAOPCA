@@ -11,7 +11,9 @@ import com.google.gson.JsonObject;
 import blusunrize.immersiveengineering.api.crafting.IngredientWithSize;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
+import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class MetalPressRecipeSerializer implements IRecipeSerializer {
@@ -38,24 +40,24 @@ public class MetalPressRecipeSerializer implements IRecipeSerializer {
 
 	@Override
 	public JsonElement get() {
-		IngredientWithSize ing = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(input), inputCount);
-		if(ing.hasNoMatchingItems()) {
+		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
+		if(ing == EmptyIngredient.INSTANCE) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack moldStack = MiscHelper.INSTANCE.getItemStack(mold, 1);
 		if(moldStack.isEmpty()) {
 			throw new IllegalArgumentException("Empty mold in recipe "+key+": "+mold);
 		}
-		IngredientWithSize outIng = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(output), outputCount);
-		if(outIng.hasNoMatchingItems()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+		Ingredient outIng = MiscHelper.INSTANCE.getIngredient(output);
+		if(outIng == EmptyIngredient.INSTANCE) {
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "immersiveengineering:metal_press");
-		json.add("input", ing.serialize());
+		json.add("input", new IngredientWithSize(ing, inputCount).serialize());
 		json.addProperty("mold", moldStack.getItem().getRegistryName().toString());
-		json.add("result", outIng.serialize());
+		json.add("result", new IngredientWithSize(outIng, outputCount).serialize());
 		json.addProperty("energy", energy);
 
 		return json;

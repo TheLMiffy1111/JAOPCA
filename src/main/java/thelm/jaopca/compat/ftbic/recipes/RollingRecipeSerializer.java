@@ -1,13 +1,16 @@
-package thelm.jaopca.compat.occultism.recipes;
+package thelm.jaopca.compat.ftbic.recipes;
 
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import dev.ftb.mods.ftbic.util.IngredientWithCount;
+import dev.ftb.mods.ftbic.util.StackWithChance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -15,24 +18,30 @@ import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
-public class CrushingRecipeSerializer implements IRecipeSerializer {
+public class RollingRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	public final ResourceLocation key;
 	public final Object input;
+	public final int inputCount;
 	public final Object output;
 	public final int outputCount;
-	public final int time;
-	public final boolean ignoreMultiplier;
+	public final double outputChance;
+	public final double time;
 
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, Object output, int outputCount, int time, boolean ignoreMultiplier) {
+	public RollingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double time) {
+		this(key, input, inputCount, output, outputCount, 1D, time);
+	}
+
+	public RollingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double outputChance, double time) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
+		this.inputCount = inputCount;
 		this.output = output;
 		this.outputCount = outputCount;
+		this.outputChance = outputChance;
 		this.time = time;
-		this.ignoreMultiplier = ignoreMultiplier;
 	}
 
 	@Override
@@ -47,11 +56,14 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		}
 
 		JsonObject json = new JsonObject();
-		json.addProperty("type", "occultism:crushing");
-		json.add("ingredient", ing.toJson());
-		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
-		json.addProperty("crushing_time", time);
-		json.addProperty("ignore_crushing_multiplier", ignoreMultiplier);
+		json.addProperty("type", "ftbic:rolling");
+		JsonArray itemInputJson = new JsonArray();
+		itemInputJson.add(new IngredientWithCount(ing, inputCount).toJson());
+		json.add("inputItems", itemInputJson);
+		JsonArray itemOutputJson = new JsonArray();
+		itemOutputJson.add(new StackWithChance(stack, outputChance).toJson());
+		json.add("outputItems", itemOutputJson);
+		json.addProperty("processingTime", time);
 
 		return json;
 	}

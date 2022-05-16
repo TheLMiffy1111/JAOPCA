@@ -54,14 +54,14 @@ public class CastingTableRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		FluidIngredient fluidIng = TConstructHelper.INSTANCE.getFluidIngredient(input, inputAmount);
-		if(fluidIng.getFluids().isEmpty()) {
+		if(fluidIng == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		FluidStack funcStack = MiscHelper.INSTANCE.getFluidStack(input, inputAmount);
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(cast);
 		ItemOutput out = TConstructHelper.INSTANCE.getItemOutput(output, outputCount);
-		if(out.get().isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+		if(out == null) {
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
 		JsonObject json = new JsonObject();

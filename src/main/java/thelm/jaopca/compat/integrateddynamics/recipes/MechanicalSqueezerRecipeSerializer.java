@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.integrateddynamics.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,8 +70,12 @@ public class MechanicalSqueezerRecipeSerializer implements IRecipeSerializer {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			itemResults.add(Pair.of(stack, chance));
+		}
+		if(itemResults.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(itemOutput));
 		}
 		FluidStack fluidStack = MiscHelper.INSTANCE.getFluidStack(fluidOutput, fluidOutputAmount);
 
@@ -87,10 +92,7 @@ public class MechanicalSqueezerRecipeSerializer implements IRecipeSerializer {
 		}
 		resultJson.add("items", itemResultJson);
 		if(!fluidStack.isEmpty()) {
-			JsonObject fluidResultJson = new JsonObject();
-			fluidResultJson.addProperty("fluid", fluidStack.getFluid().getRegistryName().toString());
-			fluidResultJson.addProperty("amount", fluidStack.getAmount());
-			resultJson.add("fluid", fluidResultJson);
+			resultJson.add("fluid", MiscHelper.INSTANCE.serializeFluidStack(fluidStack));
 		}
 		json.add("result", resultJson);
 		json.addProperty("duration", time);

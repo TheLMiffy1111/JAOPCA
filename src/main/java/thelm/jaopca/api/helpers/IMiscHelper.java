@@ -61,6 +61,8 @@ public interface IMiscHelper {
 
 	JsonObject serializeItemStack(ItemStack stack);
 
+	JsonObject serializeFluidStack(FluidStack stack);
+
 	Predicate<String> configMaterialPredicate();
 
 	Predicate<String> configModulePredicate();

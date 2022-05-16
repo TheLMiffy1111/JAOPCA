@@ -46,7 +46,7 @@ public class CrucibleRecipeSerializer implements IRecipeSerializer {
 		}
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, amount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
 		JsonObject json = new JsonObject();
@@ -55,10 +55,7 @@ public class CrucibleRecipeSerializer implements IRecipeSerializer {
 			json.addProperty("group", group);
 		}
 		json.add("input", ing.toJson());
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("fluid", stack.getFluid().getRegistryName().toString());
-		resultJson.addProperty("amount", stack.getAmount());
-		json.add("output", resultJson);
+		json.add("output", MiscHelper.INSTANCE.serializeFluidStack(stack));
 
 		return json;
 	}

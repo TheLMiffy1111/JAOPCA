@@ -6,11 +6,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 
 import net.minecraft.resources.ResourceLocation;
@@ -48,7 +46,7 @@ public class TConstructHelper {
 		if(obj instanceof Supplier<?>) {
 			Pair<FluidIngredient, Set<Fluid>> pair = getFluidIngredientResolved(((Supplier<?>)obj).get(), amount);
 			ing = pair.getLeft();
-			fluids = pair.getRight();
+			fluids.addAll(pair.getRight());
 		}
 		else if(obj instanceof FluidIngredient) {
 			ing = (FluidIngredient)obj;
@@ -58,31 +56,31 @@ public class TConstructHelper {
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
 			ing = FluidIngredient.of(MiscHelper.INSTANCE.getFluidTagKey(location), amount);
-			fluids = new HashSet<>(helper.getFluidTagValues(location));
+			fluids.addAll(helper.getFluidTagValues(location));
 		}
 		else if(obj instanceof ResourceLocation location) {
 			ing = FluidIngredient.of(MiscHelper.INSTANCE.getFluidTagKey(location), amount);
-			fluids = new HashSet<>(helper.getFluidTagValues(location));
+			fluids.addAll(helper.getFluidTagValues(location));
 		}
 		else if(obj instanceof TagKey key) {
 			ing = FluidIngredient.of(key, amount);
-			fluids = new HashSet<>(helper.getFluidTagValues(key.location()));
+			fluids.addAll(helper.getFluidTagValues(key.location()));
 		}
 		else if(obj instanceof FluidStack stack) {
 			ing = FluidIngredient.of(stack);
-			fluids = Collections.singleton(stack.getFluid());
+			fluids.add(stack.getFluid());
 		}
 		else if(obj instanceof FluidStack[] stacks) {
 			ing = FluidIngredient.of(Arrays.stream(stacks).map(FluidIngredient::of).toArray(FluidIngredient[]::new));
-			fluids = Arrays.stream(stacks).map(FluidStack::getFluid).collect(Collectors.toSet());
+			Arrays.stream(stacks).map(FluidStack::getFluid).forEach(fluids::add);
 		}
 		else if(obj instanceof Fluid fluid) {
 			ing = FluidIngredient.of(fluid, amount);
-			fluids = Collections.singleton(fluid);
+			fluids.add(fluid);
 		}
 		else if(obj instanceof Fluid[] fluidz) {
 			ing = FluidIngredient.of(Arrays.stream(fluidz).map(g->FluidIngredient.of(g, amount)).toArray(FluidIngredient[]::new));
-			fluids = Sets.newHashSet(fluidz);
+			Collections.addAll(fluids, fluidz);
 		}
 		else if(obj instanceof JsonElement) {
 			ing = FluidIngredient.deserialize((JsonElement)obj, "ingredient");
@@ -102,7 +100,7 @@ public class TConstructHelper {
 		if(obj instanceof Supplier<?>) {
 			Pair<ItemOutput, Set<Item>> pair = getItemOutputResolved(((Supplier<?>)obj).get(), count);
 			out = pair.getLeft();
-			items = pair.getRight();
+			items.addAll(pair.getRight());
 		}
 		else if(obj instanceof ItemOutput) {
 			out = ((ItemOutput)obj);
@@ -111,26 +109,26 @@ public class TConstructHelper {
 		}
 		else if(obj instanceof ItemStack stack) {
 			out = ItemOutput.fromStack(stack);
-			items = Collections.singleton(stack.getItem());
+			items.add(stack.getItem());
 		}
 		else if(obj instanceof ItemLike item) {
 			out = ItemOutput.fromItem(item, count);
-			items = Collections.singleton(item.asItem());
+			items.add(item.asItem());
 		}
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
 			out = ItemOutput.fromTag(MiscHelper.INSTANCE.getItemTagKey(location), count);
-			items = new HashSet<>(MiscHelper.INSTANCE.getItemTagValues(location));
+			items.addAll(MiscHelper.INSTANCE.getItemTagValues(location));
 		}
 		else if(obj instanceof ResourceLocation location) {
 			out = ItemOutput.fromTag(MiscHelper.INSTANCE.getItemTagKey(location), count);
-			items = new HashSet<>(MiscHelper.INSTANCE.getItemTagValues(location));
+			items.addAll(MiscHelper.INSTANCE.getItemTagValues(location));
 		}
 		else if(obj instanceof TagKey key) {
 			out = ItemOutput.fromTag(key, count);
-			items = new HashSet<>(MiscHelper.INSTANCE.getItemTagValues(key.location()));
+			items.addAll(MiscHelper.INSTANCE.getItemTagValues(key.location()));
 		}
-		return Pair.of(items.isEmpty() ? ItemOutput.fromStack(ItemStack.EMPTY) : out, items);
+		return Pair.of(items.isEmpty() ? null : out, items);
 	}
 
 	public boolean registerOreMeltingRecipe(ResourceLocation key, String group, Object input, Object output, int outputAmount, int rate, ToIntFunction<FluidStack> temperature, ToIntFunction<FluidStack> time, Object... byproducts) {

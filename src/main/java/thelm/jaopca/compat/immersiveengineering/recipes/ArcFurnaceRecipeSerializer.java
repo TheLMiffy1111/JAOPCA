@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.immersiveengineering.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +16,9 @@ import com.google.gson.JsonObject;
 import blusunrize.immersiveengineering.api.crafting.IngredientWithSize;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
+import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
@@ -57,19 +60,19 @@ public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
 				count = (Integer)input[i];
 				++i;
 			}
-			IngredientWithSize is = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(in), count);
-			if(is.hasNoMatchingItems()) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
+			Ingredient is = MiscHelper.INSTANCE.getIngredient(in);
+			if(is == EmptyIngredient.INSTANCE) {
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			if(ing == null) {
-				ing = is;
+				ing = new IngredientWithSize(is, count);
 			}
 			else {
-				additives.add(is);
+				additives.add(new IngredientWithSize(is, count));
 			}
 		}
-		if(ing == null || ing.hasNoMatchingItems()) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+key);
+		if(ing == null) {
+			throw new IllegalArgumentException("Empty ingredients in recipe "+key+": "+Arrays.toString(input));
 		}
 		IngredientWithSize slagIng = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(slag), slagCount);
 		List<IngredientWithSize> outputs = new ArrayList<>();
@@ -88,16 +91,20 @@ public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
 				chance = (Float)output[i];
 				++i;
 			}
-			IngredientWithSize is = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(out), count);
-			if(is.hasNoMatchingItems()) {
+			Ingredient is = MiscHelper.INSTANCE.getIngredient(out);
+			if(is == EmptyIngredient.INSTANCE) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			if(chance == 1F) {
-				outputs.add(is);
+				outputs.add(new IngredientWithSize(is));
 			}
 			else {
-				secondary.add(Pair.of(is, chance));
+				secondary.add(Pair.of(new IngredientWithSize(is), chance));
 			}
+		}
+		if(outputs.isEmpty() && secondary.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 
 		JsonObject json = new JsonObject();

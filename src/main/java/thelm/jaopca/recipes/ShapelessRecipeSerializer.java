@@ -44,7 +44,7 @@ public class ShapelessRecipeSerializer implements IRecipeSerializer {
 	public JsonElement get() {
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		NonNullList<Ingredient> ingredients = NonNullList.create();
 		for(Object in : input) {

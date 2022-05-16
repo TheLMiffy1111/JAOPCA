@@ -1,11 +1,10 @@
-package thelm.jaopca.compat.immersiveengineering.recipes;
+package thelm.jaopca.compat.ftbic.recipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,27 +12,31 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import blusunrize.immersiveengineering.api.crafting.IngredientWithSize;
+import dev.ftb.mods.ftbic.util.IngredientWithCount;
+import dev.ftb.mods.ftbic.util.StackWithChance;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
-public class CrusherRecipeSerializer implements IRecipeSerializer {
+public class MaceratingRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	public final ResourceLocation key;
 	public final Object input;
+	public final int inputCount;
 	public final Object[] output;
-	public final int energy;
+	public final double time;
 
-	public CrusherRecipeSerializer(ResourceLocation key, Object input, Object[] output, int energy) {
+	public MaceratingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object[] output, double time) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
+		this.inputCount = inputCount;
 		this.output = output;
-		this.energy = energy;
+		this.time = time;
 	}
 
 	@Override
@@ -42,8 +45,7 @@ public class CrusherRecipeSerializer implements IRecipeSerializer {
 		if(ing == EmptyIngredient.INSTANCE) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		IngredientWithSize result = null;
-		List<Pair<IngredientWithSize, Float>> secondary = new ArrayList<>();
+		List<StackWithChance> outputs = new ArrayList<>();
 		int i = 0;
 		while(i < output.length) {
 			Object out = output[i];
@@ -53,40 +55,33 @@ public class CrusherRecipeSerializer implements IRecipeSerializer {
 				count = (Integer)output[i];
 				++i;
 			}
-			Float chance = 1F;
-			if(i < output.length && output[i] instanceof Float) {
-				chance = (Float)output[i];
+			Double chance = 1D;
+			if(i < output.length && output[i] instanceof Double) {
+				chance = (Double)output[i];
 				++i;
 			}
-			Ingredient is = MiscHelper.INSTANCE.getIngredient(out);
-			if(is == EmptyIngredient.INSTANCE) {
+			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
+			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 				continue;
 			}
-			if(result == null) {
-				result = new IngredientWithSize(is, count);
-			}
-			else {
-				secondary.add(Pair.of(new IngredientWithSize(is, count), chance));
-			}
+			outputs.add(new StackWithChance(stack, chance));
 		}
-		if(result == null) {
+		if(outputs.isEmpty()) {
 			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 
 		JsonObject json = new JsonObject();
-		json.addProperty("type", "immersiveengineering:crusher");
-		json.add("input", ing.toJson());
-		json.add("result", result.serialize());
-		JsonArray secondaryJson = new JsonArray();
-		for(Pair<IngredientWithSize, Float> pair : secondary) {
-			JsonObject outputJson = new JsonObject();
-			outputJson.add("output", pair.getLeft().serialize());
-			outputJson.addProperty("chance", pair.getRight());
-			secondaryJson.add(outputJson);
+		json.addProperty("type", "ftbic:macerating");
+		JsonArray itemInputJson = new JsonArray();
+		itemInputJson.add(new IngredientWithCount(ing, inputCount).toJson());
+		json.add("inputItems", itemInputJson);
+		JsonArray itemOutputJson = new JsonArray();
+		for(StackWithChance stack : outputs) {
+			itemOutputJson.add(stack.toJson());
 		}
-		json.add("secondaries", secondaryJson);
-		json.addProperty("energy", energy);
+		json.add("outputItems", itemOutputJson);
+		json.addProperty("processingTime", time);
 
 		return json;
 	}

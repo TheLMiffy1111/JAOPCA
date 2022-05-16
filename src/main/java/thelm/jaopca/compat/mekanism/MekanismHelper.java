@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -74,7 +73,7 @@ public class MekanismHelper {
 		if(obj instanceof Supplier<?>) {
 			Pair<FluidStackIngredient, Set<Fluid>> pair = getFluidStackIngredientResolved(((Supplier<?>)obj).get(), amount);
 			ing = pair.getLeft();
-			fluids = pair.getRight();
+			fluids.addAll(pair.getRight());
 		}
 		else if(obj instanceof FluidStackIngredient) {
 			ing = (FluidStackIngredient)obj;
@@ -84,31 +83,31 @@ public class MekanismHelper {
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
 			ing = creator.from(helper.getFluidTagKey(location), amount);
-			fluids = new HashSet<>(helper.getFluidTagValues(location));
+			fluids.addAll(helper.getFluidTagValues(location));
 		}
 		else if(obj instanceof ResourceLocation location) {
 			ing = creator.from(helper.getFluidTagKey(location), amount);
-			fluids = new HashSet<>(helper.getFluidTagValues(location));
+			fluids.addAll(helper.getFluidTagValues(location));
 		}
 		else if(obj instanceof TagKey key) {
 			ing = creator.from(key, amount);
-			fluids = new HashSet<>(helper.getFluidTagValues(key.location()));
+			fluids.addAll(helper.getFluidTagValues(key.location()));
 		}
 		else if(obj instanceof FluidStack stack) {
 			ing = creator.from(stack);
-			fluids = Collections.singleton(stack.getFluid());
+			fluids.add(stack.getFluid());
 		}
 		else if(obj instanceof FluidStack[] stacks) {
 			ing = creator.createMulti(Arrays.stream(stacks).map(creator::from).toArray(FluidStackIngredient[]::new));
-			fluids = Arrays.stream(stacks).map(FluidStack::getFluid).collect(Collectors.toSet());
+			Arrays.stream(stacks).map(FluidStack::getFluid).forEach(fluids::add);
 		}
 		else if(obj instanceof Fluid fluid) {
 			ing = creator.from(fluid, amount);
-			fluids = Collections.singleton(fluid);
+			fluids.add(fluid);
 		}
 		else if(obj instanceof Fluid[] fluidz) {
-			ing = creator.createMulti(Arrays.stream(fluidz).map(g->creator.from(g, amount)).toArray(FluidStackIngredient[]::new));
-			fluids = Sets.newHashSet(fluidz);
+			ing = creator.createMulti(Arrays.stream(fluidz).map(f->creator.from(f, amount)).toArray(FluidStackIngredient[]::new));
+			Collections.addAll(fluids, fluidz);
 		}
 		else if(obj instanceof JsonElement) {
 			ing = creator.deserialize((JsonElement)obj);
@@ -130,7 +129,7 @@ public class MekanismHelper {
 		if(obj instanceof Supplier<?>) {
 			Pair<GasStackIngredient, Set<Gas>> pair = getGasStackIngredientResolved(((Supplier<?>)obj).get(), amount);
 			ing = pair.getLeft();
-			gases = pair.getRight();
+			gases.addAll(pair.getRight());
 		}
 		else if(obj instanceof GasStackIngredient) {
 			ing = (GasStackIngredient)obj;
@@ -140,31 +139,31 @@ public class MekanismHelper {
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
 			ing = creator.from(getGasTagKey(location), amount);
-			gases = new HashSet<>(getGasTagValues(location));
+			gases.addAll(getGasTagValues(location));
 		}
 		else if(obj instanceof ResourceLocation location) {
 			ing = creator.from(getGasTagKey(location), amount);
-			gases = new HashSet<>(getGasTagValues(location));
+			gases.addAll(getGasTagValues(location));
 		}
 		else if(obj instanceof TagKey key) {
 			ing = creator.from(key, amount);
-			gases = new HashSet<>(getGasTagValues(key.location()));
+			gases.addAll(getGasTagValues(key.location()));
 		}
 		else if(obj instanceof GasStack stack) {
 			ing = creator.from(stack);
-			gases = Collections.singleton(stack.getType());
+			gases.add(stack.getType());
 		}
 		else if(obj instanceof GasStack[] stacks) {
 			ing = creator.createMulti(Arrays.stream(stacks).map(creator::from).toArray(GasStackIngredient[]::new));
-			gases = Arrays.stream(stacks).map(GasStack::getType).collect(Collectors.toSet());
+			Arrays.stream(stacks).map(GasStack::getType).forEach(gases::add);
 		}
 		else if(obj instanceof IGasProvider gas) {
 			ing = creator.from(gas, amount);
-			gases = Collections.singleton(gas.getChemical());
+			gases.add(gas.getChemical());
 		}
 		else if(obj instanceof IGasProvider[] gasez) {
 			ing = creator.createMulti(Arrays.stream(gasez).map(g->creator.from(g, amount)).toArray(GasStackIngredient[]::new));
-			gases = Arrays.stream(gasez).map(IGasProvider::getChemical).collect(Collectors.toSet());
+			Arrays.stream(gasez).map(IGasProvider::getChemical).forEach(gases::add);
 		}
 		else if(obj instanceof JsonElement) {
 			ing = creator.deserialize((JsonElement)obj);
@@ -186,7 +185,7 @@ public class MekanismHelper {
 		if(obj instanceof Supplier<?>) {
 			Pair<SlurryStackIngredient, Set<Slurry>> pair = getSlurryStackIngredientResolved(((Supplier<?>)obj).get(), amount);
 			ing = pair.getLeft();
-			slurries = pair.getRight();
+			slurries.addAll(pair.getRight());
 		}
 		else if(obj instanceof SlurryStackIngredient) {
 			ing = (SlurryStackIngredient)obj;
@@ -196,31 +195,31 @@ public class MekanismHelper {
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
 			ing = creator.from(getSlurryTagKey(location), amount);
-			slurries = new HashSet<>(getSlurryTagValues(location));
+			slurries.addAll(getSlurryTagValues(location));
 		}
 		else if(obj instanceof ResourceLocation location) {
 			ing = creator.from(getSlurryTagKey(location), amount);
-			slurries = new HashSet<>(getSlurryTagValues(location));
+			slurries.addAll(getSlurryTagValues(location));
 		}
 		else if(obj instanceof TagKey key) {
 			ing = creator.from(key, amount);
-			slurries = new HashSet<>(getSlurryTagValues(key.location()));
+			slurries.addAll(getSlurryTagValues(key.location()));
 		}
 		else if(obj instanceof SlurryStack stack) {
 			ing = creator.from(stack);
-			slurries = Collections.singleton(stack.getType());
+			slurries.add(stack.getType());
 		}
 		else if(obj instanceof SlurryStack[] stacks) {
 			ing = creator.createMulti(Arrays.stream(stacks).map(creator::from).toArray(SlurryStackIngredient[]::new));
-			slurries = Arrays.stream(stacks).map(SlurryStack::getType).collect(Collectors.toSet());
+			Arrays.stream(stacks).map(SlurryStack::getType).forEach(slurries::add);
 		}
 		else if(obj instanceof ISlurryProvider slurry) {
 			ing = creator.from(slurry, amount);
-			slurries = Collections.singleton(slurry.getChemical());
+			slurries.add(slurry.getChemical());
 		}
 		else if(obj instanceof ISlurryProvider[] slurriez) {
-			ing = creator.createMulti(Arrays.stream(slurriez).map(g->creator.from(g, amount)).toArray(SlurryStackIngredient[]::new));
-			slurries = Arrays.stream(slurriez).map(ISlurryProvider::getChemical).collect(Collectors.toSet());
+			ing = creator.createMulti(Arrays.stream(slurriez).map(s->creator.from(s, amount)).toArray(SlurryStackIngredient[]::new));
+			Arrays.stream(slurriez).map(ISlurryProvider::getChemical).forEach(slurries::add);
 		}
 		else if(obj instanceof JsonElement) {
 			ing = creator.deserialize((JsonElement)obj);

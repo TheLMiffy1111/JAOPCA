@@ -48,7 +48,7 @@ public class BlastFurnaceRecipeSerializer implements IRecipeSerializer {
 		}
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, amount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
 		JsonObject json = new JsonObject();
@@ -57,10 +57,7 @@ public class BlastFurnaceRecipeSerializer implements IRecipeSerializer {
 			json.addProperty("group", group);
 		}
 		json.add("ingredient", ing.toJson());
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("fluid", stack.getFluid().getRegistryName().toString());
-		resultJson.addProperty("amount", stack.getAmount());
-		json.add("output", resultJson);
+		json.add("output", MiscHelper.INSTANCE.serializeFluidStack(stack));
 		json.addProperty("slag", slagCount);
 
 		return json;

@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
+import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class MeltingRecipeSerializer implements IRecipeSerializer {
@@ -50,12 +51,12 @@ public class MeltingRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.isEmpty()) {
+		if(ing == EmptyIngredient.INSTANCE) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, outputAmount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		List<FluidStack> bys = new ArrayList<>();
 		int i = 0;
@@ -70,6 +71,7 @@ public class MeltingRecipeSerializer implements IRecipeSerializer {
 			FluidStack by = MiscHelper.INSTANCE.getFluidStack(out, amount);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			bys.add(by);
 		}
@@ -80,17 +82,11 @@ public class MeltingRecipeSerializer implements IRecipeSerializer {
 			json.addProperty("group", group);
 		}
 		json.add("ingredient", ing.toJson());
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("fluid", stack.getFluid().getRegistryName().toString());
-		resultJson.addProperty("amount", stack.getAmount());
-		json.add("result", resultJson);
+		json.add("result", MiscHelper.INSTANCE.serializeFluidStack(stack));
 		if(!bys.isEmpty()) {
 			JsonArray byproductsJson = new JsonArray();
 			for(FluidStack by : bys) {
-				JsonObject byproductJson = new JsonObject();
-				byproductJson.addProperty("fluid", by.getFluid().getRegistryName().toString());
-				byproductJson.addProperty("amount", by.getAmount());
-				byproductsJson.add(byproductJson);
+				byproductsJson.add(MiscHelper.INSTANCE.serializeFluidStack(by));
 			}
 			json.add("byproducts", byproductsJson);
 		}

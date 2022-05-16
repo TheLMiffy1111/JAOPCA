@@ -43,7 +43,7 @@ public class MineralWasherRecipeSerializer implements IRecipeSerializer {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(itemInput);
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, outputAmount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
 		JsonObject json = new JsonObject();
@@ -66,10 +66,7 @@ public class MineralWasherRecipeSerializer implements IRecipeSerializer {
 		fluidIngJson.addProperty("amount", fluidInputAmount);
 		fluidInputJson.add("0", fluidIngJson);
 		json.add("fluidinputs", fluidInputJson);
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("fluid", stack.getFluid().getRegistryName().toString());
-		resultJson.addProperty("amount", stack.getAmount());
-		json.add("output", resultJson);
+		json.add("output", MiscHelper.INSTANCE.serializeFluidStack(stack));
 		json.addProperty("experience", experience);
 
 		return json;
