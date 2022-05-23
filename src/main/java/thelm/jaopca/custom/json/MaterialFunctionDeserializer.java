@@ -36,7 +36,7 @@ public class MaterialFunctionDeserializer implements JsonDeserializer<Function<I
 		JsonObject json = helper.getJsonObject(jsonElement, "object");
 		Object defaultValue = helper.deserializeType(json, "default", context, parameterizedType);
 		if(defaultValue == null) {
-			LOGGER.warn("Null default value: "+helper.toSimpleString(json.get("default")));
+			LOGGER.warn("Null default value: {}", helper.toSimpleString(json.get("default")));
 		}
 		Object2ObjectMap<IMaterial, Object> map = new Object2ObjectRBTreeMap<>();
 		map.defaultReturnValue(defaultValue);
@@ -45,7 +45,7 @@ public class MaterialFunctionDeserializer implements JsonDeserializer<Function<I
 			for(Map.Entry<String, JsonElement> entry : materialTypesJson.entrySet()) {
 				Object materialTypeValue = helper.deserializeType(entry.getValue(), "element", context, parameterizedType);
 				if(materialTypeValue == null) {
-					LOGGER.warn("Null value for material type "+entry.getKey()+": "+helper.toSimpleString(entry.getValue()));
+					LOGGER.warn("Null value for material type {}: {}", entry.getKey(), helper.toSimpleString(entry.getValue()));
 				}
 				switch(entry.getKey()) {
 				case "ingot" ->
@@ -73,7 +73,7 @@ public class MaterialFunctionDeserializer implements JsonDeserializer<Function<I
 				if(MaterialHandler.containsMaterial(entry.getKey())) {
 					Object materialValue = helper.deserializeType(entry.getValue(), "element", context, parameterizedType);
 					if(materialValue == null) {
-						LOGGER.warn("Null value for material "+entry.getKey()+": "+helper.toSimpleString(entry.getValue()));
+						LOGGER.warn("Null value for material {}: {}", entry.getKey(), helper.toSimpleString(entry.getValue()));
 					}
 					map.put(MaterialHandler.getMaterial(entry.getKey()), materialValue);
 				}

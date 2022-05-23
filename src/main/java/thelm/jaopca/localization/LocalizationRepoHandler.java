@@ -81,7 +81,7 @@ public class LocalizationRepoHandler {
 						currentLocalizationMap = ImmutableSortedMap.of();
 					}
 					catch(IOException e) {
-						LOGGER.info("Unable to download localization file for language "+language, e);
+						LOGGER.info("Unable to download localization file for language {}", language, e);
 						currentLocalizationMap = ImmutableSortedMap.of();
 					}
 				}

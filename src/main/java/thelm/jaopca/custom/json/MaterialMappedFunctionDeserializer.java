@@ -42,7 +42,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 		String defaultString = helper.getString(json, "default");
 		T defaultValue = stringToValue.apply(defaultString);
 		if(defaultValue == null) {
-			LOGGER.warn("Null default value:"+defaultString);
+			LOGGER.warn("Null default value: {}", defaultString);
 		}
 		Object2ObjectMap<IMaterial, T> map = new Object2ObjectRBTreeMap<>();
 		map.defaultReturnValue(defaultValue);
@@ -52,7 +52,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 				String materialTypeString = helper.getString(entry.getValue(), "element");
 				T materialTypeValue = stringToValue.apply(materialTypeString.toLowerCase(Locale.US));
 				if(materialTypeValue == null) {
-					LOGGER.warn("Null value for material type "+entry.getKey()+": "+materialTypeString);
+					LOGGER.warn("Null value for material type {}: {}", entry.getKey(), materialTypeString);
 				}
 				switch(entry.getKey()) {
 				case "ingot" ->
@@ -81,7 +81,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 					String materialString = helper.getString(entry.getValue(), "element");
 					T materialValue = stringToValue.apply(materialString);
 					if(materialValue == null) {
-						LOGGER.warn("Null value for material "+entry.getKey()+": "+materialString);
+						LOGGER.warn("Null value for material {}: {}", entry.getKey(), materialString);
 					}
 					map.put(MaterialHandler.getMaterial(entry.getKey()), materialValue);
 				}
@@ -100,7 +100,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 				CustomModule.instance.addCustomConfigDefiner((material, config)->{
 					T value = stringToValue.apply(config.getDefinedString(path, ""+valueToString.apply(map.get(material)), comment));
 					if(value == null) {
-						LOGGER.warn("Null config value for material "+material.getName());
+						LOGGER.warn("Null config value for material {}", material.getName());
 					}
 					map.put(material, value);
 				});

@@ -96,7 +96,7 @@ public class Material implements IMaterial {
 			DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
 				ITag<Item> tag = getTag();
 				if(!tag.isBound()) {
-					LOGGER.warn("Tried to get color for material "+name+" when tag is not bound");
+					LOGGER.warn("Tried to get color for material {} when tag is not bound", name);
 					return;
 				}
 				color = OptionalInt.of(0xFFFFFF);
@@ -105,7 +105,7 @@ public class Material implements IMaterial {
 						color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(tag), "The color of this material."));
 					}
 					catch(Exception e) {
-						LOGGER.warn("Unable to get color for material "+name, e);
+						LOGGER.warn("Unable to get color for material {}", name, e);
 					}
 				});
 			});

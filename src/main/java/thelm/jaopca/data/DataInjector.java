@@ -126,7 +126,7 @@ public class DataInjector {
 				return;
 			}
 			catch(Throwable e) {
-				LOGGER.warn("Recipe with ID "+key+" errored", e);
+				LOGGER.warn("Recipe with ID {} errored", key, e);
 				return;
 			}
 			if(recipe == null) {

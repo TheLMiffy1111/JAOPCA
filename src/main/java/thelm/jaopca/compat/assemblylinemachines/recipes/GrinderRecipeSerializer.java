@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import me.haydenb.assemblylinemachines.block.rudimentary.BlockHandGrinder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -50,15 +49,15 @@ public class GrinderRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		BlockHandGrinder.Blade blade;
+		String blade;
 		if(tier <= 0) {
-			blade = BlockHandGrinder.Blade.TITANIUM;
+			blade = "TITANIUM";
 		}
 		else if(tier == 1) {
-			blade = BlockHandGrinder.Blade.PUREGOLD;
+			blade = "PUREGOLD";
 		}
 		else {
-			blade = BlockHandGrinder.Blade.STEEL;
+			blade = "STEEL";
 		}
 
 		JsonObject json = new JsonObject();
@@ -66,7 +65,7 @@ public class GrinderRecipeSerializer implements IRecipeSerializer {
 		json.add("input", ing.toJson());
 		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("grinds", grinds);
-		json.addProperty("bladetype", blade.name());
+		json.addProperty("bladetype", blade);
 		json.addProperty("machine_required", requiresMachine);
 		json.addProperty("chanceToDouble", doubleChance);
 

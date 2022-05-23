@@ -103,7 +103,7 @@ sourceSets {
     main
 }
 
-version = "4.1.5.5"
+version = "4.1.6.6"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.18.2"
 
@@ -142,47 +142,47 @@ dependencies {
     implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.97")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.6.3")
     implementation fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:1.18-0.6.2.64")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:3.0.12")
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-66")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-1.18-forge:3.0.18")
+    implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-67")
     implementation fg.deobf("slimeknights.mantle:Mantle:1.18.2-1.9.20")
-    implementation fg.deobf("com.teamcofh:cofh_core:1.18.2-1.6.0.14")
-    implementation fg.deobf("dev.latvian.mods:rhino-forge:1802.1.10-build.147")
+    implementation fg.deobf("com.teamcofh:cofh_core:1.18.2-1.6.1.15")
+    implementation fg.deobf("dev.latvian.mods:rhino-forge:1802.1.12-build.173")
     implementation fg.deobf("dev.architectury:architectury-forge:4.4.60")
-    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.2-build.403") {
+    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.2-build.433") {
         transitive = false
     }
     implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.18.2:12.0.1")
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.18.2-8.0.0-146")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.18.2-8.0.1-147")
     implementation fg.deobf("com.simibubi.create:Create:mc1.18.2_v0.4.1+111")
     implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.18.2-3.5.0.17")
     implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.0.459")
     implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.0.459:generators")
-    implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1802.1.4-build.139") {
+    implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1802.1.4-build.141") {
         transitive = false
     }
     implementation fg.deobf("com.teamcofh:thermal_foundation:1.18.2-1.6.0.20")
     implementation fg.deobf("com.teamcofh:thermal_expansion:1.18.2-1.6.0.8")
+    implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.18.2-33.0.7268")
 
     //JitPack
 
     //CurseMaven
     implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3759881")
-    implementation fg.deobf("curse.maven:cyanide-forge-541676:3757522")
-    implementation fg.deobf("curse.maven:ato-405593:3770993")
-    implementation fg.deobf("curse.maven:allthemodium-364466:3780374")
+    implementation fg.deobf("curse.maven:ato-405593:3801220")
+    implementation fg.deobf("curse.maven:allthemodium-364466:3785840")
     //implementation fg.deobf("curse.maven:industrial-reborn-358877:")
     //implementation fg.deobf("curse.maven:useful-foundation-355245:")
     //implementation fg.deobf("curse.maven:useful-machinery-355129:")
-    implementation fg.deobf("curse.maven:electrodynamics-316867:3779044")
-    implementation fg.deobf("curse.maven:voluminous-energy-416704:3758875")
+    implementation fg.deobf("curse.maven:electrodynamics-316867:3784685")
+    implementation fg.deobf("curse.maven:voluminous-energy-416704:3776723")
     implementation fg.deobf("curse.maven:cyclops-core-232758:3778682")
     implementation fg.deobf("curse.maven:common-capabilities-247007:3768491")
-    implementation fg.deobf("curse.maven:integrated-dynamics-236307:3782127")
-    implementation fg.deobf("curse.maven:essentials-293752:3782201")
-    implementation fg.deobf("curse.maven:crossroads-mc-250231:3781078")
-    implementation fg.deobf("curse.maven:assemblylinemachines-388282:3680014")
-    implementation fg.deobf("curse.maven:occultism-361026:3751075")
-    implementation fg.deobf("curse.maven:cyclic-239286:3708026")
+    implementation fg.deobf("curse.maven:integrated-dynamics-236307:3795973")
+    implementation fg.deobf("curse.maven:essentials-293752:3796423")
+    implementation fg.deobf("curse.maven:crossroads-mc-250231:3788470")
+    implementation fg.deobf("curse.maven:assemblylinemachines-388282:3772333")
+    implementation fg.deobf("curse.maven:occultism-361026:3781844")
+    implementation fg.deobf("curse.maven:cyclic-239286:3777095")
 }
 
 jar {
