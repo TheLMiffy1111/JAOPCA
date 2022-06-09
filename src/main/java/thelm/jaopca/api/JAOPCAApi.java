@@ -18,7 +18,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
@@ -175,7 +174,7 @@ public abstract class JAOPCAApi {
 	 * deserializes registry entries with locations.
 	 * @return The forge registry entry deserializer instance
 	 */
-	public abstract JsonDeserializer<Supplier<IForgeRegistryEntry<?>>> forgeRegistryEntrySupplierDeserializer();
+	public abstract JsonDeserializer<Supplier<?>> forgeRegistryEntrySupplierDeserializer();
 
 	/**
 	 * Gets an {@link IForm} by name.
@@ -279,9 +278,9 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerFormType(IFormType type);
 
-	public abstract <T extends IForgeRegistryEntry<T>, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry);
+	public abstract <T, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry);
 
-	public abstract <T extends IForgeRegistryEntry<T>, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry);
+	public abstract <T, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry);
 
 	/**
 	 * Registers a block tag location that may be added externally and should be known to JAOPCA.

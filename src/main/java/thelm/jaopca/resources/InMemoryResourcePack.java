@@ -13,8 +13,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -112,15 +110,10 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	}
 
 	@Override
-	public Collection<ResourceLocation> getResources(PackType type, String namespace, String pathIn, int maxDepth, Predicate<String> filter) {
+	public Collection<ResourceLocation> getResources(PackType type, String namespace, String pathIn, Predicate<ResourceLocation> filter) {
 		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == PackType.CLIENT_RESOURCES ? assets : data;
 		return map.keySet().stream().filter(rl->rl.getNamespace().equals(namespace)).
-				filter(rl->StringUtils.countMatches(rl.getPath(), '/') < maxDepth).
-				filter(rl->rl.getPath().startsWith(pathIn)).filter(rl->{
-					String path = rl.getPath();
-					int lastSlash = path.lastIndexOf('/');
-					return filter.test(path.substring(lastSlash < 0 ? 0 : lastSlash));
-				}).collect(Collectors.toList());
+				filter(rl->rl.getPath().startsWith(pathIn)).filter(filter).collect(Collectors.toList());
 	}
 
 	@Override

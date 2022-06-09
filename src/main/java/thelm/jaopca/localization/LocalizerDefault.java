@@ -6,9 +6,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import thelm.jaopca.api.localization.ILocalizer;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
@@ -24,10 +23,10 @@ public class LocalizerDefault implements ILocalizer {
 		Language languageMap = Language.getInstance();
 		Map<String, String> locMap = ApiImpl.INSTANCE.currentMaterialLocalizationMap();
 		if(languageMap.has(overrideKey)) {
-			return new TranslatableComponent(overrideKey);
+			return Component.translatable(overrideKey);
 		}
 		else if(locMap.containsKey(overrideKey)) {
-			return new TextComponent(locMap.get(overrideKey));
+			return Component.literal(locMap.get(overrideKey));
 		}
 		String materialName;
 		String materialKey = "jaopca.material."+material.getName();
@@ -41,10 +40,10 @@ public class LocalizerDefault implements ILocalizer {
 			materialName = splitAndCapitalize(material.getName());
 		}
 		if(languageMap.has(formTranslationKey) || !locMap.containsKey(formTranslationKey)) {
-			return new TranslatableComponent(formTranslationKey, materialName);
+			return Component.translatable(formTranslationKey, materialName);
 		}
 		else {
-			return new TextComponent(String.format(locMap.get(overrideKey), materialName));
+			return Component.literal(String.format(locMap.get(overrideKey), materialName));
 		}
 	}
 

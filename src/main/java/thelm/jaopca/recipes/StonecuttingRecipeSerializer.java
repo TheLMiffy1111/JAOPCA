@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
@@ -55,7 +56,7 @@ public class StonecuttingRecipeSerializer implements IRecipeSerializer {
 			json.addProperty("group", group);
 		}
 		json.add("ingredient", ing.toJson());
-		json.addProperty("result", stack.getItem().getRegistryName().toString());
+		json.addProperty("result", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
 		json.addProperty("count", stack.getCount());
 
 		return json;

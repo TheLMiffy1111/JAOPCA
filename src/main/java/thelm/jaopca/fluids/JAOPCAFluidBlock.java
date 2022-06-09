@@ -39,7 +39,7 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 				settings.getMaterialColorFunction().apply(fluid.getMaterial())).
 				strength((float)settings.getBlockHardnessFunction().applyAsDouble(fluid.getMaterial())).
 				lightLevel(state->settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
-				noCollission().randomTicks().noDrops().noOcclusion(), (PlaceableFluid)fluid.asFluid(),
+				noCollission().randomTicks().noLootTable().noOcclusion(), (PlaceableFluid)fluid.asFluid(),
 				settings.getMaxLevelFunction().applyAsInt(fluid.getMaterial()));
 
 		this.fluid = fluid;

@@ -24,7 +24,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
@@ -148,7 +148,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public JsonDeserializer<Supplier<IForgeRegistryEntry<?>>> forgeRegistryEntrySupplierDeserializer() {
+	public JsonDeserializer<Supplier<?>> forgeRegistryEntrySupplierDeserializer() {
 		return ForgeRegistryEntrySupplierDeserializer.INSTANCE;
 	}
 
@@ -238,12 +238,12 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public <T extends IForgeRegistryEntry<T>, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry) {
+	public <T, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry) {
 		return RegistryHandler.registerForgeRegistryEntry(registry, name, entry);
 	}
 
 	@Override
-	public <T extends IForgeRegistryEntry<T>, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry) {
+	public <T, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry) {
 		return RegistryHandler.registerForgeRegistryEntry(registry, name, entry);
 	}
 
@@ -277,7 +277,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerBlockTag(ResourceLocation key, Block block) {
-		return registerBlockTag(key, block.getRegistryName());
+		return registerBlockTag(key, ForgeRegistries.BLOCKS.getKey(block));
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerItemTag(ResourceLocation key, Item item) {
-		return registerItemTag(key, item.getRegistryName());
+		return registerItemTag(key, ForgeRegistries.ITEMS.getKey(item));
 	}
 
 	@Override
@@ -303,7 +303,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerFluidTag(ResourceLocation key, Fluid fluid) {
-		return registerFluidTag(key, fluid.getRegistryName());
+		return registerFluidTag(key, ForgeRegistries.FLUIDS.getKey(fluid));
 	}
 
 	@Override
@@ -316,7 +316,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType) {
-		return registerEntityTypeTag(key, entityType.getRegistryName());
+		return registerEntityTypeTag(key, ForgeRegistries.ENTITIES.getKey(entityType));
 	}
 
 	@Override

@@ -92,7 +92,7 @@ public class DataCollector {
 			}
 		}
 
-		for(ResourceLocation location : getAllDataResourceLocations("tags", name->name.endsWith(".json"))) {
+		for(ResourceLocation location : getAllDataResourceLocations("tags", name->name.getPath().endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
 			path = path.substring(TAGS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
@@ -116,7 +116,7 @@ public class DataCollector {
 			}
 		}
 		LOGGER.info("Found {} unique defined tags", DEFINED_TAGS.size());
-		for(ResourceLocation location : getAllDataResourceLocations("recipes", name->name.endsWith(".json"))) {
+		for(ResourceLocation location : getAllDataResourceLocations("recipes", name->name.getPath().endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
 			if(!path.equals("recipes/_constants.json") && !path.equals("recipes/_factories.json")) {
@@ -125,14 +125,14 @@ public class DataCollector {
 			}
 		}
 		LOGGER.info("Found {} unique defined recipes", DEFINED_RECIPES.size());
-		for(ResourceLocation location : getAllDataResourceLocations("loot_tables", name->name.endsWith(".json"))) {
+		for(ResourceLocation location : getAllDataResourceLocations("loot_tables", name->name.getPath().endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
 			path = path.substring(LOOT_TABLES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
 			DEFINED_LOOT_TABLES.add(new ResourceLocation(namespace, path));
 		}
 		LOGGER.info("Found {} unique defined loot tables", DEFINED_LOOT_TABLES.size());
-		for(ResourceLocation location : getAllDataResourceLocations("advancements", name->name.endsWith(".json"))) {
+		for(ResourceLocation location : getAllDataResourceLocations("advancements", name->name.getPath().endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
 			path = path.substring(ADVANCEMENTS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
@@ -185,11 +185,11 @@ public class DataCollector {
 	}
 
 
-	static Collection<ResourceLocation> getAllDataResourceLocations(String pathIn, Predicate<String> filter) {
+	static Collection<ResourceLocation> getAllDataResourceLocations(String pathIn, Predicate<ResourceLocation> filter) {
 		Set<ResourceLocation> set = new TreeSet<>();
 		for(PackResources resourcePack : RESOURCE_PACKS) {
 			for(String namespace : resourcePack.getNamespaces(PackType.SERVER_DATA)) {
-				set.addAll(resourcePack.getResources(PackType.SERVER_DATA, namespace, pathIn, Integer.MAX_VALUE, filter));
+				set.addAll(resourcePack.getResources(PackType.SERVER_DATA, namespace, pathIn, filter));
 			}
 		}
 		return set;

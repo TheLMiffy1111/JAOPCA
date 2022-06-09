@@ -2,7 +2,6 @@ package thelm.jaopca.client.colors;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Streams;
@@ -18,6 +17,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -191,9 +191,9 @@ public class ColorHandler {
 	public static List<BakedQuad> getBakedQuads(ItemStack stack) {
 		List<BakedQuad> quads = new ArrayList<>();
 		BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(stack, null, null, 0);
-		model.getQuads(null, null, new Random(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
+		model.getQuads(null, null, RandomSource.create(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
 		for(Direction facing : Direction.values()) {
-			model.getQuads(null, facing, new Random(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
+			model.getQuads(null, facing, RandomSource.create(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
 		}
 		return quads;
 	}

@@ -14,6 +14,7 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +22,8 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagBuilder;
+import net.minecraft.tags.TagFile;
 import net.minecraft.world.level.storage.loot.Deserializers;
 import net.minecraft.world.level.storage.loot.LootTable;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
@@ -148,24 +150,24 @@ public class DataInjector {
 			Pack packInfo = Pack.create("inmemory:jaopca", true, ()->{
 				InMemoryResourcePack pack = new InMemoryResourcePack("inmemory:jaopca", true);
 				BLOCK_TAGS_INJECT.asMap().forEach((location, locations)->{
-					Tag.Builder builder = Tag.Builder.tag();
-					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/blocks/"+location.getPath()+".json"), builder.serializeToJson());
+					TagBuilder builder = TagBuilder.create();
+					locations.forEach(l->builder.addOptionalElement(l));
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/blocks/"+location.getPath()+".json"), serializeTag(builder));
 				});
 				ITEM_TAGS_INJECT.asMap().forEach((location, locations)->{
-					Tag.Builder builder = Tag.Builder.tag();
-					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/items/"+location.getPath()+".json"), builder.serializeToJson());
+					TagBuilder builder = TagBuilder.create();
+					locations.forEach(l->builder.addOptionalElement(l));
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/items/"+location.getPath()+".json"), serializeTag(builder));
 				});
 				FLUID_TAGS_INJECT.asMap().forEach((location, locations)->{
-					Tag.Builder builder = Tag.Builder.tag();
-					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/fluids/"+location.getPath()+".json"), builder.serializeToJson());
+					TagBuilder builder = TagBuilder.create();
+					locations.forEach(l->builder.addOptionalElement(l));
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/fluids/"+location.getPath()+".json"), serializeTag(builder));
 				});
 				ENTITY_TYPE_TAGS_INJECT.asMap().forEach((location, locations)->{
-					Tag.Builder builder = Tag.Builder.tag();
-					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), builder.serializeToJson());
+					TagBuilder builder = TagBuilder.create();
+					locations.forEach(l->builder.addOptionalElement(l));
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), serializeTag(builder));
 				});
 				LOOT_TABLES_INJECT.forEach((location, supplier)->{
 					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "loot_tables/"+location.getPath()+".json"), GSON.toJsonTree(supplier.get()));
@@ -180,5 +182,9 @@ public class DataInjector {
 				packConsumer.accept(packInfo);
 			}
 		}
+	}
+
+	public static JsonElement serializeTag(TagBuilder tagBuilder) {
+		return TagFile.CODEC.encodeStart(JsonOps.INSTANCE, new TagFile(tagBuilder.build(), false)).getOrThrow(false, LOGGER::error);
 	}
 }

@@ -10,6 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.utils.ApiImpl;
@@ -21,9 +22,9 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 
 	public JAOPCAFluidAttributes(IMaterialFormFluid fluid, IFluidFormSettings settings) {
 		super(FluidAttributes.builder(
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
+				new ResourceLocation(ForgeRegistries.FLUIDS.getKey(fluid.asFluid()).getNamespace(),
 						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still"),
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
+				new ResourceLocation(ForgeRegistries.FLUIDS.getKey(fluid.asFluid()).getNamespace(),
 						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow")).
 				sound(settings.getFillSoundSupplier().get(), settings.getEmptySoundSupplier().get()).
 				luminosity(settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
@@ -48,11 +49,11 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ResourceLocation getStillTexture() {
-		if(Minecraft.getInstance().getResourceManager().hasResource(
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-						"textures/fluid/"+fluid.asFluid().getRegistryName().getPath()+"_still.png"))) {
-			return new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-					"fluid/"+fluid.asFluid().getRegistryName().getPath()+"_still");
+		ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.asFluid());
+		if(Minecraft.getInstance().getResourceManager().getResource(
+				new ResourceLocation(location.getNamespace(),
+						"textures/fluid/"+location.getPath()+"_still.png")).isPresent()) {
+			return new ResourceLocation(location.getNamespace(), "fluid/"+location.getPath()+"_still");
 		}
 		return super.getStillTexture();
 	}
@@ -60,11 +61,11 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ResourceLocation getFlowingTexture() {
-		if(Minecraft.getInstance().getResourceManager().hasResource(
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-						"textures/fluid/"+fluid.asFluid().getRegistryName().getPath()+"_flow.png"))) {
-			return new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-					"fluid/"+fluid.asFluid().getRegistryName().getPath()+"_flow");
+		ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.asFluid());
+		if(Minecraft.getInstance().getResourceManager().getResource(
+				new ResourceLocation(location.getNamespace(),
+						"textures/fluid/"+location.getPath()+"_flow.png")).isPresent()) {
+			return new ResourceLocation(location.getNamespace(), "fluid/"+location.getPath()+"_flow");
 		}
 		return super.getFlowingTexture();
 	}

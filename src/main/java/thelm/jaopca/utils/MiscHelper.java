@@ -13,6 +13,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -46,7 +47,6 @@ import net.minecraftforge.common.crafting.DifferenceIngredient;
 import net.minecraftforge.common.crafting.IntersectionIngredient;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryManager;
 import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -226,7 +226,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ItemStack getPreferredItemStack(Iterable<Item> iterable, int count) {
-		return new ItemStack(getPreferredEntry(iterable).orElse(Items.AIR), count);
+		return new ItemStack(getPreferredEntry(ForgeRegistries.ITEMS::getKey, iterable).orElse(Items.AIR), count);
 	}
 
 	@Override
@@ -268,21 +268,21 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public FluidStack getPreferredFluidStack(Iterable<Fluid> iterable, int amount) {
-		return new FluidStack(getPreferredEntry(iterable).orElse(Fluids.EMPTY), amount);
+		return new FluidStack(getPreferredEntry(ForgeRegistries.FLUIDS::getKey, iterable).orElse(Fluids.EMPTY), amount);
 	}
 
 	@Override
-	public <T extends IForgeRegistryEntry<T>> TagKey<T> getTagKey(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
+	public <T> TagKey<T> getTagKey(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
 		return RegistryManager.ACTIVE.getRegistry(registry).tags().createTagKey(location);
 	}
 
 	@Override
-	public <T extends IForgeRegistryEntry<T>> TagKey<T> getTagKey(ResourceLocation registry, ResourceLocation location) {
+	public <T> TagKey<T> getTagKey(ResourceLocation registry, ResourceLocation location) {
 		return RegistryManager.ACTIVE.<T>getRegistry(registry).tags().createTagKey(location);
 	}
 
 	@Override
-	public <T extends IForgeRegistryEntry<T>> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
+	public <T> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
 		if(tagManager == null) {
 			throw new IllegalStateException("Tag manager not initialized.");
 		}
@@ -295,7 +295,7 @@ public class MiscHelper implements IMiscHelper {
 			lastTagResults.forEach(result->{
 				SetMultimap<ResourceLocation, Object> map = tagMap.computeIfAbsent(result.key(), k->MultimapBuilder.treeKeys().linkedHashSetValues().build());
 				result.tags().forEach((loc, tag)->{
-					tag.getValues().forEach(holder->map.put(loc, holder.value()));
+					tag.forEach(holder->map.put(loc, holder.value()));
 				});
 			});
 		}
@@ -303,17 +303,17 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	@Override
-	public <T extends IForgeRegistryEntry<T>> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location) {
+	public <T> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location) {
 		return getTagValues(RegistryManager.ACTIVE.<T>getRegistry(registry).getRegistryKey(), location);
 	}
 
 	//Modified from Immersive Engineering
 	@Override
-	public <T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Iterable<T> iterable) {
+	public <T> Optional<T> getPreferredEntry(Function<T, ResourceLocation> keyGetter, Iterable<T> iterable) {
 		T preferredEntry = null;
 		int currBest = ConfigHandler.PREFERRED_MODS.size();
 		for(T entry : iterable) {
-			ResourceLocation rl = entry.getRegistryName();
+			ResourceLocation rl = keyGetter.apply(entry);
 			if(rl != null) {
 				String modId = rl.getNamespace();
 				int idx = ConfigHandler.PREFERRED_MODS.indexOf(modId);
@@ -351,7 +351,7 @@ public class MiscHelper implements IMiscHelper {
 	@Override
 	public JsonObject serializeItemStack(ItemStack stack) {
 		JsonObject json = new JsonObject();
-		json.addProperty("item", stack.getItem().getRegistryName().toString());
+		json.addProperty("item", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
 		if(stack.getCount() > 1) {
 			json.addProperty("count", stack.getCount());
 		}
@@ -364,7 +364,7 @@ public class MiscHelper implements IMiscHelper {
 	@Override
 	public JsonObject serializeFluidStack(FluidStack stack) {
 		JsonObject json = new JsonObject();
-		json.addProperty("fluid", stack.getFluid().getRegistryName().toString());
+		json.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(stack.getFluid()).toString());
 		json.addProperty("amount", stack.getAmount());
 		if(stack.hasTag()) {
 			json.addProperty("nbt", stack.getTag().toString());

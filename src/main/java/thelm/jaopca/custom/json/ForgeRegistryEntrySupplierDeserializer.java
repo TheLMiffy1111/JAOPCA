@@ -11,23 +11,22 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryManager;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.utils.JsonHelper;
 
-public class ForgeRegistryEntrySupplierDeserializer implements JsonDeserializer<Supplier<IForgeRegistryEntry<?>>> {
+public class ForgeRegistryEntrySupplierDeserializer implements JsonDeserializer<Supplier<?>> {
 
 	public static final ForgeRegistryEntrySupplierDeserializer INSTANCE = new ForgeRegistryEntrySupplierDeserializer();
 
 	private ForgeRegistryEntrySupplierDeserializer() {}
 
 	@Override
-	public Supplier<IForgeRegistryEntry<?>> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+	public Supplier<?> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		IJsonHelper helper = JsonHelper.INSTANCE;
 		Type[] typeArguments = ((ParameterizedType)typeOfT).getActualTypeArguments();
 		Type parameterizedType = typeArguments[0];
-		if(parameterizedType instanceof Class && IForgeRegistryEntry.class.isAssignableFrom((Class<?>)parameterizedType)) {
+		if(parameterizedType instanceof Class) {
 			if(jsonElement.isJsonObject()) {
 				JsonObject jsonObj = helper.getJsonObject(jsonElement, "value");
 				ResourceLocation typeLocation = new ResourceLocation(helper.getString(jsonObj, "type"));

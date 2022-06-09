@@ -2,6 +2,7 @@ package thelm.jaopca.api.helpers;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import com.google.gson.JsonObject;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public interface IMiscHelper {
 
@@ -45,15 +45,15 @@ public interface IMiscHelper {
 
 	FluidStack getPreferredFluidStack(Iterable<Fluid> iterable, int amount);
 
-	<T extends IForgeRegistryEntry<T>> TagKey<T> getTagKey(ResourceKey<? extends Registry<T>> registry, ResourceLocation location);
+	<T> TagKey<T> getTagKey(ResourceKey<? extends Registry<T>> registry, ResourceLocation location);
 
-	<T extends IForgeRegistryEntry<T>> TagKey<T> getTagKey(ResourceLocation registry, ResourceLocation location);
+	<T> TagKey<T> getTagKey(ResourceLocation registry, ResourceLocation location);
 
-	<T extends IForgeRegistryEntry<T>> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, ResourceLocation location);
+	<T> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, ResourceLocation location);
 
-	<T extends IForgeRegistryEntry<T>> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location);
+	<T> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location);
 
-	<T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Iterable<T> iterable);
+	<T> Optional<T> getPreferredEntry(Function<T, ResourceLocation> keyGetter, Iterable<T> iterable);
 
 	void caclulateMaterialSet(Collection<String> configList, Collection<String> actualSet);
 

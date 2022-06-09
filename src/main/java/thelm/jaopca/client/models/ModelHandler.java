@@ -18,6 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.JAOPCA;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
@@ -36,14 +37,14 @@ public class ModelHandler {
 		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		for(IMaterialFormBlock materialFormBlock : BlockFormType.getBlocks()) {
 			Block block = materialFormBlock.asBlock();
-			ResourceLocation location = block.getRegistryName();
+			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(block);
 			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || resourceManager.getResource(location).isPresent()) {
 				continue;
 			}
 			block.getStateDefinition().getPossibleStates().forEach((state)->{
 				String propertyMapString = BlockModelShaper.statePropertiesToString(state.getValues());
-				ModelResourceLocation modelLocation = new ModelResourceLocation(block.getRegistryName(), propertyMapString);
+				ModelResourceLocation modelLocation = new ModelResourceLocation(ForgeRegistries.BLOCKS.getKey(block), propertyMapString);
 				ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 						JAOPCA.MOD_ID+':'+materialFormBlock.getMaterial().getModelType()+'/'+materialFormBlock.getForm().getName(),
 						propertyMapString);
@@ -54,12 +55,12 @@ public class ModelHandler {
 		for(IMaterialFormBlockItem materialFormBlockItem : BlockFormType.getBlockItems()) {
 			BlockItem blockItem = materialFormBlockItem.asBlockItem();
 			//TODO Change if Forge supports using blockstates in item models
-			ResourceLocation location = blockItem.getRegistryName();
+			ResourceLocation location = ForgeRegistries.ITEMS.getKey(blockItem);
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || resourceManager.getResource(location).isPresent()) {
 				continue;
 			}
-			ModelResourceLocation modelLocation = new ModelResourceLocation(blockItem.getRegistryName(), "inventory");
+			ModelResourceLocation modelLocation = new ModelResourceLocation(ForgeRegistries.ITEMS.getKey(blockItem), "inventory");
 			ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 					JAOPCA.MOD_ID+':'+materialFormBlockItem.getMaterial().getModelType()+'/'+materialFormBlockItem.getForm().getName(),
 					"inventory");
@@ -68,12 +69,12 @@ public class ModelHandler {
 		}
 		for(IMaterialFormItem materialFormItem : ItemFormType.getItems()) {
 			Item item = materialFormItem.asItem();
-			ResourceLocation location = item.getRegistryName();
+			ResourceLocation location = ForgeRegistries.ITEMS.getKey(item);
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || resourceManager.getResource(location).isPresent()) {
 				continue;
 			}
-			ModelResourceLocation modelLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
+			ModelResourceLocation modelLocation = new ModelResourceLocation(ForgeRegistries.ITEMS.getKey(item), "inventory");
 			ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 					JAOPCA.MOD_ID+':'+materialFormItem.getMaterial().getModelType()+'/'+materialFormItem.getForm().getName(),
 					"inventory");
@@ -82,14 +83,14 @@ public class ModelHandler {
 		}
 		for(IMaterialFormFluidBlock materialFormFluidBlock : FluidFormType.getFluidBlocks()) {
 			Block fluidBlock = materialFormFluidBlock.asBlock();
-			ResourceLocation location = fluidBlock.getRegistryName();
+			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(fluidBlock);
 			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || resourceManager.getResource(location).isPresent()) {
 				continue;
 			}
 			fluidBlock.getStateDefinition().getPossibleStates().forEach((state)->{
 				String propertyMapString = BlockModelShaper.statePropertiesToString(state.getValues());
-				ModelResourceLocation modelLocation = new ModelResourceLocation(fluidBlock.getRegistryName(), propertyMapString);
+				ModelResourceLocation modelLocation = new ModelResourceLocation(ForgeRegistries.BLOCKS.getKey(fluidBlock), propertyMapString);
 				ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 						JAOPCA.MOD_ID+':'+materialFormFluidBlock.getMaterial().getModelType()+'/'+materialFormFluidBlock.getForm().getName(),
 						propertyMapString);
@@ -99,12 +100,12 @@ public class ModelHandler {
 		}
 		for(IMaterialFormBucketItem materialFormBucketItem : FluidFormType.getBucketItems()) {
 			Item bucketItem = materialFormBucketItem.asItem();
-			ResourceLocation location = bucketItem.getRegistryName();
+			ResourceLocation location = ForgeRegistries.ITEMS.getKey(bucketItem);
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || resourceManager.getResource(location).isPresent()) {
 				continue;
 			}
-			ModelResourceLocation modelLocation = new ModelResourceLocation(bucketItem.getRegistryName(), "inventory");
+			ModelResourceLocation modelLocation = new ModelResourceLocation(ForgeRegistries.ITEMS.getKey(bucketItem), "inventory");
 			ModelResourceLocation defaultModelLocation = new ModelResourceLocation(
 					JAOPCA.MOD_ID+':'+materialFormBucketItem.getMaterial().getModelType()+'/'+materialFormBucketItem.getForm().getName(),
 					"inventory");

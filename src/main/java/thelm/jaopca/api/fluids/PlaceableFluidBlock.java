@@ -3,13 +3,13 @@ package thelm.jaopca.api.fluids;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -59,7 +59,7 @@ public abstract class PlaceableFluidBlock extends Block implements BucketPickup 
 	}
 
 	@Override
-	public void randomTick(BlockState blockState, ServerLevel world, BlockPos pos, Random random) {
+	public void randomTick(BlockState blockState, ServerLevel world, BlockPos pos, RandomSource random) {
 		world.getFluidState(pos).randomTick(world, pos, random);
 	}
 
