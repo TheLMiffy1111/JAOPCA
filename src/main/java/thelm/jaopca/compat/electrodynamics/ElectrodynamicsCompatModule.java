@@ -66,40 +66,41 @@ public class ElectrodynamicsCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		ElectrodynamicsHelper helper = ElectrodynamicsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(type.isIngot() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				if(itemTags.contains(dustLocation)) {
 					helper.registerMineralGrinderRecipe(
-							new ResourceLocation("jaopca", "electrodynamics.material_to_dust."+material.getName()),
+							new ResourceLocation("jaopca", "electrodynamics.material_to_dust."+name),
 							materialLocation, 1, dustLocation, 1, 0.1);
 				}
 			}
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				if(itemTags.contains(plateLocation)) {
 					helper.registerMineralCrusherRecipe(
-							new ResourceLocation("jaopca", "electrodynamics.material_to_plate."+material.getName()),
+							new ResourceLocation("jaopca", "electrodynamics.material_to_plate."+name),
 							materialLocation, 1, plateLocation, 1, 0.1);
 				}
 			}
 			if(type.isIngot() && !TO_ROD_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", material.getName());
-				ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-				if(api.getItemTags().contains(rodLocation)) {
-					if(api.getItemTags().contains(nuggetLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", name);
+				ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", name);
+				if(itemTags.contains(rodLocation)) {
+					if(itemTags.contains(nuggetLocation)) {
 						helper.registerLatheRecipe(
-								new ResourceLocation("jaopca", "electrodynamics.material_to_rod."+material.getName()),
+								new ResourceLocation("jaopca", "electrodynamics.material_to_rod."+name),
 								materialLocation, 2, rodLocation, 1, nuggetLocation, 2, 1, 0.1);
 					}
 					else {
 						helper.registerLatheRecipe(
-								new ResourceLocation("jaopca", "electrodynamics.material_to_rod."+material.getName()),
+								new ResourceLocation("jaopca", "electrodynamics.material_to_rod."+name),
 								materialLocation, 2, rodLocation, 1, 0.1);
 					}
 				}

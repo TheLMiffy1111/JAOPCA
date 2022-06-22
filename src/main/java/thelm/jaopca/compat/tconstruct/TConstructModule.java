@@ -93,6 +93,7 @@ public class TConstructModule implements IModule {
 		TConstructHelper helper = TConstructHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IFluidFormType fluidFormType = FluidFormType.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		IForm moltenForm = api.getForm("molten");
 		Set<IMaterial> moltenMaterials = moltenForm.getMaterials();
 		ResourceLocation metalTooltipLocation = new ResourceLocation("tconstruct:tooltips/metal");
@@ -169,7 +170,7 @@ public class TConstructModule implements IModule {
 								moltenLocation, baseAmount,
 								0, tempFunction, getMeltTimeFunction(1.5F));
 					}
-					if(api.getItemTags().contains(rawStorageBlockLocation)) {
+					if(itemTags.contains(rawStorageBlockLocation)) {
 						if(material.hasExtra(1)) {
 							helper.registerOreMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.raw_storage_block_to_molten."+material.getName()),

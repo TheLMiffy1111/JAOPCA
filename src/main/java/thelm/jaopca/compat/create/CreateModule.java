@@ -14,6 +14,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.JAOPCAApi;
@@ -40,7 +41,9 @@ public class CreateModule implements IModule {
 			"copper", "gold", "iron", "zinc"));
 
 	static {
-
+		//if(ModList.get().isLoaded("allthemodium")) {
+		//	Collections.addAll(BLACKLIST, "allthemodium", "unobtainium", "vibranium");
+		//}
 	}
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
@@ -86,6 +89,7 @@ public class CreateModule implements IModule {
 		CreateHelper helper = CreateHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		ResourceLocation deepslateOreLocation = new ResourceLocation("forge:ores_in_ground/deepslate");
 		ResourceLocation netherrackOreLocation = new ResourceLocation("forge:ores_in_ground/netherrack");
 		ResourceLocation endstoneOreLocation = new ResourceLocation("forge:ores_in_ground/end_stone");
@@ -133,7 +137,7 @@ public class CreateModule implements IModule {
 							xpNugget, 1, 0.75F,
 							netherrack, 1, 0.125F,
 					});
-			if(api.getItemTags().contains(endstoneOreLocation)) {
+			if(itemTags.contains(endstoneOreLocation)) {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "create.end_stone_ore_to_crushed."+material.getName()),
 						CompoundIngredientObject.intersection(new Object[] {
@@ -154,7 +158,7 @@ public class CreateModule implements IModule {
 								crushedOreInfo, 1,
 								xpNugget, 1, 0.75F,
 						});
-				if(api.getItemTags().contains(rawStorageBlockLocation)) {
+				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerCrushingRecipe(
 							new ResourceLocation("jaopca", "create.raw_storage_block_to_crushed."+material.getName()),
 							rawStorageBlockLocation, 400, new Object[] {

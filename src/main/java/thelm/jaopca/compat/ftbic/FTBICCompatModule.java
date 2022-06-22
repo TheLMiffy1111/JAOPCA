@@ -64,18 +64,19 @@ public class FTBICCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		FTBICHelper helper = FTBICHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		Set<String> generalBlacklist = helper.getBlacklist();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			boolean addToMaterials = false;
 			if(!type.isDust() && !generalBlacklist.contains(name) && !configToDustBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				if(itemTags.contains(dustLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerMaceratingRecipe(
-								new ResourceLocation("jaopca", "ftbic.material_to_dust."+material.getName()),
+								new ResourceLocation("jaopca", "ftbic.material_to_dust."+name),
 								materialLocation, 1, new Object[] {
 										dustLocation, 1, 1D,
 								}, 1D);
@@ -86,12 +87,12 @@ public class FTBICCompatModule implements IModule {
 				}
 			}
 			if(!type.isDust() && !generalBlacklist.contains(name) && !configToPlateBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				if(itemTags.contains(plateLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerRollingRecipe(
-								new ResourceLocation("jaopca", "ftbic.material_to_plate."+material.getName()),
+								new ResourceLocation("jaopca", "ftbic.material_to_plate."+name),
 								materialLocation, 1, plateLocation, 2, 1D);
 					}
 					else {
@@ -100,12 +101,12 @@ public class FTBICCompatModule implements IModule {
 				}
 			}
 			if(type.isIngot() && !generalBlacklist.contains(name) && !configToGearBlacklist.contains(name)) {
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
-				if(api.getItemTags().contains(plateLocation) && api.getItemTags().contains(gearLocation)) {
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", name);
+				if(itemTags.contains(plateLocation) && itemTags.contains(gearLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerRollingRecipe(
-								new ResourceLocation("jaopca", "ftbic.plate_to_gear."+material.getName()),
+								new ResourceLocation("jaopca", "ftbic.plate_to_gear."+name),
 								plateLocation, 4, gearLocation, 1, 1D);
 					}
 					else {
@@ -114,12 +115,12 @@ public class FTBICCompatModule implements IModule {
 				}
 			}
 			if(type.isCrystalline() && !generalBlacklist.contains(name) && !configToGearBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
-				if(api.getItemTags().contains(gearLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", name);
+				if(itemTags.contains(gearLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerRollingRecipe(
-								new ResourceLocation("jaopca", "ftbic.material_to_gear."+material.getName()),
+								new ResourceLocation("jaopca", "ftbic.material_to_gear."+name),
 								materialLocation, 2, gearLocation, 1, 1D);
 					}
 					else {
@@ -128,12 +129,12 @@ public class FTBICCompatModule implements IModule {
 				}
 			}
 			if(!type.isDust() && !generalBlacklist.contains(name) && !configToRodBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", material.getName());
-				if(api.getItemTags().contains(rodLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", name);
+				if(itemTags.contains(rodLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerExtrudingRecipe(
-								new ResourceLocation("jaopca", "ftbic.material_to_rod."+material.getName()),
+								new ResourceLocation("jaopca", "ftbic.material_to_rod."+name),
 								materialLocation, 1, rodLocation, 2, 1D);
 					}
 					else {

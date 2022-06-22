@@ -83,7 +83,8 @@ public class ThermalExpansionNonIngotModule implements IModule {
 				}
 				if(!SMELTER_BLACKLIST.contains(material.getName())) {
 					helper.registerSmelterRecipe(
-							new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()), new Object[] {
+							new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()),
+							new Object[] {
 									oreLocation,
 							}, new Object[] {
 									materialLocation, smelterChance,
@@ -100,7 +101,8 @@ public class ThermalExpansionNonIngotModule implements IModule {
 								Blocks.GRAVEL, 0.2F,
 						}, 4000, 0.2F);
 				helper.registerSmelterRecipe(
-						new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()), new Object[] {
+						new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()),
+						new Object[] {
 								oreLocation,
 						}, new Object[] {
 								materialLocation, smelterChance,

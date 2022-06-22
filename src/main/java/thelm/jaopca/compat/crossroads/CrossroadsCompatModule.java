@@ -72,50 +72,52 @@ public class CrossroadsCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		CrossroadsHelper helper = CrossroadsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
+		Set<ResourceLocation> fluidTags = api.getFluidTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			boolean isIngot = type.isIngot();
 			if(!type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				if(itemTags.contains(dustLocation)) {
 					helper.registerMillRecipe(
-							new ResourceLocation("jaopca", "crossroads.material_to_dust."+material.getName()),
+							new ResourceLocation("jaopca", "crossroads.material_to_dust."+name),
 							materialLocation, dustLocation, 1);
 				}
 			}
 			if(!type.isDust()) {
-				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
+				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", name, "_");
 				int baseAmount = material.getType().isIngot() ? 90 : 100;
-				if(api.getFluidTags().contains(moltenLocation)) {
+				if(fluidTags.contains(moltenLocation)) {
 					if(!MOLTEN_BLACKLIST.contains(name) && !configMaterialToMoltenBlacklist.contains(name)) {
-						ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+						ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 						helper.registerCrucibleRecipe(
-								new ResourceLocation("jaopca", "crossroads.material_to_molten."+material.getName()),
+								new ResourceLocation("jaopca", "crossroads.material_to_molten."+name),
 								materialLocation, moltenLocation, baseAmount);
 					}
 				}
 				if(!type.isDust() && !MOLTEN_BLACKLIST.contains(name) && !configDustToMoltenBlacklist.contains(name)) {
-					ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-					if(api.getItemTags().contains(dustLocation)) {
+					ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+					if(itemTags.contains(dustLocation)) {
 						helper.registerCrucibleRecipe(
-								new ResourceLocation("jaopca", "crossroads.dust_to_molten."+material.getName()),
+								new ResourceLocation("jaopca", "crossroads.dust_to_molten."+name),
 								dustLocation, moltenLocation, baseAmount);
 					}
 				}
 				if(!MOLTEN_BLACKLIST.contains(name) && !configNuggetToMoltenBlacklist.contains(name)) {
-					ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-					if(api.getItemTags().contains(nuggetLocation)) {
+					ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", name);
+					if(itemTags.contains(nuggetLocation)) {
 						helper.registerCrucibleRecipe(
-								new ResourceLocation("jaopca", "crossroads.nugget_to_molten."+material.getName()),
+								new ResourceLocation("jaopca", "crossroads.nugget_to_molten."+name),
 								nuggetLocation, moltenLocation, (int)Math.floor(baseAmount/9F));
 					}
 				}
 				if(!MOLTEN_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
-					ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+					ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 					helper.registerFluidCoolingRecipe(
-							new ResourceLocation("jaopca", "crossroads.molten_to_material."+material.getName()),
+							new ResourceLocation("jaopca", "crossroads.molten_to_material."+name),
 							moltenLocation, baseAmount, materialLocation, 1, 1500, 100);
 				}
 			}

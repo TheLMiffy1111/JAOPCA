@@ -51,15 +51,16 @@ public class VoluminousEnergyCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		VoluminousEnergyHelper helper = VoluminousEnergyHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				if(itemTags.contains(plateLocation)) {
 					helper.registerCompressingRecipe(
-							new ResourceLocation("jaopca", "voluminousenergy.material_to_plate."+material.getName()),
+							new ResourceLocation("jaopca", "voluminousenergy.material_to_plate."+name),
 							materialLocation, 1, plateLocation, 1, 200);
 				}
 			}

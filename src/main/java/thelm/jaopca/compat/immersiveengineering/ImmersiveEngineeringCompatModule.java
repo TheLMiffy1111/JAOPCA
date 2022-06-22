@@ -90,6 +90,7 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		ImmersiveEngineeringHelper helper = ImmersiveEngineeringHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		Item gearMold = ForgeRegistries.ITEMS.getValue(new ResourceLocation("immersiveengineering:mold_gear"));
 		Item plateMold = ForgeRegistries.ITEMS.getValue(new ResourceLocation("immersiveengineering:mold_plate"));
 		Item rodMold = ForgeRegistries.ITEMS.getValue(new ResourceLocation("immersiveengineering:mold_rod"));
@@ -100,22 +101,22 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(!type.isDust() && !GENERAL_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				if(itemTags.contains(dustLocation)) {
 					helper.registerCrusherRecipe(
-							new ResourceLocation("jaopca", "immersiveengineering.material_to_dust."+material.getName()),
+							new ResourceLocation("jaopca", "immersiveengineering.material_to_dust."+name),
 							materialLocation, new Object[] {
 									dustLocation, 1,
 							}, 3000);
 				}
 			}
 			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToIngotBlacklist.contains(name)) {
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				if(itemTags.contains(dustLocation)) {
 					helper.registerArcFurnaceRecipe(
-							new ResourceLocation("jaopca", "immersiveengineering.dust_to_material."+material.getName()),
+							new ResourceLocation("jaopca", "immersiveengineering.dust_to_material."+name),
 							new Object[] {
 									dustLocation, 1,
 							}, new Object[] {
@@ -124,58 +125,58 @@ public class ImmersiveEngineeringCompatModule implements IModule {
 				}
 			}
 			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToGearBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
-				if(api.getItemTags().contains(gearLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", name);
+				if(itemTags.contains(gearLocation)) {
 					helper.registerMetalPressRecipe(
-							new ResourceLocation("jaopca", "immersiveengineering.material_to_gear."+material.getName()),
+							new ResourceLocation("jaopca", "immersiveengineering.material_to_gear."+name),
 							materialLocation, 4, gearMold, gearLocation, 1, 2400);
 				}
 			}
 			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				if(itemTags.contains(plateLocation)) {
 					helper.registerMetalPressRecipe(
-							new ResourceLocation("jaopca", "immersiveengineering.material_to_plate_press."+material.getName()),
+							new ResourceLocation("jaopca", "immersiveengineering.material_to_plate_press."+name),
 							materialLocation, 1, plateMold, plateLocation, 1, 2400);
 				}
 			}
 			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", material.getName());
-				if(api.getItemTags().contains(rodLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", name);
+				if(itemTags.contains(rodLocation)) {
 					helper.registerMetalPressRecipe(
-							new ResourceLocation("jaopca", "immersiveengineering.material_to_rod."+material.getName()),
+							new ResourceLocation("jaopca", "immersiveengineering.material_to_rod."+name),
 							materialLocation, 1, rodMold, rodLocation, 2, 2400);
 				}
 			}
 			if(type.isIngot() && !GENERAL_BLACKLIST.contains(name) && !configToWireBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation wireLocation = miscHelper.getTagLocation("wires", material.getName());
-				if(api.getItemTags().contains(wireLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation wireLocation = miscHelper.getTagLocation("wires", name);
+				if(itemTags.contains(wireLocation)) {
 					helper.registerMetalPressRecipe(
-							new ResourceLocation("jaopca", "immersiveengineering.material_to_wire."+material.getName()),
+							new ResourceLocation("jaopca", "immersiveengineering.material_to_wire."+name),
 							materialLocation, 1, wireMold, wireLocation, 2, 2400);
 				}
 			}
 			if(type.isIngot() && !HAMMER_TO_PLATE_BLACKLIST.contains(name) && !configHammerToPlateBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				if(itemTags.contains(plateLocation)) {
 					api.registerShapelessRecipe(
-							new ResourceLocation("jaopca", "immersiveengineering.material_to_plate_hammer."+material.getName()),
+							new ResourceLocation("jaopca", "immersiveengineering.material_to_plate_hammer."+name),
 							plateLocation, 1, new Object[] {
 									materialLocation, hammer,
 							});
 				}
 			}
 			if(type.isIngot() && !WIRECUTTER_TO_WIRE_BLACKLIST.contains(name) && !configWirecutterToWireBlacklist.contains(name)) {
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				ResourceLocation wireLocation = miscHelper.getTagLocation("wires", material.getName());
-				if(api.getItemTags().contains(plateLocation) && api.getItemTags().contains(wireLocation)) {
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				ResourceLocation wireLocation = miscHelper.getTagLocation("wires", name);
+				if(itemTags.contains(plateLocation) && itemTags.contains(wireLocation)) {
 					api.registerShapelessRecipe(
-							new ResourceLocation("jaopca", "immersiveengineering.plate_to_wire."+material.getName()),
+							new ResourceLocation("jaopca", "immersiveengineering.plate_to_wire."+name),
 							wireLocation, 1, new Object[] {
 									plateLocation, wirecutter,
 							});

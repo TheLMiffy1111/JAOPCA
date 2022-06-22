@@ -40,6 +40,14 @@ public class ThermalExpansionModule implements IModule {
 		if(ModList.get().isLoaded("alltheores")) {
 			Collections.addAll(PULVERIZER_BLACKLIST, "platinum", "zinc");
 		}
+		if(ModList.get().isLoaded("thermal_integration")) {
+			if(ModList.get().isLoaded("create")) {
+				Collections.addAll(BLACKLIST, "zinc");
+			}
+			if(ModList.get().isLoaded("tconstruct")) {
+				Collections.addAll(BLACKLIST, "cobalt");
+			}
+		}
 	}
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
@@ -100,7 +108,8 @@ public class ThermalExpansionModule implements IModule {
 				}
 				if(!SMELTER_BLACKLIST.contains(material.getName())) {
 					helper.registerSmelterRecipe(
-							new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()), new Object[] {
+							new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()),
+							new Object[] {
 									oreLocation,
 							}, new Object[] {
 									materialLocation, 1F,
@@ -108,7 +117,8 @@ public class ThermalExpansionModule implements IModule {
 									richSlag, 0.2F,
 							}, 3200, 0.2F);
 					helper.registerSmelterRecipe(
-							new ResourceLocation("jaopca", "thermal_expansion.raw_material_to_material."+material.getName()), new Object[] {
+							new ResourceLocation("jaopca", "thermal_expansion.raw_material_to_material."+material.getName()),
+							new Object[] {
 									rawMaterialLocation,
 							}, new Object[] {
 									materialLocation, 1F,
@@ -132,14 +142,16 @@ public class ThermalExpansionModule implements IModule {
 				}
 				if(!SMELTER_BLACKLIST.contains(material.getName())) {
 					helper.registerSmelterRecipe(
-							new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()), new Object[] {
+							new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()),
+							new Object[] {
 									oreLocation,
 							}, new Object[] {
 									materialLocation, 1F,
 									richSlag, 0.2F,
 							}, 3200, 0.2F);
 					helper.registerSmelterRecipe(
-							new ResourceLocation("jaopca", "thermal_expansion.raw_material_to_material."+material.getName()), new Object[] {
+							new ResourceLocation("jaopca", "thermal_expansion.raw_material_to_material."+material.getName()),
+							new Object[] {
 									rawMaterialLocation,
 							}, new Object[] {
 									materialLocation, 1F,

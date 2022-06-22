@@ -64,6 +64,7 @@ public class FuturepackDataInjector {
 								return;
 							}
 							recipesToInject.add(recipe);
+							LOGGER.debug("Injected recipe with ID {}", key);
 						});
 						recipeArray.addAll(recipesToInject);
 						LOGGER.info("Injected {} recipes of type {}, {} recipes total", recipesToInject.size(), type, recipeArray.size());

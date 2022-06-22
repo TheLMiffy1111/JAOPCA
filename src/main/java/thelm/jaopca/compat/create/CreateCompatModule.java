@@ -50,15 +50,16 @@ public class CreateCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		CreateHelper helper = CreateHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				if(itemTags.contains(plateLocation)) {
 					helper.registerPressingRecipe(
-							new ResourceLocation("jaopca", "create.material_to_plate."+material.getName()),
+							new ResourceLocation("jaopca", "create.material_to_plate."+name),
 							materialLocation, plateLocation, 1);
 				}
 			}

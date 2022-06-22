@@ -1,5 +1,6 @@
 package thelm.jaopca.utils;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -179,42 +180,42 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public Set<ResourceLocation> getBlockTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("blocks"), DataInjector.getInjectBlockTags()));
+		return Sets.union(DataCollector.getDefinedTags("blocks"), DataInjector.getInjectBlockTags());
 	}
 
 	@Override
 	public Set<ResourceLocation> getItemTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("items"), DataInjector.getInjectItemTags()));
+		return Sets.union(DataCollector.getDefinedTags("items"), DataInjector.getInjectItemTags());
 	}
 
 	@Override
 	public Set<ResourceLocation> getFluidTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("fluids"), DataInjector.getInjectFluidTags()));
+		return Sets.union(DataCollector.getDefinedTags("fluids"), DataInjector.getInjectFluidTags());
 	}
 
 	@Override
 	public Set<ResourceLocation> getEntityTypeTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("entity_types"), DataInjector.getInjectEntityTypeTags()));
+		return Sets.union(DataCollector.getDefinedTags("entity_types"), DataInjector.getInjectEntityTypeTags());
 	}
 
 	@Override
 	public Set<ResourceLocation> getTags(String type) {
-		return ImmutableSortedSet.copyOf(DataCollector.getDefinedTags(type));
+		return Collections.unmodifiableSet(DataCollector.getDefinedTags(type));
 	}
 
 	@Override
 	public Set<ResourceLocation> getRecipes() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedRecipes(), DataInjector.getInjectRecipes()));
+		return Sets.union(DataCollector.getDefinedRecipes(), DataInjector.getInjectRecipes());
 	}
 
 	@Override
 	public Set<ResourceLocation> getLootTables() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedLootTables(), DataInjector.getInjectLootTables()));
+		return Sets.union(DataCollector.getDefinedLootTables(), DataInjector.getInjectLootTables());
 	}
 
 	@Override
 	public Set<ResourceLocation> getAdvancements() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectAdvancements()));
+		return Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectAdvancements());
 	}
 
 	@Override

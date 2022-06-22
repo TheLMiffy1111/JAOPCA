@@ -40,6 +40,14 @@ public class ThermalExpansionLegacyModule implements IModule {
 		if(ModList.get().isLoaded("alltheores")) {
 			Collections.addAll(PULVERIZER_BLACKLIST, "platinum", "zinc");
 		}
+		if(ModList.get().isLoaded("thermal_integration")) {
+			if(ModList.get().isLoaded("create")) {
+				Collections.addAll(BLACKLIST, "zinc");
+			}
+			if(ModList.get().isLoaded("tconstruct")) {
+				Collections.addAll(BLACKLIST, "cobalt");
+			}
+		}
 	}
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;

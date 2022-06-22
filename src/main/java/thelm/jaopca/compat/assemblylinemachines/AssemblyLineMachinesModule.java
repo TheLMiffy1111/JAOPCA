@@ -54,6 +54,7 @@ public class AssemblyLineMachinesModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		AssemblyLineMachinesHelper helper = AssemblyLineMachinesHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
@@ -70,7 +71,7 @@ public class AssemblyLineMachinesModule implements IModule {
 				helper.registerGrinderRecipe(
 						new ResourceLocation("jaopca", "assemblylinemachines.raw_material_to_dust."+material.getName()),
 						rawMaterialLocation, dustLocation, 1, 5, 2, false, 0.5F);
-				if(api.getItemTags().contains(rawStorageBlockLocation)) {
+				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerGrinderRecipe(
 							new ResourceLocation("jaopca", "assemblylinemachines.raw_storage_block_to_dust."+material.getName()),
 							rawStorageBlockLocation, dustLocation, 9, 5, 2, false, 0.25F);

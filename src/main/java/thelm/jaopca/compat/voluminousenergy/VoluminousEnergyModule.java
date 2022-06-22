@@ -53,6 +53,7 @@ public class VoluminousEnergyModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		VoluminousEnergyHelper helper = VoluminousEnergyHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
@@ -61,7 +62,7 @@ public class VoluminousEnergyModule implements IModule {
 					oreLocation, 1, dustLocation, 2, 200);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
-				if(api.getItemTags().contains(rawStorageBlockLocation)) {
+				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerCrushingRecipe(
 							new ResourceLocation("jaopca", "voluminousenergy.raw_storage_block_to_dust."+material.getName()),
 							rawStorageBlockLocation, 1, dustLocation, 18, 200);

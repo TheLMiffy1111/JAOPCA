@@ -1,7 +1,6 @@
 package thelm.jaopca.events;
 
 import java.util.Map;
-import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,7 +9,6 @@ import com.google.gson.JsonElement;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.tags.TagManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
@@ -86,11 +84,9 @@ public class CommonEventHandler {
 	}
 
 	public void onAddReloadListener(AddReloadListenerEvent event) {
-		Optional<PreparableReloadListener> tagManager = event.getServerResources().listeners().stream().filter(l -> l instanceof TagManager).findFirst();
-		if (tagManager.isEmpty()) {
-			throw new IllegalStateException("Tag manager not found.");
-		}
-		MiscHelper.INSTANCE.setTagManager((TagManager)tagManager.get());
+		MiscHelper.INSTANCE.setTagManager(event.getServerResources().listeners().stream().
+				filter(l->l instanceof TagManager).findFirst().map(l->(TagManager)l).
+				orElseThrow(()->new IllegalStateException("Tag manager not found.")));
 	}
 
 	public void onReadRecipes(Map<ResourceLocation, JsonElement> recipeMap) {

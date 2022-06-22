@@ -134,6 +134,7 @@ public class DataInjector {
 				return;
 			}
 			recipesToInject.put(key, recipe);
+			LOGGER.debug("Injected recipe with ID {}", key);
 		});
 		recipesToInject.forEach(recipeMap::putIfAbsent);
 		LOGGER.info("Injected {} recipes, {} recipes total", recipesToInject.size(), recipeMap.size());

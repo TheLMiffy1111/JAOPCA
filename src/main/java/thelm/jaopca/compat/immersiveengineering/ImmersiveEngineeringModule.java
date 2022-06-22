@@ -57,6 +57,7 @@ public class ImmersiveEngineeringModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		ImmersiveEngineeringHelper helper = ImmersiveEngineeringHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		Item hammer = ForgeRegistries.ITEMS.getValue(new ResourceLocation("immersiveengineering:hammer"));
 		ResourceLocation slagLocation = new ResourceLocation("forge:slag");
 		for(IMaterial material : moduleData.getMaterials()) {
@@ -116,7 +117,7 @@ public class ImmersiveEngineeringModule implements IModule {
 								materialLocation, 1,
 								materialLocation, 1, 0.5F,
 						}, 100, 25600);
-				if(api.getItemTags().contains(rawStorageBlockLocation)) {
+				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerCrusherRecipe(
 							new ResourceLocation("jaopca", "immersiveengineering.raw_storage_block_to_dust."+material.getName()),
 							rawStorageBlockLocation, new Object[] {

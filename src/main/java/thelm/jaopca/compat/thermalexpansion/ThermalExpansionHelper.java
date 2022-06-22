@@ -17,6 +17,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.helpers.IMiscHelper;
+import thelm.jaopca.compat.thermalexpansion.recipes.CentrifugeRecipeSerializer;
 import thelm.jaopca.compat.thermalexpansion.recipes.ChillerRecipeSerializer;
 import thelm.jaopca.compat.thermalexpansion.recipes.PressRecipeSerializer;
 import thelm.jaopca.compat.thermalexpansion.recipes.PulverizerRecipeSerializer;
@@ -128,5 +129,13 @@ public class ThermalExpansionHelper {
 
 	public boolean registerChillerRecipe(ResourceLocation key, Object fluidInput, int fluidInputAmount, Object itemInput, int itemInputCount, Object output, int outputCount, int energy, float experience) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new ChillerRecipeSerializer(key, fluidInput, fluidInputAmount, itemInput, itemInputCount, output, outputCount, energy, experience));
+	}
+
+	public boolean registerCentrifugeRecipe(ResourceLocation key, Object input, int inputCount, Object[] output, Object fluidOutput, int fluidOutputAmount, int energy, float experience) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CentrifugeRecipeSerializer(key, input, inputCount, output, fluidOutput, fluidOutputAmount, energy, experience));
+	}
+
+	public boolean registerCentrifugeRecipe(ResourceLocation key, Object input, int inputCount, Object[] output, int energy, float experience) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CentrifugeRecipeSerializer(key, input, inputCount, output, energy, experience));
 	}
 }

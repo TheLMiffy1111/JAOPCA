@@ -79,6 +79,7 @@ public class CreateNonIngotModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		CreateHelper helper = CreateHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		ResourceLocation deepslateOreLocation = new ResourceLocation("forge:ores_in_ground/deepslate");
 		ResourceLocation netherrackOreLocation = new ResourceLocation("forge:ores_in_ground/netherrack");
 		ResourceLocation endstoneOreLocation = new ResourceLocation("forge:ores_in_ground/end_stone");
@@ -128,7 +129,7 @@ public class CreateNonIngotModule implements IModule {
 							xpNugget, 1, 0.75F,
 							netherrack, 1, 0.125F,
 					});
-			if(api.getItemTags().contains(endstoneOreLocation)) {
+			if(itemTags.contains(endstoneOreLocation)) {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "create.end_stone_ore_to_material."+material.getName()),
 						CompoundIngredientObject.intersection(new Object[] {

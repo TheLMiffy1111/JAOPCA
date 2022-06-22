@@ -64,34 +64,35 @@ public class AssemblyLineMachinesCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		AssemblyLineMachinesHelper helper = AssemblyLineMachinesHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(!type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				if(itemTags.contains(dustLocation)) {
 					helper.registerGrinderRecipe(
-							new ResourceLocation("jaopca", "assemblylinemachines.material_to_dust."+material.getName()),
+							new ResourceLocation("jaopca", "assemblylinemachines.material_to_dust."+name),
 							materialLocation, dustLocation, 1, 5, 2, false, 0);
 				}
 			}
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				if(itemTags.contains(plateLocation)) {
 					helper.registerMetalRecipe(
-							new ResourceLocation("jaopca", "assemblylinemachines.material_to_plate_metal."+material.getName()),
+							new ResourceLocation("jaopca", "assemblylinemachines.material_to_plate_metal."+name),
 							materialLocation, plateLocation, 1, 6);
 				}
 			}
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configHammerToPlateBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
 				ResourceLocation hammerLocation = new ResourceLocation("assemblylinemachines:crafting/hammers");
-				if(api.getItemTags().contains(plateLocation)) {
+				if(itemTags.contains(plateLocation)) {
 					api.registerShapelessRecipe(
-							new ResourceLocation("jaopca", "assemblylinemachines.material_to_plate_hammer."+material.getName()),
+							new ResourceLocation("jaopca", "assemblylinemachines.material_to_plate_hammer."+name),
 							plateLocation, 1, new Object[] {
 									materialLocation, hammerLocation,
 							});

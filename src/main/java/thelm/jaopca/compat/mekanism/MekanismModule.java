@@ -60,10 +60,10 @@ public class MekanismModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:shards").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm crystalForm = ApiImpl.INSTANCE.newForm(this, "mekanism_crystals", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:crystals").setDefaultMaterialBlacklist(BLACKLIST);
-	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty", SlurryFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:dirty").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm cleanSlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_clean", SlurryFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:clean").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty", SlurryFormType.INSTANCE).
+			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:dirty").setDefaultMaterialBlacklist(BLACKLIST);
 
 	@Override
 	public String getName() {
@@ -85,7 +85,7 @@ public class MekanismModule implements IModule {
 	@Override
 	public List<IFormRequest> getFormRequests() {
 		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this,
-				dirtyDustForm, clumpForm, shardForm, crystalForm, cleanSlurryForm, dirtySlurryForm));
+				dirtyDustForm, clumpForm, shardForm, crystalForm, dirtySlurryForm, cleanSlurryForm));
 	}
 
 	@Override
@@ -109,6 +109,7 @@ public class MekanismModule implements IModule {
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		ResourceLocation waterLocation = new ResourceLocation("minecraft:water");
 		for(IMaterial material : dirtySlurryForm.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
@@ -131,7 +132,7 @@ public class MekanismModule implements IModule {
 					waterLocation, 5, dirtySlurryLocation, 1, cleanSlurryInfo, 1);
 			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());
 			ResourceLocation crystalLocation = miscHelper.getTagLocation("mekanism:crystals", material.getName());
-			if(!crystalForm.getMaterials().contains(material) && api.getItemTags().contains(crystalLocation)) {
+			if(!crystalForm.getMaterials().contains(material) && itemTags.contains(crystalLocation)) {
 				helper.registerCrystallizingRecipe(
 						new ResourceLocation("jaopca", "mekanism.clean_slurry_to_crystal."+material.getName()),
 						cleanSlurryLocation, 200, crystalLocation, 1);

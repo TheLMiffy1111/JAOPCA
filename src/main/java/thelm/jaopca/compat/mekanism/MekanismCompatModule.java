@@ -94,6 +94,7 @@ public class MekanismCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		ResourceLocation deepslateOreLocation = new ResourceLocation("forge:ores_in_ground/deepslate");
 		ResourceLocation netherrackOreLocation = new ResourceLocation("forge:ores_in_ground/netherrack");
 		ResourceLocation endstoneOreLocation = new ResourceLocation("forge:ores_in_ground/end_stone");
@@ -104,27 +105,27 @@ public class MekanismCompatModule implements IModule {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				if(itemTags.contains(dustLocation)) {
 					helper.registerCrushingRecipe(
-							new ResourceLocation("jaopca", "mekanism.material_to_dust."+material.getName()),
+							new ResourceLocation("jaopca", "mekanism.material_to_dust."+name),
 							materialLocation, 1, dustLocation, 1);
 				}
 			}
-			if(type.isCrystalline() && !TO_CRYSTAL_BLACKLIST.contains(material.getName()) && !configToCrystalBlacklist.contains(name)) {
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+			if(type.isCrystalline() && !TO_CRYSTAL_BLACKLIST.contains(name) && !configToCrystalBlacklist.contains(name)) {
+				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				if(itemTags.contains(dustLocation)) {
 					helper.registerEnrichingRecipe(
-							new ResourceLocation("jaopca", "mekanism.dust_to_material."+material.getName()),
+							new ResourceLocation("jaopca", "mekanism.dust_to_material."+name),
 							dustLocation, 1, materialLocation, 1);
 				}
 			}
-			if(type.isOre() && !TO_ORE_BLACKLIST.contains(material.getName()) && !configToOreBlacklist.contains(name)) {
-				ResourceLocation ingLocation = miscHelper.getTagLocation(type == MaterialType.INGOT ? "raw_materials" : "dusts", material.getName());
-				ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-				if(api.getItemTags().contains(ingLocation)) {
+			if(type.isOre() && !TO_ORE_BLACKLIST.contains(name) && !configToOreBlacklist.contains(name)) {
+				ResourceLocation ingLocation = miscHelper.getTagLocation(type == MaterialType.INGOT ? "raw_materials" : "dusts", name);
+				ResourceLocation oreLocation = miscHelper.getTagLocation("ores", name);
+				if(itemTags.contains(ingLocation)) {
 					IDynamicSpecConfig config = configs.get(material);
 					String configOreBase = config.getDefinedString("mekanism.ore_base", "#forge:cobblestone/normal",
 							this::isTagOrItemValid, "The default base to use in Mekanism's Combiner to recreate ores.");
@@ -137,27 +138,27 @@ public class MekanismCompatModule implements IModule {
 					};
 
 					helper.registerCombiningRecipe(
-							new ResourceLocation("jaopca", "mekanism.material_to_default_ore."+material.getName()),
+							new ResourceLocation("jaopca", "mekanism.material_to_default_ore."+name),
 							ingLocation, inputCount, oreBase, 1,
 							CompoundIngredientObject.difference(new Object[] {
 									oreLocation,
 									deepslateOreLocation, netherrackOreLocation, endstoneOreLocation,
 							}), 1);
 					helper.registerCombiningRecipe(
-							new ResourceLocation("jaopca", "mekanism.material_to_deepslate_ore."+material.getName()),
+							new ResourceLocation("jaopca", "mekanism.material_to_deepslate_ore."+name),
 							ingLocation, inputCount, cobbledDeepslateLocation, 1,
 							CompoundIngredientObject.intersection(new Object[] {
 									oreLocation, deepslateOreLocation,
 							}), 1);
 					helper.registerCombiningRecipe(
-							new ResourceLocation("jaopca", "mekanism.material_to_netherrack_ore."+material.getName()),
+							new ResourceLocation("jaopca", "mekanism.material_to_netherrack_ore."+name),
 							ingLocation, inputCount, netherrackLocation, 1,
 							CompoundIngredientObject.intersection(new Object[] {
 									oreLocation, netherrackOreLocation,
 							}), 1);
-					if(api.getItemTags().contains(endstoneOreLocation)) {
+					if(itemTags.contains(endstoneOreLocation)) {
 						helper.registerCombiningRecipe(
-								new ResourceLocation("jaopca", "mekanism.material_to_end_stone_ore."+material.getName()),
+								new ResourceLocation("jaopca", "mekanism.material_to_end_stone_ore."+name),
 								ingLocation, inputCount, endstoneLocation, 1,
 								CompoundIngredientObject.intersection(new Object[] {
 										oreLocation, endstoneOreLocation,
