@@ -67,6 +67,7 @@ public class SieveRecipeSerializer implements IRecipeSerializer {
 		for(MeshWithChance chance : chances) {
 			rollsJson.add(chance.serialize());
 		}
+		json.add("rolls", rollsJson);
 		json.addProperty("waterlogged", waterlogged);
 
 		return json;
