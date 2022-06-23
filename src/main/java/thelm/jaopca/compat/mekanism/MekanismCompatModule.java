@@ -104,7 +104,7 @@ public class MekanismCompatModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
+			if(!type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(dustLocation)) {

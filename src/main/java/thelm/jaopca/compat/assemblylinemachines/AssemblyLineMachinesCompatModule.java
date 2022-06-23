@@ -54,7 +54,7 @@ public class AssemblyLineMachinesCompatModule implements IModule {
 						helper.configMaterialPredicate(), "The materials that should not have metal shaper to plate recipes added."),
 				configToPlateBlacklist);
 		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.toDustMaterialBlacklist", new ArrayList<>(),
+				config.getDefinedStringList("recipes.hammerToPlateMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have hammer to plate recipes added."),
 				configHammerToPlateBlacklist);
 	}
@@ -89,7 +89,7 @@ public class AssemblyLineMachinesCompatModule implements IModule {
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configHammerToPlateBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
-				ResourceLocation hammerLocation = new ResourceLocation("assemblylinemachines:crafting/hammers");
+				ResourceLocation hammerLocation = new ResourceLocation("assemblylinemachines:hammers");
 				if(itemTags.contains(plateLocation)) {
 					api.registerShapelessRecipe(
 							new ResourceLocation("jaopca", "assemblylinemachines.material_to_plate_hammer."+name),
