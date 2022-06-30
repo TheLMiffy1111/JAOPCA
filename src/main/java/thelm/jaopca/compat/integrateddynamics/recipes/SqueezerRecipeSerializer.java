@@ -72,10 +72,10 @@ public class SqueezerRecipeSerializer implements IRecipeSerializer {
 			}
 			itemResults.add(Pair.of(stack, chance));
 		}
-		if(itemResults.isEmpty()) {
-			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(itemOutput));
-		}
 		FluidStack fluidStack = MiscHelper.INSTANCE.getFluidStack(fluidOutput, fluidOutputAmount);
+		if(itemResults.isEmpty() && fluidStack.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(itemOutput)+", "+fluidOutput);
+		}
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "integrateddynamics:squeezer");

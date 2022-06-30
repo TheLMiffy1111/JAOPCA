@@ -90,32 +90,38 @@ public class ExNihiloSequentiaModule implements IModule {
 					"Should crushed netherrack sieve recipes be added.");
 			boolean sieveCrushedEndstone = config.getDefinedBoolean("exnihilosequentia.sieveCrushedEndstone", false,
 					"Should crushed end stone sieve recipes be added.");
+			float sieveFlintChance = config.getDefinedFloat("exnihilosequentia.sieveFlintChance", 0F, 1F, 0.05F,
+					"The output chance of the sieve recipes added using a flint mesh.");
+			float sieveIronChance = config.getDefinedFloat("exnihilosequentia.sieveIronChance", 0F, 1F, 0.075F,
+					"The output chance of the sieve recipes added using an iron mesh.");
+			float sieveDiamondChance = config.getDefinedFloat("exnihilosequentia.sieveDiamondChance", 0F, 1F, 0.1F,
+					"The output chance of the sieve recipes added using a diamond mesh.");
 
 			if(sieveGravel) {
 				helper.registerSieveRecipe(
 						new ResourceLocation("jaopca", "exnihilosequentia.piece_gravel."+material.getName()),
 						gravel, pieceInfo, 1, new Number[] {
-								2, 0.05F,
-								3, 0.075F,
-								4, 0.1F,
+								2, sieveFlintChance,
+								3, sieveIronChance,
+								4, sieveDiamondChance,
 						}, false);
 			}
 			if(sieveCrushedNetherrack) {
 				helper.registerSieveRecipe(
 						new ResourceLocation("jaopca", "exnihilosequentia.piece_crushed_netherrack."+material.getName()),
 						crushedNetherrack, pieceInfo, 1, new Number[] {
-								2, 0.05F,
-								3, 0.075F,
-								4, 0.1F,
+								2, sieveFlintChance,
+								3, sieveIronChance,
+								4, sieveDiamondChance,
 						}, false);
 			}
 			if(sieveCrushedEndstone) {
 				helper.registerSieveRecipe(
 						new ResourceLocation("jaopca", "exnihilosequentia.piece_crushed_end_stone."+material.getName()),
 						crushedEndstone, pieceInfo, 1, new Number[] {
-								2, 0.05F,
-								3, 0.075F,
-								4, 0.1F,
+								2, sieveFlintChance,
+								3, sieveIronChance,
+								4, sieveDiamondChance,
 						}, false);
 			}
 		}

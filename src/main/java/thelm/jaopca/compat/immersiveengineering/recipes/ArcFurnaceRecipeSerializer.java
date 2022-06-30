@@ -72,7 +72,7 @@ public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
 			}
 		}
 		if(ing == null) {
-			throw new IllegalArgumentException("Empty ingredients in recipe "+key+": "+Arrays.toString(input));
+			throw new IllegalArgumentException("Empty ingredients in recipe "+key+": "+Arrays.deepToString(input));
 		}
 		IngredientWithSize slagIng = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(slag), slagCount);
 		List<IngredientWithSize> outputs = new ArrayList<>();

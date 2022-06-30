@@ -70,7 +70,7 @@ public class PulverizerRecycleRecipeSerializer implements IRecipeSerializer {
 			outputs.add(Pair.of(stack, chance));
 		}
 		if(outputs.isEmpty()) {
-			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.toString(output));
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 
 		JsonObject json = new JsonObject();

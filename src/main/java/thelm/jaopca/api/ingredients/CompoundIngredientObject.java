@@ -24,7 +24,7 @@ public record CompoundIngredientObject(Type type, Object... ingredients) {
 
 	@Override
 	public String toString() {
-		return "CompoundIngredientObject[type="+type+", ingredients="+Arrays.toString(ingredients)+"]";
+		return "CompoundIngredientObject[type="+type+", ingredients="+Arrays.deepToString(ingredients)+"]";
 	}
 
 	public enum Type {
