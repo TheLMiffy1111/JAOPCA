@@ -120,21 +120,25 @@ public class ExNihiloSequentiaNonIngotModule implements IModule {
 						"Should dust sieve recipes be added.");
 				boolean sieveSoulSand = config.getDefinedBoolean("exnihilosequentia.sieveCrushedNetherrack", false,
 						"Should soul sand sieve recipes be added.");
+				float sieveIronChance = config.getDefinedFloat("exnihilosequentia.sieveIronChance", 0F, 1F, 0.0625F,
+						"The output chance of the sieve recipes added using an iron mesh.");
+				float sieveDiamondChance = config.getDefinedFloat("exnihilosequentia.sieveDiamondChance", 0F, 1F, 0.125F,
+						"The output chance of the sieve recipes added using a diamond mesh.");
 
 				if(sieveDust) {
 					helper.registerSieveRecipe(
 							new ResourceLocation("jaopca", "exnihilosequentia.material_dust."+material.getName()),
 							gravel, materialLocation, 1, new Number[] {
-									3, 0.0625F,
-									4, 0.125F,
+									3, sieveIronChance,
+									4, sieveDiamondChance,
 							}, false);
 				}
 				if(sieveSoulSand) {
 					helper.registerSieveRecipe(
 							new ResourceLocation("jaopca", "exnihilosequentia.material_soul_sand."+material.getName()),
 							crushedNetherrack, materialLocation, 1, new Number[] {
-									3, 0.0625F,
-									4, 0.125F,
+									3, sieveIronChance,
+									4, sieveDiamondChance,
 							}, false);
 				}
 			}
