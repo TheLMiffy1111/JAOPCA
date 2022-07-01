@@ -84,9 +84,9 @@ public class ExNihiloSequentiaNonIngotModule implements IModule {
 						"Should crushed netherrack sieve recipes be added.");
 				boolean sieveCrushedEndstone = config.getDefinedBoolean("exnihilosequentia.sieveCrushedEndstone", false,
 						"Should crushed end stone sieve recipes be added.");
-				float sieveIronChance = config.getDefinedFloat("exnihilosequentia.sieveIronChance", 0F, 1F, 0.008F,
+				float sieveIronChance = config.getDefinedFloat("exnihilosequentia.sieveIronChance", 0.008F, 0F, 1F,
 						"The output chance of the sieve recipes added using an iron mesh.");
-				float sieveDiamondChance = config.getDefinedFloat("exnihilosequentia.sieveDiamondChance", 0F, 1F, 0.016F,
+				float sieveDiamondChance = config.getDefinedFloat("exnihilosequentia.sieveDiamondChance", 0.016F, 0F, 1F,
 						"The output chance of the sieve recipes added using a diamond mesh.");
 
 				if(sieveGravel) {
@@ -120,9 +120,9 @@ public class ExNihiloSequentiaNonIngotModule implements IModule {
 						"Should dust sieve recipes be added.");
 				boolean sieveSoulSand = config.getDefinedBoolean("exnihilosequentia.sieveCrushedNetherrack", false,
 						"Should soul sand sieve recipes be added.");
-				float sieveIronChance = config.getDefinedFloat("exnihilosequentia.sieveIronChance", 0F, 1F, 0.0625F,
+				float sieveIronChance = config.getDefinedFloat("exnihilosequentia.sieveIronChance", 0.0625F, 0F, 1F,
 						"The output chance of the sieve recipes added using an iron mesh.");
-				float sieveDiamondChance = config.getDefinedFloat("exnihilosequentia.sieveDiamondChance", 0F, 1F, 0.125F,
+				float sieveDiamondChance = config.getDefinedFloat("exnihilosequentia.sieveDiamondChance", 0.125F, 0F, 1F,
 						"The output chance of the sieve recipes added using a diamond mesh.");
 
 				if(sieveDust) {
