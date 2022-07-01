@@ -3,7 +3,6 @@ package thelm.jaopca.compat.thermalexpansion;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -17,7 +16,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
@@ -49,8 +47,6 @@ public class ThermalExpansionLegacyModule implements IModule {
 			}
 		}
 	}
-
-	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	@Override
 	public String getName() {

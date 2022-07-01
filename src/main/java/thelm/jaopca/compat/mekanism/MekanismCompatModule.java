@@ -127,7 +127,7 @@ public class MekanismCompatModule implements IModule {
 				ResourceLocation oreLocation = miscHelper.getTagLocation("ores", name);
 				if(itemTags.contains(ingLocation)) {
 					IDynamicSpecConfig config = configs.get(material);
-					String configOreBase = config.getDefinedString("mekanism.ore_base", "#forge:cobblestone/normal",
+					String configOreBase = config.getDefinedString("mekanism.oreBase", "#forge:cobblestone/normal",
 							this::isTagOrItemValid, "The default base to use in Mekanism's Combiner to recreate ores.");
 					Object oreBase = getTagOrItem(configOreBase);
 
