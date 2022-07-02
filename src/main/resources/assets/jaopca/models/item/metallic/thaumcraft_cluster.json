@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/metallic/thaumcraft_cluster",
+        "layer1": "jaopca:item/metallic/thaumcraft_cluster_overlay"
+    }
+}

@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:items/coin",
-        "layer1": "jaopca:items/coin_overlay"
-    }
-}

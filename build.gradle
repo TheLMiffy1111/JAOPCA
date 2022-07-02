@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        jcenter()
         maven {
             url = "https://maven.minecraftforge.net/"
         }
@@ -10,19 +9,26 @@ buildscript {
         maven {
             url = "https://jitpack.io/"
         }
+        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
-		classpath "com.wynprice.cursemaven:CurseMaven:2.1.5"
-		//classpath "com.github.Wyn-Price:CurseMaven:f0d58155e6"
+        classpath "com.github.jengelman.gradle.plugins:shadow:4.0.4"
     }
 }
 
 apply plugin: "net.minecraftforge.gradle.forge"
-apply plugin: "com.wynprice.cursemaven"
+apply plugin: "eclipse"
+apply plugin: "maven-publish"
+apply plugin: "com.github.johnrengelman.shadow"
 
 repositories {
+    mavenCentral()
     jcenter()
+    flatDir {
+        dirs "libs"
+    }
     maven {
         url = "https://maven.blamejared.com/"
     }
@@ -39,13 +45,10 @@ repositories {
         url = "https://maven.tterrag.com/"
     }
     maven {
-        url = "https://maven.chaosfield.at/"
-    }
-    maven {
         url = "https://maven.modmuss50.me/"
     }
     maven {
-        url = "https://maven.covers1624.net/"
+        url = "https://nexus.covers1624.net/repository/maven-releases/"
     }
     maven {
         url = "https://maven.shadowfacts.net/"
@@ -60,112 +63,163 @@ repositories {
         url = "https://www.mod-buildcraft.com/maven/"
     }
     maven {
+        url = "https://maven.cleanroommc.com/"
+    }
+    maven {
+        url = "https://cursemaven.com/"
+    }
+    maven {
         url = "https://modmaven.dev/"
     }
 }
 
-version = "1.12.2-2.2.8.106"
-group= "thelm.jaopca"
-archivesBaseName = "JAOPCA"
+sourceSets {
+    main
+}
+
+version = "2.3.0.0"
+group = "thelm.jaopca"
+archivesBaseName = "JAOPCA-1.12.2"
 
 sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
 }
+compileJava.options.encoding = "UTF-8"
 
 minecraft {
     version = "1.12.2-14.23.5.2847"
     runDir = "run"
     mappings = "stable_39"
+    def commonJvmArgs = [
+        "-Xmn768m", "-XX:+DisableExplicitGC", "-XX:+UseConcMarkSweepGC",
+        "-XX:+UseParNewGC", "-XX:+UseNUMA", "-XX:+CMSParallelRemarkEnabled",
+        "-XX:MaxTenuringThreshold=15", "-XX:MaxGCPauseMillis=30", "-XX:GCPauseIntervalMillis=150",
+        "-XX:+UseAdaptiveGCBoundary", "-XX:-UseGCOverheadLimit", "-XX:+UseBiasedLocking",
+        "-XX:SurvivorRatio=8", "-XX:TargetSurvivorRatio=90", "-XX:MaxTenuringThreshold=15",
+        "-XX:+UseFastAccessorMethods", "-XX:+UseCompressedOops", "-XX:+OptimizeStringConcat",
+        "-XX:+AggressiveOpts", "-XX:ReservedCodeCacheSize=2048m", "-XX:+UseCodeCacheFlushing",
+        "-XX:SoftRefLRUPolicyMSPerMB=10000", "-XX:ParallelGCThreads=10", "-Dmixin.hotSwap=true",
+        "-Dmixin.checks.interfaces=true"
+    ]
+    clientJvmArgs.add("-Xmx6G")
+    clientJvmArgs.addAll(commonJvmArgs)
+    clientRunArgs.add("--username=Dev")
+    serverJvmArgs.add("-Xmx3G")
+    serverJvmArgs.addAll(commonJvmArgs)
     makeObfSourceJar = false
 }
 
+configurations {
+    include
+    implementation.extendsFrom(include)
+}
+
 dependencies {
-    deobfCompile "mezz.jei:jei_1.12.2:4.15.0.273"
-    deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.3.49"
-    deobfCompile "slimeknights:TConstruct:1.12.2-2.12.0.135"
-    deobfCompile "net.industrial-craft:industrialcraft-2:2.8.109-ex112"
-    deobfCompile "blusunrize:ImmersiveEngineering:0.12-88-506"
-    deobfCompile "MCMultiPart2:MCMultiPart-exp:2.2.2_37"
-    deobfCompile("RebornCore:RebornCore-1.12.2:3.12.0.378:universal") {
+    include "com.electronwill.night-config:core:3.6.4"
+    include "com.electronwill.night-config:toml:3.6.4"
+
+    deobfCompile "mezz.jei:jei_1.12.2:4.16.1.302"
+    deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.3.55"
+    deobfCompile "slimeknights:TConstruct:1.12.2-2.13.0.183"
+    deobfCompile "net.industrial-craft:industrialcraft-2:2.8.221-ex112"
+    deobfCompile "MCMultiPart2:MCMultiPart:2.5.3"
+    deobfCompile("RebornCore:RebornCore-1.12.2:3.19.4.529:universal") {
         transitive = false
     }
-    deobfCompile("TechReborn:TechReborn-1.12.2:2.19.0.870:universal") {
+    deobfCompile("TechReborn:TechReborn-1.12.2:2.27.3.1084:universal") {
         transitive = false
     }
-    deobfCompile("TechReborn:TechReborn-ModCompatibility-1.12.2:1.1.0.5:universal") {
+    deobfCompile("TechReborn:TechReborn-ModCompatibility-1.12.2:1.4.0.76:universal") {
         transitive = false
     }
-    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.3.357:universal"
-    deobfCompile "cofh:RedstoneFlux:1.12-2.1.0.6:universal"
-    deobfCompile("cofh:CoFHCore:1.12.2-4.6.3.27:universal") {
-        transitive = false
-    }
-    deobfCompile("cofh:CoFHWorld:1.12.2-1.3.1.7:universal") {
-        transitive = false
-    }
-    deobfCompile("cofh:ThermalFoundation:1.12.2-2.6.3.27:universal") {
-        transitive = false
-    }
-    deobfCompile("cofh:ThermalExpansion:1.12.2-5.5.4.43:universal") {
-        transitive = false
-    }
-    deobfCompile("cofh:ThermalDynamics:1.12.2-2.5.5.21:universal") {
-        transitive = false
-    }
-    deobfCompile "com.shinoow.abyssalcraft:AbyssalCraft:1.12.2-1.10.3"
-    deobfCompile "net.shadowfacts:Forgelin:1.6.0"
-    deobfCompile("net.ndrei:tesla-core-lib:1.12.2-1.0.14.10") {
+    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.3.358:universal"
+    implementation "net.shadowfacts:Forgelin:1.8.4"
+    deobfCompile("net.ndrei:tesla-core-lib:1.12.2-1.0.18.28") {
         transitive = false
     }
     deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.15.25") {
         transitive = false
     }
-	deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.2.397"
-    deobfCompile("exnihilocreatio:exnihilocreatio:1.12-0.3.0.7") {
+    implementation("CraftTweaker2:ZenScript:4.1.20.675") {
         transitive = false
     }
-    deobfCompile "com.enderio.core:EnderCore:1.12.2-0.5.50"
-    deobfCompile("com.enderio:EnderIO:1.12.2-5.0.43") {
+    deobfCompile "CraftTweaker2:CraftTweaker2-API:4.1.20.675"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.675"
+    deobfCompile "com.enderio.core:EnderCore:1.12.2-0.5.76:core"
+    deobfCompile("com.enderio:EnderIO:1.12.2-5.3.70") {
         transitive = false
     }
-    deobfCompile "info.loenwind.autoconfig:AutoConfig:1.12.2-1.0.1"
-    deobfCompile "info.loenwind.autosave:AutoSave:1.12.2-1.0.10"
-    deobfCompile "com.mod-buildcraft:buildcraft:7.99.19"
-    deobfCompile("net.ndrei:bc-ore-processing:7.99.15-1.2") {
+    deobfCompile "info.loenwind.autoconfig:AutoConfig:1.12.2-1.0.2"
+    deobfCompile "info.loenwind.autosave:AutoSave:1.12.2-1.0.11"
+    deobfCompile "com.mod-buildcraft:buildcraft-main:7.99.24.8"
+    deobfCompile("net.ndrei:bc-ore-processing:7.99.24.4-1.18") {
         transitive = false
     }
+    deobfCompile "net.sengir.forestry:forestry_1.12.2:5.8.2.422"
 
-    deobfCompile "curse.maven:wrapup:2486198"
-    deobfCompile "curse.maven:advanced-rocketry:3258285"
-    deobfCompile "curse.maven:baubles:2518667"
-    deobfCompile "curse.maven:embers-rekindled:2697221"
-    deobfCompile "curse.maven:ignition-foundry:2719054"
-    deobfCompile "curse.maven:futurepack:2786639"
-    deobfCompile "curse.maven:gregtechce:2811836"
-    deobfCompile "curse.maven:libvulpes:2809593"
-    deobfCompile "curse.maven:magneticraft:2807901"
-    deobfCompile "curse.maven:mekanism:2835175"
-    deobfCompile "curse.maven:modelloader:2744735"
-    deobfCompile "curse.maven:omega-craft-mod:2670955"
-    deobfCompile "curse.maven:placebo:2830611"
-	deobfCompile "curse.maven:sky-compression:2707173"
-    deobfCompile "curse.maven:sky-resources:2758220"
-    deobfCompile "curse.maven:static-power:2571816"
-    deobfCompile "curse.maven:thaumcraft:2629023"
-    deobfCompile "curse.maven:applied-energistics-2:2747063"
+    deobfCompile "curse.maven:wrapup-275153:2486198"
+    deobfCompile "curse.maven:advanced-rocketry-236542:3801020"
+    deobfCompile "curse.maven:baubles-227083:2518667"
+    deobfCompile "curse.maven:embers-rekindled-300777:3695248"
+    deobfCompile "curse.maven:ignition-foundry-283807:2719054"
+    deobfCompile "curse.maven:futurepack-237333:2856874"
+    deobfCompile "curse.maven:libvulpes-236541:3801015"
+    deobfCompile "curse.maven:magneticraft-224808:3791484"
+    deobfCompile "curse.maven:mekanism-268560:2835175"
+    deobfCompile "curse.maven:modelloader-277663:2744735"
+    deobfCompile "curse.maven:placebo-283644:2694382"
+    deobfCompile "curse.maven:sky-resources-243482:2758220"
+    deobfCompile "curse.maven:sky-compression-271992:2707173"
+    deobfCompile "curse.maven:thaumcraft-223628:2629023"
+    deobfCompile "curse.maven:thaumic-jei-285492:2705304"
+    deobfCompile "curse.maven:applied-energistics-2-223794:2747063"
+    deobfCompile "curse.maven:redstone-flux-270789:2920436"
+    deobfCompile "curse.maven:cofh-core-69162:2920433"
+    deobfCompile "curse.maven:cofh-world-271384:2920434"
+    deobfCompile "curse.maven:thermal-foundation-222880:2926428"
+    deobfCompile "curse.maven:thermal-expansion-69163:2926431"
+    deobfCompile "curse.maven:thermal-dynamics-227443:2920505"
+    deobfCompile "curse.maven:abyssalcraft-53686:3425234"
+    deobfCompile "curse.maven:ex-nihilo-creatio-274456:2817545"
+    deobfCompile "curse.maven:minestrappolation-5-233351:2860018"
+    deobfCompile "curse.maven:buildcraft-compat-233140:3204471"
+    deobfCompile "curse.maven:hbms-nuclear-tech-mod-reloaded-435883:3835843"
+    deobfCompile "curse.maven:railcraft-51195:2687757"
+    deobfCompile "curse.maven:cyclops-core-232758:3159497"
+    deobfCompile "curse.maven:common-capabilities-247007:3053017"
+    deobfCompile "curse.maven:integrated-dynamics-236307:3159505"
+    deobfCompile "curse.maven:endercore-231868:2972849"
+
+    deobfCompile "zone.rong:mixinbooter:4.2"
+    deobfCompile "curse.maven:jeid-296289:3581715"
+    deobfCompile "curse.maven:spark-361579:3245793"
+    deobfCompile "curse.maven:lolasm-460609:3834448"
 }
 
-processResources
-{
+jar {
+    manifest {
+        attributes([
+                "Specification-Title": "JAOPCA",
+                "Specification-Vendor": "thelm",
+                "Specification-Version": "2.3",
+                "Implementation-Title": "${archivesBaseName}",
+                "Implementation-Version": "${version}",
+                "Implementation-Vendor": "thelm"
+        ],)
+    }
+    enabled = false
 }
 
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    classifier = 'deobf'
+shadowJar {
+    classifier = ""
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    configurations = [project.configurations.include]
 }
 
-artifacts {
-    archives deobfJar
+reobf {
+    shadowJar {}
 }
 
+tasks.build.dependsOn reobfShadowJar
+jar.finalizedBy("reobfShadowJar")

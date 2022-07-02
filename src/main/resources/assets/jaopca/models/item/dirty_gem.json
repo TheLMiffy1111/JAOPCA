@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:items/dirty_gem",
-        "layer1": "jaopca:items/dirty_gem_overlay"
-    }
-}

@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/metallic/mekanism_shard",
+        "layer1": "jaopca:item/metallic/mekanism_shard_overlay"
+    }
+}

@@ -1,100 +1,50 @@
 itemGroup.jaopca=JAOPCA
 
-#Default
-item.jaopca.dust.name=%s Dust
-item.jaopca.nugget.name=%s Nugget
-tile.jaopca.block.name=Block of %s
+block.jaopca.block=Block of %s
+item.jaopca.dust=%s Dust
+item.jaopca.nugget=%s Nugget
+item.jaopca.tiny_dust=Tiny Pile of %s Dust
+item.jaopca.small_dust=Small Pile of %s Dust
 fluid.jaopca.molten=Molten %s
-item.jaopca.coin.name=%s Coin
-item.jaopca.gear.name=%s Gear
-item.jaopca.plate.name=%s Plate
-item.jaopca.stick.name=%s Rod
-item.jaopca.dustTiny.name=Tiny Pile of %s Dust
-item.jaopca.dustSmall.name=Small Pile of %s Dust
-item.jaopca.plateDense.name=Dense %s Plate
+item.jaopca.coin=%s Coin
+item.jaopca.gear=%s Gear
+item.jaopca.plate=%s Plate
+item.jaopca.stick=%s Rod
+item.jaopca.dense_plate=Dense %s Plate
 
-#Mekanism
-item.jaopca.dustDirty.name=Dirty %s Dust
-item.jaopca.clump.name=%s Clump
-item.jaopca.shard.name=%s Shard
-item.jaopca.crystal.name=%s Crystal
-gas.jaopca.slurryClean=Clean %s Slurry
-gas.jaopca.slurry=%s Slurry
+item.jaopca.abyssalcraft_crystal_fragment=Crystallized %s Fragment
+item.jaopca.abyssalcraft_crystal_shard=Crystallized %s Shard
+item.jaopca.abyssalcraft_crystal=Crystallized %s
+block.jaopca.abyssalcraft_crystal_cluster=Crystallized %s Cluster
 
-#IC2
-item.jaopca.crushed.name=Crushed %s Ore
-item.jaopca.crushedPurified.name=Purified Crushed %s Ore
+fluid.jaopca.bcoreprocessing_searing=Molten %s (§cSearing§r)
+fluid.jaopca.bcoreprocessing_hot=Molten %s (§6Hot§r)
+fluid.jaopca.bcoreprocessing_cool=Molten %s (§bCool§r)
 
-#ExNihiloOmnia
-item.jaopca.oreBroken.name=Broken %s Ore
-item.jaopca.oreNetherBroken.name=Broken %s Ore
-item.jaopca.oreEnderBroken.name=Broken %s Ore
-item.jaopca.oreCrushed.name=Crushed %s Ore
-item.jaopca.orePowdered.name=Powdered %s Ore
-tile.jaopca.oreGravel.name=%s Ore Gravel
-tile.jaopca.oreNetherGravel.name=Nether %s Ore Gravel
-tile.jaopca.oreEnderGravel.name=Ender %s Ore Gravel
-tile.jaopca.oreSand.name=%s Ore Sand
-tile.jaopca.oreFine.name=%s Ore Dust
+fluid.jaopca.foundry_liquid=Liquid %s
 
-#ExNihiloCreatio
-item.jaopca.piece.name=%s Ore Piece
-item.jaopca.hunk.name=%s Ore Chunk
+item.jaopca.hbm_crystal=%s Crystals
 
-#AbyssalCraft
-item.jaopca.crystalFragment.name=Crystallized %s Fragment
-item.jaopca.crystalShard.name=Crystallized %s Shard
-item.jaopca.crystalAbyss.name=Crystallized %s
-tile.jaopca.crystalCluster.name=Crystallized %s Cluster
+item.jaopca.ic2_crushed=Crushed %s Ore
+item.jaopca.ic2_purified_crushed=Purified Crushed %s Ore
 
-#SkyResources
-item.jaopca.dustAlch.name=%s Alchemical Ore Dust
-item.jaopca.dirtyGem.name=Dirty %s
+item.jaopca.exnihilocreatio_piece=%s Ore Piece
+item.jaopca.exnihilocreatio_chunk=%s Ore Chunk
 
-#Magneticraft
-item.jaopca.rockyChunk.name=%s Rocky Chunk
-item.jaopca.chunk.name=%s Chunk
+item.jaopca.magneticraft_rocky_chunk=%s Rocky Chunk
+item.jaopca.magneticraft_chunk=%s Chunk
 
-#TeslaPoweredThingies
-item.jaopca.teslaLump.name=Teslified %s Lump
-item.jaopca.augmentedLump.name=Augmented %s Lump
+item.jaopca.mekanism_dirty_dust=Dirty %s Dust
+item.jaopca.mekanism_clump=%s Clump
+item.jaopca.mekanism_shard=%s Shard
+item.jaopca.mekanism_crystal=%s Crystal
+gas.jaopca.mekanism_clean_slurry=Clean %s Slurry
+gas.jaopca.mekanism_slurry=%s Slurry
 
-#Thaumcraft
-item.jaopca.cluster.name=Native %s Cluster
+item.jaopca.skyresources_alch_dust=%s Alchemical Ore Dust
+item.jaopca.skyresources_dirty_gem=Dirty %s
 
-#BuildcraftOreProcessing
-fluid.jaopca.searingMolten=Molten %s (§cSearing§r)
-fluid.jaopca.hotMolten=Molten %s (§6Hot§r)
-fluid.jaopca.coolMolten=Molten %s (§bCool§r)
+item.jaopca.teslathingies_tesla_lump=Teslified %s Lump
+item.jaopca.teslathingies_augmented_lump=Augmented %s Lump
 
-#Foundry
-fluid.jaopca.liquid=Liquid %s
-
-#GregTech
-item.jaopca.crushedGreg.name=Crushed %s Ore
-item.jaopca.crushedPurifiedGreg.name=Purified %s Ore
-item.jaopca.crushedCentrifuged.name=Centrifuged %s Ore
-item.jaopca.dustImpure.name=Impure Pile of %s Dust
-item.jaopca.dustPure.name=Purified Pile of %s Dust
-item.jaopca.gemChipped.name=Chipped %s
-item.jaopca.gemFlawed.name=Flawed %s
-item.jaopca.gemFlawless.name=Flawless %s
-item.jaopca.gemExquisite.name=Exquisite %s
-
-#Please refer to zh_CN or zh_TW for all names to localize.
-#Ingots
-jaopca.entry.LiquifiedCoralium=Coralium
-
-#Gems
-jaopca.entry.Lapis=Lapis Lazuli
-jaopca.entry.QuartzBlack=Black Quartz
-
-#Dusts
-
-#IngotNoOres
-jaopca.entry.Aluminiumbrass=Aluminium Brass
-jaopca.entry.ElvenElementium=Elementium
-jaocpa.entry.Galvanizedsteel=Galvanized Steel
-jaopca.entry.Stainlesssteel=Stainless Steel
-
-#GemNoOres
+item.jaopca.thaumcraft_cluster=Native %s Cluster

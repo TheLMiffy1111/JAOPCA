@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/metallic/teslathingies_augmented_lump",
+        "layer1": "jaopca:item/metallic/teslathingies_augmented_lump_overlay"
+    }
+}

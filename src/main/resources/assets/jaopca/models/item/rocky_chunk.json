@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:items/chunk",
-        "layer1": "jaopca:items/rocky_chunk_overlay"
-    }
-}

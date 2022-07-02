@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/metallic/dense_plate",
+        "layer1": "jaopca:item/metallic/dense_plate_overlay"
+    }
+}

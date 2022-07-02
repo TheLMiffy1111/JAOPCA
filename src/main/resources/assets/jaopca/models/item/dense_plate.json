@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:items/dense_plate",
-        "layer1": "jaopca:items/dense_plate_overlay"
-    }
-}

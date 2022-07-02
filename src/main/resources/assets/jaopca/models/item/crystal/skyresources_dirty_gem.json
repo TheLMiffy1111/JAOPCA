@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "jaopca:item/crystal/skyresources_dirty_gem",
+        "layer1": "jaopca:item/crystal/skyresources_dirty_gem_overlay"
+    }
+}
