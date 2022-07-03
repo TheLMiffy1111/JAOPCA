@@ -39,25 +39,30 @@ public class RegistryHandler {
 			initializeRemaps();
 		}
 		m:for(RegistryEvent.MissingMappings.Mapping<T> mapping : event.getMappings()) {
+			LOGGER.debug("Remapping registry entry {}", mapping.key);
 			String[] names = mapping.key.getPath().split("_", 2);
 			if(names.length == 2) {
 				for(Map.Entry<String, String> remap : LEGACY_REMAPS.entrySet()) {
 					if(names[1].startsWith(remap.getKey())) {
 						String materialName = names[1].substring(remap.getKey().length());
+						LOGGER.debug("Checking material {}", materialName);
 						Optional<? extends IMaterial> material = MaterialHandler.getMaterials().stream().
 								filter(m->m.getName().equalsIgnoreCase(materialName)).findAny();
 						if(material.isPresent()) {
-							String path = remap.getValue()+'_'+MiscHelper.INSTANCE.toLowercaseUnderscore(material.get().getName());
+							String path = remap.getValue()+'.'+MiscHelper.INSTANCE.toLowercaseUnderscore(material.get().getName());
 							ResourceLocation remapLocation = new ResourceLocation(mapping.key.getNamespace(), path);
 							IForgeRegistry<T> reg = RegistryManager.ACTIVE.getRegistry(event.getName());
+							LOGGER.debug("Checking registry entry {}", remapLocation);
 							if(reg.containsKey(remapLocation)) {
 								mapping.remap(reg.getValue(remapLocation));
+								LOGGER.debug("Remapped registry entry {} to {}", mapping.key, remapLocation);
 								continue m;
 							}
 						}
 					}
 				}
 			}
+			LOGGER.debug("Could not remap registry entry {}", mapping.key);
 		}
 	}
 }
