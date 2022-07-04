@@ -1,0 +1,34 @@
+itemGroup.jaopca=JAOPCA
+
+block.jaopca.block=%sblock
+item.jaopca.dust=%sstaub
+item.jaopca.nugget=%snugget
+item.jaopca.tiny_dust=Winziger Haufen %sstaub
+item.jaopca.small_dust=Kleiner Haufen %sstaub
+fluid.jaopca.molten=Geschmolzenes %s
+item.jaopca.coin=%smünze
+item.jaopca.gear=%szahnrad
+item.jaopca.plate=%splatte
+item.jaopca.stick=%sstab
+
+item.jaopca.abyssalcraft_crystal_fragment=Kristallisiertes %sfragment
+item.jaopca.abyssalcraft_crystal_shard=Kristallisierte %sscherbe
+item.jaopca.abyssalcraft_crystal=Kristallisiertes %s
+block.jaopca.abyssalcraft_crystal_cluster=Kristallisierte %ssanhäufung
+
+item.jaopca.hbm_crystal=%skristalle
+
+item.jaopca.ic2_crushed=Zerstoßenes %serz
+item.jaopca.ic2_purified_crushed=Gereinigtes Zerstoßenes %serz
+
+item.jaopca.exnihilocreatio_piece=%s Erzstück
+item.jaopca.exnihilocreatio_chunk=%s Erzbrocken
+
+item.jaopca.mekanism_dirty_dust=Schmutziger %sstaub
+item.jaopca.mekanism_clump=%sklumpen
+item.jaopca.mekanism_shard=%sscherbe
+item.jaopca.mekanism_crystal=%skristall
+gas.jaopca.mekanism_clean_slurry=Saubere %sschlacke
+gas.jaopca.mekanism_slurry=%sschlacke
+
+item.jaopca.skyresources_alch_dust=Alchemistischr %serzstaub

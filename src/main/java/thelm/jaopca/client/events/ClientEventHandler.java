@@ -1,5 +1,7 @@
 package thelm.jaopca.client.events;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -11,6 +13,7 @@ import thelm.jaopca.client.models.ModelHandler;
 import thelm.jaopca.client.models.fluids.TexturedFluidModel;
 import thelm.jaopca.client.resources.ResourceHandler;
 import thelm.jaopca.events.CommonEventHandler;
+import thelm.jaopca.localization.LocalizationRepoHandler;
 
 public class ClientEventHandler extends CommonEventHandler {
 
@@ -21,6 +24,9 @@ public class ClientEventHandler extends CommonEventHandler {
 	@Override
 	public void onInit(FMLInitializationEvent event) {
 		super.onInit(event);
+		Minecraft mc = Minecraft.getMinecraft();
+		LocalizationRepoHandler.setup(modConfigDir);
+		((IReloadableResourceManager)mc.getResourceManager()).registerReloadListener(rm->LocalizationRepoHandler.reload());
 	}
 
 	@SubscribeEvent

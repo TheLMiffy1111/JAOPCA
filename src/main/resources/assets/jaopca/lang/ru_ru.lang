@@ -1,0 +1,50 @@
+itemGroup.jaopca=JAOPCA
+
+block.jaopca.block=Блок %s
+item.jaopca.dust=Пыль %s
+item.jaopca.nugget=Самородок %s
+item.jaopca.tiny_dust=Кучка пыли %s
+item.jaopca.small_dust=Горсть пыли %s
+fluid.jaopca.molten=Расплав %s
+item.jaopca.coin=Монета из %s
+item.jaopca.gear=Шестерёнка из %s
+item.jaopca.plate=Пластина %s
+item.jaopca.stick=Стержень из %s
+item.jaopca.dense_plate=Плотная пластина из %s
+
+item.jaopca.abyssalcraft_crystal_fragment=Кристаллизованный фрагмент %s
+item.jaopca.abyssalcraft_crystal_shard=Кристаллизованный осколок %s
+item.jaopca.abyssalcraft_crystal=Кристалл %s
+block.jaopca.abyssalcraft_crystal_cluster=Кристаллизованное скопление %s
+
+fluid.jaopca.bcoreprocessing_searing=Расплав %s (§cЖгучий§r)
+fluid.jaopca.bcoreprocessing_hot=Расплав %s (§6Горячий§r)
+fluid.jaopca.bcoreprocessing_cool=Расплав %s (§bПрохладный§r)
+
+fluid.jaopca.foundry_liquid=Расплав %s
+
+item.jaopca.hbm_crystal=Кристаллизованное %s
+
+item.jaopca.ic2_crushed=Измельчённая руда %s
+item.jaopca.ic2_purified_crushed=Очищенная измельчённая руда %s
+
+item.jaopca.exnihilocreatio_piece=Кусок руды %s
+item.jaopca.exnihilocreatio_chunk=Толстый кусок руды %s
+
+item.jaopca.magneticraft_rocky_chunk=Каменистый кусок %s
+item.jaopca.magneticraft_chunk=Кусок %s
+
+item.jaopca.mekanism_dirty_dust=Загрязненная пыль %s
+item.jaopca.mekanism_clump=Глыба %s
+item.jaopca.mekanism_shard=Осколок %s
+item.jaopca.mekanism_crystal=Кристалл %s
+gas.jaopca.mekanism_clean_slurry=Очищенная взвесь %s
+gas.jaopca.mekanism_slurry=Взвесь %s
+
+item.jaopca.skyresources_alch_dust=Алхимическая рудная пыль %s
+item.jaopca.skyresources_dirty_gem=Грязный %s
+
+item.jaopca.teslathingies_tesla_lump=Теслифицированный кусок %s
+item.jaopca.teslathingies_augmented_lump=Обогащённый кусок %s
+
+item.jaopca.thaumcraft_cluster=Скопление %s
