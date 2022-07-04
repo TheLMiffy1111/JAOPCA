@@ -179,7 +179,7 @@ public class MiscHelper implements IMiscHelper {
 		return null;
 	}
 
-	private static final Predicate<String> META_ITEM_PREDICATE = s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s.split("@(?=\\d+)")[0]));
+	private static final Predicate<String> META_ITEM_PREDICATE = s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s.split("@(?=\\d*$)")[0]));
 
 	@Override
 	public Predicate<String> metaItemPredicate() {
@@ -188,7 +188,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ItemStack parseMetaItem(String str) {
-		String[] split = str.split("@(?=\\d+)");
+		String[] split = str.split("@(?=\\d*$)");
 		int meta = 0;
 		if(split.length == 2) {
 			meta = Optional.ofNullable(Ints.tryParse(split[1])).orElse(0);

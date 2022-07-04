@@ -232,7 +232,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerOredict(String oredict, String metaItemString) {
-		if(metaItemString.contains("@")) {
+		if(metaItemString.matches(".*?@\\d*$")) {
 			return registerOredict(oredict, MiscHelper.INSTANCE.parseMetaItem(metaItemString));
 		}
 		else {

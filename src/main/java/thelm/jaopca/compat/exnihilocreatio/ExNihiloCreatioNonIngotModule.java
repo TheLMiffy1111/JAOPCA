@@ -100,7 +100,7 @@ public class ExNihiloCreatioNonIngotModule implements IModule {
 			return ApiImpl.INSTANCE.getOredict().contains(s.substring(1));
 		}
 		else {
-			return ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s.split("@(?=\\d+)")[0]));
+			return ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s.split("@(?=\\d*$)")[0]));
 		}
 	}
 
