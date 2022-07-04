@@ -1,7 +1,6 @@
 package thelm.jaopca.compat.techreborn;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;

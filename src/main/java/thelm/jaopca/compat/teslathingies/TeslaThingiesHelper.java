@@ -9,7 +9,7 @@ public class TeslaThingiesHelper {
 
 	public static final TeslaThingiesHelper INSTANCE = new TeslaThingiesHelper();
 
-	private TeslaThingiesHelper() {};
+	private TeslaThingiesHelper() {}
 
 	public boolean registerCompoundMakerRecipe(ResourceLocation key, Object[] top, Object left, int leftAmount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new CompoundMakerRecipeAction(key, top, left, leftAmount, output, outputCount));

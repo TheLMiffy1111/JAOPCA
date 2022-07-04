@@ -24,7 +24,7 @@ public class AdvancedRocketryModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminium", "Aluminum", "Copper", "Gold", "Iridium", "Iron", "Tin", "Titanium"));
-	
+
 	@Override
 	public String getName() {
 		return "advancedrocketry";

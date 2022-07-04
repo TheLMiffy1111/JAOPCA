@@ -1,0 +1,48 @@
+itemGroup.jaopca=JAOPCA
+
+block.jaopca.block=%s Bloğu
+item.jaopca.dust=%s Tozu
+item.jaopca.nugget=%s Parçası
+item.jaopca.tiny_dust=Minik %s Tozu
+item.jaopca.small_dust=Küçük %s Tozu
+fluid.jaopca.molten=Erimiş %s
+item.jaopca.coin=%s Para
+item.jaopca.gear=%s Dişli
+item.jaopca.plate=%s Plaka
+item.jaopca.stick=%s Çubuk
+item.jaopca.dense_plate=Yoğun %s Plaka
+
+item.jaopca.abyssalcraft_crystal_fragment=Kristalleştirilmiş %s Parçacığı
+item.jaopca.abyssalcraft_crystal_shard=Kristalleştirilmiş %s Parçası
+item.jaopca.abyssalcraft_crystal=Kristalleştirilmiş %s
+block.jaopca.abyssalcraft_crystal_cluster=Kristalleştirilmiş %s Kümesi
+
+fluid.jaopca.bcoreprocessing_searing=Erimiş %s (§cAşırı Sıcak§r)
+fluid.jaopca.bcoreprocessing_hot=Erimiş %s (§6Sıcak§r)
+fluid.jaopca.bcoreprocessing_cool=Erimiş %s (§bSoğuk§r)
+
+fluid.jaopca.foundry_liquid=Sıvı %s
+
+item.jaopca.ic2_crushed=Ezilmiş %s Cevheri
+item.jaopca.ic2_purified_crushed=Ezilmiş Saflaştırılmış %s Cevheri
+
+item.jaopca.exnihilocreatio_piece=%s Cevher Parçası
+item.jaopca.exnihilocreatio_chunk=%s Cevher Yığını
+
+item.jaopca.magneticraft_rocky_chunk=Taşlı %s Yığını
+item.jaopca.magneticraft_chunk=%s Yığını
+
+item.jaopca.mekanism_dirty_dust=Kirli %s Tozu
+item.jaopca.mekanism_clump=%s Kümesi
+item.jaopca.mekanism_shard=%s Parçası
+item.jaopca.mekanism_crystal=%s Kristal
+gas.jaopca.mekanism_clean_slurry=Temiz %s Harcı
+gas.jaopca.mekanism_slurry=%s Harç
+
+item.jaopca.skyresources_alch_dust=Simyasal %s Cevher Tozu
+item.jaopca.skyresources_dirty_gem=Kirli %s
+
+item.jaopca.teslathingies_tesla_lump=Teslified %s Yumrusu
+item.jaopca.teslathingies_augmented_lump=Artırılmış %s Yumru
+
+item.jaopca.thaumcraft_cluster=Yerli %s Yumrusu

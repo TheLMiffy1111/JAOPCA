@@ -12,13 +12,16 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.gson.JsonDeserializer;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.JAOPCAApi;
@@ -202,7 +205,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerOredict(String oredict, Item item) {
-		if(ConfigHandler.OREDICT_BLACKLIST.contains(oredict)) {
+		if(ConfigHandler.OREDICT_BLACKLIST.contains(oredict) || item == null || item == Items.AIR) {
 			return false;
 		}
 		NonNullList<ItemStack> stacks = NonNullList.create();
@@ -214,12 +217,27 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerOredict(String oredict, Block block) {
+		return registerOredict(oredict, ForgeRegistries.ITEMS.getValue(block.getRegistryName()));
+	}
+
+	@Override
 	public boolean registerOredict(String oredict, ItemStack stack) {
-		if(ConfigHandler.OREDICT_BLACKLIST.contains(oredict)) {
+		if(ConfigHandler.OREDICT_BLACKLIST.contains(oredict) || stack.isEmpty()) {
 			return false;
 		}
 		OreDictionary.registerOre(oredict, stack);
 		return true;
+	}
+
+	@Override
+	public boolean registerOredict(String oredict, String metaItemString) {
+		if(metaItemString.contains("@")) {
+			return registerOredict(oredict, MiscHelper.INSTANCE.parseMetaItem(metaItemString));
+		}
+		else {
+			return registerOredict(oredict, ForgeRegistries.ITEMS.getValue(new ResourceLocation(metaItemString)));
+		}
 	}
 
 	@Override

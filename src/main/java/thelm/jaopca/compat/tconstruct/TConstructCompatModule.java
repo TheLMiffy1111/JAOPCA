@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.ToIntFunction;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -59,7 +61,7 @@ public class TConstructCompatModule implements IModule {
 	@Override
 	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
 		TinkerRegistry.getMaterialIntegrations().stream().filter(mi->mi.fluid != null).
-		map(mi->mi.oreSuffix).forEach(BLACKLIST::add);
+		map(mi->mi.oreSuffix).filter(StringUtils::isNotEmpty).forEach(BLACKLIST::add);
 		BLACKLIST.add("Emerald");
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		jaopcaOnly = config.getDefinedBoolean("recipes.jaopcaOnly", jaopcaOnly, "Should the module only add recipes for materials with JAOPCA molten fluids.");

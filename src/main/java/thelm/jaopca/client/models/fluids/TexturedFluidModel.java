@@ -127,7 +127,7 @@ public final class TexturedFluidModel implements IModel {
 		}
 
 		private static int[] getCorners(Optional<IExtendedBlockState> stateOption) {
-			int[] cornerRound = new int[] {0, 0, 0, 0};
+			int[] cornerRound = {0, 0, 0, 0};
 			if(stateOption.isPresent()) {
 				IExtendedBlockState state = stateOption.get();
 				for(int i = 0; i < 4; i++) {
@@ -263,7 +263,7 @@ public final class TexturedFluidModel implements IModel {
 			for(int e = 0; e < format.getElementCount(); e++) {
 				switch(format.getElement(e).getUsage()) {
 				case POSITION:
-					float[] data = new float[]{ x - side.getDirectionVec().getX() * eps, y, z - side.getDirectionVec().getZ() * eps, 1 };
+					float[] data = { x - side.getDirectionVec().getX() * eps, y, z - side.getDirectionVec().getZ() * eps, 1 };
 					if(transformation.isPresent() && transformation.get() != TRSRTransformation.identity()) {
 						Vector4f vec = new Vector4f(data);
 						transformation.get().getMatrix().transform(vec);

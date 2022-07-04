@@ -4,10 +4,6 @@ import java.util.TreeSet;
 
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
-import thelm.jaopca.api.fluids.IFluidFormSettings;
-import thelm.jaopca.api.fluids.IMaterialFormFluid;
-import thelm.jaopca.fluids.FluidFormType;
 
 public class ResourceHandler {
 

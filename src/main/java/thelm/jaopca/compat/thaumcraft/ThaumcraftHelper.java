@@ -24,7 +24,7 @@ public class ThaumcraftHelper {
 
 	public boolean registerRecipesToResearch(String research, Collection<ResourceLocation> recipeKeys) {
 		int stage = 0;
-		String[] split = research.split("@");
+		String[] split = research.split("@(?=\\d+)");
 		if(split.length == 2) {
 			stage = Optional.ofNullable(Ints.tryParse(split[1])).orElse(0);
 		}

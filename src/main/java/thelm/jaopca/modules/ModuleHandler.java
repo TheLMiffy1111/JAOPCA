@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Predicates;
 
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
@@ -27,8 +26,6 @@ import net.minecraftforge.fml.common.versioning.VersionRange;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.api.oredict.IOredictModule;
-import thelm.jaopca.api.oredict.JAOPCAOredictModule;
 import thelm.jaopca.materials.MaterialHandler;
 
 public class ModuleHandler {

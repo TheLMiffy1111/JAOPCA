@@ -24,7 +24,7 @@ import thelm.jaopca.utils.MiscHelper;
 
 public class GasFormType implements IGasFormType {
 
-	private GasFormType() {};
+	private GasFormType() {}
 
 	public static final GasFormType INSTANCE = new GasFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();

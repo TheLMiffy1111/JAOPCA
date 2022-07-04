@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.ToIntFunction;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
@@ -51,7 +53,7 @@ public class TConstructModule implements IModule {
 	public Set<String> getDefaultMaterialBlacklist() {
 		if(BLACKLIST.isEmpty()) {
 			TinkerRegistry.getMaterialIntegrations().stream().filter(mi->mi.fluid != null).
-			map(mi->mi.oreSuffix).forEach(BLACKLIST::add);
+			map(mi->mi.oreSuffix).filter(StringUtils::isNotEmpty).forEach(BLACKLIST::add);
 			BLACKLIST.add("Emerald");
 		}
 		return BLACKLIST;

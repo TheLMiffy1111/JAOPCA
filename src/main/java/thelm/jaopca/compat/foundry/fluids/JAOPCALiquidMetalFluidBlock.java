@@ -71,7 +71,7 @@ public class JAOPCALiquidMetalFluidBlock extends JAOPCAFluidBlock {
 		if(block != Blocks.AIR) {
 			int meta = stack.getMetadata();
 			for(IBlockState state : block.getBlockState().getValidStates()) {
-				if(state != null && block.damageDropped(state) == meta) { 
+				if(state != null && block.damageDropped(state) == meta) {
 					return state;
 				}
 			}
@@ -118,8 +118,8 @@ public class JAOPCALiquidMetalFluidBlock extends JAOPCAFluidBlock {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		if(temperature < 1200) { 
-			return; 
+		if(temperature < 1200) {
+			return;
 		}
 		double dx;
 		double dy;

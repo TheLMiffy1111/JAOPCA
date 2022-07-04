@@ -94,7 +94,7 @@ public class FuturepackModule implements IModule {
 				default:
 					exOredict = miscHelper.getOredictName("dust", material.getExtra(1).getName());
 					break;
-				};
+				}
 				output = ArrayUtils.addAll(output, exOredict, 2);
 			}
 			helper.registerZentrifugeRecipe(

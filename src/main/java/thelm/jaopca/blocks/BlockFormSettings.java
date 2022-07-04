@@ -43,7 +43,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->5;
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->6;
 	private ToDoubleFunction<IMaterial> slipperinessFunction = material->0.6;
-	private boolean isFull = true;
 	private AxisAlignedBB boundingBox = Block.FULL_BLOCK_AABB;
 	private Function<IMaterial, String> harvestToolFunction = material->"";
 	private ToIntFunction<IMaterial> harvestLevelFunction = material->-1;

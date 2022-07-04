@@ -1,7 +1,6 @@
 package thelm.jaopca.compat.abyssalcraft.blocks;
 
 import com.shinoow.abyssalcraft.api.APIUtils;
-import com.shinoow.abyssalcraft.api.item.ICrystal;
 import com.shinoow.abyssalcraft.api.item.IUnlockableItem;
 import com.shinoow.abyssalcraft.api.necronomicon.condition.IUnlockCondition;
 

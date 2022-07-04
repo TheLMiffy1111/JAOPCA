@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import com.google.gson.JsonDeserializer;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -227,7 +228,11 @@ public abstract class JAOPCAApi {
 
 	public abstract boolean registerOredict(String oredict, Item item);
 
+	public abstract boolean registerOredict(String oredict, Block block);
+
 	public abstract boolean registerOredict(String oredict, ItemStack stack);
+
+	public abstract boolean registerOredict(String oredict, String metaItemString);
 
 	public abstract void registerDefaultGemOverride(String materialName);
 
