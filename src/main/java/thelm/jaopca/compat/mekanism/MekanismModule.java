@@ -119,9 +119,15 @@ public class MekanismModule implements IModule {
 					oreLocation, 1, MekanismGases.SULFURIC_ACID, 1, dirtySlurryInfo, 1000);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerDissolutionRecipe(
 						new ResourceLocation("jaopca", "mekanism.raw_material_to_dirty_slurry."+material.getName()),
 						rawMaterialLocation, 3, MekanismGases.SULFURIC_ACID, 1, dirtySlurryInfo, 2000);
+				if(itemTags.contains(rawStorageBlockLocation)) {
+					helper.registerDissolutionRecipe(
+							new ResourceLocation("jaopca", "mekanism.raw_storage_block_to_dirty_slurry."+material.getName()),
+							rawStorageBlockLocation, 1, MekanismGases.SULFURIC_ACID, 2, dirtySlurryInfo, 6000);
+				}
 			}
 		}
 		for(IMaterial material : cleanSlurryForm.getMaterials()) {
@@ -157,9 +163,15 @@ public class MekanismModule implements IModule {
 					crystalLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 1);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerInjectingRecipe(
 						new ResourceLocation("jaopca", "mekanism.raw_material_to_shard."+material.getName()),
 						rawMaterialLocation, 3, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 8);
+				if(itemTags.contains(rawStorageBlockLocation)) {
+					helper.registerInjectingRecipe(
+							new ResourceLocation("jaopca", "mekanism.raw_storage_block_to_shard."+material.getName()),
+							rawStorageBlockLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 2, shardInfo, 24);
+				}
 			}
 		}
 		for(IMaterial material : clumpForm.getMaterials()) {
@@ -174,9 +186,15 @@ public class MekanismModule implements IModule {
 					shardLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 1);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerPurifyingRecipe(
 						new ResourceLocation("jaopca", "mekanism.raw_material_to_clump."+material.getName()),
 						rawMaterialLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 2);
+				if(itemTags.contains(rawStorageBlockLocation)) {
+					helper.registerPurifyingRecipe(
+							new ResourceLocation("jaopca", "mekanism.raw_storage_block_to_clump."+material.getName()),
+							rawStorageBlockLocation, 1, MekanismGases.OXYGEN, 2, clumpInfo, 18);
+				}
 			}
 		}
 		for(IMaterial material : dirtyDustForm.getMaterials()) {
@@ -198,9 +216,15 @@ public class MekanismModule implements IModule {
 					dirtyDustLocation, 1, dustLocation, 1);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerEnrichingRecipe(
 						new ResourceLocation("jaopca", "mekanism.raw_material_to_dust."+material.getName()),
 						rawMaterialLocation, 3, dustLocation, 4);	
+				if(itemTags.contains(rawStorageBlockLocation)) {
+					helper.registerEnrichingRecipe(
+							new ResourceLocation("jaopca", "mekanism.raw_storage_block_to_dust."+material.getName()),
+							rawStorageBlockLocation, 1, dustLocation, 12);	
+				}
 			}
 		}
 	}
