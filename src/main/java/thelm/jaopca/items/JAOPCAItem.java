@@ -20,7 +20,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	private final IMaterial material;
 	protected final IItemFormSettings settings;
 
-	protected OptionalInt itemStackLimit = OptionalInt.empty();
+	protected OptionalInt maxStackSize = OptionalInt.empty();
 	protected Optional<Boolean> hasEffect = Optional.empty();
 	protected Optional<Rarity> rarity = Optional.empty();
 	protected OptionalInt burnTime = OptionalInt.empty();
@@ -43,11 +43,11 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	}
 
 	@Override
-	public int getItemStackLimit(ItemStack stack) {
-		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(material));
+	public int getMaxStackSize(ItemStack stack) {
+		if(!maxStackSize.isPresent()) {
+			maxStackSize = OptionalInt.of(settings.getMaxStackSizeFunction().applyAsInt(material));
 		}
-		return itemStackLimit.getAsInt();
+		return maxStackSize.getAsInt();
 	}
 
 	@Override

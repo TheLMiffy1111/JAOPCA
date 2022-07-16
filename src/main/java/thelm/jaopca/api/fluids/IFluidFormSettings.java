@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
 
@@ -31,13 +32,29 @@ public interface IFluidFormSettings extends IFormSettings {
 
 	ToDoubleFunction<IMaterial> getExplosionResistanceFunction();
 
-	IFluidFormSettings setCanSourcesMultiplyFunction(Predicate<IMaterial> canSourcesMultiplyFunction);
+	IFluidFormSettings setFluidTypeCreator(IFluidTypeCreator fluidTypeCreator);
 
-	Predicate<IMaterial> getCanSourcesMultiplyFunction();
+	IFluidTypeCreator getFluidTypeCreator();
 
-	IFluidFormSettings setFluidAttributesCreator(IFluidAttributesCreator fluidAttributesCreator);
+	IFluidFormSettings setLightValueFunction(ToIntFunction<IMaterial> lightValueFunction);
 
-	IFluidAttributesCreator getFluidAttributesCreator();
+	ToIntFunction<IMaterial> getLightValueFunction();
+
+	IFluidFormSettings setDensityFunction(ToIntFunction<IMaterial> densityFunction);
+
+	ToIntFunction<IMaterial> getDensityFunction();
+
+	IFluidFormSettings setTemperatureFunction(ToIntFunction<IMaterial> temperatureFunction);
+
+	ToIntFunction<IMaterial> getTemperatureFunction();
+
+	IFluidFormSettings setViscosityFunction(ToIntFunction<IMaterial> viscosityFunction);
+
+	ToIntFunction<IMaterial> getViscosityFunction();
+
+	IFluidFormSettings setDisplayRarityFunction(Function<IMaterial, Rarity> displayRarityFunction);
+
+	Function<IMaterial, Rarity> getDisplayRarityFunction();
 
 	IFluidFormSettings setFillSoundSupplier(Supplier<SoundEvent> fillSoundSupplier);
 
@@ -47,21 +64,53 @@ public interface IFluidFormSettings extends IFormSettings {
 
 	Supplier<SoundEvent> getEmptySoundSupplier();
 
-	IFluidFormSettings setDensityFunction(ToIntFunction<IMaterial> densityFunction);
+	IFluidFormSettings setVaporizeSoundSupplier(Supplier<SoundEvent> vaporizeSoundSupplier);
 
-	ToIntFunction<IMaterial> getDensityFunction();
+	Supplier<SoundEvent> getVaporizeSoundSupplier();
 
-	IFluidFormSettings setViscosityFunction(ToIntFunction<IMaterial> viscosityFunction);
+	IFluidFormSettings setMotionScaleFunction(ToDoubleFunction<IMaterial> motionScaleFunction);
 
-	ToIntFunction<IMaterial> getViscosityFunction();
+	ToDoubleFunction<IMaterial> getMotionScaleFunction();
 
-	IFluidFormSettings setTemperatureFunction(ToIntFunction<IMaterial> temperatureFunction);
+	IFluidFormSettings setCanPushEntityFunction(Predicate<IMaterial> canPushEntityFunction);
 
-	ToIntFunction<IMaterial> getTemperatureFunction();
+	Predicate<IMaterial> getCanPushEntityFunction();
 
-	IFluidFormSettings setDisplayRarityFunction(Function<IMaterial, Rarity> displayRarityFunction);
+	IFluidFormSettings setCanSwimFunction(Predicate<IMaterial> canSwimFunction);
 
-	Function<IMaterial, Rarity> getDisplayRarityFunction();
+	Predicate<IMaterial> getCanSwimFunction();
+
+	IFluidFormSettings setFallDistanceModifierFunction(ToDoubleFunction<IMaterial> fallDistanceModifierFunction);
+
+	ToDoubleFunction<IMaterial> getFallDistanceModifierFunction();
+
+	IFluidFormSettings setCanExtinguishFunction(Predicate<IMaterial> canExtinguishFunction);
+
+	Predicate<IMaterial> getCanExtinguishFunction();
+
+	IFluidFormSettings setCanDrownFunction(Predicate<IMaterial> canDrownFunction);
+
+	Predicate<IMaterial> getCanDrownFunction();
+
+	IFluidFormSettings setSupportsBoatingFunction(Predicate<IMaterial> supportsBoatingFunction);
+
+	Predicate<IMaterial> getSupportsBoatingFunction();
+
+	IFluidFormSettings setCanHydrateFunction(Predicate<IMaterial> canHydrateFunction);
+
+	Predicate<IMaterial> getCanHydrateFunction();
+
+	IFluidFormSettings setCanConvertToSourceFunction(Predicate<IMaterial> canConvertToSourceFunction);
+
+	Predicate<IMaterial> getCanConvertToSourceFunction();
+
+	IFluidFormSettings setPathTypeFunction(Function<IMaterial, BlockPathTypes> pathTypeFunction);
+
+	Function<IMaterial, BlockPathTypes> getPathTypeFunction();
+
+	IFluidFormSettings setAdjacentPathTypeFunction(Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction);
+
+	Function<IMaterial, BlockPathTypes> getAdjacentPathTypeFunction();
 
 	IFluidFormSettings setFluidBlockCreator(IFluidBlockCreator fluidBlockCreator);
 
@@ -78,10 +127,6 @@ public interface IFluidFormSettings extends IFormSettings {
 	IFluidFormSettings setMaterialColorFunction(Function<IMaterial, MaterialColor> materialColorFunction);
 
 	Function<IMaterial, MaterialColor> getMaterialColorFunction();
-
-	IFluidFormSettings setLightValueFunction(ToIntFunction<IMaterial> lightValueFunction);
-
-	ToIntFunction<IMaterial> getLightValueFunction();
 
 	IFluidFormSettings setBlockHardnessFunction(ToDoubleFunction<IMaterial> blockHardnessFunction);
 
@@ -103,9 +148,9 @@ public interface IFluidFormSettings extends IFormSettings {
 
 	IBucketItemCreator getBucketItemCreator();
 
-	IFluidFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction);
+	IFluidFormSettings setMaxStackSizeFunction(ToIntFunction<IMaterial> maxStackSizeFunction);
 
-	ToIntFunction<IMaterial> getItemStackLimitFunction();
+	ToIntFunction<IMaterial> getMaxStackSizeFunction();
 
 	IFluidFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction);
 

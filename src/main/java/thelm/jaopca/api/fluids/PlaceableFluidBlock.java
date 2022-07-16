@@ -27,6 +27,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fluids.FluidInteractionRegistry;
 
 public abstract class PlaceableFluidBlock extends Block implements BucketPickup {
 
@@ -103,7 +104,7 @@ public abstract class PlaceableFluidBlock extends Block implements BucketPickup 
 
 	@Override
 	public void onPlace(BlockState blockState, Level world, BlockPos pos, BlockState oldBlockState, boolean isMoving) {
-		if(shouldSpreadLiquid(world, pos, blockState)) {
+		if(!FluidInteractionRegistry.canInteract(world, pos)) {
 			world.scheduleTick(pos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
 		}
 	}
@@ -118,13 +119,9 @@ public abstract class PlaceableFluidBlock extends Block implements BucketPickup 
 
 	@Override
 	public void neighborChanged(BlockState blockState, Level world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		if(shouldSpreadLiquid(world, pos, blockState)) {
+		if(!FluidInteractionRegistry.canInteract(world, pos)) {
 			world.scheduleTick(pos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
 		}
-	}
-
-	public boolean shouldSpreadLiquid(Level world, BlockPos pos, BlockState blockState) {
-		return true;
 	}
 
 	@Override

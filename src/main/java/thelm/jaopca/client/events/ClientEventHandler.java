@@ -8,9 +8,8 @@ import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -47,30 +46,24 @@ public class ClientEventHandler {
 				LocalizationRepoHandler.reload();
 			}
 		});
-		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
-			ItemBlockRenderTypes.setRenderLayer(block.asBlock(), RenderType.translucent());
-		}
 		for(IMaterialFormFluid fluid : FluidFormType.getFluids()) {
 			ItemBlockRenderTypes.setRenderLayer(fluid.asFluid(), RenderType.translucent());
-		}
-		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
-			ItemBlockRenderTypes.setRenderLayer(fluidBlock.asBlock(), RenderType.translucent());
 		}
 		ModuleHandler.onClientSetup(event);
 	}
 
 	@SubscribeEvent
-	public void onModelRegistry(ModelRegistryEvent event) {
-		ModelHandler.registerModels();
+	public void onModelRegisterAdditional(ModelEvent.RegisterAdditional event) {
+		ModelHandler.registerModels(event);
 	}
 
 	@SubscribeEvent
-	public void onModelBake(ModelBakeEvent event) {
+	public void onModelBake(ModelEvent.BakingCompleted event) {
 		ModelHandler.remapModels(event);
 	}
 
 	@SubscribeEvent
-	public void onColorHandler(ColorHandlerEvent.Item event) {
+	public void onRegisterColorHandlers(RegisterColorHandlersEvent.Item event) {
 		ColorHandler.setup(event);
 	}
 

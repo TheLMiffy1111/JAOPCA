@@ -7,7 +7,7 @@
     "item.jaopca.nuggets": "Pepita de %s",
     "item.jaopca.tiny_dusts": "Pilha Minúscula de Pó de %s",
     "item.jaopca.small_dusts": "Pilha Pequena de Pó de %s",
-    "fluid.jaopca.molten": "%s Derretido",
+    "fluid_type.jaopca.molten": "%s Derretido",
     "item.jaopca.molten": "Balde de %s Derretido",
 
     "item.jaopca.create_crushed_ores": "Minério de %s Triturado",

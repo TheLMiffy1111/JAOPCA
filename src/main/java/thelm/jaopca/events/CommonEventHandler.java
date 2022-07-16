@@ -84,7 +84,9 @@ public class CommonEventHandler {
 	}
 
 	public void onAddReloadListener(AddReloadListenerEvent event) {
-		MiscHelper.INSTANCE.setTagManager((TagManager)event.getServerResources().listeners().get(0));
+		MiscHelper.INSTANCE.setTagManager(event.getServerResources().listeners().stream().
+				filter(l->l instanceof TagManager).findFirst().map(l->(TagManager)l).
+				orElseThrow(()->new IllegalStateException("Tag manager not found.")));
 	}
 
 	public void onReadRecipes(Map<ResourceLocation, JsonElement> recipeMap) {

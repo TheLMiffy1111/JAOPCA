@@ -7,7 +7,7 @@
     "item.jaopca.nuggets": "%s Nugget",
     "item.jaopca.tiny_dusts": "Tiny Pile of %s Dust",
     "item.jaopca.small_dusts": "Small Pile of %s Dust",
-    "fluid.jaopca.molten": "Molten %s",
+    "fluid_type.jaopca.molten": "Molten %s",
     "item.jaopca.molten": "Molten %s Bucket",
 
     "item.jaopca.create_crushed_ores": "Crushed %s Ore",
@@ -17,7 +17,7 @@
 
     "item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
     "item.jaopca.electrodynamics_crystals": "%s Sulfate Crystal",
-    "fluid.jaopca.electrodynamics_sulfates": "%s Sulfate",
+    "fluid_type.jaopca.electrodynamics_sulfates": "%s Sulfate",
     "item.jaopca.electrodynamics_sulfates": "%s Sulfate Bucket",
 
     "item.jaopca.mekanism_dirty_dusts": "Dirty %s Dust",

@@ -6,8 +6,8 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
@@ -30,7 +30,7 @@ public class JAOPCAFluidHandlerItem implements IFluidHandlerItem, ICapabilityPro
 	}
 
 	public FluidStack getFluid() {
-		return new FluidStack(fluid.asFluid(), FluidAttributes.BUCKET_VOLUME);
+		return new FluidStack(fluid.asFluid(), FluidType.BUCKET_VOLUME);
 	}
 
 	protected void clearFluid() {
@@ -49,7 +49,7 @@ public class JAOPCAFluidHandlerItem implements IFluidHandlerItem, ICapabilityPro
 
 	@Override
 	public int getTankCapacity(int tank) {
-		return FluidAttributes.BUCKET_VOLUME;
+		return FluidType.BUCKET_VOLUME;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class JAOPCAFluidHandlerItem implements IFluidHandlerItem, ICapabilityPro
 
 	@Override
 	public FluidStack drain(FluidStack resource, FluidAction action) {
-		if(container.getCount() != 1 || resource.getAmount() < FluidAttributes.BUCKET_VOLUME) {
+		if(container.getCount() != 1 || resource.getAmount() < FluidType.BUCKET_VOLUME) {
 			return FluidStack.EMPTY;
 		}
 		FluidStack fluidStack = getFluid();
@@ -79,7 +79,7 @@ public class JAOPCAFluidHandlerItem implements IFluidHandlerItem, ICapabilityPro
 
 	@Override
 	public FluidStack drain(int maxDrain, FluidAction action) {
-		if(container.getCount() != 1 || maxDrain < FluidAttributes.BUCKET_VOLUME) {
+		if(container.getCount() != 1 || maxDrain < FluidType.BUCKET_VOLUME) {
 			return FluidStack.EMPTY;
 		}
 		FluidStack fluidStack = getFluid();

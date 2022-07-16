@@ -4,6 +4,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidType;
 import thelm.jaopca.api.blocks.IBlockLike;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
@@ -11,12 +12,18 @@ public interface IFluidInfo extends IMaterialFormInfo, IFluidLike, IBlockLike, I
 
 	IMaterialFormFluid getMaterialFormFluid();
 
+	IMaterialFormFluidType getMaterialFormFluidType();
+
 	IMaterialFormFluidBlock getMaterialFormFluidBlock();
 
 	IMaterialFormBucketItem getMaterialFormBucketItem();
 
 	default Fluid getFluid() {
 		return getMaterialFormFluid().asFluid();
+	}
+
+	default FluidType getFluidType() {
+		return getMaterialFormFluidType().asFluidType();
 	}
 
 	default Block getFluidBlock() {

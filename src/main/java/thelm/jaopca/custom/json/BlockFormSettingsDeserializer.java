@@ -114,12 +114,12 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 			}
 			settings.setIsFireSourceFunction(helper.deserializeType(json, "isFireSource", context, FormTypeHandler.PREDICATE_TYPE));
 		}
-		if(json.has("itemStackLimit")) {
-			JsonObject functionJson = helper.getJsonObject(json, "itemStackLimit");
+		if(json.has("maxStackSize")) {
+			JsonObject functionJson = helper.getJsonObject(json, "maxStackSize");
 			if(!functionJson.has("default")) {
 				functionJson.addProperty("default", 64);
 			}
-			settings.setItemStackLimitFunction(helper.deserializeType(json, "itemStackLimit", context, FormTypeHandler.INT_FUNCTION_TYPE));
+			settings.setMaxStackSizeFunction(helper.deserializeType(json, "maxStackSize", context, FormTypeHandler.INT_FUNCTION_TYPE));
 		}
 		if(json.has("hasEffect")) {
 			boolean hasEffect = helper.getBoolean(json, "hasEffect");

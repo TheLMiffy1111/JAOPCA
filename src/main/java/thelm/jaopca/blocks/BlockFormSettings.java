@@ -24,9 +24,7 @@ import thelm.jaopca.api.blocks.IBlockLootTableCreator;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
 
-public class BlockFormSettings implements IBlockFormSettings {
-
-	BlockFormSettings() {}
+class BlockFormSettings implements IBlockFormSettings {
 
 	private IBlockCreator blockCreator = JAOPCABlock::new;
 	private Function<IMaterial, Material> materialFunction = material->Material.METAL;
@@ -60,7 +58,7 @@ public class BlockFormSettings implements IBlockFormSettings {
 						when(ExplosionCondition.survivesExplosion())).build();
 	};
 	private IBlockItemCreator itemBlockCreator = JAOPCABlockItem::new;
-	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
+	private ToIntFunction<IMaterial> maxStackSizeFunction = material->64;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private Function<IMaterial, Rarity> displayRarityFunction = material->material.getDisplayRarity();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
@@ -269,14 +267,14 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction) {
-		this.itemStackLimitFunction = itemStackLimitFunction;
+	public IBlockFormSettings setMaxStackSizeFunction(ToIntFunction<IMaterial> maxStackSizeFunction) {
+		this.maxStackSizeFunction = maxStackSizeFunction;
 		return this;
 	}
 
 	@Override
-	public ToIntFunction<IMaterial> getItemStackLimitFunction() {
-		return itemStackLimitFunction;
+	public ToIntFunction<IMaterial> getMaxStackSizeFunction() {
+		return maxStackSizeFunction;
 	}
 
 	@Override

@@ -11,12 +11,10 @@ import thelm.jaopca.api.items.IItemCreator;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
 
-public class ItemFormSettings implements IItemFormSettings {
-
-	ItemFormSettings() {}
+class ItemFormSettings implements IItemFormSettings {
 
 	private IItemCreator itemCreator = JAOPCAItem::new;
-	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
+	private ToIntFunction<IMaterial> maxStackSizeFunction = material->64;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private Function<IMaterial, Rarity> displayRarityFunction = material->material.getDisplayRarity();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
@@ -38,14 +36,14 @@ public class ItemFormSettings implements IItemFormSettings {
 	}
 
 	@Override
-	public IItemFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction) {
-		this.itemStackLimitFunction = itemStackLimitFunction;
+	public IItemFormSettings setMaxStackSizeFunction(ToIntFunction<IMaterial> maxStackSizeFunction) {
+		this.maxStackSizeFunction = maxStackSizeFunction;
 		return this;
 	}
 
 	@Override
-	public ToIntFunction<IMaterial> getItemStackLimitFunction() {
-		return itemStackLimitFunction;
+	public ToIntFunction<IMaterial> getMaxStackSizeFunction() {
+		return maxStackSizeFunction;
 	}
 
 	@Override

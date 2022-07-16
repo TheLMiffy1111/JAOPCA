@@ -95,9 +95,9 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	IBlockItemCreator getBlockItemCreator();
 
-	IBlockFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction);
+	IBlockFormSettings setMaxStackSizeFunction(ToIntFunction<IMaterial> maxStackSizeFunction);
 
-	ToIntFunction<IMaterial> getItemStackLimitFunction();
+	ToIntFunction<IMaterial> getMaxStackSizeFunction();
 
 	IBlockFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction);
 

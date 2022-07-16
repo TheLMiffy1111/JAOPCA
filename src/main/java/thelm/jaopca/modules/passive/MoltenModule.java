@@ -24,8 +24,7 @@ public class MoltenModule implements IModule {
 			setMaterialTypes(MaterialType.NON_DUSTS).setTagSeparator("_").
 			setSettings(FluidFormType.INSTANCE.getNewSettings().
 					setTickRateFunction(material->50).setDensityFunction(material->2000).
-					setTemperatureFunction(this::getTemperature).setLightValueFunction(material->10).
-					setMaterialFunction(material->Material.LAVA));
+					setTemperatureFunction(this::getTemperature).setLightValueFunction(material->10));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 

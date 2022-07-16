@@ -33,10 +33,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
@@ -50,7 +51,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	private final IMaterialFormFluid fluid;
 	private final IFluidFormSettings settings;
 
-	private OptionalInt itemStackLimit = OptionalInt.empty();
+	private OptionalInt maxStackSize = OptionalInt.empty();
 	private Optional<Boolean> hasEffect = Optional.empty();
 	private Optional<Rarity> rarity = Optional.empty();
 	private OptionalInt burnTime = OptionalInt.empty();
@@ -72,11 +73,11 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	@Override
-	public int getItemStackLimit(ItemStack stack) {
-		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(getMaterial()));
+	public int getMaxStackSize(ItemStack stack) {
+		if(!maxStackSize.isPresent()) {
+			maxStackSize = OptionalInt.of(settings.getMaxStackSizeFunction().applyAsInt(getMaterial()));
 		}
-		return itemStackLimit.getAsInt();
+		return maxStackSize.getAsInt();
 	}
 
 	@Override
@@ -153,31 +154,25 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		Block block = blockState.getBlock();
 		Material blockMaterial = blockState.getMaterial();
 		boolean flag = blockState.canBeReplaced(fluid.asFluid());
-		boolean flag1 = blockState.isAir() || flag || (block instanceof LiquidBlockContainer
-				&& ((LiquidBlockContainer) block).canPlaceLiquid(world, pos, blockState, fluid.asFluid()));
+		boolean flag1 = blockState.isAir() || flag || (block instanceof LiquidBlockContainer container
+				&& container.canPlaceLiquid(world, pos, blockState, fluid.asFluid()));
 		if(!flag1) {
 			return blockHitResult != null && emptyContents(player, world, blockHitResult.getBlockPos().relative(blockHitResult.getDirection()), null);
 		}
-		FluidStack stack = new FluidStack(fluid.asFluid(), FluidAttributes.BUCKET_VOLUME);
-		if(world.dimensionType().ultraWarm() && fluid.asFluid().is(FluidTags.WATER)) {
-			int i = pos.getX();
-			int j = pos.getY();
-			int k = pos.getZ();
-			world.playSound(player, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 2.6F+(world.random.nextFloat()-world.random.nextFloat())*0.8F);
-			for(int l = 0; l < 8; ++l) {
-				world.addParticle(ParticleTypes.LARGE_SMOKE, i+Math.random(), j+Math.random(), k+Math.random(), 0, 0, 0);
-			}
+		FluidStack stack = new FluidStack(fluid.asFluid(), FluidType.BUCKET_VOLUME);
+		if(fluid.asFluid().getFluidType().isVaporizedOnPlacement(world, pos, stack)) {
+			fluid.asFluid().getFluidType().onVaporize(player, world, pos, stack);
 			return true;
 		}
-		if(block instanceof LiquidBlockContainer && ((LiquidBlockContainer)block).canPlaceLiquid(world, pos, blockState, fluid.asFluid())) {
-			((LiquidBlockContainer) block).placeLiquid(world, pos, blockState, fluid.asFluid().defaultFluidState());
+		if(block instanceof LiquidBlockContainer container && container.canPlaceLiquid(world, pos, blockState, fluid.asFluid())) {
+			container.placeLiquid(world, pos, blockState, fluid.asFluid().defaultFluidState());
 			playEmptySound(player, world, pos);
 			return true;
 		}
 		if(!world.isClientSide && flag && !blockMaterial.isLiquid()) {
 			world.destroyBlock(pos, true);
 		}
-		if(!world.setBlock(pos, fluid.asFluid().getAttributes().getStateForPlacement(world, pos, stack).createLegacyBlock(), 11) && !blockState.getFluidState().isSource()) {
+		if(!world.setBlock(pos, fluid.asFluid().getFluidType().getStateForPlacement(world, pos, stack).createLegacyBlock(), 11) && !blockState.getFluidState().isSource()) {
 			return false;
 		}
 		playEmptySound(player, world, pos);
@@ -185,7 +180,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	protected void playEmptySound(Player player, LevelAccessor world, BlockPos pos) {
-		SoundEvent soundEvent = fluid.asFluid().getAttributes().getEmptySound();
+		SoundEvent soundEvent = fluid.asFluid().getFluidType().getSound(SoundActions.BUCKET_EMPTY);
 		if(soundEvent == null) {
 			soundEvent = fluid.asFluid().is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
 		}

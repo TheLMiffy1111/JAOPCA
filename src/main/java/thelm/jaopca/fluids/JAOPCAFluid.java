@@ -1,13 +1,12 @@
 package thelm.jaopca.fluids;
 
-import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidType;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.PlaceableFluid;
@@ -23,8 +22,6 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 
 	protected OptionalInt tickRate = OptionalInt.empty();
 	protected OptionalDouble explosionResistance = OptionalDouble.empty();
-	protected Optional<Boolean> canSourcesMultiply = Optional.empty();
-	protected Optional<Boolean> canFluidBeDisplaced = Optional.empty();
 	protected OptionalInt levelDecreasePerBlock = OptionalInt.empty();
 
 	public JAOPCAFluid(IForm form, IMaterial material, IFluidFormSettings settings) {
@@ -61,14 +58,6 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	protected boolean canConvertToSource() {
-		if(!canSourcesMultiply.isPresent()) {
-			canSourcesMultiply = Optional.of(settings.getCanSourcesMultiplyFunction().test(material));
-		}
-		return canSourcesMultiply.get();
-	}
-
-	@Override
 	protected int getDropOff(LevelReader world) {
 		if(!levelDecreasePerBlock.isPresent()) {
 			levelDecreasePerBlock = OptionalInt.of(settings.getLevelDecreasePerBlockFunction().applyAsInt(material));
@@ -77,13 +66,13 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	protected FluidAttributes createAttributes() {
-		return settings.getFluidAttributesCreator().create(this, settings);
+	public FluidState getSourceState() {
+		return defaultFluidState().setValue(levelProperty, maxLevel);
 	}
 
 	@Override
-	public Item getBucket() {
-		return FluidFormType.INSTANCE.getMaterialFormInfo(form, material).getBucketItem();
+	public FluidType getFluidType() {
+		return FluidFormType.INSTANCE.getMaterialFormInfo(form, material).getFluidType();
 	}
 
 	@Override
@@ -92,7 +81,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	public FluidState getSourceState() {
-		return defaultFluidState().setValue(levelProperty, maxLevel);
+	public Item getBucket() {
+		return FluidFormType.INSTANCE.getMaterialFormInfo(form, material).getBucketItem();
 	}
 }

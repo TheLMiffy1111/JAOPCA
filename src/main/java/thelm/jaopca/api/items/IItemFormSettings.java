@@ -15,9 +15,9 @@ public interface IItemFormSettings extends IFormSettings {
 
 	IItemCreator getItemCreator();
 
-	IItemFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction);
+	IItemFormSettings setMaxStackSizeFunction(ToIntFunction<IMaterial> maxStackSizeFunction);
 
-	ToIntFunction<IMaterial> getItemStackLimitFunction();
+	ToIntFunction<IMaterial> getMaxStackSizeFunction();
 
 	IItemFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction);
 

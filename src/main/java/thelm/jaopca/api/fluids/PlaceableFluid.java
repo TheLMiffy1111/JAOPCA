@@ -79,8 +79,6 @@ public abstract class PlaceableFluid extends Fluid {
 		return stateDefinition;
 	}
 
-	protected abstract boolean canConvertToSource();
-
 	@Override
 	protected boolean canBeReplacedWith(FluidState fluidState, BlockGetter world, BlockPos pos, Fluid fluid, Direction face) {
 		return face == Direction.DOWN && !isSame(fluid);
@@ -117,7 +115,7 @@ public abstract class PlaceableFluid extends Fluid {
 						if(affectsFlow(belowState)) {
 							offsetHeight = belowState.getOwnHeight();
 							if(offsetHeight > 0) {
-								heightDiff = state.getOwnHeight() - offsetHeight - EIGHT_NINTHS;
+								heightDiff = state.getOwnHeight() - offsetHeight + EIGHT_NINTHS;
 							}
 						}
 					}
@@ -196,7 +194,7 @@ public abstract class PlaceableFluid extends Fluid {
 			BlockState offsetBlockState = world.getBlockState(offsetPos);
 			FluidState offsetFluidState = offsetBlockState.getFluidState();
 			if(offsetFluidState.getType().isSame(this) && canPassThroughWall(direction, world, pos, blockState, offsetPos, offsetBlockState)) {
-				if(offsetFluidState.isSource() && ForgeEventFactory.canCreateFluidSource(world, pos, blockState, canConvertToSource())) {
+				if(offsetFluidState.isSource() && ForgeEventFactory.canCreateFluidSource(world, pos, blockState, offsetFluidState.canConvertToSource(world, offsetPos))) {
 					++j;
 				}
 				i = Math.max(i, offsetFluidState.getAmount());

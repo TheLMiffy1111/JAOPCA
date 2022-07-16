@@ -21,7 +21,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.registries.tags.ITag;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
@@ -56,7 +56,7 @@ public class ColorHandler {
 		return 0xFFFFFFFF;
 	};
 
-	public static void setup(ColorHandlerEvent.Item event) {
+	public static void setup(RegisterColorHandlersEvent.Item event) {
 		BlockColors blockColors = event.getBlockColors();
 		ItemColors itemColors = event.getItemColors();
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {

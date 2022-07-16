@@ -7,36 +7,48 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import thelm.jaopca.api.fluids.IBucketItemCreator;
-import thelm.jaopca.api.fluids.IFluidAttributesCreator;
 import thelm.jaopca.api.fluids.IFluidBlockCreator;
 import thelm.jaopca.api.fluids.IFluidCreator;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
+import thelm.jaopca.api.fluids.IFluidTypeCreator;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
 
-public class FluidFormSettings implements IFluidFormSettings {
-
-	FluidFormSettings() {}
+class FluidFormSettings implements IFluidFormSettings {
 
 	private IFluidCreator fluidCreator = JAOPCAFluid::new;
 	private ToIntFunction<IMaterial> maxLevelFunction = material->8;
 	private ToIntFunction<IMaterial> tickRateFunction = material->5;
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->100;
-	private Predicate<IMaterial> canSourcesMultiplyFunction = material->false;
-	private IFluidAttributesCreator fluidAttributesCreator = JAOPCAFluidAttributes::new;
-	private Supplier<SoundEvent> fillSoundSupplier = ()->null;
-	private Supplier<SoundEvent> emptySoundSupplier = ()->null;
+	private IFluidTypeCreator fluidTypeCreator = JAOPCAFluidType::new;
+	private ToIntFunction<IMaterial> lightValueFunction = material->0;
 	private ToIntFunction<IMaterial> densityFunction = material->1000;
-	private ToIntFunction<IMaterial> viscosityFunction = material->tickRateFunction.applyAsInt(material)*200;
 	private ToIntFunction<IMaterial> temperatureFunction = material->300;
+	private ToIntFunction<IMaterial> viscosityFunction = material->tickRateFunction.applyAsInt(material)*200;
 	private Function<IMaterial, Rarity> displayRarityFunction = material->Rarity.COMMON;
+	private Supplier<SoundEvent> fillSoundSupplier = ()->SoundEvents.BUCKET_FILL_LAVA;
+	private Supplier<SoundEvent> emptySoundSupplier = ()->SoundEvents.BUCKET_EMPTY_LAVA;
+	private Supplier<SoundEvent> vaporizeSoundSupplier = ()->SoundEvents.FIRE_EXTINGUISH;
+	private ToDoubleFunction<IMaterial> motionScaleFunction = material->0.007D/3;
+	private Predicate<IMaterial> canPushEntityFunction = material->true;
+	private Predicate<IMaterial> canSwimFunction = material->false;
+	private ToDoubleFunction<IMaterial> fallDistanceModifierFunction = material->0.5D;
+	private Predicate<IMaterial> canExtinguishFunction = material->false;
+	private Predicate<IMaterial> canDrownFunction = material->false;
+	private Predicate<IMaterial> supportsBoatingFunction = material->false;
+	private Predicate<IMaterial> canHydrateFunction = material->false;
+	private Predicate<IMaterial> canConvertToSourceFunction = material->false;
+	private Function<IMaterial, BlockPathTypes> pathTypeFunction = material->BlockPathTypes.LAVA;
+	private Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction = material->null;
 	private IFluidBlockCreator fluidBlockCreator = JAOPCAFluidBlock::new;
 	private ToIntFunction<IMaterial> levelDecreasePerBlockFunction = material->1;
-	private Function<IMaterial, Material> materialFunction = material->Material.WATER;
+	private Function<IMaterial, Material> materialFunction = material->Material.LAVA;
 	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
 	//material->{
 	//	int color = material.getColor();
@@ -46,13 +58,12 @@ public class FluidFormSettings implements IFluidFormSettings {
 	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
 	//			orElse(MaterialColor.IRON);
 	//};
-	private ToIntFunction<IMaterial> lightValueFunction = material->0;
 	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->100;
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
 	private IBucketItemCreator bucketItemCreator = JAOPCABucketItem::new;
-	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
+	private ToIntFunction<IMaterial> maxStackSizeFunction = material->1;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
 
@@ -106,47 +117,14 @@ public class FluidFormSettings implements IFluidFormSettings {
 	}
 
 	@Override
-	public IFluidFormSettings setCanSourcesMultiplyFunction(Predicate<IMaterial> canSourcesMultiplyFunction) {
-		this.canSourcesMultiplyFunction = canSourcesMultiplyFunction;
+	public IFluidFormSettings setFluidTypeCreator(IFluidTypeCreator fluidTypeCreator) {
+		this.fluidTypeCreator = fluidTypeCreator;
 		return this;
 	}
 
 	@Override
-	public Predicate<IMaterial> getCanSourcesMultiplyFunction() {
-		return canSourcesMultiplyFunction;
-	}
-
-	@Override
-	public IFluidFormSettings setFluidAttributesCreator(IFluidAttributesCreator fluidAttributesCreator) {
-		this.fluidAttributesCreator = fluidAttributesCreator;
-		return this;
-	}
-
-	@Override
-	public IFluidAttributesCreator getFluidAttributesCreator() {
-		return fluidAttributesCreator;
-	}
-
-	@Override
-	public IFluidFormSettings setFillSoundSupplier(Supplier<SoundEvent> fillSoundSupplier) {
-		this.fillSoundSupplier = fillSoundSupplier;
-		return this;
-	}
-
-	@Override
-	public Supplier<SoundEvent> getFillSoundSupplier() {
-		return fillSoundSupplier;
-	}
-
-	@Override
-	public IFluidFormSettings setEmptySoundSupplier(Supplier<SoundEvent> emptySoundSupplier) {
-		this.emptySoundSupplier = emptySoundSupplier;
-		return this;
-	}
-
-	@Override
-	public Supplier<SoundEvent> getEmptySoundSupplier() {
-		return emptySoundSupplier;
+	public IFluidTypeCreator getFluidTypeCreator() {
+		return fluidTypeCreator;
 	}
 
 	@Override
@@ -191,6 +169,160 @@ public class FluidFormSettings implements IFluidFormSettings {
 	@Override
 	public Function<IMaterial, Rarity> getDisplayRarityFunction() {
 		return displayRarityFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setFillSoundSupplier(Supplier<SoundEvent> fillSoundSupplier) {
+		this.fillSoundSupplier = fillSoundSupplier;
+		return this;
+	}
+
+	@Override
+	public Supplier<SoundEvent> getFillSoundSupplier() {
+		return fillSoundSupplier;
+	}
+
+	@Override
+	public IFluidFormSettings setEmptySoundSupplier(Supplier<SoundEvent> emptySoundSupplier) {
+		this.emptySoundSupplier = emptySoundSupplier;
+		return this;
+	}
+
+	@Override
+	public Supplier<SoundEvent> getEmptySoundSupplier() {
+		return emptySoundSupplier;
+	}
+
+	@Override
+	public IFluidFormSettings setVaporizeSoundSupplier(Supplier<SoundEvent> vaporizeSoundSupplier) {
+		this.vaporizeSoundSupplier = vaporizeSoundSupplier;
+		return this;
+	}
+
+	@Override
+	public Supplier<SoundEvent> getVaporizeSoundSupplier() {
+		return vaporizeSoundSupplier;
+	}
+
+	@Override
+	public IFluidFormSettings setMotionScaleFunction(ToDoubleFunction<IMaterial> motionScaleFunction) {
+		this.motionScaleFunction = motionScaleFunction;
+		return this;
+	}
+
+	@Override
+	public ToDoubleFunction<IMaterial> getMotionScaleFunction() {
+		return motionScaleFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setCanPushEntityFunction(Predicate<IMaterial> canPushEntityFunction) {
+		this.canPushEntityFunction = canPushEntityFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getCanPushEntityFunction() {
+		return canPushEntityFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setCanSwimFunction(Predicate<IMaterial> canSwimFunction) {
+		this.canSwimFunction = canSwimFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getCanSwimFunction() {
+		return canSwimFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setFallDistanceModifierFunction(ToDoubleFunction<IMaterial> fallDistanceModifierFunction) {
+		this.fallDistanceModifierFunction = fallDistanceModifierFunction;
+		return this;
+	}
+
+	@Override
+	public ToDoubleFunction<IMaterial> getFallDistanceModifierFunction() {
+		return fallDistanceModifierFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setCanExtinguishFunction(Predicate<IMaterial> canExtinguishFunction) {
+		this.canExtinguishFunction = canExtinguishFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getCanExtinguishFunction() {
+		return canExtinguishFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setCanDrownFunction(Predicate<IMaterial> canDrownFunction) {
+		this.canDrownFunction = canDrownFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getCanDrownFunction() {
+		return canDrownFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setSupportsBoatingFunction(Predicate<IMaterial> supportsBoatingFunction) {
+		this.supportsBoatingFunction = supportsBoatingFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getSupportsBoatingFunction() {
+		return supportsBoatingFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setCanHydrateFunction(Predicate<IMaterial> canHydrateFunction) {
+		this.canHydrateFunction = canHydrateFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getCanHydrateFunction() {
+		return canHydrateFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setCanConvertToSourceFunction(Predicate<IMaterial> canConvertToSourceFunction) {
+		this.canConvertToSourceFunction = canConvertToSourceFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getCanConvertToSourceFunction() {
+		return canConvertToSourceFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setPathTypeFunction(Function<IMaterial, BlockPathTypes> pathTypeFunction) {
+		this.pathTypeFunction = pathTypeFunction;
+		return this;
+	}
+
+	@Override
+	public Function<IMaterial, BlockPathTypes> getPathTypeFunction() {
+		return pathTypeFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setAdjacentPathTypeFunction(Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction) {
+		this.adjacentPathTypeFunction = adjacentPathTypeFunction;
+		return this;
+	}
+
+	@Override
+	public Function<IMaterial, BlockPathTypes> getAdjacentPathTypeFunction() {
+		return adjacentPathTypeFunction;
 	}
 
 	@Override
@@ -304,14 +436,14 @@ public class FluidFormSettings implements IFluidFormSettings {
 	}
 
 	@Override
-	public IFluidFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction) {
-		this.itemStackLimitFunction = itemStackLimitFunction;
+	public IFluidFormSettings setMaxStackSizeFunction(ToIntFunction<IMaterial> maxStackSizeFunction) {
+		this.maxStackSizeFunction = maxStackSizeFunction;
 		return this;
 	}
 
 	@Override
-	public ToIntFunction<IMaterial> getItemStackLimitFunction() {
-		return itemStackLimitFunction;
+	public ToIntFunction<IMaterial> getMaxStackSizeFunction() {
+		return maxStackSizeFunction;
 	}
 
 	@Override

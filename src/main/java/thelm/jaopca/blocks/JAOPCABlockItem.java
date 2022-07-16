@@ -22,7 +22,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 
 	protected final IBlockFormSettings settings;
 
-	protected OptionalInt itemStackLimit = OptionalInt.empty();
+	protected OptionalInt maxStackSize = OptionalInt.empty();
 	protected Optional<Boolean> hasEffect = Optional.empty();
 	protected Optional<Rarity> rarity = Optional.empty();
 	protected OptionalInt burnTime = OptionalInt.empty();
@@ -43,11 +43,11 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	}
 
 	@Override
-	public int getItemStackLimit(ItemStack stack) {
-		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(getMaterial()));
+	public int getMaxStackSize(ItemStack stack) {
+		if(!maxStackSize.isPresent()) {
+			maxStackSize = OptionalInt.of(settings.getMaxStackSizeFunction().applyAsInt(getMaterial()));
 		}
-		return itemStackLimit.getAsInt();
+		return maxStackSize.getAsInt();
 	}
 
 	@Override
