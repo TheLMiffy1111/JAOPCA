@@ -28,5 +28,8 @@
     "slurry.jaopca.mekanism_clean": "Clean %s Slurry",
 
     "item.jaopca.exnihilosequentia_pieces": "%s Ore Piece",
-    "item.jaopca.exnihilosequentia_chunks": "%s Ore Chunk"
+    "item.jaopca.exnihilosequentia_chunks": "%s Ore Chunk",
+
+    "item.jaopca.bloodmagic_gravels": "%s Gravel",
+    "item.jaopca.bloodmagic_fragments": "%s Fragment"
 }
