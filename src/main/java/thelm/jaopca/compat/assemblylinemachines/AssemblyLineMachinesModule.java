@@ -24,8 +24,10 @@ import thelm.jaopca.utils.MiscHelper;
 public class AssemblyLineMachinesModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"chromium", "coal", "copper", "diamond", "flerovium", "gold", "iron", "lapis", "netherite",
-			"netherite_scrap", "titanium"));
+			"aluminium", "aluminum", "amethyst", "ardite", "brass", "bronze", "chromium", "coal", "cobalt",
+			"constantan", "copper", "diamond", "electrum", "emerald", "flerovium", "gold", "invar", "iron",
+			"lapis", "lead", "manyullyn", "netherite", "netherite_scrap", "nickel", "osmium", "platinum",
+			"rose_gold", "silver", "tin", "titanium", "tungsten", "uranium", "zinc"));
 
 	@Override
 	public String getName() {
@@ -58,23 +60,19 @@ public class AssemblyLineMachinesModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-			int count = switch(material.getType()) {
-			case CRYSTAL, GEM -> 4;
-			default -> 2;
-			};
 			helper.registerGrinderRecipe(
 					new ResourceLocation("jaopca", "assemblylinemachines.ore_to_dust."+material.getName()),
-					oreLocation, dustLocation, count, 10, 2, false, 0F);
+					oreLocation, dustLocation, 2, 10, 2, false, 0F);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerGrinderRecipe(
 						new ResourceLocation("jaopca", "assemblylinemachines.raw_material_to_dust."+material.getName()),
-						rawMaterialLocation, dustLocation, 1, 5, 2, false, 0.5F);
+						rawMaterialLocation, dustLocation, 1, 5, 2, false, 0.25F);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerGrinderRecipe(
 							new ResourceLocation("jaopca", "assemblylinemachines.raw_storage_block_to_dust."+material.getName()),
-							rawStorageBlockLocation, dustLocation, 9, 5, 2, false, 0.25F);
+							rawStorageBlockLocation, dustLocation, 9, 10, 2, false, 0.25F);
 				}
 			}
 		}
