@@ -3,11 +3,9 @@ package thelm.jaopca.data;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -25,6 +23,7 @@ import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.repository.ServerPacksSource;
+import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
 import net.minecraftforge.resource.ResourcePackLoader;
@@ -42,7 +41,6 @@ public class DataCollector {
 	private static final int ADVANCEMENTS_PATH_LENGTH = "advancements/".length();
 	private static final int JSON_EXTENSION_LENGTH = ".json".length();
 	private static final Type JAOPCA_PACK_SUPPLIER = Type.getType(JAOPCAPackSupplier.class);
-	private static final List<PackResources> RESOURCE_PACKS = new ArrayList<>();
 	private static final TreeMultimap<String, ResourceLocation> DEFINED_TAGS = TreeMultimap.create();
 	private static final TreeSet<ResourceLocation> DEFINED_RECIPES = new TreeSet<>();
 	private static final TreeSet<ResourceLocation> DEFINED_LOOT_TABLES = new TreeSet<>();
@@ -52,16 +50,12 @@ public class DataCollector {
 		DEFINED_TAGS.clear();
 		DEFINED_RECIPES.clear();
 		DEFINED_ADVANCEMENTS.clear();
-		RESOURCE_PACKS.clear();
-
-		RESOURCE_PACKS.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
+		
+		List<PackResources> resourcePacks = new ArrayList<>();
+		resourcePacks.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
 		ModList.get().getModFiles().stream().
 		map(ResourcePackLoader::createPackForMod).
-		forEach(RESOURCE_PACKS::add);
-		/*
-		 * Fabric:
-		 * ModResourcePackUtil.appendModResourcePacks(RESOURCE_PACKS, ResourcePackType.SERVER_DATA);
-		 */
+		forEach(resourcePacks::add);
 		List<AnnotationData> annotationData = ModList.get().getAllScanData().stream().
 				flatMap(data->data.getAnnotations().stream()).
 				filter(data->JAOPCA_PACK_SUPPLIER.equals(data.annotationType())).
@@ -84,7 +78,7 @@ public class DataCollector {
 				catch(NoSuchMethodException | InvocationTargetException e) {
 					supplier = supplierInstanceClass.newInstance();
 				}
-				supplier.addPacks(RESOURCE_PACKS::add);
+				supplier.addPacks(resourcePacks::add);
 				LOGGER.debug("Loaded pack supplier {}", className);
 			}
 			catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
@@ -92,7 +86,8 @@ public class DataCollector {
 			}
 		}
 
-		for(ResourceLocation location : getAllDataResourceLocations("tags", name->name.endsWith(".json"))) {
+		MultiPackResourceManager resourceManager = new MultiPackResourceManager(PackType.SERVER_DATA, resourcePacks);
+		for(ResourceLocation location : resourceManager.listResources("tags", name->name.endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
 			path = path.substring(TAGS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
@@ -116,7 +111,7 @@ public class DataCollector {
 			}
 		}
 		LOGGER.info("Found {} unique defined tags", DEFINED_TAGS.size());
-		for(ResourceLocation location : getAllDataResourceLocations("recipes", name->name.endsWith(".json"))) {
+		for(ResourceLocation location : resourceManager.listResources("recipes", name->name.endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
 			if(!path.equals("recipes/_constants.json") && !path.equals("recipes/_factories.json")) {
@@ -125,21 +120,21 @@ public class DataCollector {
 			}
 		}
 		LOGGER.info("Found {} unique defined recipes", DEFINED_RECIPES.size());
-		for(ResourceLocation location : getAllDataResourceLocations("loot_tables", name->name.endsWith(".json"))) {
+		for(ResourceLocation location : resourceManager.listResources("loot_tables", name->name.endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
 			path = path.substring(LOOT_TABLES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
 			DEFINED_LOOT_TABLES.add(new ResourceLocation(namespace, path));
 		}
 		LOGGER.info("Found {} unique defined loot tables", DEFINED_LOOT_TABLES.size());
-		for(ResourceLocation location : getAllDataResourceLocations("advancements", name->name.endsWith(".json"))) {
+		for(ResourceLocation location : resourceManager.listResources("advancements", name->name.endsWith(".json"))) {
 			String namespace = location.getNamespace();
 			String path = location.getPath();
 			path = path.substring(ADVANCEMENTS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
 			DEFINED_ADVANCEMENTS.add(new ResourceLocation(namespace, path));
 		}
 		LOGGER.info("Found {} unique defined advancements", DEFINED_ADVANCEMENTS.size());
-		RESOURCE_PACKS.clear();
+		resourceManager.close();
 	}
 
 	public static Set<ResourceLocation> getDefinedTags(String type) {
@@ -182,16 +177,5 @@ public class DataCollector {
 			}
 		}
 		return true;
-	}
-
-
-	static Collection<ResourceLocation> getAllDataResourceLocations(String pathIn, Predicate<String> filter) {
-		Set<ResourceLocation> set = new TreeSet<>();
-		for(PackResources resourcePack : RESOURCE_PACKS) {
-			for(String namespace : resourcePack.getNamespaces(PackType.SERVER_DATA)) {
-				set.addAll(resourcePack.getResources(PackType.SERVER_DATA, namespace, pathIn, Integer.MAX_VALUE, filter));
-			}
-		}
-		return set;
 	}
 }

@@ -94,11 +94,11 @@ public class Material implements IMaterial {
 	public int getColor() {
 		if(!color.isPresent() && config != null) {
 			DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
-				ITag<Item> tag = getTag();
-				if(!tag.isBound()) {
-					LOGGER.warn("Tried to get color for material {} when tag is not bound", name);
+				if(!MaterialHandler.clientTagsBound) {
+					LOGGER.warn("Tried to get color for material {} when tags are not bound", name);
 					return;
 				}
+				ITag<Item> tag = getTag();
 				color = OptionalInt.of(0xFFFFFF);
 				MiscHelper.INSTANCE.submitAsyncTask(()->{
 					try {
