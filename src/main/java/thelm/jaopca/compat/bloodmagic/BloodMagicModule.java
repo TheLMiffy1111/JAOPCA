@@ -84,13 +84,13 @@ public class BloodMagicModule implements IModule {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerARCRecipe(
 						new ResourceLocation("jaopca", "bloodmagic.ore_to_fragment."+material.getName()),
-						oreLocation, explosiveLocation, new Object[] {
+						oreLocation, 1, explosiveLocation, new Object[] {
 								fragmentInfo, 4,
 								fragmentInfo, 1, 0.5D,
 						}, false);
 				helper.registerARCRecipe(
 						new ResourceLocation("jaopca", "bloodmagic.raw_material_to_fragment."+material.getName()),
-						rawMaterialLocation, explosiveLocation, new Object[] {
+						rawMaterialLocation, 1, explosiveLocation, new Object[] {
 								fragmentInfo, 2,
 								fragmentInfo, 1, 0.25D,
 						}, false);
@@ -98,7 +98,7 @@ public class BloodMagicModule implements IModule {
 			else {
 				helper.registerARCRecipe(
 						new ResourceLocation("jaopca", "bloodmagic.ore_to_fragment."+material.getName()),
-						oreLocation, explosiveLocation, new Object[] {
+						oreLocation, 1, explosiveLocation, new Object[] {
 								fragmentInfo, 3,
 						}, false);
 			}
@@ -108,7 +108,7 @@ public class BloodMagicModule implements IModule {
 			IItemInfo gravelInfo = itemFormType.getMaterialFormInfo(gravelForm, material);
 			helper.registerARCRecipe(
 					new ResourceLocation("jaopca", "bloodmagic.fragment_to_gravel."+material.getName()),
-					fragmentLocation, resonatorLocation, new Object[] {
+					fragmentLocation, 1, resonatorLocation, new Object[] {
 							gravelInfo, 1,
 							corruptedTinyDust, 1, 0.5D,
 					}, false);
@@ -119,19 +119,19 @@ public class BloodMagicModule implements IModule {
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerARCRecipe(
 					new ResourceLocation("jaopca", "bloodmagic.gravel_to_dust."+material.getName()),
-					gravelLocation, cuttingFluidLocation, new Object[] {
+					gravelLocation, 1, cuttingFluidLocation, new Object[] {
 							dustLocation, 1,
 					}, false);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerARCRecipe(
 						new ResourceLocation("jaopca", "bloodmagic.ore_to_dust_arc."+material.getName()),
-						oreLocation, cuttingFluidLocation, new Object[] {
+						oreLocation, 1, cuttingFluidLocation, new Object[] {
 								dustLocation, 3,
 						}, false);
 				helper.registerARCRecipe(
 						new ResourceLocation("jaopca", "bloodmagic.raw_material_to_dust_arc."+material.getName()),
-						rawMaterialLocation, cuttingFluidLocation, new Object[] {
+						rawMaterialLocation, 1, cuttingFluidLocation, new Object[] {
 								dustLocation, 1,
 								dustLocation, 1, 0.5D,
 						}, false);
@@ -139,7 +139,7 @@ public class BloodMagicModule implements IModule {
 			else {
 				helper.registerARCRecipe(
 						new ResourceLocation("jaopca", "bloodmagic.ore_to_dust_arc."+material.getName()),
-						oreLocation, cuttingFluidLocation, new Object[] {
+						oreLocation, 1, cuttingFluidLocation, new Object[] {
 								dustLocation, 2,
 						}, false);
 			}

@@ -87,7 +87,7 @@ public class ImmersiveEngineeringModule implements IModule {
 						}, 6000);
 			}
 			helper.registerArcFurnaceRecipe(
-					new ResourceLocation("jaopca", "immersiveengineering.ore_to_ingot."+material.getName()),
+					new ResourceLocation("jaopca", "immersiveengineering.ore_to_material."+material.getName()),
 					new Object[] {
 							oreLocation, 1,
 					}, slagLocation, 1, new Object[] {
@@ -110,7 +110,7 @@ public class ImmersiveEngineeringModule implements IModule {
 								dustLocation, 1, 0.33333334F,
 						}, 6000);
 				helper.registerArcFurnaceRecipe(
-						new ResourceLocation("jaopca", "immersiveengineering.raw_material_to_ingot."+material.getName()),
+						new ResourceLocation("jaopca", "immersiveengineering.raw_material_to_material."+material.getName()),
 						new Object[] {
 								rawMaterialLocation, 1,
 						}, new Object[] {
@@ -124,7 +124,7 @@ public class ImmersiveEngineeringModule implements IModule {
 									dustLocation, 12,
 							}, 54000);
 					helper.registerArcFurnaceRecipe(
-							new ResourceLocation("jaopca", "immersiveengineering.raw_storage_block_to_ingot."+material.getName()),
+							new ResourceLocation("jaopca", "immersiveengineering.raw_storage_block_to_material."+material.getName()),
 							new Object[] {
 									rawStorageBlockLocation, 1,
 							}, new Object[] {

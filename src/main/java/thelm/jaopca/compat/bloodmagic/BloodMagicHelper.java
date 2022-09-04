@@ -87,11 +87,11 @@ public class BloodMagicHelper {
 		return ApiImpl.INSTANCE.registerRecipe(key, new AlchemyTableRecipeSerializer(key, input, output, count, cost, time, minTier));
 	}
 
-	public boolean registerARCRecipe(ResourceLocation key, Object input, Object tool, Object fluidInput, int fluidInputAmount, Object[] output, Object fluidOutput, int fluidOutputAmount, boolean consumeInput) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new ARCRecipeSerializer(key, input, tool, fluidInput, fluidInputAmount, output, fluidOutput, fluidOutputAmount, consumeInput));
+	public boolean registerARCRecipe(ResourceLocation key, Object input, int inputCount, Object tool, Object fluidInput, int fluidInputAmount, Object[] output, Object fluidOutput, int fluidOutputAmount, boolean consumeInput) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new ARCRecipeSerializer(key, input, inputCount, tool, fluidInput, fluidInputAmount, output, fluidOutput, fluidOutputAmount, consumeInput));
 	}
 
-	public boolean registerARCRecipe(ResourceLocation key, Object input, Object tool, Object[] output, boolean consumeInput) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new ARCRecipeSerializer(key, input, tool, output, consumeInput));
+	public boolean registerARCRecipe(ResourceLocation key, Object input, int inputCount, Object tool, Object[] output, boolean consumeInput) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new ARCRecipeSerializer(key, input, inputCount, tool, output, consumeInput));
 	}
 }

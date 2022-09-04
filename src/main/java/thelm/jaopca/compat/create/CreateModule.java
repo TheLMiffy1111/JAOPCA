@@ -37,7 +37,8 @@ import thelm.jaopca.utils.MiscHelper;
 public class CreateModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"copper", "gold", "iron", "zinc"));
+			"aluminium", "aluminum", "copper", "gold", "iron", "lead", "nickel", "osmium", "platinum", "quicksilver",
+			"silver", "tin", "uranium", "zinc"));
 
 	static {
 		//if(ModList.get().isLoaded("allthemodium")) {
@@ -173,10 +174,10 @@ public class CreateModule implements IModule {
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
 			api.registerSmeltingRecipe(
-					new ResourceLocation("jaopca", "create.crushed_to_ingot_smelting."+material.getName()),
+					new ResourceLocation("jaopca", "create.crushed_to_material_smelting."+material.getName()),
 					crushedOreLocation, materialLocation, 1, 0.1F, 200);
 			api.registerBlastingRecipe(
-					new ResourceLocation("jaopca", "create.crushed_to_ingot_blasting."+material.getName()),
+					new ResourceLocation("jaopca", "create.crushed_to_material_blasting."+material.getName()),
 					crushedOreLocation, materialLocation, 1, 0.1F, 100);
 			helper.registerSplashingRecipe(
 					new ResourceLocation("jaopca", "create.crushed_to_nugget."+material.getName()),

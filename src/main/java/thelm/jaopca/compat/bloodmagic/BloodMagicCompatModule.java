@@ -60,7 +60,7 @@ public class BloodMagicCompatModule implements IModule {
 				if(api.getItemTags().contains(dustLocation)) {
 					helper.registerARCRecipe(
 							new ResourceLocation("jaopca", "bloodmagic.material_to_dust."+material.getName()),
-							materialLocation, explosiveLocation, new Object[] {
+							materialLocation, 1, explosiveLocation, new Object[] {
 									dustLocation, 1,
 							}, false);
 				}

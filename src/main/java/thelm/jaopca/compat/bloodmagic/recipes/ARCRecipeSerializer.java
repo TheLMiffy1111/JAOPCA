@@ -29,6 +29,7 @@ public class ARCRecipeSerializer implements IRecipeSerializer {
 
 	public final ResourceLocation key;
 	public final Object input;
+	public final int inputCount;
 	public final Object tool;
 	public final Object fluidInput;
 	public final int fluidInputAmount;
@@ -37,13 +38,14 @@ public class ARCRecipeSerializer implements IRecipeSerializer {
 	public final int fluidOutputAmount;
 	public final boolean consumeInput;
 
-	public ARCRecipeSerializer(ResourceLocation key, Object input, Object tool, Object[] output, boolean consumeInput) {
-		this(key, input, tool, null, 0, output, null, 0, consumeInput);
+	public ARCRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object tool, Object[] output, boolean consumeInput) {
+		this(key, input, inputCount, tool, null, 0, output, null, 0, consumeInput);
 	}
 
-	public ARCRecipeSerializer(ResourceLocation key, Object input, Object tool, Object fluidInput, int fluidInputAmount, Object[] output, Object fluidOutput, int fluidOutputAmount, boolean consumeInput) {
+	public ARCRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object tool, Object fluidInput, int fluidInputAmount, Object[] output, Object fluidOutput, int fluidOutputAmount, boolean consumeInput) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
+		this.inputCount = inputCount;
 		this.tool = tool;
 		this.fluidInput = fluidInput;
 		this.fluidInputAmount = fluidInputAmount;
@@ -60,7 +62,7 @@ public class ARCRecipeSerializer implements IRecipeSerializer {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		Ingredient ingTool = MiscHelper.INSTANCE.getIngredient(tool);
-		if(ingTool  == EmptyIngredient.INSTANCE) {
+		if(ingTool == EmptyIngredient.INSTANCE) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+tool);
 		}
 		FluidStackIngredient fluidIng = BloodMagicHelper.INSTANCE.getFluidStackIngredient(fluidInput, fluidInputAmount);
@@ -103,6 +105,7 @@ public class ARCRecipeSerializer implements IRecipeSerializer {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "bloodmagic:arc");
 		json.add("input", ing.toJson());
+		json.addProperty("inputsize", inputCount);
 		json.add("tool", ingTool.toJson());
 		if(fluidIng != null) {
 			json.add("inputFluid", fluidIng.serialize());

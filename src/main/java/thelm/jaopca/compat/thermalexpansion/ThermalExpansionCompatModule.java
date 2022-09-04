@@ -44,9 +44,9 @@ public class ThermalExpansionCompatModule implements IModule {
 			"netherite", "nickel", "signalum", "silver", "tin"));
 	private static final Set<String> PACKING_STORAGE_BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"amethyst", "apatite", "bronze", "charcoal", "cinnabar", "coal_coke", "coal", "constantan", "copper",
-			"diamond", "electrum", "emerald", "enderium", "gold", "gunpowder", "invar", "iron", "lapis", "lead",
-			"lumium", "netherite", "nickel", "niter", "quartz", "redstone", "ruby", "sapphire", "signalum", "silver",
-			"sulfur", "wood"));
+			"diamond", "electrum", "emerald", "enderium", "glowstone", "gold", "gunpowder", "invar", "iron", "lapis",
+			"lead", "lumium", "netherite", "nickel", "niter", "quartz", "redstone", "ruby", "sapphire", "signalum",
+			"silver", "sulfur", "wood"));
 	private static final Set<String> PACKING_NUGGET_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
 			"netherite", "nickel", "signalum", "silver", "tin"));
