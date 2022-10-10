@@ -49,6 +49,10 @@ public class Material {
 		return material.hasExtra(index);
 	}
 
+	public boolean isSmallStorageBlock() {
+		return material.isSmallStorageBlock();
+	}
+
 	public String getTag(String prefix) {
 		return getTag(prefix, "/");
 	}

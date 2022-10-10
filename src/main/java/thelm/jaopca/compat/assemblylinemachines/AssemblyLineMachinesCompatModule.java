@@ -135,7 +135,7 @@ public class AssemblyLineMachinesCompatModule implements IModule {
 				if(itemTags.contains(storageBlockLocation)) {
 					helper.registerPneumaticRecipe(
 							new ResourceLocation("jaopca", "assemblylinemachines.material_to_storage_block."+name),
-							materialLocation, 9, Items.AIR, storageBlockLocation, 1, 9);
+							materialLocation, material.isSmallStorageBlock() ? 4 : 9, Items.AIR, storageBlockLocation, 1, 9);
 				}
 			}
 			if(type == MaterialType.INGOT && !TO_RAW_BLOCK_BLACKLIST.contains(name) && !configToRawStorageBlockBlacklist.contains(name)) {

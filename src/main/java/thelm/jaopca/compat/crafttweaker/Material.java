@@ -63,6 +63,11 @@ public class Material {
 		return material.hasExtra(index);
 	}
 
+	@ZenCodeType.Getter("isSmallStorageBlock")
+	public boolean isSmallStorageBlock() {
+		return material.isSmallStorageBlock();
+	}
+
 	@ZenCodeType.Method
 	public MCTag getItemTag(String prefix) {
 		return getTag(Registry.ITEM_REGISTRY.getRegistryName(), prefix, "/");

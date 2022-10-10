@@ -277,7 +277,7 @@ public class TConstructCompatModule implements IModule {
 						if(itemTags.contains(storageBlockLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.storage_block_to_molten."+name),
-									storageBlockLocation, moltenLocation, baseAmount*9,
+									storageBlockLocation, moltenLocation, baseAmount*(material.isSmallStorageBlock() ? 4 : 9),
 									tempFunction, getMeltTimeFunction(3F));
 						}
 					}
@@ -376,7 +376,7 @@ public class TConstructCompatModule implements IModule {
 						if(itemTags.contains(storageBlockLocation)) {
 							helper.registerCastingBasinRecipe(
 									new ResourceLocation("jaopca", "tconstruct.molten_to_storage_block."+name),
-									Ingredient.EMPTY, moltenLocation, baseAmount*9,
+									Ingredient.EMPTY, moltenLocation, baseAmount*(material.isSmallStorageBlock() ? 4 : 9),
 									storageBlockLocation, 1,
 									castTimeFunction, false, false);
 						}

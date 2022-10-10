@@ -97,13 +97,17 @@ public class TConstructModule implements IModule {
 		IForm moltenForm = api.getForm("molten");
 		Set<IMaterial> moltenMaterials = moltenForm.getMaterials();
 		ResourceLocation metalTooltipLocation = new ResourceLocation("tconstruct:tooltips/metal");
+		ResourceLocation brickTooltipLocation = new ResourceLocation("tconstruct:tooltips/clay");
 		ResourceLocation gemTooltipLocation = new ResourceLocation("tconstruct:tooltips/gem_large");
+		ResourceLocation smallGemTooltipLocation = new ResourceLocation("tconstruct:tooltips/gem_small");
 		ResourceLocation sparseOreLocation = new ResourceLocation("forge:ore_rates/sparse");
 		ResourceLocation denseOreLocation = new ResourceLocation("forge:ore_rates/dense");
 		ToIntFunction<FluidStack> tempFunction = stack->stack.getFluid().getAttributes().getTemperature(stack)-300;
 		for(IMaterial material : moltenMaterials) {
-			api.registerFluidTag(material.getType().isIngot() ? metalTooltipLocation : gemTooltipLocation,
-					fluidFormType.getMaterialFormInfo(moltenForm, material).asFluid());
+			ResourceLocation tooltipLocation = material.getType().isIngot() ?
+					(material.isSmallStorageBlock() ? brickTooltipLocation : metalTooltipLocation) :
+						(material.isSmallStorageBlock() ? smallGemTooltipLocation : gemTooltipLocation);
+			api.registerFluidTag(tooltipLocation, fluidFormType.getMaterialFormInfo(moltenForm, material).asFluid());
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			if(!jaopcaOnly || moltenMaterials.contains(material)) {

@@ -200,6 +200,7 @@ public class ThermalExpansionCompatModule implements IModule {
 		Item gearDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_gear_die"));
 		Item coinDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_coin_die"));
 		Item packingDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_packing_3x3_die"));
+		Item smallPackingDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_packing_2x2_die"));
 		Item unpackingDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_unpacking_die"));
 		Item ingotCast = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:chiller_ingot_cast"));
 		Item rodCast = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:chiller_rod_cast"));
@@ -274,10 +275,18 @@ public class ThermalExpansionCompatModule implements IModule {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 				ResourceLocation storageBlockLocation = miscHelper.getTagLocation("storage_blocks", name);
 				if(itemTags.contains(storageBlockLocation)) {
-					helper.registerPressRecipe(
-							new ResourceLocation("jaopca", "thermal_expansion.material_to_storage_block."+name),
-							materialLocation, 9, packingDie, 1, storageBlockLocation, 1,
-							400, 0F);
+					if(material.isSmallStorageBlock()) {
+						helper.registerPressRecipe(
+								new ResourceLocation("jaopca", "thermal_expansion.material_to_storage_block."+name),
+								materialLocation, 4, smallPackingDie, 1, storageBlockLocation, 1,
+								400, 0F);
+					}
+					else {
+						helper.registerPressRecipe(
+								new ResourceLocation("jaopca", "thermal_expansion.material_to_storage_block."+name),
+								materialLocation, 9, packingDie, 1, storageBlockLocation, 1,
+								400, 0F);
+					}
 				}
 			}
 			if(!PACKING_NUGGET_BLACKLIST.contains(name) && !configNuggetToMaterialBlacklist.contains(name)) {
@@ -306,7 +315,7 @@ public class ThermalExpansionCompatModule implements IModule {
 				if(itemTags.contains(storageBlockLocation)) {
 					helper.registerPressRecipe(
 							new ResourceLocation("jaopca", "thermal_expansion.storage_block_to_material."+name),
-							storageBlockLocation, 1, unpackingDie, 1, materialLocation, 9,
+							storageBlockLocation, 1, unpackingDie, 1, materialLocation, material.isSmallStorageBlock() ? 4 : 9,
 							400, 0F);
 				}
 			}
