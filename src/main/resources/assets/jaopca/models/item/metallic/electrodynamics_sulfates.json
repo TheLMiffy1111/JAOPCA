@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/electrodynamics_sulfates",
-        "layer1": "jaopca:item/metallic/electrodynamics_sulfates_overlay"
-    }
-}
