@@ -1,6 +1,7 @@
 package thelm.jaopca.materials;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -32,21 +33,27 @@ public class Material implements IMaterial {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
+	private static final Set<String> DEFAULT_SMALL_BLOCKS = new TreeSet<>(Arrays.asList(
+			"amethyst", "certus_quartz", "quartz"));
+
 	private final String name;
 	private final MaterialType type;
-	private String modelType;
 	private final TreeSet<String> alternativeNames = new TreeSet<>();
-	private OptionalInt color = OptionalInt.empty();
-	private boolean hasEffect = false;
-	private Rarity displayRarity = Rarity.COMMON;
 	private final List<String> extras = new ArrayList<>();
+	private boolean hasEffect = false;
 	private final TreeSet<String> configModuleBlacklist = new TreeSet<>();
+	private boolean isSmallStorageBlock;
+	private String modelType;
+	private Rarity displayRarity = Rarity.COMMON;
+	private OptionalInt color = OptionalInt.empty();
 	private IDynamicSpecConfig config;
 	private ITag<Item> tag;
 
 	public Material(String name, MaterialType type) {
 		this.name = name;
 		this.type = type;
+
+		isSmallStorageBlock = DEFAULT_SMALL_BLOCKS.contains(name);
 
 		modelType = switch(type) {
 		case INGOT, INGOT_LEGACY, INGOT_PLAIN -> "metallic";
@@ -78,6 +85,11 @@ public class Material implements IMaterial {
 	@Override
 	public boolean hasExtra(int index) {
 		return index == 0 || index-1 < extras.size() && !StringUtils.isEmpty(extras.get(index-1));
+	}
+
+	@Override
+	public boolean isSmallStorageBlock() {
+		return isSmallStorageBlock;
 	}
 
 	@Override
@@ -133,6 +145,8 @@ public class Material implements IMaterial {
 		cfgList = config.getDefinedStringList("general.extras", extras, MaterialHandler::containsMaterial, "The byproducts of this material.");
 		extras.clear();
 		extras.addAll(cfgList);
+
+		isSmallStorageBlock = config.getDefinedBoolean("general.isSmallStorageBlock", isSmallStorageBlock, "Is the storage block of this material small (2x2).");
 
 		MiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateModuleSet(
