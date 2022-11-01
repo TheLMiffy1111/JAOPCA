@@ -36,8 +36,8 @@ public class MekanismCompatModule implements IModule {
 	private static final Set<String> TO_CRYSTAL_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"charcoal", "coal", "diamond", "emerald", "fluorite", "lapis", "quartz"));
 	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"coal", "copper", "diamond", "emerald", "gold", "iron", "lapis", "lead", "netherite", "netherite_scrap",
-			"osmium", "quartz", "redstone", "tin", "uranium"));
+			"coal", "copper", "diamond", "emerald", "fluorite", "gold", "iron", "lapis", "lead", "netherite",
+			"netherite_scrap", "osmium", "quartz", "redstone", "tin", "uranium"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToCrystalBlacklist = new TreeSet<>();
 	private static Set<String> configToOreBlacklist = new TreeSet<>();

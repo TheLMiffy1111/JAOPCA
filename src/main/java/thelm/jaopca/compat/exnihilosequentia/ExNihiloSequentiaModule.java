@@ -47,9 +47,9 @@ public class ExNihiloSequentiaModule implements IModule {
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	private final IForm pieceForm = ApiImpl.INSTANCE.newForm(this, "exnihilosequentia_pieces", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("exnihilosequentia:pieces").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("exnihilosequentia:pieces").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm chunkForm = ApiImpl.INSTANCE.newForm(this, "exnihilosequentia_chunks", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("exnihilosequentia:chunks").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("exnihilosequentia:chunks").setDefaultMaterialBlacklist(BLACKLIST);
 
 	@Override
 	public String getName() {

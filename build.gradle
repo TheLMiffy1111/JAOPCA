@@ -103,7 +103,7 @@ sourceSets {
     main
 }
 
-version = "4.1.10.16"
+version = "4.1.11.17"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.18.2"
 
@@ -113,7 +113,7 @@ eclipseJdtApt.enabled = false
 eclipseFactoryPath.enabled = false
 
 minecraft {
-    mappings channel: "parchment", version: "2022.03.13-1.18.2"
+    mappings channel: "parchment", version: "2022.09.04-1.18.2"
     runs {
         client = {
             properties "forge.logging.markers": "SCAN,REGISTRIES,REGISTRYDUMP"
@@ -135,19 +135,19 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.18.2-40.1.80"
+    minecraft "net.minecraftforge:forge:1.18.2-40.1.84"
     annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
 
-    implementation fg.deobf("mezz.jei:jei-1.18.2:9.7.2.264")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.193")
+    implementation fg.deobf("mezz.jei:jei-1.18.2:9.7.2.273")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.197")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.7.1")
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-1.18.2:0.6.5-91")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.18:3.0.41")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.18:3.0.49")
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
     implementation fg.deobf("slimeknights.mantle:Mantle:1.18.2-1.9.27")
     implementation fg.deobf("com.teamcofh:cofh_core:1.18.2-1.6.4.21")
     implementation fg.deobf("dev.latvian.mods:rhino-forge:1802.2.1-build.240")
-    implementation fg.deobf("dev.architectury:architectury-forge:4.9.84")
+    implementation fg.deobf("dev.architectury:architectury-forge:4.10.86")
     implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1802.3.6-build.140") {
         transitive = false
     }
@@ -155,8 +155,8 @@ dependencies {
         transitive = false
     }
     implementation fg.deobf("net.bdew:bdlib:1.19.3.7-mc1.18.2")
-    implementation fg.deobf("com.klikli_dev:modonomicon:1.18.2-1.4.0")
-    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.5-build.550") {
+    implementation fg.deobf("com.klikli_dev:modonomicon:1.18.2-1.6.0")
+    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.5-build.552") {
         transitive = false
     }
     implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.18.2:12.0.1")
@@ -193,6 +193,7 @@ dependencies {
     //implementation fg.deobf("curse.maven:ex-nihilo-sequentia-400012:3940034")
     implementation fg.deobf("curse.maven:blood-magic-224791:3953207")
     implementation fg.deobf("curse.maven:lavatech-533955:3798871")
+    implementation fg.deobf("curse.maven:industrial-reborn-358877:4034099")
 
     //Local
     implementation fg.deobf("novamachina.exnihilosequentia:ExNihiloSequentia:1.18.2-20220818-010806")
