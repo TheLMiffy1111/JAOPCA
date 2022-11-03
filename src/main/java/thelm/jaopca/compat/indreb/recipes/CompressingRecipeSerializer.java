@@ -80,14 +80,10 @@ public class CompressingRecipeSerializer implements IRecipeSerializer {
 		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
 		ingJson.addProperty("count", inputCount);
 		json.add("ingredient", ingJson);
-		JsonObject resultJson = new JsonObject();
-		resultJson.addProperty("item", stack.getItem().getRegistryName().toString());
-		resultJson.addProperty("count", stack.getCount());
+		JsonObject resultJson = MiscHelper.INSTANCE.serializeItemStack(stack);
 		json.add("result", resultJson);
 		if(!secondStack.isEmpty()) {
-			JsonObject secondJson = new JsonObject();
-			secondJson.addProperty("item", secondStack.getItem().getRegistryName().toString());
-			secondJson.addProperty("count", secondStack.getCount());
+			JsonObject secondJson = MiscHelper.INSTANCE.serializeItemStack(secondStack);
 			secondJson.addProperty("chance", secondChance);
 			json.add("bonus_result", secondJson);
 		}
