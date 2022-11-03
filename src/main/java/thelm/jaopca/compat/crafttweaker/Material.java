@@ -13,6 +13,7 @@ import com.blamejared.crafttweaker.api.tag.CraftTweakerTagRegistry;
 import com.blamejared.crafttweaker.api.tag.MCTag;
 
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -70,22 +71,22 @@ public class Material {
 
 	@ZenCodeType.Method
 	public MCTag getItemTag(String prefix) {
-		return getTag(Registry.ITEM_REGISTRY.getRegistryName(), prefix, "/");
+		return getTag(Registry.ITEM_REGISTRY, prefix, "/");
 	}
 
 	@ZenCodeType.Method
 	public MCTag getItemTag(String prefix, String tagSeperator) {
-		return getTag(Registry.ITEM_REGISTRY.getRegistryName(), prefix, tagSeperator);
+		return getTag(Registry.ITEM_REGISTRY, prefix, tagSeperator);
 	}
 
 	@ZenCodeType.Method
 	public MCTag getFluidTag(String prefix) {
-		return getTag(Registry.FLUID_REGISTRY.getRegistryName(), prefix, "/");
+		return getTag(Registry.FLUID_REGISTRY, prefix, "/");
 	}
 
 	@ZenCodeType.Method
 	public MCTag getFluidTag(String prefix, String tagSeperator) {
-		return getTag(Registry.FLUID_REGISTRY.getRegistryName(), prefix, tagSeperator);
+		return getTag(Registry.FLUID_REGISTRY, prefix, tagSeperator);
 	}
 
 	@ZenCodeType.Method
@@ -95,6 +96,11 @@ public class Material {
 
 	@ZenCodeType.Method
 	public MCTag getTag(ResourceLocation registry, String prefix, String tagSeperator) {
+		return CraftTweakerTagRegistry.INSTANCE.tagManager(registry).
+				tag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator));
+	}
+
+	public MCTag getTag(ResourceKey<? extends Registry<?>> registry, String prefix, String tagSeperator) {
 		return CraftTweakerTagRegistry.INSTANCE.tagManager(registry).
 				tag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator));
 	}
