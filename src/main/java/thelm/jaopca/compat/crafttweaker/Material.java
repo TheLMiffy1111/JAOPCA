@@ -100,7 +100,7 @@ public class Material {
 				tag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator));
 	}
 
-	public MCTag getTag(ResourceKey<? extends Registry<?>> registry, String prefix, String tagSeperator) {
+	public <T> MCTag getTag(ResourceKey<? extends Registry<T>> registry, String prefix, String tagSeperator) {
 		return CraftTweakerTagRegistry.INSTANCE.tagManager(registry).
 				tag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator));
 	}
