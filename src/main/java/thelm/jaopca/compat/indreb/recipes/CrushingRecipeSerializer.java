@@ -84,6 +84,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		json.add("result", resultJson);
 		if(!secondStack.isEmpty()) {
 			JsonObject secondJson = MiscHelper.INSTANCE.serializeItemStack(secondStack);
+			secondJson.addProperty("chance", secondChance);
 			json.add("bonus_result", secondJson);
 		}
 		json.addProperty("experience", experience);
