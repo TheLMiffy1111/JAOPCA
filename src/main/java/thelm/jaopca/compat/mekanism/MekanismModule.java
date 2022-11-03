@@ -53,17 +53,17 @@ public class MekanismModule implements IModule {
 	}
 
 	private final IForm dirtyDustForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty_dusts", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:dirty_dusts").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:dirty_dusts").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm clumpForm = ApiImpl.INSTANCE.newForm(this, "mekanism_clumps", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:clumps").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:clumps").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm shardForm = ApiImpl.INSTANCE.newForm(this, "mekanism_shards", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:shards").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:shards").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm crystalForm = ApiImpl.INSTANCE.newForm(this, "mekanism_crystals", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:crystals").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:crystals").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm cleanSlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_clean", SlurryFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:clean").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:clean").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty", SlurryFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:dirty").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:dirty").setDefaultMaterialBlacklist(BLACKLIST);
 
 	@Override
 	public String getName() {
