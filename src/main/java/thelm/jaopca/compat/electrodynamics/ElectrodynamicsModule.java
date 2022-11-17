@@ -111,7 +111,7 @@ public class ElectrodynamicsModule implements IModule {
 			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
 			helper.registerChemicalCrystallizerRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.sulfate_to_crystal."+material.getName()),
-					sulfateLocation, 100, crystalInfo, 1, 0);
+					sulfateLocation, 200, crystalInfo, 1, 0);
 		}
 		Item sulfurTrioxide = ForgeRegistries.ITEMS.getValue(new ResourceLocation("electrodynamics:oxidetrisulfur"));
 		for(IMaterial material : impureDustForm.getMaterials()) {
