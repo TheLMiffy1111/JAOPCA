@@ -15,10 +15,24 @@
     "item.jaopca.crossroads_grits": "Areia de %s Bruta",
     "item.jaopca.crossroads_clumps": "Aglomerado de %s",
 
+    "item.jaopca.electrodynamics_impuredusts": "Poeira %s impura",
+    "item.jaopca.electrodynamics_crystals": "%s Cristal de Sulfato",
+    "fluid.jaopca.electrodynamics_sulfates": "%s Sulfato",
+    "item.jaopca.electrodynamics_sulfates": "%s Balde de Sulfato",
+
     "item.jaopca.mekanism_dirty_dusts": "Pó de %s Sujo",
     "item.jaopca.mekanism_clumps": "Aglomerado de %s",
     "item.jaopca.mekanism_shards": "Fragmento de %s",
     "item.jaopca.mekanism_crystals": "Cristal de %s",
     "slurry.jaopca.mekanism_dirty": "Polpa de %s Suja",
     "slurry.jaopca.mekanism_clean": "Polpa de %s Pura"
+
+    "item.jaopca.exnihilosequentia_pieces": "%s Pedaço de Minério",
+    "item.jaopca.exnihilosequentia_chunks": "%s Chunk de Minério",
+
+    "item.jaopca.bloodmagic_gravels": "%s Cascalho",
+    "item.jaopca.bloodmagic_fragments": "%s Fragmento",
+
+    "item.jaopca.factorium_chunks": "%s Chunks",
+    "item.jaopca.factorium_powders": "%s Em pó"
 }
