@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.assemblylinemachines;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -25,30 +25,30 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "assemblylinemachines")
 public class AssemblyLineMachinesCompatModule implements IModule {
 
-	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
 			"aluminium", "aluminum", "amethyst", "ardite", "brass", "bronze", "chromium", "coal", "cobalt",
 			"constantan", "copper", "diamond", "electrum", "emerald", "flerovium", "gold", "invar", "iron",
 			"lapis", "lead", "manyullyn", "netherite", "netherite_scrap", "nickel", "osmium", "platinum",
 			"rose_gold", "silver", "steel", "tin", "titanium", "tungsten", "uranium", "zinc"));
-	private static final Set<String> TO_BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_BLOCK_BLACKLIST = new TreeSet<>(List.of(
 			"aluminium", "aluminum", "amethyst", "ardite", "attuned_titanium", "brass", "bronze", "chromium",
 			"coal", "cobalt", "constantan", "copper", "diamond", "electrum", "emerald", "energized_gold",
 			"flerovium", "gold", "invar", "iron", "lapis", "lead", "manyullyn", "mystium", "nickel", "novasteel",
 			"osmium", "platinum", "redstone", "rose_gold", "silver", "steel", "tin", "titanium", "tungsten",
 			"uranium", "zinc"));
-	private static final Set<String> TO_RAW_BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_RAW_BLOCK_BLACKLIST = new TreeSet<>(List.of(
 			"chromium", "flerovium", "titanium"));
-	private static final Set<String> TO_MATERIAL_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_MATERIAL_BLACKLIST = new TreeSet<>(List.of(
 			"aluminium", "aluminum", "ardite", "brass", "bronze", "chromium", "cobalt", "constantan", "copper",
 			"electrum", "flerovium", "gold", "invar", "iron", "lead", "manyullyn", "nickel", "osmium", "platinum",
 			"rose_gold", "silver", "steel", "tin", "titanium", "tungsten", "uranium", "zinc"));
-	private static final Set<String> METAL_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> METAL_BLACKLIST = new TreeSet<>(List.of(
 			"aluminium", "aluminum", "ardite", "attuned_titanium", "brass", "bronze", "chromium", "cobalt",
 			"constantan", "copper", "electrum", "energized_gold", "flerovium", "gold", "graphene", "invar",
 			"iron", "lead", "manyullyn", "mystium", "nickel", "novasteel", "osmium", "platinum", "pure_copper",
 			"pure_gold", "pure_iron", "pure_steel", "pure_titanium", "rose_gold", "silver", "steel", "tin",
 			"titanium", "tungsten", "uranium", "zinc"));
-	private static final Set<String> HAMMER_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> HAMMER_BLACKLIST = new TreeSet<>(List.of(
 			"attuned_titanium", "chromium", "copper", "energized_gold", "flerovium", "gold", "iron", "mystium",
 			"novasteel", "pure_copper", "pure_gold", "pure_iron", "pure_steel", "pure_titanium"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();

@@ -1,6 +1,5 @@
 package thelm.jaopca.compat.mekanism;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -36,7 +35,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "mekanism@[10.2.0,)")
 public class MekanismModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "lead", "netherite", "netherite_scrap", "osmium", "tin", "uranium"));
 
 	static {
@@ -84,7 +83,7 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this,
+		return List.of(ApiImpl.INSTANCE.newFormRequest(this,
 				dirtyDustForm, clumpForm, shardForm, crystalForm, dirtySlurryForm, cleanSlurryForm));
 	}
 

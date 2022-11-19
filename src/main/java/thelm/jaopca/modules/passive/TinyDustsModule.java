@@ -1,6 +1,5 @@
 package thelm.jaopca.modules.passive;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.ImmutableSetMultimap;
@@ -44,7 +43,7 @@ public class TinyDustsModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(tinyDustForm.toRequest());
+		return List.of(tinyDustForm.toRequest());
 	}
 
 	@Override

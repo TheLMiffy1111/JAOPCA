@@ -1,7 +1,5 @@
 package thelm.jaopca.compat.create;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +34,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "create")
 public class CreateModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"aluminium", "aluminum", "copper", "gold", "iron", "lead", "nickel", "osmium", "platinum", "quicksilver",
 			"silver", "tin", "uranium", "zinc"));
 
@@ -65,7 +63,7 @@ public class CreateModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(crushedOreForm.toRequest());
+		return List.of(crushedOreForm.toRequest());
 	}
 
 	@Override

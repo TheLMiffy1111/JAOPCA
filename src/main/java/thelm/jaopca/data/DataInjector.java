@@ -1,5 +1,6 @@
 package thelm.jaopca.data;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -24,6 +25,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagFile;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.storage.loot.Deserializers;
 import net.minecraft.world.level.storage.loot.LootTable;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
@@ -33,6 +35,7 @@ import thelm.jaopca.resources.InMemoryResourcePack;
 public class DataInjector {
 
 	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Map<Class<?>, Consumer<Object>> RELOAD_INJECTORS = new HashMap<>();
 	private static final ListMultimap<ResourceLocation, ResourceLocation> BLOCK_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, ResourceLocation> ITEM_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, ResourceLocation> FLUID_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
@@ -41,6 +44,16 @@ public class DataInjector {
 	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
 	private static final Gson GSON = Deserializers.createLootTableSerializer().create();
+
+	public static void init() {
+		RELOAD_INJECTORS.put(RecipeManager.class, DataInjector::injectRecipes);
+	}
+
+	public static boolean registerReloadInjector(Class<?> clazz, Consumer<Object> injector) {
+		Objects.requireNonNull(clazz);
+		Objects.requireNonNull(injector);
+		return RELOAD_INJECTORS.putIfAbsent(clazz, injector) == null;
+	}
 
 	public static boolean registerBlockTag(ResourceLocation location, ResourceLocation blockLocation) {
 		Objects.requireNonNull(location);
@@ -112,7 +125,14 @@ public class DataInjector {
 		return ADVANCEMENTS_INJECT.navigableKeySet();
 	}
 
-	public static void injectRecipes(Map<ResourceLocation, JsonElement> recipeMap) {
+	public static void reloadInject(Class<?> clazz, Object object) {
+		if(RELOAD_INJECTORS.containsKey(clazz)) {
+			RELOAD_INJECTORS.get(clazz).accept(object);
+		}
+	}
+
+	public static void injectRecipes(Object object) {
+		Map<ResourceLocation, JsonElement> recipeMap = (Map<ResourceLocation, JsonElement>)object;
 		Map<ResourceLocation, JsonElement> recipesToInject = new TreeMap<>();
 		RECIPES_INJECT.forEach((key, supplier)->{
 			if(recipeMap.containsKey(key)) {

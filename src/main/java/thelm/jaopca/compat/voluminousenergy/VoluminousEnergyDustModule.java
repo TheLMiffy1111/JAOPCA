@@ -1,7 +1,7 @@
 package thelm.jaopca.compat.voluminousenergy;
 
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,7 +23,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "voluminousenergy")
 public class VoluminousEnergyDustModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"bauxite", "cinnabar", "coal", "diamond", "emerald", "galena", "lapis", "quartz", "redstone",
 			"rutile", "saltpeter", "sulfur"));
 
@@ -61,12 +61,12 @@ public class VoluminousEnergyDustModule implements IModule {
 			if(material.hasExtra(1)) {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "voluminousenergy.ore_to_material."+material.getName()),
-						oreLocation, 1, materialLocation, 6, extraDustLocation, 1, 0.5F, 200);
+						oreLocation, 1, materialLocation, 5, extraDustLocation, 1, 0.5F, 200);
 			}
 			else {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "voluminousenergy.ore_to_material."+material.getName()),
-						oreLocation, 1, materialLocation, 6, 200);
+						oreLocation, 1, materialLocation, 5, 200);
 			}
 		}
 	}

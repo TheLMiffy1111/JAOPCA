@@ -1,7 +1,5 @@
 package thelm.jaopca.compat.crossroads;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +32,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "crossroads")
 public class CrossroadsModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "tin"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
@@ -60,7 +58,7 @@ public class CrossroadsModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this, gritForm, clumpForm));
+		return List.of(ApiImpl.INSTANCE.newFormRequest(this, gritForm, clumpForm));
 	}
 
 	@Override

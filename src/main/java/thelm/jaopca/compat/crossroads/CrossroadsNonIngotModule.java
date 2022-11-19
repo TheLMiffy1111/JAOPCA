@@ -1,7 +1,7 @@
 package thelm.jaopca.compat.crossroads;
 
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -24,7 +24,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "crossroads")
 public class CrossroadsNonIngotModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"coal", "diamond", "emerald", "lapis", "quartz", "redstone", "ruby", "void"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;

@@ -1,7 +1,6 @@
 package thelm.jaopca.compat.mekanism;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -29,13 +28,13 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "mekanism@[10.2.0,)")
 public class MekanismCompatModule implements IModule {
 
-	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
 			"bronze", "charcoal", "coal", "copper", "diamond", "emerald", "fluorite", "gold", "iron", "lapis",
 			"lead", "netherite", "osmium", "quartz", "refined_glowstone", "refined_obsidian", "steel", "tin",
 			"uranium"));
-	private static final Set<String> TO_CRYSTAL_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_CRYSTAL_BLACKLIST = new TreeSet<>(List.of(
 			"charcoal", "coal", "diamond", "emerald", "fluorite", "lapis", "quartz"));
-	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(List.of(
 			"coal", "copper", "diamond", "emerald", "fluorite", "gold", "iron", "lapis", "lead", "netherite",
 			"netherite_scrap", "osmium", "quartz", "redstone", "tin", "uranium"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
@@ -44,12 +43,12 @@ public class MekanismCompatModule implements IModule {
 
 	static {
 		if(ModList.get().isLoaded("allthemodium")) {
-			List<String> materials = Arrays.asList("allthemodium", "unobtainium", "vibranium");
+			List<String> materials = List.of("allthemodium", "unobtainium", "vibranium");
 			TO_DUST_BLACKLIST.addAll(materials);
 			TO_ORE_BLACKLIST.addAll(materials);
 		}
 		if(ModList.get().isLoaded("alltheores")) {
-			List<String> materials = Arrays.asList("aluminum", "aluminium", "nickel", "platinum", "silver", "zinc");
+			List<String> materials = List.of("aluminum", "aluminium", "nickel", "platinum", "silver", "zinc");
 			TO_DUST_BLACKLIST.addAll(materials);
 			TO_ORE_BLACKLIST.addAll(materials);
 		}

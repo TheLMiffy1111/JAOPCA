@@ -1,6 +1,5 @@
 package thelm.jaopca.modules.passive;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +36,7 @@ public class NuggetsModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(nuggetForm.toRequest());
+		return List.of(nuggetForm.toRequest());
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package thelm.jaopca.compat.factorium;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +30,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "factorium")
 public class FactoriumModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "lead", "nickel", "platinum", "silver", "tin", "zinc"));
 
 	private final IForm chunkForm = ApiImpl.INSTANCE.newForm(this, "factorium_chunks", ItemFormType.INSTANCE).
@@ -54,7 +52,7 @@ public class FactoriumModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this, chunkForm, powderForm));
+		return List.of(ApiImpl.INSTANCE.newFormRequest(this, chunkForm, powderForm));
 	}
 
 	@Override

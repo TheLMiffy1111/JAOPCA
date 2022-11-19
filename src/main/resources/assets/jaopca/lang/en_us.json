@@ -15,8 +15,16 @@
     "item.jaopca.crossroads_grits": "Raw %s Grit",
     "item.jaopca.crossroads_clumps": "%s Clumps",
 
+    "item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
+    "item.jaopca.electrodynamics_crystals": "%s Sulfate Crystal",
+    "fluid_type.jaopca.electrodynamics_sulfates": "%s Sulfate",
+    "item.jaopca.electrodynamics_sulfates": "%s Sulfate Bucket",
+
     "item.jaopca.factorium_chunks": "%s Chunks",
     "item.jaopca.factorium_powders": "%s Powder",
+
+    "item.jaopca.indreb_purified": "Purified %s",
+    "item.jaopca.indreb_chunks": "%s Chunk",
 
     "item.jaopca.mekanism_dirty_dusts": "Dirty %s Dust",
     "item.jaopca.mekanism_clumps": "%s Clump",

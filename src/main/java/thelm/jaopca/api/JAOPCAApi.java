@@ -2,6 +2,7 @@ package thelm.jaopca.api;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -309,6 +310,8 @@ public abstract class JAOPCAApi {
 	 * @return true if the tag location was not already defined
 	 */
 	public abstract boolean registerDefinedEntityTypeTag(ResourceLocation key);
+
+	public abstract boolean registerReloadInjector(Class<?> clazz, Consumer<Object> injector);
 
 	/**
 	 * Registers a block location to be added to a tag by JAOPCA's in memory data pack. Locations that do

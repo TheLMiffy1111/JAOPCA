@@ -1,7 +1,7 @@
 package thelm.jaopca.compat.cyclic;
 
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,7 +23,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "cyclic")
 public class CyclicModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "netherite", "netherite_scrap"));
 
 	@Override

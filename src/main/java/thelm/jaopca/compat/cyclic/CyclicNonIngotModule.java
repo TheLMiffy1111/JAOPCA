@@ -1,7 +1,7 @@
 package thelm.jaopca.compat.cyclic;
 
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,7 +20,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "cyclic")
 public class CyclicNonIngotModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"coal", "diamond", "emerald", "inferium", "lapis", "prosperity", "quartz", "redstone", "soulium"));
 
 	@Override
@@ -49,8 +49,8 @@ public class CyclicNonIngotModule implements IModule {
 			boolean isCrystal = material.getType().isCrystalline();
 			helper.registerCrusherRecipe(
 					new ResourceLocation("jaopca", "cyclic.ore_to_material."+material.getName()),
-					oreLocation, materialLocation, (isCrystal ? 3 : 4),
-					materialLocation, (isCrystal ? 2 : 6), (isCrystal ? 50 : 60),
+					oreLocation, materialLocation, 3,
+					materialLocation, (isCrystal ? 2 : 4), (isCrystal ? 50 : 60),
 					(isCrystal ? 600 : 300), 40);
 		}
 	}

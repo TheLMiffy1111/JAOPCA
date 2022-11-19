@@ -1,7 +1,7 @@
 package thelm.jaopca.compat.assemblylinemachines;
 
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,7 +20,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "assemblylinemachines")
 public class AssemblyLineMachinesDustModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList("redstone"));
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of("redstone"));
 
 	@Override
 	public String getName() {
@@ -47,7 +47,7 @@ public class AssemblyLineMachinesDustModule implements IModule {
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			helper.registerGrinderRecipe(
 					new ResourceLocation("jaopca", "assemblylinemachines.ore_to_material."+material.getName()),
-					oreLocation, materialLocation, 6, 10, 2, false, 0F);
+					oreLocation, materialLocation, 5, 10, 2, false, 0F);
 		}
 	}
 }

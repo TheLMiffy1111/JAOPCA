@@ -97,10 +97,10 @@ public class ArcFurnaceRecipeSerializer implements IRecipeSerializer {
 				continue;
 			}
 			if(chance == 1F) {
-				outputs.add(new IngredientWithSize(is));
+				outputs.add(new IngredientWithSize(is, count));
 			}
 			else {
-				secondary.add(Pair.of(new IngredientWithSize(is), chance));
+				secondary.add(Pair.of(new IngredientWithSize(is, count), chance));
 			}
 		}
 		if(outputs.isEmpty() && secondary.isEmpty()) {

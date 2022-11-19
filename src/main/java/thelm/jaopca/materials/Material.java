@@ -1,7 +1,6 @@
 package thelm.jaopca.materials;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +32,7 @@ public class Material implements IMaterial {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	private static final Set<String> DEFAULT_SMALL_BLOCKS = new TreeSet<>(Arrays.asList(
+	private static final Set<String> DEFAULT_SMALL_BLOCKS = new TreeSet<>(List.of(
 			"amethyst", "certus_quartz", "quartz"));
 
 	private final String name;

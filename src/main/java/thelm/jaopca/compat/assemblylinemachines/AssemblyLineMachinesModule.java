@@ -1,7 +1,7 @@
 package thelm.jaopca.compat.assemblylinemachines;
 
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,7 +23,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "assemblylinemachines")
 public class AssemblyLineMachinesModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"aluminium", "aluminum", "amethyst", "ardite", "brass", "bronze", "chromium", "coal", "cobalt",
 			"constantan", "copper", "diamond", "electrum", "emerald", "flerovium", "gold", "invar", "iron",
 			"lapis", "lead", "manyullyn", "netherite", "netherite_scrap", "nickel", "osmium", "platinum",

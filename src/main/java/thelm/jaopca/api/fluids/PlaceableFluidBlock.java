@@ -1,6 +1,5 @@
 package thelm.jaopca.api.fluids;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,7 +93,7 @@ public abstract class PlaceableFluidBlock extends Block implements BucketPickup 
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		return Collections.emptyList();
+		return List.of();
 	}
 
 	@Override

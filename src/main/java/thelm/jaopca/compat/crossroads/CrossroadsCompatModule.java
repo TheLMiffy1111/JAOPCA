@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.crossroads;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,9 +22,9 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "crossroads")
 public class CrossroadsCompatModule implements IModule {
 
-	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "tin"));
-	private static final Set<String> MOLTEN_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> MOLTEN_BLACKLIST = new TreeSet<>(List.of(
 			"copper", "copshowium", "gold", "iron", "tin"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configMaterialToMoltenBlacklist = new TreeSet<>();

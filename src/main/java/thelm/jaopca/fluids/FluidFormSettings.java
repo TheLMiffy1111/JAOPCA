@@ -32,23 +32,23 @@ class FluidFormSettings implements IFluidFormSettings {
 	private ToIntFunction<IMaterial> temperatureFunction = material->300;
 	private ToIntFunction<IMaterial> viscosityFunction = material->tickRateFunction.applyAsInt(material)*200;
 	private Function<IMaterial, Rarity> displayRarityFunction = material->Rarity.COMMON;
-	private Supplier<SoundEvent> fillSoundSupplier = ()->SoundEvents.BUCKET_FILL_LAVA;
-	private Supplier<SoundEvent> emptySoundSupplier = ()->SoundEvents.BUCKET_EMPTY_LAVA;
+	private Supplier<SoundEvent> fillSoundSupplier = ()->SoundEvents.BUCKET_FILL;
+	private Supplier<SoundEvent> emptySoundSupplier = ()->SoundEvents.BUCKET_EMPTY;
 	private Supplier<SoundEvent> vaporizeSoundSupplier = ()->SoundEvents.FIRE_EXTINGUISH;
-	private ToDoubleFunction<IMaterial> motionScaleFunction = material->0.007D/3;
+	private ToDoubleFunction<IMaterial> motionScaleFunction = material->0.014D;
 	private Predicate<IMaterial> canPushEntityFunction = material->true;
-	private Predicate<IMaterial> canSwimFunction = material->false;
+	private Predicate<IMaterial> canSwimFunction = material->true;
 	private ToDoubleFunction<IMaterial> fallDistanceModifierFunction = material->0.5D;
 	private Predicate<IMaterial> canExtinguishFunction = material->false;
-	private Predicate<IMaterial> canDrownFunction = material->false;
+	private Predicate<IMaterial> canDrownFunction = material->true;
 	private Predicate<IMaterial> supportsBoatingFunction = material->false;
 	private Predicate<IMaterial> canHydrateFunction = material->false;
 	private Predicate<IMaterial> canConvertToSourceFunction = material->false;
-	private Function<IMaterial, BlockPathTypes> pathTypeFunction = material->BlockPathTypes.LAVA;
-	private Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction = material->null;
+	private Function<IMaterial, BlockPathTypes> pathTypeFunction = material->BlockPathTypes.WATER;
+	private Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction = material->BlockPathTypes.WATER_BORDER;
 	private IFluidBlockCreator fluidBlockCreator = JAOPCAFluidBlock::new;
 	private ToIntFunction<IMaterial> levelDecreasePerBlockFunction = material->1;
-	private Function<IMaterial, Material> materialFunction = material->Material.LAVA;
+	private Function<IMaterial, Material> materialFunction = material->Material.WATER;
 	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
 	//material->{
 	//	int color = material.getColor();
@@ -62,6 +62,7 @@ class FluidFormSettings implements IFluidFormSettings {
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
+	private ToIntFunction<IMaterial> fireTimeFunction = material->-1;
 	private IBucketItemCreator bucketItemCreator = JAOPCABucketItem::new;
 	private ToIntFunction<IMaterial> maxStackSizeFunction = material->1;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
@@ -422,6 +423,17 @@ class FluidFormSettings implements IFluidFormSettings {
 	@Override
 	public Predicate<IMaterial> getIsFireSourceFunction() {
 		return isFireSourceFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setFireTimeFunction(ToIntFunction<IMaterial> fireTimeFunction) {
+		this.fireTimeFunction = fireTimeFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getFireTimeFunction() {
+		return fireTimeFunction;
 	}
 
 	@Override

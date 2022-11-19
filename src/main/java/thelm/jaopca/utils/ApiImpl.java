@@ -3,6 +3,7 @@ package thelm.jaopca.utils;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -266,6 +267,11 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerDefinedEntityTypeTag(ResourceLocation key) {
 		return DataCollector.getDefinedTags("entity_types").add(key);
+	}
+
+	@Override
+	public boolean registerReloadInjector(Class<?> clazz, Consumer<Object> injector) {
+		return DataInjector.registerReloadInjector(clazz, injector);
 	}
 
 	@Override

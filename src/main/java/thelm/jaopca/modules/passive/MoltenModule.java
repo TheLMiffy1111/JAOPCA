@@ -1,6 +1,5 @@
 package thelm.jaopca.modules.passive;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +20,9 @@ public class MoltenModule implements IModule {
 
 	private final IForm moltenForm = ApiImpl.INSTANCE.newForm(this, "molten", FluidFormType.INSTANCE).
 			setMaterialTypes(MaterialType.NON_DUSTS).setTagSeparator("_").
-			setSettings(FluidFormType.INSTANCE.getNewSettings().
-					setTickRateFunction(material->50).setDensityFunction(material->2000).
-					setTemperatureFunction(this::getTemperature).setLightValueFunction(material->10));
+			setSettings(FluidFormType.INSTANCE.getNewSettingsLava().
+					setLightValueFunction(material->10).setTickRateFunction(material->50).
+					setDensityFunction(material->2000).setTemperatureFunction(this::getTemperature));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
@@ -39,7 +38,7 @@ public class MoltenModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(moltenForm.toRequest());
+		return List.of(moltenForm.toRequest());
 	}
 
 	@Override

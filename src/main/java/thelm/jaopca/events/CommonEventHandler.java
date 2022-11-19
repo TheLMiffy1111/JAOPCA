@@ -1,13 +1,8 @@
 package thelm.jaopca.events;
 
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.JsonElement;
-
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.tags.TagManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -44,6 +39,7 @@ public class CommonEventHandler {
 	public void onConstruct(FMLConstructModEvent event) {
 		MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListener);
 		ApiImpl.INSTANCE.init();
+		DataInjector.init();
 		BlockFormType.init();
 		ItemFormType.init();
 		FluidFormType.init();
@@ -89,7 +85,7 @@ public class CommonEventHandler {
 				orElseThrow(()->new IllegalStateException("Tag manager not found.")));
 	}
 
-	public void onReadRecipes(Map<ResourceLocation, JsonElement> recipeMap) {
-		DataInjector.injectRecipes(recipeMap);
+	public void onReloadApply(Class<?> clazz, Object object) {
+		DataInjector.reloadInject(clazz, object);
 	}
 }

@@ -1,6 +1,5 @@
 package thelm.jaopca.modules.active;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
@@ -30,7 +29,7 @@ public class StorageBlocksModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(storageBlockForm.toRequest());
+		return List.of(storageBlockForm.toRequest());
 	}
 
 	@Override

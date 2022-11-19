@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.factorium;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -24,16 +24,16 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "factorium")
 public class FactoriumCompatModule implements IModule {
 
-	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(List.of(
 			"brass", "bronze", "constantan", "copper", "electrum", "gold", "invar", "iron", "lead", "nickel",
 			"platinum", "silver", "steel", "tin", "zinc"));
-	private static final Set<String> TO_GEAR_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_GEAR_BLACKLIST = new TreeSet<>(List.of(
 			"bronze", "copper", "electrum", "gold", "invar", "iron", "steel", "tin"));
-	private static final Set<String> TO_ROD_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_ROD_BLACKLIST = new TreeSet<>(List.of(
 			"brass", "bronze", "copper", "electrum", "gold", "invar", "iron", "steel", "tin"));
-	private static final Set<String> TO_WIRE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_WIRE_BLACKLIST = new TreeSet<>(List.of(
 			"copper", "platinum"));
-	private static final Set<String> TO_NUGGET_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_NUGGET_BLACKLIST = new TreeSet<>(List.of(
 			"brass", "bronze", "constantan", "copper", "electrum", "gold", "invar", "iron", "lead", "nickel",
 			"platinum", "silver", "steel", "tin", "zinc"));
 	private static Set<String> configToPlateBlacklist = new TreeSet<>();
