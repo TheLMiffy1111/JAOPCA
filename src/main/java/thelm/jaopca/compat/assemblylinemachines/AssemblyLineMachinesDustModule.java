@@ -47,7 +47,7 @@ public class AssemblyLineMachinesDustModule implements IModule {
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			helper.registerGrinderRecipe(
 					new ResourceLocation("jaopca", "assemblylinemachines.ore_to_material."+material.getName()),
-					oreLocation, materialLocation, 6, 10, 2, false, 0F);
+					oreLocation, materialLocation, 5, 10, 2, false, 0F);
 		}
 	}
 }

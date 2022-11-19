@@ -57,7 +57,7 @@ public class ImmersiveEngineeringNonIngotModule implements IModule {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation extraDustLocation = miscHelper.getTagLocation("dusts", material.getExtra(1).getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-			int outputCount = material.getType() != MaterialType.DUST ? 2 : 6;
+			int outputCount = material.getType() != MaterialType.DUST ? 2 : 5;
 			if(material.hasExtra(1)) {
 				helper.registerCrusherRecipe(
 						new ResourceLocation("jaopca", "immersiveengineering.ore_to_material."+material.getName()),

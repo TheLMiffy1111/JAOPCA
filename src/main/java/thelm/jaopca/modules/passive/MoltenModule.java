@@ -22,10 +22,9 @@ public class MoltenModule implements IModule {
 
 	private final IForm moltenForm = ApiImpl.INSTANCE.newForm(this, "molten", FluidFormType.INSTANCE).
 			setMaterialTypes(MaterialType.NON_DUSTS).setTagSeparator("_").
-			setSettings(FluidFormType.INSTANCE.getNewSettings().
+			setSettings(FluidFormType.INSTANCE.getNewSettingsLava().
 					setTickRateFunction(material->50).setDensityFunction(material->2000).
-					setTemperatureFunction(this::getTemperature).setLightValueFunction(material->10).
-					setMaterialFunction(material->Material.LAVA));
+					setTemperatureFunction(this::getTemperature).setLightValueFunction(material->10));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 

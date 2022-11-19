@@ -18,6 +18,8 @@ import com.google.gson.reflect.TypeToken;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.material.Material;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.fluids.IFluidInfo;
@@ -85,6 +87,13 @@ public class FluidFormType implements IFluidFormType {
 	@Override
 	public IFluidFormSettings getNewSettings() {
 		return new FluidFormSettings();
+	}
+
+	public IFluidFormSettings getNewSettingsLava() {
+		return new FluidFormSettings().setTickRateFunction(material->30).
+				setDensityFunction(material->2000).setTemperatureFunction(material->1000).
+				setFillSoundSupplier(()->SoundEvents.BUCKET_FILL_LAVA).setEmptySoundSupplier(()->SoundEvents.BUCKET_EMPTY_LAVA).
+				setMaterialFunction(material->Material.LAVA).setFireTimeFunction(material->15);
 	}
 
 	@Override

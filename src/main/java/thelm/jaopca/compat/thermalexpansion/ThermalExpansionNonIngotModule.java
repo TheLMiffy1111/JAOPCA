@@ -69,7 +69,7 @@ public class ThermalExpansionNonIngotModule implements IModule {
 			ResourceLocation extraDustLocation = miscHelper.getTagLocation("dusts", material.getExtra(1).getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			ResourceLocation extraMaterialLocation = miscHelper.getTagLocation(material.getExtra(1).getType().getFormName(), material.getExtra(1).getName());
-			float pulverizerChance = material.getType() != MaterialType.DUST ? 2.5F : 6.5F;
+			float pulverizerChance = material.getType() != MaterialType.DUST ? 2.5F : 5.5F;
 			float smelterChance = material.getType() != MaterialType.DUST ? 1.5F : 3.5F;
 			if(material.hasExtra(1)) {
 				if(!PULVERIZER_BLACKLIST.contains(material.getName())) {

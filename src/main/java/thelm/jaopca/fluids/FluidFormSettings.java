@@ -7,6 +7,7 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -28,8 +29,8 @@ public class FluidFormSettings implements IFluidFormSettings {
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->100;
 	private Predicate<IMaterial> canSourcesMultiplyFunction = material->false;
 	private IFluidAttributesCreator fluidAttributesCreator = JAOPCAFluidAttributes::new;
-	private Supplier<SoundEvent> fillSoundSupplier = ()->null;
-	private Supplier<SoundEvent> emptySoundSupplier = ()->null;
+	private Supplier<SoundEvent> fillSoundSupplier = ()->SoundEvents.BUCKET_FILL;
+	private Supplier<SoundEvent> emptySoundSupplier = ()->SoundEvents.BUCKET_EMPTY;
 	private ToIntFunction<IMaterial> densityFunction = material->1000;
 	private ToIntFunction<IMaterial> viscosityFunction = material->tickRateFunction.applyAsInt(material)*200;
 	private ToIntFunction<IMaterial> temperatureFunction = material->300;
@@ -51,6 +52,7 @@ public class FluidFormSettings implements IFluidFormSettings {
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
+	private ToIntFunction<IMaterial> fireTimeFunction = material->-1;
 	private IBucketItemCreator bucketItemCreator = JAOPCABucketItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
@@ -290,6 +292,17 @@ public class FluidFormSettings implements IFluidFormSettings {
 	@Override
 	public Predicate<IMaterial> getIsFireSourceFunction() {
 		return isFireSourceFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setFireTimeFunction(ToIntFunction<IMaterial> fireTimeFunction) {
+		this.fireTimeFunction = fireTimeFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getFireTimeFunction() {
+		return fireTimeFunction;
 	}
 
 	@Override

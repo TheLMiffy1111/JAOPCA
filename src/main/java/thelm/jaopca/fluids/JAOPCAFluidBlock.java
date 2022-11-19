@@ -6,7 +6,9 @@ import java.util.OptionalInt;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,6 +35,7 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	protected OptionalInt flammability = OptionalInt.empty();
 	protected OptionalInt fireSpreadSpeed = OptionalInt.empty();
 	protected Optional<Boolean> isFireSource = Optional.empty();
+	protected OptionalInt fireTime = OptionalInt.empty();
 
 	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings) {
 		super(Block.Properties.of(settings.getMaterialFunction().apply(fluid.getMaterial()),
@@ -107,5 +110,16 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 			isFireSource = Optional.of(settings.getIsFireSourceFunction().test(getMaterial()));
 		}
 		return isFireSource.get();
+	}
+
+	@Override
+	public void entityInside(BlockState blockState, Level world, BlockPos pos, Entity entity) {
+		if(!fireTime.isPresent()) {
+			fireTime = OptionalInt.of(settings.getFireTimeFunction().applyAsInt(getMaterial()));
+		}
+		int time = fireTime.getAsInt();
+		if(time > 0) {
+			entity.setSecondsOnFire(time);
+		}
 	}
 }
