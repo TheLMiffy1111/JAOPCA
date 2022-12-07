@@ -42,6 +42,9 @@ public class ThermalExpansionModule implements IModule {
 			if(ModList.get().isLoaded("create")) {
 				Collections.addAll(BLACKLIST, "zinc");
 			}
+			if(ModList.get().isLoaded("immersiveengineering")) {
+				Collections.addAll(BLACKLIST, "aluminium", "aluminum", "uranium");
+			}
 			if(ModList.get().isLoaded("tconstruct")) {
 				Collections.addAll(BLACKLIST, "cobalt");
 			}

@@ -15,8 +15,5 @@
     "item.jaopca.mekanism_shards": "%s碎片",
     "item.jaopca.mekanism_crystals": "%s晶體",
     "slurry.jaopca.mekanism_dirty": "污濁%s漿液",
-    "slurry.jaopca.mekanism_clean": "純淨%s漿液",
-
-    "item.jaopca.exnihilosequentia_pieces": "%s礦碎粒",
-    "item.jaopca.exnihilosequentia_chunks": "%s礦碎塊"
+    "slurry.jaopca.mekanism_clean": "純淨%s漿液"
 }

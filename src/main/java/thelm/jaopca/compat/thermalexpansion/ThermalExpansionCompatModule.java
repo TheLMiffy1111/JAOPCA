@@ -77,12 +77,21 @@ public class ThermalExpansionCompatModule implements IModule {
 			Collections.addAll(TO_DUST_BLACKLIST, "osmium", "platinum", "zinc");
 		}
 		if(ModList.get().isLoaded("thermal_integration")) {
+			Collections.addAll(TO_DUST_BLACKLIST, "rose_gold", "steel");
+			Collections.addAll(DUST_TO_INGOT_BLACKLIST, "rose_gold", "steel");
+			Collections.addAll(TO_PLATE_BLACKLIST, "rose_gold", "steel");
+			Collections.addAll(TO_GEAR_BLACKLIST, "rose_gold", "steel");
+			Collections.addAll(TO_COIN_BLACKLIST, "rose_gold", "steel");
+			Collections.addAll(PACKING_STORAGE_BLOCK_BLACKLIST, "rose_gold", "steel");
+			Collections.addAll(PACKING_NUGGET_BLACKLIST, "rose_gold", "steel");
 			if(ModList.get().isLoaded("create")) {
+				Collections.addAll(PACKING_STORAGE_BLOCK_BLACKLIST, "zinc");
+				Collections.addAll(PACKING_NUGGET_BLACKLIST, "zinc");
 				Collections.addAll(PACKING_RAW_STORAGE_BLOCK_BLACKLIST, "zinc");
-				//Collections.addAll(CREATE_BLACKLIST, "copper", "gold", "iron", "lead", "zinc");
-				//if(ModList.get().isLoaded("immersiveengineering")) {
-				//	Collections.addAll(CREATE_BLACKLIST, "aluminium", "aluminum", "uranium");
-				//}
+				Collections.addAll(CREATE_BLACKLIST, "copper", "gold", "iron", "lead", "nickel", "silver", "tin", "zinc");
+				if(ModList.get().isLoaded("immersiveengineering")) {
+					Collections.addAll(CREATE_BLACKLIST, "aluminium", "aluminum", "uranium");
+				}
 			}
 			if(ModList.get().isLoaded("immersiveengineering")) {
 				Collections.addAll(TO_DUST_BLACKLIST, "aluminium", "aluminum", "uranium");
@@ -96,7 +105,7 @@ public class ThermalExpansionCompatModule implements IModule {
 				Collections.addAll(MOLTEN_TO_INGOT_BLACKLIST, "amethyst_bronze", "bronze", "cobalt", "constantan", "copper",
 						"debris", "electrum", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn",
 						"netherite", "netherite_scrap", "nickel", "pig_iron", "queens_slime", "rose_gold", "silver",
-						"slimesteel", "tin");
+						"slimesteel", "steel", "tin");
 				Collections.addAll(PACKING_STORAGE_BLOCK_BLACKLIST, "amethyst_bronze", "cobalt", "hepatizon", "manyullyn",
 						"pig_iron", "queens_slime", "rose_gold", "slimesteel");
 				Collections.addAll(PACKING_NUGGET_BLACKLIST, "amethyst_bronze", "cobalt", "hepatizon", "manyullyn",

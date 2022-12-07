@@ -25,10 +25,7 @@
     "item.jaopca.mekanism_shards": "Fragmento de %s",
     "item.jaopca.mekanism_crystals": "Cristal de %s",
     "slurry.jaopca.mekanism_dirty": "Polpa de %s Suja",
-    "slurry.jaopca.mekanism_clean": "Polpa de %s Pura"
-
-    "item.jaopca.exnihilosequentia_pieces": "%s Pedaço de Minério",
-    "item.jaopca.exnihilosequentia_chunks": "%s Chunk de Minério",
+    "slurry.jaopca.mekanism_clean": "Polpa de %s Pura",
 
     "item.jaopca.bloodmagic_gravels": "%s Cascalho",
     "item.jaopca.bloodmagic_fragments": "%s Fragmento",
