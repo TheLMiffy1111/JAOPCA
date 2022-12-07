@@ -49,7 +49,7 @@ public class LavaPlusModule implements IModule {
 			if(itemTags.contains(rawStorageBlockLocation)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				helper.registerInductionFurnaceRecipe(
-						new ResourceLocation("jaopca", "mekanism.dirty_to_clean_slurry."+material.getName()),
+						new ResourceLocation("jaopca", "lavaplus.raw_storage_block_to_material."+material.getName()),
 						rawStorageBlockLocation, materialLocation, 16);
 			}
 		}
