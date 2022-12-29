@@ -77,7 +77,7 @@ sourceSets {
     main
 }
 
-version = "2.3.0.0"
+version = "2.3.1.1"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.12.2"
 
@@ -102,7 +102,7 @@ minecraft {
         "-XX:SoftRefLRUPolicyMSPerMB=10000", "-XX:ParallelGCThreads=10", "-Dmixin.hotSwap=true",
         "-Dmixin.checks.interfaces=true"
     ]
-    clientJvmArgs.add("-Xmx6G")
+    clientJvmArgs.add("-Xmx7G")
     clientJvmArgs.addAll(commonJvmArgs)
     clientRunArgs.add("--username=Dev")
     serverJvmArgs.add("-Xmx3G")
@@ -169,8 +169,6 @@ dependencies {
     deobfCompile "curse.maven:mekanism-268560:2835175"
     deobfCompile "curse.maven:modelloader-277663:2744735"
     deobfCompile "curse.maven:placebo-283644:2694382"
-    deobfCompile "curse.maven:sky-resources-243482:2758220"
-    deobfCompile "curse.maven:sky-compression-271992:2707173"
     deobfCompile "curse.maven:thaumcraft-223628:2629023"
     deobfCompile "curse.maven:thaumic-jei-285492:2705304"
     deobfCompile "curse.maven:applied-energistics-2-223794:2747063"
@@ -181,17 +179,16 @@ dependencies {
     deobfCompile "curse.maven:thermal-expansion-69163:2926431"
     deobfCompile "curse.maven:thermal-dynamics-227443:2920505"
     deobfCompile "curse.maven:abyssalcraft-53686:3425234"
-    deobfCompile "curse.maven:ex-nihilo-creatio-274456:2817545"
     deobfCompile "curse.maven:minestrappolation-5-233351:2860018"
     deobfCompile "curse.maven:buildcraft-compat-233140:3204471"
-    deobfCompile "curse.maven:hbms-nuclear-tech-mod-reloaded-435883:3835843"
+    deobfCompile "curse.maven:hbms-nuclear-tech-mod-reloaded-435883:4275574"
     deobfCompile "curse.maven:railcraft-51195:2687757"
     deobfCompile "curse.maven:cyclops-core-232758:3159497"
     deobfCompile "curse.maven:common-capabilities-247007:3053017"
     deobfCompile "curse.maven:integrated-dynamics-236307:3159505"
     deobfCompile "curse.maven:endercore-231868:2972849"
 
-    deobfCompile "zone.rong:mixinbooter:4.2"
+    deobfCompile "zone.rong:mixinbooter:7.0"
     deobfCompile "curse.maven:jeid-296289:3581715"
     deobfCompile "curse.maven:spark-361579:3245793"
     deobfCompile "curse.maven:lolasm-460609:3834448"
