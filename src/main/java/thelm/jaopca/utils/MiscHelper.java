@@ -30,6 +30,7 @@ import com.google.common.collect.TreeMultiset;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -46,6 +47,7 @@ import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.common.crafting.DifferenceIngredient;
 import net.minecraftforge.common.crafting.IntersectionIngredient;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryManager;
 import thelm.jaopca.api.fluids.IFluidLike;
@@ -383,6 +385,11 @@ public class MiscHelper implements IMiscHelper {
 	@Override
 	public Predicate<String> configModulePredicate() {
 		return CONFIG_MODULE_PREDICATE;
+	}
+
+	@Override
+	public boolean hasResource(ResourceLocation location) {
+		return DistExecutor.unsafeRunForDist(()->()->Minecraft.getInstance().getResourceManager().getResource(location).isPresent(), ()->()->false);
 	}
 
 	public <T> Future<T> submitAsyncTask(Callable<T> task) {

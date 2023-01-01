@@ -24,7 +24,7 @@ public class LocalizationHandler {
 	}
 
 	public static String getLanguage() {
-		return DistExecutor.runForDist(()->()->{
+		return DistExecutor.unsafeRunForDist(()->()->{
 			Minecraft mc = Minecraft.getInstance();
 			if(mc != null) {
 				LanguageInfo lang = mc.getLanguageManager().getSelected();

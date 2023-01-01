@@ -5,7 +5,6 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.function.Consumer;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,12 +17,10 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
@@ -31,6 +28,7 @@ import thelm.jaopca.api.fluids.IMaterialFormFluidType;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType {
 
@@ -224,37 +222,33 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 
 	@Override
 	public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
-		DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
-			consumer.accept(new IClientFluidTypeExtensions() {
-				@Override
-				public int getTintColor() {
-					return fluid.getMaterial().getColor();
+		consumer.accept(new IClientFluidTypeExtensions() {
+			@Override
+			public int getTintColor() {
+				return fluid.getMaterial().getColor();
+			}
+			@Override
+			public ResourceLocation getStillTexture() {
+				ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.asFluid());
+				if(MiscHelper.INSTANCE.hasResource(
+						new ResourceLocation(location.getNamespace(),
+								"textures/fluid/"+location.getPath()+"_still.png"))) {
+					return new ResourceLocation(location.getNamespace(), "fluid/"+location.getPath()+"_still");
 				}
-
-				@Override
-				public ResourceLocation getStillTexture() {
-					ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.asFluid());
-					if(Minecraft.getInstance().getResourceManager().getResource(
-							new ResourceLocation(location.getNamespace(),
-									"textures/fluid/"+location.getPath()+"_still.png")).isPresent()) {
-						return new ResourceLocation(location.getNamespace(), "fluid/"+location.getPath()+"_still");
-					}
-					return new ResourceLocation(location.getNamespace(),
-							"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still");
+				return new ResourceLocation(location.getNamespace(),
+						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still");
+			}
+			@Override
+			public ResourceLocation getFlowingTexture() {
+				ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.asFluid());
+				if(MiscHelper.INSTANCE.hasResource(
+						new ResourceLocation(location.getNamespace(),
+								"textures/fluid/"+location.getPath()+"_flow.png"))) {
+					return new ResourceLocation(location.getNamespace(), "fluid/"+location.getPath()+"_flow");
 				}
-
-				@Override
-				public ResourceLocation getFlowingTexture() {
-					ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.asFluid());
-					if(Minecraft.getInstance().getResourceManager().getResource(
-							new ResourceLocation(location.getNamespace(),
-									"textures/fluid/"+location.getPath()+"_flow.png")).isPresent()) {
-						return new ResourceLocation(location.getNamespace(), "fluid/"+location.getPath()+"_flow");
-					}
-					return new ResourceLocation(location.getNamespace(),
-							"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow");
-				}
-			});
+				return new ResourceLocation(location.getNamespace(),
+						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow");
+			}
 		});
 	}
 
