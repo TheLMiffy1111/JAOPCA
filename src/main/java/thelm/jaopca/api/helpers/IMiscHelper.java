@@ -66,4 +66,6 @@ public interface IMiscHelper {
 	Predicate<String> configMaterialPredicate();
 
 	Predicate<String> configModulePredicate();
+
+	boolean hasResource(ResourceLocation location);
 }

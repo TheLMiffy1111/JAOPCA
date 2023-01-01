@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;

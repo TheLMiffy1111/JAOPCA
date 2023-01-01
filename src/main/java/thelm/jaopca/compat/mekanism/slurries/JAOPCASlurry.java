@@ -9,6 +9,7 @@ import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.api.slurries.IMaterialFormSlurry;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormSettings;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class JAOPCASlurry extends Slurry implements IMaterialFormSlurry {
 
@@ -45,6 +46,17 @@ public class JAOPCASlurry extends Slurry implements IMaterialFormSlurry {
 	@Override
 	public int getTint() {
 		return 0xFFFFFF & material.getColor();
+	}
+
+	@Override
+	public ResourceLocation getIcon() {
+		if(MiscHelper.INSTANCE.hasResource(
+				new ResourceLocation(getRegistryName().getNamespace(),
+				"textures/slurry/"+getRegistryName().getPath()+".png"))) {
+			return new ResourceLocation(getRegistryName().getNamespace(),
+					"slurry/"+getRegistryName().getPath());
+		}
+		return super.getIcon();
 	}
 
 	@Override

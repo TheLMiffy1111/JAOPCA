@@ -1,18 +1,16 @@
 package thelm.jaopca.fluids;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class JAOPCAFluidAttributes extends FluidAttributes {
 
@@ -45,10 +43,9 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 		return fluid.getSourceState();
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ResourceLocation getStillTexture() {
-		if(Minecraft.getInstance().getResourceManager().hasResource(
+		if(MiscHelper.INSTANCE.hasResource(
 				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
 						"textures/fluid/"+fluid.asFluid().getRegistryName().getPath()+"_still.png"))) {
 			return new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
@@ -57,10 +54,9 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 		return super.getStillTexture();
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ResourceLocation getFlowingTexture() {
-		if(Minecraft.getInstance().getResourceManager().hasResource(
+		if(MiscHelper.INSTANCE.hasResource(
 				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
 						"textures/fluid/"+fluid.asFluid().getRegistryName().getPath()+"_flow.png"))) {
 			return new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),

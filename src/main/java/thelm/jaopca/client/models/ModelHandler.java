@@ -27,18 +27,18 @@ import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.items.ItemFormType;
+import thelm.jaopca.utils.MiscHelper;
 
 public class ModelHandler {
 
 	private static final Multimap<ResourceLocation, ResourceLocation> REMAPS = LinkedHashMultimap.create();
 
 	public static void registerModels() {
-		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		for(IMaterialFormBlock materialFormBlock : BlockFormType.getBlocks()) {
 			Block block = materialFormBlock.asBlock();
 			ResourceLocation location = block.getRegistryName();
 			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
 			block.getStateDefinition().getPossibleStates().forEach((state)->{
@@ -56,7 +56,7 @@ public class ModelHandler {
 			//TODO Change if Forge supports using blockstates in item models
 			ResourceLocation location = blockItem.getRegistryName();
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
 			ModelResourceLocation modelLocation = new ModelResourceLocation(blockItem.getRegistryName(), "inventory");
@@ -70,7 +70,7 @@ public class ModelHandler {
 			Item item = materialFormItem.asItem();
 			ResourceLocation location = item.getRegistryName();
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
 			ModelResourceLocation modelLocation = new ModelResourceLocation(item.getRegistryName(), "inventory");
@@ -84,7 +84,7 @@ public class ModelHandler {
 			Block fluidBlock = materialFormFluidBlock.asBlock();
 			ResourceLocation location = fluidBlock.getRegistryName();
 			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
 			fluidBlock.getStateDefinition().getPossibleStates().forEach((state)->{
@@ -101,7 +101,7 @@ public class ModelHandler {
 			Item bucketItem = materialFormBucketItem.asItem();
 			ResourceLocation location = bucketItem.getRegistryName();
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
-			if(false || resourceManager.hasResource(location)) {
+			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
 			ModelResourceLocation modelLocation = new ModelResourceLocation(bucketItem.getRegistryName(), "inventory");

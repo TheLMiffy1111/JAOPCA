@@ -105,7 +105,7 @@ public class Material implements IMaterial {
 	@Override
 	public int getColor() {
 		if(!color.isPresent() && config != null) {
-			DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
+			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
 				if(!MaterialHandler.clientTagsBound) {
 					LOGGER.warn("Tried to get color for material {} when tags are not bound", name);
 					return;

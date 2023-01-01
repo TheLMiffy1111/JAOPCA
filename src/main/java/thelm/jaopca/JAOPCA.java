@@ -18,7 +18,7 @@ public class JAOPCA {
 		assert mixinLoaded;
 		core = this;
 		FMLJavaModLoadingContext.get().getModEventBus().register(CommonEventHandler.getInstance());
-		DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
 			FMLJavaModLoadingContext.get().getModEventBus().register(ClientEventHandler.getInstance());
 		});
 	}
