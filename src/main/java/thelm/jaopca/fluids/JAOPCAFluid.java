@@ -82,6 +82,22 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 	}
 
 	@Override
+	public ResourceLocation getStill() {
+		if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/fluid/"+getName()+"_still.png"))) {
+			return new ResourceLocation("jaopca", "fluid/"+getName()+"_still");
+		}
+		return super.getStill();
+	}
+
+	@Override
+	public ResourceLocation getFlowing() {
+		if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/fluid/"+getName()+"_flow.png"))) {
+			return new ResourceLocation("jaopca", "fluid/"+getName()+"_flow");
+		}
+		return super.getFlowing();
+	}
+
+	@Override
 	public String getUnlocalizedName() {
 		if(!translationKey.isPresent()) {
 			translationKey = Optional.of("fluid.jaopca."+MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName()));

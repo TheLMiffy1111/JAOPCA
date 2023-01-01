@@ -7,11 +7,8 @@ import java.util.Map.Entry;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockModelMapCreator;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
@@ -32,20 +29,17 @@ public class JAOPCABlockModelMapCreator implements IBlockModelMapCreator {
 	}
 
 	public ResourceLocation getBaseModelLocation(IMaterialFormBlock materialFormBlock) {
-		return MiscHelper.INSTANCE.conditionalSupplier(FMLCommonHandler.instance().getSide()::isClient, ()->()->{
-			IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
-			Block block = materialFormBlock.asBlock();
-			ResourceLocation location = block.getRegistryName();
-			ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
-			ResourceLocation modelLocation;
-			if(hasResource(resourceManager, location1)) {
-				return location;
-			}
-			else {
-				return new ResourceLocation(location.getNamespace(),
-						materialFormBlock.getMaterial().getModelType()+'/'+materialFormBlock.getForm().getName());
-			}
-		}, ()->materialFormBlock.asBlock()::getRegistryName).get();
+		Block block = materialFormBlock.asBlock();
+		ResourceLocation location = block.getRegistryName();
+		ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
+		ResourceLocation modelLocation;
+		if(MiscHelper.INSTANCE.hasResource(location1)) {
+			return location;
+		}
+		else {
+			return new ResourceLocation(location.getNamespace(),
+					materialFormBlock.getMaterial().getModelType()+'/'+materialFormBlock.getForm().getName());
+		}
 	}
 
 	public String getPropertyString(Map<IProperty<?>, Comparable<?>> values) {
@@ -71,14 +65,5 @@ public class JAOPCABlockModelMapCreator implements IBlockModelMapCreator {
 
 	public ModelResourceLocation getModelLocation(ResourceLocation location, IBlockState state) {
 		return new ModelResourceLocation(location, getPropertyString(new LinkedHashMap<>(state.getProperties())));
-	}
-
-	public boolean hasResource(IResourceManager resourceManager, ResourceLocation location) {
-		try {
-			return resourceManager.getResource(location) != null;
-		}
-		catch(Exception e) {
-			return false;
-		}
 	}
 }

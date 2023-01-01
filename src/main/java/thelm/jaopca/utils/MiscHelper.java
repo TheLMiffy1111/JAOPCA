@@ -20,6 +20,7 @@ import com.google.common.collect.TreeMultiset;
 import com.google.common.primitives.Ints;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -27,6 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreIngredient;
 import thelm.jaopca.api.fluids.IFluidProvider;
@@ -249,6 +251,18 @@ public class MiscHelper implements IMiscHelper {
 	@Override
 	public <T> Supplier<T> conditionalSupplier(BooleanSupplier conditionSupplier, Supplier<Supplier<T>> trueSupplier, Supplier<Supplier<T>> falseSupplier) {
 		return ()->conditionSupplier.getAsBoolean() ? trueSupplier.get().get() : falseSupplier.get().get();
+	}
+
+	@Override
+	public boolean hasResource(ResourceLocation location) {
+		return conditionalSupplier(FMLCommonHandler.instance().getSide()::isClient, ()->()->{
+			try {
+				return Minecraft.getMinecraft().getResourceManager().getResource(location) != null;
+			}
+			catch(Exception e) {
+				return false;
+			}
+		}, ()->()->false).get();
 	}
 
 	public <T> Future<T> submitAsyncTask(Callable<T> task) {

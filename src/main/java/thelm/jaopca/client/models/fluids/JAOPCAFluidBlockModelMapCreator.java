@@ -7,12 +7,9 @@ import java.util.Map.Entry;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import thelm.jaopca.api.fluids.IFluidBlockModelMapCreator;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
@@ -33,20 +30,17 @@ public class JAOPCAFluidBlockModelMapCreator implements IFluidBlockModelMapCreat
 	}
 
 	public ResourceLocation getBaseModelLocation(IMaterialFormFluidBlock materialFormFluidBlock) {
-		return MiscHelper.INSTANCE.conditionalSupplier(FMLCommonHandler.instance().getSide()::isClient, ()->()->{
-			IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
-			Block block = materialFormFluidBlock.asBlock();
-			ResourceLocation location = block.getRegistryName();
-			ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
-			ResourceLocation modelLocation;
-			if(hasResource(resourceManager, location1)) {
-				return location;
-			}
-			else {
-				return new ResourceLocation(location.getNamespace(),
-						materialFormFluidBlock.getMaterial().getModelType()+'/'+materialFormFluidBlock.getForm().getName());
-			}
-		}, ()->materialFormFluidBlock.asBlock()::getRegistryName).get();
+		Block block = materialFormFluidBlock.asBlock();
+		ResourceLocation location = block.getRegistryName();
+		ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
+		ResourceLocation modelLocation;
+		if(MiscHelper.INSTANCE.hasResource(location1)) {
+			return location;
+		}
+		else {
+			return new ResourceLocation(location.getNamespace(),
+					materialFormFluidBlock.getMaterial().getModelType()+'/'+materialFormFluidBlock.getForm().getName());
+		}
 	}
 
 	public String getPropertyString(Map<IProperty<?>, Comparable<?>> values) {
@@ -74,14 +68,5 @@ public class JAOPCAFluidBlockModelMapCreator implements IFluidBlockModelMapCreat
 		Map<IProperty<?>, Comparable<?>> map = new LinkedHashMap<>(state.getProperties());
 		map.remove(BlockFluidBase.LEVEL);
 		return new ModelResourceLocation(location, getPropertyString(map));
-	}
-
-	public boolean hasResource(IResourceManager resourceManager, ResourceLocation location) {
-		try {
-			return resourceManager.getResource(location) != null;
-		}
-		catch(Exception e) {
-			return false;
-		}
 	}
 }

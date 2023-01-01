@@ -51,6 +51,14 @@ public class JAOPCAGas extends Gas implements IMaterialFormGas {
 	}
 
 	@Override
+	public ResourceLocation getIcon() {
+		if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/gas/"+getName()+".png"))) {
+			return new ResourceLocation("jaopca", "gas/"+getName());
+		}
+		return super.getIcon();
+	}
+
+	@Override
 	public String getTranslationKey() {
 		if(!translationKey.isPresent()) {
 			translationKey = Optional.of("gas.jaopca."+MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName()));

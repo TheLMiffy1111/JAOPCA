@@ -47,4 +47,6 @@ public interface IMiscHelper {
 	Runnable conditionalRunnable(BooleanSupplier conditionSupplier, Supplier<Runnable> trueRunnable, Supplier<Runnable> falseRunnable);
 
 	<T> Supplier<T> conditionalSupplier(BooleanSupplier conditionSupplier, Supplier<Supplier<T>> trueSupplier, Supplier<Supplier<T>> falseSupplier);
+
+	boolean hasResource(ResourceLocation location);
 }
