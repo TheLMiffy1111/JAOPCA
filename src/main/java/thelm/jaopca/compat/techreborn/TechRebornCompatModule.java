@@ -108,7 +108,7 @@ public class TechRebornCompatModule implements IModule {
 				if(oredict.contains(blockOredict) && oredict.contains(dustOredict) && !containsTechRebornItem(dustOredict)) {
 					helper.registerGrinderRecipe(
 							miscHelper.getRecipeKey("techreborn.block_to_dust", name),
-							blockOredict, 1, dustOredict, 9, 300, 2);
+							blockOredict, 1, dustOredict, material.isSmallStorageBlock() ? 4 : 9, 300, 2);
 				}
 			}
 			if(type.isCrystalline() && !configCrystalToPlateBlacklist.contains(name)) {

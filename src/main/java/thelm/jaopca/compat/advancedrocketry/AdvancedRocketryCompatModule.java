@@ -60,7 +60,7 @@ public class AdvancedRocketryCompatModule implements IModule {
 				if(oredict.contains(blockOredict) && oredict.contains(plateOredict)) {
 					helper.registerSmallPlatePressRecipe(
 							miscHelper.getRecipeKey("advancedrocketry.block_to_plate", material.getName()),
-							blockOredict, plateOredict, 4);
+							blockOredict, plateOredict, material.isSmallStorageBlock() ? 2 : 4);
 				}
 			}
 		}

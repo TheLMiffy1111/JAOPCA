@@ -159,7 +159,7 @@ public class TConstructCompatModule implements IModule {
 						if(oredict.contains(blockOredict)) {
 							helper.registerMeltingRecipe(
 									miscHelper.getRecipeKey("tconstruct.block_to_molten", name),
-									blockOredict, moltenName, baseAmount*9, tempFunction);
+									blockOredict, moltenName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9), tempFunction);
 						}
 					}
 					if(!configNuggetToMoltenBlacklist.contains(name)) {
@@ -198,7 +198,7 @@ public class TConstructCompatModule implements IModule {
 						if(oredict.contains(blockOredict)) {
 							helper.registerBasinCastingRecipe(
 									miscHelper.getRecipeKey("tconstruct.molten_to_block", name),
-									null, moltenName, baseAmount*9, blockOredict,
+									null, moltenName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9), blockOredict,
 									tempFunction, false, false);
 						}
 					}

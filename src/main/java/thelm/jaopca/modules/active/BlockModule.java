@@ -43,17 +43,28 @@ public class BlockModule implements IModule {
 			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 			IBlockInfo storageBlockInfo = BlockFormType.INSTANCE.getMaterialFormInfo(storageBlockForm, material);
 			String storageBlockOredict = miscHelper.getOredictName("block", material.getName());
-			api.registerShapedRecipe(
-					miscHelper.getRecipeKey("block.to_block", material.getName()),
-					storageBlockInfo, 1, new Object[] {
-							"MMM",
-							"MMM",
-							"MMM",
-							'M', materialOredict,
-					});
+			if(material.isSmallStorageBlock()) {
+				api.registerShapedRecipe(
+						miscHelper.getRecipeKey("block.to_block", material.getName()),
+						storageBlockInfo, 1, new Object[] {
+								"MM",
+								"MM",
+								'M', materialOredict,
+						});
+			}
+			else {
+				api.registerShapedRecipe(
+						miscHelper.getRecipeKey("block.to_block", material.getName()),
+						storageBlockInfo, 1, new Object[] {
+								"MMM",
+								"MMM",
+								"MMM",
+								'M', materialOredict,
+						});
+			}
 			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("block.to_material", material.getName()),
-					materialOredict, 9, new Object[] {
+					materialOredict, material.isSmallStorageBlock() ? 4 : 9, new Object[] {
 							storageBlockOredict,
 					});
 		}

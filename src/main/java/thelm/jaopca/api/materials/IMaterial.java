@@ -16,6 +16,8 @@ public interface IMaterial extends Comparable<IMaterial> {
 
 	boolean hasExtra(int index);
 
+	boolean isSmallStorageBlock();
+
 	Set<String> getConfigModuleBlacklist();
 
 	String getModelType();

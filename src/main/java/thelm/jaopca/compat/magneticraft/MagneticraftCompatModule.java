@@ -95,7 +95,7 @@ public class MagneticraftCompatModule implements IModule {
 				if(oredict.contains(blockOredict) && oredict.contains(lightPlateOredict)) {
 					helper.registerCrushingTableRecipe(
 							miscHelper.getRecipeKey("magneticraft.block_to_light_plate", name),
-							blockOredict, lightPlateOredict, 5);
+							blockOredict, lightPlateOredict, material.isSmallStorageBlock() ? 2 : 5);
 				}
 			}
 			if(type.isIngot() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {

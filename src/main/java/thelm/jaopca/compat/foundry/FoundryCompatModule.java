@@ -233,7 +233,7 @@ public class FoundryCompatModule implements IModule {
 						if(oredict.contains(blockOredict)) {
 							helper.registerMeltingRecipe(
 									miscHelper.getRecipeKey("foundry.block_to_liquid", name),
-									blockOredict, 1, liquidName, baseAmount*9,
+									blockOredict, 1, liquidName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9),
 									tempFunction, speedFunction);
 						}
 					}
@@ -310,7 +310,7 @@ public class FoundryCompatModule implements IModule {
 						if(oredict.contains(blockOredict)) {
 							helper.registerCastingRecipe(
 									miscHelper.getRecipeKey("foundry.liquid_to_block", name),
-									liquidName, baseAmount*9, blockCast,
+									liquidName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9), blockCast,
 									blockOredict, 1, speedFunction);
 						}
 					}
@@ -319,7 +319,7 @@ public class FoundryCompatModule implements IModule {
 						if(oredict.contains(blockOredict)) {
 							helper.registerCastingTableRecipe(
 									miscHelper.getRecipeKey("foundry.liquid_to_block_table", name),
-									liquidName, baseAmount*9,
+									liquidName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9),
 									blockOredict, 1, "block");
 						}
 					}
@@ -409,7 +409,7 @@ public class FoundryCompatModule implements IModule {
 						if(oredict.contains(blockOredict)) {
 							helper.registerCastingRecipe(
 									miscHelper.getRecipeKey("foundry.molten_to_block", name),
-									moltenName, 1296, blockCast,
+									moltenName, 144*(material.isSmallStorageBlock() ? 4 : 9), blockCast,
 									blockOredict, 1, speedFunction);
 						}
 					}
@@ -418,7 +418,7 @@ public class FoundryCompatModule implements IModule {
 						if(oredict.contains(blockOredict)) {
 							helper.registerCastingTableRecipe(
 									miscHelper.getRecipeKey("foundry.molten_to_block_table", name),
-									moltenName, 1296,
+									moltenName, 144*(material.isSmallStorageBlock() ? 4 : 9),
 									blockOredict, 1, "block");
 						}
 					}

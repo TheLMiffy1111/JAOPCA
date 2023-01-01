@@ -86,7 +86,7 @@ public class EnderIOCompatModule implements IModule {
 					helper.registerSagMillRecipe(
 							miscHelper.getRecipeKey("enderio.block_to_dust", name),
 							blockOredict, 3600, "none", "ignore", new Object[] {
-									dustOredict, 9, 1F,
+									dustOredict, material.isSmallStorageBlock() ? 4 : 9, 1F,
 							});
 				}
 			}

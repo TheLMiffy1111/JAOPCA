@@ -133,7 +133,7 @@ public class IC2CompatModule implements IModule {
 				if(oredict.contains(blockOredict) && oredict.contains(plateOredict)) {
 					helper.registerBlockCutterRecipe(
 							miscHelper.getRecipeKey("ic2.block_to_plate", name),
-							blockOredict, 1, plateOredict, 9, 5);
+							blockOredict, 1, plateOredict, material.isSmallStorageBlock() ? 4 : 9, 5);
 				}
 			}
 			if(!PLATE_BLACKLIST.contains(name) && !configPlateToDustBlacklist.contains(name)) {
@@ -169,7 +169,7 @@ public class IC2CompatModule implements IModule {
 				if(oredict.contains(blockOredict)) {
 					helper.registerCompressorRecipe(
 							miscHelper.getRecipeKey("ic2.material_to_block", name),
-							materialOredict, 9, blockOredict, 1);
+							materialOredict, material.isSmallStorageBlock() ? 4 : 9, blockOredict, 1);
 				}
 			}
 			if(!TINY_DUST_TO_DUST_BLACKLIST.contains(name) && !configTinyDustToDustBlacklist.contains(name)) {

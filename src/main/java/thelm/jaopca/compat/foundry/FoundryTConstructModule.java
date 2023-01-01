@@ -108,7 +108,7 @@ public class FoundryTConstructModule implements IModule {
 						if(oredict.contains(blockOredict)) {
 							helper.registerBasinCastingRecipe(
 									miscHelper.getRecipeKey("foundry_tconstruct.liquid_to_block", name),
-									null, liquidName, baseAmount*9, blockOredict,
+									null, liquidName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9), blockOredict,
 									tempFunction, false, false);
 						}
 					}
