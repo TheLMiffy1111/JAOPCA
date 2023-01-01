@@ -48,39 +48,75 @@ repositories {
     }
     maven {
         url = "https://dvs1.progwml6.com/files/maven/"
+        content {
+            includeGroup "mezz.jei"
+            includeGroup "slimeknights.mantle"
+            includeGroup "slimeknights.tconstruct"
+        }
     }
     maven {
         url = "https://maven.blamejared.com/"
+        content {
+            includeGroup "blusunrize.immersiveengineering"
+            includeGroup "com.blamejared.crafttweaker"
+            includeGroup "net.darkhax.openloader"
+            includeGroup "vazkii.patchouli"
+        }
     }
     maven {
         url = "https://maven.theillusivec4.top/"
-    }
-    maven {
-        url = "https://maven.hellfiredev.net/"
+        content {
+            includeGroup "top.theillusivec4.curios"
+        }
     }
     maven {
         url = "https://maven.architectury.dev/"
+		content {
+            includeGroup "dev.architectury"
+        }
     }
     maven {
-        url = "https://maven.saps.dev/minecraft/"
+        url = "https://maven.saps.dev/releases/"
+        content {
+            includeGroup "dev.ftb.mods"
+            includeGroup "dev.latvian.mods"
+        }
     }
     maven {
         url = "https://maven.tterrag.com/"
+        content {
+            includeGroup "com.simibubi.create"
+        }
     }
     maven {
         url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+        content {
+            includeGroup "software.bernie.geckolib"
+        }
     }
     maven {
         url = "https://maven.covers1624.net/"
+        content {
+            includeGroup "com.teamcofh"
+        }
     }
     maven {
         url = "https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1/"
+        content {
+            includeGroup "com.kotori316"
+        }
     }
     maven {
         url = "https://jenkins.bdew.net/maven/"
+        content {
+            includeGroup "net.bdew"
+        }
     }
     maven {
         url = "https://repo.repsy.io/mvn/klikli-dev/mods/"
+        content {
+            includeGroup "com.klikli_dev"
+        }
     }
     maven {
         url = "https://jitpack.io/"
@@ -142,6 +178,7 @@ dependencies {
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
     //implementation fg.deobf("slimeknights.mantle:Mantle:1.19-1.10.+")
     implementation fg.deobf("com.teamcofh:cofh_core:1.19.2-10.0.0.29")
+    implementation fg.deobf("com.teamcofh:thermal_core:1.19.2-10.0.0.1")
     implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.264")
     implementation fg.deobf("dev.architectury:architectury-forge:6.3.56")
     implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1902.3.10-build.162") {
