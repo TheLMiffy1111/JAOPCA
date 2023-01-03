@@ -21,14 +21,9 @@ item.jaopca.hbm_crystal=%skristalle
 item.jaopca.ic2_crushed=Zerstoßenes %serz
 item.jaopca.ic2_purified_crushed=Gereinigtes Zerstoßenes %serz
 
-item.jaopca.exnihilocreatio_piece=%s Erzstück
-item.jaopca.exnihilocreatio_chunk=%s Erzbrocken
-
 item.jaopca.mekanism_dirty_dust=Schmutziger %sstaub
 item.jaopca.mekanism_clump=%sklumpen
 item.jaopca.mekanism_shard=%sscherbe
 item.jaopca.mekanism_crystal=%skristall
 gas.jaopca.mekanism_clean_slurry=Saubere %sschlacke
 gas.jaopca.mekanism_slurry=%sschlacke
-
-item.jaopca.skyresources_alch_dust=Alchemistischr %serzstaub

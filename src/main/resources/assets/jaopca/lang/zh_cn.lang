@@ -24,9 +24,6 @@ item.jaopca.hbm_crystal=%s晶体
 item.jaopca.ic2_crushed=粉碎%s矿石
 item.jaopca.ic2_purified_crushed=纯净的粉碎%s矿石
 
-item.jaopca.exnihilocreatio_piece=%s矿石碎片
-item.jaopca.exnihilocreatio_chunk=%s矿石块
-
 item.jaopca.magneticraft_rocky_chunk=%s砾岩
 item.jaopca.magneticraft_chunk=细块%s矿
 
@@ -36,9 +33,6 @@ item.jaopca.mekanism_shard=%s碎片
 item.jaopca.mekanism_crystal=%s晶体
 gas.jaopca.mekanism_clean_slurry=纯净%s浆液
 gas.jaopca.mekanism_slurry=%s浆液
-
-item.jaopca.skyresources_alch_dust=%s炼金矿尘
-item.jaopca.skyresources_dirty_gem=污浊的%s
 
 item.jaopca.teslathingies_tesla_lump=特斯拉%s碎块
 item.jaopca.teslathingies_augmented_lump=增强%s碎块

@@ -20,9 +20,6 @@ block.jaopca.abyssalcraft_crystal_cluster=Aglomerado Cristalizado de %s
 item.jaopca.ic2_crushed=Minério de %s Triturado
 item.jaopca.ic2_purified_crushed=Minério Purificado de %s Triturado
 
-item.jaopca.exnihilocreatio_piece=Pedaço de Minério de %s
-item.jaopca.exnihilocreatio_chunk=Fragmento de Minério de %s
-
 item.jaopca.magneticraft_rocky_chunk=Fragmento Rochoso de %s 
 item.jaopca.magneticraft_chunk=Fragmento de %s
 
@@ -32,9 +29,6 @@ item.jaopca.mekanism_shard=Estilhaço de %s
 item.jaopca.mekanism_crystal=Cristal de %s
 gas.jaopca.mekanism_clean_slurry=Polpa de %s Pura
 gas.jaopca.mekanism_slurry=Polpa de %s
-
-item.jaopca.skyresources_alch_dust=Pó Mágico de Minério de %s
-item.jaopca.skyresources_dirty_gem=%s Sujo
 
 item.jaopca.teslathingies_tesla_lump=Pedaço de %s Teslified
 item.jaopca.teslathingies_augmented_lump=Pedaço Grande de %s

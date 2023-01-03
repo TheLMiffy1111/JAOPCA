@@ -28,9 +28,6 @@ item.jaopca.hbm_crystal=Кристаллизованное %s
 item.jaopca.ic2_crushed=Измельчённая руда %s
 item.jaopca.ic2_purified_crushed=Очищенная измельчённая руда %s
 
-item.jaopca.exnihilocreatio_piece=Кусок руды %s
-item.jaopca.exnihilocreatio_chunk=Толстый кусок руды %s
-
 item.jaopca.magneticraft_rocky_chunk=Каменистый кусок %s
 item.jaopca.magneticraft_chunk=Кусок %s
 
@@ -40,9 +37,6 @@ item.jaopca.mekanism_shard=Осколок %s
 item.jaopca.mekanism_crystal=Кристалл %s
 gas.jaopca.mekanism_clean_slurry=Очищенная взвесь %s
 gas.jaopca.mekanism_slurry=Взвесь %s
-
-item.jaopca.skyresources_alch_dust=Алхимическая рудная пыль %s
-item.jaopca.skyresources_dirty_gem=Грязный %s
 
 item.jaopca.teslathingies_tesla_lump=Теслифицированный кусок %s
 item.jaopca.teslathingies_augmented_lump=Обогащённый кусок %s

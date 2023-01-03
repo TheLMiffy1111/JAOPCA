@@ -26,9 +26,6 @@ fluid.jaopca.foundry_liquid=Sıvı %s
 item.jaopca.ic2_crushed=Ezilmiş %s Cevheri
 item.jaopca.ic2_purified_crushed=Ezilmiş Saflaştırılmış %s Cevheri
 
-item.jaopca.exnihilocreatio_piece=%s Cevher Parçası
-item.jaopca.exnihilocreatio_chunk=%s Cevher Yığını
-
 item.jaopca.magneticraft_rocky_chunk=Taşlı %s Yığını
 item.jaopca.magneticraft_chunk=%s Yığını
 
@@ -38,9 +35,6 @@ item.jaopca.mekanism_shard=%s Parçası
 item.jaopca.mekanism_crystal=%s Kristal
 gas.jaopca.mekanism_clean_slurry=Temiz %s Harcı
 gas.jaopca.mekanism_slurry=%s Harç
-
-item.jaopca.skyresources_alch_dust=Simyasal %s Cevher Tozu
-item.jaopca.skyresources_dirty_gem=Kirli %s
 
 item.jaopca.teslathingies_tesla_lump=Teslified %s Yumrusu
 item.jaopca.teslathingies_augmented_lump=Artırılmış %s Yumru

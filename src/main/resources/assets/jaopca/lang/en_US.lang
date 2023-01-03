@@ -28,9 +28,6 @@ item.jaopca.hbm_crystal=%s Crystals
 item.jaopca.ic2_crushed=Crushed %s Ore
 item.jaopca.ic2_purified_crushed=Purified Crushed %s Ore
 
-item.jaopca.exnihilocreatio_piece=%s Ore Piece
-item.jaopca.exnihilocreatio_chunk=%s Ore Chunk
-
 item.jaopca.magneticraft_rocky_chunk=%s Rocky Chunk
 item.jaopca.magneticraft_chunk=%s Chunk
 
@@ -40,9 +37,6 @@ item.jaopca.mekanism_shard=%s Shard
 item.jaopca.mekanism_crystal=%s Crystal
 gas.jaopca.mekanism_clean_slurry=Clean %s Slurry
 gas.jaopca.mekanism_slurry=%s Slurry
-
-item.jaopca.skyresources_alch_dust=%s Alchemical Ore Dust
-item.jaopca.skyresources_dirty_gem=Dirty %s
 
 item.jaopca.teslathingies_tesla_lump=Teslified %s Lump
 item.jaopca.teslathingies_augmented_lump=Augmented %s Lump
