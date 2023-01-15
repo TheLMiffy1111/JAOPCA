@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -126,8 +127,11 @@ public class DataInjector {
 	}
 
 	public static void reloadInject(Class<?> clazz, Object object) {
-		if(RELOAD_INJECTORS.containsKey(clazz)) {
-			RELOAD_INJECTORS.get(clazz).accept(object);
+		for(Class<?> c : ClassUtils.hierarchy(clazz, ClassUtils.Interfaces.INCLUDE)) {
+			if(RELOAD_INJECTORS.containsKey(c)) {
+				RELOAD_INJECTORS.get(c).accept(object);
+				return;
+			}
 		}
 	}
 
