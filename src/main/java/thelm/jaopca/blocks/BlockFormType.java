@@ -48,7 +48,7 @@ public class BlockFormType implements IBlockFormType {
 	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormBlock>> BLOCKS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormBlockItem>> BLOCK_ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IBlockInfo> BLOCK_INFOS = TreeBasedTable.create();
-	private static boolean registered;
+	private static boolean registered = false;
 
 	public static final Type MATERIAL_FUNCTION_TYPE = new TypeToken<Function<IMaterial, Material>>(){}.getType();
 	public static final Type SOUND_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, SoundType>>(){}.getType();

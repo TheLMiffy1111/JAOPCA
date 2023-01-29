@@ -50,8 +50,8 @@ public class FluidFormType implements IFluidFormType {
 	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormFluidBlock>> FLUID_BLOCKS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormBucketItem>> BUCKET_ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IFluidInfo> FLUID_INFOS = TreeBasedTable.create();
-	private static boolean registered;
-	
+	private static boolean registered = false;
+
 	public static final Type SOUND_EVENT_SUPPLIER_TYPE = new TypeToken<Supplier<SoundEvent>>(){}.getType();
 
 	public static void init() {
