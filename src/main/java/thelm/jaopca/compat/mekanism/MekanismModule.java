@@ -98,11 +98,6 @@ public class MekanismModule implements IModule {
 	}
 
 	@Override
-	public void onMaterialComputeComplete(IModuleData moduleData) {
-		SlurryFormType.registerEntries();
-	}
-
-	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		MekanismHelper helper = MekanismHelper.INSTANCE;

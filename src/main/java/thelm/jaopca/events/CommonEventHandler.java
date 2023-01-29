@@ -56,9 +56,7 @@ public class CommonEventHandler {
 		ModuleHandler.computeValidMaterials();
 		FormHandler.computeValidMaterials();
 		ConfigHandler.setupModuleConfigs();
-		BlockFormType.registerEntries();
-		ItemFormType.registerEntries();
-		FluidFormType.registerEntries();
+		FormTypeHandler.registerMaterialForms();
 		ModuleHandler.onMaterialComputeComplete();
 	}
 
