@@ -1,6 +1,7 @@
 package thelm.jaopca.utils;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -39,6 +40,7 @@ import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.recipes.IRecipeAction;
 import thelm.jaopca.blocks.BlockFormType;
+import thelm.jaopca.client.resources.ResourceHandler;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.ForgeRegistryEntrySupplierDeserializer;
@@ -301,6 +303,11 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience) {
 		return registerRecipe(key, new SmeltingRecipeAction(key, input, output, count, experience));
+	}
+
+	@Override
+	public void registerTextures(Supplier<List<ResourceLocation>> locations) {
+		ResourceHandler.registerTextures(locations);
 	}
 
 	@Override

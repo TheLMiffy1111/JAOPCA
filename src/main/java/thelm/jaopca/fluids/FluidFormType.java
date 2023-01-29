@@ -29,6 +29,7 @@ import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.FluidFormSettingsDeserializer;
 import thelm.jaopca.custom.json.ForgeRegistryEntrySupplierDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 public class FluidFormType implements IFluidFormType {
@@ -40,6 +41,7 @@ public class FluidFormType implements IFluidFormType {
 	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormFluid> FLUIDS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormFluidBlock> FLUID_BLOCKS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IFluidInfo> FLUID_INFOS = TreeBasedTable.create();
+	private static boolean registered = false;
 
 	public static final Type SOUND_EVENT_SUPPLIER_TYPE = new TypeToken<Supplier<SoundEvent>>(){}.getType();
 
@@ -93,7 +95,12 @@ public class FluidFormType implements IFluidFormType {
 		return FluidFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	public static void registerEntries() {
+	@Override
+	public void registerMaterialForms() {
+		if(registered) {
+			return;
+		}
+		registered = true;
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IFluidFormSettings settings = (IFluidFormSettings)form.getSettings();

@@ -88,11 +88,6 @@ public class MekanismModule implements IModule {
 	}
 
 	@Override
-	public void onMaterialComputeComplete(IModuleData moduleData) {
-		GasFormType.registerEntries();
-	}
-
-	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		MekanismHelper helper = MekanismHelper.INSTANCE;

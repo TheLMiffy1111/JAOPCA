@@ -38,6 +38,7 @@ public class ItemFormType implements IItemFormType {
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
 	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormItem> ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IItemInfo> ITEM_INFOS = TreeBasedTable.create();
+	private static boolean registered = false;
 	private static CreativeTabs creativeTab;
 
 	public static void init() {
@@ -90,7 +91,12 @@ public class ItemFormType implements IItemFormType {
 		return ItemFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	public static void registerEntries() {
+	@Override
+	public void registerMaterialForms() {
+		if(registered) {
+			return;
+		}
+		registered = true;
 		ApiImpl api = ApiImpl.INSTANCE;
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {

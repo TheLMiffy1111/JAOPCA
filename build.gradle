@@ -77,7 +77,7 @@ sourceSets {
     main
 }
 
-version = "2.3.2.3"
+version = "2.3.4.5"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.12.2"
 
@@ -141,11 +141,8 @@ dependencies {
     deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.15.25") {
         transitive = false
     }
-    implementation("CraftTweaker2:ZenScript:4.1.20.675") {
-        transitive = false
-    }
-    deobfCompile "CraftTweaker2:CraftTweaker2-API:4.1.20.675"
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.675"
+    deobfCompile "CraftTweaker2:CraftTweaker2-API:4.1.20.683"
+    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.683"
     deobfCompile "com.enderio.core:EnderCore:1.12.2-0.5.76:core"
     deobfCompile("com.enderio:EnderIO:1.12.2-5.3.70") {
         transitive = false
@@ -172,12 +169,6 @@ dependencies {
     deobfCompile "curse.maven:thaumcraft-223628:2629023"
     deobfCompile "curse.maven:thaumic-jei-285492:2705304"
     deobfCompile "curse.maven:applied-energistics-2-223794:2747063"
-    deobfCompile "curse.maven:redstone-flux-270789:2920436"
-    deobfCompile "curse.maven:cofh-core-69162:2920433"
-    deobfCompile "curse.maven:cofh-world-271384:2920434"
-    deobfCompile "curse.maven:thermal-foundation-222880:2926428"
-    deobfCompile "curse.maven:thermal-expansion-69163:2926431"
-    deobfCompile "curse.maven:thermal-dynamics-227443:2920505"
     deobfCompile "curse.maven:abyssalcraft-53686:3425234"
     deobfCompile "curse.maven:minestrappolation-5-233351:2860018"
     deobfCompile "curse.maven:buildcraft-compat-233140:3204471"
@@ -187,6 +178,7 @@ dependencies {
     deobfCompile "curse.maven:common-capabilities-247007:3053017"
     deobfCompile "curse.maven:integrated-dynamics-236307:3159505"
     deobfCompile "curse.maven:endercore-231868:2972849"
+    deobfCompile "curse.maven:astral-sorcery-241721:3044416"
 
     deobfCompile "zone.rong:mixinbooter:7.0"
     deobfCompile "curse.maven:jeid-296289:3581715"

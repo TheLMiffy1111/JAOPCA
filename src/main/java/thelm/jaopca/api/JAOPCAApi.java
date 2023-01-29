@@ -1,5 +1,6 @@
 package thelm.jaopca.api;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -307,6 +308,8 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience);
 
+	public abstract void registerTextures(Supplier<List<ResourceLocation>> locations);
+	
 	/**
 	 * Registers an {@link ILocalizer} to languages for use by JAOPCA.
 	 * @param localizer The localizer

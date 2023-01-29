@@ -20,6 +20,7 @@ import thelm.jaopca.compat.mekanism.api.gases.IGasInfo;
 import thelm.jaopca.compat.mekanism.api.gases.IMaterialFormGas;
 import thelm.jaopca.compat.mekanism.custom.json.GasFormSettingsDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 public class GasFormType implements IGasFormType {
@@ -30,6 +31,7 @@ public class GasFormType implements IGasFormType {
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
 	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormGas> GASES = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IGasInfo> GAS_INFOS = TreeBasedTable.create();
+	private static boolean registered = false;
 
 	public static void init() {
 		FormTypeHandler.registerFormType(INSTANCE);
@@ -81,7 +83,13 @@ public class GasFormType implements IGasFormType {
 		return GasFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	public static void registerEntries() {
+	@Override
+	public void registerMaterialForms() {
+		if(registered) {
+			return;
+		}
+		registered = true;
+		ApiImpl api = ApiImpl.INSTANCE;
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IGasFormSettings settings = (IGasFormSettings)form.getSettings();
