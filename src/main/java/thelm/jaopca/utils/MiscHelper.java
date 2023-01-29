@@ -32,6 +32,7 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -218,12 +219,12 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public TagKey<Item> getItemTagKey(ResourceLocation location) {
-		return getTagKey(Registry.ITEM_REGISTRY, location);
+		return getTagKey(Registries.ITEM, location);
 	}
 
 	@Override
 	public Collection<Item> getItemTagValues(ResourceLocation location) {
-		return getTagValues(Registry.ITEM_REGISTRY, location);
+		return getTagValues(Registries.ITEM, location);
 	}
 
 	@Override
@@ -260,12 +261,12 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public TagKey<Fluid> getFluidTagKey(ResourceLocation location) {
-		return getTagKey(Registry.FLUID_REGISTRY, location);
+		return getTagKey(Registries.FLUID, location);
 	}
 
 	@Override
 	public Collection<Fluid> getFluidTagValues(ResourceLocation location) {
-		return getTagValues(Registry.FLUID_REGISTRY, location);
+		return getTagValues(Registries.FLUID, location);
 	}
 
 	@Override

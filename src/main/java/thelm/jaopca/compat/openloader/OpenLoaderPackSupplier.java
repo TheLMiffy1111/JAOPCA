@@ -12,8 +12,8 @@ import org.apache.logging.log4j.Logger;
 import net.darkhax.openloader.config.ConfigSchema;
 import net.darkhax.openloader.packs.RepoType;
 import net.minecraft.server.packs.FilePackResources;
-import net.minecraft.server.packs.FolderPackResources;
 import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PathPackResources;
 import net.minecraftforge.fml.loading.FMLPaths;
 import thelm.jaopca.api.resources.IPackSupplier;
 import thelm.jaopca.api.resources.JAOPCAPackSupplier;
@@ -47,7 +47,7 @@ public class OpenLoaderPackSupplier implements IPackSupplier {
 							for(File file : files) {
 								boolean isPack = isArchivePack(file, false) || isFolderPack(file, false);
 								if(isPack) {
-									resourcePacks.accept(file.isDirectory() ? new FolderPackResources(file) : new FilePackResources(file));
+									resourcePacks.accept(file.isDirectory() ? new PathPackResources(file.getName(), file.toPath(), false) : new FilePackResources(file.getName(), file, false));
 								}
 								else {
 									isArchivePack(file, true);

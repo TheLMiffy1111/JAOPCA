@@ -17,8 +17,10 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -28,6 +30,7 @@ import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
@@ -116,7 +119,7 @@ public class BlockFormType implements IBlockFormType {
 			return;
 		}
 		registered = true;
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
@@ -130,11 +133,11 @@ public class BlockFormType implements IBlockFormType {
 
 				Supplier<IMaterialFormBlock> materialFormBlock = Suppliers.memoize(()->settings.getBlockCreator().create(form, material, settings));
 				BLOCKS.put(form, material, materialFormBlock);
-				RegistryHandler.registerForgeRegistryEntry(Registry.BLOCK_REGISTRY, name, ()->materialFormBlock.get().asBlock());
+				RegistryHandler.registerForgeRegistryEntry(Registries.BLOCK, name, ()->materialFormBlock.get().asBlock());
 
 				Supplier<IMaterialFormBlockItem> materialFormBlockItem = Suppliers.memoize(()->settings.getBlockItemCreator().create(materialFormBlock.get(), settings));
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
-				RegistryHandler.registerForgeRegistryEntry(Registry.ITEM_REGISTRY, name, ()->materialFormBlockItem.get().asBlockItem());
+				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormBlockItem.get().asBlockItem());
 
 				DataInjector.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock.get(), settings));
 
@@ -156,6 +159,11 @@ public class BlockFormType implements IBlockFormType {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void addToCreativeModeTab(FeatureFlagSet enabledFeatures, CreativeModeTab.Output output, boolean displayOperatorCreativeTab) {
+		getBlockItems().forEach(mf->output.accept(mf.asBlockItem()));
 	}
 
 	public static Collection<IMaterialFormBlock> getBlocks() {

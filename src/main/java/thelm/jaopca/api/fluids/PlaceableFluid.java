@@ -152,7 +152,7 @@ public abstract class PlaceableFluid extends Fluid {
 				(blockState.getMaterial() != Material.ICE && blockState.isFaceSturdy(world, pos, face)));
 	}
 
-	protected void spread(LevelAccessor world, BlockPos pos, FluidState fluidState) {
+	protected void spread(Level world, BlockPos pos, FluidState fluidState) {
 		if(!fluidState.isEmpty()) {
 			BlockState blockState = world.getBlockState(pos);
 			BlockPos downPos = pos.below();
@@ -170,7 +170,7 @@ public abstract class PlaceableFluid extends Fluid {
 		}
 	}
 
-	protected void spreadToSides(LevelAccessor world, BlockPos pos, FluidState fluidState, BlockState blockState) {
+	protected void spreadToSides(Level world, BlockPos pos, FluidState fluidState, BlockState blockState) {
 		int i = fluidState.getAmount() - getDropOff(world);
 		if(i > 0) {
 			Map<Direction, FluidState> map = getSpread(world, pos, blockState);
@@ -186,7 +186,7 @@ public abstract class PlaceableFluid extends Fluid {
 		}
 	}
 
-	protected FluidState getNewLiquid(LevelReader world, BlockPos pos, BlockState blockState) {
+	protected FluidState getNewLiquid(Level world, BlockPos pos, BlockState blockState) {
 		int i = 0;
 		int j = 0;
 		for(Direction direction : Direction.Plane.HORIZONTAL) {
@@ -278,7 +278,7 @@ public abstract class PlaceableFluid extends Fluid {
 		return (short)((dx + 128 & 255) << 8 | dz + 128 & 255);
 	}
 
-	protected Map<Direction, FluidState> getSpread(LevelReader world, BlockPos pos, BlockState blockState) {
+	protected Map<Direction, FluidState> getSpread(Level world, BlockPos pos, BlockState blockState) {
 		int i = 1000;
 		Map<Direction, FluidState> map = new EnumMap(Direction.class);
 		Short2ObjectMap<Pair<BlockState, FluidState>> stateMap = new Short2ObjectOpenHashMap();

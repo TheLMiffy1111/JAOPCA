@@ -21,8 +21,7 @@ import com.google.common.collect.TreeMultimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.VanillaPackResources;
-import net.minecraft.server.packs.repository.ServerPacksSource;
+import net.minecraft.server.packs.VanillaPackResourcesBuilder;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
@@ -52,7 +51,7 @@ public class DataCollector {
 		DEFINED_ADVANCEMENTS.clear();
 
 		List<PackResources> resourcePacks = new ArrayList<>();
-		resourcePacks.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
+		resourcePacks.add(new VanillaPackResourcesBuilder().build());
 		ModList.get().getModFiles().stream().
 		map(ResourcePackLoader::createPackForMod).
 		forEach(resourcePacks::add);

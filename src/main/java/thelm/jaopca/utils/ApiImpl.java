@@ -175,11 +175,6 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public CreativeModeTab creativeTab() {
-		return ItemFormType.getCreativeTab();
-	}
-
-	@Override
 	public Set<ResourceLocation> getBlockTags() {
 		return Sets.union(DataCollector.getDefinedTags("blocks"), DataInjector.getInjectBlockTags());
 	}

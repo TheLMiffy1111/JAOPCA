@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.joml.Vector4f;
+
 import com.google.common.collect.Streams;
-import com.mojang.math.Vector4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -33,6 +34,7 @@ import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.items.ItemFormType;
+import thelm.jaopca.mixins.SpriteContentsAccessor;
 
 public class ColorHandler {
 
@@ -106,9 +108,9 @@ public class ColorHandler {
 	}
 
 	public static Vector4f weightedAverageColor(TextureAtlasSprite texture, double gammaValue) {
-		int width = texture.getWidth();
-		int height = texture.getHeight();
-		int frameCount = texture.getFrameCount();
+		int width = texture.contents().width();
+		int height = texture.contents().height();
+		int frameCount = ((SpriteContentsAccessor)texture.contents()).frameCount();
 		if(width <= 0 || height <= 0 || frameCount <= 0) {
 			return new Vector4f(1, 1, 1, 0);
 		}

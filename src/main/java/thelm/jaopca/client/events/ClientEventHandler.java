@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -60,7 +59,7 @@ public class ClientEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onModelBakingCompleted(ModelEvent.BakingCompleted event) {
+	public void onModelModifyBakingResult(ModelEvent.ModifyBakingResult event) {
 		ModelHandler.remapModels(event);
 	}
 

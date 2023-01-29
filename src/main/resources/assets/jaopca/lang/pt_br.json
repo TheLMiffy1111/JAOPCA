@@ -21,12 +21,5 @@
     "item.jaopca.electrodynamics_sulfates": "%s Balde de Sulfato",
 
     "item.jaopca.factorium_chunks": "%s Chunks",
-    "item.jaopca.factorium_powders": "%s Em pó",
-
-    "item.jaopca.mekanism_dirty_dusts": "Pó de %s Sujo",
-    "item.jaopca.mekanism_clumps": "Aglomerado de %s",
-    "item.jaopca.mekanism_shards": "Fragmento de %s",
-    "item.jaopca.mekanism_crystals": "Cristal de %s",
-    "slurry.jaopca.mekanism_dirty": "Polpa de %s Suja",
-    "slurry.jaopca.mekanism_clean": "Polpa de %s Pura"
+    "item.jaopca.factorium_powders": "%s Em pó"
 }

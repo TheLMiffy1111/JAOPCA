@@ -56,7 +56,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	private OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCABucketItem(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(new Item.Properties().craftRemainder(Items.BUCKET).tab(ItemFormType.getCreativeTab()));
+		super(new Item.Properties().craftRemainder(Items.BUCKET));
 		this.fluid = fluid;
 		this.settings = settings;
 	}

@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -164,7 +164,7 @@ public class Material implements IMaterial {
 
 	private ITag<Item> getTag() {
 		if(tag == null) {
-			tag = ForgeRegistries.ITEMS.tags().getTag(TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge:"+type.getFormName()+'/'+name)));
+			tag = ForgeRegistries.ITEMS.tags().getTag(TagKey.create(Registries.ITEM, new ResourceLocation("forge:"+type.getFormName()+'/'+name)));
 		}
 		return tag;
 	}

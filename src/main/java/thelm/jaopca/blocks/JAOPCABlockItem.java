@@ -15,7 +15,6 @@ import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 
 public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem {
@@ -28,7 +27,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	protected OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
-		super(block.asBlock(), new Item.Properties().tab(ItemFormType.getCreativeTab()));
+		super(block.asBlock(), new Item.Properties());
 		this.settings = settings;
 	}
 

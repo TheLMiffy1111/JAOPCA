@@ -196,12 +196,6 @@ public abstract class JAOPCAApi {
 	public abstract Set<IMaterial> getMaterials();
 
 	/**
-	 * Returns the creative tab used by items added by JAOPCA.
-	 * @return The creative tab used by JAOPCA
-	 */
-	public abstract CreativeModeTab creativeTab();
-
-	/**
 	 * Returns the set of known block tag locations, which is the union of defined block tag locations
 	 * and registered block tag locations. Note that tags added by custom data packs may not be included.
 	 * @return The set of block tag locations known by JAOPCA

@@ -13,13 +13,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.items.IItemInfo;
@@ -42,7 +42,6 @@ public class ItemFormType implements IItemFormType {
 	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormItem>> ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IItemInfo> ITEM_INFOS = TreeBasedTable.create();
 	private static boolean registered = false;
-	private static CreativeModeTab creativeTab;
 
 	public static void init() {
 		FormTypeHandler.registerFormType(INSTANCE);
@@ -100,7 +99,7 @@ public class ItemFormType implements IItemFormType {
 			return;
 		}
 		registered = true;
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
@@ -111,7 +110,7 @@ public class ItemFormType implements IItemFormType {
 
 				Supplier<IMaterialFormItem> materialFormItem = Suppliers.memoize(()->settings.getItemCreator().create(form, material, settings));
 				ITEMS.put(form, material, materialFormItem);
-				RegistryHandler.registerForgeRegistryEntry(Registry.ITEM_REGISTRY, name, ()->materialFormItem.get().asItem());
+				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().asItem());
 
 				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
@@ -122,16 +121,9 @@ public class ItemFormType implements IItemFormType {
 		}
 	}
 
-	public static CreativeModeTab getCreativeTab() {
-		if(creativeTab == null) {
-			creativeTab = new CreativeModeTab("jaopca") {
-				@Override
-				public ItemStack makeIcon() {
-					return new ItemStack(Items.GLOWSTONE_DUST);
-				}
-			};
-		}
-		return creativeTab;
+	@Override
+	public void addToCreativeModeTab(FeatureFlagSet enabledFeatures, CreativeModeTab.Output output, boolean displayOperatorCreativeTab) {
+		getItems().forEach(mf->output.accept(mf.asItem()));
 	}
 
 	public static Collection<IMaterialFormItem> getItems() {

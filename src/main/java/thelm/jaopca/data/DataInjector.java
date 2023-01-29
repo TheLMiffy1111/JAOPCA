@@ -19,6 +19,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
@@ -171,9 +172,9 @@ public class DataInjector {
 		public static final PackFinder INSTANCE = new PackFinder();
 
 		@Override
-		public void loadPacks(Consumer<Pack> packConsumer, Pack.PackConstructor packConstructor) {
-			Pack packInfo = Pack.create("inmemory:jaopca", true, ()->{
-				InMemoryResourcePack pack = new InMemoryResourcePack("inmemory:jaopca", true);
+		public void loadPacks(Consumer<Pack> packConsumer) {
+			Pack packInfo = Pack.readMetaAndCreate("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), true, packId->{
+				InMemoryResourcePack pack = new InMemoryResourcePack(packId, true);
 				BLOCK_TAGS_INJECT.asMap().forEach((location, locations)->{
 					TagBuilder builder = TagBuilder.create();
 					locations.forEach(l->builder.addOptionalElement(l));
@@ -202,7 +203,7 @@ public class DataInjector {
 				});
 				ModuleHandler.onCreateDataPack(pack);
 				return pack;
-			}, packConstructor, Pack.Position.BOTTOM, PackSource.BUILT_IN);
+			}, PackType.SERVER_DATA, Pack.Position.BOTTOM, PackSource.BUILT_IN);
 			if(packInfo != null) {
 				packConsumer.accept(packInfo);
 			}

@@ -13,6 +13,8 @@ import com.google.common.base.Functions;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.item.CreativeModeTab;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormType;
@@ -78,6 +80,12 @@ public class FormTypeHandler {
 				continue;
 			}
 			formType.registerMaterialForms();
+		}
+	}
+
+	public static void addToCreativeModeTab(FeatureFlagSet enabledFeatures, CreativeModeTab.Output output, boolean displayOperatorCreativeTab) {
+		for(IFormType formType : FORM_TYPES.values()) {
+			formType.addToCreativeModeTab(enabledFeatures, output, displayOperatorCreativeTab);
 		}
 	}
 }

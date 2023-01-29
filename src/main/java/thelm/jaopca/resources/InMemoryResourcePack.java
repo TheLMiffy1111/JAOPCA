@@ -5,11 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -24,38 +23,37 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.resources.IoSupplier;
 import thelm.jaopca.api.resources.IInMemoryResourcePack;
 
 public class InMemoryResourcePack implements IInMemoryResourcePack {
 
 	private static final Gson GSON = new GsonBuilder().create();
-	private final String name;
+	private final String packId;
 	private final boolean isHidden;
 	private final JsonObject metadata = (JsonObject)JsonParser.parseString("{\"pack_format\":4,\"description\":\"JAOPCA In Memory Resources\"}");
-	private final TreeMap<String, Supplier<? extends InputStream>> root = new TreeMap<>();
-	private final TreeMap<ResourceLocation, Supplier<? extends InputStream>> assets = new TreeMap<>();
-	private final TreeMap<ResourceLocation, Supplier<? extends InputStream>> data = new TreeMap<>();
+	private final TreeMap<String, Supplier<? extends InputStream>> files = new TreeMap<>();
 
-	public InMemoryResourcePack(String name, boolean isHidden) {
-		this.name = name;
+	public InMemoryResourcePack(String packId, boolean isHidden) {
+		this.packId = packId;
 		this.isHidden = isHidden;
+	}
+
+	private static String getPath(PackType packType, ResourceLocation location) {
+		return String.format(Locale.ROOT, "%s/%s/%s", packType.getDirectory(), location.getNamespace(), location.getPath());
 	}
 
 	@Override
 	public IInMemoryResourcePack putInputStream(PackType type, ResourceLocation location, Supplier<? extends InputStream> streamSupplier) {
-		switch(type) {
-		case CLIENT_RESOURCES -> assets.put(location, streamSupplier);
-		case SERVER_DATA -> data.put(location, streamSupplier);
-		}
+		files.put(getPath(type, location), streamSupplier);
 		return this;
 	}
 
 	@Override
 	public IInMemoryResourcePack putInputStreams(PackType type, Map<ResourceLocation, Supplier<? extends InputStream>> map) {
-		switch(type) {
-		case CLIENT_RESOURCES -> assets.putAll(map);
-		case SERVER_DATA -> data.putAll(map);
-		}
+		map.forEach((location, streamSupplier)->{
+			files.put(getPath(type, location), streamSupplier);
+		});
 		return this;
 	}
 
@@ -90,52 +88,62 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	}
 
 	@Override
-	public InputStream getRootResource(String fileName) throws IOException {
-		if(fileName.contains("/") || fileName.contains("\\")) {
-			throw new IllegalArgumentException("Root resources can only be filenames, not paths (no / allowed!)");
-		}
-		if(root.containsKey(fileName)) {
-			return root.get(fileName).get();
-		}
-		throw new FileNotFoundException(fileName);
+	public IoSupplier<InputStream> getRootResource(String... path) {
+		String filePath = String.join("/", path);
+		return ()->{
+			if(files.containsKey(filePath)) {
+				return files.get(filePath).get();
+			}
+			throw new FileNotFoundException(filePath);
+		};
 	}
 
 	@Override
-	public InputStream getResource(PackType type, ResourceLocation location) throws IOException {
-		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == PackType.CLIENT_RESOURCES ? assets : data;
-		if(map.containsKey(location)) {
-			return map.get(location).get();
-		}
-		throw new FileNotFoundException(location.toString());
+	public IoSupplier<InputStream> getResource(PackType type, ResourceLocation location) {
+		String filePath = getPath(type, location);
+		return ()->{
+			if(files.containsKey(filePath)) {
+				return files.get(filePath).get();
+			}
+			throw new FileNotFoundException(filePath);
+		};
 	}
 
 	@Override
-	public Collection<ResourceLocation> getResources(PackType type, String namespace, String pathIn, Predicate<ResourceLocation> filter) {
-		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == PackType.CLIENT_RESOURCES ? assets : data;
-		return map.keySet().stream().filter(rl->rl.getNamespace().equals(namespace)).
-				filter(rl->rl.getPath().startsWith(pathIn)).filter(filter).collect(Collectors.toList());
-	}
-
-	@Override
-	public boolean hasResource(PackType type, ResourceLocation location) {
-		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == PackType.CLIENT_RESOURCES ? assets : data;
-		return map.containsKey(location);
+	public void listResources(PackType type, String namespace, String path, ResourceOutput resourceOutput) {
+		String prefix = type.getDirectory()+'/'+namespace+'/';
+		String prefix1 = prefix+'/'+path+'/';
+		files.forEach((filePath, streamSupplier)->{
+			if(filePath.startsWith(prefix1)) {
+				resourceOutput.accept(new ResourceLocation(namespace, filePath.substring(prefix.length())), streamSupplier::get);
+			}
+		});
 	}
 
 	@Override
 	public Set<String> getNamespaces(PackType type) {
-		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == PackType.CLIENT_RESOURCES ? assets : data;
-		return map.keySet().stream().map(rl->rl.getNamespace()).collect(Collectors.toSet());
+		String prefix = type.getDirectory()+'/';
+		return files.keySet().stream().
+				filter(filePath->filePath.startsWith(prefix)).
+				map(filePath->filePath.substring(prefix.length())).
+				filter(filePath->filePath.contains("/")).
+				map(filePath->filePath.substring(0, filePath.indexOf("/"))).
+				collect(Collectors.toSet());
 	}
 
 	@Override
 	public <T> T getMetadataSection(MetadataSectionSerializer<T> deserializer) throws IOException {
-		return deserializer == PackMetadataSection.SERIALIZER ? deserializer.fromJson(metadata) : null;
+		return deserializer == PackMetadataSection.TYPE ? deserializer.fromJson(metadata) : null;
 	}
 
 	@Override
-	public String getName() {
-		return name;
+	public String packId() {
+		return packId;
+	}
+
+	@Override
+	public boolean isBuiltin() {
+		return true;
 	}
 
 	@Override
