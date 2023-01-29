@@ -12,6 +12,7 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
@@ -43,16 +44,6 @@ public class ClientEventHandler {
 		MinecraftForge.EVENT_BUS.addListener(this::onTagsUpdated);
 		Minecraft mc = Minecraft.getInstance();
 		LocalizationRepoHandler.setup();
-		((ReloadableResourceManager)mc.getResourceManager()).registerReloadListener(new SimplePreparableReloadListener() {
-			@Override
-			protected Object prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
-				return null;
-			}
-			@Override
-			protected void apply(Object splashList, ResourceManager resourceManager, ProfilerFiller profiler) {
-				LocalizationRepoHandler.reload();
-			}
-		});
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
 			ItemBlockRenderTypes.setRenderLayer(block.asBlock(), RenderType.translucent());
 		}
@@ -63,6 +54,20 @@ public class ClientEventHandler {
 			ItemBlockRenderTypes.setRenderLayer(fluidBlock.asBlock(), RenderType.translucent());
 		}
 		ModuleHandler.onClientSetup(event);
+	}
+
+	@SubscribeEvent
+	public void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event) {
+		event.registerReloadListener(new SimplePreparableReloadListener() {
+			@Override
+			protected Object prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+				return null;
+			}
+			@Override
+			protected void apply(Object splashList, ResourceManager resourceManager, ProfilerFiller profiler) {
+				LocalizationRepoHandler.reload();
+			}
+		});
 	}
 
 	@SubscribeEvent
