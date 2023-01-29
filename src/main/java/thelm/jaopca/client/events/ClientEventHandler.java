@@ -9,6 +9,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -33,7 +34,15 @@ public class ClientEventHandler {
 	public void onClientSetup(FMLClientSetupEvent event) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalizationRepoHandler.setup();
-		((ReloadableResourceManager)mc.getResourceManager()).registerReloadListener(new SimplePreparableReloadListener() {
+		for(IMaterialFormFluid fluid : FluidFormType.getFluids()) {
+			ItemBlockRenderTypes.setRenderLayer(fluid.asFluid(), RenderType.translucent());
+		}
+		ModuleHandler.onClientSetup(event);
+	}
+
+	@SubscribeEvent
+	public void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event) {
+		event.registerReloadListener(new SimplePreparableReloadListener() {
 			@Override
 			protected Object prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
 				return null;
@@ -43,10 +52,6 @@ public class ClientEventHandler {
 				LocalizationRepoHandler.reload();
 			}
 		});
-		for(IMaterialFormFluid fluid : FluidFormType.getFluids()) {
-			ItemBlockRenderTypes.setRenderLayer(fluid.asFluid(), RenderType.translucent());
-		}
-		ModuleHandler.onClientSetup(event);
 	}
 
 	@SubscribeEvent
@@ -55,7 +60,7 @@ public class ClientEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onModelBake(ModelEvent.BakingCompleted event) {
+	public void onModelBakingCompleted(ModelEvent.BakingCompleted event) {
 		ModelHandler.remapModels(event);
 	}
 
