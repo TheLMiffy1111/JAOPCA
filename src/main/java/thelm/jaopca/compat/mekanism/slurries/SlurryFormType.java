@@ -36,6 +36,7 @@ public class SlurryFormType implements ISlurryFormType {
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
 	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormSlurry>	> SLURRIES = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, ISlurryInfo> SLURRY_INFOS = TreeBasedTable.create();
+	private static boolean registered = false;
 
 	public static void init() {
 		FormTypeHandler.registerFormType(INSTANCE);
@@ -87,7 +88,12 @@ public class SlurryFormType implements ISlurryFormType {
 		return SlurryFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	public static void registerEntries() {
+	@Override
+	public void registerMaterialForms() {
+		if(registered) {
+			return;
+		}
+		registered = true;
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			ISlurryFormSettings settings = (ISlurryFormSettings)form.getSettings();
