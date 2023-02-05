@@ -23,6 +23,7 @@ public class MaterialHandler {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final TreeMap<String, Material> MATERIALS = new TreeMap<>();
+	static boolean clientTagsBound = false;
 
 	public static Map<String, Material> getMaterialMap() {
 		return MATERIALS;
@@ -143,6 +144,10 @@ public class MaterialHandler {
 			LOGGER.debug("Added plain dust material {}", name);
 		}
 		LOGGER.info("Added {} materials", MATERIALS.size());
+	}
+
+	public static void setClientTagsBound(boolean updated) {
+		clientTagsBound = updated;
 	}
 
 	protected static Set<String> findItemTagNamesWithPaths(Set<String> tags, String mainPath, String... paths) {

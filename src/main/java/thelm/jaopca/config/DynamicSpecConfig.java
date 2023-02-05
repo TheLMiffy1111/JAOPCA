@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.EnumGetMethod;
 import com.electronwill.nightconfig.core.file.FileConfig;
+import com.electronwill.nightconfig.core.io.ParsingException;
 import com.electronwill.nightconfig.core.utils.CommentedConfigWrapper;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
@@ -27,8 +28,13 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 	public DynamicSpecConfig(CommentedConfig config) {
 		super(config);
 		this.config = config;
-		if(config instanceof FileConfig) {
-			((FileConfig)config).load();
+		if(config instanceof FileConfig fileConfig) {
+			try {
+				fileConfig.load();
+			}
+			catch(ParsingException e) {
+				throw new ParsingException("Failed to load config file "+fileConfig.getFile().getAbsolutePath(), e);
+			}
 		}
 	}
 
