@@ -90,11 +90,11 @@ public class ConfigHandler {
 					configDir.delete();
 				}
 				if(!configDir.mkdir()) {
-					throw new Error("Could not create config directory "+configDir);
+					throw new RuntimeException("Could not create config directory "+configDir);
 				}
 			}
 			catch(SecurityException e) {
-				throw new Error("Could not create config directory "+configDir, e);
+				throw new RuntimeException("Could not create config directory "+configDir, e);
 			}
 		}
 
@@ -208,7 +208,7 @@ public class ConfigHandler {
 				moduleConfigDir.delete();
 			}
 			if(!moduleConfigDir.mkdir()) {
-				throw new Error("Could not create config directory "+moduleConfigDir);
+				throw new RuntimeException("Could not create config directory "+moduleConfigDir);
 			}
 		}
 		for(IModule module : ModuleHandler.getModules()) {
