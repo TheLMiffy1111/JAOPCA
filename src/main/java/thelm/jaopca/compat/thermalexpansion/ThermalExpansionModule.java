@@ -151,9 +151,9 @@ public class ThermalExpansionModule implements IModule {
 					helper.registerSmelterRecipe(
 							new ResourceLocation("jaopca", "thermal_expansion.raw_material_to_material."+material.getName()),
 							new Object[] {
-									rawMaterialLocation, -1.5F,
+									rawMaterialLocation,
 							}, new Object[] {
-									materialLocation, 1F,
+									materialLocation, -1.5F,
 							}, 3200, 0.1F);
 				}
 			}
