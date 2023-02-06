@@ -136,7 +136,7 @@ sourceSets {
     main
 }
 
-version = "4.3.0.1"
+version = "4.3.1.1"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.19.3"
 
@@ -184,13 +184,12 @@ dependencies {
     implementation("com.kotori316:scalablecatsforce:2.13.10-build-15:with-library") {
         transitive = false
     }
-    //implementation fg.deobf("net.bdew:bdlib:1.26.0.4-mc1.19.3")
     implementation fg.deobf("com.klikli_dev:modonomicon:1.19.3-1.23.2")
     //implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.140") {
     //    transitive = false
     //}
     implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.19.3:16.0.1")
-    //implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.2-9.1.0-156")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.3-9.2.0-160")
     //implementation fg.deobf("com.simibubi.create:create-1.19.2:0.5.0.h-21:all")
     //implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.19-3.6.+")
     //implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.5.474")
@@ -202,7 +201,6 @@ dependencies {
     //implementation fg.deobf("com.teamcofh:thermal_expansion:1.19.2-10.0.0.19")
     //implementation fg.deobf("com.teamcofh:thermal_integration:1.19.2-10.0.0.11")
     //implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.19-34.+")
-    //implementation fg.deobf("net.bdew:factorium:1.5.0.3-mc1.19.3")
 
     //JitPack
 
