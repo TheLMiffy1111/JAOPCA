@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -114,7 +115,7 @@ public class MiscHelper implements IMiscHelper {
 
 	public Pair<Ingredient, Set<Item>> getIngredientResolved(Object obj) {
 		Ingredient ing = EmptyIngredient.INSTANCE;
-		Set<Item> items = new HashSet<>();
+		Set<Item> items = new LinkedHashSet<>();
 		if(obj instanceof Supplier<?>) {
 			Pair<Ingredient, Set<Item>> pair = getIngredientResolved(((Supplier<?>)obj).get());
 			ing = pair.getLeft();
