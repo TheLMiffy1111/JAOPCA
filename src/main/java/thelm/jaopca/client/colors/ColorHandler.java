@@ -74,14 +74,11 @@ public class ColorHandler {
 	}
 
 	public static int getAverageColor(String oredictName) {
-		Tuple4f color = weightedAverageColor(OreDictionary.getOres(oredictName), ConfigHandler.gammaValue);
+		Tuple4f color = weightedAverageColor(OreDictionary.getOres(oredictName, false), ConfigHandler.gammaValue);
 		return toColorInt(color);
 	}
 
 	public static Tuple4f weightedAverageColor(Iterable<ItemStack> items, double gammaValue) {
-		if(!items.iterator().hasNext()) {
-			return new TexCoord4f(1, 1, 1, 0);
-		}
 		List<Tuple4f> colors = Streams.stream(items).
 				map(stack->weightedAverageColor(stack, gammaValue)).
 				collect(Collectors.toList());
@@ -90,9 +87,6 @@ public class ColorHandler {
 
 	public static Tuple4f weightedAverageColor(ItemStack stack, double gammaValue) {
 		List<BakedQuad> quads = getBakedQuads(stack);
-		if(quads.isEmpty()) {
-			return new TexCoord4f(1, 1, 1, 0);
-		}
 		List<Tuple4f> colors = new ArrayList<>();
 		for(BakedQuad quad : quads) {
 			Tuple4f color = weightedAverageColor(quad.getSprite(), gammaValue);
@@ -106,9 +100,6 @@ public class ColorHandler {
 		int width = texture.getIconWidth();
 		int height = texture.getIconHeight();
 		int frameCount = texture.getFrameCount();
-		if(width <= 0 || height <= 0 || frameCount <= 0) {
-			return new TexCoord4f(1, 1, 1, 0);
-		}
 		List<Tuple4f> colors = new ArrayList<>();
 		for(int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
 			for(int x = 0; x < width; ++x) {
@@ -122,19 +113,21 @@ public class ColorHandler {
 	}
 
 	public static Tuple4f weightedAverageColor(List<Tuple4f> colors, double gammaValue) {
-		if(colors.isEmpty()) {
+		double totalWeight = 0, r = 0, g = 0, b = 0;
+		for(Tuple4f color : colors) {
+			totalWeight += color.getW();
+		}
+		if(totalWeight <= 0) {
 			return new TexCoord4f(1, 1, 1, 0);
 		}
-		double weight, r = 0, g = 0, b = 0, totalWeight = 0;
 		if(gammaValue == 0) {
 			r = 1;
 			g = 1;
 			b = 1;
 			for(Tuple4f color : colors) {
-				totalWeight += weight = color.getW();
-				r *= color.getX()*weight;
-				g *= color.getY()*weight;
-				b *= color.getZ()*weight;
+				r *= color.getX()*color.getW();
+				g *= color.getY()*color.getW();
+				b *= color.getZ()*color.getW();
 			}
 			r = Math.pow(r, 1/totalWeight);
 			g = Math.pow(g, 1/totalWeight);
@@ -142,10 +135,9 @@ public class ColorHandler {
 		}
 		else {
 			for(Tuple4f color : colors) {
-				totalWeight += weight = color.getW();
-				r += Math.pow(color.getX(), gammaValue)*weight;
-				g += Math.pow(color.getY(), gammaValue)*weight;
-				b += Math.pow(color.getZ(), gammaValue)*weight;
+				r += Math.pow(color.getX(), gammaValue)*color.getW();
+				g += Math.pow(color.getY(), gammaValue)*color.getW();
+				b += Math.pow(color.getZ(), gammaValue)*color.getW();
 			}
 			r = Math.pow(r/totalWeight, 1/gammaValue);
 			g = Math.pow(g/totalWeight, 1/gammaValue);

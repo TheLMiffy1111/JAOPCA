@@ -5,14 +5,14 @@ import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
 public interface IEntityEntryInfo extends IMaterialFormInfo {
 
-	IMaterialFormEntityType getMaterialFormEntityEntry();
+	IMaterialFormEntityEntry getMaterialFormEntityEntry();
 
 	default EntityEntry getEntityEntry() {
 		return getMaterialFormEntityEntry().asEntityEntry();
 	}
 
 	@Override
-	default IMaterialFormEntityType getMaterialForm() {
+	default IMaterialFormEntityEntry getMaterialForm() {
 		return getMaterialFormEntityEntry();
 	}
 }
