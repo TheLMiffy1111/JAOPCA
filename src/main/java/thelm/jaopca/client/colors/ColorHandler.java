@@ -82,9 +82,6 @@ public class ColorHandler {
 	}
 
 	public static Vector4f weightedAverageColor(Iterable<Item> items, double gammaValue) {
-		if(!items.iterator().hasNext()) {
-			return new Vector4f(1, 1, 1, 0);
-		}
 		List<Vector4f> colors = Streams.stream(items).map(ItemStack::new).
 				map(stack->weightedAverageColor(stack, gammaValue)).
 				collect(Collectors.toList());
@@ -93,9 +90,6 @@ public class ColorHandler {
 
 	public static Vector4f weightedAverageColor(ItemStack stack, double gammaValue) {
 		List<BakedQuad> quads = getBakedQuads(stack);
-		if(quads.isEmpty()) {
-			return new Vector4f(1, 1, 1, 0);
-		}
 		List<Vector4f> colors = new ArrayList<>();
 		for(BakedQuad quad : quads) {
 			Vector4f color = weightedAverageColor(quad.getSprite(), gammaValue);
@@ -109,9 +103,6 @@ public class ColorHandler {
 		int width = texture.getWidth();
 		int height = texture.getHeight();
 		int frameCount = texture.getFrameCount();
-		if(width <= 0 || height <= 0 || frameCount <= 0) {
-			return new Vector4f(1, 1, 1, 0);
-		}
 		List<Vector4f> colors = new ArrayList<>();
 		for(int frameIndex = 0; frameIndex < frameCount; ++frameIndex) {
 			for(int x = 0; x < width; ++x) {
@@ -125,19 +116,21 @@ public class ColorHandler {
 	}
 
 	public static Vector4f weightedAverageColor(List<Vector4f> colors, double gammaValue) {
-		if(colors.isEmpty()) {
+		double totalWeight = 0, r = 0, g = 0, b = 0;
+		for(Vector4f color : colors) {
+			totalWeight += color.w();
+		}
+		if(totalWeight <= 0) {
 			return new Vector4f(1, 1, 1, 0);
 		}
-		double weight, r = 0, g = 0, b = 0, totalWeight = 0;
 		if(gammaValue == 0) {
 			r = 1;
 			g = 1;
 			b = 1;
 			for(Vector4f color : colors) {
-				totalWeight += weight = color.w();
-				r *= color.x()*weight;
-				g *= color.y()*weight;
-				b *= color.z()*weight;
+				r *= color.x()*color.w();
+				g *= color.y()*color.w();
+				b *= color.z()*color.w();
 			}
 			r = Math.pow(r, 1/totalWeight);
 			g = Math.pow(g, 1/totalWeight);
@@ -145,10 +138,9 @@ public class ColorHandler {
 		}
 		else {
 			for(Vector4f color : colors) {
-				totalWeight += weight = color.w();
-				r += Math.pow(color.x(), gammaValue)*weight;
-				g += Math.pow(color.y(), gammaValue)*weight;
-				b += Math.pow(color.z(), gammaValue)*weight;
+				r += Math.pow(color.x(), gammaValue)*color.w();
+				g += Math.pow(color.y(), gammaValue)*color.w();
+				b += Math.pow(color.z(), gammaValue)*color.w();
 			}
 			r = Math.pow(r/totalWeight, 1/gammaValue);
 			g = Math.pow(g/totalWeight, 1/gammaValue);
