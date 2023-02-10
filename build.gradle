@@ -241,5 +241,5 @@ jar {
 }
 
 mixin {
-    add sourceSets.main, "mixins.jaopca.refmap.json"
+    add sourceSets.main, "jaopca.refmap.json"
 }
