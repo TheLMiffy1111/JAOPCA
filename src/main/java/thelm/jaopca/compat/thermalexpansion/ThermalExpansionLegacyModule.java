@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.thermalexpansion;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,10 +28,10 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "thermal_expansion")
 public class ThermalExpansionLegacyModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "lead", "nickel", "silver", "tin"));
 	private static final Set<String> PULVERIZER_BLACKLIST = new TreeSet<>();
-	private static final Set<String> SMELTER_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> SMELTER_BLACKLIST = new TreeSet<>(List.of(
 			"netherite", "netherite_scrap"));
 
 	static {

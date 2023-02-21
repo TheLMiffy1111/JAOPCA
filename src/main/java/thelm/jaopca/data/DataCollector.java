@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,6 +29,7 @@ import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
 import net.minecraftforge.resource.ResourcePackLoader;
 import thelm.jaopca.api.resources.IPackSupplier;
 import thelm.jaopca.api.resources.JAOPCAPackSupplier;
+import thelm.jaopca.utils.MiscHelper;
 
 public class DataCollector {
 
@@ -58,12 +59,12 @@ public class DataCollector {
 		forEach(resourcePacks::add);
 		List<AnnotationData> annotationData = ModList.get().getAllScanData().stream().
 				flatMap(data->data.getAnnotations().stream()).
-				filter(data->JAOPCA_PACK_SUPPLIER.equals(data.annotationType())).
-				collect(Collectors.toList());
+				filter(data->JAOPCA_PACK_SUPPLIER.equals(data.annotationType())).toList();
+		Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
 		for(AnnotationData aData : annotationData) {
 			List<String> deps = (List<String>)aData.annotationData().get("modDependencies");
 			String className = aData.clazz().getClassName();
-			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(DataCollector::isModVersionNotLoaded)) {
+			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
 				LOGGER.info("Pack supplier {} has missing mod dependencies, skipping", className);
 				continue;
 			}
@@ -150,31 +151,5 @@ public class DataCollector {
 
 	public static Set<ResourceLocation> getDefinedAdvancements() {
 		return DEFINED_ADVANCEMENTS;
-	}
-
-	static boolean isModVersionNotLoaded(String dep) {
-		ModList modList = ModList.get();
-		int separatorIndex = dep.lastIndexOf('@');
-		String modId = dep.substring(0, separatorIndex == -1 ? dep.length() : separatorIndex);
-		String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1);
-		VersionRange versionRange;
-		try {
-			versionRange = VersionRange.createFromVersionSpec(spec);
-		}
-		catch(InvalidVersionSpecificationException e) {
-			LOGGER.warn("Unable to parse version spec {} for mod id {}", spec, modId, e);
-			return true;
-		}
-		if(modList.isLoaded(modId)) {
-			ArtifactVersion version = modList.getModContainerById(modId).get().getModInfo().getVersion();
-			if(versionRange.containsVersion(version)) {
-				return false;
-			}
-			else {
-				LOGGER.warn("Mod {} in version range {} was requested, was {}", modId, versionRange, version);
-				return true;
-			}
-		}
-		return true;
 	}
 }

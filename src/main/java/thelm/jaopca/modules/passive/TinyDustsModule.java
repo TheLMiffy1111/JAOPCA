@@ -51,8 +51,8 @@ public class TinyDustsModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : tinyDustForm.getMaterials()) {
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			ResourceLocation tinyDustLocation = miscHelper.getTagLocation("tiny_dusts", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			ApiImpl.INSTANCE.registerShapelessRecipe(
 					new ResourceLocation("jaopca", "tiny_dusts.to_dust."+material.getName()),
 					dustLocation, 1, new Object[] {

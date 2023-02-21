@@ -2,7 +2,6 @@ package thelm.jaopca.client.colors;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.Streams;
 import com.mojang.math.Vector4f;
@@ -86,8 +85,7 @@ public class ColorHandler {
 			return new Vector4f(1, 1, 1, 0);
 		}
 		List<Vector4f> colors = Streams.stream(items).map(ItemStack::new).
-				map(stack->weightedAverageColor(stack, gammaValue)).
-				collect(Collectors.toList());
+				map(stack->weightedAverageColor(stack, gammaValue)).toList();
 		return weightedAverageColor(colors, gammaValue);
 	}
 

@@ -113,7 +113,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	public Collection<ResourceLocation> getResources(PackType type, String namespace, String pathIn, Predicate<ResourceLocation> filter) {
 		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == PackType.CLIENT_RESOURCES ? assets : data;
 		return map.keySet().stream().filter(rl->rl.getNamespace().equals(namespace)).
-				filter(rl->rl.getPath().startsWith(pathIn)).filter(filter).collect(Collectors.toList());
+				filter(rl->rl.getPath().startsWith(pathIn)).filter(filter).toList();
 	}
 
 	@Override

@@ -43,6 +43,7 @@ public class IndRebModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("indreb:chunks").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm purifiedForm = ApiImpl.INSTANCE.newForm(this, "indreb_purified", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("indreb:purified").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this, chunkForm, purifiedForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -58,7 +59,7 @@ public class IndRebModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return List.of(ApiImpl.INSTANCE.newFormRequest(this, chunkForm, purifiedForm));
+		return List.of(formRequest);
 	}
 
 	@Override
@@ -85,9 +86,15 @@ public class IndRebModule implements IModule {
 		Item stoneDust = ForgeRegistries.ITEMS.getValue(new ResourceLocation("indreb:stone_dust"));
 		Item mudPile = ForgeRegistries.ITEMS.getValue(new ResourceLocation("indreb:mud_pile"));
 		Fluid sulfuricAcid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation("indreb:sulfuric_acid"));
-		for(IMaterial material : chunkForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+		for(IMaterial material : formRequest.getMaterials()) {
 			IItemInfo chunkInfo = itemFormType.getMaterialFormInfo(chunkForm, material);
+			ResourceLocation chunkLocation = miscHelper.getTagLocation("indreb:chunks", material.getName());
+			IItemInfo purifiedInfo = itemFormType.getMaterialFormInfo(purifiedForm, material);
+			ResourceLocation purifiedLocation = miscHelper.getTagLocation("indreb:purified", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			int temperature = configs.get(material).getDefinedInt("indreb.temperature", 1200, "The temperature required in the themal centrifuge.");
 			helper.registerThermalCentrifugingRecipe(
 					new ResourceLocation("jaopca", "indreb.ore_to_chunk."+material.getName()),
@@ -95,18 +102,13 @@ public class IndRebModule implements IModule {
 					chunkInfo, 4, stoneDust, 1,
 					temperature, 500, 48, 0.1F);
 			if(material.getType() == MaterialType.INGOT) {
-				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerThermalCentrifugingRecipe(
 						new ResourceLocation("jaopca", "indreb.raw_material_to_chunk."+material.getName()),
 						rawMaterialLocation, 3,
 						chunkInfo, 8,
 						temperature, 500, 48, 0.1F);
 			}
-		}
-		for(IMaterial material : purifiedForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation chunkLocation = miscHelper.getTagLocation("indreb:chunks", material.getName());
-			IItemInfo purifiedInfo = itemFormType.getMaterialFormInfo(purifiedForm, material);
+
 			helper.registerOreWashingRecipe(
 					new ResourceLocation("jaopca", "indreb.ore_to_purified."+material.getName()),
 					oreLocation, 1, Fluids.WATER, 750,
@@ -118,27 +120,26 @@ public class IndRebModule implements IModule {
 					purifiedInfo, 1, mudPile, 1,
 					500, 16, 0.1F);
 			if(material.getType() == MaterialType.INGOT) {
-				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerOreWashingRecipe(
 						new ResourceLocation("jaopca", "indreb.raw_material_to_purified."+material.getName()),
 						rawMaterialLocation, 1, Fluids.WATER, 500,
 						purifiedInfo, 2,
 						500, 16, 0.1F);
 			}
+
+			helper.registerCrushingRecipe(
+					new ResourceLocation("jaopca", "indreb.purified_to_dust."+material.getName()),
+					purifiedLocation, 1,
+					dustLocation, 1,
+					180, 8, 0.2F);
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation purifiedLocation = miscHelper.getTagLocation("indreb:purified", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerCrushingRecipe(
 					new ResourceLocation("jaopca", "indreb.ore_to_dust."+material.getName()),
 					oreLocation, 1,
 					dustLocation, 2,
-					180, 8, 0.2F);
-			helper.registerCrushingRecipe(
-					new ResourceLocation("jaopca", "indreb.purified_to_dust."+material.getName()),
-					purifiedLocation, 1,
-					dustLocation, 1,
 					180, 8, 0.2F);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());

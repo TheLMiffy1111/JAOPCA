@@ -38,7 +38,7 @@ public interface IModule extends Comparable<IModule> {
 	}
 
 	default Set<MaterialType> getMaterialTypes() {
-		return Collections.emptySet();
+		return Set.of();
 	}
 
 	default Set<String> getDefaultMaterialBlacklist() {

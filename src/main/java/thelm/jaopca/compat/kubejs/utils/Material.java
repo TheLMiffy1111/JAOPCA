@@ -2,7 +2,6 @@ package thelm.jaopca.compat.kubejs.utils;
 
 import java.util.List;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import dev.architectury.hooks.fluid.forge.FluidStackHooksForge;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
@@ -37,7 +36,7 @@ public class Material {
 	}
 
 	public List<String> getAlternativeNames() {
-		return material.getAlternativeNames().stream().collect(Collectors.toList());
+		return material.getAlternativeNames().stream().toList();
 	}
 
 	public Material getExtra(int index) {

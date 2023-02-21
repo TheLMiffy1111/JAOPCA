@@ -1,9 +1,9 @@
 package thelm.jaopca.compat.thermalexpansion;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -26,31 +26,31 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "thermal_expansion")
 public class ThermalExpansionCompatModule implements IModule {
 
-	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
 			"apatite", "bronze", "cinnabar", "constantan", "copper", "diamond", "electrum", "emerald", "ender_pearl",
 			"enderium", "gold", "invar", "iron", "lapis", "lead", "lumium", "netherite", "nickel", "niter", "quartz",
 			"ruby", "sapphire", "signalum", "silver", "sulfur", "tin"));
-	private static final Set<String> DUST_TO_INGOT_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> DUST_TO_INGOT_BLACKLIST = new TreeSet<>(List.of(
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
 			"netherite", "nickel", "signalum", "silver", "tin"));
-	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(List.of(
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
 			"netherite", "nickel", "signalum", "silver", "tin"));
-	private static final Set<String> TO_GEAR_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_GEAR_BLACKLIST = new TreeSet<>(List.of(
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
 			"netherite", "nickel", "signalum", "silver", "tin"));
-	private static final Set<String> TO_COIN_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_COIN_BLACKLIST = new TreeSet<>(List.of(
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
 			"netherite", "nickel", "signalum", "silver", "tin"));
-	private static final Set<String> PACKING_STORAGE_BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> PACKING_STORAGE_BLOCK_BLACKLIST = new TreeSet<>(List.of(
 			"amethyst", "apatite", "bronze", "charcoal", "cinnabar", "coal_coke", "coal", "constantan", "copper",
 			"diamond", "electrum", "emerald", "enderium", "glowstone", "gold", "gunpowder", "invar", "iron", "lapis",
 			"lead", "lumium", "netherite", "nickel", "niter", "quartz", "redstone", "ruby", "sapphire", "signalum",
 			"silver", "sulfur", "wood"));
-	private static final Set<String> PACKING_NUGGET_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> PACKING_NUGGET_BLACKLIST = new TreeSet<>(List.of(
 			"bronze", "constantan", "copper", "electrum", "enderium", "gold", "invar", "iron", "lead", "lumium",
 			"netherite", "nickel", "signalum", "silver", "tin"));
-	private static final Set<String> PACKING_RAW_STORAGE_BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> PACKING_RAW_STORAGE_BLOCK_BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "lead", "nickel", "silver", "tin"));
 	private static final Set<String> MOLTEN_TO_INGOT_BLACKLIST = new TreeSet<>();
 	private static final Set<String> TO_ROD_BLACKLIST = new TreeSet<>();
@@ -325,7 +325,7 @@ public class ThermalExpansionCompatModule implements IModule {
 					helper.registerPressRecipe(
 							new ResourceLocation("jaopca", "thermal_expansion.storage_block_to_material."+name),
 							storageBlockLocation, 1, unpackingDie, 1, materialLocation, material.isSmallStorageBlock() ? 4 : 9,
-							400, 0F);
+									400, 0F);
 				}
 			}
 			if(!PACKING_STORAGE_BLOCK_BLACKLIST.contains(name) && !configStorageBlockToMaterialBlacklist.contains(name)) {
