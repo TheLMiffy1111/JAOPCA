@@ -1,6 +1,5 @@
 package thelm.jaopca.compat.factorium;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -37,6 +36,7 @@ public class FactoriumModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("factorium:chunks").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm powderForm = ApiImpl.INSTANCE.newForm(this, "factorium_powders", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("factorium:powders").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this, chunkForm, powderForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -52,17 +52,7 @@ public class FactoriumModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return List.of(ApiImpl.INSTANCE.newFormRequest(this, chunkForm, powderForm));
-	}
-
-	@Override
-	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY);
-	}
-
-	@Override
-	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
+		return List.of(formRequest);
 	}
 
 	@Override
@@ -71,9 +61,15 @@ public class FactoriumModule implements IModule {
 		FactoriumHelper helper = FactoriumHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
-		for(IMaterial material : chunkForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+		for(IMaterial material : formRequest.getMaterials()) {
 			IItemInfo chunkInfo = itemFormType.getMaterialFormInfo(chunkForm, material);
+			ResourceLocation chunkLocation = miscHelper.getTagLocation("factorium:chunks", material.getName());
+			IItemInfo powderInfo = itemFormType.getMaterialFormInfo(powderForm, material);
+			ResourceLocation powderLocation = miscHelper.getTagLocation("factorium:powders", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			helper.registerCrusherRecipe(
 					new ResourceLocation("jaopca", "factorium.ore_to_chunk."+material.getName()),
 					oreLocation, chunkInfo, 2, 1F, Items.GRAVEL, 1, 0.1F, ItemStack.EMPTY, 0, 0);
@@ -83,19 +79,11 @@ public class FactoriumModule implements IModule {
 						new ResourceLocation("jaopca", "factorium.raw_material_to_chunk."+material.getName()),
 						rawMaterialLocation, chunkInfo, 2, 1F);
 			}
-		}
-		for(IMaterial material : powderForm.getMaterials()) {
-			ResourceLocation chunkLocation = miscHelper.getTagLocation("factorium:chunks", material.getName());
-			IItemInfo powderInfo = itemFormType.getMaterialFormInfo(powderForm, material);
+
 			helper.registerGrinderRecipe(
 					new ResourceLocation("jaopca", "factorium.chunk_to_powder."+material.getName()),
 					chunkLocation, powderInfo, 1, 1F, ItemStack.EMPTY, 0, 0, powderInfo, 1, 0.25F);
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation chunkLocation = miscHelper.getTagLocation("factorium:chunks", material.getName());
-			ResourceLocation powderLocation = miscHelper.getTagLocation("factorium:powders", material.getName());
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			api.registerSmeltingRecipe(
 					new ResourceLocation("jaopca", "factorium.chunk_to_material."+material.getName()),
 					chunkLocation, materialLocation, 1, 0.7F, 200);

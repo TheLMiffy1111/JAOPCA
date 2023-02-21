@@ -50,6 +50,8 @@ public class ElectrodynamicsModule implements IModule {
 			setSettings(FluidFormType.INSTANCE.getNewSettings().
 					setFallDistanceModifierFunction(material->0).setCanExtinguishFunction(material->true).
 					setSupportsBoatingFunction(material->true). setCanHydrateFunction(material->true));
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
+			impureDustForm, crystalForm, sulfateForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -65,8 +67,7 @@ public class ElectrodynamicsModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return List.of(ApiImpl.INSTANCE.newFormRequest(this,
-				impureDustForm, crystalForm, sulfateForm));
+		return List.of(formRequest);
 	}
 
 	@Override
@@ -92,38 +93,37 @@ public class ElectrodynamicsModule implements IModule {
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		IFluidFormType fluidFormType = FluidFormType.INSTANCE;
 		ResourceLocation sulfuricAcidLocation = new ResourceLocation("forge:sulfuric_acid");
-		for(IMaterial material : sulfateForm.getMaterials()) {
+		Item sulfurTrioxide = ForgeRegistries.ITEMS.getValue(new ResourceLocation("electrodynamics:oxidetrisulfur"));
+		for(IMaterial material : formRequest.getMaterials()) {
 			IFluidInfo sulfateInfo = fluidFormType.getMaterialFormInfo(sulfateForm, material);
+			ResourceLocation sulfateLocation = miscHelper.getTagLocation("electrodynamics:sulfates", material.getName());
+			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
+			ResourceLocation crystalLocation = miscHelper.getTagLocation("electrodynamics:crystals", material.getName());
+			IItemInfo impureDustInfo = itemFormType.getMaterialFormInfo(impureDustForm, material);
+			ResourceLocation impureDustLocation = miscHelper.getTagLocation("electrodynamics:impuredusts", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			if(material.getType() == MaterialType.INGOT) {
-				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerMineralWasherRecipe(
 						new ResourceLocation("jaopca", "electrodynamics.raw_material_to_sulfate."+material.getName()),
 						rawMaterialLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000, 0);
 			}
 			else {
-				ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 				helper.registerMineralWasherRecipe(
 						new ResourceLocation("jaopca", "electrodynamics.ore_to_sulfate."+material.getName()),
 						oreLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000, 0);
 			}
-		}
-		for(IMaterial material : crystalForm.getMaterials()) {
-			ResourceLocation sulfateLocation = miscHelper.getTagLocation("electrodynamics:sulfates", material.getName());
-			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
+
 			helper.registerChemicalCrystallizerRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.sulfate_to_crystal."+material.getName()),
 					sulfateLocation, 200, crystalInfo, 1, 0);
-		}
-		Item sulfurTrioxide = ForgeRegistries.ITEMS.getValue(new ResourceLocation("electrodynamics:oxidetrisulfur"));
-		for(IMaterial material : impureDustForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation crystalLocation = miscHelper.getTagLocation("electrodynamics:crystals", material.getName());
-			IItemInfo impureDustInfo = itemFormType.getMaterialFormInfo(impureDustForm, material);
+
 			helper.registerMineralCrusherRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.ore_to_impure_dust."+material.getName()),
 					oreLocation, 1, impureDustInfo, 3, 0.3);
 			if(material.getType() == MaterialType.INGOT) {
-				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerMineralCrusherRecipe(
 						new ResourceLocation("jaopca", "electrodynamics.raw_material_to_impure_dust."+material.getName()),
 						rawMaterialLocation, 1, impureDustInfo, 3, 0.3);
@@ -131,10 +131,13 @@ public class ElectrodynamicsModule implements IModule {
 			helper.registerMineralCrusherRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.crystal_to_impure_dust."+material.getName()),
 					crystalLocation, 1, impureDustInfo, 1, sulfurTrioxide, 1, 0.19, 0.1);
+
+			helper.registerMineralGrinderRecipe(
+					new ResourceLocation("jaopca", "electrodynamics.impure_dust_to_dust."+material.getName()),
+					impureDustLocation, 1, dustLocation, 1, 0.1);
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation impureDustLocation = miscHelper.getTagLocation("electrodynamics:impuredusts", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 
 			IDynamicSpecConfig config = configs.get(material);
@@ -151,9 +154,6 @@ public class ElectrodynamicsModule implements IModule {
 						new ResourceLocation("jaopca", "electrodynamics.raw_material_to_dust."+material.getName()),
 						rawMaterialLocation, 1, dustLocation, 2, 0.3);
 			}
-			helper.registerMineralGrinderRecipe(
-					new ResourceLocation("jaopca", "electrodynamics.impure_dust_to_dust."+material.getName()),
-					impureDustLocation, 1, dustLocation, 1, 0.1);
 		}
 	}
 }

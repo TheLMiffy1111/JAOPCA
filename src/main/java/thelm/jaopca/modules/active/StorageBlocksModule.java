@@ -37,9 +37,9 @@ public class StorageBlocksModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : storageBlockForm.getMaterials()) {
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			IBlockInfo storageBlockInfo = BlockFormType.INSTANCE.getMaterialFormInfo(storageBlockForm, material);
 			ResourceLocation storageBlockLocation = miscHelper.getTagLocation("storage_blocks", material.getName());
+			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			if(material.isSmallStorageBlock()) {
 				api.registerShapedRecipe(
 						new ResourceLocation("jaopca", "storage_blocks.to_storage_block."+material.getName()),

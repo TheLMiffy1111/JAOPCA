@@ -21,6 +21,10 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.Logger;
+import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
+import org.apache.maven.artifact.versioning.VersionRange;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSetMultimap;
@@ -50,6 +54,7 @@ import net.minecraftforge.common.crafting.DifferenceIngredient;
 import net.minecraftforge.common.crafting.IntersectionIngredient;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryManager;
 import thelm.jaopca.api.fluids.IFluidLike;
@@ -407,5 +412,33 @@ public class MiscHelper implements IMiscHelper {
 		int diffG = (color1<< 8&0xFF)-(color2<< 8&0xFF);
 		int diffB = (color1    &0xFF)-(color2    &0xFF);
 		return diffR*diffR+diffG*diffG+diffB*diffB;
+	}
+
+	public Predicate<String> modVersionNotLoaded(Logger logger) {
+		return dep->{
+			ModList modList = ModList.get();
+			int separatorIndex = dep.lastIndexOf('@');
+			String modId = dep.substring(0, separatorIndex == -1 ? dep.length() : separatorIndex);
+			String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1);
+			VersionRange versionRange;
+			try {
+				versionRange = VersionRange.createFromVersionSpec(spec);
+			}
+			catch(InvalidVersionSpecificationException e) {
+				logger.warn("Unable to parse version spec {} for mod id {}", spec, modId, e);
+				return true;
+			}
+			if(modList.isLoaded(modId)) {
+				ArtifactVersion version = modList.getModContainerById(modId).get().getModInfo().getVersion();
+				if(versionRange.containsVersion(version)) {
+					return false;
+				}
+				else {
+					logger.warn("Mod {} in version range {} was requested, was {}", modId, versionRange, version);
+					return true;
+				}
+			}
+			return true;
+		};
 	}
 }

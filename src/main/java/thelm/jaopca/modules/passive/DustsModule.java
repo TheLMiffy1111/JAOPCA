@@ -43,14 +43,14 @@ public class DustsModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		for(IMaterial material : dustForm.getMaterials()) {
 			if(material.getType().isIngot()) {
-				IItemInfo dustInfo = ItemFormType.INSTANCE.getMaterialFormInfo(dustForm, material);
+				ResourceLocation dustLocation = MiscHelper.INSTANCE.getTagLocation("dusts", material.getName());
 				ResourceLocation materialLocation = MiscHelper.INSTANCE.getTagLocation(material.getType().getFormName(), material.getName());
 				api.registerSmeltingRecipe(
 						new ResourceLocation("jaopca", "dusts.to_material."+material.getName()),
-						dustInfo, materialLocation, 1, 0.7F, 200);
+						dustLocation, materialLocation, 1, 0.7F, 200);
 				api.registerBlastingRecipe(
 						new ResourceLocation("jaopca", "dusts.to_material_blasting."+material.getName()),
-						dustInfo, materialLocation, 1, 0.7F, 100);
+						dustLocation, materialLocation, 1, 0.7F, 100);
 			}
 		}
 	}

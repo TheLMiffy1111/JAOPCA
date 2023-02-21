@@ -75,6 +75,8 @@ public class ConfigHandler {
 
 	public static final Set<ResourceLocation> ADVANCEMENT_BLACKLIST = new TreeSet<>();
 
+	public static final Set<String> DATA_MODULE_BLACKLIST = new TreeSet<>();
+
 	public static double gammaValue = 2;
 	public static boolean resetColors = false;
 
@@ -156,6 +158,9 @@ public class ConfigHandler {
 		mainConfig.setComment("advancements", "Configurations related to advancements.");
 		ADVANCEMENT_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("advancements.blacklist", new ArrayList<>(),
 				"List of advancements that should not be added."), ResourceLocation::new));
+
+		mainConfig.setComment("data", "Configurations related to data modules.");
+		DATA_MODULE_BLACKLIST.addAll(mainConfig.getDefinedStringList("data.moduleBlacklist", new ArrayList<>(), "List of data modules that should not be registered."));
 
 		mainConfig.setComment("colors", "Configurations related to color generation.");
 		gammaValue = mainConfig.getDefinedDouble("colors.gammaValue", gammaValue, "The gamma value used to blend colors.");

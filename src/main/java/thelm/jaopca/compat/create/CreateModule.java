@@ -1,6 +1,5 @@
 package thelm.jaopca.compat.create;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -67,16 +66,6 @@ public class CreateModule implements IModule {
 	}
 
 	@Override
-	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY);
-	}
-
-	@Override
-	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
-	}
-
-	@Override
 	public void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {
 		this.configs = configs;
 	}
@@ -98,6 +87,9 @@ public class CreateModule implements IModule {
 		for(IMaterial material : crushedOreForm.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			IItemInfo crushedOreInfo = itemFormType.getMaterialFormInfo(crushedOreForm, material);
+			ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", material.getName());
+			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
+			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
 			IDynamicSpecConfig config = configs.get(material);
 			String configByproduct = config.getDefinedString("create.byproduct", "minecraft:cobblestone",
@@ -165,11 +157,6 @@ public class CreateModule implements IModule {
 							});
 				}
 			}
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", material.getName());
-			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
 			api.registerSmeltingRecipe(
 					new ResourceLocation("jaopca", "create.crushed_to_material_smelting."+material.getName()),
