@@ -1,0 +1,9 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "thelm.jaopca.compat.rotarycraft.mixins",
+    "refmap": "jaopca.refmap.json",
+    "target": "@env(DEFAULT)",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": []
+}

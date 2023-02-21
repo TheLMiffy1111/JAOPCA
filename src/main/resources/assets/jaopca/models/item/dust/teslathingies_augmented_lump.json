@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/dust/teslathingies_augmented_lump",
-        "layer1": "jaopca:item/dust/teslathingies_augmented_lump_overlay"
-    }
-}

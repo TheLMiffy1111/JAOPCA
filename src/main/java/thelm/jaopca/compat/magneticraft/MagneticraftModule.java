@@ -2,20 +2,15 @@ package thelm.jaopca.compat.magneticraft;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
-import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -30,20 +25,22 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "magneticraft")
+@JAOPCAModule(modDependencies = "Magneticraft")
 public class MagneticraftModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Aluminium", "Aluminum", "Cobalt", "Copper", "Galena", "Gold", "Iron", "Lead", "Mithril", "Nickel",
-			"Osmium", "Silver", "Tin", "Tungsten", "Zinc"));
+			"Aluminium", "Aluminum", "Ardite", "Bismuth", "Chromium", "Cobalt", "Copper", "Galena", "Gold",
+			"Iridium", "Iron", "Lead", "Lithium", "Manganese", "Mithril", "NaturalAluminum", "Nickel", "Osmium",
+			"Platinum", "Silver", "Thorium", "Tin", "Titanium", "Tungsten", "Uranium", "Zinc"));
 
-	private Map<IMaterial, IDynamicSpecConfig> configs;
-
-	private final IForm rockyChunkForm = ApiImpl.INSTANCE.newForm(this, "magneticraft_rocky_chunk", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("rockyChunk").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm chunkForm = ApiImpl.INSTANCE.newForm(this, "magneticraft_chunk", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("chunk").setDefaultMaterialBlacklist(BLACKLIST);
-	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this, rockyChunkForm, chunkForm).setGrouped(true);
+	private final IForm rubbleForm = ApiImpl.INSTANCE.newForm(this, "magneticraft_rubble", ItemFormType.INSTANCE).
+			setMaterialTypes(MaterialType.INGOT).setSecondaryName("rubble").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IForm pebblesForm = ApiImpl.INSTANCE.newForm(this, "magneticraft_pebbles", ItemFormType.INSTANCE).
+			setMaterialTypes(MaterialType.INGOT).setSecondaryName("pebbles").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
+			chunkForm, rubbleForm, pebblesForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -53,8 +50,8 @@ public class MagneticraftModule implements IModule {
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
 		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		builder.put(0, "dust");
 		builder.put(1, "dust");
-		builder.put(2, "dust");
 		return builder.build();
 	}
 
@@ -64,97 +61,79 @@ public class MagneticraftModule implements IModule {
 	}
 
 	@Override
-	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT);
-	}
-
-	@Override
-	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
-	}
-
-	@Override
-	public void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {
-		this.configs = configs;
-	}
-
-	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		MagneticraftHelper helper = MagneticraftHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		for(IMaterial material : formRequest.getMaterials()) {
-			IItemInfo rockyChunkInfo = itemFormType.getMaterialFormInfo(rockyChunkForm, material);
-			String rockyChunkOredict = miscHelper.getOredictName("rockyChunk", material.getName());
 			IItemInfo chunkInfo = itemFormType.getMaterialFormInfo(chunkForm, material);
 			String chunkOredict = miscHelper.getOredictName("chunk", material.getName());
+			IItemInfo rubbleInfo = itemFormType.getMaterialFormInfo(rubbleForm, material);
+			String rubbleOredict = miscHelper.getOredictName("rubble", material.getName());
+			IItemInfo pebblesInfo = itemFormType.getMaterialFormInfo(pebblesForm, material);
+			String pebblesOredict = miscHelper.getOredictName("pebbles", material.getName());
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			String extraDustOredict = miscHelper.getOredictName("dust", material.getExtra(1).getName());
-			String secondExtraDustOredict = miscHelper.getOredictName("dust", material.getExtra(2).getName());
 			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 
-			IDynamicSpecConfig config = configs.get(material);
-			String configByproduct = config.getDefinedString("magneticraft.grinderByproduct", "minecraft:gravel",
-					miscHelper.metaItemPredicate(), "The default byproduct material to output in Magneticraft's grinder.");
-			ItemStack byproduct = miscHelper.parseMetaItem(configByproduct);
-
-			helper.registerCrushingTableRecipe(
-					miscHelper.getRecipeKey("magneticraft.ore_to_rocky_chunk_crushing_table", material.getName()),
-					oreOredict, rockyChunkInfo, 1);
-			helper.registerGrinderRecipe(
-					miscHelper.getRecipeKey("magneticraft.ore_to_rocky_chunk_grinder", material.getName()),
-					oreOredict, rockyChunkInfo, 1, byproduct, 1, 0.15F, 50);
-
-			configByproduct = config.getDefinedString("magneticraft.sluiceBoxByproduct", "minecraft:cobblestone",
-					miscHelper.metaItemPredicate(), "The default byproduct material to output in Magneticraft's sluice box.");
-			byproduct = miscHelper.parseMetaItem(configByproduct);
-
-			if(material.hasExtra(2)) {
-				helper.registerSluiceBoxRecipe(
-						miscHelper.getRecipeKey("magneticraft.rocky_chunk_to_chunk_sluice_box", material.getName()),
-						rockyChunkOredict, new Object[] {
-								chunkInfo, 1, 1F, extraDustOredict, 1, 0.15F, secondExtraDustOredict, 1, 0.15F, byproduct, 1, 0.15F,
-						});
-				helper.registerSieveRecipe(
-						miscHelper.getRecipeKey("magneticraft.rocky_chunk_to_chunk_sieve", material.getName()),
-						rockyChunkOredict, chunkInfo, 1, 1F, extraDustOredict, 1, 0.15F, secondExtraDustOredict, 1, 0.15F, 50);
-			}
-			else if(material.hasExtra(1)) {
-				helper.registerSluiceBoxRecipe(
-						miscHelper.getRecipeKey("magneticraft.rocky_chunk_to_chunk_sluice_box", material.getName()),
-						rockyChunkOredict, new Object[] {
-								chunkInfo, 1, 1F, extraDustOredict, 1, 0.15F, byproduct, 1, 0.15F,
-						});
-				helper.registerSieveRecipe(
-						miscHelper.getRecipeKey("magneticraft.rocky_chunk_to_chunk_sieve", material.getName()),
-						rockyChunkOredict, chunkInfo, 1, 1F, extraDustOredict, 1, 0.15F, 50);
+			helper.registerHammerTableRecipe(
+					miscHelper.getRecipeKey("magneticraft.ore_to_chunk_hammer", material.getName()),
+					oreOredict, chunkInfo, 1);
+			if(material.hasExtra(1)) {
+				helper.registerCrusherRecipe(
+						miscHelper.getRecipeKey("magneticraft.ore_to_chunk_crusher", material.getName()),
+						oreOredict, chunkInfo, 1, dustOredict, 1, 0.05F, extraDustOredict, 1, 0.05F);
 			}
 			else {
-				helper.registerSluiceBoxRecipe(
-						miscHelper.getRecipeKey("magneticraft.rocky_chunk_to_chunk_sluice_box", material.getName()),
-						rockyChunkOredict, new Object[] {
-								chunkInfo, 1, 1F, byproduct, 1, 0.15F,
-						});
-				helper.registerSieveRecipe(
-						miscHelper.getRecipeKey("magneticraft.rocky_chunk_to_chunk_sieve", material.getName()),
-						rockyChunkOredict, chunkInfo, 1, 1F, 50);
+				helper.registerCrusherRecipe(
+						miscHelper.getRecipeKey("magneticraft.ore_to_chunk_crusher", material.getName()),
+						oreOredict, chunkInfo, 1, dustOredict, 1, 0.05F);
 			}
 
-			api.registerSmeltingRecipe(
-					miscHelper.getRecipeKey("magneticraft.rocky_chunk_to_material", material.getName()),
-					rockyChunkOredict, materialOredict, 1, 0.1F);
+			if(material.hasExtra(1)) {
+				helper.registerGrinderRecipe(
+						miscHelper.getRecipeKey("magneticraft.chunk_to_rubble", material.getName()),
+						chunkOredict, rubbleInfo, 1, dustOredict, 1, 0.05F, extraDustOredict, 1, 0.05F);
+			}
+			else {
+				helper.registerGrinderRecipe(
+						miscHelper.getRecipeKey("magneticraft.chunk_to_rubble", material.getName()),
+						chunkOredict, rubbleInfo, 1, dustOredict, 1, 0.05F);
+			}
+
+
+			if(material.hasExtra(1)) {
+				helper.registerGrinderRecipe(
+						miscHelper.getRecipeKey("magneticraft.rubble_to_pebbles", material.getName()),
+						rubbleOredict, pebblesInfo, 1, dustOredict, 1, 0.05F, extraDustOredict, 1, 0.05F);
+			}
+			else {
+				helper.registerGrinderRecipe(
+						miscHelper.getRecipeKey("magneticraft.rubble_to_pebbles", material.getName()),
+						rubbleOredict, pebblesInfo, 1, dustOredict, 1, 0.05F);
+			}
+
+			if(material.hasExtra(1)) {
+				helper.registerSifterRecipe(
+						miscHelper.getRecipeKey("magneticraft.pebbles_to_dust", material.getName()),
+						pebblesOredict, dustOredict, 3, extraDustOredict, 1, 0.05F);
+			}
+			else {
+				helper.registerSifterRecipe(
+						miscHelper.getRecipeKey("magneticraft.pebbles_to_dust", material.getName()),
+						pebblesOredict, dustOredict, 3);
+			}
 			api.registerSmeltingRecipe(
 					miscHelper.getRecipeKey("magneticraft.chunk_to_material", material.getName()),
-					chunkOredict, materialOredict, 2, 0.1F);
+					chunkInfo, materialOredict, 2, 1F);
+			api.registerSmeltingRecipe(
+					miscHelper.getRecipeKey("magneticraft.rubble_to_material", material.getName()),
+					rubbleOredict, materialOredict, 2, 1F);
+			api.registerSmeltingRecipe(
+					miscHelper.getRecipeKey("magneticraft.pebbles_to_material", material.getName()),
+					pebblesOredict, materialOredict, 2, 1F);
 		}
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("rockychunk", "magneticraft_rocky_chunk");
-		builder.put("chunk", "magneticraft_chunk");
-		return builder.build();
 	}
 }

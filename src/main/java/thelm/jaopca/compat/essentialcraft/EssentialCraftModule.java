@@ -7,10 +7,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import essentialcraft.api.OreSmeltingRecipe;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import ec3.utils.common.EnumOreColoring;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -27,8 +27,7 @@ public class EssentialCraftModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>();
 
-	private Map<IMaterial, OreSmeltingRecipe> addedRecipes = new TreeMap<>();
-	private boolean colorsLoaded;
+	private Map<IMaterial, EnumOreColoring> addedRecipes = new TreeMap<>();
 
 	public EssentialCraftModule() {
 		MinecraftForge.EVENT_BUS.register(this);
@@ -47,7 +46,7 @@ public class EssentialCraftModule implements IModule {
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
 		if(BLACKLIST.isEmpty()) {
-			OreSmeltingRecipe.RECIPES.stream().map(r->r.oreName).
+			Arrays.stream(EnumOreColoring.values()).map(r->r.oreName).
 			filter(n->n.startsWith("ore")).map(n->n.substring(3)).forEach(BLACKLIST::add);
 		}
 		return BLACKLIST;

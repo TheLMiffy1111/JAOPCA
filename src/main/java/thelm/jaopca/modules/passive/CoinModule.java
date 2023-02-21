@@ -2,9 +2,6 @@ package thelm.jaopca.modules.passive;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
 
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -33,12 +30,5 @@ public class CoinModule implements IModule {
 	@Override
 	public List<IFormRequest> getFormRequests() {
 		return Collections.singletonList(coinForm.toRequest());
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("coin", "coin");
-		return builder.build();
 	}
 }

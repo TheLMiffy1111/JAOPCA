@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import exter.foundry.fluid.LiquidMetalRegistry;
+import exter.foundry.registry.LiquidMetalRegistry;
 import net.minecraft.block.material.Material;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;
@@ -23,7 +23,7 @@ import thelm.jaopca.compat.foundry.fluids.JAOPCALiquidMetalFluidBlock;
 import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.utils.ApiImpl;
 
-@JAOPCAModule(modDependencies = "foundry@[3,)")
+@JAOPCAModule(modDependencies = "foundry")
 public class FoundryLiquidModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>();
@@ -32,7 +32,7 @@ public class FoundryLiquidModule implements IModule {
 			setMaterialTypes(MaterialType.INGOTS).setSettings(FluidFormType.INSTANCE.getNewSettings().
 					setFluidBlockCreator(JAOPCALiquidMetalFluidBlock::new).
 					setLuminosityFunction(material->15).setDensityFunction(material->2000).
-					setTemperatureFunction(this::getTemperature).setMaterialFunction(material->Material.LAVA));
+					setTemperatureFunction(this::getTemperature).setMaterialFunction(material->Material.lava));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
@@ -56,8 +56,8 @@ public class FoundryLiquidModule implements IModule {
 	@Override
 	public List<IFormRequest> getFormRequests() {
 		if(BLACKLIST.isEmpty()) {
-			BLACKLIST.addAll(LiquidMetalRegistry.INSTANCE.getFluidNames());
-			Collections.addAll(BLACKLIST, "Aluminum", "Constantan");
+			BLACKLIST.addAll(LiquidMetalRegistry.instance.GetFluidNames());
+			Collections.addAll(BLACKLIST, "Aluminium", "Chrome");
 			liquidForm.setDefaultMaterialBlacklist(BLACKLIST);
 		}
 		return Collections.singletonList(liquidForm.toRequest());
@@ -69,6 +69,6 @@ public class FoundryLiquidModule implements IModule {
 	}
 
 	public int getTemperature(IMaterial material) {
-		return configs.get(material).getDefinedInt("foundry.temperature", 1000, "The temperature of this Foundry liquid metal.");
+		return configs.get(material).getDefinedInt("foundry.temperature", 1300, "The temperature of this Foundry liquid metal.");
 	}
 }

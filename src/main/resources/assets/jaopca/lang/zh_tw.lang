@@ -6,26 +6,35 @@ item.jaopca.nugget=%s粒
 item.jaopca.tiny_dust=小撮%s粉
 item.jaopca.small_dust=小堆%s粉
 fluid.jaopca.molten=熔融%s
+item.jaopca.molten=熔融%s桶
 item.jaopca.coin=%s幣
 item.jaopca.gear=%s齒輪
 item.jaopca.plate=%s板
 item.jaopca.stick=%s桿
 item.jaopca.dense_plate=緻密%s板
 
-item.jaopca.abyssalcraft_crystal_fragment=結晶%s斷片
 item.jaopca.abyssalcraft_crystal_shard=結晶%s碎片
 item.jaopca.abyssalcraft_crystal=結晶%s
-block.jaopca.abyssalcraft_crystal_cluster=結晶%s簇
+
+item.jaopca.eng_toolbox_ground=磨碎%s礦石
+item.jaopca.eng_toolbox_impure_dust=不純%s粉
+
+item.jaopca.factorization_dirty_gravel=骯髒的%s礦砂
+item.jaopca.factorization_clean_gravel=乾淨的%s礦砂
+item.jaopca.factorization_reduced=還原%s塊
+item.jaopca.factorization_crystalline=結晶%s
 
 fluid.jaopca.foundry_liquid=液態%s
+item.jaopca.foundry_liquid=液態%s桶
 
 item.jaopca.hbm_crystal=%s晶體
 
 item.jaopca.ic2_crushed=粉碎%s礦
 item.jaopca.ic2_purified_crushed=乾淨的粉碎%s礦
 
-item.jaopca.magneticraft_rocky_chunk=%s礫岩
-item.jaopca.magneticraft_chunk=細塊%s礦
+item.jaopca.magneticraft_chunk=大塊%s礦
+item.jaopca.magneticraft_rubble=碎%s礦
+item.jaopca.magneticraft_pebbles=細%s礦
 
 item.jaopca.mekanism_dirty_dust=污濁的%s粉
 item.jaopca.mekanism_clump=%s碎塊
@@ -34,7 +43,14 @@ item.jaopca.mekanism_crystal=%s晶體
 gas.jaopca.mekanism_clean_slurry=純凈%s漿液
 gas.jaopca.mekanism_slurry=%s漿液
 
-item.jaopca.teslathingies_tesla_lump=特斯拉%s碎塊
-item.jaopca.teslathingies_augmented_lump=增強%s碎塊
+item.jaopca.rotarycraft_dust=%s礦粉
+item.jaopca.rotarycraft_slurry=%s礦漿
+item.jaopca.rotarycraft_solution=%s礦溶液
+item.jaopca.rotarycraft_flakes=%s礦薄片
 
-item.jaopca.thaumcraft_cluster=原生%s礦簇
+item.jaopca.thaumcraft_cluster=%s礦晶簇
+
+tc.research_category.JAOPCA=JAOPCA
+tc.research_name.JAOPCA_PUREMETAL=金屬晶簇化2
+tc.research_text.JAOPCA_PUREMETAL=將大多數金屬礦物結晶成礦晶簇
+tc.research_page.JAOPCA_PUREMETAL.1=礦物晶簇是稀有而純淨的金屬聚合體。你發現一種方法能提純並聚合大多數金屬礦物得到礦晶簇。<BR>冶煉這些礦晶簇比起普通礦石能得到雙倍的金屬錠。

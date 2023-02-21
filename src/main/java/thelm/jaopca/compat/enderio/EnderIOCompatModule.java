@@ -6,7 +6,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -18,21 +18,19 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "enderio")
+@JAOPCAModule(modDependencies = "EnderIO")
 public class EnderIOCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Adamantine", "Aluminium", "Aluminum", "AluminumBrass", "Amordrine", "Angmallen", "Ardite",
-			"AstralSilver", "Atlarus", "BlackSteel", "Blutonium", "Brass", "Bronze", "Carmot", "Celenegil",
-			"CertusQuartz", "Ceruclase", "Charcoal", "Cobalt", "ConductiveIron", "Copper", "Cyanite",
-			"DamascusSteel", "DarkSteel", "DeepIron", "Diamond", "Draconium", "ElectricalSteel", "Electrum",
-			"Emerald", "Enderium", "EnergeticAlloy", "Fluix", "Gold", "Graphite", "Haderoth", "Hepatizon",
-			"Ignatius", "Infuscolium", "Inolashite", "Invar", "Iron", "Kalendrite", "Lead", "Lemurite", "Ludicrite",
-			"Lumium", "Magnesium", "Manganese", "Manyullyn", "Midasium", "Mithril", "NaturalAluminum", "Nickel",
-			"Orichalcum", "Osmium", "Oureclase", "Platinum", "Prismarine", "Prometheum", "PulsatingIron",
-			"Quicksilver", "RedstoneAlloy", "Rubracium", "Rutile", "Sanguinite", "ShadowIron", "ShadowSteel",
-			"Signalum", "Silver", "Soularium", "Steel", "Tartarite", "Tin", "Titanium", "Tungsten", "Uranium",
-			"VibrantAlloy", "Vulcanite", "Vyroxeres", "Yellorium", "Zinc"));
+			"Adamantine", "Aluminium", "AluminiumBrass", "Aluminum", "AluminumBrass", "Amordrine", "Angmallen",
+			"Ardite", "AstralSilver", "Atlarus", "BlackSteel", "Blutonium", "Brass", "Bronze", "Bronze", "Carmot",
+			"Celenegil", "CertusQuartz", "Ceruclase", "Cobalt", "Copper", "Cyanite", "DamascusSteel", "DeepIron",
+			"Electrum", "Enderium", "Fluix", "Gold", "Graphite", "Haderoth", "Hepatizon", "Ignatius",
+			"Infuscolium", "Inolashite", "Invar", "Iron", "Kalendrite", "Lapis", "Lead", "Lemurite", "Ludicrite",
+			"Lumium", "Manganese", "Manyullyn", "Midasium", "Mithril", "NaturalAluminum", "Nickel", "Orichalcum",
+			"Osmium", "Oureclase", "Platinum", "Prometheum", "Quicksilver", "Rubracium", "Sanguinite", "ShadowIron",
+			"ShadowSteel", "Signalum", "Silver", "Silver", "Steel", "Tartarite", "Tin", "Vulcanite", "Vyroxeres",
+			"Yellorite", "Yellorium", "Zinc"));
 	private static Set<String> configMaterialToDustBlacklist = new TreeSet<>();
 	private static Set<String> configBlockToDustBlacklist = new TreeSet<>();
 
@@ -74,7 +72,7 @@ public class EnderIOCompatModule implements IModule {
 				if(oredict.contains(dustOredict)) {
 					helper.registerSagMillRecipe(
 							miscHelper.getRecipeKey("enderio.material_to_dust", name),
-							materialOredict, 2400, "none", "ignore", new Object[] {
+							materialOredict, 2400, "none", new Object[] {
 									dustOredict, 1, 1F,
 							});
 				}
@@ -85,7 +83,7 @@ public class EnderIOCompatModule implements IModule {
 				if(oredict.contains(dustOredict)) {
 					helper.registerSagMillRecipe(
 							miscHelper.getRecipeKey("enderio.block_to_dust", name),
-							blockOredict, 3600, "none", "ignore", new Object[] {
+							blockOredict, 3600, "none", new Object[] {
 									dustOredict, material.isSmallStorageBlock() ? 4 : 9, 1F,
 							});
 				}

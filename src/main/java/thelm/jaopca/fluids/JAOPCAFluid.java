@@ -4,8 +4,6 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 import net.minecraft.item.EnumRarity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
@@ -27,9 +25,7 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 	protected Optional<String> translationKey = Optional.empty();
 
 	public JAOPCAFluid(IForm form, IMaterial material, IFluidFormSettings settings) {
-		super(MiscHelper.INSTANCE.getFluidName(form.getSecondaryName(), material.getName()),
-				new ResourceLocation("jaopca", "fluid/"+material.getModelType()+'/'+form.getName()+"_still"),
-				new ResourceLocation("jaopca", "fluid/"+material.getModelType()+'/'+form.getName()+"_flow"));
+		super(MiscHelper.INSTANCE.getFluidName(form.getSecondaryName(), material.getName()));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -47,7 +43,7 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	public IMaterial getMaterial() {
+	public IMaterial getIMaterial() {
 		return material;
 	}
 
@@ -57,16 +53,6 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 			rarity = Optional.of(settings.getDisplayRarityFunction().apply(material));
 		}
 		return rarity.get();
-	}
-
-	@Override
-	public SoundEvent getFillSound() {
-		return settings.getFillSoundSupplier().get();
-	}
-
-	@Override
-	public SoundEvent getEmptySound() {
-		return settings.getEmptySoundSupplier().get();
 	}
 
 	public int getOpacity() {
@@ -82,22 +68,6 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	public ResourceLocation getStill() {
-		if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/fluid/"+form.getName()+'.'+material.getName()+"_still.png"))) {
-			return new ResourceLocation("jaopca", "fluid/"+form.getName()+'.'+material.getName()+"_still");
-		}
-		return super.getStill();
-	}
-
-	@Override
-	public ResourceLocation getFlowing() {
-		if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/fluid/"+form.getName()+'.'+material.getName()+"_flow.png"))) {
-			return new ResourceLocation("jaopca", "fluid/"+form.getName()+'.'+material.getName()+"_flow");
-		}
-		return super.getFlowing();
-	}
-
-	@Override
 	public String getUnlocalizedName() {
 		if(!translationKey.isPresent()) {
 			translationKey = Optional.of("fluid.jaopca."+MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName()));
@@ -107,6 +77,6 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 
 	@Override
 	public String getLocalizedName(FluidStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("fluid.jaopca."+getForm().getName(), getMaterial(), getUnlocalizedName());
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("fluid.jaopca."+getForm().getName(), getIMaterial(), getUnlocalizedName());
 	}
 }

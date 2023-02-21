@@ -8,13 +8,10 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.Lists;
 import com.shinoow.abyssalcraft.api.APIUtils;
 import com.shinoow.abyssalcraft.api.AbyssalCraftAPI;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeAction;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -22,12 +19,12 @@ public class MaterializationRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final String key;
 	public final Object output;
 	public final int count;
 	public final Object[] input;
 
-	public MaterializationRecipeAction(ResourceLocation key, Object output, int count, Object... input) {
+	public MaterializationRecipeAction(String key, Object output, int count, Object... input) {
 		this.key = Objects.requireNonNull(key);
 		this.output = output;
 		this.count = count;
@@ -36,7 +33,7 @@ public class MaterializationRecipeAction implements IRecipeAction {
 
 	@Override
 	public boolean register() {
-		Ingredient out = MiscHelper.INSTANCE.getIngredient(output);
+		List<ItemStack> out = MiscHelper.INSTANCE.getItemStacks(output, count, false);
 		if(out == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
@@ -50,14 +47,14 @@ public class MaterializationRecipeAction implements IRecipeAction {
 				inc = (Integer)input[i];
 				++i;
 			}
-			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
+			List<ItemStack> ing = MiscHelper.INSTANCE.getItemStacks(in, inc, true);
 			if(ing == null || inc == 0) {
 				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			List<ItemStack> list = new ArrayList<>();
-			for(ItemStack is : ing.getMatchingStacks()) {
+			for(ItemStack is : ing) {
 				if(APIUtils.isCrystal(is)) {
-					list.add(MiscHelper.INSTANCE.resizeItemStack(is, inc));
+					list.add(is);
 				}
 			}
 			if(list.isEmpty()) {
@@ -68,9 +65,9 @@ public class MaterializationRecipeAction implements IRecipeAction {
 		if(inputs.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredients in recipe "+key+": "+Arrays.deepToString(input));
 		}
-		for(List<ItemStack> in : Lists.cartesianProduct(inputs)) {
-			for(ItemStack stack : out.getMatchingStacks()) {
-				AbyssalCraftAPI.addMaterialization(MiscHelper.INSTANCE.resizeItemStack(stack, count), in.toArray(new ItemStack[in.size()]));
+		for(List<ItemStack> in : MiscHelper.INSTANCE.guavaCartesianProduct(inputs)) {
+			for(ItemStack stack : out) {
+				AbyssalCraftAPI.addMaterialization(in.toArray(new ItemStack[in.size()]), stack);
 			}
 		}
 		return true;

@@ -9,11 +9,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mods.railcraft.api.crafting.Crafters;
-import mods.railcraft.api.crafting.IRockCrusherCrafter;
+import mods.railcraft.api.crafting.IRockCrusherRecipe;
+import mods.railcraft.api.crafting.RailcraftCraftingManager;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeAction;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -21,12 +19,12 @@ public class RockCrusherRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final String key;
 	public final Object input;
 	public final int time;
 	public final Object[] output;
 
-	public RockCrusherRecipeAction(ResourceLocation key, Object input, int time, Object... output) {
+	public RockCrusherRecipeAction(String key, Object input, int time, Object... output) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.time = time;
@@ -35,8 +33,8 @@ public class RockCrusherRecipeAction implements IRecipeAction {
 
 	@Override
 	public boolean register() {
-		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing == null) {
+		List<ItemStack> ing = MiscHelper.INSTANCE.getItemStacks(input, 1, true);
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		List<Pair<ItemStack, Float>> outputs = new ArrayList<>();
@@ -54,8 +52,8 @@ public class RockCrusherRecipeAction implements IRecipeAction {
 				chance = (Float)output[i];
 				++i;
 			}
-			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
-			if(stack.isEmpty()) {
+			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count, false);
+			if(stack == null) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 				continue;
 			}
@@ -64,11 +62,12 @@ public class RockCrusherRecipeAction implements IRecipeAction {
 		if(outputs.isEmpty()) {
 			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
-		IRockCrusherCrafter.IRockCrusherRecipeBuilder builder = Crafters.rockCrusher().makeRecipe(ing).name(key).time(time);
-		for(Pair<ItemStack, Float> out : outputs) {
-			builder.addOutput(out.getLeft(), out.getRight());
+		for(ItemStack in : ing) {
+			IRockCrusherRecipe recipe = RailcraftCraftingManager.rockCrusher.createNewRecipe(in, true, false);
+			for(Pair<ItemStack, Float> out : outputs) {
+				recipe.addOutput(out.getLeft(), out.getRight());
+			}
 		}
-		builder.register();
 		return true;
 	}
 }

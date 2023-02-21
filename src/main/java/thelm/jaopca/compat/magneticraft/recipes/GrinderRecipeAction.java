@@ -5,12 +5,9 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.cout970.magneticraft.api.MagneticraftApi;
-import com.cout970.magneticraft.api.registries.machines.grinder.IGrinderRecipeManager;
+import com.cout970.magneticraft.api.access.MgRecipeRegister;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeAction;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -18,20 +15,26 @@ public class GrinderRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final String key;
 	public final Object input;
 	public final Object output;
 	public final int outputCount;
 	public final Object secondOutput;
 	public final int secondOutputCount;
 	public final float secondOutputChance;
-	public final float time;
+	public final Object thirdOutput;
+	public final int thirdOutputCount;
+	public final float thirdOutputChance;
 
-	public GrinderRecipeAction(ResourceLocation key, Object input, Object output, int outputCount, float time) {
-		this(key, input, output, outputCount, ItemStack.EMPTY, 0, 0, time);
+	public GrinderRecipeAction(String key, Object input, Object output, int outputCount) {
+		this(key, input, output, outputCount, null, 0, 0, null, 0, 0);
 	}
 
-	public GrinderRecipeAction(ResourceLocation key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondOutputChance, float time) {
+	public GrinderRecipeAction(String key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondOutputChance) {
+		this(key, input, output, outputCount, secondOutput, secondOutputCount, secondOutputChance, null, 0, 0);
+	}
+
+	public GrinderRecipeAction(String key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondOutputChance, Object thirdOutput, int thirdOutputCount, float thirdOutputChance) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
@@ -39,24 +42,24 @@ public class GrinderRecipeAction implements IRecipeAction {
 		this.secondOutput = secondOutput;
 		this.secondOutputCount = secondOutputCount;
 		this.secondOutputChance = secondOutputChance;
-		this.time = time;
+		this.thirdOutput = thirdOutput;
+		this.thirdOutputCount = thirdOutputCount;
+		this.thirdOutputChance = thirdOutputChance;
 	}
 
 	@Override
 	public boolean register() {
-		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
+		ItemStack ing = MiscHelper.INSTANCE.getItemStack(input, 1, true);
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		ItemStack stack1 = MiscHelper.INSTANCE.getItemStack(output, outputCount);
-		if(stack1.isEmpty()) {
+		ItemStack stack1 = MiscHelper.INSTANCE.getItemStack(output, outputCount, false);
+		if(stack1 == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		ItemStack stack2 = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
-		IGrinderRecipeManager manager = MagneticraftApi.getGrinderRecipeManager();
-		for(ItemStack in : ing.getMatchingStacks()) {
-			manager.registerRecipe(manager.createRecipe(in.copy(), stack1, stack2, secondOutputChance, time, false));
-		}
+		ItemStack stack2 = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount, false);
+		ItemStack stack3 = MiscHelper.INSTANCE.getItemStack(thirdOutput, thirdOutputCount, false);
+		MgRecipeRegister.registerGrinderRecipe(ing, stack1, stack2, secondOutputChance, stack3, thirdOutputChance);
 		return true;
 	}
 }

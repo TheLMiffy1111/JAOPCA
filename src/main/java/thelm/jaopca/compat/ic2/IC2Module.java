@@ -3,17 +3,15 @@ package thelm.jaopca.compat.ic2;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import ic2.api.item.IC2Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -29,7 +27,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "ic2")
+@JAOPCAModule(modDependencies = "IC2")
 public class IC2Module implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
@@ -66,8 +64,8 @@ public class IC2Module implements IModule {
 		IC2Helper helper = IC2Helper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
-		ItemStack stoneDust = IC2Items.getItem("dust", "stone");
-		for(IMaterial material : crushedForm.getMaterials()) {
+		ItemStack stoneDust = IC2Items.getItem("stoneDust");
+		for(IMaterial material : formRequest.getMaterials()) {
 			IItemInfo crushedInfo = itemFormType.getMaterialFormInfo(crushedForm, material);
 			String crushedOredict = miscHelper.getOredictName("crushed", material.getName());
 			IItemInfo purifiedCrushedInfo = itemFormType.getMaterialFormInfo(purifiedCrushedForm, material);
@@ -111,14 +109,5 @@ public class IC2Module implements IModule {
 							extraTinyDustOredict, 1, dustOredict, 1,
 					});
 		}
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("crushed", "ic2_crushed");
-		builder.put("crushedpurified", "ic2_purified_crushed");
-		builder.put("purified", "ic2_purified_crushed");
-		return builder.build();
 	}
 }

@@ -1,26 +1,26 @@
 package thelm.jaopca.api.helpers;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface IMiscHelper {
 
-	ResourceLocation getRecipeKey(String category, String material);
+	String getRecipeKey(String category, String material);
 
 	String getOredictName(String form, String material);
 
 	String getFluidName(String form, String material);
 
-	ItemStack getItemStack(Object obj, int count);
+	List<ItemStack> getItemStacks(Object obj, int count, boolean allowWildcard);
 
-	Ingredient getIngredient(Object obj);
+	ItemStack getItemStack(Object obj, int count, boolean allowWildcard);
 
 	ItemStack getPreferredItemStack(Iterable<ItemStack> iterable, int count);
 

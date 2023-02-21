@@ -6,27 +6,22 @@ item.jaopca.nugget=%s Parçası
 item.jaopca.tiny_dust=Minik %s Tozu
 item.jaopca.small_dust=Küçük %s Tozu
 fluid.jaopca.molten=Erimiş %s
+item.jaopca.molten=Erimiş %s Kovası
 item.jaopca.coin=%s Para
 item.jaopca.gear=%s Dişli
 item.jaopca.plate=%s Plaka
 item.jaopca.stick=%s Çubuk
 item.jaopca.dense_plate=Yoğun %s Plaka
 
-item.jaopca.abyssalcraft_crystal_fragment=Kristalleştirilmiş %s Parçacığı
 item.jaopca.abyssalcraft_crystal_shard=Kristalleştirilmiş %s Parçası
 item.jaopca.abyssalcraft_crystal=Kristalleştirilmiş %s
-block.jaopca.abyssalcraft_crystal_cluster=Kristalleştirilmiş %s Kümesi
-
-fluid.jaopca.bcoreprocessing_searing=Erimiş %s (§cAşırı Sıcak§r)
-fluid.jaopca.bcoreprocessing_hot=Erimiş %s (§6Sıcak§r)
-fluid.jaopca.bcoreprocessing_cool=Erimiş %s (§bSoğuk§r)
 
 fluid.jaopca.foundry_liquid=Sıvı %s
+item.jaopca.foundry_liquid=Sıvı %s Kovası
 
 item.jaopca.ic2_crushed=Ezilmiş %s Cevheri
 item.jaopca.ic2_purified_crushed=Ezilmiş Saflaştırılmış %s Cevheri
 
-item.jaopca.magneticraft_rocky_chunk=Taşlı %s Yığını
 item.jaopca.magneticraft_chunk=%s Yığını
 
 item.jaopca.mekanism_dirty_dust=Kirli %s Tozu
@@ -35,8 +30,5 @@ item.jaopca.mekanism_shard=%s Parçası
 item.jaopca.mekanism_crystal=%s Kristal
 gas.jaopca.mekanism_clean_slurry=Temiz %s Harcı
 gas.jaopca.mekanism_slurry=%s Harç
-
-item.jaopca.teslathingies_tesla_lump=Teslified %s Yumrusu
-item.jaopca.teslathingies_augmented_lump=Artırılmış %s Yumru
 
 item.jaopca.thaumcraft_cluster=Yerli %s Yumrusu

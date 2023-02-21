@@ -6,27 +6,22 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.AxisAlignedBB;
 import thelm.jaopca.api.blocks.IBlockCreator;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockItemCreator;
-import thelm.jaopca.api.blocks.IBlockItemModelFunctionCreator;
-import thelm.jaopca.api.blocks.IBlockModelMapCreator;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.client.models.blocks.JAOPCABlockItemModelFunctionCreator;
-import thelm.jaopca.client.models.blocks.JAOPCABlockModelMapCreator;
 
 public class BlockFormSettings implements IBlockFormSettings {
 
 	BlockFormSettings() {}
 
 	private IBlockCreator blockCreator = JAOPCABlock::new;
-	private Function<IMaterial, Material> materialFunction = material->Material.IRON;
+	private Function<IMaterial, Material> materialFunction = material->Material.iron;
 	private Function<IMaterial, MapColor> mapColorFunction = materialFunction.andThen(Material::getMaterialMapColor);
 	//material->{
 	//	int color = material.getColor();
@@ -37,26 +32,23 @@ public class BlockFormSettings implements IBlockFormSettings {
 	//			orElse(MaterialColor.IRON);
 	//};
 	private boolean blocksMovement = true;
-	private Function<IMaterial, SoundType> soundTypeFunction = material->SoundType.METAL;
+	private Function<IMaterial, Block.SoundType> soundTypeFunction = material->Block.soundTypeMetal;
 	private ToIntFunction<IMaterial> lightOpacityFunction = material->15;
 	private ToIntFunction<IMaterial> lightValueFunction = material->0;
 	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->5;
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->6;
 	private ToDoubleFunction<IMaterial> slipperinessFunction = material->0.6;
-	private AxisAlignedBB boundingBox = Block.FULL_BLOCK_AABB;
+	private AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
 	private Function<IMaterial, String> harvestToolFunction = material->"";
 	private ToIntFunction<IMaterial> harvestLevelFunction = material->-1;
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
 	private Predicate<IMaterial> isBeaconBaseFunction = material->false;
-	private IBlockModelMapCreator blockModelMapCreator = JAOPCABlockModelMapCreator.INSTANCE;
 	private IBlockItemCreator blockItemCreator = JAOPCABlockItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private Function<IMaterial, EnumRarity> displayRarityFunction = material->material.getDisplayRarity();
-	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
-	private IBlockItemModelFunctionCreator blockItemModelFunctionCreator = JAOPCABlockItemModelFunctionCreator.INSTANCE;
 
 	@Override
 	public IFormType getType() {
@@ -108,13 +100,13 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setSoundTypeFunction(Function<IMaterial, SoundType> soundTypeFunction) {
+	public IBlockFormSettings setSoundTypeFunction(Function<IMaterial, Block.SoundType> soundTypeFunction) {
 		this.soundTypeFunction = soundTypeFunction;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, SoundType> getSoundTypeFunction() {
+	public Function<IMaterial, Block.SoundType> getSoundTypeFunction() {
 		return soundTypeFunction;
 	}
 
@@ -251,17 +243,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setBlockModelMapCreator(IBlockModelMapCreator blockModelMapCreator) {
-		this.blockModelMapCreator = blockModelMapCreator;
-		return this;
-	}
-
-	@Override
-	public IBlockModelMapCreator getBlockModelMapCreator() {
-		return blockModelMapCreator;
-	}
-
-	@Override
 	public IBlockFormSettings setBlockItemCreator(IBlockItemCreator blockItemCreator) {
 		this.blockItemCreator = blockItemCreator;
 		return this;
@@ -303,27 +284,5 @@ public class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public Function<IMaterial, EnumRarity> getDisplayRarityFunction() {
 		return displayRarityFunction;
-	}
-
-	@Override
-	public IBlockFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction) {
-		this.burnTimeFunction = burnTimeFunction;
-		return this;
-	}
-
-	@Override
-	public ToIntFunction<IMaterial> getBurnTimeFunction() {
-		return burnTimeFunction;
-	}
-
-	@Override
-	public IBlockFormSettings setBlockItemModelFunctionCreator(IBlockItemModelFunctionCreator blockItemModelFunctionCreator) {
-		this.blockItemModelFunctionCreator = blockItemModelFunctionCreator;
-		return this;
-	}
-
-	@Override
-	public IBlockItemModelFunctionCreator getBlockItemModelFunctionCreator() {
-		return blockItemModelFunctionCreator;
 	}
 }

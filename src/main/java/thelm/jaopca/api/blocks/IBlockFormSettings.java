@@ -5,11 +5,11 @@ import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
-import net.minecraft.block.SoundType;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.AxisAlignedBB;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
 
@@ -31,9 +31,9 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	boolean getBlocksMovement();
 
-	IBlockFormSettings setSoundTypeFunction(Function<IMaterial, SoundType> soundTypeFunction);
+	IBlockFormSettings setSoundTypeFunction(Function<IMaterial, Block.SoundType> soundTypeFunction);
 
-	Function<IMaterial, SoundType> getSoundTypeFunction();
+	Function<IMaterial, Block.SoundType> getSoundTypeFunction();
 
 	IBlockFormSettings setLightOpacityFunction(ToIntFunction<IMaterial> lightOpacityFunction);
 
@@ -87,10 +87,6 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	//Predicate<IMaterial> getIsFallableFunction();
 
-	IBlockFormSettings setBlockModelMapCreator(IBlockModelMapCreator blockModelMapCreator);
-
-	IBlockModelMapCreator getBlockModelMapCreator();
-
 	IBlockFormSettings setBlockItemCreator(IBlockItemCreator blockItemCreator);
 
 	IBlockItemCreator getBlockItemCreator();
@@ -106,12 +102,4 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setDisplayRarityFunction(Function<IMaterial, EnumRarity> displayRarityFunction);
 
 	Function<IMaterial, EnumRarity> getDisplayRarityFunction();
-
-	IBlockFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction);
-
-	ToIntFunction<IMaterial> getBurnTimeFunction();
-
-	IBlockFormSettings setBlockItemModelFunctionCreator(IBlockItemModelFunctionCreator blockItemModelFunctionCreator);
-
-	IBlockItemModelFunctionCreator getBlockItemModelFunctionCreator();
 }

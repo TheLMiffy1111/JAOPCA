@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,8 +16,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.CustomModule;
@@ -44,8 +43,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 		if(defaultValue == null) {
 			LOGGER.warn("Null default value: {}", defaultString);
 		}
-		Object2ObjectMap<IMaterial, T> map = new Object2ObjectRBTreeMap<>();
-		map.defaultReturnValue(defaultValue);
+		Map<IMaterial, T> map = new TreeMap<>();
 		if(json.has("materialTypes")) {
 			JsonObject materialTypesJson = helper.getJsonObject(json, "materialTypes");
 			for(Map.Entry<String, JsonElement> entry : materialTypesJson.entrySet()) {
@@ -102,7 +100,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 					comment = "";
 				}
 				CustomModule.instance.addCustomConfigDefiner((material, config)->{
-					T value = stringToValue.apply(config.getDefinedString(path, ""+valueToString.apply(map.get(material)), comment));
+					T value = stringToValue.apply(config.getDefinedString(path, ""+valueToString.apply(map.getOrDefault(material, defaultValue)), comment));
 					if(value == null) {
 						LOGGER.warn("Null config value for material {}", material.getName());
 					}
@@ -110,6 +108,6 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 				});
 			}
 		}
-		return material->map.get(material);
+		return material->map.getOrDefault(material, defaultValue);
 	}
 }

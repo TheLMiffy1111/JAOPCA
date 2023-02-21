@@ -25,10 +25,12 @@ public class FormRequest implements IFormRequest {
 
 	public FormRequest(IModule module, IForm... forms) {
 		this.module = Objects.requireNonNull(module);
-		this.forms = Arrays.stream(Objects.requireNonNull(forms)).
-				filter(Objects::nonNull).
-				filter(form->form.getModule() == module).
-				map(IForm::lock).collect(ImmutableList.toImmutableList());
+		ImmutableList.Builder<IForm> builder = ImmutableList.builder();
+		Arrays.stream(Objects.requireNonNull(forms)).
+		filter(Objects::nonNull).
+		filter(form->form.getModule() == module).
+		map(IForm::lock).forEach(builder::add);
+		this.forms = builder.build();
 		for(IForm form : this.forms) {
 			form.setRequest(this);
 		}

@@ -3,6 +3,7 @@ package thelm.jaopca.custom.json;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,8 +15,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.materials.MaterialHandler;
@@ -38,8 +37,7 @@ public class MaterialFunctionDeserializer implements JsonDeserializer<Function<I
 		if(defaultValue == null) {
 			LOGGER.warn("Null default value: {}", helper.toSimpleString(json.get("default")));
 		}
-		Object2ObjectMap<IMaterial, Object> map = new Object2ObjectRBTreeMap<>();
-		map.defaultReturnValue(defaultValue);
+		Map<IMaterial, Object> map = new TreeMap<>();
 		if(json.has("materialTypes")) {
 			JsonObject materialTypesJson = helper.getJsonObject(json, "materialTypes");
 			for(Map.Entry<String, JsonElement> entry : materialTypesJson.entrySet()) {
@@ -79,6 +77,6 @@ public class MaterialFunctionDeserializer implements JsonDeserializer<Function<I
 				}
 			}
 		}
-		return material->map.get(material);
+		return material->map.getOrDefault(material, defaultValue);
 	}
 }

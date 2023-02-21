@@ -2,13 +2,11 @@ package thelm.jaopca.modules.passive;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -63,12 +61,5 @@ public class SmallDustModule implements IModule {
 							smallDustOredict, smallDustOredict,
 					});
 		}
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("dustsmall", "small_dust");
-		return builder.build();
 	}
 }

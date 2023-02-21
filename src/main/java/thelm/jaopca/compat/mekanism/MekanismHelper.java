@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
 import mekanism.api.gas.GasStack;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.compat.mekanism.api.gases.IGasProvider;
 import thelm.jaopca.compat.mekanism.recipes.ChemicalCrystallizerRecipeAction;
 import thelm.jaopca.compat.mekanism.recipes.ChemicalDissolutionChamberRecipeAction;
@@ -51,35 +50,35 @@ public class MekanismHelper {
 		return null;
 	}
 
-	public boolean registerCrusherRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
+	public boolean registerCrusherRecipe(String key, Object input, int inputCount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new CrusherRecipeAction(key, input, inputCount, output, outputCount));
 	}
 
-	public boolean registerEnrichmentChamberRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
+	public boolean registerEnrichmentChamberRecipe(String key, Object input, int inputCount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new EnrichmentChamberRecipeAction(key, input, inputCount, output, outputCount));
 	}
 
-	public boolean registerCombinerRecipe(ResourceLocation key, Object input, int inputCount, Object secondInput, int secondInputCount, Object output, int outputCount) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CombinerRecipeAction(key, input, inputCount, secondInput, secondInputCount, output, outputCount));
+	public boolean registerCombinerRecipe(String key, Object input, int inputCount, Object output, int outputCount) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CombinerRecipeAction(key, input, inputCount, output, outputCount));
 	}
 
-	public boolean registerChemicalWasherRecipe(ResourceLocation key, Object input, int inputAmount, Object output, int outputAmount) {
+	public boolean registerChemicalWasherRecipe(String key, Object input, int inputAmount, Object output, int outputAmount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new ChemicalWasherRecipeAction(key, input, inputAmount, output, outputAmount));
 	}
 
-	public boolean registerChemicalCrystallizerRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
+	public boolean registerChemicalCrystallizerRecipe(String key, Object input, int inputCount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new ChemicalCrystallizerRecipeAction(key, input, inputCount, output, outputCount));
 	}
 
-	public boolean registerChemicalDissolutionChamberRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
+	public boolean registerChemicalDissolutionChamberRecipe(String key, Object input, int inputCount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new ChemicalDissolutionChamberRecipeAction(key, input, inputCount, output, outputCount));
 	}
 
-	public boolean registerPurificationChamberRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
+	public boolean registerPurificationChamberRecipe(String key, Object input, int inputCount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new PurificationChamberRecipeAction(key, input, inputCount, output, outputCount));
 	}
 
-	public boolean registerChemicalInjectionChamberRecipe(ResourceLocation key, Object input, int inputCount, Object gasInput, Object output, int outputCount) {
+	public boolean registerChemicalInjectionChamberRecipe(String key, Object input, int inputCount, Object gasInput, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new ChemicalInjectionChamberRecipeAction(key, input, inputCount, gasInput, output, outputCount));
 	}
 }

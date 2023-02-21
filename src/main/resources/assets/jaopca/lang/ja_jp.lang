@@ -6,6 +6,7 @@ item.jaopca.nugget=%s塊
 item.jaopca.tiny_dust=極小の%sの粉
 item.jaopca.small_dust=小さな%sの粉
 fluid.jaopca.molten=溶融%s
+item.jaopca.molten=溶融%s入りバケツ
 item.jaopca.coin=%sのコイン
 item.jaopca.gear=%sの歯車
 item.jaopca.plate=%s板

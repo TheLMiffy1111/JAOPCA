@@ -1,7 +1,11 @@
 package thelm.jaopca.utils;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -16,33 +20,32 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.TreeMultiset;
 import com.google.common.primitives.Ints;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.versioning.ArtifactVersion;
+import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
+import cpw.mods.fml.common.versioning.InvalidVersionSpecificationException;
+import cpw.mods.fml.common.versioning.VersionRange;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.versioning.ArtifactVersion;
-import net.minecraftforge.fml.common.versioning.InvalidVersionSpecificationException;
-import net.minecraftforge.fml.common.versioning.VersionRange;
-import net.minecraftforge.oredict.OreIngredient;
+import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemProvider;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
-import thelm.jaopca.oredict.OredictHandler;
 
 public class MiscHelper implements IMiscHelper {
 
@@ -53,11 +56,11 @@ public class MiscHelper implements IMiscHelper {
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(r->new Thread(r, "JAOPCA Executor Thread"));
 
 	@Override
-	public ResourceLocation getRecipeKey(String category, String material) {
+	public String getRecipeKey(String category, String material) {
 		if(StringUtils.contains(category, ':')) {
-			return new ResourceLocation(category+'.'+toLowercaseUnderscore(material));
+			return category+'.'+toLowercaseUnderscore(material);
 		}
-		return new ResourceLocation("jaopca", category+'.'+toLowercaseUnderscore(material));
+		return "jaopca:"+category+'.'+toLowercaseUnderscore(material);
 	}
 
 	@Override
@@ -67,63 +70,60 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public String getFluidName(String form, String material) {
+		if(form.startsWith(".")) {
+			form = form.substring(1);
+			return material.toLowerCase(Locale.US)+(form.isEmpty() ? "" : ".")+form;
+		}
 		return form+(form.isEmpty() ? "" : "_")+toLowercaseUnderscore(material);
 	}
 
 	@Override
-	public ItemStack getItemStack(Object obj, int count) {
+	public List<ItemStack> getItemStacks(Object obj, int count, boolean allowWildcard) {
+		List<ItemStack> ret = new ArrayList<>();
 		if(obj instanceof Supplier<?>) {
-			return getItemStack(((Supplier<?>)obj).get(), count);
+			ret.addAll(getItemStacks(((Supplier<?>)obj).get(), count, allowWildcard));
 		}
-		else if(obj instanceof ItemStack) {
-			return resizeItemStack((ItemStack)obj, count);
-		}
-		else if(obj instanceof Item) {
-			return new ItemStack((Item)obj, count);
-		}
-		else if(obj instanceof Block) {
-			return new ItemStack((Block)obj, count);
-		}
-		else if(obj instanceof IItemProvider) {
-			return new ItemStack(((IItemProvider)obj).asItem(), count);
-		}
-		else if(obj instanceof String) {
-			if(OredictHandler.getOredict().contains(obj)) {
-				return getPreferredItemStack(Arrays.asList(new OreIngredient((String)obj).getMatchingStacks()), count);
+		else if(obj instanceof List<?>) {
+			for(Object o : (List<?>)obj) {
+				ret.addAll(getItemStacks(o, count, allowWildcard));
 			}
 		}
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public Ingredient getIngredient(Object obj) {
-		if(obj instanceof Supplier<?>) {
-			return getIngredient(((Supplier<?>)obj).get());
-		}
-		else if(obj instanceof Ingredient) {
-			return (Ingredient)obj;
-		}
 		else if(obj instanceof String) {
-			if(OredictHandler.getOredict().contains(obj)) {
-				return new OreIngredient((String)obj);
+			for(ItemStack stack : OreDictionary.getOres((String)obj, false)) {
+				if(allowWildcard || stack.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
+					ret.add(resizeItemStack(stack, count));
+				}
+				else {
+					ret.add(new ItemStack(stack.getItem(), count));
+				}
 			}
 		}
 		else if(obj instanceof ItemStack) {
 			ItemStack stack = (ItemStack)obj;
-			if(!stack.isEmpty()) {
-				return Ingredient.fromStacks(stack);
+			if(stack.getItem() != null) {
+				if(allowWildcard || stack.getItemDamage() != OreDictionary.WILDCARD_VALUE) {
+					ret.add(resizeItemStack(stack, count));
+				}
+				else {
+					ret.add(new ItemStack(stack.getItem(), count));
+				}
 			}
 		}
 		else if(obj instanceof Item) {
-			return Ingredient.fromItem((Item)obj);
+			ret.add(new ItemStack((Item)obj, count));
 		}
 		else if(obj instanceof Block) {
-			return Ingredient.fromItem(Item.getItemFromBlock((Block)obj));
+			ret.add(new ItemStack((Block)obj, count));
 		}
 		else if(obj instanceof IItemProvider) {
-			return Ingredient.fromItem(((IItemProvider)obj).asItem());
+			ret.add(new ItemStack(((IItemProvider)obj).asItem(), count));
 		}
-		return null;
+		return ret;
+	}
+
+	@Override
+	public ItemStack getItemStack(Object obj, int count, boolean allowWildcard) {
+		return getPreferredItemStack(getItemStacks(obj, count, allowWildcard), count);
 	}
 
 	@Override
@@ -131,9 +131,9 @@ public class MiscHelper implements IMiscHelper {
 		ItemStack preferredEntry = null;
 		int currBest = ConfigHandler.PREFERRED_MODS.size();
 		for(ItemStack entry : iterable) {
-			ResourceLocation rl = entry.getItem().getRegistryName();
-			if(rl != null) {
-				String modId = rl.getNamespace();
+			String name = Item.itemRegistry.getNameForObject(entry.getItem());
+			if(name != null) {
+				String modId = name.split(":")[0];
 				int idx = ConfigHandler.PREFERRED_MODS.indexOf(modId);
 				if(preferredEntry == null || idx >= 0 && idx < currBest) {
 					preferredEntry = entry;
@@ -148,12 +148,12 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ItemStack resizeItemStack(ItemStack stack, int count) {
-		if(stack != null && !stack.isEmpty()) {
+		if(stack != null) {
 			ItemStack ret = stack.copy();
-			ret.setCount(count);
+			ret.stackSize = count;
 			return ret;
 		}
-		return ItemStack.EMPTY;
+		return null;
 	}
 
 	@Override
@@ -186,7 +186,7 @@ public class MiscHelper implements IMiscHelper {
 		return null;
 	}
 
-	private static final Predicate<String> META_ITEM_PREDICATE = s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s.split("@(?=\\d*$)")[0]));
+	private static final Predicate<String> META_ITEM_PREDICATE = s->Item.itemRegistry.containsKey(s.split("@(?=\\d*$)")[0]);
 
 	@Override
 	public Predicate<String> metaItemPredicate() {
@@ -200,7 +200,7 @@ public class MiscHelper implements IMiscHelper {
 		if(split.length == 2) {
 			meta = Optional.ofNullable(Ints.tryParse(split[1])).orElse(0);
 		}
-		return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(split[0])), 1, meta);
+		return new ItemStack((Item)Item.itemRegistry.getObject(split[0]), 1, meta);
 	}
 
 	@Override
@@ -300,7 +300,7 @@ public class MiscHelper implements IMiscHelper {
 				return true;
 			}
 			if(Loader.isModLoaded(modId)) {
-				ArtifactVersion version = modLoader.getIndexedModList().get(modId).getProcessedVersion();
+				ArtifactVersion version = new DefaultArtifactVersion(modLoader.getIndexedModList().get(modId).getDisplayVersion());
 				if(versionRange.containsVersion(version)) {
 					return false;
 				}
@@ -311,5 +311,16 @@ public class MiscHelper implements IMiscHelper {
 			}
 			return true;
 		};
+	}
+
+	public <T> List<List<T>> guavaCartesianProduct(List<? extends List<? extends T>> lists) {
+		try {
+			Method method = Lists.class.getDeclaredMethod("cartesianProduct", List.class);
+			method.setAccessible(true);
+			return (List<List<T>>)method.invoke(null, lists);
+		}
+		catch(Exception e) {
+			return Collections.emptyList();
+		}
 	}
 }

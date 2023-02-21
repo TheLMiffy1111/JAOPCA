@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
 import appeng.core.AEConfig;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -45,7 +45,7 @@ public class AppliedEnergistics2Module implements IModule {
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
 		if(BLACKLIST.isEmpty()) {
-			Collections.addAll(BLACKLIST, AEConfig.instance().getGrinderOres());
+			Collections.addAll(BLACKLIST, AEConfig.instance.grinderOres);
 		}
 		return BLACKLIST;
 	}
@@ -55,7 +55,7 @@ public class AppliedEnergistics2Module implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		AppliedEnergistics2Helper helper = AppliedEnergistics2Helper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		float chance = (float)(AEConfig.instance().getOreDoublePercentage()/100);
+		float chance = (float)(AEConfig.instance.oreDoublePercentage/100);
 		for(IMaterial material : moduleData.getMaterials()) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());

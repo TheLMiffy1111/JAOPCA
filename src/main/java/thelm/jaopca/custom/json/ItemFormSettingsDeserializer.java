@@ -45,13 +45,6 @@ public class ItemFormSettingsDeserializer implements JsonDeserializer<IItemFormS
 			EnumRarity rarity = helper.deserializeType(json, "rarity", context, EnumRarity.class);
 			settings.setDisplayRarityFunction(m->rarity);
 		}
-		if(json.has("burnTime")) {
-			JsonObject functionJson = helper.getJsonObject(json, "burnTime");
-			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", -1);
-			}
-			settings.setBurnTimeFunction(helper.deserializeType(json, "burnTime", context, FormTypeHandler.INT_FUNCTION_TYPE));
-		}
 		return settings;
 	}
 }

@@ -5,18 +5,22 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.research.ResearchCategories;
+import thaumcraft.api.research.ResearchItem;
+import thaumcraft.api.research.ResearchPage;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -32,16 +36,14 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "thaumcraft")
+@JAOPCAModule(modDependencies = "Thaumcraft")
 public class ThaumcraftModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Cinnabar", "Copper", "Gold", "Iron", "Lead", "Quartz", "Silver", "Tin"));
+			"Cinnabar", "Copper", "Gold", "Iron", "Lead", "Silver", "Tin"));
 
 	private final IForm clusterForm = ApiImpl.INSTANCE.newForm(this, "thaumcraft_cluster", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("cluster").setDefaultMaterialBlacklist(BLACKLIST);
-
-	private List<ResourceLocation> recipeKeys = new ArrayList<>();
 
 	@Override
 	public String getName() {
@@ -86,12 +88,10 @@ public class ThaumcraftModule implements IModule {
 			helper.registerSpecialMiningRecipe(
 					miscHelper.getRecipeKey("thaumcraft.ore_to_cluster_mining", material.getName()),
 					oreOredict, clusterInfo, 1, 1F);
-			ResourceLocation recipeKey = miscHelper.getRecipeKey("thaumcraft.ore_to_cluster_crucible", material.getName());
-			recipeKeys.add(recipeKey);
 			helper.registerCrucibleRecipe(
-					recipeKey,
-					"METALPURIFICATION", oreOredict, new Object[] {
-							Aspect.METAL, 5, Aspect.ORDER, 5,
+					miscHelper.getRecipeKey("thaumcraft.ore_to_cluster_crucible", material.getName()),
+					"JAOPCA_PUREMETAL", oreOredict, new Object[] {
+							Aspect.METAL, 1, Aspect.ORDER, 1,
 					}, clusterInfo, 1);
 
 			api.registerSmeltingRecipe(
@@ -99,27 +99,34 @@ public class ThaumcraftModule implements IModule {
 					clusterOredict, materialOredict, 2, 1F);
 			helper.registerSmeltingBonusRecipe(
 					miscHelper.getRecipeKey("thaumcraft.cluster_to_nugget", material.getName()),
-					clusterOredict, nuggetOredict, 1, 0.33F);
-
+					clusterOredict, nuggetOredict, 1);
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String nuggetOredict = miscHelper.getOredictName("nugget", material.getName());
 			helper.registerSmeltingBonusRecipe(
 					miscHelper.getRecipeKey("thaumcraft.ore_to_nugget", material.getName()),
-					oreOredict, nuggetOredict, 1, 0.33F);
+					oreOredict, nuggetOredict, 1);
 		}
 	}
 
 	@Override
-	public void onPostInit(IModuleData moduleData, FMLPostInitializationEvent event) {
-		ThaumcraftHelper.INSTANCE.registerRecipesToResearch("METALPURIFICATION", recipeKeys);
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("cluster", "thaumcraft_cluster");
-		return builder.build();
+	public void onLoadComplete(IModuleData moduleData, FMLLoadCompleteEvent event) {
+		ArrayList<ResearchPage> pages = new ArrayList<ResearchPage>();
+		pages.add(new ResearchPage("tc.research_page.JAOPCA_PUREMETAL.1"));
+		((List<Object>)ThaumcraftApi.getCraftingRecipes()).stream().
+		filter(o->o instanceof CrucibleRecipe).
+		map(o->(CrucibleRecipe)o).
+		filter(r->r.key.equals("JAOPCA_PUREMETAL")).
+		forEach(r->pages.add(new ResearchPage(r)));
+		if(pages.size() > 1) {
+			ResourceLocation texture = new ResourceLocation("jaopca:textures/items/metallic/thaumcraft_cluster_research.png");
+			ResearchCategories.registerCategory("JAOPCA", texture, new ResourceLocation("thaumcraft:textures/gui/gui_researchback.png"));
+			new ResearchItem("JAOPCA_PUREMETAL", "JAOPCA", new AspectList().add(Aspect.METAL, 5).add(Aspect.ORDER, 2), 0, 0, 1, texture).
+			setPages(pages.toArray(new ResearchPage[pages.size()])).
+			setSecondary().
+			setParents("PUREIRON", "PUREGOLD").
+			registerResearchItem();
+		}
 	}
 }

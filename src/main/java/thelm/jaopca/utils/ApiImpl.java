@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -13,21 +14,16 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.gson.JsonDeserializer;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.LoaderState;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
-import thelm.jaopca.api.entities.IEntityEntryFormType;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -43,7 +39,6 @@ import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.client.resources.ResourceHandler;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.custom.json.EnumDeserializer;
-import thelm.jaopca.custom.json.ForgeRegistryEntrySupplierDeserializer;
 import thelm.jaopca.custom.json.MaterialEnumFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
@@ -86,12 +81,6 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public IFluidFormType fluidFormType() {
 		return FluidFormType.INSTANCE;
-	}
-
-	@Override
-	public IEntityEntryFormType entityTypeFormType() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -141,11 +130,6 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public JsonDeserializer<Supplier<IForgeRegistryEntry<?>>> forgeRegistryEntrySupplierDeserializer() {
-		return ForgeRegistryEntrySupplierDeserializer.INSTANCE;
-	}
-
-	@Override
 	public IForm getForm(String name) {
 		return FormHandler.getForm(name);
 	}
@@ -176,7 +160,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public Set<ResourceLocation> getRecipes() {
+	public Set<String> getRecipes() {
 		return RecipeHandler.getRegisteredRecipes();
 	}
 
@@ -207,25 +191,21 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public boolean registerOredict(String oredict, Item item) {
-		if(ConfigHandler.OREDICT_BLACKLIST.contains(oredict) || item == null || item == Items.AIR) {
+		if(ConfigHandler.OREDICT_BLACKLIST.contains(oredict) || item == null) {
 			return false;
 		}
-		NonNullList<ItemStack> stacks = NonNullList.create();
-		item.getSubItems(CreativeTabs.SEARCH, stacks);
-		for(ItemStack stack : stacks) {
-			OreDictionary.registerOre(oredict, stack);
-		}
+		OreDictionary.registerOre(oredict, new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
 		return true;
 	}
 
 	@Override
 	public boolean registerOredict(String oredict, Block block) {
-		return registerOredict(oredict, ForgeRegistries.ITEMS.getValue(block.getRegistryName()));
+		return registerOredict(oredict, Item.getItemFromBlock(block));
 	}
 
 	@Override
 	public boolean registerOredict(String oredict, ItemStack stack) {
-		if(ConfigHandler.OREDICT_BLACKLIST.contains(oredict) || stack.isEmpty()) {
+		if(ConfigHandler.OREDICT_BLACKLIST.contains(oredict) || stack == null || stack.getItem() == null) {
 			return false;
 		}
 		OreDictionary.registerOre(oredict, stack);
@@ -238,7 +218,7 @@ public class ApiImpl extends JAOPCAApi {
 			return registerOredict(oredict, MiscHelper.INSTANCE.parseMetaItem(metaItemString));
 		}
 		else {
-			return registerOredict(oredict, ForgeRegistries.ITEMS.getValue(new ResourceLocation(metaItemString)));
+			return registerOredict(oredict, (Item)Item.itemRegistry.getObject(metaItemString));
 		}
 	}
 
@@ -258,7 +238,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerRecipe(ResourceLocation key, IRecipeAction recipeAction) {
+	public boolean registerRecipe(String key, IRecipeAction recipeAction) {
 		if(ConfigHandler.RECIPE_BLACKLIST.contains(key) ||
 				ConfigHandler.RECIPE_REGEX_BLACKLIST.stream().anyMatch(p->p.matcher(key.toString()).matches())) {
 			return false;
@@ -266,48 +246,55 @@ public class ApiImpl extends JAOPCAApi {
 		if(!Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION)) {
 			return RecipeHandler.registerRecipe(key, recipeAction);
 		}
-		else {
+		else if(!Loader.instance().hasReachedState(LoaderState.AVAILABLE)) {
 			return RecipeHandler.registerLateRecipe(key, recipeAction);
+		}
+		else {
+			return RecipeHandler.registerFinalRecipe(key, recipeAction);
 		}
 	}
 
 	@Override
-	public boolean registerLateRecipe(ResourceLocation key, IRecipeAction recipeAction) {
+	public boolean registerLateRecipe(String key, IRecipeAction recipeAction) {
 		if(ConfigHandler.RECIPE_BLACKLIST.contains(key) ||
 				ConfigHandler.RECIPE_REGEX_BLACKLIST.stream().anyMatch(p->p.matcher(key.toString()).matches())) {
 			return false;
 		}
-		return RecipeHandler.registerLateRecipe(key, recipeAction);
+		if(!Loader.instance().hasReachedState(LoaderState.AVAILABLE)) {
+			return RecipeHandler.registerLateRecipe(key, recipeAction);
+		}
+		else {
+			return RecipeHandler.registerFinalRecipe(key, recipeAction);
+		}
 	}
 
 	@Override
-	public boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapedRecipeAction(key, group, output, count, input));
+	public boolean registerFinalRecipe(String key, IRecipeAction recipeAction) {
+		if(ConfigHandler.RECIPE_BLACKLIST.contains(key) ||
+				ConfigHandler.RECIPE_REGEX_BLACKLIST.stream().anyMatch(p->p.matcher(key.toString()).matches())) {
+			return false;
+		}
+		return RecipeHandler.registerFinalRecipe(key, recipeAction);
 	}
 
 	@Override
-	public boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input) {
+	public boolean registerShapedRecipe(String key, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapedRecipeAction(key, output, count, input));
 	}
 
 	@Override
-	public boolean registerShapelessRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
-		return registerRecipe(key, new ShapelessRecipeAction(key, group, output, count, input));
-	}
-
-	@Override
-	public boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input) {
+	public boolean registerShapelessRecipe(String key, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapelessRecipeAction(key, output, count, input));
 	}
 
 	@Override
-	public boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience) {
+	public boolean registerSmeltingRecipe(String key, Object input, Object output, int count, float experience) {
 		return registerRecipe(key, new SmeltingRecipeAction(key, input, output, count, experience));
 	}
 
 	@Override
-	public void registerTextures(Supplier<List<ResourceLocation>> locations) {
-		ResourceHandler.registerTextures(locations);
+	public void registerTextures(int mapId, Supplier<List<String>> locations, Consumer<List<IIcon>> consumer) {
+		ResourceHandler.registerTextures(mapId, locations, consumer);
 	}
 
 	@Override

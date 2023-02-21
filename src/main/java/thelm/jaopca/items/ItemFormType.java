@@ -10,13 +10,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
@@ -103,18 +104,18 @@ public class ItemFormType implements IItemFormType {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+helper.toLowercaseUnderscore(material.getName()));
+				String registryName = form.getName()+'.'+helper.toLowercaseUnderscore(material.getName());
 
 				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, settings);
 				Item item = materialFormItem.asItem();
-				item.setRegistryName(registryName);
 				item.setCreativeTab(creativeTab);
 				ITEMS.put(form, material, materialFormItem);
-				ForgeRegistries.ITEMS.register(item);
+				GameRegistry.registerItem(item, registryName);
 
-				api.registerOredict(helper.getOredictName(secondaryName, material.getName()), item);
+				ItemStack stack = new ItemStack(item, 1);
+				api.registerOredict(helper.getOredictName(secondaryName, material.getName()), stack);
 				for(String alternativeName : material.getAlternativeNames()) {
-					api.registerOredict(helper.getOredictName(secondaryName, alternativeName), item);
+					api.registerOredict(helper.getOredictName(secondaryName, alternativeName), stack);
 				}
 			}
 		}
@@ -123,9 +124,10 @@ public class ItemFormType implements IItemFormType {
 	public static CreativeTabs getCreativeTab() {
 		if(creativeTab == null) {
 			creativeTab = new CreativeTabs("jaopca") {
+				@SideOnly(Side.CLIENT)
 				@Override
-				public ItemStack createIcon() {
-					return new ItemStack(Items.GLOWSTONE_DUST);
+				public Item getTabIconItem() {
+					return Items.glowstone_dust;
 				}
 			};
 		}

@@ -3,6 +3,7 @@ package thelm.jaopca.api;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -12,10 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraft.util.IIcon;
 import thelm.jaopca.api.blocks.IBlockFormType;
-import thelm.jaopca.api.entities.IEntityEntryFormType;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -80,12 +79,6 @@ public abstract class JAOPCAApi {
 	 * @return The fluid form type instance
 	 */
 	public abstract IFluidFormType fluidFormType();
-
-	/**
-	 * Returns the implementation instance of {@link IEntityEntryFormType}. <b>Not yet implemented!</b>
-	 * @return The entity type form type instance
-	 */
-	public abstract IEntityEntryFormType entityTypeFormType();
 
 	/**
 	 * Gets an {@link IFormType} by name.
@@ -164,13 +157,6 @@ public abstract class JAOPCAApi {
 	public abstract JsonDeserializer<Function<IMaterial, ?>> materialFunctionDeserializer();
 
 	/**
-	 * Returns the forge registry entry supplier JSON deserializer instance used by JAOPCA. The deserializer
-	 * deserializes registry entries with locations.
-	 * @return The forge registry entry deserializer instance
-	 */
-	public abstract JsonDeserializer<Supplier<IForgeRegistryEntry<?>>> forgeRegistryEntrySupplierDeserializer();
-
-	/**
 	 * Gets an {@link IForm} by name.
 	 * @param name The name of the form
 	 * @return The form with the name provided, null if no form registered has this name
@@ -205,7 +191,7 @@ public abstract class JAOPCAApi {
 	 * Returns the set of recipe action keys that has been registered with JAOPCA.
 	 * @return The set of recipe keys known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getRecipes();
+	public abstract Set<String> getRecipes();
 
 	/**
 	 * Returns the current {@link ILocalizer} based on Minecraft's current language. Will always return the
@@ -247,21 +233,11 @@ public abstract class JAOPCAApi {
 	 * @param recipeAction The recipe action
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerRecipe(ResourceLocation key, IRecipeAction recipeAction);
+	public abstract boolean registerRecipe(String key, IRecipeAction recipeAction);
 
-	public abstract boolean registerLateRecipe(ResourceLocation key, IRecipeAction recipeAction);
+	public abstract boolean registerLateRecipe(String key, IRecipeAction recipeAction);
 
-	/**
-	 * Creates a shaped recipe supplier that is then registered for injection.
-	 * @param key The id of the recipe
-	 * @param group The identifier used to group recipes in the recipe book
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
-	 * @param count The size of the output
-	 * @param input The input of the recipe in the form of how one would specify inputs in Minecraft versions
-	 * prior to 1.12, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
-	 */
-	public abstract boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input);
+	public abstract boolean registerFinalRecipe(String key, IRecipeAction recipeAction);
 
 	/**
 	 * Creates a shaped recipe supplier that is then registered for injection.
@@ -272,19 +248,7 @@ public abstract class JAOPCAApi {
 	 * prior to 1.12, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input);
-
-	/**
-	 * Creates a shapeless recipe supplier that is then registered for injection.
-	 * @param key The id of the recipe
-	 * @param group The identifier used to group recipes in the recipe book
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
-	 * @param count The size of the output
-	 * @param input An array of inputs for the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid
-	 * input forms
-	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
-	 */
-	public abstract boolean registerShapelessRecipe(ResourceLocation key, String group, Object output, int count, Object... input);
+	public abstract boolean registerShapedRecipe(String key, Object output, int count, Object... input);
 
 	/**
 	 * Creates a shapeless recipe supplier that is then registered for injection.
@@ -295,7 +259,7 @@ public abstract class JAOPCAApi {
 	 * input forms
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input);
+	public abstract boolean registerShapelessRecipe(String key, Object output, int count, Object... input);
 
 	/**
 	 * Creates a furnace recipe supplier that is then registered for injection.
@@ -306,10 +270,10 @@ public abstract class JAOPCAApi {
 	 * @param experience The amount of experience the recipe gives
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience);
+	public abstract boolean registerSmeltingRecipe(String key, Object input, Object output, int count, float experience);
 
-	public abstract void registerTextures(Supplier<List<ResourceLocation>> locations);
-	
+	public abstract void registerTextures(int mapId, Supplier<List<String>> locations, Consumer<List<IIcon>> consumer);
+
 	/**
 	 * Registers an {@link ILocalizer} to languages for use by JAOPCA.
 	 * @param localizer The localizer

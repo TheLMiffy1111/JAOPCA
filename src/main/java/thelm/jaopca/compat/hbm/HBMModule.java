@@ -10,11 +10,13 @@ import java.util.TreeSet;
 
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
+import com.hbm.inventory.fluid.FluidType;
+import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;
@@ -31,18 +33,19 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "hbm")
+@JAOPCAModule(modDependencies = "hbm@[1.0.27_X4480,)")
 public class HBMModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminum", "Aluminium", "Beryllium", "CertusQuartz", "Cinnabar", "Coal", "Cobalt", "Copper", "Diamond",
-			"Fluorite", "Gold", "Iron", "Lead", "Lithium", "Niter", "Plutonium", "RareEarth", "Redstone",
-			"Saltpeter", "Schrabidium", "Starmetal", "Sulfur", "Thorium", "Titanium", "Tungsten", "Uranium"));
+			"Fluorite", "Gold", "Iron", "Lead", "Lithium", "NaturalAluminum", "Niter", "Plutonium", "RareEarth",
+			"Redstone", "Saltpeter", "Schrabidium", "Starmetal", "Sulfur", "Thorium", "Titanium", "Tungsten",
+			"Uranium"));
 	private static final Set<String> MODULE_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminum", "Aluminium", "Beryllium", "CertusQuartz", "Cinnabar", "Coal", "Cobalt", "Copper", "Diamond",
-			"Emerald", "Fluorite", "Gold", "Iron", "Lapis", "Lead", "Lignite", "Lithium", "Niter", "Plutonium",
-			"Quartz", "RareEarth", "Redstone", "Saltpeter", "Schrabidium", "Starmetal", "Sulfur", "Thorium",
-			"Titanium", "Tungsten", "Uranium"));
+			"Emerald", "Fluorite", "Gold", "Iron", "Lapis", "Lead", "Lignite", "Lithium", "NaturalAluminum",
+			"NetherQuartz", "Niter", "Plutonium", "Quartz", "RareEarth", "Redstone", "Saltpeter", "Schrabidium",
+			"Starmetal", "Sulfur", "Thorium", "Titanium", "Tungsten", "Uranium"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
@@ -51,8 +54,8 @@ public class HBMModule implements IModule {
 
 	public HBMModule() {
 		ApiImpl.INSTANCE.registerBlacklistedMaterialNames(
-				"Am241", "Am242", "Au198", "Co60", "Gh336", "Np237", "Pb209", "Po210", "Pu238", "Pu239", "Pu240",
-				"Pu241", "Sr90", "Tc99", "Th232", "U233", "U235", "U238");
+				"Ac227", "Am241", "Am242", "Au198", "Co60", "Gh336", "Np237", "Pb209", "Po210", "Pu238", "Pu239",
+				"Pu240", "Pu241", "Ra226", "Sr90", "Tc99", "Th232", "U233", "U235", "U238");
 	}
 
 	@Override
@@ -103,9 +106,13 @@ public class HBMModule implements IModule {
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			String extraDustOredict = miscHelper.getOredictName("dust", material.getExtra(1).getName());
 
+			IDynamicSpecConfig config = configs.get(material);
+			boolean useSulfuric = config.getDefinedBoolean("hbm.byproduct", false, "Should this ore use sulfuric acid in HBMNTM's crystallizer.");
+			FluidType acid = useSulfuric ? Fluids.SULFURIC_ACID : Fluids.ACID;
+
 			helper.registerCrystallizerRecipe(
 					miscHelper.getRecipeKey("hbm.ore_to_crystal", material.getName()),
-					oreOredict, crystalInfo, 1);
+					oreOredict, acid, 500, crystalInfo, 1, 600);
 
 			api.registerSmeltingRecipe(
 					miscHelper.getRecipeKey("hbm.crystal_to_material", material.getName()),

@@ -1,31 +1,34 @@
 package thelm.jaopca.compat.essentialcraft.recipes;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import essentialcraft.api.OreSmeltingRecipe;
-import net.minecraft.util.ResourceLocation;
+import ec3.utils.common.EnumOreColoring;
+import net.minecraftforge.common.util.EnumHelper;
 import thelm.jaopca.api.recipes.IRecipeAction;
 
 public class MagmaticSmelterRecipeAction implements IRecipeAction {
 
-	public final ResourceLocation key;
+	public final String key;
 	public final String input;
 	public final String output;
 	public final int count;
-	public final Consumer<OreSmeltingRecipe> callback;
+	public final Consumer<EnumOreColoring> callback;
 
-	public MagmaticSmelterRecipeAction(ResourceLocation key, String input, String output, int count, Consumer<OreSmeltingRecipe> callback) {
+	public MagmaticSmelterRecipeAction(String key, String input, String output, int count, Consumer<EnumOreColoring> callback) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
 		this.count = count;
-		this.callback = callback;
+		this.callback = Objects.requireNonNull(callback);
 	}
 
 	@Override
 	public boolean register() {
-		callback.accept(OreSmeltingRecipe.addRecipe(input, output, 0, count));
+		callback.accept(EnumHelper.addEnum(EnumOreColoring.class, input.toUpperCase(Locale.US),
+				new Class<?>[] {String.class, String.class, int.class, int.class},
+				new Object[] {input, output, 0, count}));
 		return true;
 	}
 }

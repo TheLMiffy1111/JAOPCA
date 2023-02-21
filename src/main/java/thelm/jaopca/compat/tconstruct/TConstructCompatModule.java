@@ -1,20 +1,18 @@
 package thelm.jaopca.compat.tconstruct;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.ToIntFunction;
 
-import org.apache.commons.lang3.StringUtils;
-
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.smeltery.TinkerSmeltery;
+import tconstruct.library.crafting.FluidType;
+import tconstruct.smeltery.TinkerSmeltery;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -26,7 +24,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "tconstruct")
+@JAOPCAModule(modDependencies = "TConstruct")
 public class TConstructCompatModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>();
@@ -34,17 +32,12 @@ public class TConstructCompatModule implements IModule {
 	private static Set<String> configBlockToMoltenBlacklist = new TreeSet<>();
 	private static Set<String> configNuggetToMoltenBlacklist = new TreeSet<>();
 	private static Set<String> configDustToMoltenBlacklist = new TreeSet<>();
-	private static Set<String> configPlateToMoltenBlacklist = new TreeSet<>();
-	private static Set<String> configGearToMoltenBlacklist = new TreeSet<>();
+	private static Set<String> configCrystallineToMoltenBlacklist = new TreeSet<>();
 	private static Set<String> configToMaterialBlacklist = new TreeSet<>();
 	private static Set<String> configToBlockBlacklist = new TreeSet<>();
 	private static Set<String> configToNuggetBlacklist = new TreeSet<>();
-	private static Set<String> configToPlateBlacklist = new TreeSet<>();
-	private static Set<String> configToGearBlacklist = new TreeSet<>();
 	private static Set<String> configMaterialCastBlacklist = new TreeSet<>();
 	private static Set<String> configNuggetCastBlacklist = new TreeSet<>();
-	private static Set<String> configPlateCastBlacklist = new TreeSet<>();
-	private static Set<String> configGearCastBlacklist = new TreeSet<>();
 
 	private static boolean jaopcaOnly = true;
 
@@ -60,9 +53,10 @@ public class TConstructCompatModule implements IModule {
 
 	@Override
 	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
-		TinkerRegistry.getMaterialIntegrations().stream().filter(mi->mi.fluid != null).
-		map(mi->mi.oreSuffix).filter(StringUtils::isNotEmpty).forEach(BLACKLIST::add);
-		BLACKLIST.add("Emerald");
+		BLACKLIST.addAll(FluidType.fluidTypes.keySet());
+		if(Loader.isModLoaded("Mariculture")) {
+			Collections.addAll(BLACKLIST, "Magnesium", "Rutile", "Titanium");
+		}
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		jaopcaOnly = config.getDefinedBoolean("recipes.jaopcaOnly", jaopcaOnly, "Should the module only add recipes for materials with JAOPCA molten fluids.");
 		helper.caclulateMaterialSet(
@@ -82,13 +76,9 @@ public class TConstructCompatModule implements IModule {
 						helper.configMaterialPredicate(), "The materials that should not have dust melting recipes added."),
 				configDustToMoltenBlacklist);
 		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.plateToMoltenMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have plate melting recipes added."),
-				configPlateToMoltenBlacklist);
-		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.gearToMoltenMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have gear melting recipes added."),
-				configGearToMoltenBlacklist);
+				config.getDefinedStringList("recipes.crystallineToMoltenMaterialBlacklist", new ArrayList<>(),
+						helper.configMaterialPredicate(), "The materials that should not have crystalline melting recipes added."),
+				configCrystallineToMoltenBlacklist);
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.toMaterialMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have material casting recipes added."),
@@ -102,14 +92,6 @@ public class TConstructCompatModule implements IModule {
 						helper.configMaterialPredicate(), "The materials that should not have nugget casting recipes added."),
 				configToNuggetBlacklist);
 		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.toPlateMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have plate casting recipes added."),
-				configToPlateBlacklist);
-		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.toGearMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have gear casting recipes added."),
-				configToGearBlacklist);
-		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.materialCastMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have material cast recipes added."),
 				configMaterialCastBlacklist);
@@ -117,14 +99,6 @@ public class TConstructCompatModule implements IModule {
 				config.getDefinedStringList("recipes.nuggetCastMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have nugget cast recipes added."),
 				configNuggetCastBlacklist);
-		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.materialCastMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have plate cast recipes added."),
-				configPlateCastBlacklist);
-		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.materialCastMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have gear cast recipes added."),
-				configGearCastBlacklist);
 	}
 
 	@Override
@@ -134,64 +108,59 @@ public class TConstructCompatModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Set<String> oredict = api.getOredict();
 		Set<IMaterial> moltenMaterials = api.getForm("molten").getMaterials();
-		ToIntFunction<FluidStack> tempFunction = stack->stack.getFluid().getTemperature(stack)-300;
-		ItemStack ingotCast = TinkerSmeltery.castIngot;
-		ItemStack gemCast = TinkerSmeltery.castGem;
-		ItemStack nuggetCast = TinkerSmeltery.castNugget;
-		ItemStack plateCast = TinkerSmeltery.castPlate;
-		ItemStack gearCast = TinkerSmeltery.castGear;
-		List<FluidStack> castFluids = TinkerSmeltery.castCreationFluids;
+		ItemStack ingotCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 0);
+		ItemStack gemCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 26);
+		ItemStack nuggetCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 27);
+		Fluid alubrass = TinkerSmeltery.moltenAlubrassFluid;
+		Fluid gold = TinkerSmeltery.moltenGoldFluid;
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(!type.isDust() && !BLACKLIST.contains(name) && (!jaopcaOnly || moltenMaterials.contains(material))) {
-				String moltenName = miscHelper.getFluidName("", name);
-				int baseAmount = material.getType().isIngot() ? 144 : 666;
+				String moltenName = miscHelper.getFluidName(".molten", name);
+				int baseAmount = 144;
+				int baseTemp = TConstructModule.tempFunction.applyAsInt(material);
 				if(FluidRegistry.isFluidRegistered(moltenName)) {
 					if(!configMaterialToMoltenBlacklist.contains(name)) {
 						String materialOredict = miscHelper.getOredictName(type.getFormName(), name);
+						String blockOredict = miscHelper.getOredictName("block", name);
 						helper.registerMeltingRecipe(
 								miscHelper.getRecipeKey("tconstruct.material_to_molten", name),
-								materialOredict, moltenName, baseAmount, tempFunction);
+								materialOredict, blockOredict, moltenName, baseAmount, baseTemp-50);
 					}
 					if(!configBlockToMoltenBlacklist.contains(name)) {
 						String blockOredict = miscHelper.getOredictName("block", name);
 						if(oredict.contains(blockOredict)) {
 							helper.registerMeltingRecipe(
 									miscHelper.getRecipeKey("tconstruct.block_to_molten", name),
-									blockOredict, moltenName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9), tempFunction);
+									blockOredict, blockOredict, moltenName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9), baseTemp+100);
 						}
 					}
 					if(!configNuggetToMoltenBlacklist.contains(name)) {
 						String nuggetOredict = miscHelper.getOredictName("nugget", name);
+						String blockOredict = miscHelper.getOredictName("block", name);
 						if(oredict.contains(nuggetOredict)) {
 							helper.registerMeltingRecipe(
 									miscHelper.getRecipeKey("tconstruct.nugget_to_molten", name),
-									nuggetOredict, moltenName, baseAmount/9, tempFunction);
+									nuggetOredict, blockOredict, moltenName, baseAmount/9, baseTemp-100);
 						}
 					}
 					if(!configDustToMoltenBlacklist.contains(name)) {
 						String dustOredict = miscHelper.getOredictName("dust", name);
+						String blockOredict = miscHelper.getOredictName("block", name);
 						if(oredict.contains(dustOredict)) {
 							helper.registerMeltingRecipe(
 									miscHelper.getRecipeKey("tconstruct.dust_to_molten", name),
-									dustOredict, moltenName, baseAmount, tempFunction);
+									dustOredict, blockOredict, moltenName, baseAmount, baseTemp-50);
 						}
 					}
-					if(!configPlateToMoltenBlacklist.contains(name)) {
-						String plateOredict = miscHelper.getOredictName("plate", name);
-						if(oredict.contains(plateOredict)) {
+					if(!configCrystallineToMoltenBlacklist.contains(name)) {
+						String crystallineOredict = miscHelper.getOredictName("crystalline", name);
+						String blockOredict = miscHelper.getOredictName("block", name);
+						if(oredict.contains(crystallineOredict)) {
 							helper.registerMeltingRecipe(
-									miscHelper.getRecipeKey("tconstruct.plate_to_molten", name),
-									plateOredict, moltenName, baseAmount, tempFunction);
-						}
-					}
-					if(!configGearToMoltenBlacklist.contains(name)) {
-						String gearOredict = miscHelper.getOredictName("gear", name);
-						if(oredict.contains(gearOredict)) {
-							helper.registerMeltingRecipe(
-									miscHelper.getRecipeKey("tconstruct.gear_to_molten", name),
-									gearOredict, moltenName, baseAmount*4, tempFunction);
+									miscHelper.getRecipeKey("tconstruct.crystalline_to_molten", name),
+									crystallineOredict, blockOredict, moltenName, baseAmount, baseTemp-50);
 						}
 					}
 					if(!configToMaterialBlacklist.contains(name)) {
@@ -199,7 +168,7 @@ public class TConstructCompatModule implements IModule {
 						helper.registerTableCastingRecipe(
 								miscHelper.getRecipeKey("tconstruct.molten_to_material", name),
 								(type.isIngot() ? ingotCast : gemCast), moltenName, baseAmount, materialOredict,
-								tempFunction, false, false);
+								80, false);
 					}
 					if(!configToBlockBlacklist.contains(name)) {
 						String blockOredict = miscHelper.getOredictName("block", name);
@@ -207,7 +176,7 @@ public class TConstructCompatModule implements IModule {
 							helper.registerBasinCastingRecipe(
 									miscHelper.getRecipeKey("tconstruct.molten_to_block", name),
 									null, moltenName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9), blockOredict,
-									tempFunction, false, false);
+									400, false);
 						}
 					}
 					if(!configToNuggetBlacklist.contains(name)) {
@@ -216,25 +185,7 @@ public class TConstructCompatModule implements IModule {
 							helper.registerTableCastingRecipe(
 									miscHelper.getRecipeKey("tconstruct.molten_to_nugget", name),
 									nuggetCast, moltenName, baseAmount/9, nuggetOredict,
-									tempFunction, false, false);
-						}
-					}
-					if(!configToPlateBlacklist.contains(name)) {
-						String plateOredict = miscHelper.getOredictName("plate", name);
-						if(oredict.contains(plateOredict)) {
-							helper.registerTableCastingRecipe(
-									miscHelper.getRecipeKey("tconstruct.molten_to_plate", name),
-									plateCast, moltenName, baseAmount, plateOredict,
-									tempFunction, false, false);
-						}
-					}
-					if(!configToGearBlacklist.contains(name)) {
-						String gearOredict = miscHelper.getOredictName("gear", name);
-						if(oredict.contains(gearOredict)) {
-							helper.registerTableCastingRecipe(
-									miscHelper.getRecipeKey("tconstruct.molten_to_gear", name),
-									gearCast, moltenName, baseAmount*4, gearOredict,
-									tempFunction, false, false);
+									40, false);
 						}
 					}
 				}
@@ -242,58 +193,37 @@ public class TConstructCompatModule implements IModule {
 			if(!type.isDust() && !BLACKLIST.contains(name) && !configMaterialCastBlacklist.contains(name)) {
 				String materialOredict = miscHelper.getOredictName(type.getFormName(), name);
 				if(type.isIngot()) {
-					int i = 0;
-					for(FluidStack stack : castFluids) {
-						helper.registerTableCastingRecipe(
-								miscHelper.getRecipeKey("tconstruct.material_cast_"+i++, name),
-								materialOredict, stack, stack.amount, ingotCast,
-								tempFunction, true, true);
-					}
+					helper.registerTableCastingRecipe(
+							miscHelper.getRecipeKey("tconstruct.material_cast_alubrass", name),
+							materialOredict, alubrass, 144, ingotCast,
+							50, false);
+					helper.registerTableCastingRecipe(
+							miscHelper.getRecipeKey("tconstruct.material_cast_gold", name),
+							materialOredict, gold, 288, ingotCast,
+							50, false);
 				}
 				else {
-					int i = 0;
-					for(FluidStack stack : castFluids) {
-						helper.registerTableCastingRecipe(
-								miscHelper.getRecipeKey("tconstruct.material_cast_"+i++, name),
-								materialOredict, stack, stack.amount, gemCast,
-								tempFunction, true, true);
-					}
+					helper.registerTableCastingRecipe(
+							miscHelper.getRecipeKey("tconstruct.material_cast_alubrass", name),
+							materialOredict, alubrass, 144, gemCast,
+							50, false);
+					helper.registerTableCastingRecipe(
+							miscHelper.getRecipeKey("tconstruct.material_cast_gold", name),
+							materialOredict, gold, 288, gemCast,
+							50, false);
 				}
 			}
 			if(!type.isDust() && !BLACKLIST.contains(name) && !configNuggetCastBlacklist.contains(name)) {
 				String nuggetOredict = miscHelper.getOredictName("nugget", name);
 				if(oredict.contains(nuggetOredict)) {
-					int i = 0;
-					for(FluidStack stack : castFluids) {
-						helper.registerTableCastingRecipe(
-								miscHelper.getRecipeKey("tconstruct.nugget_cast_"+i++, name),
-								nuggetOredict, stack, stack.amount, nuggetCast,
-								tempFunction, true, true);
-					}
-				}
-			}
-			if(!type.isDust() && !BLACKLIST.contains(name) && !configPlateCastBlacklist.contains(name)) {
-				String plateOredict = miscHelper.getOredictName("plate", name);
-				if(oredict.contains(plateOredict)) {
-					int i = 0;
-					for(FluidStack stack : castFluids) {
-						helper.registerTableCastingRecipe(
-								miscHelper.getRecipeKey("tconstruct.plate_cast_"+i++, name),
-								plateOredict, stack, stack.amount, plateCast,
-								tempFunction, true, true);
-					}
-				}
-			}
-			if(!type.isDust() && !BLACKLIST.contains(name) && !configGearCastBlacklist.contains(name)) {
-				String gearOredict = miscHelper.getOredictName("gear", name);
-				if(oredict.contains(gearOredict)) {
-					int i = 0;
-					for(FluidStack stack : castFluids) {
-						helper.registerTableCastingRecipe(
-								miscHelper.getRecipeKey("tconstruct.gear_cast_"+i++, name),
-								gearOredict, stack, stack.amount, gearCast,
-								tempFunction, true, true);
-					}
+					helper.registerTableCastingRecipe(
+							miscHelper.getRecipeKey("tconstruct.nugget_cast_alubrass", name),
+							nuggetOredict, alubrass, 144, nuggetCast,
+							50, false);
+					helper.registerTableCastingRecipe(
+							miscHelper.getRecipeKey("tconstruct.nugget_cast_gold", name),
+							nuggetOredict, gold, 288, nuggetCast,
+							50, false);
 				}
 			}
 		}

@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.AxisAlignedBB;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.utils.JsonHelper;
 
@@ -37,6 +37,6 @@ public class AABBDeserializer implements JsonDeserializer<AxisAlignedBB> {
 		double xTo = helper.getDouble(jsonArrayFrom.get(0), "xTo");
 		double yTo = helper.getDouble(jsonArrayFrom.get(1), "yTo");
 		double zTo = helper.getDouble(jsonArrayFrom.get(2), "zTo");
-		return new AxisAlignedBB(xFrom, yFrom, zFrom, xTo, yTo, zTo);
+		return AxisAlignedBB.getBoundingBox(xFrom, yFrom, zFrom, xTo, yTo, zTo);
 	}
 }

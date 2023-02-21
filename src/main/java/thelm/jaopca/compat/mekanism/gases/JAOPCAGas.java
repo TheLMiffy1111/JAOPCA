@@ -3,7 +3,6 @@ package thelm.jaopca.compat.mekanism.gases;
 import java.util.Optional;
 
 import mekanism.api.gas.Gas;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.api.gases.IGasFormSettings;
@@ -21,8 +20,7 @@ public class JAOPCAGas extends Gas implements IMaterialFormGas {
 	protected Optional<String> translationKey = Optional.empty();
 
 	public JAOPCAGas(IForm form, IMaterial material, IGasFormSettings settings) {
-		super(MiscHelper.INSTANCE.getFluidName(form.getSecondaryName(), material.getName()),
-				new ResourceLocation("jaopca", "gas/"+material.getModelType()+'/'+form.getName()));
+		super(MiscHelper.INSTANCE.getFluidName(form.getSecondaryName(), material.getName()));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -36,7 +34,7 @@ public class JAOPCAGas extends Gas implements IMaterialFormGas {
 	}
 
 	@Override
-	public IMaterial getMaterial() {
+	public IMaterial getIMaterial() {
 		return material;
 	}
 
@@ -46,20 +44,7 @@ public class JAOPCAGas extends Gas implements IMaterialFormGas {
 	}
 
 	@Override
-	public int getTint() {
-		return 0xFF000000 | material.getColor();
-	}
-
-	@Override
-	public ResourceLocation getIcon() {
-		if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/gas/"+form.getName()+'.'+material.getName()+".png"))) {
-			return new ResourceLocation("jaopca", "gas/"+form.getName()+'.'+material.getName());
-		}
-		return super.getIcon();
-	}
-
-	@Override
-	public String getTranslationKey() {
+	public String getUnlocalizedName() {
 		if(!translationKey.isPresent()) {
 			translationKey = Optional.of("gas.jaopca."+MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName()));
 		}
@@ -68,6 +53,6 @@ public class JAOPCAGas extends Gas implements IMaterialFormGas {
 
 	@Override
 	public String getLocalizedName() {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("gas.jaopca."+form.getName(), material, getTranslationKey());
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("gas.jaopca."+form.getName(), material, getUnlocalizedName());
 	}
 }

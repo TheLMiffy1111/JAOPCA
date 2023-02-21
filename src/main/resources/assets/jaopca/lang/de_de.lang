@@ -6,15 +6,14 @@ item.jaopca.nugget=%snugget
 item.jaopca.tiny_dust=Winziger Haufen %sstaub
 item.jaopca.small_dust=Kleiner Haufen %sstaub
 fluid.jaopca.molten=Geschmolzenes %s
+item.jaopca.molten=Eimer mit Geschmolzenes %s
 item.jaopca.coin=%smünze
 item.jaopca.gear=%szahnrad
 item.jaopca.plate=%splatte
 item.jaopca.stick=%sstab
 
-item.jaopca.abyssalcraft_crystal_fragment=Kristallisiertes %sfragment
 item.jaopca.abyssalcraft_crystal_shard=Kristallisierte %sscherbe
 item.jaopca.abyssalcraft_crystal=Kristallisiertes %s
-block.jaopca.abyssalcraft_crystal_cluster=Kristallisierte %ssanhäufung
 
 item.jaopca.hbm_crystal=%skristalle
 

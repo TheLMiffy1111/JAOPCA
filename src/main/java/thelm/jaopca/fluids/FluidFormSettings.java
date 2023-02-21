@@ -2,40 +2,34 @@ package thelm.jaopca.fluids;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.util.SoundEvent;
+import thelm.jaopca.api.fluids.IBucketItemCreator;
 import thelm.jaopca.api.fluids.IFluidBlockCreator;
-import thelm.jaopca.api.fluids.IFluidBlockModelMapCreator;
 import thelm.jaopca.api.fluids.IFluidCreator;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.client.models.fluids.JAOPCAFluidBlockModelMapCreator;
 
 public class FluidFormSettings implements IFluidFormSettings {
 
 	FluidFormSettings() {}
 
 	private IFluidCreator fluidCreator = JAOPCAFluid::new;
-	private Supplier<SoundEvent> fillSoundSupplier = ()->SoundEvents.ITEM_BUCKET_FILL_LAVA;
-	private Supplier<SoundEvent> emptySoundSupplier = ()->SoundEvents.ITEM_BUCKET_EMPTY_LAVA;
 	private ToIntFunction<IMaterial> luminosityFunction = material->0;
 	private ToIntFunction<IMaterial> densityFunction = material->1000;
 	private ToIntFunction<IMaterial> temperatureFunction = material->300;
 	private ToIntFunction<IMaterial> viscosityFunction = material->1000;
 	private ToIntFunction<IMaterial> opacityFunction = material->255;
 	private Predicate<IMaterial> isGaseousFunction = material->false;
-	private Function<IMaterial, EnumRarity> displayRarityFunction = material->EnumRarity.COMMON;
+	private Function<IMaterial, EnumRarity> displayRarityFunction = material->EnumRarity.common;
 	private IFluidBlockCreator fluidBlockCreator = JAOPCAFluidBlock::new;
 	private ToIntFunction<IMaterial> maxLevelFunction = material->8;
-	private Function<IMaterial, Material> materialFunction = material->Material.LAVA;
+	private Function<IMaterial, Material> materialFunction = material->Material.lava;
 	private Function<IMaterial, MapColor> mapColorFunction = materialFunction.andThen(Material::getMaterialMapColor);
 	//material->{
 	//	int color = material.getColor();
@@ -50,7 +44,9 @@ public class FluidFormSettings implements IFluidFormSettings {
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
-	private IFluidBlockModelMapCreator fluidBlockModelMapCreator = JAOPCAFluidBlockModelMapCreator.INSTANCE;
+	private IBucketItemCreator bucketItemCreator = JAOPCABucketItem::new;
+	private ToIntFunction<IMaterial> itemStackLimitFunction = material->1;
+	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 
 	@Override
 	public IFormType getType() {
@@ -66,28 +62,6 @@ public class FluidFormSettings implements IFluidFormSettings {
 	@Override
 	public IFluidCreator getFluidCreator() {
 		return fluidCreator;
-	}
-
-	@Override
-	public IFluidFormSettings setFillSoundSupplier(Supplier<SoundEvent> fillSoundSupplier) {
-		this.fillSoundSupplier = fillSoundSupplier;
-		return this;
-	}
-
-	@Override
-	public Supplier<SoundEvent> getFillSoundSupplier() {
-		return fillSoundSupplier;
-	}
-
-	@Override
-	public IFluidFormSettings setEmptySoundSupplier(Supplier<SoundEvent> emptySoundSupplier) {
-		this.emptySoundSupplier = emptySoundSupplier;
-		return this;
-	}
-
-	@Override
-	public Supplier<SoundEvent> getEmptySoundSupplier() {
-		return emptySoundSupplier;
 	}
 
 	@Override
@@ -267,13 +241,35 @@ public class FluidFormSettings implements IFluidFormSettings {
 	}
 
 	@Override
-	public IFluidFormSettings setFluidBlockModelMapCreator(IFluidBlockModelMapCreator fluidBlockModelMapCreator) {
-		this.fluidBlockModelMapCreator = fluidBlockModelMapCreator;
+	public IFluidFormSettings setBucketItemCreator(IBucketItemCreator bucketItemCreator) {
+		this.bucketItemCreator = bucketItemCreator;
 		return this;
 	}
 
 	@Override
-	public IFluidBlockModelMapCreator getFluidBlockModelMapCreator() {
-		return fluidBlockModelMapCreator;
+	public IBucketItemCreator getBucketItemCreator() {
+		return bucketItemCreator;
+	}
+
+	@Override
+	public IFluidFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction) {
+		this.itemStackLimitFunction = itemStackLimitFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getItemStackLimitFunction() {
+		return itemStackLimitFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction) {
+		this.hasEffectFunction = hasEffectFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getHasEffectFunction() {
+		return hasEffectFunction;
 	}
 }

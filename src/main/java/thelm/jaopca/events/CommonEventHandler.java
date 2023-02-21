@@ -2,11 +2,12 @@ package thelm.jaopca.events;
 
 import java.io.File;
 
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.discovery.ASMDataTable;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.discovery.ASMDataTable;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
@@ -18,12 +19,7 @@ import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.oredict.OredictHandler;
 import thelm.jaopca.recipes.RecipeHandler;
-import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
-import thelm.wrapup.event.InitializationWrapUpEvent;
-import thelm.wrapup.event.PostInitializationWrapUpEvent;
-import thelm.wrapup.event.PreInitializationWrapUpEvent;
-import thelm.wrapup.event.RegistryWrapUpEvent;
 
 public class CommonEventHandler {
 
@@ -33,10 +29,6 @@ public class CommonEventHandler {
 	public void onPreInit(FMLPreInitializationEvent event) {
 		asmDataTable = event.getAsmData();
 		modConfigDir = event.getModConfigurationDirectory();
-	}
-
-	@SubscribeEvent
-	public void onPreInitWrapUp2(PreInitializationWrapUpEvent.Event2 event) {
 		ApiImpl.INSTANCE.init();
 		BlockFormType.init();
 		ItemFormType.init();
@@ -44,10 +36,10 @@ public class CommonEventHandler {
 		ModuleHandler.findModules(asmDataTable);
 		ConfigHandler.setupMainConfig(modConfigDir);
 		OredictHandler.findOredictModules(asmDataTable);
+		RecipeHandler.registerEarlyRecipes();
 	}
 
-	@SubscribeEvent
-	public void onRegistryWrapUp2(RegistryWrapUpEvent.Event2 event) {
+	public void onInit(FMLInitializationEvent event) {
 		OredictHandler.register();
 		MaterialHandler.findMaterials();
 		ConfigHandler.setupMaterialConfigs();
@@ -60,32 +52,22 @@ public class CommonEventHandler {
 		ConfigHandler.setupModuleConfigs();
 		FormTypeHandler.registerMaterialForms();
 		ModuleHandler.onMaterialComputeComplete();
-		RecipeHandler.registerEarlyRecipes();
-	}
-
-	public void onInit(FMLInitializationEvent event) {
-
-	}
-
-	@SubscribeEvent
-	public void onInitWrapUp2(InitializationWrapUpEvent.Event2 event) {
-		ModuleHandler.onInit(event.event);
+		ModuleHandler.onInit(event);
 		RecipeHandler.registerRecipes();
 	}
 
-	@SubscribeEvent
-	public void onPostInitWrapUp2(PostInitializationWrapUpEvent.Event2 event) {
-		ModuleHandler.onPostInit(event.event);
+	public void onPostInit(FMLPostInitializationEvent event) {
+		ModuleHandler.onPostInit(event);
 		RecipeHandler.registerLateRecipes();
+	}
+
+	public void onLoadComplete(FMLLoadCompleteEvent event) {
+		ModuleHandler.onLoadComplete(event);
+		RecipeHandler.registerFinalRecipes();
 	}
 
 	@SubscribeEvent
 	public void onOreRegister(OreDictionary.OreRegisterEvent event) {
 		OredictHandler.onOreRegister(event);
-	}
-
-	@SubscribeEvent
-	public void onMissingMappings(RegistryEvent.MissingMappings event) {
-		RegistryHandler.onMissingMappings(event);
 	}
 }

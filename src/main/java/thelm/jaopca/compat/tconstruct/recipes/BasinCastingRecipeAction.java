@@ -1,37 +1,30 @@
 package thelm.jaopca.compat.tconstruct.recipes;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.function.ToIntFunction;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import slimeknights.mantle.util.RecipeMatch;
-import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.smeltery.CastingRecipe;
-import slimeknights.tconstruct.library.smeltery.PreferenceCastingRecipe;
+import tconstruct.TConstruct;
 import thelm.jaopca.api.recipes.IRecipeAction;
-import thelm.jaopca.compat.tconstruct.TConstructHelper;
-import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 public class BasinCastingRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final String key;
 	public final Object cast;
 	public final Object input;
 	public final int inputAmount;
 	public final Object output;
-	public final ToIntFunction<FluidStack> time;
+	public final int time;
 	public final boolean consumeCast;
-	public final boolean switchSlots;
 
-	public BasinCastingRecipeAction(ResourceLocation key, Object cast, Object input, int inputAmount, Object output, ToIntFunction<FluidStack> time, boolean consumeCast, boolean switchSlots) {
+	public BasinCastingRecipeAction(String key, Object cast, Object input, int inputAmount, Object output, int time, boolean consumeCast) {
 		this.key = Objects.requireNonNull(key);
 		this.cast = cast;
 		this.input = input;
@@ -39,7 +32,6 @@ public class BasinCastingRecipeAction implements IRecipeAction {
 		this.output = output;
 		this.time = time;
 		this.consumeCast = consumeCast;
-		this.switchSlots = switchSlots;
 	}
 
 	@Override
@@ -48,19 +40,16 @@ public class BasinCastingRecipeAction implements IRecipeAction {
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		RecipeMatch match = TConstructHelper.INSTANCE.getRecipeMatch(cast, 1, 1);
-		if(output instanceof String) {
-			if(!ApiImpl.INSTANCE.getOredict().contains(output)) {
-				throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
-			}
-			TinkerRegistry.registerBasinCasting(new PreferenceCastingRecipe((String)output, match, ing, time.applyAsInt(ing), consumeCast, switchSlots));
+		List<ItemStack> castIng = MiscHelper.INSTANCE.getItemStacks(cast, 1, true);
+		if(castIng.isEmpty()) {
+			castIng.add(null);
 		}
-		else {
-			ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, 1);
-			if(stack.isEmpty()) {
-				throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
-			}
-			TinkerRegistry.registerBasinCasting(new CastingRecipe(stack, match, ing, time.applyAsInt(ing), consumeCast, switchSlots));
+		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, 1, false);
+		if(stack == null) {
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
+		}
+		for(ItemStack cin : castIng) {
+			TConstruct.basinCasting.addCastingRecipe(stack, ing, cin, consumeCast, time);
 		}
 		return true;
 	}

@@ -9,8 +9,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -22,7 +22,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "enderio")
+@JAOPCAModule(modDependencies = "EnderIO")
 public class EnderIONonIngotModule implements IModule {
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
@@ -82,7 +82,7 @@ public class EnderIONonIngotModule implements IModule {
 			}
 			helper.registerSagMillRecipe(
 					miscHelper.getRecipeKey("enderio.ore_to_material", material.getName()),
-					oreOredict, 3600, "multiply_output", "ignore", output);
+					oreOredict, 3600, "multiply_output", output);
 		}
 	}
 }

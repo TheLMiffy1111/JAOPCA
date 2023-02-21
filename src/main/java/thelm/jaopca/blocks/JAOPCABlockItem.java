@@ -3,6 +3,8 @@ package thelm.jaopca.blocks;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -21,7 +23,6 @@ public class JAOPCABlockItem extends ItemBlock implements IMaterialFormBlockItem
 	protected OptionalInt itemStackLimit = OptionalInt.empty();
 	protected Optional<Boolean> hasEffect = Optional.empty();
 	protected Optional<EnumRarity> rarity = Optional.empty();
-	protected OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
 		super(block.asBlock());
@@ -30,26 +31,27 @@ public class JAOPCABlockItem extends ItemBlock implements IMaterialFormBlockItem
 
 	@Override
 	public IForm getForm() {
-		return ((IMaterialForm)getBlock()).getForm();
+		return ((IMaterialForm)field_150939_a).getForm();
 	}
 
 	@Override
-	public IMaterial getMaterial() {
-		return ((IMaterialForm)getBlock()).getMaterial();
+	public IMaterial getIMaterial() {
+		return ((IMaterialForm)field_150939_a).getIMaterial();
 	}
 
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
 		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(getMaterial()));
+			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(getIMaterial()));
 		}
 		return itemStackLimit.getAsInt();
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean hasEffect(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
-			hasEffect = Optional.of(settings.getHasEffectFunction().test(getMaterial()));
+			hasEffect = Optional.of(settings.getHasEffectFunction().test(getIMaterial()));
 		}
 		return hasEffect.get() || super.hasEffect(stack);
 	}
@@ -57,21 +59,13 @@ public class JAOPCABlockItem extends ItemBlock implements IMaterialFormBlockItem
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.getDisplayRarityFunction().apply(getMaterial()));
+			rarity = Optional.of(settings.getDisplayRarityFunction().apply(getIMaterial()));
 		}
 		return rarity.get();
 	}
 
 	@Override
-	public int getItemBurnTime(ItemStack itemStack) {
-		if(!burnTime.isPresent()) {
-			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(getMaterial()));
-		}
-		return burnTime.getAsInt();
-	}
-
-	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getTranslationKey(stack));
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getIMaterial(), getUnlocalizedName(stack));
 	}
 }

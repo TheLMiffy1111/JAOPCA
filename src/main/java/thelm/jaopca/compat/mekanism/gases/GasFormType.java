@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
+import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.api.gases.IGasFormSettings;
@@ -55,7 +56,7 @@ public class GasFormType implements IGasFormType {
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
 		String fluidName = MiscHelper.INSTANCE.getFluidName(form.getSecondaryName(), material.getName());
-		return GasRegistry.getGas(fluidName) == null;
+		return GasRegistry.getGas(fluidName) != null;
 	}
 
 	@Override
@@ -99,6 +100,17 @@ public class GasFormType implements IGasFormType {
 				GASES.put(form, material, materialFormGas);
 				Gas gas = materialFormGas.asGas();
 				GasRegistry.register(gas);
+
+				api.registerTextures(0, ()->{
+					if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/blocks/"+form.getName()+'.'+material.getName()+".png"))) {
+						return Collections.singletonList("jaopca:"+form.getName()+'.'+material.getName());
+					}
+					else {
+						return Collections.singletonList("jaopca:"+material.getModelType()+'/'+form.getName());
+					}
+				}, list->{
+					gas.setIcon(list.get(0));
+				});
 			}
 		}
 	}

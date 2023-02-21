@@ -2,6 +2,7 @@ package thelm.jaopca.custom.json;
 
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 
 import com.google.gson.JsonDeserializationContext;
@@ -10,8 +11,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
-import it.unimi.dsi.fastutil.objects.Object2BooleanRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.CustomModule;
@@ -29,8 +28,7 @@ public class MaterialPredicateDeserializer implements JsonDeserializer<Predicate
 		IJsonHelper helper = JsonHelper.INSTANCE;
 		JsonObject json = helper.getJsonObject(jsonElement, "object");
 		boolean defaultValue = helper.getBoolean(json, "default");
-		Object2BooleanMap<IMaterial> map = new Object2BooleanRBTreeMap<>();
-		map.defaultReturnValue(defaultValue);
+		Map<IMaterial, Boolean> map = new TreeMap<>();
 		if(json.has("materialTypes")) {
 			JsonObject materialTypesJson = helper.getJsonObject(json, "materialTypes");
 			for(Map.Entry<String, JsonElement> entry : materialTypesJson.entrySet()) {
@@ -78,10 +76,10 @@ public class MaterialPredicateDeserializer implements JsonDeserializer<Predicate
 					comment = "";
 				}
 				CustomModule.instance.addCustomConfigDefiner((material, config)->{
-					map.put(material, config.getDefinedBoolean(path, map.getBoolean(material), comment));
+					map.put(material, config.getDefinedBoolean(path, map.getOrDefault(material, defaultValue), comment));
 				});
 			}
 		}
-		return material->map.getBoolean(material);
+		return material->map.getOrDefault(material, defaultValue);
 	}
 }

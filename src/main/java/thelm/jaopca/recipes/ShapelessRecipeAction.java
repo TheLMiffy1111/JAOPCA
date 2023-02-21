@@ -1,18 +1,16 @@
 package thelm.jaopca.recipes;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.base.Strings;
-
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thelm.jaopca.api.recipes.IRecipeAction;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -20,19 +18,13 @@ public class ShapelessRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
-	public final String group;
+	public final String key;
 	public final Object output;
 	public final int count;
 	public final Object[] input;
 
-	public ShapelessRecipeAction(ResourceLocation key, Object output, int count, Object... input) {
-		this(key, "", output, count, input);
-	}
-
-	public ShapelessRecipeAction(ResourceLocation key, String group, Object output, int count, Object... input) {
+	public ShapelessRecipeAction(String key, Object output, int count, Object... input) {
 		this.key = Objects.requireNonNull(key);
-		this.group = Strings.nullToEmpty(group);
 		this.output = output;
 		this.count = count;
 		this.input = Objects.requireNonNull(input);
@@ -40,21 +32,27 @@ public class ShapelessRecipeAction implements IRecipeAction {
 
 	@Override
 	public boolean register() {
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
-		if(stack.isEmpty()) {
+		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count, false);
+		if(stack == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		NonNullList<Ingredient> inputList = NonNullList.create();
+		List<List<?>> inputList = new ArrayList<>();
 		for(Object in : input) {
-			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
-			if(ing == null) {
+			if(in instanceof String) {
+				inputList.add(Collections.singletonList(in));
+				continue;
+			}
+			List<ItemStack> ing = MiscHelper.INSTANCE.getItemStacks(in, 1, true);
+			if(ing.isEmpty()) {
 				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			else {
 				inputList.add(ing);
 			}
 		}
-		ForgeRegistries.RECIPES.register(new ShapelessRecipes(group, stack, inputList).setRegistryName(key));
+		for(List<?> ins : MiscHelper.INSTANCE.guavaCartesianProduct(inputList)) {
+			CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(stack, ins.toArray()));
+		}
 		return true;
 	}
 }

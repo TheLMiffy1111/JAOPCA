@@ -16,7 +16,6 @@ import com.electronwill.nightconfig.core.EnumGetMethod;
 import com.electronwill.nightconfig.core.file.FileConfig;
 import com.electronwill.nightconfig.core.io.ParsingException;
 import com.electronwill.nightconfig.core.utils.CommentedConfigWrapper;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -46,7 +45,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public String getDefinedString(List<String> path, String defaultValue, String comment) {
-		return getDefinedString(path, defaultValue, Predicates.alwaysTrue(), comment);
+		return getDefinedString(path, defaultValue, v->true, comment);
 	}
 
 	@Override
@@ -82,7 +81,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public List<String> getDefinedStringList(List<String> path, List<String> defaultValue, String comment) {
-		return getDefinedStringList(path, defaultValue, Predicates.alwaysTrue(), comment);
+		return getDefinedStringList(path, defaultValue, v->true, comment);
 	}
 
 	@Override
@@ -208,7 +207,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public float getDefinedFloat(List<String> path, float defaultValue, String comment) {
-		return getDefinedFloat(path, defaultValue, Predicates.alwaysTrue(), comment);
+		return getDefinedFloat(path, defaultValue, v->true, comment);
 	}
 
 	@Override
@@ -280,7 +279,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public byte getDefinedByte(List<String> path, byte defaultValue, String comment) {
-		return getDefinedByte(path, defaultValue, Predicates.alwaysTrue(), comment);
+		return getDefinedByte(path, defaultValue, v->true, comment);
 	}
 
 	@Override
@@ -316,7 +315,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public short getDefinedShort(List<String> path, short defaultValue, String comment) {
-		return getDefinedShort(path, defaultValue, Predicates.alwaysTrue(), comment);
+		return getDefinedShort(path, defaultValue, v->true, comment);
 	}
 
 	@Override
@@ -352,7 +351,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public char getDefinedChar(List<String> path, char defaultValue, String comment) {
-		return getDefinedChar(path, defaultValue, Predicates.alwaysTrue(), comment);
+		return getDefinedChar(path, defaultValue, v->true, comment);
 	}
 
 	@Override
@@ -388,7 +387,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public <T extends Enum<T>> T getDefinedEnum(List<String> path, Class<T> enumType, T defaultValue, String comment) {
-		return getDefinedEnum(path, enumType, defaultValue, Predicates.alwaysTrue(), comment);
+		return getDefinedEnum(path, enumType, defaultValue, v->true, comment);
 	}
 
 	@Override

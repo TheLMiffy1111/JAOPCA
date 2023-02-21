@@ -1,3 +1,9 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
+
 buildscript {
     repositories {
         maven {
@@ -7,36 +13,43 @@ buildscript {
             url = "https://plugins.gradle.org/m2/"
         }
         maven {
+            url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+        }
+        maven {
             url = "https://jitpack.io/"
         }
         mavenCentral()
         jcenter()
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+        classpath "net.minecraftforge.gradle:ForgeGradle:1.2.13"
         classpath "com.github.jengelman.gradle.plugins:shadow:4.0.4"
+        classpath "de.undercouch:gradle-download-task:5.3.1"
     }
 }
 
-apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "forge"
 apply plugin: "eclipse"
 apply plugin: "maven-publish"
 apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "de.undercouch.download"
 
 repositories {
-    mavenCentral()
     jcenter()
     flatDir {
         dirs "libs"
     }
     maven {
-        url = "https://maven.blamejared.com/"
+        url = "https://chickenbones.net/maven/"
     }
     maven {
-        url = "https://dvs1.progwml6.com/files/maven/"
+        url = "https://maven.mcmoddev.com/"
     }
     maven {
-        url = "https://maven.amadornes.com/"
+        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+    }
+    maven {
+        url = "https://maven.covers1624.net/"
     }
     maven {
         url = "https://maven.ic2.player.to/"
@@ -45,41 +58,31 @@ repositories {
         url = "https://maven.tterrag.com/"
     }
     maven {
-        url = "https://maven.modmuss50.me/"
+        url = "https://maven.k-4u.nl/"
     }
     maven {
-        url = "https://maven.covers1624.net/"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    ivy {
+        artifactPattern "https://asie.pl/files/mods/[module]/[module]-[revision]-[classifier].[ext]"
     }
     maven {
-        url = "https://maven.shadowfacts.net/"
-    }
-    maven {
-        url = "https://maven.mcmoddev.com/"
-    }
-    maven {
-        url = "https://maven.thiakil.com/"
-    }
-    maven {
-        url = "https://www.mod-buildcraft.com/maven/"
-    }
-    maven {
-        url = "https://maven.cleanroommc.com/"
+        url = "https://jitpack.io/"
     }
     maven {
         url = "https://cursemaven.com/"
+    }
+    maven {
+        url = "https://api.modrinth.com/maven/"
     }
     maven {
         url = "https://modmaven.dev/"
     }
 }
 
-sourceSets {
-    main
-}
-
-version = "2.3.5.7"
+version = "W.0.0.0"
 group = "thelm.jaopca"
-archivesBaseName = "JAOPCA-1.12.2"
+archivesBaseName = "JAOPCA-1.7.10"
 
 sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
@@ -88,26 +91,7 @@ compileJava {
 compileJava.options.encoding = "UTF-8"
 
 minecraft {
-    version = "1.12.2-14.23.5.2847"
-    runDir = "run"
-    mappings = "stable_39"
-    def commonJvmArgs = [
-        "-Xmn768m", "-XX:+DisableExplicitGC", "-XX:+UseConcMarkSweepGC",
-        "-XX:+UseParNewGC", "-XX:+UseNUMA", "-XX:+CMSParallelRemarkEnabled",
-        "-XX:MaxTenuringThreshold=15", "-XX:MaxGCPauseMillis=30", "-XX:GCPauseIntervalMillis=150",
-        "-XX:+UseAdaptiveGCBoundary", "-XX:-UseGCOverheadLimit", "-XX:+UseBiasedLocking",
-        "-XX:SurvivorRatio=8", "-XX:TargetSurvivorRatio=90", "-XX:MaxTenuringThreshold=15",
-        "-XX:+UseFastAccessorMethods", "-XX:+UseCompressedOops", "-XX:+OptimizeStringConcat",
-        "-XX:+AggressiveOpts", "-XX:ReservedCodeCacheSize=2048m", "-XX:+UseCodeCacheFlushing",
-        "-XX:SoftRefLRUPolicyMSPerMB=10000", "-XX:ParallelGCThreads=10", "-Dmixin.hotSwap=true",
-        "-Dmixin.checks.interfaces=true"
-    ]
-    clientJvmArgs.add("-Xmx7G")
-    clientJvmArgs.addAll(commonJvmArgs)
-    clientRunArgs.add("--username=Dev")
-    serverJvmArgs.add("-Xmx3G")
-    serverJvmArgs.addAll(commonJvmArgs)
-    makeObfSourceJar = false
+    version = "1.7.10-10.13.4.1614-1.7.10"
 }
 
 configurations {
@@ -118,93 +102,102 @@ configurations {
 dependencies {
     include "com.electronwill.night-config:core:3.6.4"
     include "com.electronwill.night-config:toml:3.6.4"
+    
+    annotationProcessor "org.ow2.asm:asm-debug-all:5.0.3"
+    annotationProcessor "com.google.guava:guava:24.1.1-jre"
+    annotationProcessor "com.google.code.gson:gson:2.8.6"
+    annotationProcessor "com.gtnewhorizon:gtnhmixins:2.1.12:processor"
 
-    deobfCompile "mezz.jei:jei_1.12.2:4.16.1.302"
-    deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.3.55"
-    deobfCompile "slimeknights:TConstruct:1.12.2-2.13.0.183"
-    deobfCompile "net.industrial-craft:industrialcraft-2:2.8.221-ex112"
-    deobfCompile "MCMultiPart2:MCMultiPart:2.5.3"
-    deobfCompile("RebornCore:RebornCore-1.12.2:3.19.4.529:universal") {
-        transitive = false
-    }
-    deobfCompile("TechReborn:TechReborn-1.12.2:2.27.3.1084:universal") {
-        transitive = false
-    }
-    deobfCompile("TechReborn:TechReborn-ModCompatibility-1.12.2:1.4.0.76:universal") {
-        transitive = false
-    }
-    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.3.358:universal"
-    implementation "net.shadowfacts:Forgelin:1.8.4"
-    deobfCompile("net.ndrei:tesla-core-lib:1.12.2-1.0.18.28") {
-        transitive = false
-    }
-    deobfCompile("net.ndrei:powered-thingies:1.12.2-1.0.15.25") {
-        transitive = false
-    }
-    deobfCompile "CraftTweaker2:CraftTweaker2-API:4.1.20.683"
-    deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.683"
-    deobfCompile "com.enderio.core:EnderCore:1.12.2-0.5.76:core"
-    deobfCompile("com.enderio:EnderIO:1.12.2-5.3.70") {
-        transitive = false
-    }
-    deobfCompile "info.loenwind.autoconfig:AutoConfig:1.12.2-1.0.2"
-    deobfCompile "info.loenwind.autosave:AutoSave:1.12.2-1.0.11"
-    deobfCompile "com.mod-buildcraft:buildcraft-main:7.99.24.8"
-    deobfCompile("net.ndrei:bc-ore-processing:7.99.24.4-1.18") {
-        transitive = false
-    }
-    deobfCompile "net.sengir.forestry:forestry_1.12.2:5.8.2.422"
+    implementation "com.gtnewhorizon:gtnhmixins:2.1.12"
 
-    deobfCompile "curse.maven:wrapup-275153:2486198"
-    deobfCompile "curse.maven:advanced-rocketry-236542:3801020"
-    deobfCompile "curse.maven:baubles-227083:2518667"
-    deobfCompile "curse.maven:embers-rekindled-300777:3695248"
-    deobfCompile "curse.maven:ignition-foundry-283807:2719054"
-    deobfCompile "curse.maven:futurepack-237333:2856874"
-    deobfCompile "curse.maven:libvulpes-236541:3801015"
-    deobfCompile "curse.maven:magneticraft-224808:3791484"
-    deobfCompile "curse.maven:mekanism-268560:2835175"
-    deobfCompile "curse.maven:modelloader-277663:2744735"
-    deobfCompile "curse.maven:placebo-283644:2694382"
-    deobfCompile "curse.maven:thaumcraft-223628:2629023"
-    deobfCompile "curse.maven:thaumic-jei-285492:2705304"
-    deobfCompile "curse.maven:applied-energistics-2-223794:2747063"
-    deobfCompile "curse.maven:redstone-flux-270789:2920436"
-    deobfCompile "curse.maven:cofh-core-69162:2920433"
-    deobfCompile "curse.maven:cofh-world-271384:2920434"
-    deobfCompile "curse.maven:thermal-foundation-222880:2926428"
-    deobfCompile "curse.maven:thermal-expansion-69163:2926431"
-    deobfCompile "curse.maven:thermal-dynamics-227443:2920505"
-    deobfCompile "curse.maven:abyssalcraft-53686:3425234"
-    deobfCompile "curse.maven:minestrappolation-5-233351:2860018"
-    deobfCompile "curse.maven:buildcraft-compat-233140:3204471"
-    deobfCompile "curse.maven:hbms-nuclear-tech-mod-reloaded-435883:4283916"
-    deobfCompile "curse.maven:railcraft-51195:2687757"
-    deobfCompile "curse.maven:cyclops-core-232758:3159497"
-    deobfCompile "curse.maven:common-capabilities-247007:3053017"
-    deobfCompile "curse.maven:integrated-dynamics-236307:3159505"
-    deobfCompile "curse.maven:endercore-231868:2972849"
-    deobfCompile "curse.maven:astral-sorcery-241721:3044416"
-    deobfCompile "curse.maven:dummycore-unofficial-266491:2611426"
-    deobfCompile "curse.maven:essentialcraft-4-unofficial-254817:2611428"
+    implementation "com.github.GTNewHorizons:CodeChickenCore:1.1.11:dev"
+    implementation "com.github.GTNewHorizons:CodeChickenLib:1.1.7:dev"
+    implementation "com.github.GTNewHorizons:NotEnoughItems:2.3.27-GTNH:dev"
+    implementation "net.industrial-craft:industrialcraft-2:2.2.827-experimental:dev"
+    implementation("com.enderio.core:EnderCore:1.7.10-0.2.0.39_beta:dev") {
+        transitive = false
+    }
+    implementation("com.enderio:EnderIO:1.7.10-2.3.0.429_beta:dev") {
+        transitive = false
+    }
+    implementation "com.azanor.baubles:Baubles:1.0.1.10:deobf"
+    implementation "com.azanor:Thaumcraft:1.7.10-4.2.3.5:deobf"
+    implementation "k4unl:k4lib:1.7.10-0.1.75:deobf"
+    implementation("k4unl:HydCraft:1.7.10-2.1.253:deobf") {
+        transitive = false
+    }
+    implementation "mantle:Mantle:1.7.10-0.3.2.jenkins191:deobf"
+    implementation("tconstruct:TConstruct:1.7.10-1.8.8.build988:deobf") {
+        transitive = false
+    }
+    implementation "com.github.GTNewHorizons:CreativeCore:1.3.27-GTNH:dev"
+    implementation "com.github.GTNewHorizons:BuildCraft:7.1.25:dev"
+    implementation "com.github.GTNewHorizons:ForgeMultipart:1.3.1:dev"
+    implementation "com.github.GTNewHorizons:DummyCore:1.15:dev"
 
-    deobfCompile "zone.rong:mixinbooter:7.0"
-    deobfCompile "curse.maven:jeid-296289:3581715"
-    deobfCompile "curse.maven:spark-361579:3245793"
-    deobfCompile "curse.maven:lolasm-460609:3834448"
+    implementation "curse.maven:bookshelf-api-library-232784:2250215"
+    implementation "curse.maven:cofh-core-69162:2388751"
+    implementation "curse.maven:thermal-foundation-222880:2388753"
+    implementation "curse.maven:thermal-expansion-69163:2388759"
+    implementation "curse.maven:thermal-dynamics-227443:2388757"
+    implementation "curse.maven:immersive-engineering-231951:2299020"
+    implementation name: "Factorization", version: "1.7.10-0.8.109", classifier: "dev", ext: "jar"
+
+    implementation deobfCurse("crafttweaker-239197:2838720")
+    implementation deobfCurse("railcraft-51195:2458987")
+    implementation deobfCurse("mekanism-268560:2475797")
+    implementation deobfDropbox("hl2or6ajvemaaib/RandomAdditions%20Alpha%200.11.23%20mc1.7.10.jar")
+    implementation deobfCurse("ganys-nether-222302:2274606")
+    implementation deobfCurse("modular-systems-68528:2250241")
+    implementation deobfCurse("applied-energistics-2-223794:2296430")
+    implementation deobfCurse("flaxbeards-steam-power-224867:2301651")
+    implementation deobfCurse("eureka-222995:2235481")
+    implementation deobfCurse("buildcraft-additions-221014:2272835")
+    implementation deobfCurse("dragonapi-235591:3574508")
+    implementation deobfCurse("projecte-226410:2340786")
+    implementation deobfCurse("rotarycraft-235596:3574506")
+    implementation deobfCurse("electrical-age-253045:2937618")
+    implementation deobfCurse("engineers-toolbox-224613:2248029")
+    implementation deobfCurse("enchiridion-76612:2242855")
+    implementation deobfCurse("mariculture-68023:2323944")
+    implementation deobfCurse("magneticraft-224808:2276268")
+    implementation deobfCurse("foundry-228297:2269019")
+    implementation deobfGithub("HbmMods/Hbm-s-Nuclear-Tech-GIT", "1.0.27X4501/HBM-NTM-.1.0.27_X4501.jar")
+    implementation deobfCurse("abyssalcraft-53686:2311135")
+    implementation deobfCurse("essentialcraft-4-unofficial-254817:2394702")
+
+    implementation "com.github.GTNewHorizons:NotEnoughIds:1.4.6:dev"
+    implementation("com.github.GTNewHorizons:TCNEIAdditions:1.1.1.8:dev") {
+        transitive = false
+    }
+    implementation "com.github.GTNewHorizons:Mixingasm:v0.2.4:dev"
+
+    implementation deobfCurse("fastcraft-242677:2522249")
+    implementation deobfCurse("nei-integration-225251:2282522")
+    implementation deobfCurse("thaumcraft-nei-plugin-225095:2241913")
 }
+
+def manifestAttributes = [
+        "Specification-Title": "JAOPCA",
+        "Specification-Vendor": "thelm",
+        "Specification-Version": "W",
+        "Implementation-Title": "${archivesBaseName}",
+        "Implementation-Version": "${version}",
+        "Implementation-Vendor": "thelm",
+        //"Implementation-Timestamp": new Date().format("yyyy-MM-dd"T"HH:mm:ssZ")
+        "FMLCorePluginContainsFMLMod": "true",
+        "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+        "ForceLoadAsMod": "true"
+]
+def configRefMap = "jaopca.refmap.json"
+def refMap = "${tasks.compileJava.temporaryDir}${File.separator}${configRefMap}"
+def mixinSrg = "${tasks.reobf.temporaryDir}${File.separator}mixins.srg"
 
 jar {
     manifest {
-        attributes([
-                "Specification-Title": "JAOPCA",
-                "Specification-Vendor": "thelm",
-                "Specification-Version": "2.3",
-                "Implementation-Title": "${archivesBaseName}",
-                "Implementation-Version": "${version}",
-                "Implementation-Vendor": "thelm"
-        ],)
+        attributes(manifestAttributes)
     }
+    dependsOn shadowJar
     enabled = false
 }
 
@@ -215,8 +208,178 @@ shadowJar {
 }
 
 reobf {
-    shadowJar {}
+    addExtraSrgFile mixinSrg
 }
 
-tasks.build.dependsOn reobfShadowJar
-jar.finalizedBy("reobfShadowJar")
+task devJar(type: ShadowJar) {
+    from sourceSets.main.output
+    classifier = "dev"
+    manifest {
+        attributes(manifestAttributes)
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    configurations = [project.configurations.include]
+}
+
+afterEvaluate {
+    tasks.compileJava {
+        options.compilerArgs += [
+            "-AreobfSrgFile=${tasks.reobf.srg}",
+            "-AoutSrgFile=${mixinSrg}",
+            "-AoutRefMapFile=${refMap}",
+            "-XDenableSunApiLintControl",
+            "-XDignore.symbol.file"
+        ]
+    }
+}
+
+processResources {
+    from refMap
+}
+
+artifacts {
+    archives devJar
+}
+
+def deobfCurse(String curseDep) {
+    return deobfMaven("https://www.cursemaven.com/", "curse.maven:${curseDep}")
+}
+
+def deobfModrinth(String modrinthDep) {
+    return deobfMaven("https://api.modrinth.com/maven/", "maven.modrinth:${modrinthDep}")
+}
+
+def deobfMaven(String repoURL, String mavenDep) {
+    if(!repoURL.endsWith("/")) {
+        repoURL += "/"
+    }
+    String[] parts = mavenDep.split(":")
+    parts[0] = parts[0].replace(".", "/")
+    String jarURL
+    if(parts.length > 3) {
+        jarURL = "${repoURL}${parts[0]}/${parts[1]}/${parts[2]}/${parts[1]}-${parts[2]}-${parts[3]}.jar"
+    }
+    else {
+        jarURL = "${repoURL}${parts[0]}/${parts[1]}/${parts[2]}/${parts[1]}-${parts[2]}.jar"
+    }
+    return deobf(jarURL)
+}
+
+def deobfMediafire(String mediafireDep) {
+    String fileName = mediafireDep
+    int lastSlash = fileName.lastIndexOf("/")
+    if(lastSlash > 0) {
+        fileName = fileName.substring(lastSlash+1)
+    }
+    if(fileName.endsWith(".jar") || fileName.endsWith(".litemod")) {
+        fileName = fileName.substring(0, fileName.lastIndexOf("."))
+    }
+    return deobf("https://thealiendrew.github.io/mediafire-direct/?dl=mediafire.com/file/${mediafireDep}", "com.mediafire/${fileName}")
+}
+
+def deobfDropbox(String dropboxDep) {
+    String fileName = dropboxDep
+    fileName = fileName.replace("%20", "-").replace("%", "")
+    int lastSlash = fileName.lastIndexOf("/")
+    if(lastSlash > 0) {
+        fileName = fileName.substring(lastSlash+1)
+    }
+    if(fileName.endsWith(".jar") || fileName.endsWith(".litemod")) {
+        fileName = fileName.substring(0, fileName.lastIndexOf("."))
+    }
+    return deobf("https://www.dropbox.com/s/${dropboxDep}?dl=1", "com.dropbox/${fileName}")
+}
+
+def deobfGithub(String repo, String dep) {
+    return deobf("https://github.com/${repo}/releases/download/${dep}")
+}
+
+def deobf(String sourceURL) {
+    try {
+        URL url = new URL(sourceURL)
+        String fileName = url.getFile()
+        int lastSlash = fileName.lastIndexOf("/")
+        if(lastSlash > 0) {
+            fileName = fileName.substring(lastSlash+1)
+        }
+        if(fileName.endsWith(".jar") || fileName.endsWith(".litemod")) {
+            fileName = fileName.substring(0, fileName.lastIndexOf("."))
+        }
+        String hostName = url.getHost()
+        if(hostName.startsWith("www.")) {
+            hostName = hostName.substring(4)
+        }
+        List parts = Arrays.asList(hostName.split("\\."))
+        Collections.reverse(parts)
+        hostName = String.join(".", parts)
+        return deobf(sourceURL, "${hostName}/${fileName}")
+    }
+    catch(Exception e) {
+        return deobf(sourceURL, "deobf/${sourceURL.hashCode()}")
+    }
+}
+
+def deobf(String sourceURL, String rawFileName) {
+    String bon2Version = "2.5.1"
+    String fileName = URLDecoder.decode(rawFileName, "UTF-8")
+    String cacheDir = "${project.gradle.gradleUserHomeDir}/caches"
+    String bon2Dir = "${cacheDir}/forge_gradle/deobf"
+    String bon2File = "${bon2Dir}/BON2-${bon2Version}.jar"
+    String obfFile = "${cacheDir}/modules-2/files-2.1/${fileName}.jar"
+    String deobfFile = "${cacheDir}/modules-2/files-2.1/${fileName}-deobf.jar"
+    if(file(deobfFile).exists()) {
+        return files(deobfFile)
+    }
+    String mappingsVer
+    String remoteMappings = "https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/"
+    String id = "1614-1.7.10"
+    String mappingsZIP = "${cacheDir}/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/${id}/mcp_snapshot_nodoc-${id}.zip"
+    zipMappings(mappingsZIP, remoteMappings, bon2Dir)
+    mappingsVer = "snapshot_${id}"
+    download.run {
+        src "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/com/github/parker8283/BON2/${bon2Version}-CUSTOM/BON2-${bon2Version}-CUSTOM-all.jar"
+        dest bon2File
+        quiet true
+        overwrite false
+    }
+    download.run {
+        src sourceURL
+        dest obfFile
+        quiet true
+        overwrite false
+    }
+    exec {
+        commandLine "java", "-jar", bon2File, "--inputJar", obfFile, "--outputJar", deobfFile, "--mcVer", "1.7.10", "--mappingsVer", mappingsVer, "--notch"
+        workingDir bon2Dir
+        standardOutput = new FileOutputStream("${deobfFile}.log")
+    }
+    return files(deobfFile)
+}
+
+def zipMappings(String zipPath, String url, String bon2Dir) {
+    File zipFile = new File(zipPath)
+    if(zipFile.exists()) {
+        return
+    }
+    String fieldsCache = "${bon2Dir}/data/fields.csv"
+    String methodsCache = "${bon2Dir}/data/methods.csv"
+    download.run {
+        src "${url}fields.csv"
+        dest fieldsCache
+        quiet true
+    }
+    download.run {
+        src "${url}methods.csv"
+        dest methodsCache
+        quiet true
+    }
+    zipFile.getParentFile().mkdirs()
+    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))
+    zos.putNextEntry(new ZipEntry("fields.csv"))
+    Files.copy(Paths.get(fieldsCache), zos)
+    zos.closeEntry()
+    zos.putNextEntry(new ZipEntry("methods.csv"))
+    Files.copy(Paths.get(methodsCache), zos)
+    zos.closeEntry()
+    zos.close()
+}

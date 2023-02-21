@@ -1,22 +1,19 @@
 package thelm.jaopca.compat.hbm.recipes;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.hbm.inventory.CrystallizerRecipes;
+import com.hbm.inventory.FluidStack;
 import com.hbm.inventory.RecipesCommon;
+import com.hbm.inventory.recipes.CrystallizerRecipes;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeAction;
+import thelm.jaopca.compat.hbm.HBMHelper;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -24,16 +21,22 @@ public class CrystallizerRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final String key;
 	public final Object input;
+	public final Object fluidInput;
+	public final int fluidInputAmount;
 	public final Object output;
-	public final int count;
+	public final int outputCount;
+	public final int time;
 
-	public CrystallizerRecipeAction(ResourceLocation key, Object input, Object output, int count) {
+	public CrystallizerRecipeAction(String key, Object input, Object fluidInput, int fluidInputAmount, Object output, int outputCount, int time) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
+		this.fluidInput = fluidInput;
+		this.fluidInputAmount = fluidInputAmount;
 		this.output = output;
-		this.count = count;
+		this.outputCount = outputCount;
+		this.time = time;
 	}
 
 	@Override
@@ -46,30 +49,26 @@ public class CrystallizerRecipeAction implements IRecipeAction {
 			ins.add(input);
 		}
 		else {
-			Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-			if(ing == null) {
+			List<ItemStack> ing = MiscHelper.INSTANCE.getItemStacks(input, 1, true);
+			if(ing.isEmpty()) {
 				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 			}
-			for(ItemStack is : ing.getMatchingStacks()) {
-				ins.add(new RecipesCommon.ComparableStack(is).singulize());
+			for(ItemStack is : ing) {
+				ins.add(new RecipesCommon.ComparableStack(is));
 			}
 		}
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
-		if(stack.isEmpty()) {
+		FluidStack fluidIng = HBMHelper.INSTANCE.getFluidTypeStack(fluidInput, fluidInputAmount);
+		if(fluidIng == null) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+fluidInput);
+		}
+		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount, false);
+		if(stack == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		try {
-			Field mapField = Arrays.stream(CrystallizerRecipes.class.getDeclaredFields()).
-					filter(f->Map.class.isAssignableFrom(f.getType())).findFirst().get();
-			mapField.setAccessible(true);
-			Map<Object, ItemStack> map = (Map<Object, ItemStack>)mapField.get(null);
-			for(Object in : ins) {
-				map.put(in, stack);
-			}
-			return true;
+		CrystallizerRecipes.CrystallizerRecipe rec = new CrystallizerRecipes.CrystallizerRecipe(stack, time, fluidIng);
+		for(Object in : ins) {
+			CrystallizerRecipes.registerRecipe(in, rec);
 		}
-		catch(Exception e) {
-			throw new IllegalStateException("Could not access crystallizer recipe map.");
-		}
+		return true;
 	}
 }

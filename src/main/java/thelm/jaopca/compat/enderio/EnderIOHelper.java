@@ -2,15 +2,16 @@ package thelm.jaopca.compat.enderio;
 
 import java.util.function.Supplier;
 
-import com.enderio.core.common.util.stackable.Things;
-
+import crazypants.enderio.machine.recipe.OreDictionaryRecipeInput;
+import crazypants.enderio.machine.recipe.RecipeInput;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.items.IItemProvider;
 import thelm.jaopca.compat.enderio.recipes.SagMillRecipeAction;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class EnderIOHelper {
 
@@ -18,35 +19,36 @@ public class EnderIOHelper {
 
 	private EnderIOHelper() {}
 
-	public Things getThings(Object obj) {
-		Things things = new Things();
+	public RecipeInput getRecipeInput(Object obj, int count) {
 		if(obj instanceof Supplier<?>) {
-			things.add(getThings(((Supplier<?>)obj).get()));
+			return getRecipeInput(((Supplier<?>)obj).get(), count);
 		}
-		else if(obj instanceof Things) {
-			things.add((Things)obj);
-		}
-		else if(obj instanceof String) {
+		if(obj instanceof String) {
 			if(ApiImpl.INSTANCE.getOredict().contains(obj)) {
-				things.addOredict((String)obj);
+				return new OreDictionaryRecipeInput(
+						MiscHelper.INSTANCE.getItemStack(obj, count, true),
+						OreDictionary.getOreID((String)obj), -1);
 			}
 		}
-		else if(obj instanceof ItemStack) {
-			things.add((ItemStack)obj);
+		if(obj instanceof ItemStack) {
+			return new RecipeInput(MiscHelper.INSTANCE.resizeItemStack((ItemStack)obj, count));
 		}
-		else if(obj instanceof Item) {
-			things.add((Item)obj);
+		if(obj instanceof Item) {
+			return new RecipeInput(new ItemStack((Item)obj, count), false);
 		}
-		else if(obj instanceof Block) {
-			things.add((Block)obj);
+		if(obj instanceof Block) {
+			return new RecipeInput(new ItemStack((Block)obj, count), false);
 		}
-		else if(obj instanceof IItemProvider) {
-			things.add(((IItemProvider)obj).asItem());
+		if(obj instanceof IItemProvider) {
+			return new RecipeInput(new ItemStack(((IItemProvider)obj).asItem(), count), false);
 		}
-		return things;
+		if(obj instanceof RecipeInput) {
+			return (RecipeInput)obj;
+		}
+		return null;
 	}
 
-	public boolean registerSagMillRecipe(ResourceLocation key, Object input, int energy, String bonusType, String level, Object... output) {
-		return ApiImpl.INSTANCE.registerLateRecipe(key, new SagMillRecipeAction(key, input, energy, bonusType, level, output));
+	public boolean registerSagMillRecipe(String key, Object input, int energy, String bonusType, Object... output) {
+		return ApiImpl.INSTANCE.registerLateRecipe(key, new SagMillRecipeAction(key, input, energy, bonusType, output));
 	}
 }

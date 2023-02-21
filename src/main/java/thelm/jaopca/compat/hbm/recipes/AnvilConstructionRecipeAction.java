@@ -8,11 +8,10 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.hbm.inventory.AnvilRecipes;
 import com.hbm.inventory.RecipesCommon;
+import com.hbm.inventory.recipes.anvil.AnvilRecipes;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeAction;
 import thelm.jaopca.compat.hbm.HBMHelper;
 import thelm.jaopca.utils.MiscHelper;
@@ -21,12 +20,12 @@ public class AnvilConstructionRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final String key;
 	public final Object[] input;
 	public final Object[] output;
 	public final int tier;
 
-	public AnvilConstructionRecipeAction(ResourceLocation key, Object[] input, Object[] output, int tier) {
+	public AnvilConstructionRecipeAction(String key, Object[] input, Object[] output, int tier) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
@@ -45,6 +44,7 @@ public class AnvilConstructionRecipeAction implements IRecipeAction {
 				count = (Integer)output[i];
 				++i;
 			}
+			List<RecipesCommon.AStack> list = new ArrayList<>();
 			RecipesCommon.AStack ing = HBMHelper.INSTANCE.getAStack(in, count);
 			if(ing == null) {
 				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
@@ -69,8 +69,8 @@ public class AnvilConstructionRecipeAction implements IRecipeAction {
 				chance = (Float)output[i];
 				++i;
 			}
-			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
-			if(stack.isEmpty()) {
+			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count, false);
+			if(stack == null) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 				continue;
 			}

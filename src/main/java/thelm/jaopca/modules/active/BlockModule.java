@@ -2,11 +2,8 @@ package thelm.jaopca.modules.active;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.forms.IForm;
@@ -40,9 +37,9 @@ public class BlockModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : storageBlockForm.getMaterials()) {
+			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 			IBlockInfo storageBlockInfo = BlockFormType.INSTANCE.getMaterialFormInfo(storageBlockForm, material);
 			String storageBlockOredict = miscHelper.getOredictName("block", material.getName());
-			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 			if(material.isSmallStorageBlock()) {
 				api.registerShapedRecipe(
 						miscHelper.getRecipeKey("block.to_block", material.getName()),
@@ -68,12 +65,5 @@ public class BlockModule implements IModule {
 							storageBlockOredict,
 					});
 		}
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("block", "block");
-		return builder.build();
 	}
 }

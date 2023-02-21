@@ -1,20 +1,16 @@
 package thelm.jaopca.recipes;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.base.Strings;
-
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import thelm.jaopca.api.recipes.IRecipeAction;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -22,19 +18,13 @@ public class ShapedRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
-	public final String group;
+	public final String key;
 	public final Object output;
 	public final int count;
 	public final Object[] input;
 
-	public ShapedRecipeAction(ResourceLocation key, Object output, int count, Object... input) {
-		this(key, "", output, count, input);
-	}
-
-	public ShapedRecipeAction(ResourceLocation key, String group, Object output, int count, Object... input) {
+	public ShapedRecipeAction(String key, Object output, int count, Object... input) {
 		this.key = Objects.requireNonNull(key);
-		this.group = Strings.nullToEmpty(group);
 		this.output = output;
 		this.count = count;
 		this.input = Objects.requireNonNull(input);
@@ -42,59 +32,45 @@ public class ShapedRecipeAction implements IRecipeAction {
 
 	@Override
 	public boolean register() {
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
-		if(stack.isEmpty()) {
+		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count, false);
+		if(stack == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		int width = 0, height = 0;
-		String shape = "";
 		int idx = 0;
 		if(input[idx] instanceof String[]) {
-			String[] parts = ((String[])input[idx++]);
-			for(String s : parts) {
-				width = s.length();
-				shape += s;
-			}
-			height = parts.length;
+			idx++;
 		}
 		else {
 			while(input[idx] instanceof String) {
-				String s = (String)input[idx++];
-				shape += s;
-				width = s.length();
-				height++;
+				idx++;
 			}
 		}
-		if(width * height != shape.length() || shape.length() == 0) {
-			throw new IllegalArgumentException("Invalid shape in recipe "+key+": "+shape+","+width+"x"+height);
-		}
-		Map<Character, Ingredient> itemMap = new HashMap<>();
-		itemMap.put(' ', Ingredient.EMPTY);
+		int end = idx;
+		List<Character> keys = new ArrayList<>();
+		List<List<?>> inputList = new ArrayList<>();
 		for(; idx < input.length; idx += 2)  {
-			Character chr = (Character)input[idx];
+			keys.add((Character)input[idx]);
 			Object in = input[idx+1];
-			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
-			if(itemMap.containsKey(chr)) {
-				throw new IllegalArgumentException("Invalid key entry in recipe "+key+": Symbol '"+chr+"' is defined twice");
+			if(in instanceof String) {
+				inputList.add(Collections.singletonList(in));
+				continue;
 			}
-			if(' ' == chr.charValue()) {
-				throw new IllegalArgumentException("Invalid key entry in recipe "+key+": Symbol ' ' is reserved");
-			}
-			if(ing == null) {
+			List<ItemStack> ing = MiscHelper.INSTANCE.getItemStacks(in, 1, true);
+			if(ing.isEmpty()) {
 				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
-			itemMap.put(chr, ing);
-		}
-		NonNullList<Ingredient> inputList = NonNullList.withSize(width * height, Ingredient.EMPTY);
-		int x = 0;
-		for(char chr : shape.toCharArray()) {
-			Ingredient ing = itemMap.get(chr);
-			if(ing == null) {
-				throw new IllegalArgumentException("Pattern in recipe "+key+" references symbol '"+chr+"' but it's not defined in the key");
+			else {
+				inputList.add(ing);
 			}
-			inputList.set(x++, ing);
 		}
-		ForgeRegistries.RECIPES.register(new ShapedRecipes(group, width, height, inputList, stack).setRegistryName(key));
+		for(List<?> ins : MiscHelper.INSTANCE.guavaCartesianProduct(inputList)) {
+			Object[] newInput = input.clone();
+			for(int i = 0; i < keys.size(); ++i) {
+				newInput[end+i*2] = keys.get(i);
+				newInput[end+i*2+1] = ins.get(i);
+			}
+			CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(stack, newInput));
+		}
 		return true;
 	}
 }

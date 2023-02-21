@@ -9,7 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import net.minecraft.item.EnumRarity;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.AxisAlignedBB;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.blocks.BlockFormType;
@@ -139,13 +139,6 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 		if(json.has("rarity")) {
 			EnumRarity rarity = helper.deserializeType(json, "rarity", context, EnumRarity.class);
 			settings.setDisplayRarityFunction(m->rarity);
-		}
-		if(json.has("burnTime")) {
-			JsonObject functionJson = helper.getJsonObject(json, "burnTime");
-			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", -1);
-			}
-			settings.setBurnTimeFunction(helper.deserializeType(json, "burnTime", context, FormTypeHandler.INT_FUNCTION_TYPE));
 		}
 		return settings;
 	}

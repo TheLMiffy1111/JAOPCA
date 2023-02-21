@@ -6,14 +6,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.ImmutableSortedSet;
-import com.google.common.collect.Ordering;
 
-import it.unimi.dsi.fastutil.objects.Object2BooleanRBTreeMap;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
@@ -27,7 +26,7 @@ public class ModuleData implements IModuleData {
 	private IDynamicSpecConfig config = null;
 	private final TreeSet<String> configMaterialBlacklist = new TreeSet<>();
 	private final TreeSet<String> configPassiveMaterialWhitelist = new TreeSet<>();
-	private final Object2BooleanRBTreeMap<IMaterial> dependencyValidMaterials = new Object2BooleanRBTreeMap<>();
+	private final TreeMap<IMaterial, Boolean> dependencyValidMaterials = new TreeMap<>();
 	private final TreeSet<IMaterial> rejectedMaterials = new TreeSet<>();
 	private final TreeSet<IMaterial> requestedMaterials = new TreeSet<>();
 	private final TreeSet<IMaterial> materials = new TreeSet<>();
@@ -51,7 +50,9 @@ public class ModuleData implements IModuleData {
 		if(module.isPassive()) {
 			return Collections.unmodifiableNavigableSet(configPassiveMaterialWhitelist);
 		}
-		return MaterialHandler.getMaterials().stream().map(IMaterial::getName).collect(ImmutableSortedSet.toImmutableSortedSet(Ordering.natural()));
+		ImmutableSortedSet.Builder<String> builder = ImmutableSortedSet.naturalOrder();
+		MaterialHandler.getMaterials().stream().map(IMaterial::getName).forEach(builder::add);
+		return builder.build();
 	}
 
 	@Override

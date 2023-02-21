@@ -2,9 +2,6 @@ package thelm.jaopca.modules.passive;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
 
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -61,12 +58,5 @@ public class StickModule implements IModule {
 				api.registerOredict(miscHelper.getOredictName("rod", material.getName()), stickInfo.asItem());
 			}
 		}
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("stick", "stick");
-		return builder.build();
 	}
 }

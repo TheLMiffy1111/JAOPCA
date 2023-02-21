@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -13,16 +14,11 @@ import java.util.function.Predicate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
 
+import cpw.mods.fml.common.discovery.ASMDataTable;
+import cpw.mods.fml.common.discovery.ASMDataTable.ASMData;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.discovery.ASMDataTable;
-import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
-import net.minecraftforge.fml.common.versioning.ArtifactVersion;
-import net.minecraftforge.fml.common.versioning.InvalidVersionSpecificationException;
-import net.minecraftforge.fml.common.versioning.VersionRange;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.oredict.IOredictModule;
 import thelm.jaopca.api.oredict.JAOPCAOredictModule;
@@ -48,7 +44,7 @@ public class OredictHandler {
 		if(!initialized) {
 			initialize();
 		}
-		OREDICT_NAMES.add(event.getName());
+		OREDICT_NAMES.add(event.Name);
 	}
 
 	public static Set<String> getOredict() {
@@ -69,7 +65,7 @@ public class OredictHandler {
 		for(ASMData aData : annotationData) {
 			List<String> deps = (List<String>)aData.getAnnotationInfo().get("modDependencies");
 			String className = aData.getClassName();
-			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
+			if(deps != null && deps.stream().filter(Objects::nonNull).anyMatch(modVersionNotLoaded)) {
 				LOGGER.info("Oredict module {} has missing mod dependencies, skipping", className);
 				continue;
 			}
@@ -113,7 +109,7 @@ public class OredictHandler {
 					continue;
 				}
 				ItemStack stack = MiscHelper.INSTANCE.parseMetaItem(split.get(0));
-				if(stack.isEmpty()) {
+				if(stack == null || stack.getItem() == null) {
 					LOGGER.warn("Custom oredict entry [{}] has empty item", entry);
 					continue;
 				}

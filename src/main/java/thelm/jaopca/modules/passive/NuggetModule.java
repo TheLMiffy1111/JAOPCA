@@ -2,11 +2,8 @@ package thelm.jaopca.modules.passive;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -51,24 +48,17 @@ public class NuggetModule implements IModule {
 			String nuggetOredict = miscHelper.getOredictName("nugget", material.getName());
 			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 			api.registerShapelessRecipe(
+					miscHelper.getRecipeKey("nugget.to_nugget", material.getName()),
+					nuggetInfo, 9, new Object[] {
+							materialOredict,
+					});
+			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("nugget.to_material", material.getName()),
 					materialOredict, 1, new Object[] {
 							nuggetOredict, nuggetOredict, nuggetOredict,
 							nuggetOredict, nuggetOredict, nuggetOredict,
 							nuggetOredict, nuggetOredict, nuggetOredict,
 					});
-			api.registerShapelessRecipe(
-					miscHelper.getRecipeKey("nugget.to_nugget", material.getName()),
-					nuggetInfo, 9, new Object[] {
-							materialOredict,
-					});
 		}
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("nugget", "nugget");
-		return builder.build();
 	}
 }

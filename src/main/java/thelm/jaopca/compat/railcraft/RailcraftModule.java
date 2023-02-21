@@ -8,8 +8,8 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -20,13 +20,13 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "railcraft")
+@JAOPCAModule(modDependencies = "Railcraft")
 public class RailcraftModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>();
 
 	static {
-		if(Loader.isModLoaded("ic2")) {
+		if(Loader.isModLoaded("IC2")) {
 			Collections.addAll(BLACKLIST, "Copper", "Gold", "Iron", "Lead", "Tin", "Silver", "Uranium");
 		}
 	}

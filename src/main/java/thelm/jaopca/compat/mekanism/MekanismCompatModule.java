@@ -10,10 +10,9 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraft.item.Item;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -25,37 +24,27 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism")
+@JAOPCAModule(modDependencies = "Mekanism")
 public class MekanismCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Aluminium", "Aluminum", "Amber", "Charcoal", "Coal", "Copper", "Diamond", "Draconium", "Emerald",
-			"Gold", "Iridium", "Iron", "Lapis", "Lead", "Malachite", "Mithril", "Nickel", "Osmium", "Peridot",
-			"Platinum", "Quartz", "Redstone", "RefinedGlowstone", "RefinedObsidian", "Ruby", "Sapphire", "Silver",
-			"Steel", "Tanzanite", "Tin", "Topaz", "Uranium"));
+			"Aluminium", "Aluminum", "Bronze", "CertusQuartz", "Charcoal", "Coal", "Copper", "Diamond", "Fluix",
+			"Gold", "Iron", "Lapis", "Lead", "NaturalAluminum", "NetherQuartz", "Nickel", "Osmium", "Quartz",
+			"RefinedGlowstone", "RefinedObsidian", "Silver", "Steel", "Tin", "Yellorite", "Yellorium"));
 	private static final Set<String> TO_CRYSTAL_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Amber", "Charcoal", "Coal", "Diamond", "Emerald", "Lapis", "Malachite", "Peridot", "Quartz",
-			"Ruby", "Sapphire", "Tanzanite", "Topaz"));
+			"CertusQuartz", "Diamond", "Fluix", "NetherQuartz", "Quartz"));
 	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Aluminium", "Aluminum", "Amber", "Amethyst", "Apatite", "Coal", "Copper", "Diamond", "Draconium",
-			"Emerald", "Gold", "Iridium", "Iron", "Lapis", "Lead", "Malachite", "Mithril", "Nickel", "Osmium",
-			"Peridot", "Platinum", "Quartz", "Redstone", "Ruby", "Sapphire", "Silver", "Steel", "Tanzanite",
-			"Tin", "Topaz", "Uranium"));
+			"Aluminium", "Aluminum", "Copper", "Gold", "Iron", "Lapis", "Lead", "NaturalAluminum", "Nickel",
+			"Osmium", "Redstone", "Silver", "Tin"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToCrystalBlacklist = new TreeSet<>();
 	private static Set<String> configToOreBlacklist = new TreeSet<>();
 
 	static {
-		if(Loader.isModLoaded("appliedenergistics2")) {
-			Collections.addAll(TO_DUST_BLACKLIST, "CertusQuartz", "ChargedCertusQuartz", "Fluix");
-			Collections.addAll(TO_CRYSTAL_BLACKLIST, "CertusQuartz", "Fluix");
-		}
-		if(Loader.isModLoaded("metallurgy")) {
+		if(Loader.isModLoaded("Metallurgy")) {
 			Collections.addAll(TO_DUST_BLACKLIST, MekanismModule.METALLURGY_LIST);
 			Collections.addAll(TO_ORE_BLACKLIST, MekanismModule.METALLURGY_LIST);
-		}
-		if(Loader.isModLoaded("mysticalagriculture")) {
-			Collections.addAll(TO_ORE_BLACKLIST, "Inferium", "Prosperity");
+			Collections.addAll(TO_ORE_BLACKLIST, MekanismNonIngotModule.METALLURGY_LIST);
 		}
 	}
 
@@ -86,11 +75,6 @@ public class MekanismCompatModule implements IModule {
 				config.getDefinedStringList("recipes.toOreMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have combining to ore recipes added."),
 				configToOreBlacklist);
-	}
-
-	@Override
-	public void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {
-		this.configs = configs;
 	}
 
 	@Override
@@ -127,13 +111,9 @@ public class MekanismCompatModule implements IModule {
 					ingOredict = miscHelper.getOredictName(type.getFormName(), name);
 				}
 				if(oredict.contains(ingOredict)) {
-					IDynamicSpecConfig config = configs.get(material);
-					String configOreBase = config.getDefinedString("mekanism.oreBase", "minecraft:cobblestone",
-							this::isOredictOrItemValid, "The default base to use in Mekanism's Combiner to recreate ores.");
-					Object oreBase = getOredictOrItem(configOreBase);
 					helper.registerCombinerRecipe(
 							miscHelper.getRecipeKey("mekanism.material_to_ore", name),
-							ingOredict, type.isCrystalline() ? 5 : 8, oreBase, 1, oreOredict, 1);
+							ingOredict, type.isCrystalline() ? 5 : 8, oreOredict, 1);
 				}
 			}
 		}
@@ -144,7 +124,7 @@ public class MekanismCompatModule implements IModule {
 			return ApiImpl.INSTANCE.getOredict().contains(s.substring(1));
 		}
 		else {
-			return ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s.split("@(?=\\d*$)")[0]));
+			return Item.itemRegistry.containsKey(s.split("@(?=\\d*$)")[0]);
 		}
 	}
 

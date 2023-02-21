@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Predicate;
@@ -14,12 +15,11 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.base.Predicates;
-
-import net.minecraftforge.fml.common.discovery.ASMDataTable;
-import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.discovery.ASMDataTable;
+import cpw.mods.fml.common.discovery.ASMDataTable.ASMData;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.JAOPCAModule;
@@ -63,11 +63,11 @@ public class ModuleHandler {
 	public static void findModules(ASMDataTable asmDataTable) {
 		MODULES.clear();
 		Set<ASMData> annotationData = asmDataTable.getAll(JAOPCA_MODULE);
+		Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
 		for(ASMData aData : annotationData) {
 			List<String> deps = (List<String>)aData.getAnnotationInfo().get("modDependencies");
-			Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
 			String className = aData.getClassName();
-			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
+			if(deps != null && deps.stream().filter(Objects::nonNull).anyMatch(modVersionNotLoaded)) {
 				LOGGER.info("Module {} has missing mod dependencies, skipping", className);
 				continue;
 			}
@@ -133,6 +133,12 @@ public class ModuleHandler {
 	public static void onPostInit(FMLPostInitializationEvent event) {
 		for(IModule module : getModules()) {
 			module.onPostInit(getModuleData(module), event);
+		}
+	}
+
+	public static void onLoadComplete(FMLLoadCompleteEvent event) {
+		for(IModule module : getModules()) {
+			module.onLoadComplete(getModuleData(module), event);
 		}
 	}
 }

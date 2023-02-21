@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.StatCollector;
 import thelm.jaopca.api.localization.ILocalizer;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
@@ -18,27 +18,32 @@ public class LocalizerDefault implements ILocalizer {
 	public static final LocalizerDefault INSTANCE = new LocalizerDefault();
 
 	@Override
+	public String localizeMaterial(IMaterial material) {
+		Map<String, String> locMap = ApiImpl.INSTANCE.currentMaterialLocalizationMap();
+		String materialKey = "jaopca.material."+material.getName();
+		if(StatCollector.canTranslate(materialKey)) {
+			return StatCollector.translateToLocal(materialKey);
+		}
+		else if(locMap.containsKey(materialKey)) {
+			return locMap.get(materialKey);
+		}
+		else {
+			return splitAndCapitalize(material.getName());
+		}
+	}
+
+	@Override
 	public String localizeMaterialForm(String formTranslationKey, IMaterial material, String overrideKey) {
 		Map<String, String> locMap = ApiImpl.INSTANCE.currentMaterialLocalizationMap();
-		if(I18n.canTranslate(overrideKey)) {
-			return I18n.translateToLocal(overrideKey);
+		if(StatCollector.canTranslate(overrideKey)) {
+			return StatCollector.translateToLocal(overrideKey);
 		}
 		else if(locMap.containsKey(overrideKey)) {
 			return locMap.get(overrideKey);
 		}
-		String materialName;
-		String materialKey = "jaopca.material."+material.getName();
-		if(I18n.canTranslate(materialKey)) {
-			materialName = I18n.translateToLocal(materialKey);
-		}
-		else if(locMap.containsKey(materialKey)) {
-			materialName = locMap.get(materialKey);
-		}
-		else {
-			materialName = splitAndCapitalize(material.getName());
-		}
-		if(I18n.canTranslate(formTranslationKey) || !locMap.containsKey(formTranslationKey)) {
-			return I18n.translateToLocalFormatted(formTranslationKey, materialName);
+		String materialName = localizeMaterial(material);
+		if(StatCollector.canTranslate(formTranslationKey) || !locMap.containsKey(formTranslationKey)) {
+			return StatCollector.translateToLocalFormatted(formTranslationKey, materialName);
 		}
 		else {
 			return String.format(locMap.get(overrideKey), materialName);

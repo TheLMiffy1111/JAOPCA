@@ -2,6 +2,7 @@ package thelm.jaopca.custom.json;
 
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.ToLongFunction;
 
 import com.google.gson.JsonDeserializationContext;
@@ -10,8 +11,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import it.unimi.dsi.fastutil.objects.Object2LongMap;
-import it.unimi.dsi.fastutil.objects.Object2LongRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.CustomModule;
@@ -29,8 +28,7 @@ public class MaterialLongFunctionDeserializer implements JsonDeserializer<ToLong
 		IJsonHelper helper = JsonHelper.INSTANCE;
 		JsonObject json = helper.getJsonObject(jsonElement, "object");
 		long defaultValue = helper.getLong(json, "default");
-		Object2LongMap<IMaterial> map = new Object2LongRBTreeMap<>();
-		map.defaultReturnValue(defaultValue);
+		Map<IMaterial, Long> map = new TreeMap<>();
 		if(json.has("materialTypes")) {
 			JsonObject materialTypesJson = helper.getJsonObject(json, "materialTypes");
 			for(Map.Entry<String, JsonElement> entry : materialTypesJson.entrySet()) {
@@ -78,10 +76,10 @@ public class MaterialLongFunctionDeserializer implements JsonDeserializer<ToLong
 					comment = "";
 				}
 				CustomModule.instance.addCustomConfigDefiner((material, config)->{
-					map.put(material, config.getDefinedLong(path, map.getLong(material), comment));
+					map.put(material, config.getDefinedLong(path, map.getOrDefault(material, defaultValue), comment));
 				});
 			}
 		}
-		return material->map.getLong(material);
+		return material->map.getOrDefault(material, defaultValue);
 	}
 }

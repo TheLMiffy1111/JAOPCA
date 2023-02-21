@@ -6,21 +6,19 @@ item.jaopca.nugget=Pepita de %s
 item.jaopca.tiny_dust=Pequena Pilha de Pó de %s
 item.jaopca.small_dust=Um Pouco de Pó de %s
 fluid.jaopca.molten=%s Derretido
+item.jaopca.molten=Balde de %s Derretido
 item.jaopca.coin=Moeda de %s
 item.jaopca.gear=Engrenagem de %s
 item.jaopca.plate=Placa de %s
 item.jaopca.stick=Graveto de %s
 item.jaopca.dense_plate=Placa Densa de %s
 
-item.jaopca.abyssalcraft_crystal_fragment=Fragmento Cristalizado de %s
 item.jaopca.abyssalcraft_crystal_shard=Estilhaço Cristalizado de %s
 item.jaopca.abyssalcraft_crystal=%s Cristalizado
-block.jaopca.abyssalcraft_crystal_cluster=Aglomerado Cristalizado de %s
 
 item.jaopca.ic2_crushed=Minério de %s Triturado
 item.jaopca.ic2_purified_crushed=Minério Purificado de %s Triturado
 
-item.jaopca.magneticraft_rocky_chunk=Fragmento Rochoso de %s 
 item.jaopca.magneticraft_chunk=Fragmento de %s
 
 item.jaopca.mekanism_dirty_dust=Pó de %s Sujo
@@ -29,8 +27,5 @@ item.jaopca.mekanism_shard=Estilhaço de %s
 item.jaopca.mekanism_crystal=Cristal de %s
 gas.jaopca.mekanism_clean_slurry=Polpa de %s Pura
 gas.jaopca.mekanism_slurry=Polpa de %s
-
-item.jaopca.teslathingies_tesla_lump=Pedaço de %s Teslified
-item.jaopca.teslathingies_augmented_lump=Pedaço Grande de %s
 
 item.jaopca.thaumcraft_cluster=Aglomerado Nativo de %s

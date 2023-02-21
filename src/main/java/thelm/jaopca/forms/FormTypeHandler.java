@@ -9,7 +9,6 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 
-import com.google.common.base.Functions;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
@@ -61,8 +60,7 @@ public class FormTypeHandler {
 				registerTypeAdapter(INT_FUNCTION_TYPE, MaterialIntFunctionDeserializer.INSTANCE).
 				registerTypeAdapter(LONG_FUNCTION_TYPE, MaterialLongFunctionDeserializer.INSTANCE).
 				registerTypeAdapter(DOUBLE_FUNCTION_TYPE, MaterialDoubleFunctionDeserializer.INSTANCE).
-				registerTypeAdapter(STRING_FUNCTION_TYPE,
-						new MaterialMappedFunctionDeserializer<>(Functions.identity(), Functions.identity()));
+				registerTypeAdapter(STRING_FUNCTION_TYPE, new MaterialMappedFunctionDeserializer<>(s->s, s->s));
 		for(IFormType formType : FORM_TYPES.values()) {
 			builder = formType.configureGsonBuilder(builder);
 		}

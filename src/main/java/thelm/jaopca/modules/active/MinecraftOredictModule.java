@@ -1,6 +1,7 @@
 package thelm.jaopca.modules.active;
 
 import net.minecraft.init.Items;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.oredict.IOredictModule;
 import thelm.jaopca.api.oredict.JAOPCAOredictModule;
 import thelm.jaopca.utils.ApiImpl;
@@ -15,6 +16,7 @@ public class MinecraftOredictModule implements IOredictModule {
 
 	@Override
 	public void register() {
-		ApiImpl.INSTANCE.registerOredict("crystalCoal", Items.COAL);
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		api.registerOredict("crystalCoal", Items.coal);
 	}
 }

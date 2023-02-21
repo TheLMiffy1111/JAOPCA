@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/ic2_purified_crushed",
-        "layer1": "jaopca:item/metallic/ic2_purified_crushed_overlay"
-    }
-}

@@ -2,14 +2,12 @@ package thelm.jaopca.api.fluids;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.util.SoundEvent;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
 
@@ -18,14 +16,6 @@ public interface IFluidFormSettings extends IFormSettings {
 	IFluidFormSettings setFluidCreator(IFluidCreator fluidCreator);
 
 	IFluidCreator getFluidCreator();
-
-	IFluidFormSettings setFillSoundSupplier(Supplier<SoundEvent> fillSoundSupplier);
-
-	Supplier<SoundEvent> getFillSoundSupplier();
-
-	IFluidFormSettings setEmptySoundSupplier(Supplier<SoundEvent> emptySoundSupplier);
-
-	Supplier<SoundEvent> getEmptySoundSupplier();
 
 	IFluidFormSettings setLuminosityFunction(ToIntFunction<IMaterial> luminosityFunction);
 
@@ -91,7 +81,15 @@ public interface IFluidFormSettings extends IFormSettings {
 
 	Predicate<IMaterial> getIsFireSourceFunction();
 
-	IFluidFormSettings setFluidBlockModelMapCreator(IFluidBlockModelMapCreator fluidBlockModelMapCreator);
+	IFluidFormSettings setBucketItemCreator(IBucketItemCreator bucketItemCreator);
 
-	IFluidBlockModelMapCreator getFluidBlockModelMapCreator();
+	IBucketItemCreator getBucketItemCreator();
+
+	IFluidFormSettings setItemStackLimitFunction(ToIntFunction<IMaterial> itemStackLimitFunction);
+
+	ToIntFunction<IMaterial> getItemStackLimitFunction();
+
+	IFluidFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction);
+
+	Predicate<IMaterial> getHasEffectFunction();
 }

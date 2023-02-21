@@ -3,15 +3,22 @@ package thelm.jaopca.items;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.IItemRenderer;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.client.renderer.JAOPCAItemRenderer;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class JAOPCAItem extends Item implements IMaterialFormItem {
 
@@ -37,7 +44,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	}
 
 	@Override
-	public IMaterial getMaterial() {
+	public IMaterial getIMaterial() {
 		return material;
 	}
 
@@ -49,6 +56,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 		return itemStackLimit.getAsInt();
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean hasEffect(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
@@ -66,29 +74,64 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	}
 
 	@Override
-	public int getItemBurnTime(ItemStack itemStack) {
-		if(!burnTime.isPresent()) {
-			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(material));
-		}
-		return burnTime.getAsInt();
-	}
-
-	@Override
-	public String getTranslationKey() {
+	public String getUnlocalizedName() {
 		if(!translationKey.isPresent()) {
-			ResourceLocation id = getRegistryName();
-			translationKey = Optional.of("item."+id.getNamespace()+"."+id.getPath().replace('/', '.'));
+			String name = itemRegistry.getNameForObject(this);
+			translationKey = Optional.of("item."+name.replaceFirst(":", ".").replace('/', '.'));
 		}
 		return translationKey.get();
 	}
 
 	@Override
-	public String getTranslationKey(ItemStack stack) {
-		return getTranslationKey();
+	public String getUnlocalizedName(ItemStack stack) {
+		return getUnlocalizedName();
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+getForm().getName(), getMaterial(), getTranslationKey(stack));
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+getForm().getName(), getIMaterial(), getUnlocalizedName(stack));
+	}
+
+	@Override
+	public IItemRenderer getRenderer() {
+		return JAOPCAItemRenderer.INSTANCE;
+	}
+
+	@SideOnly(Side.CLIENT)
+	protected IIcon overlayIcon = null;
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerIcons(IIconRegister iconRegister) {
+		if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/items/"+form.getName()+'.'+material.getName()+".png"))) {
+			itemIcon = iconRegister.registerIcon("jaopca:"+form.getName()+'.'+material.getName());
+		}
+		else {
+			itemIcon = iconRegister.registerIcon("jaopca:"+material.getModelType()+'/'+form.getName());
+		}
+		if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/items/"+form.getName()+'.'+material.getName()+"_overlay.png"))) {
+			overlayIcon = iconRegister.registerIcon("jaopca:"+form.getName()+'.'+material.getName());
+		}
+		else if(MiscHelper.INSTANCE.hasResource(new ResourceLocation("jaopca", "textures/items/"+material.getModelType()+'/'+form.getName()+"_overlay.png"))) {
+			overlayIcon = iconRegister.registerIcon("jaopca:"+material.getModelType()+'/'+form.getName()+"_overlay");
+		}
+		else {
+			overlayIcon = null;
+		}
+	}
+
+	@Override
+	public boolean requiresMultipleRenderPasses() {
+		return overlayIcon != null;
+	}
+
+	@Override
+	public IIcon getIconFromDamageForRenderPass(int meta, int pass) {
+		return pass == 0 ? itemIcon : overlayIcon;
+	}
+
+	@Override
+	public int getColorFromItemStack(ItemStack stack, int pass) {
+		return pass == 0 ? material.getColor() : 0xFFFFFF;
 	}
 }

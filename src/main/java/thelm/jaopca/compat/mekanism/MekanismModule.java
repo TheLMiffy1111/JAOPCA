@@ -4,17 +4,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import mekanism.common.MekanismFluids;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -33,25 +30,25 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism")
+@JAOPCAModule(modDependencies = "Mekanism")
 public class MekanismModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Copper", "Gold", "Iron", "Lead", "Osmium", "Silver", "Tin"));
 	private static final Set<String> MODULE_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Aluminium", "Aluminum", "Copper", "Draconium", "Gold", "Iridium", "Iron", "Lead",
-			"Mithril", "Nickel", "Osmium", "Silver", "Tin", "Uranium", "Yellorium"));
+			"Aluminium", "Aluminum", "Copper", "Gold", "Iron", "Lead", "NaturalAluminum", "Nickel", "Osmium",
+			"Silver", "Tin", "Yellorite", "Yellorium"));
 	static final String[] METALLURGY_LIST = {
 			"Adamantine", "Alduorite", "Amordrine", "Angmallen", "AstralSilver", "Atlarus", "BlackSteel",
-			"Brass", "Bronze", "Carmot", "Celenegil", "Ceruclase", "DamascusSteel", "DeepIron",
+			"Brass", "Bronze", "Carmot", "Celenegil", "Ceruclase", "Copper", "DamascusSteel", "DeepIron",
 			"Desichalkos", "Electrum", "Eximite", "Haderoth", "Hepatizon", "Ignatius", "Infuscolium",
-			"Inolashite", "Kalendrite", "Lemurite", "Lutetium", "Manganese", "Meutoite", "Midasium",
-			"Orichalcum", "Oureclase", "Prometheum", "Quicksilver", "Rubracium", "Sanguinite",
-			"ShadowIron", "ShadowSteel", "Tartarite", "Vulcanite", "Vyroxeres", "Zinc",
+			"Inolashite", "Kalendrite", "Lemurite", "Manganese", "Meutoite", "Midasium", "Mithril", "Orichalcum",
+			"Oureclase", "Platinum", "Prometheum", "Quicksilver", "Rubracium", "Sanguinite", "ShadowIron",
+			"ShadowSteel", "Silver", "Steel", "Tartarite", "Tin", "Vulcanite", "Vyroxeres", "Zinc",
 	};
 
 	static {
-		if(Loader.isModLoaded("metallurgy")) {
+		if(Loader.isModLoaded("Metallurgy")) {
 			Collections.addAll(MODULE_BLACKLIST, METALLURGY_LIST);
 		}
 	}
@@ -111,7 +108,7 @@ public class MekanismModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		IGasFormType gasFormType = GasFormType.INSTANCE;
-		for(IMaterial material : dirtySlurryForm.getMaterials()) {
+		for(IMaterial material : formRequest.getMaterials()) {
 			IGasInfo dirtySlurryInfo = gasFormType.getMaterialFormInfo(dirtySlurryForm, material);
 			String dirtySlurryName = miscHelper.getFluidName("slurry", material.getName());
 			IGasInfo cleanSlurryInfo = gasFormType.getMaterialFormInfo(cleanSlurryForm, material);
@@ -141,18 +138,18 @@ public class MekanismModule implements IModule {
 
 			helper.registerChemicalInjectionChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.ore_to_shard", material.getName()),
-					oreOredict, 1, MekanismFluids.HydrogenChloride, shardInfo, 4);
+					oreOredict, 1, "hydrogenChloride", shardInfo, 4);
 			helper.registerChemicalInjectionChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.crystal_to_shard", material.getName()),
-					crystalOredict, 1, MekanismFluids.HydrogenChloride, shardInfo, 1);
+					crystalOredict, 1, "hydrogenChloride", shardInfo, 1);
 
 			helper.registerPurificationChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.ore_to_clump", material.getName()),
 					oreOredict, 1, clumpInfo, 3);
 			helper.registerPurificationChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.shard_to_clump", material.getName()),
-
 					shardOredict, 1, clumpInfo, 1);
+
 			helper.registerCrusherRecipe(
 					miscHelper.getRecipeKey("mekanism.clump_to_dirty_dust", material.getName()),
 					clumpOredict, 1, dirtyDustInfo, 1);
@@ -168,17 +165,5 @@ public class MekanismModule implements IModule {
 					miscHelper.getRecipeKey("mekanism.ore_to_dust", material.getName()),
 					oreOredict, 1, dustOredict, 2);
 		}
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("dustdirty", "mekanism_dirty_dust");
-		builder.put("clump", "mekanism_clump");
-		builder.put("shard", "mekanism_shard");
-		builder.put("crystal", "mekanism_crystal");
-		builder.put("slurryclean", "mekanism_clean_slurry");
-		builder.put("slurry", "mekanism_slurry");
-		return builder.build();
 	}
 }

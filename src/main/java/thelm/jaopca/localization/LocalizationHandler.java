@@ -3,9 +3,9 @@ package thelm.jaopca.localization;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.Language;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import thelm.jaopca.api.localization.ILocalizer;
 import thelm.jaopca.utils.MiscHelper;
 

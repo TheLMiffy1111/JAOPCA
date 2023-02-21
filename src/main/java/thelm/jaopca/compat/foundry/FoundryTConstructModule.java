@@ -10,13 +10,14 @@ import java.util.function.ToIntFunction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import exter.foundry.api.FoundryAPI;
-import exter.foundry.fluid.LiquidMetalRegistry;
+import exter.foundry.registry.LiquidMetalRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import slimeknights.tconstruct.smeltery.TinkerSmeltery;
+import tconstruct.plugins.gears.TinkerGears;
+import tconstruct.smeltery.TinkerSmeltery;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -26,10 +27,11 @@ import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.compat.tconstruct.TConstructHelper;
+import thelm.jaopca.compat.tconstruct.TConstructModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = {"foundry@[3,)", "tconstruct"})
+@JAOPCAModule(modDependencies = {"foundry", "TConstruct"})
 public class FoundryTConstructModule implements IModule {
 
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -38,7 +40,6 @@ public class FoundryTConstructModule implements IModule {
 	private static Set<String> configToMaterialBlacklist = new TreeSet<>();
 	private static Set<String> configToBlockBlacklist = new TreeSet<>();
 	private static Set<String> configToNuggetBlacklist = new TreeSet<>();
-	private static Set<String> configToPlateBlacklist = new TreeSet<>();
 	private static Set<String> configToGearBlacklist = new TreeSet<>();
 
 	@Override
@@ -53,8 +54,8 @@ public class FoundryTConstructModule implements IModule {
 
 	@Override
 	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
-		BLACKLIST.addAll(LiquidMetalRegistry.INSTANCE.getFluidNames());
-		Collections.addAll(BLACKLIST, "Aluminum", "Constantan");
+		BLACKLIST.addAll(LiquidMetalRegistry.instance.GetFluidNames());
+		Collections.addAll(BLACKLIST, "Aluminium", "Chrome");
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.toMaterialMaterialBlacklist", new ArrayList<>(),
@@ -69,10 +70,6 @@ public class FoundryTConstructModule implements IModule {
 						helper.configMaterialPredicate(), "The materials that should not have nugget casting recipes added."),
 				configToNuggetBlacklist);
 		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.toPlateMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have plate casting recipes added."),
-				configToPlateBlacklist);
-		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.toGearMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have gear casting recipes added."),
 				configToGearBlacklist);
@@ -86,22 +83,22 @@ public class FoundryTConstructModule implements IModule {
 		Set<String> oredict = api.getOredict();
 		int baseAmount = FoundryAPI.FLUID_AMOUNT_INGOT;
 		ToIntFunction<FluidStack> tempFunction = stack->stack.getFluid().getTemperature(stack)-300;
-		ItemStack ingotCast = TinkerSmeltery.castIngot;
-		ItemStack nuggetCast = TinkerSmeltery.castNugget;
-		ItemStack plateCast = TinkerSmeltery.castPlate;
-		ItemStack gearCast = TinkerSmeltery.castGear;
+		ItemStack ingotCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 0);
+		ItemStack nuggetCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 27);
+		ItemStack gearCast = new ItemStack(TinkerGears.gearCast);
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(type.isIngot() && !BLACKLIST.contains(name)) {
 				String liquidName = miscHelper.getFluidName("foundry_liquid", name);
+				int baseTemp = TConstructModule.tempFunction.applyAsInt(material);
 				if(FluidRegistry.isFluidRegistered(liquidName)) {
 					if(!configToMaterialBlacklist.contains(name)) {
 						String materialOredict = miscHelper.getOredictName(type.getFormName(), name);
 						helper.registerTableCastingRecipe(
 								miscHelper.getRecipeKey("foundry_tconstruct.liquid_to_material", name),
 								ingotCast, liquidName, baseAmount, materialOredict,
-								tempFunction, false, false);
+								80, false);
 					}
 					if(!configToBlockBlacklist.contains(name)) {
 						String blockOredict = miscHelper.getOredictName("block", name);
@@ -109,7 +106,7 @@ public class FoundryTConstructModule implements IModule {
 							helper.registerBasinCastingRecipe(
 									miscHelper.getRecipeKey("foundry_tconstruct.liquid_to_block", name),
 									null, liquidName, baseAmount*(material.isSmallStorageBlock() ? 4 : 9), blockOredict,
-									tempFunction, false, false);
+									400, false);
 						}
 					}
 					if(!configToNuggetBlacklist.contains(name)) {
@@ -118,16 +115,7 @@ public class FoundryTConstructModule implements IModule {
 							helper.registerTableCastingRecipe(
 									miscHelper.getRecipeKey("foundry_tconstruct.liquid_to_nugget", name),
 									nuggetCast, liquidName, ceilDiv(baseAmount, 9), nuggetOredict,
-									tempFunction, false, false);
-						}
-					}
-					if(!configToPlateBlacklist.contains(name)) {
-						String plateOredict = miscHelper.getOredictName("plate", name);
-						if(oredict.contains(plateOredict)) {
-							helper.registerTableCastingRecipe(
-									miscHelper.getRecipeKey("foundry_tconstruct.liquid_to_plate", name),
-									plateCast, liquidName, baseAmount, plateOredict,
-									tempFunction, false, false);
+									40, false);
 						}
 					}
 					if(!configToGearBlacklist.contains(name)) {
@@ -136,7 +124,7 @@ public class FoundryTConstructModule implements IModule {
 							helper.registerTableCastingRecipe(
 									miscHelper.getRecipeKey("foundry_tconstruct.liquid_to_gear", name),
 									gearCast, liquidName, baseAmount*4, gearOredict,
-									tempFunction, false, false);
+									50, false);
 						}
 					}
 				}

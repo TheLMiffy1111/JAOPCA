@@ -8,8 +8,9 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.materials.IMaterial;
@@ -53,9 +54,7 @@ public interface IModule extends Comparable<IModule> {
 
 	default void onPostInit(IModuleData moduleData, FMLPostInitializationEvent event) {}
 
-	default Map<String, String> getLegacyRemaps() {
-		return Collections.emptyNavigableMap();
-	}
+	default void onLoadComplete(IModuleData moduleData, FMLLoadCompleteEvent event) {}
 
 	@Override
 	default int compareTo(IModule other) {

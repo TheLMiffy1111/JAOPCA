@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import appeng.core.AEConfig;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -37,7 +37,7 @@ public class AppliedEnergistics2CompatModule implements IModule {
 
 	@Override
 	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
-		Collections.addAll(TO_DUST_BLACKLIST, AEConfig.instance().getGrinderOres());
+		Collections.addAll(TO_DUST_BLACKLIST, AEConfig.instance.grinderOres);
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("recipes.toDustMaterialBlacklist", new ArrayList<>(),

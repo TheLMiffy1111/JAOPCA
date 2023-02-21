@@ -2,11 +2,8 @@ package thelm.jaopca.modules.active;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -49,12 +46,5 @@ public class DustModule implements IModule {
 						dustOredict, materialOredict, 1, 0.7F);
 			}
 		}
-	}
-
-	@Override
-	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
-		builder.put("dust", "dust");
-		return builder.build();
 	}
 }

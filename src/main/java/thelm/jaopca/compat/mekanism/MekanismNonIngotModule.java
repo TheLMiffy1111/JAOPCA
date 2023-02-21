@@ -6,8 +6,8 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -18,19 +18,18 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism")
+@JAOPCAModule(modDependencies = "Mekanism")
 public class MekanismNonIngotModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Amber", "Amethyst", "Apatite", "Coal", "Diamond", "Emerald", "Lapis", "Malachite", "Peridot",
-			"Quartz", "Redstone", "Ruby", "Sapphire", "Tanzanite", "Topaz"));
+			"CertusQuartz", "ChargedCertusQuartz", "Coal", "Diamond", "Lapis", "NetherQuartz", "Quartz", "Redstone"));
+	static final String[] METALLURGY_LIST = {
+			"Bitumen", "Magnesium", "Phosphorite", "Potash", "Saltpeter", "Sulfur",
+	};
 
 	static {
-		if(Loader.isModLoaded("appliedenergistics2")) {
-			Collections.addAll(BLACKLIST, "CertusQuartz", "ChargedCertusQuartz");
-		}
-		if(Loader.isModLoaded("mysticalagriculture")) {
-			Collections.addAll(BLACKLIST, "Inferium", "Prosperity");
+		if(Loader.isModLoaded("Metallurgy")) {
+			Collections.addAll(BLACKLIST, METALLURGY_LIST);
 		}
 	}
 

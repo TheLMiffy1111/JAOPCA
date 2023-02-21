@@ -11,7 +11,6 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.Recipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeAction;
 import thelm.jaopca.compat.ic2.IC2Helper;
 import thelm.jaopca.utils.MiscHelper;
@@ -20,13 +19,13 @@ public class OreWashingRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final String key;
 	public final Object input;
 	public final int inputCount;
 	public final int waterAmount;
 	public final Object[] output;
 
-	public OreWashingRecipeAction(ResourceLocation key, Object input, int inputCount, int waterAmount, Object... output) {
+	public OreWashingRecipeAction(String key, Object input, int inputCount, int waterAmount, Object... output) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.inputCount = inputCount;
@@ -50,8 +49,8 @@ public class OreWashingRecipeAction implements IRecipeAction {
 				count = (Integer)output[i];
 				++i;
 			}
-			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
-			if(stack.isEmpty()) {
+			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count, false);
+			if(stack == null) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 				continue;
 			}
@@ -59,6 +58,8 @@ public class OreWashingRecipeAction implements IRecipeAction {
 		}
 		NBTTagCompound metadata = new NBTTagCompound();
 		metadata.setInteger("amount", waterAmount);
-		return Recipes.oreWashing.addRecipe(ing, outputs, metadata, false);
+		ItemStack[] outs = outputs.toArray(new ItemStack[outputs.size()]);
+		Recipes.oreWashing.addRecipe(ing, metadata, outs);
+		return true;
 	}
 }

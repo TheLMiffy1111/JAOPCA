@@ -13,13 +13,12 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
@@ -48,7 +47,7 @@ public class BlockFormType implements IBlockFormType {
 	private static boolean registered = false;
 
 	public static final Type MATERIAL_FUNCTION_TYPE = new TypeToken<Function<IMaterial, Material>>(){}.getType();
-	public static final Type SOUND_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, SoundType>>(){}.getType();
+	public static final Type SOUND_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, Block.SoundType>>(){}.getType();
 
 	public static void init() {
 		FormTypeHandler.registerFormType(INSTANCE);
@@ -119,24 +118,23 @@ public class BlockFormType implements IBlockFormType {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
-				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+helper.toLowercaseUnderscore(material.getName()));
+				String registryName = form.getName()+'.'+helper.toLowercaseUnderscore(material.getName());
 
 				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
 				Block block = materialFormBlock.asBlock();
-				block.setRegistryName(registryName);
 				block.setCreativeTab(api.creativeTab());
 				BLOCKS.put(form, material, materialFormBlock);
-				ForgeRegistries.BLOCKS.register(block);
+				GameRegistry.registerBlock(block, null, registryName);
 
 				IMaterialFormBlockItem materialFormBlockItem = settings.getBlockItemCreator().create(materialFormBlock, settings);
 				ItemBlock blockItem = materialFormBlockItem.asBlockItem();
-				blockItem.setRegistryName(registryName);
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
-				ForgeRegistries.ITEMS.register(blockItem);
+				GameRegistry.registerItem(blockItem, registryName);
 
-				api.registerOredict(helper.getOredictName(secondaryName, material.getName()), blockItem);
+				ItemStack stack = new ItemStack(blockItem, 1);
+				api.registerOredict(helper.getOredictName(secondaryName, material.getName()), stack);
 				for(String alternativeName : material.getAlternativeNames()) {
-					api.registerOredict(helper.getOredictName(secondaryName, alternativeName), blockItem);
+					api.registerOredict(helper.getOredictName(secondaryName, alternativeName), stack);
 				}
 			}
 		}

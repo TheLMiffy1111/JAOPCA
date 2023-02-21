@@ -31,12 +31,6 @@ public class FluidFormSettingsDeserializer implements JsonDeserializer<IFluidFor
 		IJsonHelper helper = JsonHelper.INSTANCE;
 		JsonObject json = helper.getJsonObject(jsonElement, "settings");
 		IFluidFormSettings settings = FluidFormType.INSTANCE.getNewSettings();
-		if(json.has("fillSound")) {
-			settings.setFillSoundSupplier(helper.deserializeType(json, "fillSound", context, FluidFormType.SOUND_EVENT_SUPPLIER_TYPE));
-		}
-		if(json.has("emptySound")) {
-			settings.setFillSoundSupplier(helper.deserializeType(json, "emptySound", context, FluidFormType.SOUND_EVENT_SUPPLIER_TYPE));
-		}
 		if(json.has("luminosity")) {
 			JsonObject functionJson = helper.getJsonObject(json, "luminosity");
 			if(!functionJson.has("default")) {

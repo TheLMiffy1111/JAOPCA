@@ -10,25 +10,23 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.hbm.inventory.CentrifugeRecipes;
 import com.hbm.inventory.RecipesCommon;
+import com.hbm.inventory.recipes.CentrifugeRecipes;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeAction;
-import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.compat.hbm.HBMHelper;
 import thelm.jaopca.utils.MiscHelper;
 
 public class CentrifugeRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final String key;
 	public final Object input;
 	public final Object[] output;
 
-	public CentrifugeRecipeAction(ResourceLocation key, Object input, Object... output) {
+	public CentrifugeRecipeAction(String key, Object input, Object... output) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
@@ -36,21 +34,9 @@ public class CentrifugeRecipeAction implements IRecipeAction {
 
 	@Override
 	public boolean register() {
-		List<Object> ins = new ArrayList<>();
-		if(input instanceof String) {
-			if(!ApiImpl.INSTANCE.getOredict().contains(input)) {
-				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
-			}
-			ins.add(input);
-		}
-		else {
-			Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-			if(ing == null) {
-				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
-			}
-			for(ItemStack is : ing.getMatchingStacks()) {
-				ins.add(new RecipesCommon.ComparableStack(is).singulize());
-			}
+		RecipesCommon.AStack ing = HBMHelper.INSTANCE.getAStack(input, 1);
+		if(ing == null) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		List<ItemStack> outputs = new ArrayList<>();
 		int i = 0;
@@ -62,8 +48,8 @@ public class CentrifugeRecipeAction implements IRecipeAction {
 				count = (Integer)output[i];
 				++i;
 			}
-			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
-			if(stack.isEmpty()) {
+			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count, false);
+			if(stack == null) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 				continue;
 			}
@@ -77,14 +63,12 @@ public class CentrifugeRecipeAction implements IRecipeAction {
 			Field mapField = Arrays.stream(CentrifugeRecipes.class.getDeclaredFields()).
 					filter(f->Map.class.isAssignableFrom(f.getType())).findFirst().get();
 			mapField.setAccessible(true);
-			Map<Object, ItemStack[]> map = (Map<Object, ItemStack[]>)mapField.get(null);
-			for(Object in : ins) {
-				map.put(in, out);
-			}
+			Map<RecipesCommon.AStack, ItemStack[]> map = (Map<RecipesCommon.AStack, ItemStack[]>)mapField.get(null);
+			map.put(ing, out);
 			return true;
 		}
 		catch(Exception e) {
-			throw new IllegalStateException("Could not access centrifuge recipe map.");
+			throw new IllegalStateException("Could not access shredder recipe map.");
 		}
 	}
 }

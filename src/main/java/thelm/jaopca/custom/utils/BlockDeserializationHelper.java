@@ -4,7 +4,8 @@ import java.util.Locale;
 
 import com.google.common.collect.HashBiMap;
 
-import net.minecraft.block.SoundType;
+import net.minecraft.block.Block;
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.material.Material;
 
 public class BlockDeserializationHelper {
@@ -14,7 +15,7 @@ public class BlockDeserializationHelper {
 	private BlockDeserializationHelper() {}
 
 	private static final HashBiMap<String, Material> BLOCK_MATERIALS = HashBiMap.create();
-	private static final HashBiMap<String, SoundType> SOUND_TYPES = HashBiMap.create();
+	private static final HashBiMap<String, Block.SoundType> SOUND_TYPES = HashBiMap.create();
 
 	public Material getBlockMaterial(String name) {
 		return BLOCK_MATERIALS.get(name.toLowerCase(Locale.US));
@@ -41,54 +42,52 @@ public class BlockDeserializationHelper {
 	}
 
 	static {
-		INSTANCE.putBlockMaterial("air", Material.AIR);
-		INSTANCE.putBlockMaterial("grass", Material.GRASS);
-		INSTANCE.putBlockMaterial("ground", Material.GROUND);
-		INSTANCE.putBlockMaterial("wood", Material.WOOD);
-		INSTANCE.putBlockMaterial("rock", Material.ROCK);
-		INSTANCE.putBlockMaterial("iron", Material.IRON);
-		INSTANCE.putBlockMaterial("anvil", Material.ANVIL);
-		INSTANCE.putBlockMaterial("water", Material.WATER);
-		INSTANCE.putBlockMaterial("lava", Material.LAVA);
-		INSTANCE.putBlockMaterial("leaves", Material.LEAVES);
-		INSTANCE.putBlockMaterial("plants", Material.PLANTS);
-		INSTANCE.putBlockMaterial("vine", Material.VINE);
-		INSTANCE.putBlockMaterial("sponge", Material.SPONGE);
-		INSTANCE.putBlockMaterial("cloth", Material.CLOTH);
-		INSTANCE.putBlockMaterial("fire", Material.FIRE);
-		INSTANCE.putBlockMaterial("sand", Material.SAND);
-		INSTANCE.putBlockMaterial("circuits", Material.CIRCUITS);
-		INSTANCE.putBlockMaterial("carpet", Material.CARPET);
-		INSTANCE.putBlockMaterial("glass", Material.GLASS);
-		INSTANCE.putBlockMaterial("redstone_light", Material.REDSTONE_LIGHT);
-		INSTANCE.putBlockMaterial("tnt", Material.TNT);
-		INSTANCE.putBlockMaterial("coral", Material.CORAL);
-		INSTANCE.putBlockMaterial("ice", Material.ICE);
-		INSTANCE.putBlockMaterial("packed_ice", Material.PACKED_ICE);
-		INSTANCE.putBlockMaterial("snow", Material.SNOW);
-		INSTANCE.putBlockMaterial("crafted_snow", Material.CRAFTED_SNOW);
-		INSTANCE.putBlockMaterial("cactus", Material.CACTUS);
-		INSTANCE.putBlockMaterial("clay", Material.CLAY);
-		INSTANCE.putBlockMaterial("gourd", Material.GOURD);
-		INSTANCE.putBlockMaterial("dragon_egg", Material.DRAGON_EGG);
-		INSTANCE.putBlockMaterial("portal", Material.PORTAL);
-		INSTANCE.putBlockMaterial("cake", Material.CAKE);
-		INSTANCE.putBlockMaterial("web", Material.WEB);
-		INSTANCE.putBlockMaterial("piston", Material.PISTON);
-		INSTANCE.putBlockMaterial("barrier", Material.BARRIER);
-		INSTANCE.putBlockMaterial("structure_void", Material.STRUCTURE_VOID);
+		INSTANCE.putBlockMaterial("air", Material.air);
+		INSTANCE.putBlockMaterial("grass", Material.grass);
+		INSTANCE.putBlockMaterial("ground", Material.ground);
+		INSTANCE.putBlockMaterial("wood", Material.wood);
+		INSTANCE.putBlockMaterial("rock", Material.rock);
+		INSTANCE.putBlockMaterial("iron", Material.iron);
+		INSTANCE.putBlockMaterial("anvil", Material.anvil);
+		INSTANCE.putBlockMaterial("water", Material.water);
+		INSTANCE.putBlockMaterial("lava", Material.lava);
+		INSTANCE.putBlockMaterial("leaves", Material.leaves);
+		INSTANCE.putBlockMaterial("plants", Material.plants);
+		INSTANCE.putBlockMaterial("vine", Material.vine);
+		INSTANCE.putBlockMaterial("sponge", Material.sponge);
+		INSTANCE.putBlockMaterial("cloth", Material.cloth);
+		INSTANCE.putBlockMaterial("fire", Material.fire);
+		INSTANCE.putBlockMaterial("sand", Material.sand);
+		INSTANCE.putBlockMaterial("circuits", Material.circuits);
+		INSTANCE.putBlockMaterial("carpet", Material.carpet);
+		INSTANCE.putBlockMaterial("glass", Material.glass);
+		INSTANCE.putBlockMaterial("redstone_light", Material.redstoneLight);
+		INSTANCE.putBlockMaterial("tnt", Material.tnt);
+		INSTANCE.putBlockMaterial("coral", Material.coral);
+		INSTANCE.putBlockMaterial("ice", Material.ice);
+		INSTANCE.putBlockMaterial("packed_ice", Material.packedIce);
+		INSTANCE.putBlockMaterial("snow", Material.snow);
+		INSTANCE.putBlockMaterial("crafted_snow", Material.craftedSnow);
+		INSTANCE.putBlockMaterial("cactus", Material.cactus);
+		INSTANCE.putBlockMaterial("clay", Material.clay);
+		INSTANCE.putBlockMaterial("gourd", Material.gourd);
+		INSTANCE.putBlockMaterial("dragon_egg", Material.dragonEgg);
+		INSTANCE.putBlockMaterial("portal", Material.portal);
+		INSTANCE.putBlockMaterial("cake", Material.cake);
+		INSTANCE.putBlockMaterial("web", Material.web);
+		INSTANCE.putBlockMaterial("piston", Material.piston);
 
-		INSTANCE.putSoundType("wood", SoundType.WOOD);
-		INSTANCE.putSoundType("ground", SoundType.GROUND);
-		INSTANCE.putSoundType("plant", SoundType.PLANT);
-		INSTANCE.putSoundType("stone", SoundType.STONE);
-		INSTANCE.putSoundType("metal", SoundType.METAL);
-		INSTANCE.putSoundType("glass", SoundType.GLASS);
-		INSTANCE.putSoundType("cloth", SoundType.CLOTH);
-		INSTANCE.putSoundType("sand", SoundType.SAND);
-		INSTANCE.putSoundType("snow", SoundType.SNOW);
-		INSTANCE.putSoundType("ladder", SoundType.LADDER);
-		INSTANCE.putSoundType("anvil", SoundType.ANVIL);
-		INSTANCE.putSoundType("slime", SoundType.SLIME);
+		INSTANCE.putSoundType("stone", Block.soundTypeStone);
+		INSTANCE.putSoundType("wood", Block.soundTypeWood);
+		INSTANCE.putSoundType("gravel", Block.soundTypeGravel);
+		INSTANCE.putSoundType("grass", Block.soundTypeGrass);
+		INSTANCE.putSoundType("piston", Block.soundTypePiston);
+		INSTANCE.putSoundType("metal", Block.soundTypeMetal);
+		INSTANCE.putSoundType("glass", Block.soundTypeGlass);
+		INSTANCE.putSoundType("cloth", Block.soundTypeCloth);
+		INSTANCE.putSoundType("sand", Block.soundTypeSand);
+		INSTANCE.putSoundType("snow", Block.soundTypeSnow);
+		INSTANCE.putSoundType("ladder", Block.soundTypeLadder);
+		INSTANCE.putSoundType("anvil", Block.soundTypeAnvil);
 	}
 }

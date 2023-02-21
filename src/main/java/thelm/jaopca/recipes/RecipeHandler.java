@@ -11,20 +11,20 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableSortedSet;
 
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.LoaderState;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
 import thelm.jaopca.api.recipes.IRecipeAction;
 
 public class RecipeHandler {
 
 	private static final Logger LOGGER = LogManager.getLogger();
-	private static final TreeMap<ResourceLocation, IRecipeAction> EARLY_RECIPE_ACTIONS = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, IRecipeAction> RECIPE_ACTIONS = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, IRecipeAction> LATE_RECIPE_ACTIONS = new TreeMap<>();
-	private static final TreeSet<ResourceLocation> EXECUTED_RECIPE_ACTIONS = new TreeSet<>();
+	private static final TreeMap<String, IRecipeAction> EARLY_RECIPE_ACTIONS = new TreeMap<>();
+	private static final TreeMap<String, IRecipeAction> RECIPE_ACTIONS = new TreeMap<>();
+	private static final TreeMap<String, IRecipeAction> LATE_RECIPE_ACTIONS = new TreeMap<>();
+	private static final TreeMap<String, IRecipeAction> FINAL_RECIPE_ACTIONS = new TreeMap<>();
+	private static final TreeSet<String> EXECUTED_RECIPE_ACTIONS = new TreeSet<>();
 
-	public static boolean registerEarlyRecipe(ResourceLocation key, IRecipeAction recipeAction) {
+	public static boolean registerEarlyRecipe(String key, IRecipeAction recipeAction) {
 		if(Loader.instance().hasReachedState(LoaderState.INITIALIZATION)) {
 			return false;
 		}
@@ -33,7 +33,7 @@ public class RecipeHandler {
 		return EARLY_RECIPE_ACTIONS.putIfAbsent(key, recipeAction) == null;
 	}
 
-	public static boolean registerRecipe(ResourceLocation key, IRecipeAction recipeAction) {
+	public static boolean registerRecipe(String key, IRecipeAction recipeAction) {
 		if(Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION)) {
 			return false;
 		}
@@ -42,7 +42,7 @@ public class RecipeHandler {
 		return RECIPE_ACTIONS.putIfAbsent(key, recipeAction) == null;
 	}
 
-	public static boolean registerLateRecipe(ResourceLocation key, IRecipeAction recipeAction) {
+	public static boolean registerLateRecipe(String key, IRecipeAction recipeAction) {
 		if(Loader.instance().hasReachedState(LoaderState.AVAILABLE)) {
 			return false;
 		}
@@ -51,11 +51,21 @@ public class RecipeHandler {
 		return LATE_RECIPE_ACTIONS.putIfAbsent(key, recipeAction) == null;
 	}
 
-	public static Set<ResourceLocation> getRegisteredRecipes() {
-		return ImmutableSortedSet.<ResourceLocation>naturalOrder().
+	public static boolean registerFinalRecipe(String key, IRecipeAction recipeAction) {
+		if(Loader.instance().hasReachedState(LoaderState.SERVER_ABOUT_TO_START)) {
+			return false;
+		}
+		Objects.requireNonNull(key);
+		Objects.requireNonNull(recipeAction);
+		return LATE_RECIPE_ACTIONS.putIfAbsent(key, recipeAction) == null;
+	}
+
+	public static Set<String> getRegisteredRecipes() {
+		return ImmutableSortedSet.<String>naturalOrder().
 				addAll(EARLY_RECIPE_ACTIONS.keySet()).
 				addAll(RECIPE_ACTIONS.keySet()).
 				addAll(LATE_RECIPE_ACTIONS.keySet()).
+				addAll(FINAL_RECIPE_ACTIONS.keySet()).
 				addAll(EXECUTED_RECIPE_ACTIONS).build();
 	}
 
@@ -126,5 +136,28 @@ public class RecipeHandler {
 		EXECUTED_RECIPE_ACTIONS.addAll(LATE_RECIPE_ACTIONS.keySet());
 		LATE_RECIPE_ACTIONS.clear();
 		LOGGER.info("Registered {} late recipes", recipeCount.get());
+	}
+
+	public static void registerFinalRecipes() {
+		AtomicInteger recipeCount = new AtomicInteger(0);
+		FINAL_RECIPE_ACTIONS.forEach((key, recipeAction)->{
+			try {
+				if(recipeAction.register()) {
+					LOGGER.debug("Registered final recipe with key {}", key);
+					recipeCount.incrementAndGet();
+				}
+			}
+			catch(IllegalArgumentException e) {
+				LOGGER.warn("Final recipe with ID {} received invalid arguments: {}", key, e.getMessage());
+				return;
+			}
+			catch(Throwable e) {
+				LOGGER.error("Final recipe with ID {} errored", key, e);
+				return;
+			}
+		});
+		EXECUTED_RECIPE_ACTIONS.addAll(FINAL_RECIPE_ACTIONS.keySet());
+		FINAL_RECIPE_ACTIONS.clear();
+		LOGGER.info("Registered {} final recipes", recipeCount.get());
 	}
 }

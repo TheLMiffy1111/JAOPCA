@@ -14,11 +14,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.LoaderState;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialColorEvent;
@@ -40,7 +40,7 @@ public class Material implements IMaterial {
 	private final TreeSet<String> alternativeNames = new TreeSet<>();
 	private OptionalInt color = OptionalInt.empty();
 	private boolean hasEffect = false;
-	private EnumRarity displayRarity = EnumRarity.COMMON;
+	private EnumRarity displayRarity = EnumRarity.common;
 	private final List<String> extras = new ArrayList<>();
 	private final TreeSet<String> configModuleBlacklist = new TreeSet<>();
 	private boolean isSmallStorageBlock;

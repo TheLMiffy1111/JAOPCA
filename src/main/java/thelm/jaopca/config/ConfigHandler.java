@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.google.common.collect.Lists;
 
-import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
@@ -63,7 +62,7 @@ public class ConfigHandler {
 	public static final Set<String> OREDICT_MODULE_BLACKLIST = new TreeSet<>();
 	public static final List<String> CUSTOM_OREDICT = new ArrayList<>();
 
-	public static final Set<ResourceLocation> RECIPE_BLACKLIST = new TreeSet<>();
+	public static final Set<String> RECIPE_BLACKLIST = new TreeSet<>();
 	public static final List<Pattern> RECIPE_REGEX_BLACKLIST = new ArrayList<>();
 
 	public static double gammaValue = 2;
@@ -114,8 +113,7 @@ public class ConfigHandler {
 		CUSTOM_OREDICT.addAll(mainConfig.getDefinedStringList("oredict.custom", new ArrayList<>(), "List of custom oredict entries to add. Format: <mod:item@meta=oredict>"));
 
 		mainConfig.setComment("recipes", "Configurations related to recipes.");
-		RECIPE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("recipes.blacklist", new ArrayList<>(),
-				"List of recipes that should not be added."), ResourceLocation::new));
+		RECIPE_BLACKLIST.addAll(mainConfig.getDefinedStringList("recipes.blacklist", new ArrayList<>(), "List of recipes that should not be added."));
 		RECIPE_REGEX_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("recipes.regexBlacklist", new ArrayList<>(),
 				"List of recipes by regex that should not be added."), Pattern::compile));
 

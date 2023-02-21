@@ -1,25 +1,22 @@
 package thelm.jaopca.client.events;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import thelm.jaopca.client.colors.ColorHandler;
-import thelm.jaopca.client.models.ModelHandler;
-import thelm.jaopca.client.models.fluids.TexturedFluidModel;
+import thelm.jaopca.api.items.IMaterialFormItem;
+import thelm.jaopca.client.renderer.JAOPCABlockRenderer;
 import thelm.jaopca.client.resources.ResourceHandler;
 import thelm.jaopca.events.CommonEventHandler;
+import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.localization.LocalizationRepoHandler;
 
 public class ClientEventHandler extends CommonEventHandler {
-
-	static {
-		ModelLoaderRegistry.registerLoader(TexturedFluidModel.Loader.INSTANCE);
-	}
 
 	@Override
 	public void onInit(FMLInitializationEvent event) {
@@ -29,18 +26,20 @@ public class ClientEventHandler extends CommonEventHandler {
 		((IReloadableResourceManager)mc.getResourceManager()).registerReloadListener(rm->LocalizationRepoHandler.reload());
 	}
 
-	@SubscribeEvent
-	public void onModelRegistry(ModelRegistryEvent event) {
-		ModelHandler.registerModels();
-	}
-
-	@SubscribeEvent
-	public void onColorHandler(ColorHandlerEvent.Item event) {
-		ColorHandler.setup(event);
+	@Override
+	public void onPostInit(FMLPostInitializationEvent event) {
+		super.onPostInit(event);
+		RenderingRegistry.registerBlockHandler(JAOPCABlockRenderer.INSTANCE);
+		for(IMaterialFormItem item : ItemFormType.getItems()) {
+			IItemRenderer renderer = item.getRenderer();
+			if(renderer != null) {
+				MinecraftForgeClient.registerItemRenderer(item.asItem(), renderer);
+			}
+		}
 	}
 
 	@SubscribeEvent
 	public void onTextureStitchPre(TextureStitchEvent.Pre event) {
-		ResourceHandler.registerTextures(event.getMap());
+		ResourceHandler.registerTextures(event.map);
 	}
 }

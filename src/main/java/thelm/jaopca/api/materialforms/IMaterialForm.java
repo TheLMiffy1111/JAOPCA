@@ -7,5 +7,5 @@ public interface IMaterialForm {
 
 	IForm getForm();
 
-	IMaterial getMaterial();
+	IMaterial getIMaterial();
 }

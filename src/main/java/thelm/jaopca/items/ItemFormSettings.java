@@ -9,9 +9,7 @@ import net.minecraft.item.EnumRarity;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.items.IItemCreator;
 import thelm.jaopca.api.items.IItemFormSettings;
-import thelm.jaopca.api.items.IItemModelFunctionCreator;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.client.models.items.JAOPCAItemModelFunctionCreator;
 
 public class ItemFormSettings implements IItemFormSettings {
 
@@ -22,7 +20,6 @@ public class ItemFormSettings implements IItemFormSettings {
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private Function<IMaterial, EnumRarity> displayRarityFunction = material->material.getDisplayRarity();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
-	private IItemModelFunctionCreator itemModelFunctionCreator = JAOPCAItemModelFunctionCreator.INSTANCE;
 
 	@Override
 	public IFormType getType() {
@@ -71,27 +68,5 @@ public class ItemFormSettings implements IItemFormSettings {
 	@Override
 	public Function<IMaterial, EnumRarity> getDisplayRarityFunction() {
 		return displayRarityFunction;
-	}
-
-	@Override
-	public IItemFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction) {
-		this.burnTimeFunction = burnTimeFunction;
-		return this;
-	}
-
-	@Override
-	public ToIntFunction<IMaterial> getBurnTimeFunction() {
-		return burnTimeFunction;
-	}
-
-	@Override
-	public IItemFormSettings setItemModelFunctionCreator(IItemModelFunctionCreator itemModelFunctionCreator) {
-		this.itemModelFunctionCreator = itemModelFunctionCreator;
-		return this;
-	}
-
-	@Override
-	public IItemModelFunctionCreator getItemModelFunctionCreator() {
-		return itemModelFunctionCreator;
 	}
 }

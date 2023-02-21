@@ -14,8 +14,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectRBTreeMap;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.CustomModule;
@@ -42,7 +40,7 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 				enumToString.put(value, value.name());
 			}
 			JsonObject json = helper.getJsonObject(jsonElement, "object");
-			Enum<?> defaultValue = null;
+			Enum<?> defaultValue;
 			if(helper.isString(json, "default")) {
 				String defaultString = helper.getString(json, "default");
 				Enum<?> value = stringToEnum.get(defaultString.toLowerCase(Locale.US));
@@ -61,8 +59,7 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 			else {
 				throw new JsonSyntaxException("Unable to deserialize enum");
 			}
-			Object2ObjectMap<IMaterial, Enum<?>> map = new Object2ObjectRBTreeMap<>();
-			map.defaultReturnValue(defaultValue);
+			Map<IMaterial, Enum<?>> map = new TreeMap<>();
 			if(json.has("materialTypes")) {
 				JsonObject materialTypesJson = helper.getJsonObject(json, "materialTypes");
 				for(Map.Entry<String, JsonElement> entry : materialTypesJson.entrySet()) {
@@ -147,14 +144,14 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 						comment = "";
 					}
 					CustomModule.instance.addCustomConfigDefiner((material, config)->{
-						Enum<?> value = config.getDefinedEnum(path, (Class<Enum>)parameterizedType, (Enum)map.get(material), comment);
+						Enum<?> value = config.getDefinedEnum(path, (Class<Enum>)parameterizedType, (Enum)map.getOrDefault(material, defaultValue), comment);
 						if(value != null) {
 							map.put(material, value);
 						}
 					});
 				}
 			}
-			return material->map.get(material);
+			return material->map.getOrDefault(material, defaultValue);
 		}
 		throw new JsonParseException("Unable to deserialize "+helper.toSimpleString(jsonElement)+" into an enum function");
 	}

@@ -5,7 +5,7 @@ import thelm.jaopca.api.oredict.IOredictModule;
 import thelm.jaopca.api.oredict.JAOPCAOredictModule;
 import thelm.jaopca.utils.ApiImpl;
 
-@JAOPCAOredictModule(modDependencies = "galaxyspace")
+@JAOPCAOredictModule(modDependencies = "GalaxySpace")
 public class GalaxySpaceOredictModule implements IOredictModule {
 
 	@Override
@@ -16,16 +16,13 @@ public class GalaxySpaceOredictModule implements IOredictModule {
 	@Override
 	public void register() {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		api.registerOredict("blockCobalt", "galaxyspace:decoblocks@4");
-		api.registerOredict("blockNickel", "galaxyspace:decoblocks@5");
-		api.registerOredict("blockMagnesium", "galaxyspace:decoblocks@6");
-		api.registerOredict("oreMeteoricIron", "galaxyspace:ceresblocks@3");
-		api.registerOredict("oreIron", "galaxyspace:phobosblocks@2");
-		api.registerOredict("oreMeteoricIron", "galaxyspace:phobosblocks@3");
-		api.registerOredict("oreNickel", "galaxyspace:phobosblocks@4");
-		api.registerOredict("oreDesh", "galaxyspace:phobosblocks@5");
-		api.registerOredict("oreTitanium", "galaxyspace:ganymedeblocks@3");
-		api.registerOredict("gemDolomite", "galaxyspace:gs_basic@3");
-		api.registerOredict("gemVolcanic", "galaxyspace:gs_basic@12");
+		api.registerOredict("oreSapphire", "GalaxySpace:ores@2");
+		api.registerOredict("blockSapphire", "GalaxySpace:ores@4");
+		api.registerOredict("oreTitanium", "GalaxySpace:ganymedeblocks@3");
+		api.registerOredict("oreMeteoricIron", "GalaxySpace:ceresblocks@3");
+		api.registerOredict("gemDolomite", "GalaxySpace:item.BasicItems@4");
+		api.registerOredict("gemSapphire", "GalaxySpace:item.BasicItems@6");
+		api.registerOredict("dustGlowstone", "GalaxySpace:item.GlowstoneDusts@0");
+		api.registerOredict("dustGlowstone", "GalaxySpace:item.GlowstoneDusts@1");
 	}
 }

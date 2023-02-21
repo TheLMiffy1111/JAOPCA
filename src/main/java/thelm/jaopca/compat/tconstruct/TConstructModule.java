@@ -1,19 +1,20 @@
 package thelm.jaopca.compat.tconstruct;
 
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.ToIntFunction;
-
-import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import slimeknights.tconstruct.common.config.Config;
-import slimeknights.tconstruct.library.TinkerRegistry;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import tconstruct.library.crafting.FluidType;
+import tconstruct.util.config.PHConstruct;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -25,12 +26,20 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "tconstruct")
+@JAOPCAModule(modDependencies = "TConstruct")
 public class TConstructModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>();
 
 	private static boolean jaopcaOnly = true;
+	private static Map<IMaterial, Integer> tempMap = new TreeMap<>();
+	public static ToIntFunction<IMaterial> tempFunction;
+
+	private Map<IMaterial, IDynamicSpecConfig> configs;
+
+	public TConstructModule() {
+		tempFunction = this::getTemperature;
+	}
 
 	@Override
 	public String getName() {
@@ -46,15 +55,16 @@ public class TConstructModule implements IModule {
 
 	@Override
 	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT, MaterialType.GEM, MaterialType.CRYSTAL);
+		return EnumSet.of(MaterialType.INGOT);
 	}
 
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
 		if(BLACKLIST.isEmpty()) {
-			TinkerRegistry.getMaterialIntegrations().stream().filter(mi->mi.fluid != null).
-			map(mi->mi.oreSuffix).filter(StringUtils::isNotEmpty).forEach(BLACKLIST::add);
-			BLACKLIST.add("Emerald");
+			BLACKLIST.addAll(FluidType.fluidTypes.keySet());
+			if(Loader.isModLoaded("Mariculture")) {
+				Collections.addAll(BLACKLIST, "Magnesium", "Rutile");
+			}
 		}
 		return BLACKLIST;
 	}
@@ -65,22 +75,31 @@ public class TConstructModule implements IModule {
 	}
 
 	@Override
+	public void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {
+		this.configs = configs;
+	}
+
+	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		TConstructHelper helper = TConstructHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Set<IMaterial> moltenMaterials = api.getForm("molten").getMaterials();
-		ToIntFunction<FluidStack> tempFunction = stack->stack.getFluid().getTemperature(stack)-300;
 		for(IMaterial material : moduleData.getMaterials()) {
 			if(!jaopcaOnly || moltenMaterials.contains(material)) {
 				String oreOredict = miscHelper.getOredictName("ore", material.getName());
-				String moltenName = miscHelper.getFluidName("", material.getName());
+				String moltenName = miscHelper.getFluidName(".molten", material.getName());
 				boolean isIngot = material.getType().isIngot();
-				int amount = (int)Math.floor((isIngot ? 144 : 666)*Config.oreToIngotRatio);
+				int amount = (int)Math.floor(144*PHConstruct.ingotsPerOre);
+				int temperature = tempFunction.applyAsInt(material);
 				helper.registerMeltingRecipe(
 						miscHelper.getRecipeKey("tconstruct.ore_to_molten", material.getName()),
-						oreOredict, moltenName, amount, tempFunction);
+						oreOredict, oreOredict, moltenName, amount, temperature);
 			}
 		}
+	}
+
+	public int getTemperature(IMaterial material) {
+		return tempMap.computeIfAbsent(material, key->configs.get(key).getDefinedInt("tconstruct.temperature", 600, "The base smeltery temperature of this material."));
 	}
 }
