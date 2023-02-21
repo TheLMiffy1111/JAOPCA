@@ -43,6 +43,7 @@ public class MagneticraftModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("rockyChunk").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm chunkForm = ApiImpl.INSTANCE.newForm(this, "magneticraft_chunk", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("chunk").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this, rockyChunkForm, chunkForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -59,7 +60,7 @@ public class MagneticraftModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this, rockyChunkForm, chunkForm).setGrouped(true));
+		return Collections.singletonList(formRequest);
 	}
 
 	@Override
@@ -83,9 +84,15 @@ public class MagneticraftModule implements IModule {
 		MagneticraftHelper helper = MagneticraftHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
-		for(IMaterial material : rockyChunkForm.getMaterials()) {
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+		for(IMaterial material : formRequest.getMaterials()) {
 			IItemInfo rockyChunkInfo = itemFormType.getMaterialFormInfo(rockyChunkForm, material);
+			String rockyChunkOredict = miscHelper.getOredictName("rockyChunk", material.getName());
+			IItemInfo chunkInfo = itemFormType.getMaterialFormInfo(chunkForm, material);
+			String chunkOredict = miscHelper.getOredictName("chunk", material.getName());
+			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+			String extraDustOredict = miscHelper.getOredictName("dust", material.getExtra(1).getName());
+			String secondExtraDustOredict = miscHelper.getOredictName("dust", material.getExtra(2).getName());
+			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 
 			IDynamicSpecConfig config = configs.get(material);
 			String configByproduct = config.getDefinedString("magneticraft.grinderByproduct", "minecraft:gravel",
@@ -98,17 +105,10 @@ public class MagneticraftModule implements IModule {
 			helper.registerGrinderRecipe(
 					miscHelper.getRecipeKey("magneticraft.ore_to_rocky_chunk_grinder", material.getName()),
 					oreOredict, rockyChunkInfo, 1, byproduct, 1, 0.15F, 50);
-		}
-		for(IMaterial material : chunkForm.getMaterials()) {
-			String rockyChunkOredict = miscHelper.getOredictName("rockyChunk", material.getName());
-			IItemInfo chunkInfo = itemFormType.getMaterialFormInfo(chunkForm, material);
-			String extraDustOredict = miscHelper.getOredictName("dust", material.getExtra(1).getName());
-			String secondExtraDustOredict = miscHelper.getOredictName("dust", material.getExtra(2).getName());
 
-			IDynamicSpecConfig config = configs.get(material);
-			String configByproduct = config.getDefinedString("magneticraft.sluiceBoxByproduct", "minecraft:cobblestone",
+			configByproduct = config.getDefinedString("magneticraft.sluiceBoxByproduct", "minecraft:cobblestone",
 					miscHelper.metaItemPredicate(), "The default byproduct material to output in Magneticraft's sluice box.");
-			ItemStack byproduct = miscHelper.parseMetaItem(configByproduct);
+			byproduct = miscHelper.parseMetaItem(configByproduct);
 
 			if(material.hasExtra(2)) {
 				helper.registerSluiceBoxRecipe(
@@ -140,11 +140,7 @@ public class MagneticraftModule implements IModule {
 						miscHelper.getRecipeKey("magneticraft.rocky_chunk_to_chunk_sieve", material.getName()),
 						rockyChunkOredict, chunkInfo, 1, 1F, 50);
 			}
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			String rockyChunkOredict = miscHelper.getOredictName("rockyChunk", material.getName());
-			String chunkOredict = miscHelper.getOredictName("chunk", material.getName());
-			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
+
 			api.registerSmeltingRecipe(
 					miscHelper.getRecipeKey("magneticraft.rocky_chunk_to_material", material.getName()),
 					rockyChunkOredict, materialOredict, 1, 0.1F);

@@ -39,8 +39,8 @@ public class MekanismCompatModule implements IModule {
 	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminium", "Aluminum", "Amber", "Amethyst", "Apatite", "Coal", "Copper", "Diamond", "Draconium",
 			"Emerald", "Gold", "Iridium", "Iron", "Lapis", "Lead", "Malachite", "Mithril", "Nickel", "Osmium",
-			"Peridot", "Platinum", "Quartz", "Redstone", "RefinedGlowstone", "RefinedObsidian", "Ruby", "Sapphire",
-			"Silver", "Steel", "Tanzanite", "Tin", "Topaz", "Uranium"));
+			"Peridot", "Platinum", "Quartz", "Redstone", "Ruby", "Sapphire", "Silver", "Steel", "Tanzanite",
+			"Tin", "Topaz", "Uranium"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToCrystalBlacklist = new TreeSet<>();
 	private static Set<String> configToOreBlacklist = new TreeSet<>();
@@ -51,16 +51,8 @@ public class MekanismCompatModule implements IModule {
 			Collections.addAll(TO_CRYSTAL_BLACKLIST, "CertusQuartz", "Fluix");
 		}
 		if(Loader.isModLoaded("metallurgy")) {
-			String[] list = {
-					"Adamantine", "Alduorite", "Amordrine", "Angmallen", "AstralSilver", "Atlarus", "BlackSteel",
-					"Brass", "Bronze", "Carmot", "Celenegil", "Ceruclase", "DamascusSteel", "DeepIron",
-					"Desichalkos", "Electrum", "Eximite", "Haderoth", "Hepatizon", "Ignatius", "Infuscolium",
-					"Inolashite", "Kalendrite", "Lemurite", "Manganese", "Meutoite", "Midasium", "Orichalcum",
-					"Oureclase", "Prometheum", "Quicksilver", "Rubracium", "Sanguinite", "ShadowIron",
-					"ShadowSteel", "Tartarite", "Vulcanite", "Vyroxeres", "Zinc",
-			};
-			Collections.addAll(TO_DUST_BLACKLIST, list);
-			Collections.addAll(TO_ORE_BLACKLIST, list);
+			Collections.addAll(TO_DUST_BLACKLIST, MekanismModule.METALLURGY_LIST);
+			Collections.addAll(TO_ORE_BLACKLIST, MekanismModule.METALLURGY_LIST);
 		}
 		if(Loader.isModLoaded("mysticalagriculture")) {
 			Collections.addAll(TO_ORE_BLACKLIST, "Inferium", "Prosperity");

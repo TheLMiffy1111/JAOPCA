@@ -5,12 +5,14 @@ import java.util.function.Supplier;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.IRecipeInputFactory;
 import ic2.api.recipe.Recipes;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import thelm.jaopca.api.items.IItemProvider;
 import thelm.jaopca.compat.ic2.recipes.BlockCutterRecipeAction;
 import thelm.jaopca.compat.ic2.recipes.CentrifugeRecipeAction;
 import thelm.jaopca.compat.ic2.recipes.CompressorRecipeAction;
@@ -40,6 +42,12 @@ public class IC2Helper {
 		}
 		if(obj instanceof Item) {
 			return inputFactory.forStack(new ItemStack((Item)obj, amount));
+		}
+		if(obj instanceof Block) {
+			return inputFactory.forStack(new ItemStack((Block)obj, amount));
+		}
+		if(obj instanceof IItemProvider) {
+			return inputFactory.forStack(new ItemStack(((IItemProvider)obj).asItem(), amount));
 		}
 		if(obj instanceof FluidStack) {
 			return inputFactory.forFluidContainer(((FluidStack)obj).getFluid(), amount);

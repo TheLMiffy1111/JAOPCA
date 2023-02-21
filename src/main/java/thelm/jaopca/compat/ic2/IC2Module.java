@@ -2,7 +2,6 @@ package thelm.jaopca.compat.ic2;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +39,7 @@ public class IC2Module implements IModule {
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("crushed").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm purifiedCrushedForm = ApiImpl.INSTANCE.newForm(this, "ic2_purified_crushed", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("crushedPurified").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this, crushedForm, purifiedCrushedForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -57,17 +57,7 @@ public class IC2Module implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this, crushedForm, purifiedCrushedForm).setGrouped(true));
-	}
-
-	@Override
-	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT);
-	}
-
-	@Override
-	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
+		return Collections.singletonList(formRequest);
 	}
 
 	@Override
@@ -78,28 +68,26 @@ public class IC2Module implements IModule {
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		ItemStack stoneDust = IC2Items.getItem("dust", "stone");
 		for(IMaterial material : crushedForm.getMaterials()) {
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			IItemInfo crushedInfo = itemFormType.getMaterialFormInfo(crushedForm, material);
+			String crushedOredict = miscHelper.getOredictName("crushed", material.getName());
+			IItemInfo purifiedCrushedInfo = itemFormType.getMaterialFormInfo(purifiedCrushedForm, material);
+			String purifiedCrushedOredict = miscHelper.getOredictName("crushedPurified", material.getName());
+			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+			String tinyDustOredict = miscHelper.getOredictName("dustTiny", material.getName());
+			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
+			String dustOredict = miscHelper.getOredictName("dust", material.getName());
+			String extraTinyDustOredict = miscHelper.getOredictName("dustTiny", material.getExtra(1).getName());
+
 			helper.registerMaceratorRecipe(
 					miscHelper.getRecipeKey("ic2.ore_to_crushed", material.getName()),
 					oreOredict, 1, crushedInfo, 2);
-		}
-		for(IMaterial material : purifiedCrushedForm.getMaterials()) {
-			String crushedOredict = miscHelper.getOredictName("crushed", material.getName());
-			IItemInfo purifiedCrushedInfo = itemFormType.getMaterialFormInfo(purifiedCrushedForm, material);
-			String tinyDustOredict = miscHelper.getOredictName("dustTiny", material.getName());
+
 			helper.registerOreWashingRecipe(
 					miscHelper.getRecipeKey("ic2.crushed_to_purified_crushed", material.getName()),
 					crushedOredict, 1, 1000, new Object[] {
 							purifiedCrushedInfo, 1, tinyDustOredict, 2, stoneDust, 1,
 					});
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			String crushedOredict = miscHelper.getOredictName("crushed", material.getName());
-			String purifiedCrushedOredict = miscHelper.getOredictName("crushedPurified", material.getName());
-			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
-			String dustOredict = miscHelper.getOredictName("dust", material.getName());
-			String extraTinyDustOredict = miscHelper.getOredictName("dustTiny", material.getExtra(1).getName());
+
 			api.registerSmeltingRecipe(
 					miscHelper.getRecipeKey("ic2.crushed_to_material", material.getName()),
 					crushedOredict, materialOredict, 1, 0.5F);

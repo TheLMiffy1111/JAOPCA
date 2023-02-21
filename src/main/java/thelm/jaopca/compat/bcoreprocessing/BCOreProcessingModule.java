@@ -2,7 +2,6 @@ package thelm.jaopca.compat.bcoreprocessing;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +50,7 @@ public class BCOreProcessingModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT).setDefaultMaterialBlacklist(BLACKLIST).
 			setSettings(FluidFormType.INSTANCE.getNewSettings().
 					setTemperatureFunction(material->300).setMaterialFunction(material->Material.LAVA));
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this, searingForm, hotForm, coolForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -59,17 +59,7 @@ public class BCOreProcessingModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this, searingForm, hotForm, coolForm).setGrouped(true));
-	}
-
-	@Override
-	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT);
-	}
-
-	@Override
-	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
+		return Collections.singletonList(formRequest);
 	}
 
 	@Override
@@ -79,40 +69,34 @@ public class BCOreProcessingModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IFluidFormType fluidFormType = FluidFormType.INSTANCE;
 		Fluid searingLava = FluidsRegistry.GASEOUS_LAVA[2];
-		for(IMaterial material : searingForm.getMaterials()) {
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+		for(IMaterial material : formRequest.getMaterials()) {
+			IFluidInfo hotInfo = fluidFormType.getMaterialFormInfo(hotForm, material);
 			String hotName = miscHelper.getFluidName("bcoreprocessing_hot", material.getName());
 			IFluidInfo searingInfo = fluidFormType.getMaterialFormInfo(searingForm, material);
+			String searingName = miscHelper.getFluidName("bcoreprocessing_searing", material.getName());
+			IFluidInfo coolInfo = fluidFormType.getMaterialFormInfo(coolForm, material);
+			String coolName = miscHelper.getFluidName("bcoreprocessing_cool", material.getName());
+			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
+
 			helper.registerOreProcessorRecipe(
 					miscHelper.getRecipeKey("bcoreprocessing.ore_to_searing", material.getName()),
 					oreOredict, 1, searingInfo, 1000, searingLava, 125, 40);
 			helper.registerHeatableRecipe(
 					miscHelper.getRecipeKey("bcoreprocessing.hot_to_searing", material.getName()),
 					hotName, 100, searingInfo, 100, 1, 2);
-		}
-		for(IMaterial material : hotForm.getMaterials()) {
-			String searingName = miscHelper.getFluidName("bcoreprocessing_searing", material.getName());
-			String coolName = miscHelper.getFluidName("bcoreprocessing_cool", material.getName());
-			IFluidInfo hotInfo = fluidFormType.getMaterialFormInfo(hotForm, material);
 			helper.registerCoolableRecipe(
+
 					miscHelper.getRecipeKey("bcoreprocessing.searing_to_hot", material.getName()),
 					searingName, 100, hotInfo, 100, 2, 1);
 			helper.registerHeatableRecipe(
 					miscHelper.getRecipeKey("bcoreprocessing.cool_to_hot", material.getName()),
 					coolName, 100, hotInfo, 100, 0, 1);
-		}
-		for(IMaterial material : coolForm.getMaterials()) {
-			String hotName = miscHelper.getFluidName("bcoreprocessing_hot", material.getName());
-			IFluidInfo coolInfo = fluidFormType.getMaterialFormInfo(coolForm, material);
+
 			helper.registerCoolableRecipe(
 					miscHelper.getRecipeKey("bcoreprocessing.hot_to_cool", material.getName()),
 					hotName, 100, coolInfo, 100, 1, 0);
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			String searingName = miscHelper.getFluidName("bcoreprocessing_searing", material.getName());
-			String hotName = miscHelper.getFluidName("bcoreprocessing_hot", material.getName());
-			String coolName = miscHelper.getFluidName("bcoreprocessing_cool", material.getName());
-			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
+
 			helper.registerFluidProcessorRecipe(
 					miscHelper.getRecipeKey("bcoreprocessing.searing_to_material", material.getName()),
 					searingName, 1000, materialOredict, 1, searingLava, 50, 40);

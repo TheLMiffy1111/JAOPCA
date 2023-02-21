@@ -11,7 +11,6 @@ import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.helpers.IMiscHelper;
-import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
@@ -43,11 +42,11 @@ public class DustModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : dustForm.getMaterials()) {
 			if(material.getType().isIngot()) {
-				IItemInfo dustInfo = ItemFormType.INSTANCE.getMaterialFormInfo(dustForm, material);
+				String dustOredict = miscHelper.getOredictName("dust", material.getName());
 				String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 				api.registerSmeltingRecipe(
 						miscHelper.getRecipeKey("dust.to_material", material.getName()),
-						dustInfo, materialOredict, 1, 0.7F);
+						dustOredict, materialOredict, 1, 0.7F);
 			}
 		}
 	}

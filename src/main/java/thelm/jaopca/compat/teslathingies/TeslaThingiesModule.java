@@ -46,6 +46,7 @@ public class TeslaThingiesModule implements IModule {
 			setMaterialTypes(MaterialType.ORE).setSecondaryName("teslaLump").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm augmentedLumpForm = ApiImpl.INSTANCE.newForm(this, "teslathingies_augmented_lump", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.ORE).setSecondaryName("augmentedLump").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this, teslaLumpForm, augmentedLumpForm).setGrouped(true);
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
@@ -65,8 +66,7 @@ public class TeslaThingiesModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this, teslaLumpForm, augmentedLumpForm).
-				setGrouped(true));
+		return Collections.singletonList(formRequest);
 	}
 
 	@Override
@@ -90,9 +90,12 @@ public class TeslaThingiesModule implements IModule {
 		TeslaThingiesHelper helper = TeslaThingiesHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
-		for(IMaterial material : augmentedLumpForm.getMaterials()) {
+		for(IMaterial material : formRequest.getMaterials()) {
 			String teslaLumpOredict = miscHelper.getOredictName("teslaLump", material.getName());
 			IItemInfo augmentedLumpInfo = itemFormType.getMaterialFormInfo(augmentedLumpForm, material);
+			String augmentedLumpOredict = miscHelper.getOredictName("augmentedLump", material.getName());
+			String dustOredict = miscHelper.getOredictName("dust", material.getName());
+
 			helper.registerCompoundMakerRecipe(
 					miscHelper.getRecipeKey("teslathingies.tesla_lump_to_augmented_lump", material.getName()),
 					new Object[] {
@@ -100,10 +103,7 @@ public class TeslaThingiesModule implements IModule {
 					}, new Object[] {
 							TeslifiedObsidian.INSTANCE, 1,
 					}, augmentedLumpInfo, 1);
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			String augmentedLumpOredict = miscHelper.getOredictName("augmentedLump", material.getName());
-			String dustOredict = miscHelper.getOredictName("dust", material.getName());
+
 			int amount;
 			switch(material.getType()) {
 			default: case INGOT:

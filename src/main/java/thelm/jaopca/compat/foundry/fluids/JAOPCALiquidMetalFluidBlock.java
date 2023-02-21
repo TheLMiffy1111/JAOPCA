@@ -54,11 +54,10 @@ public class JAOPCALiquidMetalFluidBlock extends JAOPCAFluidBlock {
 			}
 			for(EnumFacing facing : EnumFacing.VALUES) {
 				if(world.getBlockState(pos.offset(facing)).getMaterial() == Material.WATER) {
-					int i;
 					world.setBlockState(pos, solidState.get());
-					world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5f, 2.6f + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8f, false);
-					for(i = 0; i < 8; i++) {
-						world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + Math.random(), pos.getY() + 1.2D, pos.getZ() + Math.random(), 0.0D, 0.0D, 0.0D);
+					world.playSound(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F+(world.rand.nextFloat()-world.rand.nextFloat())*0.8F, false);
+					for(int i = 0; i < 8; i++) {
+						world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX()+Math.random(), pos.getY()+1.2, pos.getZ()+Math.random(), 0, 0, 0);
 					}
 					return;
 				}

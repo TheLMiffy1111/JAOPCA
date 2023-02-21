@@ -40,9 +40,9 @@ public class BlockModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : storageBlockForm.getMaterials()) {
-			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 			IBlockInfo storageBlockInfo = BlockFormType.INSTANCE.getMaterialFormInfo(storageBlockForm, material);
 			String storageBlockOredict = miscHelper.getOredictName("block", material.getName());
+			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 			if(material.isSmallStorageBlock()) {
 				api.registerShapedRecipe(
 						miscHelper.getRecipeKey("block.to_block", material.getName()),

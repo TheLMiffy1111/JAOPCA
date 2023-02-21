@@ -15,9 +15,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.item.EnumRarity;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.LoaderState;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.api.materials.MaterialColorEvent;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.client.colors.ColorHandler;
 import thelm.jaopca.config.ConfigHandler;
@@ -42,6 +46,7 @@ public class Material implements IMaterial {
 	private boolean isSmallStorageBlock;
 	private IDynamicSpecConfig config;
 	private String oredict;
+	private boolean shouldFireColorEvent = true;
 
 	public Material(String name, MaterialType type) {
 		this.name = name;
@@ -104,19 +109,30 @@ public class Material implements IMaterial {
 
 	@Override
 	public int getColor() {
-		if(!color.isPresent() && config != null) {
-			MiscHelper.INSTANCE.conditionalRunnable(FMLCommonHandler.instance().getSide()::isClient, ()->()->{
-				String oredict = getOredict();
-				color = OptionalInt.of(0xFFFFFF);
-				MiscHelper.INSTANCE.submitAsyncTask(()->{
-					try {
-						color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(oredict), "The color of this material."));
-					}
-					catch(Exception e) {
-						LOGGER.warn("Unable to get color for material {}", name, e);
-					}
-				});
-			}, ()->()->{}).run();
+		if(Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION)) {
+			if(!color.isPresent() && config != null) {
+				MiscHelper.INSTANCE.conditionalRunnable(FMLCommonHandler.instance().getSide()::isClient, ()->()->{
+					shouldFireColorEvent = false;
+					String oredict = getOredict();
+					color = OptionalInt.of(0xFFFFFF);
+					MiscHelper.INSTANCE.submitAsyncTask(()->{
+						try {
+							color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(oredict), "The color of this material."));
+							MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
+						}
+						catch(Exception e) {
+							LOGGER.warn("Unable to get color for material {}", name, e);
+						}
+					});
+				}, ()->()->{}).run();
+			}
+			if(color.isPresent() && shouldFireColorEvent) {
+				shouldFireColorEvent = false;
+				MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
+			}
+		}
+		else {
+			LOGGER.warn("Tried to get color for material {} before post-init", name);
 		}
 		return 0xFF000000 | color.orElse(0xFFFFFF);
 	}

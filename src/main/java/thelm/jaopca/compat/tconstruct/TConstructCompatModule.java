@@ -170,6 +170,14 @@ public class TConstructCompatModule implements IModule {
 									nuggetOredict, moltenName, baseAmount/9, tempFunction);
 						}
 					}
+					if(!configDustToMoltenBlacklist.contains(name)) {
+						String dustOredict = miscHelper.getOredictName("dust", name);
+						if(oredict.contains(dustOredict)) {
+							helper.registerMeltingRecipe(
+									miscHelper.getRecipeKey("tconstruct.dust_to_molten", name),
+									dustOredict, moltenName, baseAmount, tempFunction);
+						}
+					}
 					if(!configPlateToMoltenBlacklist.contains(name)) {
 						String plateOredict = miscHelper.getOredictName("plate", name);
 						if(oredict.contains(plateOredict)) {

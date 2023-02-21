@@ -55,7 +55,7 @@ public class GasFormType implements IGasFormType {
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
 		String fluidName = MiscHelper.INSTANCE.getFluidName(form.getSecondaryName(), material.getName());
-		return GasRegistry.getGas(fluidName) != null;
+		return GasRegistry.getGas(fluidName) == null;
 	}
 
 	@Override

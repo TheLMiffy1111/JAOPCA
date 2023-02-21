@@ -17,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
@@ -27,6 +26,7 @@ import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.ItemFormSettingsDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.oredict.OredictHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -63,7 +63,7 @@ public class ItemFormType implements IItemFormType {
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
 		String oredictName = MiscHelper.INSTANCE.getOredictName(form.getSecondaryName(), material.getName());
-		return !OreDictionary.doesOreNameExist(oredictName);
+		return !OredictHandler.getOredict().contains(oredictName);
 	}
 
 	@Override

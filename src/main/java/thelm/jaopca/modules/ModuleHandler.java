@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,18 +16,15 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Predicates;
 
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.versioning.ArtifactVersion;
-import net.minecraftforge.fml.common.versioning.InvalidVersionSpecificationException;
-import net.minecraftforge.fml.common.versioning.VersionRange;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.materials.MaterialHandler;
+import thelm.jaopca.utils.MiscHelper;
 
 public class ModuleHandler {
 
@@ -67,8 +65,9 @@ public class ModuleHandler {
 		Set<ASMData> annotationData = asmDataTable.getAll(JAOPCA_MODULE);
 		for(ASMData aData : annotationData) {
 			List<String> deps = (List<String>)aData.getAnnotationInfo().get("modDependencies");
+			Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
 			String className = aData.getClassName();
-			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(ModuleHandler::isModVersionNotLoaded)) {
+			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
 				LOGGER.info("Module {} has missing mod dependencies, skipping", className);
 				continue;
 			}
@@ -95,32 +94,6 @@ public class ModuleHandler {
 				LOGGER.fatal("Unable to load module {}", className, e);
 			}
 		}
-	}
-
-	static boolean isModVersionNotLoaded(String dep) {
-		Loader modLoader = Loader.instance();
-		int separatorIndex = dep.lastIndexOf('@');
-		String modId = dep.substring(0, separatorIndex == -1 ? dep.length() : separatorIndex);
-		String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1);
-		VersionRange versionRange;
-		try {
-			versionRange = VersionRange.createFromVersionSpec(spec);
-		}
-		catch(InvalidVersionSpecificationException e) {
-			LOGGER.warn("Unable to parse version spec {} for mod id {}", spec, modId, e);
-			return true;
-		}
-		if(Loader.isModLoaded(modId)) {
-			ArtifactVersion version = modLoader.getIndexedModList().get(modId).getProcessedVersion();
-			if(versionRange.containsVersion(version)) {
-				return false;
-			}
-			else {
-				LOGGER.warn("Mod {} in version range {} was requested, was {}", modId, versionRange, version);
-				return true;
-			}
-		}
-		return true;
 	}
 
 	public static void computeValidMaterials() {

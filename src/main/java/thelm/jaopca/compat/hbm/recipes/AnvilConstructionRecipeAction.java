@@ -1,4 +1,4 @@
-package thelm.jaopca.compat.hbmntm.recipes;
+package thelm.jaopca.compat.hbm.recipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,15 +8,13 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.Lists;
 import com.hbm.inventory.AnvilRecipes;
 import com.hbm.inventory.RecipesCommon;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeAction;
-import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.compat.hbm.HBMHelper;
 import thelm.jaopca.utils.MiscHelper;
 
 public class AnvilConstructionRecipeAction implements IRecipeAction {
@@ -37,7 +35,7 @@ public class AnvilConstructionRecipeAction implements IRecipeAction {
 
 	@Override
 	public boolean register() {
-		List<List<RecipesCommon.AStack>> inputs = new ArrayList<>();
+		List<RecipesCommon.AStack> inputs = new ArrayList<>();
 		int i = 0;
 		while(i < input.length) {
 			Object in = input[i];
@@ -47,27 +45,11 @@ public class AnvilConstructionRecipeAction implements IRecipeAction {
 				count = (Integer)output[i];
 				++i;
 			}
-			List<RecipesCommon.AStack> list = new ArrayList<>();
-			if(in instanceof String) {
-				if(!ApiImpl.INSTANCE.getOredict().contains(in)) {
-					throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
-				}
-				RecipesCommon.AStack aStack = new RecipesCommon.OreDictStack((String)in);
-				aStack.setCount(count);
-				list.add(aStack);
+			RecipesCommon.AStack ing = HBMHelper.INSTANCE.getAStack(in, count);
+			if(ing == null) {
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
-			else {
-				Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
-				if(ing == null) {
-					throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
-				}
-				for(ItemStack is : ing.getMatchingStacks()) {
-					RecipesCommon.AStack aStack = new RecipesCommon.ComparableStack(is);
-					aStack.setCount(count);
-					list.add(aStack);
-				}
-			}
-			inputs.add(list);
+			inputs.add(ing);
 		}
 		if(inputs.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredients in recipe "+key+": "+Arrays.deepToString(input));
@@ -98,20 +80,18 @@ public class AnvilConstructionRecipeAction implements IRecipeAction {
 			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 		AnvilRecipes.AnvilOutput[] outs = outputs.toArray(new AnvilRecipes.AnvilOutput[outputs.size()]);
-		for(List<RecipesCommon.AStack> in : Lists.cartesianProduct(inputs)) {
-			RecipesCommon.AStack[] ins = in.toArray(new RecipesCommon.AStack[in.size()]);
-			AnvilRecipes.AnvilConstructionRecipe recipe = new AnvilRecipes.AnvilConstructionRecipe(ins, outs).setTier(tier);
-			if(ins.length == 1 && outs.length == 1) {
-				recipe.setOverlay(AnvilRecipes.OverlayType.SMITHING);
-			}
-			else if(ins.length == 1) {
-				recipe.setOverlay(AnvilRecipes.OverlayType.RECYCLING);
-			}
-			else if(outs.length == 1) {
-				recipe.setOverlay(AnvilRecipes.OverlayType.CONSTRUCTION);
-			}
-			AnvilRecipes.getConstruction().add(recipe);
+		RecipesCommon.AStack[] ins = inputs.toArray(new RecipesCommon.AStack[inputs.size()]);
+		AnvilRecipes.AnvilConstructionRecipe recipe = new AnvilRecipes.AnvilConstructionRecipe(ins, outs).setTier(tier);
+		if(ins.length == 1 && outs.length == 1) {
+			recipe.setOverlay(AnvilRecipes.OverlayType.SMITHING);
 		}
+		else if(ins.length == 1) {
+			recipe.setOverlay(AnvilRecipes.OverlayType.RECYCLING);
+		}
+		else if(outs.length == 1) {
+			recipe.setOverlay(AnvilRecipes.OverlayType.CONSTRUCTION);
+		}
+		AnvilRecipes.getConstruction().add(recipe);
 		return true;
 	}
 }

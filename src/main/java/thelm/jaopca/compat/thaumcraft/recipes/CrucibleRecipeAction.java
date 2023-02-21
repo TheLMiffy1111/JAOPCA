@@ -13,6 +13,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.CrucibleRecipe;
 import thelm.jaopca.api.recipes.IRecipeAction;
+import thelm.jaopca.compat.thaumcraft.ThaumcraftHelper;
 import thelm.jaopca.utils.MiscHelper;
 
 public class CrucibleRecipeAction implements IRecipeAction {
@@ -44,14 +45,14 @@ public class CrucibleRecipeAction implements IRecipeAction {
 		AspectList aspectList = new AspectList();
 		int i = 0;
 		while(i < aspects.length) {
-			String in = aspects[i].toString();
+			Object in = aspects[i];
 			++i;
 			Integer inc = 1;
 			if(i < aspects.length && aspects[i] instanceof Integer) {
 				inc = (Integer)aspects[i];
 				++i;
 			}
-			Aspect aspect = Aspect.getAspect(in);
+			Aspect aspect = ThaumcraftHelper.INSTANCE.getAspect(in);
 			if(aspect == null) {
 				throw new IllegalArgumentException("Non-existent aspect in recipe "+key+": "+in);
 			}

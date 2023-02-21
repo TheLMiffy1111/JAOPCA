@@ -1,4 +1,4 @@
-package thelm.jaopca.compat.hbmntm.recipes;
+package thelm.jaopca.compat.hbm.recipes;
 
 import java.util.Map;
 import java.util.Objects;

@@ -29,7 +29,6 @@ import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.FluidFormSettingsDeserializer;
 import thelm.jaopca.custom.json.ForgeRegistryEntrySupplierDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 public class FluidFormType implements IFluidFormType {

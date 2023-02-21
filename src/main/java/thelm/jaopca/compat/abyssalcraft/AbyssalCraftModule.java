@@ -85,6 +85,8 @@ public class AbyssalCraftModule implements IModule {
 					setBlockItemCreator((mf, s)->
 					new JAOPCAUnlockableBlockItem(mf, s).
 					setUnlockCondition(new DimensionCondition(ACLib.dreadlands_id))));
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
+			crystalFragmentForm, crystalShardForm, crystalForm, crystalClusterForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -93,8 +95,7 @@ public class AbyssalCraftModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this,
-				crystalFragmentForm, crystalShardForm, crystalForm, crystalClusterForm).setGrouped(true));
+		return Collections.singletonList(formRequest);
 	}
 
 	@Override
@@ -110,9 +111,16 @@ public class AbyssalCraftModule implements IModule {
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		Set<String> oredict = api.getOredict();
 		boolean rework = ACConfig.crystal_rework;
-		for(IMaterial material : crystalFragmentForm.getMaterials()) {
-			String crystalShardOredict = miscHelper.getOredictName("crystalShard", material.getName());
+		for(IMaterial material : formRequest.getMaterials()) {
 			IItemInfo crystalFragmentInfo = itemFormType.getMaterialFormInfo(crystalFragmentForm, material);
+			String crystalFragmentOredict = miscHelper.getOredictName("crystalFragment", material.getName());
+			IItemInfo crystalShardInfo = itemFormType.getMaterialFormInfo(crystalShardForm, material);
+			String crystalShardOredict = miscHelper.getOredictName("crystalShard", material.getName());
+			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
+			String crystalOredict = miscHelper.getOredictName("crystal", material.getName());
+			IBlockInfo crystalClusterInfo = BlockFormType.INSTANCE.getMaterialFormInfo(crystalClusterForm, material);
+			String crystalClusterOredict = miscHelper.getOredictName("crystalCluster", material.getName());
+
 			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("abyssalcraft.crystal_shard_to_crystal_fragment", material.getName()),
 					crystalFragmentInfo, 9, new Object[] {
@@ -122,11 +130,7 @@ public class AbyssalCraftModule implements IModule {
 			if(!rework) {
 				helper.registerFuel(crystalFragmentInfo, 17);
 			}
-		}
-		for(IMaterial material : crystalShardForm.getMaterials()) {
-			String crystalFragmentOredict = miscHelper.getOredictName("crystalFragment", material.getName());
-			String crystalOredict = miscHelper.getOredictName("crystal", material.getName());
-			IItemInfo crystalShardInfo = itemFormType.getMaterialFormInfo(crystalShardForm, material);
+
 			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("abyssalcraft.crystal_fragment_to_crystal_shard", material.getName()),
 					crystalShardInfo, 1, new Object[] {
@@ -143,11 +147,7 @@ public class AbyssalCraftModule implements IModule {
 			if(!rework) {
 				helper.registerFuel(crystalShardInfo, 150);
 			}
-		}
-		for(IMaterial material : crystalForm.getMaterials()) {
-			String crystalShardOredict = miscHelper.getOredictName("crystalShard", material.getName());
-			String crystalClusterOredict = miscHelper.getOredictName("crystalCluster", material.getName());
-			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
+
 			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("abyssalcraft.crystal_shard_to_crystal", material.getName()),
 					crystalInfo, 1, new Object[] {
@@ -164,10 +164,7 @@ public class AbyssalCraftModule implements IModule {
 			if(!rework) {
 				helper.registerFuel(crystalInfo, 1350);
 			}
-		}
-		for(IMaterial material : crystalClusterForm.getMaterials()) {
-			String crystalOredict = miscHelper.getOredictName("crystal", material.getName());
-			IBlockInfo crystalClusterInfo = BlockFormType.INSTANCE.getMaterialFormInfo(crystalClusterForm, material);
+
 			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("abyssalcraft.crystal_to_crystal_cluster", material.getName()),
 					crystalClusterInfo, 1, new Object[] {

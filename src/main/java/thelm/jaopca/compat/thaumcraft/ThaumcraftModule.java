@@ -16,6 +16,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import thaumcraft.api.aspects.Aspect;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -76,8 +77,12 @@ public class ThaumcraftModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		for(IMaterial material : clusterForm.getMaterials()) {
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			IItemInfo clusterInfo = itemFormType.getMaterialFormInfo(clusterForm, material);
+			String clusterOredict = miscHelper.getOredictName("cluster", material.getName());
+			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
+			String nuggetOredict = miscHelper.getOredictName("nugget", material.getName());
+
 			helper.registerSpecialMiningRecipe(
 					miscHelper.getRecipeKey("thaumcraft.ore_to_cluster_mining", material.getName()),
 					oreOredict, clusterInfo, 1, 1F);
@@ -86,20 +91,20 @@ public class ThaumcraftModule implements IModule {
 			helper.registerCrucibleRecipe(
 					recipeKey,
 					"METALPURIFICATION", oreOredict, new Object[] {
-							"metallum", 5, "ordo", 5,
+							Aspect.METAL, 5, Aspect.ORDER, 5,
 					}, clusterInfo, 1);
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			String clusterOredict = miscHelper.getOredictName("cluster", material.getName());
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
-			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
-			String nuggetOredict = miscHelper.getOredictName("nugget", material.getName());
+
 			api.registerSmeltingRecipe(
 					miscHelper.getRecipeKey("thaumcraft.cluster_to_material", material.getName()),
 					clusterOredict, materialOredict, 2, 1F);
 			helper.registerSmeltingBonusRecipe(
 					miscHelper.getRecipeKey("thaumcraft.cluster_to_nugget", material.getName()),
 					clusterOredict, nuggetOredict, 1, 0.33F);
+
+		}
+		for(IMaterial material : moduleData.getMaterials()) {
+			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+			String nuggetOredict = miscHelper.getOredictName("nugget", material.getName());
 			helper.registerSmeltingBonusRecipe(
 					miscHelper.getRecipeKey("thaumcraft.ore_to_nugget", material.getName()),
 					oreOredict, nuggetOredict, 1, 0.33F);

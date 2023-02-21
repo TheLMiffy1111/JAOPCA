@@ -56,8 +56,8 @@ public class StickModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		for(IMaterial material : stickForm.getMaterials()) {
-			IItemInfo stickInfo = itemFormType.getMaterialFormInfo(stickForm, material);
 			if(registerRodOredict) {
+				IItemInfo stickInfo = itemFormType.getMaterialFormInfo(stickForm, material);
 				api.registerOredict(miscHelper.getOredictName("rod", material.getName()), stickInfo.asItem());
 			}
 		}

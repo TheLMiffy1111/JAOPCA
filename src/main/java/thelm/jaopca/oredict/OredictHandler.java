@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -64,10 +65,11 @@ public class OredictHandler {
 	public static void findOredictModules(ASMDataTable asmDataTable) {
 		OREDICT_MODULES.clear();
 		Set<ASMData> annotationData = asmDataTable.getAll(JAOPCA_OREDICT_MODULE);
+		Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
 		for(ASMData aData : annotationData) {
 			List<String> deps = (List<String>)aData.getAnnotationInfo().get("modDependencies");
 			String className = aData.getClassName();
-			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(OredictHandler::isModVersionNotLoaded)) {
+			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
 				LOGGER.info("Oredict module {} has missing mod dependencies, skipping", className);
 				continue;
 			}
@@ -95,32 +97,6 @@ public class OredictHandler {
 				LOGGER.fatal("Unable to load oredict module {}", className, e);
 			}
 		}
-	}
-
-	static boolean isModVersionNotLoaded(String dep) {
-		Loader modLoader = Loader.instance();
-		int separatorIndex = dep.lastIndexOf('@');
-		String modId = dep.substring(0, separatorIndex == -1 ? dep.length() : separatorIndex);
-		String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1);
-		VersionRange versionRange;
-		try {
-			versionRange = VersionRange.createFromVersionSpec(spec);
-		}
-		catch(InvalidVersionSpecificationException e) {
-			LOGGER.warn("Unable to parse version spec {} for mod id {}", spec, modId, e);
-			return true;
-		}
-		if(Loader.isModLoaded(modId)) {
-			ArtifactVersion version = modLoader.getIndexedModList().get(modId).getProcessedVersion();
-			if(versionRange.containsVersion(version)) {
-				return false;
-			}
-			else {
-				LOGGER.warn("Mod {} in version range {} was requested, was {}", modId, versionRange, version);
-				return true;
-			}
-		}
-		return true;
 	}
 
 	public static void register() {

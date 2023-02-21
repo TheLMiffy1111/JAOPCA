@@ -45,7 +45,7 @@ public class ShapelessRecipeAction implements IRecipeAction {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		NonNullList<Ingredient> inputList = NonNullList.create();
-		for(Object in : input){
+		for(Object in : input) {
 			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
 			if(ing == null) {
 				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);

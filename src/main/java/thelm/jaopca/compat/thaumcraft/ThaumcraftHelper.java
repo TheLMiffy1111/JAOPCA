@@ -2,12 +2,14 @@ package thelm.jaopca.compat.thaumcraft;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.primitives.Ints;
 
 import net.minecraft.util.ResourceLocation;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchEntry;
 import thaumcraft.api.research.ResearchStage;
@@ -21,6 +23,19 @@ public class ThaumcraftHelper {
 	public static final ThaumcraftHelper INSTANCE = new ThaumcraftHelper();
 
 	private ThaumcraftHelper() {}
+
+	public Aspect getAspect(Object obj) {
+		if(obj instanceof Supplier<?>) {
+			return getAspect((Supplier<?>)obj);	
+		}
+		if(obj instanceof String) {
+			return Aspect.getAspect((String)obj);
+		}
+		if(obj instanceof Aspect) {
+			return (Aspect)obj;
+		}
+		return null;
+	}
 
 	public boolean registerRecipesToResearch(String research, Collection<ResourceLocation> recipeKeys) {
 		int stage = 0;

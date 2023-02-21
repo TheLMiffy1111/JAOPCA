@@ -54,8 +54,8 @@ public class SmallDustModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : smallDustForm.getMaterials()) {
-			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			String smallDustOredict = miscHelper.getOredictName("dustSmall", material.getName());
+			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			ApiImpl.INSTANCE.registerShapelessRecipe(
 					miscHelper.getRecipeKey("small_dust.to_dust", material.getName()),
 					dustOredict, 1, new Object[] {

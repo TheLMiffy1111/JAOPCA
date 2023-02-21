@@ -20,7 +20,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
@@ -33,6 +32,7 @@ import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.custom.utils.BlockDeserializationHelper;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.oredict.OredictHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -72,7 +72,7 @@ public class BlockFormType implements IBlockFormType {
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
 		String oredictName = MiscHelper.INSTANCE.getOredictName(form.getSecondaryName(), material.getName());
-		return !OreDictionary.doesOreNameExist(oredictName);
+		return !OredictHandler.getOredict().contains(oredictName);
 	}
 
 	@Override

@@ -68,6 +68,7 @@ public class FormHandler {
 				for(IForm form : request.getForms()) {
 					form.setMaterials(materials);
 				}
+				request.setMaterials(materials);
 			}
 			else {
 				for(IForm form : request.getForms()) {

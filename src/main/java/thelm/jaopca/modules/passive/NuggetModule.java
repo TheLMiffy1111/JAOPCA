@@ -47,9 +47,9 @@ public class NuggetModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : nuggetForm.getMaterials()) {
-			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 			IItemInfo nuggetInfo = ItemFormType.INSTANCE.getMaterialFormInfo(nuggetForm, material);
 			String nuggetOredict = miscHelper.getOredictName("nugget", material.getName());
+			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("nugget.to_material", material.getName()),
 					materialOredict, 1, new Object[] {

@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -486,17 +485,6 @@ public class FoundryCompatModule implements IModule {
 					}
 				}
 			}
-		}
-	}
-
-	@Override
-	public void onPostInit(IModuleData moduleData, FMLPostInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
-		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		Set<IMaterial> moltenMaterials = api.getForm("molten").getMaterials();
-		for(IMaterial material : moduleData.getMaterials()) {
-			MaterialType type = material.getType();
-			String name = material.getName();
 		}
 	}
 

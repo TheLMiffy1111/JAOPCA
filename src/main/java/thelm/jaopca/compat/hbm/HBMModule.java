@@ -1,4 +1,4 @@
-package thelm.jaopca.compat.hbmntm;
+package thelm.jaopca.compat.hbm;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,21 +32,24 @@ import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "hbm")
-public class HBMNTMModule implements IModule {
+public class HBMModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminum", "Aluminium", "Beryllium", "CertusQuartz", "Cinnabar", "Coal", "Cobalt", "Copper", "Diamond",
 			"Fluorite", "Gold", "Iron", "Lead", "Lithium", "Niter", "Plutonium", "RareEarth", "Redstone",
 			"Saltpeter", "Schrabidium", "Starmetal", "Sulfur", "Thorium", "Titanium", "Tungsten", "Uranium"));
-	private static final Set<String> CENTRIFUGE_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Emerald", "Lapis", "Lignite", "Quartz"));
+	private static final Set<String> MODULE_BLACKLIST = new TreeSet<>(Arrays.asList(
+			"Aluminum", "Aluminium", "Beryllium", "CertusQuartz", "Cinnabar", "Coal", "Cobalt", "Copper", "Diamond",
+			"Emerald", "Fluorite", "Gold", "Iron", "Lapis", "Lead", "Lignite", "Lithium", "Niter", "Plutonium",
+			"Quartz", "RareEarth", "Redstone", "Saltpeter", "Schrabidium", "Starmetal", "Sulfur", "Thorium",
+			"Titanium", "Tungsten", "Uranium"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	private final IForm crystalForm = ApiImpl.INSTANCE.newForm(this, "hbm_crystal", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.ORE).setSecondaryName("hbm:crystal").setDefaultMaterialBlacklist(BLACKLIST);
 
-	public HBMNTMModule() {
+	public HBMModule() {
 		ApiImpl.INSTANCE.registerBlacklistedMaterialNames(
 				"Am241", "Am242", "Au198", "Co60", "Gh336", "Np237", "Pb209", "Po210", "Pu238", "Pu239", "Pu240",
 				"Pu241", "Sr90", "Tc99", "Th232", "U233", "U235", "U238");
@@ -77,7 +80,7 @@ public class HBMNTMModule implements IModule {
 
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
+		return MODULE_BLACKLIST;
 	}
 
 	@Override
@@ -88,35 +91,22 @@ public class HBMNTMModule implements IModule {
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		HBMNTMHelper helper = HBMNTMHelper.INSTANCE;
+		HBMHelper helper = HBMHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		Item tinyLithium = ModItems.powder_lithium_tiny;
 		for(IMaterial material : crystalForm.getMaterials()) {
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
-			helper.registerCrystallizerRecipe(
-					miscHelper.getRecipeKey("hbm.ore_to_crystal", material.getName()),
-					oreOredict, crystalInfo, 1);
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String crystalOredict = miscHelper.getOredictName("hbm:crystal", material.getName());
+			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			String extraDustOredict = miscHelper.getOredictName("dust", material.getExtra(1).getName());
-			if(!CENTRIFUGE_BLACKLIST.contains(material.getName())) {
-				IDynamicSpecConfig config = configs.get(material);
-				String configByproduct = config.getDefinedString("hbm.byproduct", "minecraft:gravel",
-						miscHelper.metaItemPredicate(), "The default byproduct material to output in HBMNTM's centrifuge.");
-				ItemStack byproduct = miscHelper.parseMetaItem(configByproduct);
-				int count = material.getType().isDust() ? 3 : 1;
-				helper.registerCentrifugeRecipe(
-						miscHelper.getRecipeKey("hbm.ore_to_dust_centrifuge", material.getName()),
-						oreOredict, new Object[] {
-								dustOredict, count, dustOredict, count, extraDustOredict, 1, byproduct, 1,
-						});
-			}
+
+			helper.registerCrystallizerRecipe(
+					miscHelper.getRecipeKey("hbm.ore_to_crystal", material.getName()),
+					oreOredict, crystalInfo, 1);
+
 			api.registerSmeltingRecipe(
 					miscHelper.getRecipeKey("hbm.crystal_to_material", material.getName()),
 					crystalOredict, materialOredict, material.getType().isDust() ? 6 : 2, 2F);
@@ -125,10 +115,36 @@ public class HBMNTMModule implements IModule {
 					miscHelper.getRecipeKey("hbm.crystal_to_dust_shredder", material.getName()),
 					crystalOredict, dustOredict, count);
 			count = material.getType().isDust() ? 4 : 2;
+			if(material.hasExtra(1)) {
+				helper.registerCentrifugeRecipe(
+						miscHelper.getRecipeKey("hbm.crystal_to_dust_centrifuge", material.getName()),
+						crystalOredict, new Object[] {
+								dustOredict, count, dustOredict, count, extraDustOredict, 1, tinyLithium, 1,
+						});
+			}
+			else {
+				helper.registerCentrifugeRecipe(
+						miscHelper.getRecipeKey("hbm.crystal_to_dust_centrifuge", material.getName()),
+						crystalOredict, new Object[] {
+								dustOredict, count, dustOredict, count, tinyLithium, 1, tinyLithium, 1,
+						});
+			}
+		}
+		for(IMaterial material : moduleData.getMaterials()) {
+			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+			String dustOredict = miscHelper.getOredictName("dust", material.getName());
+			String extraDustOredict = miscHelper.getOredictName("dust", material.getExtra(1).getName());
+
+			IDynamicSpecConfig config = configs.get(material);
+			String configByproduct = config.getDefinedString("hbm.byproduct", "minecraft:gravel",
+					miscHelper.metaItemPredicate(), "The default byproduct material to output in HBMNTM's centrifuge.");
+			ItemStack byproduct = miscHelper.parseMetaItem(configByproduct);
+
+			int count = material.getType().isDust() ? 3 : 1;
 			helper.registerCentrifugeRecipe(
-					miscHelper.getRecipeKey("hbm.crystal_to_dust_centrifuge", material.getName()),
-					crystalOredict, new Object[] {
-							dustOredict, count, dustOredict, count, extraDustOredict, 1, tinyLithium, 1,
+					miscHelper.getRecipeKey("hbm.ore_to_dust_centrifuge", material.getName()),
+					oreOredict, new Object[] {
+							dustOredict, count, dustOredict, count, extraDustOredict, 1, byproduct, 1,
 					});
 		}
 	}

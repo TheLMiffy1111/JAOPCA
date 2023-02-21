@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
 import mekanism.common.MekanismFluids;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
@@ -37,8 +38,23 @@ public class MekanismModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Copper", "Gold", "Iron", "Lead", "Osmium", "Silver", "Tin"));
-	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Aluminium", "Aluminum", "Draconium", "Iridium", "Mithril", "Nickel", "Uranium", "Yellorium"));
+	private static final Set<String> MODULE_BLACKLIST = new TreeSet<>(Arrays.asList(
+			"Aluminium", "Aluminum", "Copper", "Draconium", "Gold", "Iridium", "Iron", "Lead",
+			"Mithril", "Nickel", "Osmium", "Silver", "Tin", "Uranium", "Yellorium"));
+	static final String[] METALLURGY_LIST = {
+			"Adamantine", "Alduorite", "Amordrine", "Angmallen", "AstralSilver", "Atlarus", "BlackSteel",
+			"Brass", "Bronze", "Carmot", "Celenegil", "Ceruclase", "DamascusSteel", "DeepIron",
+			"Desichalkos", "Electrum", "Eximite", "Haderoth", "Hepatizon", "Ignatius", "Infuscolium",
+			"Inolashite", "Kalendrite", "Lemurite", "Lutetium", "Manganese", "Meutoite", "Midasium",
+			"Orichalcum", "Oureclase", "Prometheum", "Quicksilver", "Rubracium", "Sanguinite",
+			"ShadowIron", "ShadowSteel", "Tartarite", "Vulcanite", "Vyroxeres", "Zinc",
+	};
+
+	static {
+		if(Loader.isModLoaded("metallurgy")) {
+			Collections.addAll(MODULE_BLACKLIST, METALLURGY_LIST);
+		}
+	}
 
 	public MekanismModule() {
 		GasFormType.init();
@@ -58,6 +74,8 @@ public class MekanismModule implements IModule {
 	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_slurry", GasFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("slurry").setDefaultMaterialBlacklist(BLACKLIST).
 			setSkipGroupedCheck(true);
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
+			dirtyDustForm, clumpForm, shardForm, crystalForm, dirtySlurryForm, cleanSlurryForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -73,8 +91,7 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this,
-				dirtyDustForm, clumpForm, shardForm, crystalForm, dirtySlurryForm, cleanSlurryForm).setGrouped(true));
+		return Collections.singletonList(formRequest);
 	}
 
 	@Override
@@ -84,7 +101,7 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
+		return MODULE_BLACKLIST;
 	}
 
 	@Override
@@ -95,65 +112,61 @@ public class MekanismModule implements IModule {
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		IGasFormType gasFormType = GasFormType.INSTANCE;
 		for(IMaterial material : dirtySlurryForm.getMaterials()) {
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			IGasInfo dirtySlurryInfo = gasFormType.getMaterialFormInfo(dirtySlurryForm, material);
+			String dirtySlurryName = miscHelper.getFluidName("slurry", material.getName());
+			IGasInfo cleanSlurryInfo = gasFormType.getMaterialFormInfo(cleanSlurryForm, material);
+			String cleanSlurryName = miscHelper.getFluidName("clean_slurry", material.getName());
+			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
+			String crystalOredict = miscHelper.getOredictName("crystal", material.getName());
+			IItemInfo shardInfo = itemFormType.getMaterialFormInfo(shardForm, material);
+			String shardOredict = miscHelper.getOredictName("shard", material.getName());
+			IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
+			String clumpOredict = miscHelper.getOredictName("clump", material.getName());
+			IItemInfo dirtyDustInfo = itemFormType.getMaterialFormInfo(dirtyDustForm, material);
+			String dirtyDustOredict = miscHelper.getOredictName("dustDirty", material.getName());
+			String oreOredict = miscHelper.getOredictName("ore", material.getName());
+			String dustOredict = miscHelper.getOredictName("dust", material.getName());
+
 			helper.registerChemicalDissolutionChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.ore_to_dirty_slurry", material.getName()),
 					oreOredict, 1, dirtySlurryInfo, 1000);
-		}
-		for(IMaterial material : cleanSlurryForm.getMaterials()) {
-			String dirtySlurryName = miscHelper.getFluidName("slurry", material.getName());
-			IGasInfo cleanSlurryInfo = gasFormType.getMaterialFormInfo(cleanSlurryForm, material);
+
 			helper.registerChemicalWasherRecipe(
 					miscHelper.getRecipeKey("mekanism.dirty_to_clean_slurry", material.getName()),
 					dirtySlurryName, 1, cleanSlurryInfo, 1);
-		}
-		for(IMaterial material : crystalForm.getMaterials()) {
-			String cleanSlurryName = miscHelper.getFluidName("clean_slurry", material.getName());
-			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
+
 			helper.registerChemicalCrystallizerRecipe(
 					miscHelper.getRecipeKey("mekanism.clean_slurry_to_crystal", material.getName()),
 					cleanSlurryName, 200, crystalInfo, 1);
-		}
-		for(IMaterial material : shardForm.getMaterials()) {
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
-			String crystalOredict = miscHelper.getOredictName("crystal", material.getName());
-			IItemInfo shardInfo = itemFormType.getMaterialFormInfo(shardForm, material);
+
 			helper.registerChemicalInjectionChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.ore_to_shard", material.getName()),
 					oreOredict, 1, MekanismFluids.HydrogenChloride, shardInfo, 4);
 			helper.registerChemicalInjectionChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.crystal_to_shard", material.getName()),
 					crystalOredict, 1, MekanismFluids.HydrogenChloride, shardInfo, 1);
-		}
-		for(IMaterial material : clumpForm.getMaterials()) {
-			String oreOredict = miscHelper.getOredictName("ore", material.getName());
-			String shardOredict = miscHelper.getOredictName("shard", material.getName());
-			IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
+
 			helper.registerPurificationChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.ore_to_clump", material.getName()),
 					oreOredict, 1, clumpInfo, 3);
 			helper.registerPurificationChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.shard_to_clump", material.getName()),
+
 					shardOredict, 1, clumpInfo, 1);
-		}
-		for(IMaterial material : dirtyDustForm.getMaterials()) {
-			String clumpOredict = miscHelper.getOredictName("clump", material.getName());
-			IItemInfo dirtyDustInfo = itemFormType.getMaterialFormInfo(dirtyDustForm, material);
 			helper.registerCrusherRecipe(
 					miscHelper.getRecipeKey("mekanism.clump_to_dirty_dust", material.getName()),
 					clumpOredict, 1, dirtyDustInfo, 1);
+
+			helper.registerEnrichmentChamberRecipe(
+					miscHelper.getRecipeKey("mekanism.dirty_dust_to_dust", material.getName()),
+					dirtyDustOredict, 1, dustOredict, 1);
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
-			String dirtyDustOredict = miscHelper.getOredictName("dustDirty", material.getName());
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			helper.registerEnrichmentChamberRecipe(
 					miscHelper.getRecipeKey("mekanism.ore_to_dust", material.getName()),
 					oreOredict, 1, dustOredict, 2);
-			helper.registerEnrichmentChamberRecipe(
-					miscHelper.getRecipeKey("mekanism.dirty_dust_to_dust", material.getName()),
-					dirtyDustOredict, 1, dustOredict, 1);
 		}
 	}
 
