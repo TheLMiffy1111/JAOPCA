@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.bloodmagic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,7 +22,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "bloodmagic")
 public class BloodMagicCompatModule implements IModule {
 
-	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "hellforged", "iron", "netherite_scrap"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 

@@ -1,7 +1,6 @@
 package thelm.jaopca.compat.kubejs.utils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.forms.FormHandler;
@@ -35,10 +34,10 @@ public class JAOPCA {
 	}
 
 	public static List<Material> getMaterialsForType(String materialType) {
-		return MaterialHandler.getMaterials().stream().filter(m->m.getType() == MaterialType.fromName(materialType)).map(Material::getMaterialWrapper).collect(Collectors.toList());
+		return MaterialHandler.getMaterials().stream().filter(m->m.getType() == MaterialType.fromName(materialType)).map(Material::getMaterialWrapper).toList();
 	}
 
 	public static List<Material> getAllMaterials() {
-		return MaterialHandler.getMaterials().stream().map(Material::getMaterialWrapper).collect(Collectors.toList());
+		return MaterialHandler.getMaterials().stream().map(Material::getMaterialWrapper).toList();
 	}
 }

@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.indreb;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,7 +22,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "indreb")
 public class IndRebCompatModule implements IModule {
 
-	private static final Set<String> TO_BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_BLOCK_BLACKLIST = new TreeSet<>(List.of(
 			"bone", "brick", "bronze", "coal", "copper", "diamond", "emerald", "glowstone", "gold", "iron", "lapis",
 			"nether_brick", "netherite", "quartz", "redstone", "silver", "steel", "tin"));
 	private static Set<String> configToBlockBlacklist = new TreeSet<>();

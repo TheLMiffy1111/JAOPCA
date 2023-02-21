@@ -2,7 +2,6 @@ package thelm.jaopca.compat.kubejs.utils;
 
 import java.util.List;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import dev.architectury.hooks.fluid.forge.FluidStackHooksForge;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
@@ -47,11 +46,11 @@ public class Form {
 	}
 
 	public List<String> getMaterialTypes() {
-		return form.getMaterialTypes().stream().map(MaterialType::getName).collect(Collectors.toList());
+		return form.getMaterialTypes().stream().map(MaterialType::getName).toList();
 	}
 
 	public List<Material> getMaterials() {
-		return form.getMaterials().stream().map(Material::getMaterialWrapper).collect(Collectors.toList());
+		return form.getMaterials().stream().map(Material::getMaterialWrapper).toList();
 	}
 
 	public String getTagSeparator() {
@@ -90,7 +89,7 @@ public class Form {
 	}
 
 	public List<MaterialForm> getMaterialForms() {
-		return form.getMaterials().stream().map(m->MaterialForm.getMaterialFormWrapper(form, m)).collect(Collectors.toList());
+		return form.getMaterials().stream().map(m->MaterialForm.getMaterialFormWrapper(form, m)).toList();
 	}
 
 	@Override

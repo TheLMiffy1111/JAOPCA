@@ -1,6 +1,5 @@
 package thelm.jaopca.modules.passive;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public class MoltenModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(moltenForm.toRequest());
+		return List.of(moltenForm.toRequest());
 	}
 
 	@Override

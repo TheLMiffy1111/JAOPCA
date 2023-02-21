@@ -1,7 +1,7 @@
 package thelm.jaopca.compat.futurepack;
 
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -30,7 +30,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "futurepack")
 public class FuturepackModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"adrite", "amethyst", "apatite", "bauxite", "beryllium", "cinnabar", "coal", "cobalt", "copper",
 			"devilsiron", "diamond", "emerald", "gold", "iridium", "iron", "lapis", "lead", "magnesium",
 			"magnetite", "manganese", "molybdenum", "naquadah", "nickel", "olivine", "platinum", "pyrite",

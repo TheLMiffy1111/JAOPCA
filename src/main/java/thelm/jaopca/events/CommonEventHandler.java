@@ -51,6 +51,7 @@ public class CommonEventHandler {
 		DataCollector.collectData();
 		ModuleHandler.findModules();
 		ConfigHandler.setupMainConfig();
+		DataInjector.findDataModules();
 		MaterialHandler.findMaterials();
 		ConfigHandler.setupMaterialConfigs();
 		FormTypeHandler.setupGson();

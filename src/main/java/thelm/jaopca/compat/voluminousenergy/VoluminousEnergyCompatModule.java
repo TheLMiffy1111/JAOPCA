@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.voluminousenergy;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,7 +22,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "voluminousenergy")
 public class VoluminousEnergyCompatModule implements IModule {
 
-	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "carbon", "solarium", "titanium"));
 	private static Set<String> configToPlateBlacklist = new TreeSet<>();
 

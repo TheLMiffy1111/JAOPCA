@@ -1,8 +1,5 @@
 package thelm.jaopca.compat.create;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +33,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "create")
 public class CreateModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"aluminium", "aluminum", "copper", "gold", "iron", "lead", "nickel", "osmium", "platinum", "quicksilver",
 			"silver", "tin", "uranium", "zinc"));
 
@@ -65,17 +62,7 @@ public class CreateModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(crushedOreForm.toRequest());
-	}
-
-	@Override
-	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY);
-	}
-
-	@Override
-	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
+		return List.of(crushedOreForm.toRequest());
 	}
 
 	@Override
@@ -98,8 +85,11 @@ public class CreateModule implements IModule {
 		Item netherrack = Items.NETHERRACK;
 		Item endstone = Items.END_STONE;
 		for(IMaterial material : crushedOreForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			IItemInfo crushedOreInfo = itemFormType.getMaterialFormInfo(crushedOreForm, material);
+			ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
+			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
 			IDynamicSpecConfig config = configs.get(material);
 			String configByproduct = config.getDefinedString("create.byproduct", "minecraft:cobblestone",
@@ -167,11 +157,6 @@ public class CreateModule implements IModule {
 							});
 				}
 			}
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", material.getName());
-			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
 			api.registerSmeltingRecipe(
 					new ResourceLocation("jaopca", "create.crushed_to_material_smelting."+material.getName()),

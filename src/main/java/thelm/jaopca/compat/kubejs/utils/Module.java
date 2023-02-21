@@ -2,7 +2,6 @@ package thelm.jaopca.compat.kubejs.utils;
 
 import java.util.List;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
@@ -34,11 +33,11 @@ public class Module {
 	}
 
 	public List<String> getMaterialTypes() {
-		return module.getMaterialTypes().stream().map(MaterialType::getName).collect(Collectors.toList());
+		return module.getMaterialTypes().stream().map(MaterialType::getName).toList();
 	}
 
 	public List<Material> getMaterials() {
-		return moduleData.getMaterials().stream().map(Material::getMaterialWrapper).collect(Collectors.toList());
+		return moduleData.getMaterials().stream().map(Material::getMaterialWrapper).toList();
 	}
 
 	public boolean containsMaterial(Material material) {
@@ -46,7 +45,7 @@ public class Module {
 	}
 
 	public List<Form> getForms() {
-		return FormHandler.getForms().stream().filter(f->f.getModule() == module).map(Form::getFormWrapper).collect(Collectors.toList());
+		return FormHandler.getForms().stream().filter(f->f.getModule() == module).map(Form::getFormWrapper).toList();
 	}
 
 	@Override

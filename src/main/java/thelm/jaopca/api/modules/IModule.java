@@ -34,11 +34,11 @@ public interface IModule extends Comparable<IModule> {
 	}
 
 	default List<IFormRequest> getFormRequests() {
-		return Collections.emptyList();
+		return List.of();
 	}
 
 	default Set<MaterialType> getMaterialTypes() {
-		return Collections.emptySet();
+		return Set.of();
 	}
 
 	default Set<String> getDefaultMaterialBlacklist() {

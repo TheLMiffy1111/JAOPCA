@@ -1,8 +1,12 @@
 package thelm.jaopca.forms;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.google.common.collect.ImmutableList;
 
@@ -17,6 +21,7 @@ public class FormRequest implements IFormRequest {
 	private final IModule module;
 	private final List<IForm> forms;
 	private boolean grouped = false;
+	private final TreeSet<IMaterial> materials = new TreeSet<>();
 
 	public FormRequest(IModule module, IForm... forms) {
 		this.module = Objects.requireNonNull(module);
@@ -51,8 +56,19 @@ public class FormRequest implements IFormRequest {
 	}
 
 	@Override
+	public Set<IMaterial> getMaterials() {
+		return Collections.unmodifiableNavigableSet(materials);
+	}
+
+	@Override
 	public boolean isMaterialGroupValid(IMaterial material) {
 		return !ModuleHandler.getModuleData(module).getRejectedMaterials().contains(material) &&
 				forms.stream().filter(form->!form.skipGroupedCheck()).anyMatch(form->form.isMaterialValid(material));
+	}
+
+	@Override
+	public void setMaterials(Collection<IMaterial> materials) {
+		this.materials.clear();
+		this.materials.addAll(materials);
 	}
 }

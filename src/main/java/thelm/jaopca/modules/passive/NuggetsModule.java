@@ -1,6 +1,5 @@
 package thelm.jaopca.modules.passive;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +36,7 @@ public class NuggetsModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(nuggetForm.toRequest());
+		return List.of(nuggetForm.toRequest());
 	}
 
 	@Override
@@ -45,20 +44,20 @@ public class NuggetsModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : nuggetForm.getMaterials()) {
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			IItemInfo nuggetInfo = ItemFormType.INSTANCE.getMaterialFormInfo(nuggetForm, material);
 			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
+			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+			api.registerShapelessRecipe(
+					new ResourceLocation("jaopca", "nuggets.to_nugget."+material.getName()),
+					nuggetInfo, 9, new Object[] {
+							materialLocation,
+					});
 			api.registerShapelessRecipe(
 					new ResourceLocation("jaopca", "nuggets.to_material."+material.getName()),
 					materialLocation, 1, new Object[] {
 							nuggetLocation, nuggetLocation, nuggetLocation,
 							nuggetLocation, nuggetLocation, nuggetLocation,
 							nuggetLocation, nuggetLocation, nuggetLocation,
-					});
-			api.registerShapelessRecipe(
-					new ResourceLocation("jaopca", "nuggets.to_nugget."+material.getName()),
-					nuggetInfo, 9, new Object[] {
-							materialLocation,
 					});
 		}
 	}

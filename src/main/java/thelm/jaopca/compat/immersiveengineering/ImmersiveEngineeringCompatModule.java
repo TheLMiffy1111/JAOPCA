@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.immersiveengineering;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -24,14 +24,14 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "immersiveengineering")
 public class ImmersiveEngineeringCompatModule implements IModule {
 
-	private static final Set<String> GENERAL_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> GENERAL_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "ardite", "brass", "bronze", "cobalt", "constantan", "copper", "electrum",
 			"gold", "invar", "iron", "lead", "manyullyn", "nickel", "osmium", "platinum", "silver", "steel",
 			"tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> HAMMER_TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> HAMMER_TO_PLATE_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "constantan", "copper", "electrum", "gold", "iron", "lead", "nickel",
 			"silver", "steel", "uranium"));
-	private static final Set<String> WIRECUTTER_TO_WIRE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> WIRECUTTER_TO_WIRE_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "copper", "electrum", "steel"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToIngotBlacklist = new TreeSet<>();

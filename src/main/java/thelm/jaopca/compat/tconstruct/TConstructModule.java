@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.tconstruct;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.ToIntFunction;
@@ -33,7 +33,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "tconstruct")
 public class TConstructModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "amethyst", "cobalt", "copper", "debris", "diamond", "emerald", "gold", "iron",
 			"lead", "netherite", "netherite_scrap", "nickel", "osmium", "platinum", "quartz", "silver", "tin",
 			"tungsten", "uranium", "zinc"));

@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.electrodynamics;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -22,13 +22,13 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "electrodynamics")
 public class ElectrodynamicsCompatModule implements IModule {
 
-	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
 			"bronze", "chromium", "copper", "gold", "iron", "lead", "lithium", "molybdenum", "netherite",
 			"netherite_scrap", "silver", "steel", "superconductive", "tin", "vanadium"));
-	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "bronze", "hslasteel", "iron", "lithium", "stainlesssteel", "steel", "titanium",
 			"titaniumcarbide", "vanadiumsteel"));
-	private static final Set<String> TO_ROD_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> TO_ROD_BLACKLIST = new TreeSet<>(List.of(
 			"hslasteel", "stainlesssteel", "steel", "titaniumcarbide"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToPlateBlacklist = new TreeSet<>();

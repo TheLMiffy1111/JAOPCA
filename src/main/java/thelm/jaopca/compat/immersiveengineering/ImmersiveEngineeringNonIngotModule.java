@@ -1,7 +1,7 @@
 package thelm.jaopca.compat.immersiveengineering;
 
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,7 +23,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "immersiveengineering")
 public class ImmersiveEngineeringNonIngotModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"coal", "diamond", "emerald", "fluorite", "lapis", "quartz", "redstone"));
 
 	@Override

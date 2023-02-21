@@ -1,6 +1,5 @@
 package thelm.jaopca.modules.passive;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.ImmutableSetMultimap;
@@ -44,7 +43,7 @@ public class TinyDustsModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(tinyDustForm.toRequest());
+		return List.of(tinyDustForm.toRequest());
 	}
 
 	@Override
@@ -52,8 +51,8 @@ public class TinyDustsModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : tinyDustForm.getMaterials()) {
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			ResourceLocation tinyDustLocation = miscHelper.getTagLocation("tiny_dusts", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			ApiImpl.INSTANCE.registerShapelessRecipe(
 					new ResourceLocation("jaopca", "tiny_dusts.to_dust."+material.getName()),
 					dustLocation, 1, new Object[] {

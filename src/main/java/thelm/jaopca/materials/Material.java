@@ -1,7 +1,6 @@
 package thelm.jaopca.materials;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +18,13 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.tags.ITag;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.api.materials.MaterialColorEvent;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.client.colors.ColorHandler;
 import thelm.jaopca.config.ConfigHandler;
@@ -33,7 +34,7 @@ public class Material implements IMaterial {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	private static final Set<String> DEFAULT_SMALL_BLOCKS = new TreeSet<>(Arrays.asList(
+	private static final Set<String> DEFAULT_SMALL_BLOCKS = new TreeSet<>(List.of(
 			"amethyst", "certus_quartz", "quartz"));
 
 	private final String name;
@@ -48,6 +49,7 @@ public class Material implements IMaterial {
 	private OptionalInt color = OptionalInt.empty();
 	private IDynamicSpecConfig config;
 	private ITag<Item> tag;
+	private boolean shouldFireColorEvent = true;
 
 	public Material(String name, MaterialType type) {
 		this.name = name;
@@ -104,23 +106,30 @@ public class Material implements IMaterial {
 
 	@Override
 	public int getColor() {
-		if(!color.isPresent() && config != null) {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
-				if(!MaterialHandler.clientTagsBound) {
-					LOGGER.warn("Tried to get color for material {} when tags are not bound", name);
-					return;
-				}
-				ITag<Item> tag = getTag();
-				color = OptionalInt.of(0xFFFFFF);
-				MiscHelper.INSTANCE.submitAsyncTask(()->{
-					try {
-						color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(tag), "The color of this material."));
-					}
-					catch(Exception e) {
-						LOGGER.warn("Unable to get color for material {}", name, e);
-					}
+		if(MaterialHandler.clientTagsBound) {
+			if(!color.isPresent() && config != null) {
+				DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
+					shouldFireColorEvent = false;
+					ITag<Item> tag = getTag();
+					color = OptionalInt.of(0xFFFFFF);
+					MiscHelper.INSTANCE.submitAsyncTask(()->{
+						try {
+							color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(tag), "The color of this material."));
+							MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
+						}
+						catch(Exception e) {
+							LOGGER.warn("Unable to get color for material {}", name, e);
+						}
+					});
 				});
-			});
+			}
+			if(color.isPresent() && shouldFireColorEvent) {
+				shouldFireColorEvent = false;
+				MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
+			}
+		}
+		else {
+			LOGGER.warn("Tried to get color for material {} when tags are not bound", name);
 		}
 		return 0xFF000000 | color.orElse(0xFFFFFF);
 	}

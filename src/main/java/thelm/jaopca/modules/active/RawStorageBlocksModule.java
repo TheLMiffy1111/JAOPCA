@@ -1,6 +1,5 @@
 package thelm.jaopca.modules.active;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +31,7 @@ public class RawStorageBlocksModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(rawStorageBlockForm.toRequest());
+		return List.of(rawStorageBlockForm.toRequest());
 	}
 
 	@Override
@@ -40,9 +39,9 @@ public class RawStorageBlocksModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : rawStorageBlockForm.getMaterials()) {
-			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			IBlockInfo rawStorageBlockInfo = BlockFormType.INSTANCE.getMaterialFormInfo(rawStorageBlockForm, material);
 			ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
+			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			api.registerShapedRecipe(
 					new ResourceLocation("jaopca", "raw_storage_blocks.to_raw_storage_block."+material.getName()),
 					rawStorageBlockInfo, 1, new Object[] {

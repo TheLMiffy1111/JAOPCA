@@ -1,15 +1,21 @@
 package thelm.jaopca.data;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.objectweb.asm.Type;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.gson.Gson;
@@ -24,13 +30,20 @@ import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.level.storage.loot.Deserializers;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
+import thelm.jaopca.api.data.IDataModule;
+import thelm.jaopca.api.data.JAOPCADataModule;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
+import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.resources.InMemoryResourcePack;
+import thelm.jaopca.utils.MiscHelper;
 
 public class DataInjector {
 
 	private static final Logger LOGGER = LogManager.getLogger();
+	private static final Type JAOPCA_DATA_MODULE = Type.getType(JAOPCADataModule.class);
 	private static final ListMultimap<ResourceLocation, ResourceLocation> BLOCK_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, ResourceLocation> ITEM_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final ListMultimap<ResourceLocation, ResourceLocation> FLUID_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
@@ -108,6 +121,48 @@ public class DataInjector {
 
 	public static Set<ResourceLocation> getInjectAdvancements() {
 		return ADVANCEMENTS_INJECT.navigableKeySet();
+	}
+
+	public static void findDataModules() {
+		Map<String, IDataModule> dataModules = new TreeMap<>();
+		List<AnnotationData> annotationData = ModList.get().getAllScanData().stream().
+				flatMap(data->data.getAnnotations().stream()).
+				filter(data->JAOPCA_DATA_MODULE.equals(data.annotationType())).toList();
+		Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
+		for(AnnotationData aData : annotationData) {
+			List<String> deps = (List<String>)aData.annotationData().get("modDependencies");
+			String className = aData.clazz().getClassName();
+			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
+				LOGGER.info("Data module {} has missing mod dependencies, skipping", className);
+				continue;
+			}
+			try {
+				Class<?> moduleClass = Class.forName(className);
+				Class<? extends IDataModule> moduleInstanceClass = moduleClass.asSubclass(IDataModule.class);
+				IDataModule module;
+				try {
+					Method method = moduleClass.getMethod("getInstance");
+					module = (IDataModule)method.invoke(null);
+				}
+				catch(NoSuchMethodException | InvocationTargetException e) {
+					module = moduleInstanceClass.newInstance();
+				}
+				if(ConfigHandler.DATA_MODULE_BLACKLIST.contains(module.getName())) {
+					LOGGER.info("Data module {} is disabled in config, skipping", module.getName());
+				}
+				if(dataModules.putIfAbsent(module.getName(), module) != null) {
+					LOGGER.fatal("Data module name conflict: {} for {} and {}", module.getName(), dataModules.get(module.getName()).getClass(), module.getClass());
+					continue;
+				}
+				LOGGER.debug("Loaded data module {}", module.getName());
+			}
+			catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				LOGGER.fatal("Unable to load data module {}", className, e);
+			}
+		}
+		for(IDataModule module : dataModules.values()) {
+			module.register();
+		}
 	}
 
 	public static void injectRecipes(Map<ResourceLocation, JsonElement> recipeMap) {

@@ -1,7 +1,5 @@
 package thelm.jaopca.compat.bloodmagic;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -32,13 +30,14 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "bloodmagic")
 public class BloodMagicModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "hellforged", "iron", "netherite_scrap"));
 
 	private final IForm fragmentForm = ApiImpl.INSTANCE.newForm(this, "bloodmagic_fragments", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("bloodmagic:fragments").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm gravelForm = ApiImpl.INSTANCE.newForm(this, "bloodmagic_gravels", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("bloodmagic:gravels").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this, fragmentForm, gravelForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -54,7 +53,7 @@ public class BloodMagicModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this, fragmentForm, gravelForm));
+		return List.of(formRequest);
 	}
 
 	@Override
@@ -77,9 +76,14 @@ public class BloodMagicModule implements IModule {
 		ResourceLocation resonatorLocation = new ResourceLocation("bloodmagic:arc/resonator");
 		ResourceLocation cuttingFluidLocation = new ResourceLocation("bloodmagic:arc/cuttingfluid");
 		Item corruptedTinyDust = ForgeRegistries.ITEMS.getValue(new ResourceLocation("bloodmagic:corrupted_tinydust"));
-		for(IMaterial material : fragmentForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+		for(IMaterial material : formRequest.getMaterials()) {
 			IItemInfo fragmentInfo = itemFormType.getMaterialFormInfo(fragmentForm, material);
+			ResourceLocation fragmentLocation = miscHelper.getTagLocation("bloodmagic:fragments", material.getName());
+			IItemInfo gravelInfo = itemFormType.getMaterialFormInfo(gravelForm, material);
+			ResourceLocation gravelLocation = miscHelper.getTagLocation("bloodmagic:gravels", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerARCRecipe(
@@ -102,26 +106,24 @@ public class BloodMagicModule implements IModule {
 								fragmentInfo, 3,
 						}, false);
 			}
-		}
-		for(IMaterial material : gravelForm.getMaterials()) {
-			ResourceLocation fragmentLocation = miscHelper.getTagLocation("bloodmagic:fragments", material.getName());
-			IItemInfo gravelInfo = itemFormType.getMaterialFormInfo(gravelForm, material);
+
 			helper.registerARCRecipe(
 					new ResourceLocation("jaopca", "bloodmagic.fragment_to_gravel."+material.getName()),
 					fragmentLocation, 1, resonatorLocation, new Object[] {
 							gravelInfo, 1,
 							corruptedTinyDust, 1, 0.5D,
 					}, false);
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation gravelLocation = miscHelper.getTagLocation("bloodmagic:gravels", material.getName());
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			helper.registerARCRecipe(
 					new ResourceLocation("jaopca", "bloodmagic.gravel_to_dust."+material.getName()),
 					gravelLocation, 1, cuttingFluidLocation, new Object[] {
 							dustLocation, 1,
 					}, false);
+		}
+		for(IMaterial material : moduleData.getMaterials()) {
+			ResourceLocation gravelLocation = miscHelper.getTagLocation("bloodmagic:gravels", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerARCRecipe(

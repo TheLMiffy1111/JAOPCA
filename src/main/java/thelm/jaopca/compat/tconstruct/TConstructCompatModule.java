@@ -1,7 +1,6 @@
 package thelm.jaopca.compat.tconstruct;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -30,44 +29,44 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "tconstruct")
 public class TConstructCompatModule implements IModule {
 
-	private static final Set<String> MATERIAL_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> MATERIAL_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "amethyst", "amethyst_bronze", "brass", "brick", "bronze", "cobalt",
 			"constantan", "copper", "debris", "diamond", "electrum", "emerald", "enderium", "gold", "hepatizon",
 			"invar", "iron", "knightslime", "lead", "lumium", "manyullyn", "netherite", "netherite_scrap",
 			"nickel", "osmium", "pewter", "pig_iron", "platinum", "quartz", "queens_slime", "refined_glowstone",
 			"refined_obsidian", "rose_gold", "signalum", "silver", "slimesteel", "soulsteel", "steel", "tin",
 			"tungsten", "uranium", "zinc"));
-	private static final Set<String> STORAGE_BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> STORAGE_BLOCK_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "amethyst", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan",
 			"copper", "diamond", "electrum", "emerald", "enderium", "gold", "hepatizon", "invar", "iron",
 			"knightslime", "lead", "lumium", "manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron",
 			"platinum", "quartz", "queens_slime", "refined_glowstone", "refined_obsidian", "rose_gold", "signalum",
 			"silver", "slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> NUGGET_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> NUGGET_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan", "copper",
 			"debris", "electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
 			"manyullyn", "netherite", "netherite_scrap", "nickel", "osmium", "pewter", "pig_iron", "platinum",
 			"queens_slime", "refined_glowstone", "refined_obsidian", "rose_gold", "signalum", "silver",
 			"slimesteel", "soulsteel", "steel", "tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> DUST_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan", "copper",
 			"electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
 			"manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime",
 			"refined_glowstone", "refined_obsidian", "rose_gold", "signalum", "silver", "slimesteel", "soulsteel",
 			"steel", "tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> PLATE_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "amethyst_bronze", "brass", "brick", "bronze", "cobalt", "constantan",
 			"copper", "electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
 			"manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime",
 			"rose_gold", "signalum", "refined_glowstone", "refined_obsidian", "silver", "slimesteel", "soulsteel",
 			"steel", "tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> COIN_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> COIN_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan", "copper",
 			"electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
 			"manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime",
 			"rose_gold", "signalum", "refined_glowstone", "refined_obsidian", "silver", "slimesteel", "soulsteel",
 			"steel", "tin", "tungsten", "uranium", "zinc"));
-	private static final Set<String> GENERAL_BLACKLIST = new TreeSet<>(Arrays.asList(
+	private static final Set<String> GENERAL_BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "amethyst_bronze", "brass", "bronze", "cobalt", "constantan", "copper",
 			"electrum", "enderium", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "lumium",
 			"manyullyn", "netherite", "nickel", "osmium", "pewter", "pig_iron", "platinum", "queens_slime",
@@ -94,14 +93,14 @@ public class TConstructCompatModule implements IModule {
 
 	static {
 		if(ModList.get().isLoaded("allthemodium")) {
-			List<String> materials = Arrays.asList("allthemodium", "unobtainium", "vibranium");
+			List<String> materials = List.of("allthemodium", "unobtainium", "vibranium");
 			MATERIAL_BLACKLIST.addAll(materials);
 			STORAGE_BLOCK_BLACKLIST.addAll(materials);
 			NUGGET_BLACKLIST.addAll(materials);
 			DUST_BLACKLIST.addAll(materials);
 		}
 		if(ModList.get().isLoaded("materialis")) {
-			List<String> materials = Arrays.asList("arcane_gold", "cloggrum", "ebony_psimetal", "fairy",
+			List<String> materials = List.of("arcane_gold", "cloggrum", "ebony_psimetal", "fairy",
 					"forgotten_metal", "froststeel", "iesnium", "ivory_psimetal", "neptunium", "pink_slime",
 					"psimetal", "quicksilver", "refined_glowstone", "refined_obsidian", "refined_radiance",
 					"regalium", "shadow_steel", "starmetal", "utherium");
@@ -122,7 +121,7 @@ public class TConstructCompatModule implements IModule {
 			Collections.addAll(NUGGET_BLACKLIST, "endorium", "terminite", "thallasium");
 		}
 		if(ModList.get().isLoaded("tdelight")) {
-			List<String> materials = Arrays.asList("gildedfern", "hamletite", "rosenquartz");
+			List<String> materials = List.of("gildedfern", "hamletite", "rosenquartz");
 			MATERIAL_BLACKLIST.addAll(materials);
 			STORAGE_BLOCK_BLACKLIST.addAll(materials);
 			NUGGET_BLACKLIST.addAll(materials);
@@ -132,7 +131,7 @@ public class TConstructCompatModule implements IModule {
 			GENERAL_BLACKLIST.addAll(materials);
 		}
 		if(ModList.get().isLoaded("natureminerals")) {
-			List<String> materials = Arrays.asList("astrite", "kunzite", "stibnite", "thounite", "uvarovite");
+			List<String> materials = List.of("astrite", "kunzite", "stibnite", "thounite", "uvarovite");
 			MATERIAL_BLACKLIST.addAll(materials);
 			STORAGE_BLOCK_BLACKLIST.addAll(materials);
 			NUGGET_BLACKLIST.addAll(materials);
@@ -141,7 +140,7 @@ public class TConstructCompatModule implements IModule {
 			GENERAL_BLACKLIST.addAll(materials);
 		}
 		if(ModList.get().isLoaded("taiga")) {
-			List<String> materials = Arrays.asList("abyssum", "adamant", "astrium", "aurorium", "basalt",
+			List<String> materials = List.of("abyssum", "adamant", "astrium", "aurorium", "basalt",
 					"dilithium", "duranite", "dyonite", "eezo", "fractum", "ignitz", "imperomite", "iox",
 					"jauxum", "karmesine", "lumix", "meteorite", "nihilite", "niob", "nucleum", "obsidiorite",
 					"osram", "ovium", "palladium", "prometheum", "proxii", "seismum", "solarium", "terrax",
