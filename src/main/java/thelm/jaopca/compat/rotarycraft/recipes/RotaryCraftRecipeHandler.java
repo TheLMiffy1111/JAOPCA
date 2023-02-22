@@ -10,6 +10,8 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ModContainer;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.set.hash.TCustomHashSet;
 import gnu.trove.strategy.HashingStrategy;
@@ -40,6 +42,16 @@ public class RotaryCraftRecipeHandler {
 	private static final Map<ItemStack, JAOPCAExtractorRecipe> EXTRACTOR_RECIPES_FLAKES = new TCustomHashMap<>(HASH);
 
 	public static boolean registerExtractorRecipe(Collection<ItemStack> ore, ItemStack dust, ItemStack slurry, ItemStack solution, ItemStack flakes, boolean isRare) {
+		ModContainer modContainer = Loader.instance().activeModContainer();
+		if(modContainer == null) {
+			LOGGER.warn("External source tried to register JAOPCA RotaryCraft extractor recipe, ignoring");
+			return false;
+		}
+		String modid = modContainer.getModId();
+		if(!"jaopca".equals(modid)) {
+			LOGGER.warn("External mod {} tried to register JAOPCA RotaryCraft extractor recipe, ignoring", modid);
+			return false;
+		}
 		if(HASH.equals(dust, slurry) || HASH.equals(slurry, solution) || HASH.equals(solution, dust)) {
 			return false;
 		}
