@@ -6,6 +6,8 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -23,7 +25,12 @@ public class ClientEventHandler extends CommonEventHandler {
 		super.onInit(event);
 		Minecraft mc = Minecraft.getMinecraft();
 		LocalizationRepoHandler.setup(modConfigDir);
-		((IReloadableResourceManager)mc.getResourceManager()).registerReloadListener(rm->LocalizationRepoHandler.reload());
+		((IReloadableResourceManager)mc.getResourceManager()).registerReloadListener(new IResourceManagerReloadListener() {
+			@Override
+			public void onResourceManagerReload(IResourceManager resourceManager) {
+				LocalizationRepoHandler.reload();
+			}
+		});
 	}
 
 	@Override
