@@ -1,7 +1,6 @@
 package thelm.jaopca.resources;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -51,9 +50,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 
 	@Override
 	public IInMemoryResourcePack putInputStreams(PackType type, Map<ResourceLocation, Supplier<? extends InputStream>> map) {
-		map.forEach((location, streamSupplier)->{
-			files.put(getPath(type, location), streamSupplier);
-		});
+		map.forEach((location, streamSupplier)->files.put(getPath(type, location), streamSupplier));
 		return this;
 	}
 
@@ -90,23 +87,13 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	@Override
 	public IoSupplier<InputStream> getRootResource(String... path) {
 		String filePath = String.join("/", path);
-
-		if (files.containsKey(filePath)) {
-			return ()->files.get(filePath).get();
-		}
-
-		return null;
+		return files.containsKey(filePath) ? ()->files.get(filePath).get() : null;
 	}
 
 	@Override
 	public IoSupplier<InputStream> getResource(PackType type, ResourceLocation location) {
 		String filePath = getPath(type, location);
-
-		if (files.containsKey(filePath)) {
-			return ()->files.get(filePath).get();
-		}
-
-		return null;
+		return files.containsKey(filePath) ? ()->files.get(filePath).get() : null;
 	}
 
 	@Override
