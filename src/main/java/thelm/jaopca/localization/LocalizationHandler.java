@@ -1,5 +1,6 @@
 package thelm.jaopca.localization;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.TreeMap;
 
@@ -30,9 +31,9 @@ public class LocalizationHandler {
 			if(mc != null) {
 				Language lang = mc.getLanguageManager().getCurrentLanguage();
 				if(lang != null) {
-					return lang.getLanguageCode();
+					return lang.getLanguageCode().toLowerCase(Locale.US);
 				}
-				return mc.gameSettings.language;
+				return mc.gameSettings.language.toLowerCase(Locale.US);
 			}
 			return "en_us";
 		}, ()->()->"en_us").get();

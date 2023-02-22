@@ -14,7 +14,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.compat.hbm.ntmmaterials.NTMMaterialFormType;
 import thelm.jaopca.utils.ApiImpl;
 
-@JAOPCAModule(modDependencies = "hbm@[1.0.27_X4480,)")
+@JAOPCAModule(modDependencies = "hbm@[1.0.27_X4515,)")
 public class HBMMaterialModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(

@@ -65,9 +65,9 @@ public class CrystallizerRecipeAction implements IRecipeAction {
 		if(stack == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		CrystallizerRecipes.CrystallizerRecipe rec = new CrystallizerRecipes.CrystallizerRecipe(stack, time, fluidIng);
+		CrystallizerRecipes.CrystallizerRecipe rec = new CrystallizerRecipes.CrystallizerRecipe(stack, time);
 		for(Object in : ins) {
-			CrystallizerRecipes.registerRecipe(in, rec);
+			CrystallizerRecipes.registerRecipe(in, rec, fluidIng);
 		}
 		return true;
 	}

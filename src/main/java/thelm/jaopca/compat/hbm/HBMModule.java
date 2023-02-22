@@ -33,7 +33,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "hbm@[1.0.27_X4480,)")
+@JAOPCAModule(modDependencies = "hbm@[1.0.27_X4515,)")
 public class HBMModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
