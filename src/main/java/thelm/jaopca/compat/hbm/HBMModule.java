@@ -55,7 +55,7 @@ public class HBMModule implements IModule {
 	public HBMModule() {
 		ApiImpl.INSTANCE.registerBlacklistedMaterialNames(
 				"Ac227", "Am241", "Am242", "Au198", "Co60", "Gh336", "Np237", "Pb209", "Po210", "Pu238", "Pu239",
-				"Pu240", "Pu241", "Ra226", "Sr90", "Tc99", "Th232", "U233", "U235", "U238");
+				"Pu240", "Pu241", "Ra226", "Sr90", "Tc99", "Th232", "Thorium232", "U233", "U235", "U238");
 	}
 
 	@Override
