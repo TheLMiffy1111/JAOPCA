@@ -183,11 +183,8 @@ def manifestAttributes = [
         "Specification-Version": "W",
         "Implementation-Title": "${archivesBaseName}",
         "Implementation-Version": "${version}",
-        "Implementation-Vendor": "thelm",
+        "Implementation-Vendor": "thelm"
         //"Implementation-Timestamp": new Date().format("yyyy-MM-dd"T"HH:mm:ssZ")
-        "FMLCorePluginContainsFMLMod": "true",
-        "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-        "ForceLoadAsMod": "true"
 ]
 def configRefMap = "jaopca.refmap.json"
 def refMap = "${tasks.compileJava.temporaryDir}${File.separator}${configRefMap}"
