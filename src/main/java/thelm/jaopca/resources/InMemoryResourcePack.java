@@ -90,23 +90,23 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	@Override
 	public IoSupplier<InputStream> getRootResource(String... path) {
 		String filePath = String.join("/", path);
-		return ()->{
-			if(files.containsKey(filePath)) {
-				return files.get(filePath).get();
-			}
-			throw new FileNotFoundException(filePath);
-		};
+
+		if (files.containsKey(filePath)) {
+			return ()->files.get(filePath).get();
+		}
+
+		return null;
 	}
 
 	@Override
 	public IoSupplier<InputStream> getResource(PackType type, ResourceLocation location) {
 		String filePath = getPath(type, location);
-		return ()->{
-			if(files.containsKey(filePath)) {
-				return files.get(filePath).get();
-			}
-			throw new FileNotFoundException(filePath);
-		};
+
+		if (files.containsKey(filePath)) {
+			return ()->files.get(filePath).get();
+		}
+
+		return null;
 	}
 
 	@Override
