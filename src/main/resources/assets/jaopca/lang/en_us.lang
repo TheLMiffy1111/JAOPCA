@@ -1,0 +1,44 @@
+itemGroup.jaopca=JAOPCA
+
+block.jaopca.block=Block of %s
+item.jaopca.dust=%s Dust
+item.jaopca.nugget=%s Nugget
+item.jaopca.tiny_dust=Tiny Pile of %s Dust
+item.jaopca.small_dust=Small Pile of %s Dust
+fluid.jaopca.molten=Molten %s
+item.jaopca.coin=%s Coin
+item.jaopca.gear=%s Gear
+item.jaopca.plate=%s Plate
+item.jaopca.stick=%s Rod
+item.jaopca.dense_plate=Dense %s Plate
+
+item.jaopca.abyssalcraft_crystal_fragment=Crystallized %s Fragment
+item.jaopca.abyssalcraft_crystal_shard=Crystallized %s Shard
+item.jaopca.abyssalcraft_crystal=Crystallized %s
+block.jaopca.abyssalcraft_crystal_cluster=Crystallized %s Cluster
+
+fluid.jaopca.bcoreprocessing_searing=Molten %s (§cSearing§r)
+fluid.jaopca.bcoreprocessing_hot=Molten %s (§6Hot§r)
+fluid.jaopca.bcoreprocessing_cool=Molten %s (§bCool§r)
+
+fluid.jaopca.foundry_liquid=Liquid %s
+
+item.jaopca.hbm_crystal=%s Crystals
+
+item.jaopca.ic2_crushed=Crushed %s Ore
+item.jaopca.ic2_purified_crushed=Purified Crushed %s Ore
+
+item.jaopca.magneticraft_rocky_chunk=%s Rocky Chunk
+item.jaopca.magneticraft_chunk=%s Chunk
+
+item.jaopca.mekanism_dirty_dust=Dirty %s Dust
+item.jaopca.mekanism_clump=%s Clump
+item.jaopca.mekanism_shard=%s Shard
+item.jaopca.mekanism_crystal=%s Crystal
+gas.jaopca.mekanism_clean_slurry=Clean %s Slurry
+gas.jaopca.mekanism_slurry=%s Slurry
+
+item.jaopca.teslathingies_tesla_lump=Teslified %s Lump
+item.jaopca.teslathingies_augmented_lump=Augmented %s Lump
+
+item.jaopca.thaumcraft_cluster=Native %s Cluster
