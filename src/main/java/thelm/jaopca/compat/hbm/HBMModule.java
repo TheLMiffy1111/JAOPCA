@@ -40,9 +40,9 @@ public class HBMModule implements IModule {
 			"Saltpeter", "Schrabidium", "Starmetal", "Sulfur", "Thorium", "Titanium", "Tungsten", "Uranium"));
 	private static final Set<String> MODULE_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminum", "Aluminium", "Beryllium", "CertusQuartz", "Cinnabar", "Coal", "Cobalt", "Copper", "Diamond",
-			"Emerald", "Fluorite", "Gold", "Iron", "Lapis", "Lead", "Lignite", "Lithium", "Niter", "Plutonium",
-			"Quartz", "RareEarth", "Redstone", "Saltpeter", "Schrabidium", "Starmetal", "Sulfur", "Thorium",
-			"Titanium", "Tungsten", "Uranium"));
+			"Emerald", "Fluorite", "Gold", "Iron", "Lapis", "Lead", "Lignite", "Lithium", "NetherQuartz", "Niter",
+			"Plutonium", "Quartz", "RareEarth", "Redstone", "Saltpeter", "Schrabidium", "Starmetal", "Sulfur",
+			"Thorium", "Titanium", "Tungsten", "Uranium"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
@@ -51,8 +51,10 @@ public class HBMModule implements IModule {
 
 	public HBMModule() {
 		ApiImpl.INSTANCE.registerBlacklistedMaterialNames(
-				"Am241", "Am242", "Au198", "Co60", "Gh336", "Np237", "Pb209", "Po210", "Pu238", "Pu239", "Pu240",
-				"Pu241", "Sr90", "Tc99", "Th232", "U233", "U235", "U238");
+				"Ac227", "Am241", "Am242", "At209", "Au198", "Co60", "Cs137", "Gh336", "I131", "Np237", "Pb209",
+				"Po210", "Pu238", "Pu239", "Pu240", "Pu241", "Ra226", "Sr90", "Tc99", "Th232", "Thorium232", "U233",
+				"U235", "U238", "Xe135");
+		ApiImpl.INSTANCE.registerUsedPlainPrefixes("ingotAny", "gemAny", "dustAny");
 	}
 
 	@Override

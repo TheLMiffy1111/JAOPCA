@@ -20,7 +20,7 @@ public class MagmaticSmelterRecipeAction implements IRecipeAction {
 		this.input = input;
 		this.output = output;
 		this.count = count;
-		this.callback = callback;
+		this.callback = Objects.requireNonNull(callback);
 	}
 
 	@Override

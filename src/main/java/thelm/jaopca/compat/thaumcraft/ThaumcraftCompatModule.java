@@ -24,10 +24,10 @@ import thelm.jaopca.utils.MiscHelper;
 public class ThaumcraftCompatModule implements IModule {
 
 	private static final Set<String> ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Cinnabar", "Copper", "Diamond", "Emerald", "Gold", "Iron", "Lapis", "Lead", "Quartz", "Redstone",
-			"Silver", "Tin"));
+			"Cinnabar", "Copper", "Diamond", "Emerald", "Gold", "Iron", "Lapis", "Lead", "NetherQuartz", "Quartz",
+			"Redstone", "Silver", "Tin"));
 	private static final Set<String> CLUSTER_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Cinnabar", "Copper", "Gold", "Iron", "Lead", "Quartz", "Silver", "Tin"));
+			"Cinnabar", "Copper", "Gold", "Iron", "Lead", "NetherQuartz", "Quartz", "Silver", "Tin"));
 	private static Set<String> configOreBlacklist = new TreeSet<>();
 	private static Set<String> configClusterBlacklist = new TreeSet<>();
 

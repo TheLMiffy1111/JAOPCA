@@ -30,9 +30,9 @@ public class FuturepackModule implements IModule {
 	static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Adrite", "Amethyst", "Apatite", "Bauxit", "Beryllium", "Cinnabar", "Coal", "Cobalt", "Copper",
 			"DevilsIron", "Diamond", "Emerald", "Gold", "Iridium", "Iron", "Lapis", "Lead", "Magnesium",
-			"Magnetite", "Manganese", "Molybdenum", "Naquadah", "Nickel", "Olivine", "Platinum", "Pyrite", "Quartz",
-			"Redstone", "Ruby", "Salt", "Silver", "Sulfur", "Sulphur", "Tin", "Titanium", "Tungsten", "Unobtainium",
-			"Wulfenit", "Zinc"));
+			"Magnetite", "Manganese", "Molybdenum", "Naquadah", "NetherQuartz", "Nickel", "Olivine", "Platinum",
+			"Pyrite", "Quartz", "Redstone", "Ruby", "Salt", "Silver", "Sulfur", "Sulphur", "Tin", "Titanium",
+			"Tungsten", "Unobtainium", "Wulfenit", "Zinc"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 

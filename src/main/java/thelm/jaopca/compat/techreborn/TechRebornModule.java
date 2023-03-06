@@ -27,6 +27,10 @@ public class TechRebornModule implements IModule {
 			"Lead", "Olivine", "Peridot", "Platinum", "Pyrite", "Redstone", "Ruby", "Sapphire", "Silver",
 			"Sodalite", "Sheldonite", "Sphalerite", "Tin", "Tungsten"));
 
+	public TechRebornModule() {
+		ApiImpl.INSTANCE.registerUsedPlainPrefixes("ingotHot");
+	}
+
 	@Override
 	public String getName() {
 		return "techreborn";

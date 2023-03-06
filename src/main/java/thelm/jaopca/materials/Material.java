@@ -58,10 +58,10 @@ public class Material implements IMaterial {
 		case INGOT: case INGOT_PLAIN:
 			modelType = "metallic";
 			break;
-		case GEM: case GEM_PLAIN: case CRYSTAL:
+		case GEM: case GEM_PLAIN: case CRYSTAL: case CRYSTAL_PLAIN:
 			modelType = "crystal";
 			break;
-		case DUST:
+		case DUST: case DUST_PLAIN:
 			modelType = "dust";
 			break;
 		}

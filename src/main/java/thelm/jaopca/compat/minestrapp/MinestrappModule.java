@@ -29,7 +29,8 @@ public class MinestrappModule implements IModule {
 
 	static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Archantine", "Blazium", "Coal", "Copper", "Diamond", "Dimensium", "Emerald", "Gold", "Iron",
-			"Irradium", "Lapis", "Meurodite", "Quartz", "Redstone", "Salt", "Soul", "Tin", "Torite"));
+			"Irradium", "Lapis", "Meurodite", "NetherQuartz", "Quartz", "Redstone", "Salt", "Soul", "Tin",
+			"Torite"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 

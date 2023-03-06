@@ -23,7 +23,7 @@ import thelm.jaopca.utils.MiscHelper;
 public class MagneticraftNonIngotModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Coal", "Diamond", "Emerald", "Galena", "Lapis", "Pyrite", "Quartz", "Redstone", "Sulfur"));
+			"Coal", "Diamond", "Emerald", "Galena", "Lapis", "NetherQuartz", "Pyrite", "Quartz", "Redstone", "Sulfur"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 

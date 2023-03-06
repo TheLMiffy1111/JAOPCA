@@ -36,7 +36,7 @@ import thelm.jaopca.utils.MiscHelper;
 public class ThaumcraftModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Cinnabar", "Copper", "Gold", "Iron", "Lead", "Quartz", "Silver", "Tin"));
+			"Cinnabar", "Copper", "Gold", "Iron", "Lead", "NetherQuartz", "Quartz", "Silver", "Tin"));
 
 	private final IForm clusterForm = ApiImpl.INSTANCE.newForm(this, "thaumcraft_cluster", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("cluster").setDefaultMaterialBlacklist(BLACKLIST);

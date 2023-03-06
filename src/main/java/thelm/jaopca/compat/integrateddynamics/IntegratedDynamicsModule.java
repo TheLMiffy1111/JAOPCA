@@ -24,7 +24,7 @@ public class IntegratedDynamicsModule implements IModule {
 
 	static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Ardite", "Coal", "Cobalt", "Copper", "Dark", "Diamond", "Emerald", "Gold", "Iron", "Lapis", "Lead",
-			"Mithril", "Nickel", "Platinum", "Quartz", "Redstone", "Silver", "Tin"));
+			"Mithril", "NetherQuartz", "Nickel", "Platinum", "Quartz", "Redstone", "Silver", "Tin"));
 
 	@Override
 	public String getName() {

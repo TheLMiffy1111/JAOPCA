@@ -25,6 +25,7 @@ public class MaterialHandler {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final TreeSet<String> BLACKLISTED_NAMES = new TreeSet<>();
+	private static final TreeSet<String> USED_PREFIXES = new TreeSet<>();
 	private static final ListMultimap<String, String> ALTERNATIVE_NAMES = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final TreeMap<String, Material> MATERIALS = new TreeMap<>();
 
@@ -48,6 +49,10 @@ public class MaterialHandler {
 		return Collections.addAll(BLACKLISTED_NAMES, names);
 	}
 
+	public static boolean registerUsedPlainPrefixes(String... prefixes) {
+		return Collections.addAll(USED_PREFIXES, prefixes);
+	}
+
 	public static boolean registerMaterialAlternativeNames(String name, String... alternatives) {
 		return ALTERNATIVE_NAMES.putAll(name, Arrays.asList(alternatives));
 	}
@@ -59,45 +64,68 @@ public class MaterialHandler {
 
 		Set<String> allMaterials = new TreeSet<>();
 
-		Set<String> ingots = ConfigHandler.ingot ? findOredictEntriesWithPrefixes(oredict, "ingot", "ore") : new LinkedHashSet<>();
-		ingots.removeAll(BLACKLISTED_NAMES);
-		ingots.removeAll(ConfigHandler.GEM_OVERRIDES);
-		ingots.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
-		ingots.removeAll(ConfigHandler.DUST_OVERRIDES);
+		Set<String> nameBlacklist = new TreeSet<>();
+
+		Set<String> empty = Collections.emptySet();
+
+		nameBlacklist.addAll(BLACKLISTED_NAMES);
+		nameBlacklist.addAll(ConfigHandler.GEM_OVERRIDES);
+		nameBlacklist.addAll(ConfigHandler.CRYSTAL_OVERRIDES);
+		nameBlacklist.addAll(ConfigHandler.DUST_OVERRIDES);
+		Set<String> ingots = ConfigHandler.ingot ? find(oredict, nameBlacklist, empty, "ingot", "ore") : new LinkedHashSet<>();
+		nameBlacklist.clear();
 		allMaterials.addAll(ingots);
 
-		Set<String> gems = ConfigHandler.gem ? findOredictEntriesWithPrefixes(oredict, "gem", "ore") : new LinkedHashSet<>();
-		gems.removeAll(allMaterials);
-		gems.removeAll(BLACKLISTED_NAMES);
-		gems.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
-		gems.removeAll(ConfigHandler.DUST_OVERRIDES);
+		nameBlacklist.addAll(allMaterials);
+		nameBlacklist.addAll(BLACKLISTED_NAMES);
+		nameBlacklist.addAll(ConfigHandler.CRYSTAL_OVERRIDES);
+		nameBlacklist.addAll(ConfigHandler.DUST_OVERRIDES);
+		Set<String> gems = ConfigHandler.gem ? find(oredict, nameBlacklist, empty, "gem", "ore") : new LinkedHashSet<>();
+		nameBlacklist.clear();
 		allMaterials.addAll(gems);
 
-		Set<String> crystals = ConfigHandler.crystal ? findOredictEntriesWithPrefixes(oredict, "crystal", "ore") : new LinkedHashSet<>();
-		crystals.removeAll(allMaterials);
-		crystals.removeAll(BLACKLISTED_NAMES);
-		crystals.removeAll(ConfigHandler.DUST_OVERRIDES);
+		nameBlacklist.addAll(allMaterials);
+		nameBlacklist.addAll(BLACKLISTED_NAMES);
+		nameBlacklist.addAll(ConfigHandler.DUST_OVERRIDES);
+		Set<String> crystals = ConfigHandler.crystal ? find(oredict, nameBlacklist, empty, "crystal", "ore") : new LinkedHashSet<>();
+		nameBlacklist.clear();
 		allMaterials.addAll(crystals);
 
-		Set<String> dusts = ConfigHandler.dust ? findOredictEntriesWithPrefixes(oredict, "dust", "ore") : new LinkedHashSet<>();
-		dusts.removeAll(allMaterials);
-		dusts.removeAll(BLACKLISTED_NAMES);
+		nameBlacklist.addAll(allMaterials);
+		nameBlacklist.addAll(BLACKLISTED_NAMES);
+		Set<String> dusts = ConfigHandler.dust ? find(oredict, nameBlacklist, empty, "dust", "ore") : new LinkedHashSet<>();
+		nameBlacklist.clear();
 		allMaterials.addAll(dusts);
 
-		Set<String> ingotsPlain = ConfigHandler.ingotPlain ? findOredictEntriesWithPrefixes(oredict, "ingot") : new LinkedHashSet<>();
-		ingotsPlain.removeAll(allMaterials);
-		ingotsPlain.removeAll(BLACKLISTED_NAMES);
-		ingotsPlain.removeAll(ConfigHandler.GEM_OVERRIDES);
-		ingotsPlain.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
-		ingotsPlain.removeAll(ConfigHandler.DUST_OVERRIDES);
+		nameBlacklist.addAll(allMaterials);
+		nameBlacklist.addAll(BLACKLISTED_NAMES);
+		nameBlacklist.addAll(ConfigHandler.GEM_OVERRIDES);
+		nameBlacklist.addAll(ConfigHandler.CRYSTAL_OVERRIDES);
+		nameBlacklist.addAll(ConfigHandler.DUST_OVERRIDES);
+		Set<String> ingotsPlain = ConfigHandler.ingotPlain ? find(oredict, nameBlacklist, USED_PREFIXES, "ingot") : new LinkedHashSet<>();
+		nameBlacklist.clear();
 		allMaterials.addAll(ingotsPlain);
 
-		Set<String> gemsPlain = ConfigHandler.gemPlain ? findOredictEntriesWithPrefixes(oredict, "gem") : new LinkedHashSet<>();
-		gemsPlain.removeAll(allMaterials);
-		gemsPlain.removeAll(BLACKLISTED_NAMES);
-		gemsPlain.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
-		gemsPlain.removeAll(ConfigHandler.DUST_OVERRIDES);
+		nameBlacklist.addAll(allMaterials);
+		nameBlacklist.addAll(BLACKLISTED_NAMES);
+		nameBlacklist.addAll(ConfigHandler.CRYSTAL_OVERRIDES);
+		nameBlacklist.addAll(ConfigHandler.DUST_OVERRIDES);
+		Set<String> gemsPlain = ConfigHandler.gemPlain ? find(oredict, nameBlacklist, USED_PREFIXES, "gem") : new LinkedHashSet<>();
+		nameBlacklist.clear();
 		allMaterials.addAll(gemsPlain);
+
+		nameBlacklist.addAll(allMaterials);
+		nameBlacklist.addAll(BLACKLISTED_NAMES);
+		nameBlacklist.addAll(ConfigHandler.DUST_OVERRIDES);
+		Set<String> crystalsPlain = ConfigHandler.crystalPlain ? find(oredict, nameBlacklist, USED_PREFIXES, "crystal") : new LinkedHashSet<>();
+		nameBlacklist.clear();
+		allMaterials.addAll(crystalsPlain);
+
+		nameBlacklist.addAll(allMaterials);
+		nameBlacklist.addAll(BLACKLISTED_NAMES);
+		Set<String> dustsPlain = ConfigHandler.dustPlain ? find(oredict, nameBlacklist, USED_PREFIXES, "dust") : new LinkedHashSet<>();
+		nameBlacklist.clear();
+		allMaterials.addAll(dustsPlain);
 
 		for(String name : ingots) {
 			Material material = new Material(name, MaterialType.INGOT);
@@ -129,19 +157,43 @@ public class MaterialHandler {
 			MATERIALS.put(name, material);
 			LOGGER.debug("Added plain gem material {}", name);
 		}
+		for(String name : crystalsPlain) {
+			Material material = new Material(name, MaterialType.CRYSTAL_PLAIN);
+			MATERIALS.put(name, material);
+			LOGGER.debug("Added plain crystal material {}", name);
+		}
+		for(String name : dustsPlain) {
+			Material material = new Material(name, MaterialType.DUST_PLAIN);
+			MATERIALS.put(name, material);
+			LOGGER.debug("Added plain dust material {}", name);
+		}
 		LOGGER.info("Added {} materials", MATERIALS.size());
 	}
 
-	protected static Set<String> findOredictEntriesWithPrefixes(Set<String> entries, String mainPrefix, String... prefixes) {
-		Set<String> ret = new TreeSet<>();
+	protected static Set<String> find(Set<String> entries, Set<String> nameBlacklist, Set<String> prefixBlacklist, String mainPrefix, String... prefixes) {
+		Set<String> found = new TreeSet<>();
 		for(String entry : entries) {
 			if(entry.startsWith(mainPrefix)) {
 				String name = entry.substring(mainPrefix.length());
-				if(Arrays.stream(prefixes).map(prefix->prefix+name).allMatch(entries::contains)) {
-					ret.add(name);
+				if(!nameBlacklist.contains(name) && Arrays.stream(prefixes).map(prefix->prefix+name).allMatch(entries::contains)) {
+					found.add(name);
 				}
+			}
+		}
+		Set<String> ret = new TreeSet<>();
+		for(String name : found) {
+			String entry = mainPrefix+name;
+			if(prefixBlacklist.stream().noneMatch(bp->{
+				if(entry.startsWith(bp)) {
+					String nName = entry.substring(bp.length());
+					return found.contains(nName) || nameBlacklist.contains(nName);
+				}
+				return false;
+			})) {
+				ret.add(name);
 			}
 		}
 		return ret;
 	}
+
 }

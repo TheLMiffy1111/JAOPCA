@@ -58,6 +58,7 @@ public class MekanismModule implements IModule {
 
 	public MekanismModule() {
 		GasFormType.init();
+		ApiImpl.INSTANCE.registerUsedPlainPrefixes("dustDirty");
 	}
 
 	private final IForm dirtyDustForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty_dust", ItemFormType.INSTANCE).
@@ -111,7 +112,7 @@ public class MekanismModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		IGasFormType gasFormType = GasFormType.INSTANCE;
-		for(IMaterial material : dirtySlurryForm.getMaterials()) {
+		for(IMaterial material : formRequest.getMaterials()) {
 			IGasInfo dirtySlurryInfo = gasFormType.getMaterialFormInfo(dirtySlurryForm, material);
 			String dirtySlurryName = miscHelper.getFluidName("slurry", material.getName());
 			IGasInfo cleanSlurryInfo = gasFormType.getMaterialFormInfo(cleanSlurryForm, material);

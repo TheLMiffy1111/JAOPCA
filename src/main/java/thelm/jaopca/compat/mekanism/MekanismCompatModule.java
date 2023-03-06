@@ -30,16 +30,16 @@ public class MekanismCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminium", "Aluminum", "Amber", "Charcoal", "Coal", "Copper", "Diamond", "Draconium", "Emerald",
-			"Gold", "Iridium", "Iron", "Lapis", "Lead", "Malachite", "Mithril", "Nickel", "Osmium", "Peridot",
-			"Platinum", "Quartz", "Redstone", "RefinedGlowstone", "RefinedObsidian", "Ruby", "Sapphire", "Silver",
-			"Steel", "Tanzanite", "Tin", "Topaz", "Uranium"));
+			"Gold", "Iridium", "Iron", "Lapis", "Lead", "Malachite", "Mithril", "NetherQuartz", "Nickel", "Osmium",
+			"Peridot", "Platinum", "Quartz", "Redstone", "RefinedGlowstone", "RefinedObsidian", "Ruby", "Sapphire",
+			"Silver", "Steel", "Tanzanite", "Tin", "Topaz", "Uranium"));
 	private static final Set<String> TO_CRYSTAL_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"Amber", "Charcoal", "Coal", "Diamond", "Emerald", "Lapis", "Malachite", "Peridot", "Quartz",
-			"Ruby", "Sapphire", "Tanzanite", "Topaz"));
+			"Amber", "Charcoal", "Coal", "Diamond", "Emerald", "Lapis", "NetherQuartz", "Malachite", "Peridot",
+			"Quartz", "Ruby", "Sapphire", "Tanzanite", "Topaz"));
 	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminium", "Aluminum", "Amber", "Amethyst", "Apatite", "Coal", "Copper", "Diamond", "Draconium",
-			"Emerald", "Gold", "Iridium", "Iron", "Lapis", "Lead", "Malachite", "Mithril", "Nickel", "Osmium",
-			"Peridot", "Platinum", "Quartz", "Redstone", "Ruby", "Sapphire", "Silver", "Steel", "Tanzanite",
+			"Emerald", "Gold", "Iridium", "Iron", "Lapis", "Lead", "Malachite", "Mithril", "NetherQuartz", "Nickel",
+			"Osmium", "Peridot", "Platinum", "Quartz", "Redstone", "Ruby", "Sapphire", "Silver", "Steel", "Tanzanite",
 			"Tin", "Topaz", "Uranium"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToCrystalBlacklist = new TreeSet<>();

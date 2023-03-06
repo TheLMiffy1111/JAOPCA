@@ -24,15 +24,15 @@ public class EnderIOCompatModule implements IModule {
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Adamantine", "Aluminium", "Aluminum", "AluminumBrass", "Amordrine", "Angmallen", "Ardite",
 			"AstralSilver", "Atlarus", "BlackSteel", "Blutonium", "Brass", "Bronze", "Carmot", "Celenegil",
-			"CertusQuartz", "Ceruclase", "Charcoal", "Cobalt", "ConductiveIron", "Copper", "Cyanite",
+			"CertusQuartz", "Ceruclase", "Charcoal", "Cobalt", "ConductiveIron", "Coal", "Copper", "Cyanite",
 			"DamascusSteel", "DarkSteel", "DeepIron", "Diamond", "Draconium", "ElectricalSteel", "Electrum",
 			"Emerald", "Enderium", "EnergeticAlloy", "Fluix", "Gold", "Graphite", "Haderoth", "Hepatizon",
-			"Ignatius", "Infuscolium", "Inolashite", "Invar", "Iron", "Kalendrite", "Lead", "Lemurite", "Ludicrite",
-			"Lumium", "Magnesium", "Manganese", "Manyullyn", "Midasium", "Mithril", "NaturalAluminum", "Nickel",
-			"Orichalcum", "Osmium", "Oureclase", "Platinum", "Prismarine", "Prometheum", "PulsatingIron",
-			"Quicksilver", "RedstoneAlloy", "Rubracium", "Rutile", "Sanguinite", "ShadowIron", "ShadowSteel",
-			"Signalum", "Silver", "Soularium", "Steel", "Tartarite", "Tin", "Titanium", "Tungsten", "Uranium",
-			"VibrantAlloy", "Vulcanite", "Vyroxeres", "Yellorium", "Zinc"));
+			"Ignatius", "Infuscolium", "Inolashite", "Invar", "Iron", "Kalendrite", "Lapis", "Lead", "Lemurite",
+			"Ludicrite", "Lumium", "Magnesium", "Manganese", "Manyullyn", "Midasium", "Mithril", "NaturalAluminum",
+			"NetherQuartz", "Nickel", "Orichalcum", "Osmium", "Oureclase", "Platinum", "Prismarine", "Prometheum",
+			"PulsatingIron", "Quartz", "Quicksilver", "RedstoneAlloy", "Rubracium", "Rutile", "Sanguinite",
+			"ShadowIron", "ShadowSteel", "Signalum", "Silver", "Soularium", "Steel", "Tartarite", "Tin", "Titanium",
+			"Tungsten", "Uranium", "VibrantAlloy", "Vulcanite", "Vyroxeres", "Yellorium", "Zinc"));
 	private static Set<String> configMaterialToDustBlacklist = new TreeSet<>();
 	private static Set<String> configBlockToDustBlacklist = new TreeSet<>();
 

@@ -36,13 +36,13 @@ public class EnderIOModule implements IModule {
 			"Ender", "EnderBiotite", "EnderEssence", "Fluorite", "Galena", "Garnet", "Gold", "GoldenBeryl",
 			"Heliodor", "Ignatius", "Indicolite", "Infuscolium", "Iolite", "Iridium", "Iron", "Jade", "Jasper",
 			"Kalendrite", "Kunzite", "Kyanite", "Lapis", "Lava", "Lead", "Lemurite", "Lepidolite", "Lithium",
-			"Magnesium", "Malachite", "Midasium", "Mithril", "Moonstone", "Morganite", "NaturalAluminum", "Nickel",
-			"Niter", "Onyx", "Opal", "Orichalcum", "Osmium", "Oureclase", "Pearl", "Peridot", "Platinum",
-			"Prometheum", "Prosperity", "Pyrite", "Pyrope", "Quartz", "QuartzBlack", "Redstone", "RoseQuartz",
-			"Rubracium", "Ruby", "Rutile", "Saltpeter", "Sanguinite", "Sapphire", "ShadowIron", "Sheldonite",
-			"Silver", "Sodalite", "Sphalerite", "Spinel", "Sulfur", "Sunstone", "Tanzanite", "Tektite", "Thorium",
-			"Tin", "Titanium", "Topaz", "Tritanium", "Tungsten", "Turquoise", "Uranium", "VioletSapphire",
-			"Vulcanite", "Vyroxeres", "Yellorium", "Zinc", "Zircon"));
+			"Magnesium", "Malachite", "Midasium", "Mithril", "Moonstone", "Morganite", "NaturalAluminum",
+			"NetherQuartz", "Nickel", "Niter", "Onyx", "Opal", "Orichalcum", "Osmium", "Oureclase", "Pearl",
+			"Peridot", "Platinum", "Prometheum", "Prosperity", "Pyrite", "Pyrope", "Quartz", "QuartzBlack",
+			"Redstone", "RoseQuartz", "Rubracium", "Ruby", "Rutile", "Saltpeter", "Sanguinite", "Sapphire",
+			"ShadowIron", "Sheldonite", "Silver", "Sodalite", "Sphalerite", "Spinel", "Sulfur", "Sunstone",
+			"Tanzanite", "Tektite", "Thorium", "Tin", "Titanium", "Topaz", "Tritanium", "Tungsten", "Turquoise",
+			"Uranium", "VioletSapphire", "Vulcanite", "Vyroxeres", "Yellorium", "Zinc", "Zircon"));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 

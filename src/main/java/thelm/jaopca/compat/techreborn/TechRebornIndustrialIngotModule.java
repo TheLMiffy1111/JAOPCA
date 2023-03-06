@@ -31,8 +31,8 @@ public class TechRebornIndustrialIngotModule implements IModule {
 	static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminium", "Aluminum", "Amethyst", "Apatite", "Ardite", "Bauxite", "Cinnabar", "Coal", "Cobalt",
 			"Copper", "Diamond", "Emerald", "Galena", "Gold", "Iridium", "Iron", "Lapis", "Lead", "Malachite",
-			"Nickel", "Niter", "Osmium", "Peridot", "Pitchblende", "Pyrite", "Quartz", "Redstone", "Ruby",
-			"Saltpeter", "Sapphire", "Sheldonite", "Silver", "Sodalite", "Sphalerite", "Sulfur", "Tanzanite",
+			"NetherQuartz", "Nickel", "Niter", "Osmium", "Peridot", "Pitchblende", "Pyrite", "Quartz", "Redstone",
+			"Ruby", "Saltpeter", "Sapphire", "Sheldonite", "Silver", "Sodalite", "Sphalerite", "Sulfur", "Tanzanite",
 			"Teslatite", "Tin", "Topaz", "Tungsten", "Uranium", "Zinc"));
 	private static Set<String> configWaterBlacklist = new TreeSet<>();
 	private static Set<String> configMercuryBlacklist = new TreeSet<>();

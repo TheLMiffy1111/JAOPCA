@@ -218,6 +218,8 @@ public abstract class JAOPCAApi {
 
 	public abstract boolean registerBlacklistedMaterialNames(String... names);
 
+	public abstract boolean registerUsedPlainPrefixes(String... prefixes);
+
 	public abstract boolean registerMaterialAlternativeNames(String name, String... alternatives);
 
 	/**
@@ -309,7 +311,7 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience);
 
 	public abstract void registerTextures(Supplier<List<ResourceLocation>> locations);
-	
+
 	/**
 	 * Registers an {@link ILocalizer} to languages for use by JAOPCA.
 	 * @param localizer The localizer

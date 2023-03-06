@@ -196,6 +196,11 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerUsedPlainPrefixes(String... prefixes) {
+		return MaterialHandler.registerUsedPlainPrefixes(prefixes);
+	}
+
+	@Override
 	public boolean registerMaterialAlternativeNames(String name, String... alternatives) {
 		return MaterialHandler.registerMaterialAlternativeNames(name, alternatives);
 	}

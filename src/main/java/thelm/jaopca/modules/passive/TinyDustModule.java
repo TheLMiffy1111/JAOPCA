@@ -27,6 +27,10 @@ public class TinyDustModule implements IModule {
 	private final IForm tinyDustForm = ApiImpl.INSTANCE.newForm(this, "tiny_dust", ItemFormType.INSTANCE).
 			setSecondaryName("dustTiny");
 
+	public TinyDustModule() {
+		ApiImpl.INSTANCE.registerUsedPlainPrefixes("dustTiny");
+	}
+
 	@Override
 	public String getName() {
 		return "tiny_dust";
