@@ -162,7 +162,7 @@ dependencies {
     implementation deobfCurse("mariculture-68023:2323944")
     implementation deobfCurse("magneticraft-224808:2276268")
     implementation deobfCurse("foundry-228297:2269019")
-    implementation deobfGithub("HbmMods/Hbm-s-Nuclear-Tech-GIT", "1.0.27X4501/HBM-NTM-.1.0.27_X4501.jar")
+    implementation deobfGithub("HbmMods/Hbm-s-Nuclear-Tech-GIT", "1.0.27X4515/HBM-NTM-.1.0.27_X4515.jar")
     implementation deobfCurse("abyssalcraft-53686:2311135")
     implementation deobfCurse("essentialcraft-4-unofficial-254817:2394702")
 

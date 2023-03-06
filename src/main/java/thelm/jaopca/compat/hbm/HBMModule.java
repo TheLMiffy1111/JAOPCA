@@ -47,16 +47,18 @@ public class HBMModule implements IModule {
 			"NetherQuartz", "Niter", "Plutonium", "Quartz", "RareEarth", "Redstone", "Saltpeter", "Schrabidium",
 			"Starmetal", "Sulfur", "Thorium", "Titanium", "Tungsten", "Uranium"));
 
-	private Map<IMaterial, IDynamicSpecConfig> configs;
+	public HBMModule() {
+		ApiImpl.INSTANCE.registerBlacklistedMaterialNames(
+				"Ac227", "Am241", "Am242", "At209", "Au198", "Co60", "Cs137", "Gh336", "I131", "Np237", "Pb209",
+				"Po210", "Pu238", "Pu239", "Pu240", "Pu241", "Ra226", "Sr90", "Tc99", "Th232", "Thorium232", "U233",
+				"U235", "U238", "Xe135");
+		ApiImpl.INSTANCE.registerUsedPlainPrefixes("ingotAny", "gemAny", "dustAny");
+	}
 
 	private final IForm crystalForm = ApiImpl.INSTANCE.newForm(this, "hbm_crystal", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.ORE).setSecondaryName("hbm:crystal").setDefaultMaterialBlacklist(BLACKLIST);
-
-	public HBMModule() {
-		ApiImpl.INSTANCE.registerBlacklistedMaterialNames(
-				"Ac227", "Am241", "Am242", "Au198", "Co60", "Gh336", "Np237", "Pb209", "Po210", "Pu238", "Pu239",
-				"Pu240", "Pu241", "Ra226", "Sr90", "Tc99", "Th232", "Thorium232", "U233", "U235", "U238");
-	}
+	
+	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	@Override
 	public String getName() {

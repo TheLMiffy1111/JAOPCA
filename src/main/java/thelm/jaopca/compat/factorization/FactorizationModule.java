@@ -41,7 +41,9 @@ public class FactorizationModule implements IModule {
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Ardite", "Cobalt", "Copper", "FzDarkIron", "Galena", "Gold", "Iron", "Lead", "Silver", "Tin"));
 
-	private Map<IMaterial, IDynamicSpecConfig> configs;
+	public FactorizationModule() {
+		FMLCommonHandler.instance().bus().register(this);
+	}
 
 	private final IForm dirtyGravelForm = ApiImpl.INSTANCE.newForm(this, "factorization_dirty_gravel", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("dirtyGravel").setDefaultMaterialBlacklist(BLACKLIST);
@@ -54,9 +56,7 @@ public class FactorizationModule implements IModule {
 	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
 			dirtyGravelForm, cleanGravelForm, reducedForm, crystallineForm).setGrouped(true);
 
-	public FactorizationModule() {
-		FMLCommonHandler.instance().bus().register(this);
-	}
+	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	@Override
 	public String getName() {

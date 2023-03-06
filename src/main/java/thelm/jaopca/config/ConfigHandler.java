@@ -47,6 +47,7 @@ public class ConfigHandler {
 	public static boolean ingotPlain = true;
 	public static boolean gemPlain = true;
 	public static boolean crystalPlain = true;
+	public static boolean dustPlain = true;
 
 	public static final List<String> DEFAULT_GEM_OVERRIDES = Lists.newArrayList("Coal", "Diamond", "Emerald", "Lapis", "Prismarine", "Quartz");
 	public static final List<String> DEFAULT_CRYSTAL_OVERRIDES = Lists.newArrayList();
@@ -98,6 +99,7 @@ public class ConfigHandler {
 		ingotPlain = mainConfig.getDefinedBoolean("materials.ingotPlain", ingotPlain, "Should the mod find ingot materials without ores.");
 		gemPlain = mainConfig.getDefinedBoolean("materials.gemPlain", gemPlain, "Should the mod find gem materials without ores.");
 		crystalPlain = mainConfig.getDefinedBoolean("materials.crystalPlain", crystalPlain, "Should the mod find crystal materials without ores.");
+		dustPlain = mainConfig.getDefinedBoolean("materials.dustPlain", dustPlain, "Should the mod find dust materials without ores.");
 
 		mainConfig.setComment("materialOverrides", "Configurations related to material overrides.");
 		GEM_OVERRIDES.addAll(mainConfig.getDefinedStringList("materialOverrides.gem", DEFAULT_GEM_OVERRIDES, "List of materials that should be gems."));

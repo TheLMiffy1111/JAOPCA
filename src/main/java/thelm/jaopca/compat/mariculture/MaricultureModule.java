@@ -37,11 +37,11 @@ public class MaricultureModule implements IModule {
 	private static Map<IMaterial, Integer> tempMap = new TreeMap<>();
 	public static ToIntFunction<IMaterial> tempFunction;
 
-	private Map<IMaterial, IDynamicSpecConfig> configs;
-
 	public MaricultureModule() {
 		tempFunction = this::getTemperature;
 	}
+
+	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	@Override
 	public String getName() {

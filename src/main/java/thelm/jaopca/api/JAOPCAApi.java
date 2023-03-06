@@ -204,6 +204,8 @@ public abstract class JAOPCAApi {
 
 	public abstract boolean registerBlacklistedMaterialNames(String... names);
 
+	public abstract boolean registerUsedPlainPrefixes(String... prefixes);
+
 	public abstract boolean registerMaterialAlternativeNames(String name, String... alternatives);
 
 	/**

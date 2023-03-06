@@ -55,6 +55,7 @@ public class MekanismModule implements IModule {
 
 	public MekanismModule() {
 		GasFormType.init();
+		ApiImpl.INSTANCE.registerUsedPlainPrefixes("dustDirty");
 	}
 
 	private final IForm dirtyDustForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty_dust", ItemFormType.INSTANCE).

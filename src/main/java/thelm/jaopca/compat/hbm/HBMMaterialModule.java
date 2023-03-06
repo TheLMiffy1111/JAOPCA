@@ -28,12 +28,12 @@ public class HBMMaterialModule implements IModule {
 			"Schraranium", "Slag", "Solinium", "Starmetal", "Steel", "Stone", "Tantalum", "TcAlloy", "Technetium99",
 			"Thorium", "Thorium232", "Titanium", "Tungsten", "Uranium", "Uranium233", "Uranium235", "Uranium238"));
 
-	private final IForm ntmMaterialForm = ApiImpl.INSTANCE.newForm(this, "hbm_material", NTMMaterialFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOTS).setSecondaryName("").setDefaultMaterialBlacklist(BLACKLIST);
-
 	public HBMMaterialModule() {
 		NTMMaterialFormType.init();
 	}
+	
+	private final IForm ntmMaterialForm = ApiImpl.INSTANCE.newForm(this, "hbm_material", NTMMaterialFormType.INSTANCE).
+			setMaterialTypes(MaterialType.INGOTS).setSecondaryName("").setDefaultMaterialBlacklist(BLACKLIST);
 
 	@Override
 	public String getName() {

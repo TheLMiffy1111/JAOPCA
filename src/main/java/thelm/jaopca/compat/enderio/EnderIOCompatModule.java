@@ -25,11 +25,11 @@ public class EnderIOCompatModule implements IModule {
 			"Adamantine", "Aluminium", "AluminiumBrass", "Aluminum", "AluminumBrass", "Amordrine", "Angmallen",
 			"Ardite", "AstralSilver", "Atlarus", "BlackSteel", "Blutonium", "Brass", "Bronze", "Bronze", "Carmot",
 			"Celenegil", "CertusQuartz", "Ceruclase", "Cobalt", "Copper", "Cyanite", "DamascusSteel", "DeepIron",
-			"Electrum", "Enderium", "Fluix", "Gold", "Graphite", "Haderoth", "Hepatizon", "Ignatius",
-			"Infuscolium", "Inolashite", "Invar", "Iron", "Kalendrite", "Lapis", "Lead", "Lemurite", "Ludicrite",
-			"Lumium", "Manganese", "Manyullyn", "Midasium", "Mithril", "NaturalAluminum", "Nickel", "Orichalcum",
-			"Osmium", "Oureclase", "Platinum", "Prometheum", "Quicksilver", "Rubracium", "Sanguinite", "ShadowIron",
-			"ShadowSteel", "Signalum", "Silver", "Silver", "Steel", "Tartarite", "Tin", "Vulcanite", "Vyroxeres",
+			"Electrum", "Enderium", "Fluix", "Gold", "Graphite", "Haderoth", "Hepatizon", "Ignatius", "Infuscolium",
+			"Inolashite", "Invar", "Iron", "Kalendrite", "Lapis", "Lead", "Lemurite", "Ludicrite", "Lumium",
+			"Manganese", "Manyullyn", "Midasium", "Mithril", "NaturalAluminum", "NetherQuartz", "Nickel", "Orichalcum",
+			"Osmium", "Oureclase", "Platinum", "Prometheum", "Quartz", "Quicksilver", "Rubracium", "Sanguinite",
+			"ShadowIron", "ShadowSteel", "Signalum", "Silver", "Steel", "Tartarite", "Tin", "Vulcanite", "Vyroxeres",
 			"Yellorite", "Yellorium", "Zinc"));
 	private static Set<String> configMaterialToDustBlacklist = new TreeSet<>();
 	private static Set<String> configBlockToDustBlacklist = new TreeSet<>();
