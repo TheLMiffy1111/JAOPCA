@@ -2,6 +2,7 @@ package thelm.jaopca.compat.rotarycraft;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -65,6 +66,16 @@ public class RotaryCraftModule implements IModule {
 	@Override
 	public List<IFormRequest> getFormRequests() {
 		return Collections.singletonList(formRequest);
+	}
+
+	@Override
+	public Set<MaterialType> getMaterialTypes() {
+		return EnumSet.copyOf(Arrays.asList(MaterialType.ORE));
+	}
+
+	@Override
+	public Set<String> getDefaultMaterialBlacklist() {
+		return BLACKLIST;
 	}
 
 	@Override

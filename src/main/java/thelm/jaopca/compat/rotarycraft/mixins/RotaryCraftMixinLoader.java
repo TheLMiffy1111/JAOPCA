@@ -7,8 +7,6 @@ import java.util.Set;
 import com.gtnewhorizon.gtnhmixins.ILateMixinLoader;
 import com.gtnewhorizon.gtnhmixins.LateMixin;
 
-import thelm.jaopca.JAOPCA;
-
 @LateMixin
 public class RotaryCraftMixinLoader implements ILateMixinLoader {
 

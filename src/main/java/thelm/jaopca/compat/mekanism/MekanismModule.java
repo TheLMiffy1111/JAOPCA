@@ -9,6 +9,7 @@ import java.util.TreeSet;
 
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -99,7 +100,7 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
-		return MODULE_BLACKLIST;
+		return BLACKLIST;
 	}
 
 	@Override
@@ -159,7 +160,7 @@ public class MekanismModule implements IModule {
 					miscHelper.getRecipeKey("mekanism.dirty_dust_to_dust", material.getName()),
 					dirtyDustOredict, 1, dustOredict, 1);
 		}
-		for(IMaterial material : moduleData.getMaterials()) {
+		for(IMaterial material : Sets.difference(moduleData.getMaterials(), MODULE_BLACKLIST)) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			helper.registerEnrichmentChamberRecipe(

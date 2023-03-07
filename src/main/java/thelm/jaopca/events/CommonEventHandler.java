@@ -1,6 +1,6 @@
 package thelm.jaopca.events;
 
-import java.io.File;
+import java.nio.file.Path;
 
 import cpw.mods.fml.common.discovery.ASMDataTable;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -24,11 +24,11 @@ import thelm.jaopca.utils.ApiImpl;
 public class CommonEventHandler {
 
 	protected ASMDataTable asmDataTable;
-	protected File modConfigDir;
+	protected Path modConfigDir;
 
 	public void onPreInit(FMLPreInitializationEvent event) {
 		asmDataTable = event.getAsmData();
-		modConfigDir = event.getModConfigurationDirectory();
+		modConfigDir = event.getModConfigurationDirectory().toPath();
 		ApiImpl.INSTANCE.init();
 		BlockFormType.init();
 		ItemFormType.init();

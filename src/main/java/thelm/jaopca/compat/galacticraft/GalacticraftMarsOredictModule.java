@@ -1,6 +1,5 @@
 package thelm.jaopca.compat.galacticraft;
 
-import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.oredict.IOredictModule;
 import thelm.jaopca.api.oredict.JAOPCAOredictModule;

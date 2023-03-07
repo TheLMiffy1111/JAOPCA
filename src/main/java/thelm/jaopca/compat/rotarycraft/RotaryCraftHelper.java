@@ -1,11 +1,7 @@
 package thelm.jaopca.compat.rotarycraft;
 
-import java.util.function.Consumer;
-
-import Reika.RotaryCraft.Auxiliary.CustomExtractLoader;
 import thelm.jaopca.compat.rotarycraft.recipes.CrystallizerRecipeAction;
 import thelm.jaopca.compat.rotarycraft.recipes.ExtractorRecipeAction;
-import thelm.jaopca.compat.rotarycraft.recipes.ExtractAPIRecipeAction;
 import thelm.jaopca.compat.rotarycraft.recipes.GrinderRecipeAction;
 import thelm.jaopca.utils.ApiImpl;
 

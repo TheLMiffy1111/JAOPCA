@@ -10,6 +10,7 @@ import java.util.TreeSet;
 
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
@@ -85,7 +86,7 @@ public class HBMModule implements IModule {
 
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
-		return MODULE_BLACKLIST;
+		return BLACKLIST;
 	}
 
 	@Override
@@ -139,7 +140,7 @@ public class HBMModule implements IModule {
 						});
 			}
 		}
-		for(IMaterial material : moduleData.getMaterials()) {
+		for(IMaterial material : Sets.difference(moduleData.getMaterials(), MODULE_BLACKLIST)) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			String extraDustOredict = miscHelper.getOredictName("dust", material.getExtra(1).getName());

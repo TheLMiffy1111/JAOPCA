@@ -2,6 +2,7 @@ package thelm.jaopca.compat.ic2;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -56,6 +57,16 @@ public class IC2Module implements IModule {
 	@Override
 	public List<IFormRequest> getFormRequests() {
 		return Collections.singletonList(formRequest);
+	}
+
+	@Override
+	public Set<MaterialType> getMaterialTypes() {
+		return EnumSet.of(MaterialType.INGOT);
+	}
+
+	@Override
+	public Set<String> getDefaultMaterialBlacklist() {
+		return BLACKLIST;
 	}
 
 	@Override

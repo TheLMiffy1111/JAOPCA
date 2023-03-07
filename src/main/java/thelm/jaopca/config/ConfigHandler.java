@@ -1,8 +1,7 @@
 package thelm.jaopca.config;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -32,10 +31,10 @@ public class ConfigHandler {
 	private ConfigHandler() {}
 
 	private static final Logger LOGGER = LogManager.getLogger();
-	private static File configDir;
-	private static File customFormConfigFile;
-	private static File materialConfigDir;
-	private static File moduleConfigDir;
+	private static Path configDir;
+	private static Path customFormConfigFile;
+	private static Path materialConfigDir;
+	private static Path moduleConfigDir;
 	private static IDynamicSpecConfig mainConfig;
 	private static final TreeMap<IMaterial, IDynamicSpecConfig> MATERIAL_CONFIGS = new TreeMap<>();
 	private static final TreeMap<IModule, IDynamicSpecConfig> MODULE_CONFIGS = new TreeMap<>();
@@ -72,24 +71,22 @@ public class ConfigHandler {
 	public static boolean checkL10nUpdates = true;
 	public static double updateInterval = 3;
 
-	public static void setupMainConfig(File modConfigDir) {
-		configDir = new File(modConfigDir, "jaopca");
-		if(!configDir.exists() || !configDir.isDirectory()) {
+	public static void setupMainConfig(Path modConfigDir) {
+		configDir = modConfigDir.resolve("jaopca");
+		if(!Files.exists(configDir) || !Files.isDirectory(configDir)) {
 			try {
-				if(configDir.exists() && !configDir.isDirectory()) {
+				if(Files.exists(configDir) && !Files.isDirectory(configDir)) {
 					LOGGER.warn("Config directory {} is a file, deleting", configDir);
-					configDir.delete();
+					Files.delete(configDir);
 				}
-				if(!configDir.mkdir()) {
-					throw new RuntimeException("Could not create config directory "+configDir);
-				}
+				Files.createDirectory(configDir);
 			}
-			catch(SecurityException e) {
+			catch(Exception e) {
 				throw new RuntimeException("Could not create config directory "+configDir, e);
 			}
 		}
 
-		mainConfig = new DynamicSpecConfig(CommentedFileConfig.builder(new File(configDir, "main.toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
+		mainConfig = new DynamicSpecConfig(CommentedFileConfig.builder(configDir.resolve("main.toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
 
 		mainConfig.setComment("materials", "Configurations related to materials.");
 		ingot = mainConfig.getDefinedBoolean("materials.ingot", ingot, "Should the mod find ingot materials with ores.");
@@ -130,51 +127,56 @@ public class ConfigHandler {
 	}
 
 	public static void setupCustomFormConfig() {
-		customFormConfigFile = new File(configDir, "custom_forms.json");
+		customFormConfigFile = configDir.resolve("custom_forms.json");
 		try {
-			if(!customFormConfigFile.exists()) {
-				FileWriter writer = new FileWriter(customFormConfigFile);
-				writer.close();
+			if(!Files.exists(customFormConfigFile)) {
+				Files.createFile(customFormConfigFile);
 			}
 		}
-		catch(IOException e) {
+		catch(Exception e) {
 			throw new RuntimeException("Could not create config file "+customFormConfigFile, e);
 		}
 		CustomModule.instance.setCustomFormConfigFile(customFormConfigFile);
 	}
 
 	public static void setupMaterialConfigs() {
-		materialConfigDir = new File(configDir, "materials");
-		if(!materialConfigDir.exists() || !materialConfigDir.isDirectory()) {
-			if(materialConfigDir.exists() && !materialConfigDir.isDirectory()) {
-				LOGGER.warn("Config directory {} is a file, deleting", materialConfigDir);
-				materialConfigDir.delete();
+		materialConfigDir = configDir.resolve("materials");
+		if(!Files.exists(materialConfigDir) || !Files.isDirectory(materialConfigDir)) {
+			try {
+				if(Files.exists(materialConfigDir) && !Files.isDirectory(materialConfigDir)) {
+					LOGGER.warn("Config directory {} is a file, deleting", materialConfigDir);
+					Files.delete(materialConfigDir);
+				}
+				Files.createDirectory(materialConfigDir);
 			}
-			if(!materialConfigDir.mkdir()) {
-				throw new RuntimeException("Could not create config directory "+materialConfigDir);
+			catch(Exception e) {
+				throw new RuntimeException("Could not create config directory "+materialConfigDir, e);
 			}
 		}
 		MATERIAL_CONFIGS.clear();
 		for(Material material : MaterialHandler.getMaterials()) {
-			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(new File(materialConfigDir, material.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
+			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(materialConfigDir.resolve(material.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
 			MATERIAL_CONFIGS.put(material, config);
 			material.setConfig(config);
 		}
 	}
 
 	public static void setupModuleConfigsPre() {
-		moduleConfigDir = new File(configDir, "modules");
-		if(!moduleConfigDir.exists() || !moduleConfigDir.isDirectory()) {
-			if(moduleConfigDir.exists() && !moduleConfigDir.isDirectory()) {
-				LOGGER.warn("Config directory {} is a file, deleting", moduleConfigDir);
-				moduleConfigDir.delete();
+		moduleConfigDir = configDir.resolve("modules");
+		if(!Files.exists(moduleConfigDir) || !Files.isDirectory(moduleConfigDir)) {
+			try {
+				if(Files.exists(moduleConfigDir) && !Files.isDirectory(moduleConfigDir)) {
+					LOGGER.warn("Config directory {} is a file, deleting", moduleConfigDir);
+					Files.delete(moduleConfigDir);
+				}
+				Files.createDirectory(moduleConfigDir);
 			}
-			if(!moduleConfigDir.mkdir()) {
-				throw new RuntimeException("Could not create config directory "+moduleConfigDir);
+			catch(Exception e) {
+				throw new RuntimeException("Could not create config directory "+moduleConfigDir, e);
 			}
 		}
 		for(IModule module : ModuleHandler.getModules()) {
-			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(new File(moduleConfigDir, module.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
+			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(moduleConfigDir.resolve(module.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
 			MODULE_CONFIGS.put(module, config);
 			ModuleData data = ModuleHandler.getModuleData(module);
 			data.setConfig(config);
