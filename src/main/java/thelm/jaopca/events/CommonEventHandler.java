@@ -1,6 +1,6 @@
 package thelm.jaopca.events;
 
-import java.io.File;
+import java.nio.file.Path;
 
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
@@ -28,11 +28,11 @@ import thelm.wrapup.event.RegistryWrapUpEvent;
 public class CommonEventHandler {
 
 	protected ASMDataTable asmDataTable;
-	protected File modConfigDir;
+	protected Path modConfigDir;
 
 	public void onPreInit(FMLPreInitializationEvent event) {
 		asmDataTable = event.getAsmData();
-		modConfigDir = event.getModConfigurationDirectory();
+		modConfigDir = event.getModConfigurationDirectory().toPath();
 	}
 
 	@SubscribeEvent
