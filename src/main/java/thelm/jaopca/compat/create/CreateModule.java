@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.create;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,6 +64,16 @@ public class CreateModule implements IModule {
 	@Override
 	public List<IFormRequest> getFormRequests() {
 		return List.of(crushedOreForm.toRequest());
+	}
+
+	@Override
+	public Set<MaterialType> getMaterialTypes() {
+		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY);
+	}
+
+	@Override
+	public Set<String> getDefaultMaterialBlacklist() {
+		return BLACKLIST;
 	}
 
 	@Override

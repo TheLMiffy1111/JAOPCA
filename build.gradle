@@ -136,7 +136,7 @@ sourceSets {
     main
 }
 
-version = "4.3.2.4"
+version = "4.3.2.5"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.19.3"
 
@@ -165,11 +165,11 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.19.3-44.1.17"
+    minecraft "net.minecraftforge:forge:1.19.3-44.1.20"
     annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
 
     implementation fg.deobf("mezz.jei:jei-1.19.3-forge:12.2.0.16")
-    //implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.0.29")
+    //implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.35")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19.3-5.1.3.1")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19.3:4.0.3")
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.19.3-78")
@@ -190,10 +190,10 @@ dependencies {
     //}
     implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.19.3:16.0.1")
     implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.3-9.2.0-160")
-    //implementation fg.deobf("com.simibubi.create:create-1.19.2:0.5.0.h-21:all")
+    //implementation fg.deobf("com.simibubi.create:create-1.19.2:0.5.0.i-23:all")
     //implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.19-3.6.+")
-    //implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.5.474")
-    //implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.5.474:generators")
+    //implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.8.477")
+    //implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.8.477:generators")
     //implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1900.1.7-build.212") {
     //    transitive = false
     //}
