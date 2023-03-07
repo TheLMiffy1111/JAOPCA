@@ -57,6 +57,16 @@ public class FactoriumModule implements IModule {
 	}
 
 	@Override
+	public Set<MaterialType> getMaterialTypes() {
+		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY);
+	}
+
+	@Override
+	public Set<String> getDefaultMaterialBlacklist() {
+		return BLACKLIST;
+	}
+
+	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		FactoriumHelper helper = FactoriumHelper.INSTANCE;

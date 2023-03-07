@@ -67,6 +67,16 @@ public class CreateModule implements IModule {
 	}
 
 	@Override
+	public Set<MaterialType> getMaterialTypes() {
+		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY);
+	}
+
+	@Override
+	public Set<String> getDefaultMaterialBlacklist() {
+		return BLACKLIST;
+	}
+
+	@Override
 	public void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {
 		this.configs = configs;
 	}
