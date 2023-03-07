@@ -77,7 +77,7 @@ public class LocalizationRepoHandler {
 			if(Files.exists(langFile)) {
 				try(InputStreamReader reader = new InputStreamReader(Files.newInputStream(langFile), StandardCharsets.UTF_8)) {
 					LOGGER.info("Reading localization file", language);
-					JsonElement jsonElement = new JsonParser().parse(reader);
+					JsonElement jsonElement = JsonParser.parseReader(reader);
 					JsonObject json = jsonHelper.getJsonObject(jsonElement, "file");
 					ImmutableSortedMap.Builder<String, String> builder = ImmutableSortedMap.naturalOrder();
 					for(Map.Entry<String, JsonElement> entry : json.entrySet()) {
