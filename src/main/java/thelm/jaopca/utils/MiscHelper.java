@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -15,6 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -58,6 +60,7 @@ import net.minecraftforge.registries.RegistryManager;
 import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.ingredients.CompoundIngredientObject;
+import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.materials.MaterialHandler;
@@ -337,10 +340,17 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public void caclulateMaterialSet(Collection<String> configList, Collection<String> actualSet) {
-		TreeMultiset<String> list = TreeMultiset.create(configList);
+		TreeMultiset<String> list = configList.stream().
+				map(s->s.startsWith("*") ? s.toLowerCase(Locale.US) : s).
+				collect(Collectors.toCollection(TreeMultiset::create));
 		int listCount = list.count("*");
-		MaterialHandler.getMaterialMap().keySet().forEach(s->list.add(s, listCount));
+		MaterialHandler.getMaterials().forEach(m->list.add(m.getName(), listCount));
 		list.remove("*", listCount);
+		for(MaterialType type : MaterialType.values()) {
+			int listCount1 = list.count("*"+type.getName());
+			MaterialHandler.getMaterials().stream().filter(m->m.getType() == type).forEach(m->list.add(m.getName(), listCount1));
+			list.remove("*"+type.getName(), listCount1);
+		}
 		actualSet.clear();
 		list.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(Multiset.Entry::getElement).forEach(actualSet::add);
 	}
@@ -349,7 +359,7 @@ public class MiscHelper implements IMiscHelper {
 	public void caclulateModuleSet(Collection<String> configList, Collection<String> actualSet) {
 		TreeMultiset<String> list = TreeMultiset.create(configList);
 		int listCount = list.count("*");
-		ModuleHandler.getModuleMap().keySet().forEach(s->list.add(s, listCount));
+		ModuleHandler.getModules().forEach(m->list.add(m.getName(), listCount));
 		list.remove("*", listCount);
 		actualSet.clear();
 		list.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(Multiset.Entry::getElement).forEach(actualSet::add);
@@ -379,8 +389,8 @@ public class MiscHelper implements IMiscHelper {
 		return json;
 	}
 
-	private static final Predicate<String> CONFIG_MATERIAL_PREDICATE = s->"*".equals(s) || MaterialHandler.containsMaterial(s);
-	private static final Predicate<String> CONFIG_MODULE_PREDICATE = s->"*".equals(s) || ModuleHandler.getModuleMap().containsKey(s);
+	private static final Predicate<String> CONFIG_MATERIAL_PREDICATE = s->s.equals("*") || s.startsWith("*") && MaterialType.fromName(s.substring(1)) != null || MaterialHandler.containsMaterial(s);
+	private static final Predicate<String> CONFIG_MODULE_PREDICATE = s->s.equals("*") || ModuleHandler.getModuleMap().containsKey(s);
 
 	@Override
 	public Predicate<String> configMaterialPredicate() {
