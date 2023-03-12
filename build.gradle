@@ -77,7 +77,7 @@ sourceSets {
     main
 }
 
-version = "2.3.6.9"
+version = "2.3.7.10"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.12.2"
 
