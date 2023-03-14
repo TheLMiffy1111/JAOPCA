@@ -61,6 +61,24 @@ public class RegistryHandler {
 					}
 				}
 			}
+			names = mapping.key.getPath().split(".", 2);
+			if(names.length == 2) {
+				String materialName = names[1].replaceAll("_", "");
+				LOGGER.debug("Checking material {}", materialName);
+				Optional<? extends IMaterial> material = MaterialHandler.getMaterials().stream().
+						filter(m->m.getName().equalsIgnoreCase(materialName)).findAny();
+				if(material.isPresent()) {
+					String path = names[0]+'.'+MiscHelper.INSTANCE.toLowercaseUnderscore(material.get().getName());
+					ResourceLocation remapLocation = new ResourceLocation(mapping.key.getNamespace(), path);
+					IForgeRegistry<T> reg = RegistryManager.ACTIVE.getRegistry(event.getName());
+					LOGGER.debug("Checking registry entry {}", remapLocation);
+					if(reg.containsKey(remapLocation)) {
+						mapping.remap(reg.getValue(remapLocation));
+						LOGGER.debug("Remapped registry entry {} to {}", mapping.key, remapLocation);
+						continue m;
+					}
+				}
+			}
 			LOGGER.debug("Could not remap registry entry {}", mapping.key);
 		}
 	}
