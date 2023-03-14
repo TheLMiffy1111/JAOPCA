@@ -63,7 +63,7 @@ public class RegistryHandler {
 					}
 				}
 			}
-			names = mapping.key.getPath().split(".", 2);
+			names = mapping.key.getPath().split("\\.", 2);
 			if(names.length == 2) {
 				String materialName = names[1].replaceAll("_", "");
 				LOGGER.debug("Checking material {}", materialName);

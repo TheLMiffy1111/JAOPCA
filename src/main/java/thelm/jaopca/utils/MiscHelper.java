@@ -2,6 +2,7 @@ package thelm.jaopca.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -209,8 +210,19 @@ public class MiscHelper implements IMiscHelper {
 		if(StringUtils.isEmpty(camelCase)) {
 			return "";
 		}
-		return Arrays.stream(StringUtils.splitByCharacterTypeCamelCase(camelCase)).
-				map(s->s.toLowerCase(Locale.US)).collect(Collectors.joining("_"));
+		LinkedList<String> list = new LinkedList<>();
+		for(String s : StringUtils.splitByCharacterTypeCamelCase(camelCase)) {
+			if(StringUtils.isAllUpperCase(s)) {
+				list.add(StringUtils.lowerCase(s).chars().mapToObj(c->String.valueOf((char)c)).collect(Collectors.joining("_")));
+			}
+			else if(StringUtils.isAllLowerCase(s) && !list.isEmpty()) {
+				list.add(list.pollLast()+s);
+			}
+			else {
+				list.add(StringUtils.uncapitalize(s));
+			}
+		}
+		return String.join("_", list);
 	}
 
 	@Override
