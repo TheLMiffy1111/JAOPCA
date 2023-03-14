@@ -55,7 +55,6 @@ public class AbyssalCraftModule implements IModule {
 
 	public AbyssalCraftModule() {
 		MinecraftForge.EVENT_BUS.register(AbyssalCraftHelper.INSTANCE);
-		ApiImpl.INSTANCE.registerUsedPlainPrefixes("crystalFragment", "crystalShard", "crystalCluster");
 	}
 
 	private final IForm crystalFragmentForm = ApiImpl.INSTANCE.newForm(this, "abyssalcraft_crystal_fragment", ItemFormType.INSTANCE).

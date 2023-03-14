@@ -1,8 +1,5 @@
 package thelm.jaopca.config;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -51,6 +48,8 @@ public class ConfigHandler {
 	public static boolean gemPlain = true;
 	public static boolean crystalPlain = true;
 	public static boolean dustPlain = true;
+	public static boolean nonPlainUsedPrefix = false;
+	public static boolean strictUsedPrefix = false;
 
 	public static final List<String> DEFAULT_GEM_OVERRIDES = Lists.newArrayList("Coal", "Diamond", "Emerald", "Lapis", "Prismarine", "Quartz");
 	public static final List<String> DEFAULT_CRYSTAL_OVERRIDES = Lists.newArrayList();
@@ -101,6 +100,8 @@ public class ConfigHandler {
 		gemPlain = mainConfig.getDefinedBoolean("materials.gemPlain", gemPlain, "Should the mod find gem materials without ores.");
 		crystalPlain = mainConfig.getDefinedBoolean("materials.crystalPlain", crystalPlain, "Should the mod find crystal materials without ores.");
 		dustPlain = mainConfig.getDefinedBoolean("materials.dustPlain", dustPlain, "Should the mod find dust materials without ores.");
+		nonPlainUsedPrefix = mainConfig.getDefinedBoolean("materials.nonPlainUsedPrefix", nonPlainUsedPrefix, "Should the mod not find materials with ores with used prefixes.");
+		strictUsedPrefix = mainConfig.getDefinedBoolean("materials.strictUsedPrefix", strictUsedPrefix, "Should the mod not find materials with used prefixes when the material name is not found yet.");
 
 		mainConfig.setComment("materialOverrides", "Configurations related to material overrides.");
 		GEM_OVERRIDES.addAll(mainConfig.getDefinedStringList("materialOverrides.gem", DEFAULT_GEM_OVERRIDES, "List of materials that should be gems."));
