@@ -172,9 +172,7 @@ public class MiscHelper implements IMiscHelper {
 			return new FluidStack(((IFluidProvider)obj).asFluid(), amount);
 		}
 		else if(obj instanceof String) {
-			if(FluidRegistry.isFluidRegistered((String)obj)) {
-				return new FluidStack(FluidRegistry.getFluid((String)obj), amount);
-			}
+			return FluidRegistry.getFluidStack((String)obj, amount);
 		}
 		return null;
 	}
