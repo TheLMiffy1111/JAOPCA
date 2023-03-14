@@ -47,6 +47,7 @@ public class ConfigHandler {
 	public static boolean gemPlain = true;
 	public static boolean crystalPlain = true;
 	public static boolean dustPlain = true;
+	public static boolean nonPlainUsedPrefix = true;
 	public static boolean strictUsedPrefix = true;
 
 	public static final List<String> DEFAULT_GEM_OVERRIDES = Lists.newArrayList("Coal", "Diamond", "Emerald", "Lapis", "Prismarine", "Quartz");
@@ -98,6 +99,7 @@ public class ConfigHandler {
 		gemPlain = mainConfig.getDefinedBoolean("materials.gemPlain", gemPlain, "Should the mod find gem materials without ores.");
 		crystalPlain = mainConfig.getDefinedBoolean("materials.crystalPlain", crystalPlain, "Should the mod find crystal materials without ores.");
 		dustPlain = mainConfig.getDefinedBoolean("materials.dustPlain", dustPlain, "Should the mod find dust materials without ores.");
+		nonPlainUsedPrefix = mainConfig.getDefinedBoolean("materials.nonPlainUsedPrefix", nonPlainUsedPrefix, "Should the mod not find materials with ores with used prefixes.");
 		strictUsedPrefix = mainConfig.getDefinedBoolean("materials.strictUsedPrefix", strictUsedPrefix, "Should the mod not find materials with used prefixes when the material name is not found yet.");
 
 		mainConfig.setComment("materialOverrides", "Configurations related to material overrides.");
