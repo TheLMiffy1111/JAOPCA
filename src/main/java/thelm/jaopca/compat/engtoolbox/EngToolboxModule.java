@@ -33,10 +33,6 @@ public class EngToolboxModule implements IModule {
 			"Aluminium", "Aluminum", "Ardite", "Cobalt", "Copper", "Gold", "Iron", "Lead", "NaturalAluminum",
 			"Nickel", "Silver", "Tin"));
 
-	public EngToolboxModule() {
-		ApiImpl.INSTANCE.registerUsedPlainPrefixes("dustImpure", "dustPure");
-	}
-
 	private final IForm groundForm = ApiImpl.INSTANCE.newForm(this, "eng_toolbox_ground", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("ground").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm impureDustForm = ApiImpl.INSTANCE.newForm(this, "eng_toolbox_impure_dust", ItemFormType.INSTANCE).

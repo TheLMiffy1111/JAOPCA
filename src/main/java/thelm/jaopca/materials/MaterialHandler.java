@@ -25,7 +25,11 @@ public class MaterialHandler {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final TreeSet<String> BLACKLISTED_NAMES = new TreeSet<>();
-	private static final TreeSet<String> USED_PREFIXES = new TreeSet<>();
+	private static final TreeSet<String> USED_PREFIXES = new TreeSet<>(Arrays.asList(
+			"ingotAny", "ingotHot", "ingotDouble", "ingotTriple", "ingotQuadruple", "ingotQuintuple",
+			"gemAny", "gemOre", "gemRaw", "gemUncut", "gemPolished", "gemChipped", "gemFlawed", "gemFlawless", "gemExquisite", "gemLegendary",
+			"crystalAny", "crystalShard", "crystalPure",
+			"dustAny", "dustSmall", "dustTiny", "dustDirty", "dustDiv72", "dustImpure", "dustPure", "dustRefined"));
 	private static final ListMultimap<String, String> ALTERNATIVE_NAMES = MultimapBuilder.treeKeys().arrayListValues().build();
 	private static final TreeMap<String, Material> MATERIALS = new TreeMap<>();
 
@@ -186,7 +190,7 @@ public class MaterialHandler {
 			if(prefixBlacklist.stream().noneMatch(bp->{
 				if(entry.startsWith(bp)) {
 					String nName = entry.substring(bp.length());
-					return found.contains(nName) || nameBlacklist.contains(nName);
+					return ConfigHandler.strictUsedPrefix || found.contains(nName) || nameBlacklist.contains(nName);
 				}
 				return false;
 			})) {

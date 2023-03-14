@@ -41,7 +41,6 @@ public class AbyssalCraftModule implements IModule {
 	public AbyssalCraftModule() {
 		AbyssalCraftAPI.registerFuelHandler(AbyssalCraftHelper.INSTANCE, AbyssalCraftAPI.FuelType.CRYSTALLIZER);
 		AbyssalCraftAPI.registerFuelHandler(AbyssalCraftHelper.INSTANCE, AbyssalCraftAPI.FuelType.TRANSMUTATOR);
-		ApiImpl.INSTANCE.registerUsedPlainPrefixes("crystalShard");
 	}
 
 	private final IForm crystalShardForm = ApiImpl.INSTANCE.newForm(this, "abyssalcraft_crystal_shard", ItemFormType.INSTANCE).

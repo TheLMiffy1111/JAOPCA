@@ -22,10 +22,6 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule
 public class TinyDustModule implements IModule {
 
-	public TinyDustModule() {
-		ApiImpl.INSTANCE.registerUsedPlainPrefixes("dustTiny");
-	}
-
 	private final IForm tinyDustForm = ApiImpl.INSTANCE.newForm(this, "tiny_dust", ItemFormType.INSTANCE).
 			setSecondaryName("dustTiny");
 
