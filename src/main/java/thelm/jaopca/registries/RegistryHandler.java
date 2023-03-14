@@ -1,8 +1,10 @@
 package thelm.jaopca.registries;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,10 +47,10 @@ public class RegistryHandler {
 					if(names[1].startsWith(remap.getKey())) {
 						String materialName = names[1].substring(remap.getKey().length());
 						LOGGER.debug("Checking material {}", materialName);
-						Optional<? extends IMaterial> material = MaterialHandler.getMaterials().stream().
-								filter(m->m.getName().equalsIgnoreCase(materialName)).findAny();
-						if(material.isPresent()) {
-							String path = remap.getValue()+'.'+MiscHelper.INSTANCE.toLowercaseUnderscore(material.get().getName());
+						List<IMaterial> materials = MaterialHandler.getMaterials().stream().
+								filter(m->m.getName().equalsIgnoreCase(materialName)).collect(Collectors.toList());
+						for(IMaterial material : materials) {
+							String path = remap.getValue()+'.'+MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName());
 							ResourceLocation remapLocation = new ResourceLocation(mapping.key.getNamespace(), path);
 							IForgeRegistry<T> reg = RegistryManager.ACTIVE.getRegistry(event.getName());
 							LOGGER.debug("Checking registry entry {}", remapLocation);
@@ -65,10 +67,10 @@ public class RegistryHandler {
 			if(names.length == 2) {
 				String materialName = names[1].replaceAll("_", "");
 				LOGGER.debug("Checking material {}", materialName);
-				Optional<? extends IMaterial> material = MaterialHandler.getMaterials().stream().
-						filter(m->m.getName().equalsIgnoreCase(materialName)).findAny();
-				if(material.isPresent()) {
-					String path = names[0]+'.'+MiscHelper.INSTANCE.toLowercaseUnderscore(material.get().getName());
+				List<IMaterial> materials = MaterialHandler.getMaterials().stream().
+						filter(m->m.getName().equalsIgnoreCase(materialName)).collect(Collectors.toList());
+				for(IMaterial material : materials) {
+					String path = names[0]+'.'+MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName());
 					ResourceLocation remapLocation = new ResourceLocation(mapping.key.getNamespace(), path);
 					IForgeRegistry<T> reg = RegistryManager.ACTIVE.getRegistry(event.getName());
 					LOGGER.debug("Checking registry entry {}", remapLocation);
