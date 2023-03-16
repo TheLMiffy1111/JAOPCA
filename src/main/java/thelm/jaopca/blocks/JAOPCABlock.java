@@ -6,6 +6,8 @@ import java.util.OptionalInt;
 
 import com.google.common.base.Strings;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -28,6 +30,9 @@ import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 public class JAOPCABlock extends Block implements IMaterialFormBlock {
+
+	public static final int RENDER_ID = MiscHelper.INSTANCE.conditionalSupplier(FMLCommonHandler.instance().getSide()::isClient,
+			()->RenderingRegistry::getNextAvailableRenderId, ()->()->0).get();
 
 	private final IForm form;
 	private final IMaterial material;
@@ -211,9 +216,10 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 
 	@Override
 	public int getRenderType() {
-		return JAOPCABlockRenderer.RENDER_ID;
+		return RENDER_ID;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public int getRenderBlockPass() {
 		return 1;

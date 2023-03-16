@@ -182,16 +182,19 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean requiresMultipleRenderPasses() {
 		return overlayIcon != null;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public IIcon getIconFromDamageForRenderPass(int meta, int pass) {
 		return pass == 0 ? itemIcon : overlayIcon;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int pass) {
 		return pass == 0 ? getIMaterial().getColor() : 0xFFFFFF;

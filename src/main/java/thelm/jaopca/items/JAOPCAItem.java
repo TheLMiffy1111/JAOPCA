@@ -120,16 +120,19 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean requiresMultipleRenderPasses() {
 		return overlayIcon != null;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public IIcon getIconFromDamageForRenderPass(int meta, int pass) {
 		return pass == 0 ? itemIcon : overlayIcon;
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int pass) {
 		return pass == 0 ? material.getColor() : 0xFFFFFF;

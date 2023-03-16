@@ -3,7 +3,6 @@ package thelm.jaopca.client.renderer;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,7 +13,6 @@ import thelm.jaopca.blocks.JAOPCABlock;
 public class JAOPCABlockRenderer implements ISimpleBlockRenderingHandler {
 
 	public static final JAOPCABlockRenderer INSTANCE = new JAOPCABlockRenderer();
-	public static final int RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 	public boolean renderingOverlay = false;
 
 	@Override
@@ -77,6 +75,6 @@ public class JAOPCABlockRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public int getRenderId() {
-		return RENDER_ID;
+		return JAOPCABlock.RENDER_ID;
 	}
 }
