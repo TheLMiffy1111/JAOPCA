@@ -160,7 +160,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected IIcon overlayIcon = null;
+	protected IIcon overlayIcon;
 
 	@SideOnly(Side.CLIENT)
 	@Override

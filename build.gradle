@@ -80,7 +80,7 @@ repositories {
     }
 }
 
-version = "W.0.3.6"
+version = "W.0.3.7"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.7.10"
 

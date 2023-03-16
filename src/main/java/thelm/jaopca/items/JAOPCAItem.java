@@ -98,7 +98,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected IIcon overlayIcon = null;
+	protected IIcon overlayIcon;
 
 	@SideOnly(Side.CLIENT)
 	@Override
