@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.DoublePredicate;
@@ -36,14 +37,32 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 		this.config = config;
 		if(config instanceof FileConfig) {
 			FileConfig fileConfig = (FileConfig)config;
+			Path path = fileConfig.getNioPath();
+			String fileName = path.getFileName().toString();
+			String oldFileName = Arrays.stream(StringUtils.split(fileName, '_')).map(StringUtils::capitalize).collect(Collectors.joining());
+			Path oldPath = path.resolveSibling(oldFileName);
+			if(Files.exists(oldPath)) {
+				try {
+					Path realPath = oldPath.toRealPath();
+					String realFileName = realPath.getFileName().toString();
+					if(!realFileName.equals(fileName)) {
+						LOGGER.debug("Moving config with path {} to path {}", oldPath, path);
+						Path tempPath = Files.createTempFile(path.getParent(), null, null);
+						Files.move(oldPath, tempPath, StandardCopyOption.REPLACE_EXISTING);
+						Files.move(tempPath, path, StandardCopyOption.REPLACE_EXISTING);
+					}
+				}
+				catch(Exception e) {
+					LOGGER.error("Unable to move config with path {}", oldPath, e);
+				}
+			}
 			try {
 				fileConfig.load();
 			}
 			catch(ParsingException e) {
-				Path path = fileConfig.getNioPath();
 				LOGGER.warn("Config with path {} is malformed, moving", path);
 				try {
-					Files.move(path, path.resolveSibling(path.getFileName()+".bak"), StandardCopyOption.REPLACE_EXISTING);
+					Files.move(path, path.resolveSibling(fileName+".bak"), StandardCopyOption.REPLACE_EXISTING);
 				}
 				catch(Exception e1) {
 					LOGGER.error("Unable to move config with path {}", path, e1);

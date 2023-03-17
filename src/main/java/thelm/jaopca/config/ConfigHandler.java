@@ -25,6 +25,7 @@ import thelm.jaopca.materials.Material;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleData;
 import thelm.jaopca.modules.ModuleHandler;
+import thelm.jaopca.utils.MiscHelper;
 
 public class ConfigHandler {
 
@@ -159,7 +160,7 @@ public class ConfigHandler {
 		}
 		MATERIAL_CONFIGS.clear();
 		for(Material material : MaterialHandler.getMaterials()) {
-			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(materialConfigDir.resolve(material.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
+			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(materialConfigDir.resolve(MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName())+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
 			MATERIAL_CONFIGS.put(material, config);
 			material.setConfig(config);
 		}

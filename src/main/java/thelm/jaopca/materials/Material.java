@@ -154,6 +154,8 @@ public class Material implements IMaterial {
 	public void setConfig(IDynamicSpecConfig config) {
 		this.config = config;
 
+		config.setComment("general", "Configurations for material "+name+".");
+
 		List<String> cfgList = config.getDefinedStringList("general.alternativeNames", new ArrayList<>(alternativeNames), "The alternative names of this material.");
 		alternativeNames.clear();
 		alternativeNames.addAll(cfgList);
