@@ -63,6 +63,9 @@ repositories {
     maven {
         url = "https://dvs1.progwml6.com/files/maven/"
     }
+    maven {
+        url = "https://maven.modmuss50.me/"
+    }
     ivy {
         artifactPattern "https://asie.pl/files/mods/[module]/[module]-[revision]-[classifier].[ext]"
     }
@@ -80,7 +83,7 @@ repositories {
     }
 }
 
-version = "W.0.3.8"
+version = "W.0.4.9"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.7.10"
 
@@ -130,6 +133,7 @@ dependencies {
     implementation("tconstruct:TConstruct:1.7.10-1.8.8.build988:deobf") {
         transitive = false
     }
+    implementation "RebornCore:RebornCore:1.1.0.15:dev"
     implementation "com.github.GTNewHorizons:CreativeCore:1.3.27-GTNH:dev"
     implementation "com.github.GTNewHorizons:BuildCraft:7.1.25:dev"
     implementation "com.github.GTNewHorizons:ForgeMultipart:1.3.1:dev"
@@ -142,6 +146,7 @@ dependencies {
     implementation "curse.maven:thermal-dynamics-227443:2388757"
     implementation "curse.maven:immersive-engineering-231951:2299020"
     implementation name: "Factorization", version: "1.7.10-0.8.109", classifier: "dev", ext: "jar"
+    implementation "curse.maven:techreborn-233564:2605736-api-sources"
 
     implementation deobfCurse("crafttweaker-239197:2838720")
     implementation deobfCurse("railcraft-51195:2458987")
