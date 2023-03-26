@@ -179,7 +179,7 @@ public class MaterialHandler {
 		for(String entry : entries) {
 			if(entry.startsWith(mainPrefix)) {
 				String name = entry.substring(mainPrefix.length());
-				if(!Character.isLowerCase(name.charAt(0)) && !nameBlacklist.contains(name) && Arrays.stream(prefixes).map(prefix->prefix+name).allMatch(entries::contains)) {
+				if(!name.isEmpty() && !Character.isLowerCase(name.charAt(0)) && !nameBlacklist.contains(name) && Arrays.stream(prefixes).map(prefix->prefix+name).allMatch(entries::contains)) {
 					found.add(name);
 				}
 			}
