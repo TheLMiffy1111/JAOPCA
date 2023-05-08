@@ -26,14 +26,18 @@ public class ChemicalCrystallizerRecipeSerializer implements IRecipeSerializer {
 	public final Object output;
 	public final int outputCount;
 	public final double experience;
+	public final int time;
+	public final double energy;
 
-	public ChemicalCrystallizerRecipeSerializer(ResourceLocation key, Object input, int inputAmount, Object output, int outputCount, double experience) {
+	public ChemicalCrystallizerRecipeSerializer(ResourceLocation key, Object input, int inputAmount, Object output, int outputCount, double experience, int time, double energy) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.inputAmount = inputAmount;
 		this.output = output;
 		this.outputCount = outputCount;
 		this.experience = experience;
+		this.time = time;
+		this.energy = energy;
 	}
 
 	@Override
@@ -62,6 +66,8 @@ public class ChemicalCrystallizerRecipeSerializer implements IRecipeSerializer {
 		json.add("fluidinputs", fluidInputJson);
 		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("experience", experience);
+		json.addProperty("ticks", time);
+		json.addProperty("usagepertick", energy);
 
 		return json;
 	}

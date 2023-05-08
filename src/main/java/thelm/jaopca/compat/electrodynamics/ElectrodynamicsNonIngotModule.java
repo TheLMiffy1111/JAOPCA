@@ -15,7 +15,7 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "electrodynamics")
+@JAOPCAModule(modDependencies = "electrodynamics@[1.19.2-0.8.0,)")
 public class ElectrodynamicsNonIngotModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
@@ -47,11 +47,11 @@ public class ElectrodynamicsNonIngotModule implements IModule {
 
 			helper.registerMineralGrinderRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.ore_to_material_grinder."+material.getName()),
-					oreLocation, 1, materialLocation, isCrystal ? 3 : 2, isCrystal ? 1 : 0.3);
+					oreLocation, 1, materialLocation, isCrystal ? 3 : 2, isCrystal ? 1 : 0.2, 200, 350);
 			if(!isCrystal) {
 				helper.registerMineralCrusherRecipe(
 						new ResourceLocation("jaopca", "electrodynamics.ore_to_material_crusher."+material.getName()),
-						oreLocation, 1, materialLocation, 4, 0.3);
+						oreLocation, 1, materialLocation, 4, 0.1, 200, 450);
 			}
 		}
 	}

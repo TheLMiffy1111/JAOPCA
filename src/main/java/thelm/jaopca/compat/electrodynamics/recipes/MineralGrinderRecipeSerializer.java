@@ -29,12 +29,14 @@ public class MineralGrinderRecipeSerializer implements IRecipeSerializer {
 	public final int secondOutputCount;
 	public final double secondChance;
 	public final double experience;
+	public final int time;
+	public final double energy;
 
-	public MineralGrinderRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double experience) {
-		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, experience);
+	public MineralGrinderRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double experience, int time, double energy) {
+		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, experience, time, energy);
 	}
 
-	public MineralGrinderRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, double secondChance, double experience) {
+	public MineralGrinderRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, double secondChance, double experience, int time, double energy) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.inputCount = inputCount;
@@ -44,6 +46,8 @@ public class MineralGrinderRecipeSerializer implements IRecipeSerializer {
 		this.secondOutputCount = secondOutputCount;
 		this.secondChance = secondChance;
 		this.experience = experience;
+		this.time = time;
+		this.energy = energy;
 	}
 
 	@Override
@@ -76,6 +80,8 @@ public class MineralGrinderRecipeSerializer implements IRecipeSerializer {
 			json.add("itembi", secondJson);
 		}
 		json.addProperty("experience", experience);
+		json.addProperty("ticks", time);
+		json.addProperty("usagepertick", energy);
 
 		return json;
 	}

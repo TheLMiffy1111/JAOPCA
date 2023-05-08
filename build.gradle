@@ -136,7 +136,7 @@ sourceSets {
     main
 }
 
-version = "4.2.7.13"
+version = "4.2.7.14"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.19.2"
 
@@ -165,32 +165,32 @@ minecraft {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.19.2-43.2.6"
+    minecraft "net.minecraftforge:forge:1.19.2-43.2.10"
     annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
 
-    implementation fg.deobf("mezz.jei:jei-1.19.2-forge:11.6.0.1010")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.35")
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.2.2")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:3.1.39")
+    implementation fg.deobf("mezz.jei:jei-1.19.2-forge:11.6.0.1015")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.42")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.4.1")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:3.1.40")
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
     //implementation fg.deobf("slimeknights.mantle:Mantle:1.19-1.10.+")
     implementation fg.deobf("com.teamcofh:cofh_core:1.19.2-10.2.1.40")
     implementation fg.deobf("com.teamcofh:thermal_core:1.19.2-10.2.0.5")
-    implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.264")
-    implementation fg.deobf("dev.architectury:architectury-forge:6.5.69")
-    implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1902.3.13-build.175") {
+    implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.268")
+    implementation fg.deobf("dev.architectury:architectury-forge:6.5.82")
+    implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1902.3.18-build.208") {
         transitive = false
     }
     implementation("com.kotori316:scalablecatsforce:2.13.8-build-8:with-library") {
         transitive = false
     }
     implementation fg.deobf("net.bdew:bdlib:1.25.0.5-mc1.19.2")
-    implementation fg.deobf("com.klikli_dev:modonomicon:1.19.2-1.25.0")
+    implementation fg.deobf("com.klikli_dev:modonomicon:1.19.2-1.30.2")
     implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.142") {
         transitive = false
     }
     implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.19.2:15.0.1")
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.2-9.1.2-159")
+    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.2-9.2.1-164")
     implementation fg.deobf("com.simibubi.create:create-1.19.2:0.5.0.i-23:all")
     //implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.19-3.6.+")
     implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.8.477")
@@ -210,23 +210,24 @@ dependencies {
     implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3759881")
     implementation fg.deobf("curse.maven:ato-405593:4046926")
     implementation fg.deobf("curse.maven:allthemodium-364466:4402276")
-    implementation fg.deobf("curse.maven:electrodynamics-316867:4399782")
-    implementation fg.deobf("curse.maven:voluminous-energy-416704:4360482")
-    implementation fg.deobf("curse.maven:cyclops-core-232758:4392595")
+    implementation fg.deobf("curse.maven:electrodynamics-316867:4518028")
+    implementation fg.deobf("curse.maven:voluminous-energy-416704:4452529")
+    implementation fg.deobf("curse.maven:cyclops-core-232758:4515669")
     implementation fg.deobf("curse.maven:common-capabilities-247007:4391413")
-    implementation fg.deobf("curse.maven:integrated-dynamics-236307:4391520")
+    implementation fg.deobf("curse.maven:integrated-dynamics-236307:4493167")
     implementation fg.deobf("curse.maven:essentials-293752:4394651")
     implementation fg.deobf("curse.maven:crossroads-mc-250231:4397746")
     implementation fg.deobf("curse.maven:assemblylinemachines-388282:3964948")
-    implementation fg.deobf("curse.maven:smartbrainlib-661293:4312502")
-    implementation fg.deobf("curse.maven:occultism-361026:4404085")
+    implementation fg.deobf("curse.maven:smartbrainlib-661293:4458565")
+    implementation fg.deobf("curse.maven:occultism-361026:4521658")
     implementation fg.deobf("curse.maven:cyclic-239286:4075141")
     implementation fg.deobf("curse.maven:industrial-reborn-358877:4076608")
-    implementation fg.deobf("curse.maven:ic2-classic-242942:4348706")
+    implementation fg.deobf("curse.maven:ic2-classic-242942:4441313")
     implementation fg.deobf("curse.maven:silent-lib-242998:3968715")
     implementation fg.deobf("curse.maven:silents-mechanisms-326258:4392434")
     implementation fg.deobf("curse.maven:silents-gems-220311:4181316")
-    implementation fg.deobf("curse.maven:silent-gear-297039:4370101")
+    implementation fg.deobf("curse.maven:silent-gear-297039:4397693")
+    implementation fg.deobf("curse.maven:json-things-541617:4477844")
 }
 
 jar {
