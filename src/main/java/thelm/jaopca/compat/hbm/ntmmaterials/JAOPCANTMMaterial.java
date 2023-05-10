@@ -18,7 +18,6 @@ public class JAOPCANTMMaterial extends NTMMaterial implements IMaterialForm {
 
 	public JAOPCANTMMaterial(int id, IForm form, IMaterial material) {
 		super(id, getDictFrame(material));
-		this.omitItemGen = true;
 		this.smeltable = SmeltingBehavior.SMELTABLE;
 		this.form = form;
 		this.material = material;
@@ -40,7 +39,7 @@ public class JAOPCANTMMaterial extends NTMMaterial implements IMaterialForm {
 	}
 
 	public void setColors() {
-		moltenColor = solidColor = material.getColor();
+		moltenColor = solidColorLight = solidColorDark = material.getColor();
 	}
 
 	public static OreDictManager.DictFrame getDictFrame(IMaterial material) {

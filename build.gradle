@@ -83,7 +83,7 @@ repositories {
     }
 }
 
-version = "W.0.4.10"
+version = "W.0.4.11"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.7.10"
 
@@ -114,8 +114,8 @@ dependencies {
     implementation "com.gtnewhorizon:gtnhmixins:2.1.12"
 
     implementation "com.github.GTNewHorizons:CodeChickenCore:1.1.11:dev"
-    implementation "com.github.GTNewHorizons:CodeChickenLib:1.1.7:dev"
-    implementation "com.github.GTNewHorizons:NotEnoughItems:2.3.27-GTNH:dev"
+    implementation "com.github.GTNewHorizons:CodeChickenLib:1.1.8:dev"
+    implementation "com.github.GTNewHorizons:NotEnoughItems:2.3.51-GTNH:dev"
     implementation "net.industrial-craft:industrialcraft-2:2.2.827-experimental:dev"
     implementation("com.enderio.core:EnderCore:1.7.10-0.2.0.39_beta:dev") {
         transitive = false
@@ -167,7 +167,7 @@ dependencies {
     implementation deobfCurse("mariculture-68023:2323944")
     implementation deobfCurse("magneticraft-224808:2276268")
     implementation deobfCurse("foundry-228297:2269019")
-    implementation deobfGithub("HbmMods/Hbm-s-Nuclear-Tech-GIT", "1.0.27X4515/HBM-NTM-.1.0.27_X4515.jar")
+    implementation deobfGithub("HbmMods/Hbm-s-Nuclear-Tech-GIT", "1.0.27X4592/HBM-NTM-.1.0.27_X4592.jar")
     implementation deobfCurse("abyssalcraft-53686:2311135")
     implementation deobfCurse("essentialcraft-4-unofficial-254817:2394702")
 
