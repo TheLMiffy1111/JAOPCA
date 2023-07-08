@@ -1,7 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/create_crushed_ores",
-        "layer1": "jaopca:item/metallic/create_crushed_ores_overlay"
-    }
-}
