@@ -136,14 +136,14 @@ sourceSets {
     main
 }
 
-version = "4.3.3.6"
+version = "4.3.3.7"
 group = "thelm.jaopca"
 archivesBaseName = "JAOPCA-1.19.3"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: "parchment", version: "2022.12.18-1.19.3"
+    mappings channel: "parchment", version: "2023.06.25-1.19.3"
     runs {
         client = {
             properties "forge.logging.markers": "SCAN,REGISTRIES,REGISTRYDUMP"

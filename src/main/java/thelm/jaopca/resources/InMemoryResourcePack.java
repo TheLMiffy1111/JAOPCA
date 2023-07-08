@@ -99,7 +99,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	@Override
 	public void listResources(PackType type, String namespace, String path, ResourceOutput resourceOutput) {
 		String prefix = type.getDirectory()+'/'+namespace+'/';
-		String prefix1 = prefix+'/'+path+'/';
+		String prefix1 = prefix+path+'/';
 		files.forEach((filePath, streamSupplier)->{
 			if(filePath.startsWith(prefix1)) {
 				resourceOutput.accept(new ResourceLocation(namespace, filePath.substring(prefix.length())), streamSupplier::get);
