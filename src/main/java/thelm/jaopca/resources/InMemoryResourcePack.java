@@ -30,7 +30,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	private static final Gson GSON = new GsonBuilder().create();
 	private final String packId;
 	private final boolean isHidden;
-	private final JsonObject metadata = (JsonObject)JsonParser.parseString("{\"pack_format\":4,\"description\":\"JAOPCA In Memory Resources\"}");
+	private final JsonObject metadata = (JsonObject)JsonParser.parseString("{\"pack_format\":15,\"description\":\"JAOPCA In Memory Resources\"}");
 	private final TreeMap<String, Supplier<? extends InputStream>> files = new TreeMap<>();
 
 	public InMemoryResourcePack(String packId, boolean isHidden) {

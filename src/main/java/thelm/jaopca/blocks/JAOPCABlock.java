@@ -12,7 +12,10 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -29,9 +32,9 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected final IBlockFormSettings settings;
 
 	protected boolean blocksMovement;
+	protected Optional<MapColor> mapColor = Optional.empty();
 	protected Optional<SoundType> soundType = Optional.empty();
 	protected OptionalInt lightValue = OptionalInt.empty();
-	//protected OptionalDouble blockHardness = OptionalDouble.empty();
 	protected OptionalDouble explosionResistance = OptionalDouble.empty();
 	protected OptionalDouble friction = OptionalDouble.empty();
 	protected VoxelShape shape;
@@ -39,13 +42,10 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected OptionalInt flammability = OptionalInt.empty();
 	protected OptionalInt fireSpreadSpeed = OptionalInt.empty();
 	protected Optional<Boolean> isFireSource = Optional.empty();
+	protected Optional<PushReaction> pushReaction = Optional.empty();
 
 	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings) {
-		super(Block.Properties.of(settings.getMaterialFunction().apply(material),
-				settings.getMaterialColorFunction().apply(material)).
-				strength((float)settings.getBlockHardnessFunction().applyAsDouble(material)).
-				lightLevel(state->settings.getLightValueFunction().applyAsInt(material)).
-				noOcclusion());
+		super(getProperties(form, material, settings));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -53,6 +53,17 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		blocksMovement = settings.getBlocksMovement();
 		shape = settings.getShape();
 		interactionShape = settings.getInteractionShape();
+	}
+
+	public static BlockBehaviour.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings) {
+		BlockBehaviour.Properties prop = Block.Properties.of();
+		prop.strength((float)settings.getBlockHardnessFunction().applyAsDouble(material));
+		prop.lightLevel(state->settings.getLightValueFunction().applyAsInt(material));
+		if(settings.getReplaceable()) {
+			prop.replaceable();
+		}
+		prop.noOcclusion();
+		return prop;
 	}
 
 	@Override
@@ -71,6 +82,14 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	@Override
+	public MapColor getMapColor(BlockState state, BlockGetter level, BlockPos pos, MapColor defaultColor) {
+		if(!mapColor.isPresent()) {
+			mapColor = Optional.of(settings.getMapColorFunction().apply(material));
+		}
+		return mapColor.get();
+	}
+
+	@Override
 	public SoundType getSoundType(BlockState blockState) {
 		if(!soundType.isPresent()) {
 			soundType = Optional.of(settings.getSoundTypeFunction().apply(material));
@@ -85,14 +104,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		}
 		return lightValue.getAsInt();
 	}
-
-	//@Override
-	//public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos) {
-	//	if(!blockHardness.isPresent()) {
-	//		blockHardness = OptionalDouble.of(settings.getBlockHardnessFunction().applyAsDouble(material));
-	//	}
-	//	return (float)blockHardness.getAsDouble();
-	//}
 
 	@Override
 	public float getExplosionResistance() {
@@ -147,6 +158,14 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 			isFireSource = Optional.of(settings.getIsFireSourceFunction().test(material));
 		}
 		return isFireSource.get();
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState state) {
+		if(!pushReaction.isPresent()) {
+			pushReaction = Optional.of(settings.getPushReactionFunction().apply(material));
+		}
+		return pushReaction.get();
 	}
 
 	@Override

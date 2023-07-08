@@ -59,13 +59,17 @@ public class VoluminousEnergyModule implements IModule {
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerCrushingRecipe(
 					new ResourceLocation("jaopca", "voluminousenergy.ore_to_dust."+material.getName()),
-					oreLocation, 1, dustLocation, 2, 200);
+					oreLocation, 1, dustLocation, 2, 200, 1, 3);
 			if(material.getType() == MaterialType.INGOT) {
+				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				helper.registerCrushingRecipe(
+						new ResourceLocation("jaopca", "voluminousenergy.raw_material_to_dust."+material.getName()),
+						rawMaterialLocation, 1, dustLocation, 1, dustLocation, 1, 0.333F, 200, 1, 3);
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerCrushingRecipe(
 							new ResourceLocation("jaopca", "voluminousenergy.raw_storage_block_to_dust."+material.getName()),
-							rawStorageBlockLocation, 1, dustLocation, 18, 200);
+							rawStorageBlockLocation, 1, dustLocation, 9, dustLocation, 9, 0.333F, 200, 1, 3);
 				}
 			}
 		}

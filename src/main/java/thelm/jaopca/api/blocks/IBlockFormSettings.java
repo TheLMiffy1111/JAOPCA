@@ -7,8 +7,8 @@ import java.util.function.ToIntFunction;
 
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
@@ -19,13 +19,13 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	IBlockCreator getBlockCreator();
 
-	IBlockFormSettings setMaterialFunction(Function<IMaterial, Material> materialFunction);
+	IBlockFormSettings setMapColorFunction(Function<IMaterial, MapColor> mapColorFunction);
 
-	Function<IMaterial, Material> getMaterialFunction();
+	Function<IMaterial, MapColor> getMapColorFunction();
 
-	IBlockFormSettings setMaterialColorFunction(Function<IMaterial, MaterialColor> materialColorFunction);
+	IBlockFormSettings setReplaceable(boolean replaceable);
 
-	Function<IMaterial, MaterialColor> getMaterialColorFunction();
+	boolean getReplaceable();
 
 	IBlockFormSettings setBlocksMovement(boolean blocksMovement);
 
@@ -78,6 +78,10 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setIsFireSourceFunction(Predicate<IMaterial> isFireSourceFunction);
 
 	Predicate<IMaterial> getIsFireSourceFunction();
+
+	IBlockFormSettings setPushReactionFunction(Function<IMaterial, PushReaction> pushReactionFunction);
+
+	Function<IMaterial, PushReaction> getPushReactionFunction();
 
 	//IBlockFormSettings setIsWaterLoggable(boolean waterLoggable);
 

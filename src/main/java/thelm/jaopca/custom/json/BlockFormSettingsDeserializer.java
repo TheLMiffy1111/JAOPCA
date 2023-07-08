@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.helpers.IJsonHelper;
@@ -31,12 +32,15 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 		IJsonHelper helper = JsonHelper.INSTANCE;
 		JsonObject json = helper.getJsonObject(jsonElement, "settings");
 		IBlockFormSettings settings = BlockFormType.INSTANCE.getNewSettings();
-		if(json.has("blockMaterial")) {
-			JsonObject functionJson = helper.getJsonObject(json, "blockMaterial");
+		if(json.has("mapColor")) {
+			JsonObject functionJson = helper.getJsonObject(json, "mapColor");
 			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", "iron");
+				functionJson.addProperty("default", "metal");
 			}
-			settings.setMaterialFunction(helper.deserializeType(json, "blockMaterial", context, BlockFormType.MATERIAL_FUNCTION_TYPE));
+			settings.setMapColorFunction(helper.deserializeType(json, "mapColor", context, BlockFormType.MAP_COLOR_FUNCTION_TYPE));
+		}
+		if(json.has("replaceable")) {
+			settings.setReplaceable(helper.getBoolean(json, "replaceable"));
 		}
 		if(json.has("soundType")) {
 			JsonObject functionJson = helper.getJsonObject(json, "soundType");
@@ -113,6 +117,10 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 				functionJson.addProperty("default", false);
 			}
 			settings.setIsFireSourceFunction(helper.deserializeType(json, "isFireSource", context, FormTypeHandler.PREDICATE_TYPE));
+		}
+		if(json.has("pushReaction")) {
+			PushReaction pushReaction = helper.deserializeType(json, "pushReaction", context, PushReaction.class);
+			settings.setPushReactionFunction(m->pushReaction);
 		}
 		if(json.has("maxStackSize")) {
 			JsonObject functionJson = helper.getJsonObject(json, "maxStackSize");

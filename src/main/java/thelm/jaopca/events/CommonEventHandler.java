@@ -3,16 +3,16 @@ package thelm.jaopca.events;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.tags.TagManager;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
@@ -28,6 +28,7 @@ import thelm.jaopca.ingredients.IngredientSerializers;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
+import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -64,12 +65,8 @@ public class CommonEventHandler {
 		ConfigHandler.setupModuleConfigs();
 		FormTypeHandler.registerMaterialForms();
 		ModuleHandler.onMaterialComputeComplete();
-	}
-
-	@SubscribeEvent
-	public void onCreativeModeTabRegister(CreativeModeTabEvent.Register event) {
-		event.registerCreativeModeTab(new ResourceLocation("jaopca:tab"),
-				builder->builder.
+		RegistryHandler.registerForgeRegistryEntry(Registries.CREATIVE_MODE_TAB, "tab",
+				()->CreativeModeTab.builder().
 				title(Component.translatable("itemGroup.jaopca")).
 				icon(()->new ItemStack(Items.GLOWSTONE_DUST)).
 				displayItems(FormTypeHandler::addToCreativeModeTab).

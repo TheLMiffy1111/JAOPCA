@@ -9,8 +9,7 @@ import java.util.function.ToIntFunction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import thelm.jaopca.api.fluids.IBucketItemCreator;
 import thelm.jaopca.api.fluids.IFluidBlockCreator;
@@ -48,8 +47,7 @@ class FluidFormSettings implements IFluidFormSettings {
 	private Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction = material->BlockPathTypes.WATER_BORDER;
 	private IFluidBlockCreator fluidBlockCreator = JAOPCAFluidBlock::new;
 	private ToIntFunction<IMaterial> levelDecreasePerBlockFunction = material->1;
-	private Function<IMaterial, Material> materialFunction = material->Material.WATER;
-	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
+	private Function<IMaterial, MapColor> mapColorFunction = material->MapColor.WATER;
 	//material->{
 	//	int color = material.getColor();
 	//	return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
@@ -349,25 +347,14 @@ class FluidFormSettings implements IFluidFormSettings {
 	}
 
 	@Override
-	public IFluidFormSettings setMaterialFunction(Function<IMaterial, Material> materialFunction) {
-		this.materialFunction = materialFunction;
+	public IFluidFormSettings setMapColorFunction(Function<IMaterial, MapColor> mapColorFunction) {
+		this.mapColorFunction = mapColorFunction;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, Material> getMaterialFunction() {
-		return materialFunction;
-	}
-
-	@Override
-	public IFluidFormSettings setMaterialColorFunction(Function<IMaterial, MaterialColor> materialColorFunction) {
-		this.materialColorFunction = materialColorFunction;
-		return this;
-	}
-
-	@Override
-	public Function<IMaterial, MaterialColor> getMaterialColorFunction() {
-		return materialColorFunction;
+	public Function<IMaterial, MapColor> getMapColorFunction() {
+		return mapColorFunction;
 	}
 
 	@Override

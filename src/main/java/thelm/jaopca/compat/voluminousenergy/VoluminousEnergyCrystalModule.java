@@ -49,7 +49,7 @@ public class VoluminousEnergyCrystalModule implements IModule {
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			helper.registerCrushingRecipe(
 					new ResourceLocation("jaopca", "voluminousenergy.ore_to_material."+material.getName()),
-					oreLocation, 1, materialLocation, 1, 200);
+					oreLocation, 1, materialLocation, 1, 200, 1, 3);
 		}
 	}
 }

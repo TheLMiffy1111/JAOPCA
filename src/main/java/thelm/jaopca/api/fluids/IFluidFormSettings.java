@@ -8,8 +8,7 @@ import java.util.function.ToIntFunction;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
@@ -120,13 +119,9 @@ public interface IFluidFormSettings extends IFormSettings {
 
 	ToIntFunction<IMaterial> getLevelDecreasePerBlockFunction();
 
-	IFluidFormSettings setMaterialFunction(Function<IMaterial, Material> materialFunction);
+	IFluidFormSettings setMapColorFunction(Function<IMaterial, MapColor> mapColorFunction);
 
-	Function<IMaterial, Material> getMaterialFunction();
-
-	IFluidFormSettings setMaterialColorFunction(Function<IMaterial, MaterialColor> materialColorFunction);
-
-	Function<IMaterial, MaterialColor> getMaterialColorFunction();
+	Function<IMaterial, MapColor> getMapColorFunction();
 
 	IFluidFormSettings setBlockHardnessFunction(ToDoubleFunction<IMaterial> blockHardnessFunction);
 

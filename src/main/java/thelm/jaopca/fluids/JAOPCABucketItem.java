@@ -29,7 +29,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.SoundActions;
@@ -150,7 +149,6 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	public boolean emptyContents(Player player, Level world, BlockPos pos, BlockHitResult blockHitResult) {
 		BlockState blockState = world.getBlockState(pos);
 		Block block = blockState.getBlock();
-		Material blockMaterial = blockState.getMaterial();
 		boolean flag = blockState.canBeReplaced(fluid.asFluid());
 		boolean flag1 = blockState.isAir() || flag || (block instanceof LiquidBlockContainer container
 				&& container.canPlaceLiquid(world, pos, blockState, fluid.asFluid()));
@@ -167,7 +165,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 			playEmptySound(player, world, pos);
 			return true;
 		}
-		if(!world.isClientSide && flag && !blockMaterial.isLiquid()) {
+		if(!world.isClientSide && flag && !blockState.liquid()) {
 			world.destroyBlock(pos, true);
 		}
 		if(!world.setBlock(pos, fluid.asFluid().getFluidType().getStateForPlacement(world, pos, stack).createLegacyBlock(), 11) && !blockState.getFluidState().isSource()) {

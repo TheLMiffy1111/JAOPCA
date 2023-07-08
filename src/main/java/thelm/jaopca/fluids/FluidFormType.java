@@ -19,9 +19,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
@@ -103,7 +101,7 @@ public class FluidFormType implements IFluidFormType {
 				setFillSoundSupplier(()->SoundEvents.BUCKET_FILL_LAVA).setEmptySoundSupplier(()->SoundEvents.BUCKET_EMPTY_LAVA).
 				setMotionScaleFunction(material->0.007D/3).setCanDrownFunction(material->false).
 				setPathTypeFunction(material->BlockPathTypes.LAVA).setAdjacentPathTypeFunction(material->null).
-				setMaterialFunction(material->Material.LAVA).setFireTimeFunction(material->15);
+				setFireTimeFunction(material->15);
 	}
 
 	@Override
@@ -157,7 +155,7 @@ public class FluidFormType implements IFluidFormType {
 	}
 
 	@Override
-	public void addToCreativeModeTab(FeatureFlagSet enabledFeatures, CreativeModeTab.Output output, boolean displayOperatorCreativeTab) {
+	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
 		getBucketItems().forEach(mf->output.accept(mf.asItem()));
 	}
 

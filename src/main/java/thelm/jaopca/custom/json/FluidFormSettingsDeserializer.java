@@ -172,12 +172,12 @@ public class FluidFormSettingsDeserializer implements JsonDeserializer<IFluidFor
 			}
 			settings.setLevelDecreasePerBlockFunction(helper.deserializeType(json, "levelDecreasePerBlock", context, FormTypeHandler.INT_FUNCTION_TYPE));
 		}
-		if(json.has("blockMaterial")) {
-			JsonObject functionJson = helper.getJsonObject(json, "blockMaterial");
+		if(json.has("mapColor")) {
+			JsonObject functionJson = helper.getJsonObject(json, "mapColor");
 			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", "lava");
+				functionJson.addProperty("default", "metal");
 			}
-			settings.setMaterialFunction(helper.deserializeType(json, "blockMaterial", context, BlockFormType.MATERIAL_FUNCTION_TYPE));
+			settings.setMapColorFunction(helper.deserializeType(json, "mapColor", context, BlockFormType.MAP_COLOR_FUNCTION_TYPE));
 		}
 		if(json.has("blockHardness")) {
 			JsonObject functionJson = helper.getJsonObject(json, "blockHardness");

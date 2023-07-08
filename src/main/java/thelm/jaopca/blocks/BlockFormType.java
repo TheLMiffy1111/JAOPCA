@@ -19,10 +19,9 @@ import com.google.gson.reflect.TypeToken;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
@@ -53,7 +52,7 @@ public class BlockFormType implements IBlockFormType {
 	private static final TreeBasedTable<IForm, IMaterial, IBlockInfo> BLOCK_INFOS = TreeBasedTable.create();
 	private static boolean registered = false;
 
-	public static final Type MATERIAL_FUNCTION_TYPE = new TypeToken<Function<IMaterial, Material>>(){}.getType();
+	public static final Type MAP_COLOR_FUNCTION_TYPE = new TypeToken<Function<IMaterial, MapColor>>(){}.getType();
 	public static final Type SOUND_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, SoundType>>(){}.getType();
 
 	public static void init() {
@@ -99,9 +98,9 @@ public class BlockFormType implements IBlockFormType {
 	@Override
 	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
 		return builder.
-				registerTypeAdapter(MATERIAL_FUNCTION_TYPE,
-						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getBlockMaterial,
-								BlockDeserializationHelper.INSTANCE::getBlockMaterialName)).
+				registerTypeAdapter(MAP_COLOR_FUNCTION_TYPE,
+						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getMapColor,
+								BlockDeserializationHelper.INSTANCE::getMapColorName)).
 				registerTypeAdapter(SOUND_TYPE_FUNCTION_TYPE,
 						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getSoundType,
 								BlockDeserializationHelper.INSTANCE::getSoundTypeName)).
@@ -162,7 +161,7 @@ public class BlockFormType implements IBlockFormType {
 	}
 
 	@Override
-	public void addToCreativeModeTab(FeatureFlagSet enabledFeatures, CreativeModeTab.Output output, boolean displayOperatorCreativeTab) {
+	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
 		getBlockItems().forEach(mf->output.accept(mf.asBlockItem()));
 	}
 

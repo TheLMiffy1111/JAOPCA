@@ -7,8 +7,8 @@ import java.util.function.ToIntFunction;
 
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -27,8 +27,7 @@ import thelm.jaopca.api.materials.IMaterial;
 class BlockFormSettings implements IBlockFormSettings {
 
 	private IBlockCreator blockCreator = JAOPCABlock::new;
-	private Function<IMaterial, Material> materialFunction = material->Material.METAL;
-	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
+	private Function<IMaterial, MapColor> mapColorFunction = material->MapColor.METAL;
 	//material->{
 	//	int color = material.getColor();
 	//	return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
@@ -38,6 +37,7 @@ class BlockFormSettings implements IBlockFormSettings {
 	//			orElse(MaterialColor.IRON);
 	//};
 	private boolean blocksMovement = true;
+	private boolean replaceable = false;
 	private Function<IMaterial, SoundType> soundTypeFunction = material->SoundType.METAL;
 	private ToIntFunction<IMaterial> lightValueFunction = material->0;
 	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->5;
@@ -51,6 +51,7 @@ class BlockFormSettings implements IBlockFormSettings {
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
+	private Function<IMaterial, PushReaction> pushReactionFunction = material->PushReaction.NORMAL;
 	private IBlockLootTableCreator blockLootTableCreator = (block, settings)->{
 		return LootTable.lootTable().setParamSet(LootContextParamSets.BLOCK).
 				withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).
@@ -80,25 +81,25 @@ class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
-	public IBlockFormSettings setMaterialFunction(Function<IMaterial, Material> materialFunction) {
-		this.materialFunction = materialFunction;
+	public IBlockFormSettings setMapColorFunction(Function<IMaterial, MapColor> mapColorFunction) {
+		this.mapColorFunction = mapColorFunction;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, Material> getMaterialFunction() {
-		return materialFunction;
+	public Function<IMaterial, MapColor> getMapColorFunction() {
+		return mapColorFunction;
 	}
 
 	@Override
-	public IBlockFormSettings setMaterialColorFunction(Function<IMaterial, MaterialColor> materialColorFunction) {
-		this.materialColorFunction = materialColorFunction;
+	public IBlockFormSettings setReplaceable(boolean replaceable) {
+		this.replaceable = replaceable;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, MaterialColor> getMaterialColorFunction() {
-		return materialColorFunction;
+	public boolean getReplaceable() {
+		return replaceable;
 	}
 
 	@Override
@@ -242,6 +243,17 @@ class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public Predicate<IMaterial> getIsFireSourceFunction() {
 		return isFireSourceFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setPushReactionFunction(Function<IMaterial, PushReaction> pushReactionFunction) {
+		this.pushReactionFunction = pushReactionFunction;
+		return this;
+	}
+
+	@Override
+	public Function<IMaterial, PushReaction> getPushReactionFunction() {
+		return pushReactionFunction;
 	}
 
 	@Override

@@ -122,7 +122,7 @@ public class ItemFormType implements IItemFormType {
 	}
 
 	@Override
-	public void addToCreativeModeTab(FeatureFlagSet enabledFeatures, CreativeModeTab.Output output, boolean displayOperatorCreativeTab) {
+	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
 		getItems().forEach(mf->output.accept(mf.asItem()));
 	}
 

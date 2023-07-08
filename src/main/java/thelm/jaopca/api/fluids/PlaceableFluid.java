@@ -21,6 +21,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,7 +30,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -109,7 +109,7 @@ public abstract class PlaceableFluid extends Fluid {
 				float offsetHeight = offsetState.getOwnHeight();
 				float heightDiff = 0;
 				if(offsetHeight == 0) {
-					if(!world.getBlockState(mutablePos).getMaterial().blocksMotion()) {
+					if(!world.getBlockState(mutablePos).blocksMotion()) {
 						BlockPos posDown = mutablePos.below();
 						FluidState belowState = world.getFluidState(posDown);
 						if(affectsFlow(belowState)) {
@@ -149,7 +149,7 @@ public abstract class PlaceableFluid extends Fluid {
 		BlockState blockState = world.getBlockState(pos);
 		FluidState fluidState = world.getFluidState(pos);
 		return !fluidState.getType().isSame(this) && (face == Direction.UP ||
-				(blockState.getMaterial() != Material.ICE && blockState.isFaceSturdy(world, pos, face)));
+				(!(blockState.getBlock() instanceof IceBlock) && blockState.isFaceSturdy(world, pos, face)));
 	}
 
 	protected void spread(Level world, BlockPos pos, FluidState fluidState) {
@@ -203,7 +203,7 @@ public abstract class PlaceableFluid extends Fluid {
 		if(j >= 2) {
 			BlockState blockstate1 = world.getBlockState(pos.below());
 			FluidState FluidState1 = blockstate1.getFluidState();
-			if(blockstate1.getMaterial().isSolid() || isSourceBlockOfThisType(FluidState1)) {
+			if(blockstate1.isSolid() || isSourceBlockOfThisType(FluidState1)) {
 				return defaultFluidState().setValue(levelProperty, maxLevel);
 			}
 		}
@@ -373,13 +373,11 @@ public abstract class PlaceableFluid extends Fluid {
 		if(block instanceof LiquidBlockContainer) {
 			return ((LiquidBlockContainer)block).canPlaceLiquid(world, pos, blockState, fluid);
 		}
-		if(block instanceof DoorBlock || blockState.is(BlockTags.SIGNS) || block == Blocks.LADDER || block == Blocks.SUGAR_CANE ||
-				block == Blocks.BUBBLE_COLUMN) {
+		if(block instanceof DoorBlock || blockState.is(BlockTags.SIGNS) || block == Blocks.LADDER || block == Blocks.SUGAR_CANE || block == Blocks.BUBBLE_COLUMN) {
 			return false;
 		}
-		Material blockMaterial = blockState.getMaterial();
-		return blockMaterial != Material.PORTAL && blockMaterial != Material.STRUCTURAL_AIR && blockMaterial != Material.WATER_PLANT
-				&& blockMaterial != Material.REPLACEABLE_WATER_PLANT && !blockMaterial.blocksMotion();
+		return !blockState.is(Blocks.NETHER_PORTAL) && !blockState.is(Blocks.END_PORTAL) && !blockState.is(Blocks.END_GATEWAY) && !blockState.is(Blocks.STRUCTURE_VOID)
+				&& !blockState.blocksMotion();
 	}
 
 	protected boolean canSpreadTo(BlockGetter world, BlockPos fromPos, BlockState fromBlockState, Direction direction, BlockPos toPos, BlockState toBlockState, FluidState toFluidState, Fluid fluid) {

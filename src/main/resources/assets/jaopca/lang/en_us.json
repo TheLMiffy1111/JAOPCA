@@ -10,7 +10,7 @@
     "fluid_type.jaopca.molten": "Molten %s",
     "item.jaopca.molten": "Molten %s Bucket",
 
-    "item.jaopca.create_crushed_ores": "Crushed %s Ore",
+    "item.jaopca.create_crushed": "Crushed Raw %s",
 
     "item.jaopca.crossroads_grits": "Raw %s Grit",
     "item.jaopca.crossroads_clumps": "%s Clumps",

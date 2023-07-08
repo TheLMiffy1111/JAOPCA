@@ -29,12 +29,14 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 	public final int secondOutputCount;
 	public final float secondChance;
 	public final int time;
+	public final int minExperience;
+	public final int maxExperience;
 
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time) {
-		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, time);
+	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time, int minExperience, int maxExperience) {
+		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, time, minExperience, maxExperience);
 	}
 
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondChance, int time) {
+	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondChance, int time, int minExperience, int maxExperience) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.inputCount = inputCount;
@@ -44,6 +46,8 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		this.secondOutputCount = secondOutputCount;
 		this.secondChance = secondChance;
 		this.time = time;
+		this.minExperience = minExperience;
+		this.maxExperience = maxExperience;
 	}
 
 	@Override
@@ -68,6 +72,10 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		secondJson.addProperty("chance", secondChance);
 		json.add("rng", secondJson);
 		json.addProperty("process_time", time);
+		JsonObject expJson = new JsonObject();
+		expJson.addProperty("minimum", minExperience);
+		expJson.addProperty("maximum", maxExperience);
+		json.add("experience", expJson);
 
 		return json;
 	}
