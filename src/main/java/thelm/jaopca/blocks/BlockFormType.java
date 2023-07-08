@@ -21,6 +21,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
@@ -32,6 +33,7 @@ import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
+import thelm.jaopca.custom.json.MaterialEnumFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.custom.json.VoxelShapeDeserializer;
 import thelm.jaopca.custom.utils.BlockDeserializationHelper;
@@ -54,6 +56,7 @@ public class BlockFormType implements IBlockFormType {
 
 	public static final Type MAP_COLOR_FUNCTION_TYPE = new TypeToken<Function<IMaterial, MapColor>>(){}.getType();
 	public static final Type SOUND_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, SoundType>>(){}.getType();
+	public static final Type INSTRUMENT_FUNCTION_TYPE = new TypeToken<Function<IMaterial, NoteBlockInstrument>>(){}.getType();
 
 	public static void init() {
 		FormTypeHandler.registerFormType(INSTANCE);
@@ -104,7 +107,8 @@ public class BlockFormType implements IBlockFormType {
 				registerTypeAdapter(SOUND_TYPE_FUNCTION_TYPE,
 						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getSoundType,
 								BlockDeserializationHelper.INSTANCE::getSoundTypeName)).
-				registerTypeAdapter(VoxelShape.class, VoxelShapeDeserializer.INSTANCE);
+				registerTypeAdapter(VoxelShape.class, VoxelShapeDeserializer.INSTANCE).
+				registerTypeAdapter(INSTRUMENT_FUNCTION_TYPE, MaterialEnumFunctionDeserializer.INSTANCE);
 	}
 
 	@Override

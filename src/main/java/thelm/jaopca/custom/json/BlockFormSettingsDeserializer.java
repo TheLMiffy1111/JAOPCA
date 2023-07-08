@@ -83,14 +83,21 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 		if(json.has("interactionShape")) {
 			settings.setInteractionShape(helper.deserializeType(json, "interactionShape", context, VoxelShape.class));
 		}
-		if(json.has("harvestTool")) {
+		if(json.has("requiresTool")) {
+			JsonObject functionJson = helper.getJsonObject(json, "requiresTool");
+			if(!functionJson.has("default")) {
+				functionJson.addProperty("default", false);
+			}
+			settings.setIsFireSourceFunction(helper.deserializeType(json, "requiresTool", context, FormTypeHandler.PREDICATE_TYPE));
+		}
+		if(json.has("harvestToolTag")) {
 			JsonObject functionJson = helper.getJsonObject(json, "harvestToolTag");
 			if(!functionJson.has("default")) {
 				functionJson.addProperty("default", "minecraft:mineable/pickaxe");
 			}
 			settings.setHarvestToolTagFunction(helper.deserializeType(json, "harvestToolTag", context, FormTypeHandler.STRING_FUNCTION_TYPE));
 		}
-		if(json.has("harvestLevel")) {
+		if(json.has("harvestTierTag")) {
 			JsonObject functionJson = helper.getJsonObject(json, "harvestTierTag");
 			if(!functionJson.has("default")) {
 				functionJson.addProperty("default", "");
@@ -121,6 +128,13 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 		if(json.has("pushReaction")) {
 			PushReaction pushReaction = helper.deserializeType(json, "pushReaction", context, PushReaction.class);
 			settings.setPushReactionFunction(m->pushReaction);
+		}
+		if(json.has("instrument")) {
+			JsonObject functionJson = helper.getJsonObject(json, "instrument");
+			if(!functionJson.has("default")) {
+				functionJson.addProperty("default", "harp");
+			}
+			settings.setInstrumentFunction(helper.deserializeType(json, "instrument", context, BlockFormType.INSTRUMENT_FUNCTION_TYPE));
 		}
 		if(json.has("maxStackSize")) {
 			JsonObject functionJson = helper.getJsonObject(json, "maxStackSize");

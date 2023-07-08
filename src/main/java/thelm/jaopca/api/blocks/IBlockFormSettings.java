@@ -7,6 +7,7 @@ import java.util.function.ToIntFunction;
 
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -59,6 +60,10 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	VoxelShape getInteractionShape();
 
+	IBlockFormSettings setRequiresToolFunction(Predicate<IMaterial> requiresToolFunction);
+
+	Predicate<IMaterial> getRequiresToolFunction();
+
 	IBlockFormSettings setHarvestToolTagFunction(Function<IMaterial, String> harvestToolTagFunction);
 
 	Function<IMaterial, String> getHarvestToolTagFunction();
@@ -82,6 +87,10 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setPushReactionFunction(Function<IMaterial, PushReaction> pushReactionFunction);
 
 	Function<IMaterial, PushReaction> getPushReactionFunction();
+
+	IBlockFormSettings setInstrumentFunction(Function<IMaterial, NoteBlockInstrument> instrumentFunction);
+
+	Function<IMaterial, NoteBlockInstrument> getInstrumentFunction();
 
 	//IBlockFormSettings setIsWaterLoggable(boolean waterLoggable);
 

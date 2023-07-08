@@ -7,6 +7,7 @@ import java.util.function.ToIntFunction;
 
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -46,12 +47,14 @@ class BlockFormSettings implements IBlockFormSettings {
 	private boolean isFull = true;
 	private VoxelShape shape = Shapes.block();
 	private VoxelShape interactionShape = Shapes.empty();
+	private Predicate<IMaterial> requiresToolFunction = material->false;
 	private Function<IMaterial, String> harvestToolTagFunction = material->"minecraft:mineable/pickaxe";
 	private Function<IMaterial, String> harvestTierTagFunction = material->"";
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
 	private Function<IMaterial, PushReaction> pushReactionFunction = material->PushReaction.NORMAL;
+	private Function<IMaterial, NoteBlockInstrument> instrumentFunction = material->NoteBlockInstrument.HARP;
 	private IBlockLootTableCreator blockLootTableCreator = (block, settings)->{
 		return LootTable.lootTable().setParamSet(LootContextParamSets.BLOCK).
 				withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).
@@ -191,6 +194,17 @@ class BlockFormSettings implements IBlockFormSettings {
 	}
 
 	@Override
+	public IBlockFormSettings setRequiresToolFunction(Predicate<IMaterial> requiresToolFunction) {
+		this.requiresToolFunction = requiresToolFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getRequiresToolFunction() {
+		return requiresToolFunction;
+	}
+
+	@Override
 	public IBlockFormSettings setHarvestToolTagFunction(Function<IMaterial, String> harvestToolTagFunction) {
 		this.harvestToolTagFunction = harvestToolTagFunction;
 		return this;
@@ -254,6 +268,16 @@ class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public Function<IMaterial, PushReaction> getPushReactionFunction() {
 		return pushReactionFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setInstrumentFunction(Function<IMaterial, NoteBlockInstrument> instrumentFunction) {
+		return null;
+	}
+
+	@Override
+	public Function<IMaterial, NoteBlockInstrument> getInstrumentFunction() {
+		return null;
 	}
 
 	@Override

@@ -62,6 +62,10 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		if(settings.getReplaceable()) {
 			prop.replaceable();
 		}
+		if(settings.getRequiresToolFunction().test(material)) {
+			prop.requiresCorrectToolForDrops();
+		}
+		prop.instrument(settings.getInstrumentFunction().apply(material));
 		prop.noOcclusion();
 		return prop;
 	}
