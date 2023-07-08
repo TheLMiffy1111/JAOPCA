@@ -272,12 +272,13 @@ class BlockFormSettings implements IBlockFormSettings {
 
 	@Override
 	public IBlockFormSettings setInstrumentFunction(Function<IMaterial, NoteBlockInstrument> instrumentFunction) {
-		return null;
+		this.instrumentFunction = instrumentFunction;
+		return this;
 	}
 
 	@Override
 	public Function<IMaterial, NoteBlockInstrument> getInstrumentFunction() {
-		return null;
+		return instrumentFunction;
 	}
 
 	@Override
