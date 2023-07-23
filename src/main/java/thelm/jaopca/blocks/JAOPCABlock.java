@@ -81,11 +81,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	@Override
-	public Block asBlock() {
-		return this;
-	}
-
-	@Override
 	public MapColor getMapColor(BlockState state, BlockGetter level, BlockPos pos, MapColor defaultColor) {
 		if(!mapColor.isPresent()) {
 			mapColor = Optional.of(settings.getMapColorFunction().apply(material));

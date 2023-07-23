@@ -58,7 +58,7 @@ class BlockFormSettings implements IBlockFormSettings {
 	private IBlockLootTableCreator blockLootTableCreator = (block, settings)->{
 		return LootTable.lootTable().setParamSet(LootContextParamSets.BLOCK).
 				withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).
-						add(LootItem.lootTableItem(block.asBlock())).
+						add(LootItem.lootTableItem(block.toBlock())).
 						when(ExplosionCondition.survivesExplosion())).build();
 	};
 	private IBlockItemCreator itemBlockCreator = JAOPCABlockItem::new;

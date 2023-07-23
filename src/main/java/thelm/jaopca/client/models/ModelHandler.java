@@ -34,7 +34,7 @@ public class ModelHandler {
 
 	public static void registerModels(ModelEvent.RegisterAdditional event) {
 		for(IMaterialFormBlock materialFormBlock : BlockFormType.getBlocks()) {
-			Block block = materialFormBlock.asBlock();
+			Block block = materialFormBlock.toBlock();
 			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(block);
 			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
@@ -52,7 +52,7 @@ public class ModelHandler {
 			});
 		}
 		for(IMaterialFormBlockItem materialFormBlockItem : BlockFormType.getBlockItems()) {
-			BlockItem blockItem = materialFormBlockItem.asBlockItem();
+			BlockItem blockItem = materialFormBlockItem.toBlockItem();
 			//TODO Change if Forge supports using blockstates in item models
 			ResourceLocation location = ForgeRegistries.ITEMS.getKey(blockItem);
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
@@ -68,7 +68,7 @@ public class ModelHandler {
 			REMAPS.put(defaultModelLocation, modelLocation);
 		}
 		for(IMaterialFormItem materialFormItem : ItemFormType.getItems()) {
-			Item item = materialFormItem.asItem();
+			Item item = materialFormItem.toItem();
 			ResourceLocation location = ForgeRegistries.ITEMS.getKey(item);
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
@@ -83,7 +83,7 @@ public class ModelHandler {
 			REMAPS.put(defaultModelLocation, modelLocation);
 		}
 		for(IMaterialFormFluidBlock materialFormFluidBlock : FluidFormType.getFluidBlocks()) {
-			Block fluidBlock = materialFormFluidBlock.asBlock();
+			Block fluidBlock = materialFormFluidBlock.toBlock();
 			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(fluidBlock);
 			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
@@ -101,7 +101,7 @@ public class ModelHandler {
 			});
 		}
 		for(IMaterialFormBucketItem materialFormBucketItem : FluidFormType.getBucketItems()) {
-			Item bucketItem = materialFormBucketItem.asItem();
+			Item bucketItem = materialFormBucketItem.toItem();
 			ResourceLocation location = ForgeRegistries.ITEMS.getKey(bucketItem);
 			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {

@@ -37,7 +37,7 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	protected OptionalInt fireTime = OptionalInt.empty();
 
 	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(getProperties(fluid, settings), (PlaceableFluid)fluid.asFluid(),
+		super(getProperties(fluid, settings), (PlaceableFluid)fluid.toFluid(),
 				settings.getMaxLevelFunction().applyAsInt(fluid.getMaterial()));
 		this.fluid = fluid;
 		this.settings = settings;
@@ -65,11 +65,6 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	@Override
 	public IMaterial getMaterial() {
 		return fluid.getMaterial();
-	}
-
-	@Override
-	public Block asBlock() {
-		return this;
 	}
 
 	@Override

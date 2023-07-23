@@ -131,19 +131,19 @@ public class FluidFormType implements IFluidFormType {
 
 				Supplier<IMaterialFormFluid> materialFormFluid = Suppliers.memoize(()->settings.getFluidCreator().create(form, material, settings));
 				FLUIDS.put(form, material, materialFormFluid);
-				RegistryHandler.registerForgeRegistryEntry(Registries.FLUID, name, ()->materialFormFluid.get().asFluid());
+				RegistryHandler.registerForgeRegistryEntry(Registries.FLUID, name, ()->materialFormFluid.get().toFluid());
 
 				Supplier<IMaterialFormFluidType> materialFormFluidType = Suppliers.memoize(()->settings.getFluidTypeCreator().create(materialFormFluid.get(), settings));
 				FLUID_TYPES.put(form, material, materialFormFluidType);
-				RegistryHandler.registerForgeRegistryEntry(ForgeRegistries.Keys.FLUID_TYPES, name, ()->materialFormFluidType.get().asFluidType());
+				RegistryHandler.registerForgeRegistryEntry(ForgeRegistries.Keys.FLUID_TYPES, name, ()->materialFormFluidType.get().toFluidType());
 
 				Supplier<IMaterialFormFluidBlock> materialFormFluidBlock = Suppliers.memoize(()->settings.getFluidBlockCreator().create(materialFormFluid.get(), settings));
 				FLUID_BLOCKS.put(form, material, materialFormFluidBlock);
-				RegistryHandler.registerForgeRegistryEntry(Registries.BLOCK, name, ()->materialFormFluidBlock.get().asBlock());
+				RegistryHandler.registerForgeRegistryEntry(Registries.BLOCK, name, ()->materialFormFluidBlock.get().toBlock());
 
 				Supplier<IMaterialFormBucketItem> materialFormBucketItem = Suppliers.memoize(()->settings.getBucketItemCreator().create(materialFormFluid.get(), settings));
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
-				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormBucketItem.get().asItem());
+				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormBucketItem.get().toItem());
 
 				DataInjector.registerFluidTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
@@ -156,7 +156,7 @@ public class FluidFormType implements IFluidFormType {
 
 	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-		getBucketItems().forEach(mf->output.accept(mf.asItem()));
+		getBucketItems().forEach(mf->output.accept(mf.toItem()));
 	}
 
 	public static Collection<IMaterialFormFluid> getFluids() {
