@@ -3,6 +3,7 @@ package thelm.jaopca.compat.indreb.recipes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -25,16 +26,17 @@ public class ThermalCentrifugingRecipeSerializer implements IRecipeSerializer {
 	public final int outputCount;
 	public final Object secondOutput;
 	public final int secondOutputCount;
+	public final float secondChance;
 	public final int temperature;
 	public final int time;
 	public final int power;
 	public final float experience;
 
 	public ThermalCentrifugingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time, int power, int temperature, float experience) {
-		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, time, power, temperature, experience);
+		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, time, power, temperature, experience);
 	}
 
-	public ThermalCentrifugingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, int temperature, int time, int power, float experience) {
+	public ThermalCentrifugingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondChance, int temperature, int time, int power, float experience) {
 		this.key = key;
 		this.input = input;
 		this.inputCount = inputCount;
@@ -42,6 +44,7 @@ public class ThermalCentrifugingRecipeSerializer implements IRecipeSerializer {
 		this.outputCount = outputCount;
 		this.secondOutput = secondOutput;
 		this.secondOutputCount = secondOutputCount;
+		this.secondChance = secondChance;
 		this.temperature = temperature;
 		this.time = time;
 		this.power = power;
@@ -62,18 +65,23 @@ public class ThermalCentrifugingRecipeSerializer implements IRecipeSerializer {
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "indreb:thermal_centrifuging");
+		JsonArray ingsJson = new JsonArray();
 		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
 		ingJson.addProperty("count", inputCount);
-		json.add("ingredient", ingJson);
+		ingsJson.add(ingJson);
+		json.add("ingredients", ingsJson);
 		JsonObject resultJson = MiscHelper.INSTANCE.serializeItemStack(stack);
-		json.add("result_1", resultJson);
+		json.add("result", resultJson);
+		JsonArray chanceJson = new JsonArray();
 		if(!secondStack.isEmpty()) {
 			JsonObject secondJson = MiscHelper.INSTANCE.serializeItemStack(secondStack);
-			json.add("result_2", secondJson);
+			secondJson.addProperty("chance", secondChance);
+			chanceJson.add(secondJson);
 		}
+		json.add("chance_result", chanceJson);
 		json.addProperty("temperature", temperature);
 		json.addProperty("duration", time);
-		json.addProperty("power_cost", power);
+		json.addProperty("tick_energy_cost", power);
 		json.addProperty("experience", experience);
 
 		return json;

@@ -21,7 +21,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "indreb@[1.19.2-0.14.2,)")
+@JAOPCAModule(modDependencies = "indreb@[1.19.2-0.14.3,)")
 public class IndRebCompatModule implements IModule {
 
 	private static final Set<String> TO_BLOCK_BLACKLIST = new TreeSet<>(List.of(
@@ -83,7 +83,7 @@ public class IndRebCompatModule implements IModule {
 				if(itemTags.contains(storageBlockLocation)) {
 					helper.registerCompressingRecipe(
 							new ResourceLocation("jaopca", "indreb.material_to_storage_block."+name),
-							materialLocation, 9,
+							materialLocation, material.isSmallStorageBlock() ? 4 : 9,
 							storageBlockLocation, 1,
 							180, 8, 0.3F);
 				}

@@ -1,4 +1,4 @@
-package thelm.jaopca.compat.integrateddynamics;
+package thelm.jaopca.compat.energizedpower;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -17,15 +17,17 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "integrateddynamics")
-public class IntegratedDynamicsNonIngotModule implements IModule {
+@JAOPCAModule(modDependencies = "energizedpower")
+public class EnergizedPowerNonIngotModule implements IModule {
 
+	private static final double[] CRYSTAL_CHANCES = {1, 0.67, 0.17};
+	private static final double[] DUST_CHANCES = {1, 1, 1, 1, 0.5, 0.33, 0.17};
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"coal", "diamond", "emerald", "lapis", "quartz", "redstone"));
 
 	@Override
 	public String getName() {
-		return "integrateddynamics_non_ingot";
+		return "energizedpower_non_ingot";
 	}
 
 	@Override
@@ -41,40 +43,15 @@ public class IntegratedDynamicsNonIngotModule implements IModule {
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		IntegratedDynamicsHelper helper = IntegratedDynamicsHelper.INSTANCE;
+		EnergizedPowerHelper helper = EnergizedPowerHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-			if(material.getType() != MaterialType.DUST) {
-				helper.registerSqueezerRecipe(
-						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material."+material.getName()),
-						oreLocation, new Object[] {
-								materialLocation, 1, 1F,
-								materialLocation, 1, 0.75F,
-						});
-				helper.registerMechanicalSqueezerRecipe(
-						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material_mechanical."+material.getName()),
-						oreLocation, new Object[] {
-								materialLocation, 2, 1F,
-								materialLocation, 1, 0.5F,
-						}, 40);
-			}
-			else {
-				helper.registerSqueezerRecipe(
-						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material."+material.getName()),
-						oreLocation, new Object[] {
-								materialLocation, 3, 1F,
-								materialLocation, 1, 0.5F,
-								materialLocation, 1, 0.5F,
-						});
-				helper.registerMechanicalSqueezerRecipe(
-						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material_mechanical."+material.getName()),
-						oreLocation, new Object[] {
-								materialLocation, 5, 1F,
-								materialLocation, 1, 0.5F,
-						}, 40);
-			}
+			double[] outputChances = material.getType() != MaterialType.DUST ? CRYSTAL_CHANCES : DUST_CHANCES;
+			helper.registerPulverizerRecipe(
+					new ResourceLocation("jaopca", "energizedpower.ore_to_material."+material.getName()),
+					oreLocation, materialLocation, outputChances);
 		}
 	}
 }

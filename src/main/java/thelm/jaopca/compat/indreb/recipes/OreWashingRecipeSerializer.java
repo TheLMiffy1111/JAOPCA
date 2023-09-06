@@ -5,6 +5,7 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -30,15 +31,16 @@ public class OreWashingRecipeSerializer implements IRecipeSerializer {
 	public final int outputCount;
 	public final Object secondOutput;
 	public final int secondOutputCount;
+	public final float secondChance;
 	public final int time;
 	public final int power;
 	public final float experience;
 
 	public OreWashingRecipeSerializer(ResourceLocation key, Object itemInput, int itemInputCount, Object fluidInput, int fluidInputAmount, Object output, int outputCount, int time, int power, float experience) {
-		this(key, itemInput, itemInputCount, fluidInput, fluidInputAmount, output, outputCount, ItemStack.EMPTY, 0, time, power, experience);
+		this(key, itemInput, itemInputCount, fluidInput, fluidInputAmount, output, outputCount, ItemStack.EMPTY, 0, 0, time, power, experience);
 	}
 
-	public OreWashingRecipeSerializer(ResourceLocation key, Object itemInput, int itemInputCount, Object fluidInput, int fluidInputAmount, Object output, int outputCount, Object secondOutput, int secondOutputCount, int time, int power, float experience) {
+	public OreWashingRecipeSerializer(ResourceLocation key, Object itemInput, int itemInputCount, Object fluidInput, int fluidInputAmount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondChance, int time, int power, float experience) {
 		this.key = Objects.requireNonNull(key);
 		this.itemInput = itemInput;
 		this.itemInputCount = itemInputCount;
@@ -48,6 +50,7 @@ public class OreWashingRecipeSerializer implements IRecipeSerializer {
 		this.outputCount = outputCount;
 		this.secondOutput = secondOutput;
 		this.secondOutputCount = secondOutputCount;
+		this.secondChance = secondChance;
 		this.time = time;
 		this.power = power;
 		this.experience = experience;
@@ -71,18 +74,23 @@ public class OreWashingRecipeSerializer implements IRecipeSerializer {
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "indreb:ore_washing");
+		JsonArray ingsJson = new JsonArray();
 		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
 		ingJson.addProperty("count", itemInputCount);
-		json.add("ingredient", ingJson);
-		json.add("fluid_ingredient", MiscHelper.INSTANCE.serializeFluidStack(fluidIng));
+		ingsJson.add(ingJson);
+		json.add("ingredients", ingsJson);
+		json.add("fluid_input", MiscHelper.INSTANCE.serializeFluidStack(fluidIng));
 		JsonObject resultJson = MiscHelper.INSTANCE.serializeItemStack(stack);
-		json.add("result_1", resultJson);
+		json.add("result", resultJson);
+		JsonArray chanceJson = new JsonArray();
 		if(!secondStack.isEmpty()) {
 			JsonObject secondJson = MiscHelper.INSTANCE.serializeItemStack(secondStack);
-			json.add("result_2", secondJson);
+			secondJson.addProperty("chance", secondChance);
+			chanceJson.add(secondJson);
 		}
+		json.add("chance_result", chanceJson);
 		json.addProperty("duration", time);
-		json.addProperty("power_cost", power);
+		json.addProperty("tick_energy_cost", power);
 		json.addProperty("experience", experience);
 
 		return json;

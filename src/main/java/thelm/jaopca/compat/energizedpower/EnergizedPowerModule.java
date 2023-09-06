@@ -1,4 +1,4 @@
-package thelm.jaopca.compat.voluminousenergy;
+package thelm.jaopca.compat.energizedpower;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -20,15 +20,18 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "voluminousenergy@[1.19-0.4.0.0,)")
-public class VoluminousEnergyModule implements IModule {
+@JAOPCAModule(modDependencies = "energizedpower")
+public class EnergizedPowerModule implements IModule {
 
+	private static final double[] ORE_CHANCES = {1, 1, 0.25};
+	private static final double[] RAW_CHANCES = {1, 0.25};
+	private static final double[] RAW_BLOCK_CHANCES = {1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 0.5, 0.25};
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"eighzo", "copper", "gold", "iron", "netherite", "netherite_scrap"));
+			"copper", "gold", "iron", "netherite", "netherite_scrap"));
 
 	@Override
 	public String getName() {
-		return "voluminousenergy";
+		return "energizedpower";
 	}
 
 	@Override
@@ -51,25 +54,25 @@ public class VoluminousEnergyModule implements IModule {
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		VoluminousEnergyHelper helper = VoluminousEnergyHelper.INSTANCE;
+		EnergizedPowerHelper helper = EnergizedPowerHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-			helper.registerCrushingRecipe(
-					new ResourceLocation("jaopca", "voluminousenergy.ore_to_dust."+material.getName()),
-					oreLocation, 1, dustLocation, 2, 200, 1, 3);
+			helper.registerPulverizerRecipe(
+					new ResourceLocation("jaopca", "energizedpower.ore_to_dust."+material.getName()),
+					oreLocation, dustLocation, ORE_CHANCES);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
-				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "voluminousenergy.raw_material_to_dust."+material.getName()),
-						rawMaterialLocation, 1, dustLocation, 1, dustLocation, 1, 0.333F, 200, 1, 3);
+				helper.registerPulverizerRecipe(
+						new ResourceLocation("jaopca", "energizedpower.raw_material_to_dust."+material.getName()),
+						oreLocation, dustLocation, RAW_CHANCES);
 				if(itemTags.contains(rawStorageBlockLocation)) {
-					helper.registerCrushingRecipe(
-							new ResourceLocation("jaopca", "voluminousenergy.raw_storage_block_to_dust."+material.getName()),
-							rawStorageBlockLocation, 1, dustLocation, 9, dustLocation, 9, 0.333F, 200, 1, 3);
+					helper.registerPulverizerRecipe(
+							new ResourceLocation("jaopca", "energizedpower.raw_storage_block_to_dust."+material.getName()),
+							oreLocation, dustLocation, RAW_BLOCK_CHANCES);
 				}
 			}
 		}

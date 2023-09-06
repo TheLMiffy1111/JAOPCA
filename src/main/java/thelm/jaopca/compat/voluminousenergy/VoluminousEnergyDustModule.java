@@ -20,7 +20,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "voluminousenergy")
+@JAOPCAModule(modDependencies = "voluminousenergy@[1.19-0.4.0.0,)")
 public class VoluminousEnergyDustModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
@@ -61,12 +61,12 @@ public class VoluminousEnergyDustModule implements IModule {
 			if(material.hasExtra(1)) {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "voluminousenergy.ore_to_material."+material.getName()),
-						oreLocation, 1, materialLocation, 5, extraDustLocation, 1, 0.5F, 200);
+						oreLocation, 1, materialLocation, 5, extraDustLocation, 1, 0.5F, 200, 1, 3);
 			}
 			else {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "voluminousenergy.ore_to_material."+material.getName()),
-						oreLocation, 1, materialLocation, 5, 200);
+						oreLocation, 1, materialLocation, 5, 200, 1, 3);
 			}
 		}
 	}

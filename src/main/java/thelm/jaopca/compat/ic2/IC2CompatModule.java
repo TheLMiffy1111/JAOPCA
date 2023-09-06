@@ -77,7 +77,7 @@ public class IC2CompatModule implements IModule {
 					helper.registerMaceratorRecipe(
 							new ResourceLocation("jaopca", "ic2.storage_block_to_dust."+material.getName()),
 							storageBlockLocation, 1,
-							dustLocation, 9,
+							dustLocation, material.isSmallStorageBlock() ? 4 : 9,
 							4, 1, 0.9F);
 				}
 			}

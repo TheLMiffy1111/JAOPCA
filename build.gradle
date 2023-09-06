@@ -1,250 +1,236 @@
-buildscript {
-    repositories {
-        maven {
-            url = "https://maven.minecraftforge.net/"
-        }
-        maven {
-            url = "https://libraries.minecraft.net/"
-        }
-        maven {
-            url = "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            url = "https://repo.spongepowered.org/maven/"
-        }
-        maven {
-            url = "https://maven.parchmentmc.org/"
-        }
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
-        classpath "org.spongepowered:mixingradle:0.7-SNAPSHOT"
-        classpath "org.parchmentmc:librarian:1.+"
-    }
+plugins {
+	id "net.neoforged.gradle" version "[6.0.13,)"
+	id "org.parchmentmc.librarian.forgegradle" version "[1,)"
+	id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
+	id "eclipse"
+	id "idea"
+	id "maven-publish"
 }
 
-apply plugin: "net.minecraftforge.gradle"
-apply plugin: "org.parchmentmc.librarian.forgegradle"
-apply plugin: "org.spongepowered.mixin"
-apply plugin: "eclipse"
-apply plugin: "maven-publish"
-
 repositories {
-    jcenter()
-    mavenCentral()
-    flatDir {
-        dirs "libs"
-    }
-    maven {
-        url = "https://libraries.minecraft.net/"
-    }
-    maven {
-        url = "https://maven.minecraftforge.net/"
-    }
-    maven {
-        url = "https://repo.spongepowered.org/maven"
-    }
-    maven {
-        url = "https://dvs1.progwml6.com/files/maven/"
-        content {
-            includeGroup "mezz.jei"
-            includeGroup "slimeknights.mantle"
-            includeGroup "slimeknights.tconstruct"
-        }
-    }
-    maven {
-        url = "https://maven.blamejared.com/"
-        content {
-            includeGroup "blusunrize.immersiveengineering"
-            includeGroup "com.blamejared.crafttweaker"
-            includeGroup "net.darkhax.openloader"
-            includeGroup "vazkii.patchouli"
-        }
-    }
-    maven {
-        url = "https://maven.theillusivec4.top/"
-        content {
-            includeGroup "top.theillusivec4.curios"
-        }
-    }
-    maven {
-        url = "https://maven.architectury.dev/"
-        content {
-            includeGroup "dev.architectury"
-        }
-    }
-    maven {
-        url = "https://maven.saps.dev/releases/"
-        content {
-            includeGroup "dev.ftb.mods"
-            includeGroup "dev.latvian.mods"
-        }
-    }
-    maven {
-        url = "https://maven.tterrag.com/"
-        content {
-            includeGroup "com.simibubi.create"
-        }
-    }
-    maven {
-        url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
-        content {
-            includeGroup "software.bernie.geckolib"
-        }
-    }
-    maven {
-        url = "https://maven.covers1624.net/"
-        content {
-            includeGroup "com.teamcofh"
-        }
-    }
-    maven {
-        url = "https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1/"
-        content {
-            includeGroup "com.kotori316"
-        }
-    }
-    maven {
-        url = "https://jenkins.bdew.net/maven/"
-        content {
-            includeGroup "net.bdew"
-        }
-    }
-    maven {
-        url = "https://repo.repsy.io/mvn/klikli-dev/mods/"
-        content {
-            includeGroup "com.klikli_dev"
-        }
-    }
-    maven {
-        url = "https://jitpack.io/"
-    }
-    maven {
-        url = "https://cursemaven.com/"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        url = "https://modmaven.dev/"
-    }
+	jcenter()
+	flatDir {
+		dirs "libs"
+	}
+	maven {
+		url = "https://maven.minecraftforge.net/"
+	}
+	maven {
+		url = "https://repo.spongepowered.org/maven"
+	}
+	maven {
+		url = "https://dvs1.progwml6.com/files/maven/"
+		content {
+			includeGroup "slimeknights.mantle"
+			includeGroup "slimeknights.tconstruct"
+		}
+	}
+	maven {
+		url = "https://maven.blamejared.com/"
+		content {
+			includeGroup "mezz.jei"
+			includeGroup "blusunrize.immersiveengineering"
+			includeGroup "com.blamejared.crafttweaker"
+			includeGroup "net.darkhax.openloader"
+			includeGroup "vazkii.patchouli"
+		}
+	}
+	maven {
+		url = "https://maven.theillusivec4.top/"
+		content {
+			includeGroup "top.theillusivec4.curios"
+		}
+	}
+	maven {
+		url = "https://maven.architectury.dev/"
+		content {
+			includeGroup "dev.architectury"
+		}
+	}
+	maven {
+		url = "https://maven.saps.dev/releases/"
+		content {
+			includeGroup "dev.ftb.mods"
+			includeGroup "dev.latvian.mods"
+		}
+	}
+	maven {
+		url = "https://maven.tterrag.com/"
+		content {
+			includeGroup "com.simibubi.create"
+		}
+	}
+	maven {
+		url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+		content {
+			includeGroup "software.bernie.geckolib"
+		}
+	}
+	maven {
+		url = "https://maven.covers1624.net/"
+		content {
+			includeGroup "com.teamcofh"
+		}
+	}
+	maven {
+		url = "https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1/"
+		content {
+			includeGroup "com.kotori316"
+		}
+	}
+	maven {
+		url = "https://jenkins.bdew.net/maven/"
+		content {
+			includeGroup "net.bdew"
+		}
+	}
+	maven {
+		url = "https://dogforce-games.com/maven/"
+		content {
+			includeGroup "dev.gigaherz.jsonthings"
+		}
+	}
+	maven {
+		url = "https://cursemaven.com/"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+	maven {
+		url = "https://modmaven.dev/"
+	}
 }
 
 sourceSets {
-    main
+	main
 }
 
-version = "4.2.7.14"
-group = "thelm.jaopca"
-archivesBaseName = "JAOPCA-1.19.2"
+def mcVersion = "1.19.2"
+def modName = "JAOPCA"
+def modId = "jaopca"
+def specVersion = "4"
+def vendor = "thelm"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+group = "thelm.jaopca"
+version = "4.2.8.15"
+
+archivesBaseName = "${modName}-${mcVersion}"
+
+java {
+	toolchain.languageVersion = JavaLanguageVersion.of(17)
+	withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = "UTF-8"
+}
 
 minecraft {
-    mappings channel: "parchment", version: "2022.10.16-1.19.2"
-    runs {
-        client = {
-            properties "forge.logging.markers": "SCAN,REGISTRIES,REGISTRYDUMP"
-            properties "forge.logging.console.level": "debug"
-            properties "mixin.env.remapRefMap": "true"
-            properties "mixin.env.refMapRemappingFile": "${projectDir}/build/createSrgToMcp/output.srg".toString()
-            workingDirectory project.file("run")
-            source sourceSets.main
-        }
-        server = {
-            properties "forge.logging.markers": "SCAN,REGISTRIES,REGISTRYDUMP"
-            properties "forge.logging.console.level": "debug"
-            properties "mixin.env.remapRefMap": "true"
-            properties "mixin.env.refMapRemappingFile": "${projectDir}/build/createSrgToMcp/output.srg".toString()
-            workingDirectory project.file("run")
-            source sourceSets.main
-        }
-    }
+	mappings channel: "parchment", version: "2022.11.27-1.19.2"
+	generateRunFolders = true
+	runs {
+		configureEach {
+			workingDirectory project.file("run")
+			property "forge.logging.markers", "SCAN,REGISTRIES,REGISTRYDUMP"
+			property "forge.logging.console.level", "debug"
+			property "mixin.env.remapRefMap", "true"
+			property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
+			property "production", "true"
+			mods {
+				"${modId}" {
+					source sourceSets.main
+				}
+			}
+		}
+		client
+		server
+	}
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.19.2-43.2.10"
-    annotationProcessor "org.spongepowered:mixin:0.8.4:processor"
+	minecraft "net.minecraftforge:forge:1.19.2-43.2.21"
+	annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
-    implementation fg.deobf("mezz.jei:jei-1.19.2-forge:11.6.0.1015")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.42")
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.4.1")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:3.1.40")
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
-    //implementation fg.deobf("slimeknights.mantle:Mantle:1.19-1.10.+")
-    implementation fg.deobf("com.teamcofh:cofh_core:1.19.2-10.2.1.40")
-    implementation fg.deobf("com.teamcofh:thermal_core:1.19.2-10.2.0.5")
-    implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.268")
-    implementation fg.deobf("dev.architectury:architectury-forge:6.5.82")
-    implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1902.3.18-build.208") {
-        transitive = false
-    }
-    implementation("com.kotori316:scalablecatsforce:2.13.8-build-8:with-library") {
-        transitive = false
-    }
-    implementation fg.deobf("net.bdew:bdlib:1.25.0.5-mc1.19.2")
-    implementation fg.deobf("com.klikli_dev:modonomicon:1.19.2-1.30.2")
-    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.142") {
-        transitive = false
-    }
-    implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.19.2:15.0.1")
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.2-9.2.1-164")
-    implementation fg.deobf("com.simibubi.create:create-1.19.2:0.5.0.i-23:all")
-    //implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.19-3.6.+")
-    implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.8.477")
-    implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.8.477:generators")
-    implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1900.1.7-build.221") {
-        transitive = false
-    }
-    implementation fg.deobf("com.teamcofh:thermal_foundation:1.19.2-10.2.0.47")
-    implementation fg.deobf("com.teamcofh:thermal_expansion:1.19.2-10.2.0.21")
-    implementation fg.deobf("com.teamcofh:thermal_integration:1.19.2-10.2.0.17")
-    //implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.19-34.+")
-    implementation fg.deobf("net.bdew:factorium:1.4.0.4-mc1.19.2")
+	implementation fg.deobf("mezz.jei:jei-1.19.2-forge:11.6.0.1018")
+	implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.49")
+	implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.4.1")
+	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:3.1.40")
+	implementation fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
+	implementation fg.deobf("com.teamcofh:cofh_core:1.19.2-10.2.1.40")
+	implementation fg.deobf("com.teamcofh:thermal_core:1.19.2-10.2.0.5")
+	implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.272")
+	implementation fg.deobf("dev.architectury:architectury-forge:6.5.85")
+	implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1902.4.1-build.236") {
+		transitive = false
+	}
+	implementation("com.kotori316:scalablecatsforce:2.13.8-build-8:with-library") {
+		transitive = false
+	}
+	implementation fg.deobf("net.bdew:bdlib:1.25.0.5-mc1.19.2")
+	implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.1-build.370") {
+		transitive = false
+	}
+	implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.19.2:15.0.1")
+	implementation fg.deobf("dev.gigaherz.jsonthings:JsonThings-1.19.2:0.7.15")
+	implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.2-9.2.2-165")
+	implementation fg.deobf("com.simibubi.create:create-1.19.2:0.5.1.c-36:all") {
+		transitive = false
+	}
+	implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.9.13")
+	implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.9.13:generators")
+	implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1900.1.7-build.221") {
+		transitive = false
+	}
+	implementation fg.deobf("com.teamcofh:thermal_foundation:1.19.2-10.2.0.47")
+	implementation fg.deobf("com.teamcofh:thermal_expansion:1.19.2-10.2.0.21")
+	implementation fg.deobf("com.teamcofh:thermal_integration:1.19.2-10.2.0.17")
+	implementation fg.deobf("net.bdew:factorium:1.4.0.4-mc1.19.2")
 
-    //JitPack
-
-    //CurseMaven
-    implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3759881")
-    implementation fg.deobf("curse.maven:ato-405593:4046926")
-    implementation fg.deobf("curse.maven:allthemodium-364466:4402276")
-    implementation fg.deobf("curse.maven:electrodynamics-316867:4518028")
-    implementation fg.deobf("curse.maven:voluminous-energy-416704:4452529")
-    implementation fg.deobf("curse.maven:cyclops-core-232758:4515669")
-    implementation fg.deobf("curse.maven:common-capabilities-247007:4391413")
-    implementation fg.deobf("curse.maven:integrated-dynamics-236307:4493167")
-    implementation fg.deobf("curse.maven:essentials-293752:4394651")
-    implementation fg.deobf("curse.maven:crossroads-mc-250231:4397746")
-    implementation fg.deobf("curse.maven:assemblylinemachines-388282:3964948")
-    implementation fg.deobf("curse.maven:smartbrainlib-661293:4458565")
-    implementation fg.deobf("curse.maven:occultism-361026:4521658")
-    implementation fg.deobf("curse.maven:cyclic-239286:4075141")
-    implementation fg.deobf("curse.maven:industrial-reborn-358877:4076608")
-    implementation fg.deobf("curse.maven:ic2-classic-242942:4441313")
-    implementation fg.deobf("curse.maven:silent-lib-242998:3968715")
-    implementation fg.deobf("curse.maven:silents-mechanisms-326258:4392434")
-    implementation fg.deobf("curse.maven:silents-gems-220311:4181316")
-    implementation fg.deobf("curse.maven:silent-gear-297039:4397693")
-    implementation fg.deobf("curse.maven:json-things-541617:4477844")
+	//CurseMaven
+	implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3759881")
+	implementation fg.deobf("curse.maven:ato-405593:4046926")
+	implementation fg.deobf("curse.maven:allthemodium-364466:4667332")
+	implementation fg.deobf("curse.maven:electrodynamics-316867:4518028")
+	implementation fg.deobf("curse.maven:voluminous-energy-416704:4627252")
+	implementation fg.deobf("curse.maven:cyclops-core-232758:4724186")
+	implementation fg.deobf("curse.maven:common-capabilities-247007:4391413")
+	implementation fg.deobf("curse.maven:integrated-dynamics-236307:4724194")
+	implementation fg.deobf("curse.maven:essentials-293752:4633275")
+	implementation fg.deobf("curse.maven:crossroads-mc-250231:4633319")
+	implementation fg.deobf("curse.maven:assemblylinemachines-388282:3964948")
+	implementation fg.deobf("curse.maven:smartbrainlib-661293:4458565")
+	implementation fg.deobf("curse.maven:modonomicon-538392:4675974")
+	implementation fg.deobf("curse.maven:occultism-361026:4729076")
+	implementation fg.deobf("curse.maven:cyclic-239286:4660268")
+	implementation fg.deobf("curse.maven:industrial-reborn-358877:4651636")
+	implementation fg.deobf("curse.maven:ic2-classic-242942:4563059")
+	implementation fg.deobf("curse.maven:silent-lib-242998:3968715")
+	implementation fg.deobf("curse.maven:silents-mechanisms-326258:4392434")
+	implementation fg.deobf("curse.maven:silents-gems-220311:4181316")
+	implementation fg.deobf("curse.maven:silent-gear-297039:4585760")
+	implementation fg.deobf("curse.maven:energized-power-782147:4722871")
 }
 
+def manifestAttributes = [
+	"Specification-Title": modName,
+	"Specification-Vendor": vendor,
+	"Specification-Version": specVersion,
+	"Implementation-Title": archivesBaseName,
+	"Implementation-Version": version,
+	"Implementation-Vendor": vendor,
+	"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+	"MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
+]
+
 jar {
-    manifest {
-        attributes([
-                "Specification-Title": "JAOPCA",
-                "Specification-Vendor": "thelm",
-                "Specification-Version": "4",
-                "Implementation-Title": "${archivesBaseName}",
-                "Implementation-Version": "${version}",
-                "Implementation-Vendor": "thelm",
-                //"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
-        ],)
-    }
+	manifest.attributes(manifestAttributes)
+	finalizedBy("reobfJar")
+}
+
+sourcesJar {
+	manifest.attributes(manifestAttributes)
 }
 
 mixin {
-    add sourceSets.main, "jaopca.refmap.json"
+	add sourceSets.main, "jaopca.refmap.json"
 }
