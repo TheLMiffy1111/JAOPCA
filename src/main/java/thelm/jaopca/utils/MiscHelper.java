@@ -371,9 +371,7 @@ public class MiscHelper implements IMiscHelper {
 	public JsonObject serializeItemStack(ItemStack stack) {
 		JsonObject json = new JsonObject();
 		json.addProperty("item", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
-		if(stack.getCount() > 1) {
-			json.addProperty("count", stack.getCount());
-		}
+		json.addProperty("count", stack.getCount());
 		if(stack.hasTag()) {
 			json.addProperty("nbt", stack.getTag().toString());
 		}

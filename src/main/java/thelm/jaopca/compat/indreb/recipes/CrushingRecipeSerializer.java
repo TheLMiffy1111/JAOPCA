@@ -5,6 +5,7 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -64,18 +65,22 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "indreb:crushing");
+		JsonArray ingsJson = new JsonArray();
 		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
 		ingJson.addProperty("count", inputCount);
-		json.add("ingredient", ingJson);
+		ingsJson.add(ingJson);
+		json.add("ingredients", ingsJson);
 		JsonObject resultJson = MiscHelper.INSTANCE.serializeItemStack(stack);
 		json.add("result", resultJson);
+		JsonArray chanceJson = new JsonArray();
 		if(!secondStack.isEmpty()) {
 			JsonObject secondJson = MiscHelper.INSTANCE.serializeItemStack(secondStack);
 			secondJson.addProperty("chance", secondChance);
-			json.add("bonus_result", secondJson);
+			chanceJson.add(secondJson);
 		}
+		json.add("chance_result", chanceJson);
 		json.addProperty("duration", time);
-		json.addProperty("power_cost", power);
+		json.addProperty("tick_energy_cost", power);
 		json.addProperty("experience", experience);
 
 		return json;

@@ -31,7 +31,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "indreb@[1.19.2-0.14.2,)")
+@JAOPCAModule(modDependencies = "indreb@[1.19.2-0.14.3,)")
 public class IndRebModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
@@ -99,25 +99,25 @@ public class IndRebModule implements IModule {
 			helper.registerThermalCentrifugingRecipe(
 					new ResourceLocation("jaopca", "indreb.ore_to_chunk."+material.getName()),
 					oreLocation, 1,
-					chunkInfo, 4, stoneDust, 1,
-					temperature, 500, 48, 0.1F);
+					chunkInfo, 4, stoneDust, 1, 100F,
+					temperature, 500, 46, 0.1F);
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerThermalCentrifugingRecipe(
 						new ResourceLocation("jaopca", "indreb.raw_material_to_chunk."+material.getName()),
 						rawMaterialLocation, 3,
 						chunkInfo, 8,
-						temperature, 500, 48, 0.1F);
+						temperature, 500, 46, 0.1F);
 			}
 
 			helper.registerOreWashingRecipe(
 					new ResourceLocation("jaopca", "indreb.ore_to_purified."+material.getName()),
 					oreLocation, 1, Fluids.WATER, 750,
-					purifiedInfo, 3, stoneDust, 1,
+					purifiedInfo, 3, stoneDust, 1, 100F,
 					500, 16, 0.1F);
 			helper.registerOreWashingRecipe(
 					new ResourceLocation("jaopca", "indreb.chunk_to_purified."+material.getName()),
 					chunkLocation, 1, sulfuricAcid, 250,
-					purifiedInfo, 1, mudPile, 1,
+					purifiedInfo, 1, mudPile, 1, 100F,
 					500, 16, 0.1F);
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerOreWashingRecipe(
