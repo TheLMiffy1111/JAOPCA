@@ -72,10 +72,10 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		secondJson.addProperty("chance", secondChance);
 		json.add("rng", secondJson);
 		json.addProperty("process_time", time);
-		JsonObject expJson = new JsonObject();
-		expJson.addProperty("minimum", minExperience);
-		expJson.addProperty("maximum", maxExperience);
-		json.add("experience", expJson);
+		JsonObject experienceJson = new JsonObject();
+		experienceJson.addProperty("minimum", minExperience);
+		experienceJson.addProperty("maximum", maxExperience);
+		json.add("experience", experienceJson);
 
 		return json;
 	}
