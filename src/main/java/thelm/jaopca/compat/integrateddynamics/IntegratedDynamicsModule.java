@@ -50,16 +50,15 @@ public class IntegratedDynamicsModule implements IModule {
 			helper.registerSqueezerRecipe(
 					new ResourceLocation("jaopca", "integrateddynamics.ore_to_raw_material."+material.getName()),
 					oreLocation, new Object[] {
-							rawMaterialLocation, 4, 1F,
-							rawMaterialLocation, 2, 0.5F,
-							rawMaterialLocation, 2, 0.5F,
+							rawMaterialLocation, 2, 1F,
+							rawMaterialLocation, 1, 0.75F,
 					});
 			helper.registerMechanicalSqueezerRecipe(
 					new ResourceLocation("jaopca", "integrateddynamics.ore_to_raw_material_mechanical."+material.getName()),
 					oreLocation, new Object[] {
-							rawMaterialLocation, 8, 1F,
-							rawMaterialLocation, 2, 0.5F,
-							rawMaterialLocation, 2, 0.5F,
+							rawMaterialLocation, 3, 1F,
+							rawMaterialLocation, 1, 0.5F,
+							rawMaterialLocation, 1, 0.5F,
 					}, 40);
 		}
 	}

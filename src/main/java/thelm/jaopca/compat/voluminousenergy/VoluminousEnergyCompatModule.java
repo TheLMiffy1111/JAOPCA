@@ -19,7 +19,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "voluminousenergy")
+@JAOPCAModule(modDependencies = "voluminousenergy@[1.18.2J9-0.4.0.0,),[1.18.2JX-0.4.0.0,)")
 public class VoluminousEnergyCompatModule implements IModule {
 
 	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(List.of(

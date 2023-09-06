@@ -59,7 +59,7 @@ public class IndRebCompatModule implements IModule {
 				if(api.getItemTags().contains(storageBlockLocation)) {
 					helper.registerCompressingRecipe(
 							new ResourceLocation("jaopca", "indreb.material_to_storage_block."+material.getName()),
-							materialLocation, 9,
+							materialLocation, material.isSmallStorageBlock() ? 4 : 9,
 							storageBlockLocation, 1,
 							180, 8, 0.3F);
 				}

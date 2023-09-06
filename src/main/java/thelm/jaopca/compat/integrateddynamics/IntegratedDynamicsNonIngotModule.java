@@ -64,15 +64,15 @@ public class IntegratedDynamicsNonIngotModule implements IModule {
 				helper.registerSqueezerRecipe(
 						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material."+material.getName()),
 						oreLocation, new Object[] {
-								materialLocation, 6, 1F,
-								materialLocation, 2, 0.5F,
-								materialLocation, 2, 0.5F,
+								materialLocation, 3, 1F,
+								materialLocation, 1, 0.5F,
+								materialLocation, 1, 0.5F,
 						});
 				helper.registerMechanicalSqueezerRecipe(
 						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material_mechanical."+material.getName()),
 						oreLocation, new Object[] {
-								materialLocation, 10, 1F,
-								materialLocation, 2, 0.5F,
+								materialLocation, 5, 1F,
+								materialLocation, 1, 0.5F,
 						}, 40);
 			}
 		}
