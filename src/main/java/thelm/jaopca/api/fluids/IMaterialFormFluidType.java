@@ -5,7 +5,7 @@ import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public interface IMaterialFormFluidType extends IMaterialForm {
 
-	default FluidType asFluidType() {
+	default FluidType toFluidType() {
 		return (FluidType)this;
 	}
 }

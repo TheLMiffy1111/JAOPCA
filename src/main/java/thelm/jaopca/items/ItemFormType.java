@@ -110,7 +110,7 @@ public class ItemFormType implements IItemFormType {
 
 				Supplier<IMaterialFormItem> materialFormItem = Suppliers.memoize(()->settings.getItemCreator().create(form, material, settings));
 				ITEMS.put(form, material, materialFormItem);
-				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().asItem());
+				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().toItem());
 
 				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
@@ -123,7 +123,7 @@ public class ItemFormType implements IItemFormType {
 
 	@Override
 	public void addToCreativeModeTab(FeatureFlagSet enabledFeatures, CreativeModeTab.Output output, boolean displayOperatorCreativeTab) {
-		getItems().forEach(mf->output.accept(mf.asItem()));
+		getItems().forEach(mf->output.accept(mf.toItem()));
 	}
 
 	public static Collection<IMaterialFormItem> getItems() {

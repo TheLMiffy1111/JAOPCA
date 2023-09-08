@@ -133,11 +133,11 @@ public class BlockFormType implements IBlockFormType {
 
 				Supplier<IMaterialFormBlock> materialFormBlock = Suppliers.memoize(()->settings.getBlockCreator().create(form, material, settings));
 				BLOCKS.put(form, material, materialFormBlock);
-				RegistryHandler.registerForgeRegistryEntry(Registries.BLOCK, name, ()->materialFormBlock.get().asBlock());
+				RegistryHandler.registerForgeRegistryEntry(Registries.BLOCK, name, ()->materialFormBlock.get().toBlock());
 
 				Supplier<IMaterialFormBlockItem> materialFormBlockItem = Suppliers.memoize(()->settings.getBlockItemCreator().create(materialFormBlock.get(), settings));
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
-				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormBlockItem.get().asBlockItem());
+				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormBlockItem.get().toBlockItem());
 
 				DataInjector.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock.get(), settings));
 
@@ -163,7 +163,7 @@ public class BlockFormType implements IBlockFormType {
 
 	@Override
 	public void addToCreativeModeTab(FeatureFlagSet enabledFeatures, CreativeModeTab.Output output, boolean displayOperatorCreativeTab) {
-		getBlockItems().forEach(mf->output.accept(mf.asBlockItem()));
+		getBlockItems().forEach(mf->output.accept(mf.toBlockItem()));
 	}
 
 	public static Collection<IMaterialFormBlock> getBlocks() {
