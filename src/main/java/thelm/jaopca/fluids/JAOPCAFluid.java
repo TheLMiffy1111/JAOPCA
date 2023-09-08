@@ -88,7 +88,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 
 	@Override
 	protected PlaceableFluidBlock getFluidBlock() {
-		return (PlaceableFluidBlock)FluidFormType.INSTANCE.getMaterialFormInfo(form, material).getMaterialFormFluidBlock().asBlock();
+		return (PlaceableFluidBlock)FluidFormType.INSTANCE.getMaterialFormInfo(form, material).getMaterialFormFluidBlock().toBlock();
 	}
 
 	@Override

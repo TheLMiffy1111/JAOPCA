@@ -59,19 +59,19 @@ public class ColorHandler {
 		BlockColors blockColors = event.getBlockColors();
 		ItemColors itemColors = event.getItemColors();
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
-			blockColors.register(BLOCK_COLOR, block.asBlock());
+			blockColors.register(BLOCK_COLOR, block.toBlock());
 		}
 		for(IMaterialFormBlockItem blockItem : BlockFormType.getBlockItems()) {
-			itemColors.register(ITEM_COLOR, blockItem.asBlockItem());
+			itemColors.register(ITEM_COLOR, blockItem.toBlockItem());
 		}
 		for(IMaterialFormItem item : ItemFormType.getItems()) {
-			itemColors.register(ITEM_COLOR, item.asItem());
+			itemColors.register(ITEM_COLOR, item.toItem());
 		}
 		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
-			blockColors.register(BLOCK_COLOR, fluidBlock.asBlock());
+			blockColors.register(BLOCK_COLOR, fluidBlock.toBlock());
 		}
 		for(IMaterialFormBucketItem bucketItem : FluidFormType.getBucketItems()) {
-			itemColors.register(ITEM_COLOR, bucketItem.asItem());
+			itemColors.register(ITEM_COLOR, bucketItem.toItem());
 		}
 	}
 

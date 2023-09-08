@@ -19,16 +19,16 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 
 	public JAOPCAFluidAttributes(IMaterialFormFluid fluid, IFluidFormSettings settings) {
 		super(FluidAttributes.builder(
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
+				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
 						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still"),
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
+				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
 						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow")).
 				sound(settings.getFillSoundSupplier().get(), settings.getEmptySoundSupplier().get()).
 				luminosity(settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
 				density(settings.getDensityFunction().applyAsInt(fluid.getMaterial())).
 				viscosity(settings.getViscosityFunction().applyAsInt(fluid.getMaterial())).
 				temperature(settings.getTemperatureFunction().applyAsInt(fluid.getMaterial())).
-				rarity(settings.getDisplayRarityFunction().apply(fluid.getMaterial())), fluid.asFluid());
+				rarity(settings.getDisplayRarityFunction().apply(fluid.getMaterial())), fluid.toFluid());
 		this.fluid = fluid;
 		this.settings = settings;
 	}
@@ -46,10 +46,10 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	@Override
 	public ResourceLocation getStillTexture() {
 		if(MiscHelper.INSTANCE.hasResource(
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-						"textures/fluid/"+fluid.asFluid().getRegistryName().getPath()+"_still.png"))) {
-			return new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-					"fluid/"+fluid.asFluid().getRegistryName().getPath()+"_still");
+				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
+						"textures/fluid/"+fluid.toFluid().getRegistryName().getPath()+"_still.png"))) {
+			return new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
+					"fluid/"+fluid.toFluid().getRegistryName().getPath()+"_still");
 		}
 		return super.getStillTexture();
 	}
@@ -57,10 +57,10 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	@Override
 	public ResourceLocation getFlowingTexture() {
 		if(MiscHelper.INSTANCE.hasResource(
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-						"textures/fluid/"+fluid.asFluid().getRegistryName().getPath()+"_flow.png"))) {
-			return new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-					"fluid/"+fluid.asFluid().getRegistryName().getPath()+"_flow");
+				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
+						"textures/fluid/"+fluid.toFluid().getRegistryName().getPath()+"_flow.png"))) {
+			return new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
+					"fluid/"+fluid.toFluid().getRegistryName().getPath()+"_flow");
 		}
 		return super.getFlowingTexture();
 	}

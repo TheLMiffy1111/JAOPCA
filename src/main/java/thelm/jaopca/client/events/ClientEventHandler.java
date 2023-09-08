@@ -44,13 +44,13 @@ public class ClientEventHandler {
 		Minecraft mc = Minecraft.getInstance();
 		LocalizationRepoHandler.setup();
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
-			ItemBlockRenderTypes.setRenderLayer(block.asBlock(), RenderType.translucent());
+			ItemBlockRenderTypes.setRenderLayer(block.toBlock(), RenderType.translucent());
 		}
 		for(IMaterialFormFluid fluid : FluidFormType.getFluids()) {
-			ItemBlockRenderTypes.setRenderLayer(fluid.asFluid(), RenderType.translucent());
+			ItemBlockRenderTypes.setRenderLayer(fluid.toFluid(), RenderType.translucent());
 		}
 		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
-			ItemBlockRenderTypes.setRenderLayer(fluidBlock.asBlock(), RenderType.translucent());
+			ItemBlockRenderTypes.setRenderLayer(fluidBlock.toBlock(), RenderType.translucent());
 		}
 		ModuleHandler.onClientSetup(event);
 	}

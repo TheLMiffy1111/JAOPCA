@@ -104,7 +104,7 @@ public class SlurryFormType implements ISlurryFormType {
 
 				Supplier<IMaterialFormSlurry> materialFormSlurry = Suppliers.memoize(()->settings.getSlurryCreator().create(form, material, settings));
 				SLURRIES.put(form, material, materialFormSlurry);
-				RegistryHandler.registerForgeRegistryEntry(MekanismAPI.slurryRegistryName(), name, ()->materialFormSlurry.get().asSlurry());
+				RegistryHandler.registerForgeRegistryEntry(MekanismAPI.slurryRegistryName(), name, ()->materialFormSlurry.get().toSlurry());
 
 				MekanismDataInjector.registerSlurryTag(helper.createResourceLocation(secondaryName), registryName);
 				MekanismDataInjector.registerSlurryTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
