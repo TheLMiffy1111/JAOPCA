@@ -11,7 +11,7 @@ public interface ISlurryInfo extends IMaterialFormInfo, ISlurryProvider {
 
 	@Override
 	default Slurry getChemical() {
-		return getMaterialFormSlurry().asSlurry();
+		return getMaterialFormSlurry().toSlurry();
 	}
 
 	@Override

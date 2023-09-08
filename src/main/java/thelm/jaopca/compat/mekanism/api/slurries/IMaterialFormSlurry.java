@@ -5,7 +5,7 @@ import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public interface IMaterialFormSlurry extends IMaterialForm {
 
-	default Slurry asSlurry() {
+	default Slurry toSlurry() {
 		return (Slurry)this;
 	}
 }

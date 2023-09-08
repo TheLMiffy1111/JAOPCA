@@ -38,7 +38,7 @@ public class ClientEventHandler {
 		MinecraftForge.EVENT_BUS.addListener(this::onTagsUpdated);
 		LocalizationRepoHandler.setup();
 		for(IMaterialFormFluid fluid : FluidFormType.getFluids()) {
-			ItemBlockRenderTypes.setRenderLayer(fluid.asFluid(), RenderType.translucent());
+			ItemBlockRenderTypes.setRenderLayer(fluid.toFluid(), RenderType.translucent());
 		}
 		ModuleHandler.onClientSetup(event);
 	}

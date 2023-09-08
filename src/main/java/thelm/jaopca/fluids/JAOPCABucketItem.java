@@ -152,26 +152,26 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		BlockState blockState = world.getBlockState(pos);
 		Block block = blockState.getBlock();
 		Material blockMaterial = blockState.getMaterial();
-		boolean flag = blockState.canBeReplaced(fluid.asFluid());
+		boolean flag = blockState.canBeReplaced(fluid.toFluid());
 		boolean flag1 = blockState.isAir() || flag || (block instanceof LiquidBlockContainer container
-				&& container.canPlaceLiquid(world, pos, blockState, fluid.asFluid()));
+				&& container.canPlaceLiquid(world, pos, blockState, fluid.toFluid()));
 		if(!flag1) {
 			return blockHitResult != null && emptyContents(player, world, blockHitResult.getBlockPos().relative(blockHitResult.getDirection()), null);
 		}
-		FluidStack stack = new FluidStack(fluid.asFluid(), FluidType.BUCKET_VOLUME);
-		if(fluid.asFluid().getFluidType().isVaporizedOnPlacement(world, pos, stack)) {
-			fluid.asFluid().getFluidType().onVaporize(player, world, pos, stack);
+		FluidStack stack = new FluidStack(fluid.toFluid(), FluidType.BUCKET_VOLUME);
+		if(fluid.toFluid().getFluidType().isVaporizedOnPlacement(world, pos, stack)) {
+			fluid.toFluid().getFluidType().onVaporize(player, world, pos, stack);
 			return true;
 		}
-		if(block instanceof LiquidBlockContainer container && container.canPlaceLiquid(world, pos, blockState, fluid.asFluid())) {
-			container.placeLiquid(world, pos, blockState, fluid.asFluid().defaultFluidState());
+		if(block instanceof LiquidBlockContainer container && container.canPlaceLiquid(world, pos, blockState, fluid.toFluid())) {
+			container.placeLiquid(world, pos, blockState, fluid.toFluid().defaultFluidState());
 			playEmptySound(player, world, pos);
 			return true;
 		}
 		if(!world.isClientSide && flag && !blockMaterial.isLiquid()) {
 			world.destroyBlock(pos, true);
 		}
-		if(!world.setBlock(pos, fluid.asFluid().getFluidType().getStateForPlacement(world, pos, stack).createLegacyBlock(), 11) && !blockState.getFluidState().isSource()) {
+		if(!world.setBlock(pos, fluid.toFluid().getFluidType().getStateForPlacement(world, pos, stack).createLegacyBlock(), 11) && !blockState.getFluidState().isSource()) {
 			return false;
 		}
 		playEmptySound(player, world, pos);
@@ -179,16 +179,16 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	protected void playEmptySound(Player player, LevelAccessor world, BlockPos pos) {
-		SoundEvent soundEvent = fluid.asFluid().getFluidType().getSound(SoundActions.BUCKET_EMPTY);
+		SoundEvent soundEvent = fluid.toFluid().getFluidType().getSound(SoundActions.BUCKET_EMPTY);
 		if(soundEvent == null) {
-			soundEvent = fluid.asFluid().is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
+			soundEvent = fluid.toFluid().is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
 		}
 		world.playSound(player, pos, soundEvent, SoundSource.BLOCKS, 1, 1);
 		world.gameEvent(player, GameEvent.FLUID_PLACE, pos);
 	}
 
 	protected boolean canBlockContainFluid(Level worldIn, BlockPos posIn, BlockState blockstate) {
-		return blockstate.getBlock() instanceof LiquidBlockContainer && ((LiquidBlockContainer)blockstate.getBlock()).canPlaceLiquid(worldIn, posIn, blockstate, fluid.asFluid());
+		return blockstate.getBlock() instanceof LiquidBlockContainer && ((LiquidBlockContainer)blockstate.getBlock()).canPlaceLiquid(worldIn, posIn, blockstate, fluid.toFluid());
 	}
 
 	@Override

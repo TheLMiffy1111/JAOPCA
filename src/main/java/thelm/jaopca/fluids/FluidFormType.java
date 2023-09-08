@@ -130,19 +130,19 @@ public class FluidFormType implements IFluidFormType {
 
 				Supplier<IMaterialFormFluid> materialFormFluid = Suppliers.memoize(()->settings.getFluidCreator().create(form, material, settings));
 				FLUIDS.put(form, material, materialFormFluid);
-				RegistryHandler.registerForgeRegistryEntry(Registry.FLUID_REGISTRY, name, ()->materialFormFluid.get().asFluid());
+				RegistryHandler.registerForgeRegistryEntry(Registry.FLUID_REGISTRY, name, ()->materialFormFluid.get().toFluid());
 
 				Supplier<IMaterialFormFluidType> materialFormFluidType = Suppliers.memoize(()->settings.getFluidTypeCreator().create(materialFormFluid.get(), settings));
 				FLUID_TYPES.put(form, material, materialFormFluidType);
-				RegistryHandler.registerForgeRegistryEntry(ForgeRegistries.Keys.FLUID_TYPES, name, ()->materialFormFluidType.get().asFluidType());
+				RegistryHandler.registerForgeRegistryEntry(ForgeRegistries.Keys.FLUID_TYPES, name, ()->materialFormFluidType.get().toFluidType());
 
 				Supplier<IMaterialFormFluidBlock> materialFormFluidBlock = Suppliers.memoize(()->settings.getFluidBlockCreator().create(materialFormFluid.get(), settings));
 				FLUID_BLOCKS.put(form, material, materialFormFluidBlock);
-				RegistryHandler.registerForgeRegistryEntry(Registry.BLOCK_REGISTRY, name, ()->materialFormFluidBlock.get().asBlock());
+				RegistryHandler.registerForgeRegistryEntry(Registry.BLOCK_REGISTRY, name, ()->materialFormFluidBlock.get().toBlock());
 
 				Supplier<IMaterialFormBucketItem> materialFormBucketItem = Suppliers.memoize(()->settings.getBucketItemCreator().create(materialFormFluid.get(), settings));
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
-				RegistryHandler.registerForgeRegistryEntry(Registry.ITEM_REGISTRY, name, ()->materialFormBucketItem.get().asItem());
+				RegistryHandler.registerForgeRegistryEntry(Registry.ITEM_REGISTRY, name, ()->materialFormBucketItem.get().toItem());
 
 				DataInjector.registerFluidTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);

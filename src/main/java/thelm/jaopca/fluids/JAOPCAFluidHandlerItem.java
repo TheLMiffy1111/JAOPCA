@@ -30,7 +30,7 @@ public class JAOPCAFluidHandlerItem implements IFluidHandlerItem, ICapabilityPro
 	}
 
 	public FluidStack getFluid() {
-		return new FluidStack(fluid.asFluid(), FluidType.BUCKET_VOLUME);
+		return new FluidStack(fluid.toFluid(), FluidType.BUCKET_VOLUME);
 	}
 
 	protected void clearFluid() {

@@ -66,11 +66,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	@Override
-	public Block asBlock() {
-		return this;
-	}
-
-	@Override
 	public SoundType getSoundType(BlockState blockState) {
 		if(!soundType.isPresent()) {
 			soundType = Optional.of(settings.getSoundTypeFunction().apply(material));

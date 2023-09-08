@@ -28,7 +28,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	protected OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
-		super(block.asBlock(), new Item.Properties().tab(ItemFormType.getCreativeTab()));
+		super(block.toBlock(), new Item.Properties().tab(ItemFormType.getCreativeTab()));
 		this.settings = settings;
 	}
 

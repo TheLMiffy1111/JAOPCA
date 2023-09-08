@@ -229,7 +229,7 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 			}
 			@Override
 			public ResourceLocation getStillTexture() {
-				ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.asFluid());
+				ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.toFluid());
 				if(MiscHelper.INSTANCE.hasResource(
 						new ResourceLocation(location.getNamespace(),
 								"textures/fluid/"+location.getPath()+"_still.png"))) {
@@ -240,7 +240,7 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 			}
 			@Override
 			public ResourceLocation getFlowingTexture() {
-				ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.asFluid());
+				ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.toFluid());
 				if(MiscHelper.INSTANCE.hasResource(
 						new ResourceLocation(location.getNamespace(),
 								"textures/fluid/"+location.getPath()+"_flow.png"))) {
