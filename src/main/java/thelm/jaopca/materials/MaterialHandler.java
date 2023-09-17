@@ -44,7 +44,7 @@ public class MaterialHandler {
 	public static void findMaterials() {
 		MATERIALS.clear();
 
-		Set<String> tags = ApiImpl.INSTANCE.getItemTags().stream().map(ResourceLocation::toString).collect(Collectors.toCollection(TreeSet::new));
+		TreeSet<String> tags = ApiImpl.INSTANCE.getItemTags().stream().map(ResourceLocation::toString).collect(Collectors.toCollection(TreeSet::new));
 
 		Set<String> allMaterials = new TreeSet<>();
 
@@ -150,10 +150,10 @@ public class MaterialHandler {
 		clientTagsBound = updated;
 	}
 
-	protected static Set<String> findItemTagNamesWithPaths(Set<String> tags, String mainPath, String... paths) {
+	protected static Set<String> findItemTagNamesWithPaths(TreeSet<String> tags, String mainPath, String... paths) {
 		Set<String> ret = new TreeSet<>();
 		for(String tag : tags) {
-			if(tag.startsWith(mainPath)) {
+			if(tag.startsWith(mainPath) && !tags.ceiling(tag+'/').startsWith(tag+'/')) {
 				String name = tag.substring(mainPath.length());
 				if(!name.contains("/") && Arrays.stream(paths).map(path->path+name).allMatch(tags::contains)) {
 					ret.add(name);
