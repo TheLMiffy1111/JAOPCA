@@ -20,6 +20,9 @@
     "fluid.jaopca.electrodynamics_sulfates": "%s Sulfato",
     "item.jaopca.electrodynamics_sulfates": "%s Balde de Sulfato",
 
+    "item.jaopca.bloodmagic_gravels": "%s Cascalho",
+    "item.jaopca.bloodmagic_fragments": "%s Fragmento",
+
     "item.jaopca.factorium_chunks": "%s Chunks",
     "item.jaopca.factorium_powders": "%s Em pó"
 }

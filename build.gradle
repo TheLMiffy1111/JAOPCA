@@ -109,7 +109,7 @@ def specVersion = "3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.4.1.2"
+version = "4.4.2.3"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -201,6 +201,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:occultism-361026:4729079")
 	implementation fg.deobf("curse.maven:flib-661261:4724762")
 	implementation fg.deobf("curse.maven:cyclic-239286:4722579")
+    implementation fg.deobf("curse.maven:blood-magic-224791:4753358")
 	//implementation fg.deobf("curse.maven:industrial-reborn-358877:4076608")
 	//implementation fg.deobf("curse.maven:ic2-classic-242942:4348706")
 	implementation fg.deobf("curse.maven:bdlib-70496:4670650")
