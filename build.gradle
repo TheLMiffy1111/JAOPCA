@@ -109,7 +109,7 @@ def specVersion = "3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.4.2.3"
+version = "4.4.3.4"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -157,7 +157,7 @@ dependencies {
 	//implementation fg.deobf("slimeknights.mantle:Mantle:1.19-1.10.+")
 	//implementation fg.deobf("com.teamcofh:cofh_core:1.19.2-10.0.2.33")
 	//implementation fg.deobf("com.teamcofh:thermal_core:1.19.2-10.0.0.1")
-	//implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.264")
+	implementation fg.deobf("dev.latvian.mods:rhino-forge:2001.2.2-build.6")
 	implementation fg.deobf("dev.architectury:architectury-forge:9.1.12")
 	//implementation fg.deobf("dev.ftb.mods:ftb-library-forge:2001.1.3") {
 	//	transitive = false
@@ -165,9 +165,9 @@ dependencies {
 	implementation("com.kotori316:scalablecatsforce:3.3.0-build-2:with-library") {
 		transitive = false
 	}
-	//implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.0-build.140") {
-	//	transitive = false
-	//}
+	implementation fg.deobf("dev.latvian.mods:kubejs-forge:2001.6.3-build.47") {
+		transitive = false
+	}
 	implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.20.1:19.0.2")
 	implementation fg.deobf("dev.gigaherz.jsonthings:JsonThings-1.20.1:0.9.1")
 	//implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.3-9.2.0-160")
@@ -186,8 +186,8 @@ dependencies {
 	//implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.19-34.+")
 
 	//CurseMaven
-	implementation fg.deobf("curse.maven:ato-405593:4590570")
-	implementation fg.deobf("curse.maven:allthemodium-364466:4733041")
+	implementation fg.deobf("curse.maven:ato-405593:4751952")
+	implementation fg.deobf("curse.maven:allthemodium-364466:4760433")
 	//implementation fg.deobf("curse.maven:electrodynamics-316867:4086209")
 	implementation fg.deobf("curse.maven:voluminous-energy-416704:4627288")
 	implementation fg.deobf("curse.maven:cyclops-core-232758:4724211")
