@@ -27,5 +27,12 @@
     "item.jaopca.factorium_powders": "%s Powder",
 
     "item.jaopca.indreb_purified": "Purified %s",
-    "item.jaopca.indreb_chunks": "%s Chunk"
+    "item.jaopca.indreb_chunks": "%s Chunk",
+
+    "item.jaopca.mekanism_dirty_dusts": "Dirty %s Dust",
+    "item.jaopca.mekanism_clumps": "%s Clump",
+    "item.jaopca.mekanism_shards": "%s Shard",
+    "item.jaopca.mekanism_crystals": "%s Crystal",
+    "slurry.jaopca.mekanism_dirty": "Dirty %s Slurry",
+    "slurry.jaopca.mekanism_clean": "Clean %s Slurry"
 }
