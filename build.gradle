@@ -109,7 +109,7 @@ def specVersion = "3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.4.4.5"
+version = "4.4.5.6"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -170,7 +170,7 @@ dependencies {
 	}
 	implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.20.1:19.0.2")
 	implementation fg.deobf("dev.gigaherz.jsonthings:JsonThings-1.20.1:0.9.1")
-	//implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.20.1-")
+	implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.20.1-10.0.0-169.40")
 	implementation fg.deobf("com.simibubi.create:create-1.20.1:0.5.1.d-9:all") {
 		transitive = false
 	}
