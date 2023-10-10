@@ -19,15 +19,15 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "electrodynamics")
+@JAOPCAModule(modDependencies = "electrodynamics@[1.19.2-0.8.0,)")
 public class ElectrodynamicsCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
 			"bronze", "chromium", "copper", "gold", "iron", "lead", "lithium", "molybdenum", "netherite",
 			"netherite_scrap", "silver", "steel", "superconductive", "tin", "vanadium"));
 	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(List.of(
-			"aluminum", "aluminium", "bronze", "hslasteel", "iron", "lithium", "stainlesssteel", "steel", "titanium",
-			"titaniumcarbide", "vanadiumsteel"));
+			"aluminum", "aluminium", "bronze", "hslasteel", "iron", "lead", "lithium", "stainlesssteel", "steel",
+			"titanium", "titaniumcarbide", "vanadiumsteel"));
 	private static final Set<String> TO_ROD_BLACKLIST = new TreeSet<>(List.of(
 			"hslasteel", "stainlesssteel", "steel", "titaniumcarbide"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
@@ -76,7 +76,7 @@ public class ElectrodynamicsCompatModule implements IModule {
 				if(itemTags.contains(dustLocation)) {
 					helper.registerMineralGrinderRecipe(
 							new ResourceLocation("jaopca", "electrodynamics.material_to_dust."+name),
-							materialLocation, 1, dustLocation, 1, 0.1);
+							materialLocation, 1, dustLocation, 1, 0, 200, 350);
 				}
 			}
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
@@ -85,7 +85,7 @@ public class ElectrodynamicsCompatModule implements IModule {
 				if(itemTags.contains(plateLocation)) {
 					helper.registerMineralCrusherRecipe(
 							new ResourceLocation("jaopca", "electrodynamics.material_to_plate."+name),
-							materialLocation, 1, plateLocation, 1, 0.1);
+							materialLocation, 1, plateLocation, 1, 0.1, 200, 450);
 				}
 			}
 			if(type.isIngot() && !TO_ROD_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
@@ -96,12 +96,12 @@ public class ElectrodynamicsCompatModule implements IModule {
 					if(itemTags.contains(nuggetLocation)) {
 						helper.registerLatheRecipe(
 								new ResourceLocation("jaopca", "electrodynamics.material_to_rod."+name),
-								materialLocation, 2, rodLocation, 1, nuggetLocation, 2, 1, 0.1);
+								materialLocation, 2, rodLocation, 1, nuggetLocation, 2, 1, 0.1, 200, 350);
 					}
 					else {
 						helper.registerLatheRecipe(
 								new ResourceLocation("jaopca", "electrodynamics.material_to_rod."+name),
-								materialLocation, 2, rodLocation, 1, 0.1);
+								materialLocation, 2, rodLocation, 1, 0.1, 200, 350);
 					}
 				}
 			}

@@ -109,7 +109,7 @@ def specVersion = "3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.4.5.6"
+version = "4.4.5.7"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -138,7 +138,9 @@ minecraft {
 				}
 			}
 		}
-		client
+		client {
+			jvmArg "-Xmx7G"
+		}
 		server
 	}
 }
@@ -188,7 +190,7 @@ dependencies {
 	//CurseMaven
 	implementation fg.deobf("curse.maven:ato-405593:4751952")
 	implementation fg.deobf("curse.maven:allthemodium-364466:4760433")
-	//implementation fg.deobf("curse.maven:electrodynamics-316867:")
+	implementation fg.deobf("curse.maven:electrodynamics-316867:4788038")
 	implementation fg.deobf("curse.maven:voluminous-energy-416704:4627288")
 	implementation fg.deobf("curse.maven:cyclops-core-232758:4724211")
 	implementation fg.deobf("curse.maven:common-capabilities-247007:4620480")

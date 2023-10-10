@@ -32,7 +32,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "electrodynamics")
+@JAOPCAModule(modDependencies = "electrodynamics@[1.19.2-0.8.0,)")
 public class ElectrodynamicsModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
@@ -105,36 +105,36 @@ public class ElectrodynamicsModule implements IModule {
 			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 
-			if(material.getType() == MaterialType.INGOT) {
-				helper.registerMineralWasherRecipe(
-						new ResourceLocation("jaopca", "electrodynamics.raw_material_to_sulfate."+material.getName()),
-						rawMaterialLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000, 0);
-			}
-			else {
-				helper.registerMineralWasherRecipe(
-						new ResourceLocation("jaopca", "electrodynamics.ore_to_sulfate."+material.getName()),
-						oreLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000, 0);
-			}
+			//if(material.getType() == MaterialType.INGOT) {
+			//	helper.registerMineralWasherRecipe(
+			//			new ResourceLocation("jaopca", "electrodynamics.raw_material_to_sulfate."+material.getName()),
+			//			rawMaterialLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000, 0);
+			//}
+			//else {
+			helper.registerMineralWasherRecipe(
+					new ResourceLocation("jaopca", "electrodynamics.ore_to_sulfate."+material.getName()),
+					oreLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000, 0, 200, 400);
+			//}
 
 			helper.registerChemicalCrystallizerRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.sulfate_to_crystal."+material.getName()),
-					sulfateLocation, 200, crystalInfo, 1, 0);
+					sulfateLocation, 200, crystalInfo, 1, 0, 200, 800);
 
 			helper.registerMineralCrusherRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.ore_to_impure_dust."+material.getName()),
-					oreLocation, 1, impureDustInfo, 3, 0.3);
+					oreLocation, 1, impureDustInfo, 3, 0.3, 200, 450);
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerMineralCrusherRecipe(
 						new ResourceLocation("jaopca", "electrodynamics.raw_material_to_impure_dust."+material.getName()),
-						rawMaterialLocation, 1, impureDustInfo, 3, 0.3);
+						rawMaterialLocation, 1, impureDustInfo, 3, 0.3, 200, 450);
 			}
 			helper.registerMineralCrusherRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.crystal_to_impure_dust."+material.getName()),
-					crystalLocation, 1, impureDustInfo, 1, sulfurTrioxide, 1, 0.19, 0.1);
+					crystalLocation, 1, impureDustInfo, 1, sulfurTrioxide, 1, 0, 0.1, 200, 450);
 
 			helper.registerMineralGrinderRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.impure_dust_to_dust."+material.getName()),
-					impureDustLocation, 1, dustLocation, 1, 0.1);
+					impureDustLocation, 1, dustLocation, 1, 0.1, 200, 350);
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
@@ -147,12 +147,12 @@ public class ElectrodynamicsModule implements IModule {
 
 			helper.registerMineralGrinderRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.ore_to_dust."+material.getName()),
-					oreLocation, 1, dustLocation, 2, byproduct, 1, 0.1, 0.3);
+					oreLocation, 1, dustLocation, 2, byproduct, 1, 0.1, 0.3, 200, 350);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerMineralGrinderRecipe(
 						new ResourceLocation("jaopca", "electrodynamics.raw_material_to_dust."+material.getName()),
-						rawMaterialLocation, 1, dustLocation, 2, 0.3);
+						rawMaterialLocation, 1, dustLocation, 2, 0.1, 200, 350);
 			}
 		}
 	}
