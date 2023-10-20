@@ -52,8 +52,8 @@ public class MoltenModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		for(IMaterial material : moltenForm.getMaterials()) {
-			//ApiImpl.INSTANCE.registerFluidTag(new ResourceLocation("lava"), FluidFormType.INSTANCE.getMaterialFormInfo(moltenForm, material).getFluid());
-		}
+		//for(IMaterial material : moltenForm.getMaterials()) {
+		//	ApiImpl.INSTANCE.registerFluidTag(new ResourceLocation("lava"), FluidFormType.INSTANCE.getMaterialFormInfo(moltenForm, material).getFluid());
+		//}
 	}
 }

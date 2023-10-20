@@ -36,7 +36,7 @@ public class EnergizedPowerModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		return builder.build();
 	}
@@ -68,11 +68,11 @@ public class EnergizedPowerModule implements IModule {
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerPulverizerRecipe(
 						new ResourceLocation("jaopca", "energizedpower.raw_material_to_dust."+material.getName()),
-						oreLocation, dustLocation, RAW_CHANCES);
+						rawMaterialLocation, dustLocation, RAW_CHANCES);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerPulverizerRecipe(
 							new ResourceLocation("jaopca", "energizedpower.raw_storage_block_to_dust."+material.getName()),
-							oreLocation, dustLocation, RAW_BLOCK_CHANCES);
+							rawStorageBlockLocation, dustLocation, RAW_BLOCK_CHANCES);
 				}
 			}
 		}

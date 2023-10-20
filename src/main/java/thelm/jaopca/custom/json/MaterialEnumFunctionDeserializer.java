@@ -37,7 +37,7 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 			Map<String, Enum<?>> stringToEnum = new TreeMap<>();
 			Map<Enum<?>, String> enumToString = new TreeMap<>();
 			Enum<?>[] values = ((Class<Enum<?>>)parameterizedType).getEnumConstants();
-			for(Enum<?> value : ((Class<Enum<?>>)parameterizedType).getEnumConstants()) {
+			for(Enum<?> value : values) {
 				stringToEnum.put(value.name().toLowerCase(Locale.US), value);
 				enumToString.put(value, value.name());
 			}
@@ -143,6 +143,7 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 						comment = "";
 					}
 					CustomModule.instance.addCustomConfigDefiner((material, config)->{
+						@SuppressWarnings("rawtypes")
 						Enum<?> value = config.getDefinedEnum(path, (Class<Enum>)parameterizedType, (Enum)map.get(material), comment);
 						if(value != null) {
 							map.put(material, value);

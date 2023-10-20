@@ -36,7 +36,7 @@ public class TinyDustsModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		return builder.build();
 	}
@@ -53,7 +53,7 @@ public class TinyDustsModule implements IModule {
 		for(IMaterial material : tinyDustForm.getMaterials()) {
 			ResourceLocation tinyDustLocation = miscHelper.getTagLocation("tiny_dusts", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-			ApiImpl.INSTANCE.registerShapelessRecipe(
+			api.registerShapelessRecipe(
 					new ResourceLocation("jaopca", "tiny_dusts.to_dust."+material.getName()),
 					dustLocation, 1, new Object[] {
 							tinyDustLocation, tinyDustLocation, tinyDustLocation,
