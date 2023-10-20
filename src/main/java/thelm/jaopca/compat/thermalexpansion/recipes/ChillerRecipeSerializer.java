@@ -55,7 +55,6 @@ public class ChillerRecipeSerializer implements IRecipeSerializer {
 
 	@Override
 	public JsonElement get() {
-		List<Ingredient> itemInputs = new ArrayList<>();
 		FluidIngredient fluidIng = ThermalExpansionHelper.INSTANCE.getFluidIngredient(fluidInput, fluidInputAmount);
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(itemInput);
 		if(fluidIng == null && ing == EmptyIngredient.INSTANCE) {

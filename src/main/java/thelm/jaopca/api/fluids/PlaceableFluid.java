@@ -280,8 +280,8 @@ public abstract class PlaceableFluid extends Fluid {
 
 	protected Map<Direction, FluidState> getSpread(LevelReader world, BlockPos pos, BlockState blockState) {
 		int i = 1000;
-		Map<Direction, FluidState> map = new EnumMap(Direction.class);
-		Short2ObjectMap<Pair<BlockState, FluidState>> stateMap = new Short2ObjectOpenHashMap();
+		Map<Direction, FluidState> map = new EnumMap<>(Direction.class);
+		Short2ObjectMap<Pair<BlockState, FluidState>> stateMap = new Short2ObjectOpenHashMap<>();
 		Short2BooleanMap isWaterHoleMap = new Short2BooleanOpenHashMap();
 		for(Direction direction : Direction.Plane.HORIZONTAL) {
 			BlockPos offsetPos = pos.relative(direction);

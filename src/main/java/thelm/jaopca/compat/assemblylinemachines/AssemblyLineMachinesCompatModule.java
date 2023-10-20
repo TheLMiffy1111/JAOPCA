@@ -180,7 +180,7 @@ public class AssemblyLineMachinesCompatModule implements IModule {
 				if(itemTags.contains(plateLocation) && itemTags.contains(gearLocation)) {
 					helper.registerPneumaticRecipe(
 							new ResourceLocation("jaopca", "assemblylinemachines.plate_to_gear."+name),
-							plateLocation, 4, rodMold, gearLocation, 1, 9);
+							plateLocation, 4, gearMold, gearLocation, 1, 9);
 				}
 			}
 			if(type.isIngot() && !HAMMER_BLACKLIST.contains(name) && !configHammerToPlateBlacklist.contains(name)) {

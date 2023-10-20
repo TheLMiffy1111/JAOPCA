@@ -87,52 +87,53 @@ public class DataCollector {
 			}
 		}
 
-		MultiPackResourceManager resourceManager = new MultiPackResourceManager(PackType.SERVER_DATA, resourcePacks);
-		for(ResourceLocation location : resourceManager.listResources("tags", name->name.getPath().endsWith(".json")).keySet()) {
-			String namespace = location.getNamespace();
-			String path = location.getPath();
-			path = path.substring(TAGS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
-			String[] split = path.split("/", 2);
-			if(split.length == 2) {
-				String type = split[0];
-				if(ModList.get().isLoaded(type)) {
-					String[] split0 = split[1].split("/", 2);
-					if(split0.length == 2) {
-						type += ':'+split0[0];
-						path = split0[1];
-						DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
-						continue;
+		try(MultiPackResourceManager resourceManager = new MultiPackResourceManager(PackType.SERVER_DATA, resourcePacks)) {
+			for(ResourceLocation location : resourceManager.listResources("tags", name->name.getPath().endsWith(".json")).keySet()) {
+				String namespace = location.getNamespace();
+				String path = location.getPath();
+				path = path.substring(TAGS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
+				String[] split = path.split("/", 2);
+				if(split.length == 2) {
+					String type = split[0];
+					if(ModList.get().isLoaded(type)) {
+						String[] split0 = split[1].split("/", 2);
+						if(split0.length == 2) {
+							type += ':'+split0[0];
+							path = split0[1];
+							DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
+							continue;
+						}
 					}
+					path = split[1];
+					DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
 				}
-				path = split[1];
-				DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
+				else {
+					LOGGER.error("Tag {} in namespace {} has no type", path, namespace);
+				}
 			}
-			else {
-				LOGGER.error("Tag {} in namespace {} has no type", path, namespace);
+			LOGGER.info("Found {} unique defined tags", DEFINED_TAGS.size());
+			for(ResourceLocation location : resourceManager.listResources("recipes", name->name.getPath().endsWith(".json")).keySet()) {
+				String namespace = location.getNamespace();
+				String path = location.getPath();
+				if(!path.equals("recipes/_constants.json") && !path.equals("recipes/_factories.json")) {
+					path = path.substring(RECIPES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
+					DEFINED_RECIPES.add(new ResourceLocation(namespace, path));
+				}
 			}
-		}
-		LOGGER.info("Found {} unique defined tags", DEFINED_TAGS.size());
-		for(ResourceLocation location : resourceManager.listResources("recipes", name->name.getPath().endsWith(".json")).keySet()) {
-			String namespace = location.getNamespace();
-			String path = location.getPath();
-			if(!path.equals("recipes/_constants.json") && !path.equals("recipes/_factories.json")) {
-				path = path.substring(RECIPES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
-				DEFINED_RECIPES.add(new ResourceLocation(namespace, path));
+			LOGGER.info("Found {} unique defined recipes", DEFINED_RECIPES.size());
+			for(ResourceLocation location : resourceManager.listResources("loot_tables", name->name.getPath().endsWith(".json")).keySet()) {
+				String namespace = location.getNamespace();
+				String path = location.getPath();
+				path = path.substring(LOOT_TABLES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
+				DEFINED_LOOT_TABLES.add(new ResourceLocation(namespace, path));
 			}
-		}
-		LOGGER.info("Found {} unique defined recipes", DEFINED_RECIPES.size());
-		for(ResourceLocation location : resourceManager.listResources("loot_tables", name->name.getPath().endsWith(".json")).keySet()) {
-			String namespace = location.getNamespace();
-			String path = location.getPath();
-			path = path.substring(LOOT_TABLES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
-			DEFINED_LOOT_TABLES.add(new ResourceLocation(namespace, path));
-		}
-		LOGGER.info("Found {} unique defined loot tables", DEFINED_LOOT_TABLES.size());
-		for(ResourceLocation location : resourceManager.listResources("advancements", name->name.getPath().endsWith(".json")).keySet()) {
-			String namespace = location.getNamespace();
-			String path = location.getPath();
-			path = path.substring(ADVANCEMENTS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
-			DEFINED_ADVANCEMENTS.add(new ResourceLocation(namespace, path));
+			LOGGER.info("Found {} unique defined loot tables", DEFINED_LOOT_TABLES.size());
+			for(ResourceLocation location : resourceManager.listResources("advancements", name->name.getPath().endsWith(".json")).keySet()) {
+				String namespace = location.getNamespace();
+				String path = location.getPath();
+				path = path.substring(ADVANCEMENTS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
+				DEFINED_ADVANCEMENTS.add(new ResourceLocation(namespace, path));
+			}
 		}
 		LOGGER.info("Found {} unique defined advancements", DEFINED_ADVANCEMENTS.size());
 	}

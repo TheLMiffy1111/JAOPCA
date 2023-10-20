@@ -1,5 +1,5 @@
 plugins {
-	id "net.neoforged.gradle" version "[6.0.13,)"
+	id "net.neoforged.gradle" version "[6.0.13,7)"
 	id "org.parchmentmc.librarian.forgegradle" version "[1,)"
 	id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
 	id "eclipse"
@@ -112,7 +112,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.2.8.18"
+version = "4.2.8.19"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -148,16 +148,16 @@ minecraft {
 }
 
 dependencies {
-	minecraft "net.minecraftforge:forge:1.19.2-43.2.21"
+	minecraft "net.minecraftforge:forge:1.19.2-43.3.0"
 	annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
 	implementation fg.deobf("mezz.jei:jei-1.19.2-forge:11.6.0.1018")
-	implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.49")
+	implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.50")
 	implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.4.1")
 	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:3.1.40")
 	implementation fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
-	implementation fg.deobf("com.teamcofh:cofh_core:1.19.2-10.2.1.40")
-	implementation fg.deobf("com.teamcofh:thermal_core:1.19.2-10.2.0.5")
+	implementation fg.deobf("com.teamcofh:cofh_core:1.19.2-10.3.1.48")
+	implementation fg.deobf("com.teamcofh:thermal_core:1.19.2-10.3.1.10")
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.272")
 	implementation fg.deobf("dev.architectury:architectury-forge:6.5.85")
 	implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1902.4.1-build.236") {
@@ -167,13 +167,13 @@ dependencies {
 		transitive = false
 	}
 	implementation fg.deobf("net.bdew:bdlib:1.25.0.5-mc1.19.2")
-	implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.1-build.370") {
+	implementation fg.deobf("dev.latvian.mods:kubejs-forge:1902.6.2-build.27") {
 		transitive = false
 	}
 	implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.19.2:15.0.1")
 	implementation fg.deobf("dev.gigaherz.jsonthings:JsonThings-1.19.2:0.7.15")
 	implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.2-9.2.2-165")
-	implementation fg.deobf("com.simibubi.create:create-1.19.2:0.5.1.c-36:all") {
+	implementation fg.deobf("com.simibubi.create:create-1.19.2:0.5.1.e-44:all") {
 		transitive = false
 	}
 	implementation fg.deobf("mekanism:Mekanism:1.19.2-10.3.9.13")
@@ -181,9 +181,9 @@ dependencies {
 	implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1900.1.7-build.221") {
 		transitive = false
 	}
-	implementation fg.deobf("com.teamcofh:thermal_foundation:1.19.2-10.2.0.47")
-	implementation fg.deobf("com.teamcofh:thermal_expansion:1.19.2-10.2.0.21")
-	implementation fg.deobf("com.teamcofh:thermal_integration:1.19.2-10.2.0.17")
+	implementation fg.deobf("com.teamcofh:thermal_foundation:1.19.2-10.3.1.57")
+	implementation fg.deobf("com.teamcofh:thermal_expansion:1.19.2-10.3.1.25")
+	implementation fg.deobf("com.teamcofh:thermal_integration:1.19.2-10.3.0.19")
 	implementation fg.deobf("net.bdew:factorium:1.4.0.4-mc1.19.2")
 
 	//CurseMaven

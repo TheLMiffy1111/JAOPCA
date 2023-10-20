@@ -124,7 +124,6 @@ public class MekanismHelper {
 	public Pair<GasStackIngredient, Set<Gas>> getGasStackIngredientResolved(Object obj, int amount) {
 		GasStackIngredient ing = null;
 		Set<Gas> gases = new HashSet<>();
-		IMiscHelper helper = MiscHelper.INSTANCE;
 		IChemicalStackIngredientCreator<Gas, GasStack, GasStackIngredient> creator = IngredientCreatorAccess.gas();
 		if(obj instanceof Supplier<?>) {
 			Pair<GasStackIngredient, Set<Gas>> pair = getGasStackIngredientResolved(((Supplier<?>)obj).get(), amount);
@@ -180,7 +179,6 @@ public class MekanismHelper {
 	public Pair<SlurryStackIngredient, Set<Slurry>> getSlurryStackIngredientResolved(Object obj, int amount) {
 		SlurryStackIngredient ing = null;
 		Set<Slurry> slurries = new HashSet<>();
-		IMiscHelper helper = MiscHelper.INSTANCE;
 		IChemicalStackIngredientCreator<Slurry, SlurryStack, SlurryStackIngredient> creator = IngredientCreatorAccess.slurry();
 		if(obj instanceof Supplier<?>) {
 			Pair<SlurryStackIngredient, Set<Slurry>> pair = getSlurryStackIngredientResolved(((Supplier<?>)obj).get(), amount);

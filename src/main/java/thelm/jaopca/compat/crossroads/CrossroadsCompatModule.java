@@ -89,7 +89,7 @@ public class CrossroadsCompatModule implements IModule {
 			}
 			if(!type.isDust()) {
 				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", name, "_");
-				int baseAmount = material.getType().isIngot() ? 90 : 100;
+				int baseAmount = isIngot ? 90 : 100;
 				if(fluidTags.contains(moltenLocation)) {
 					if(!MOLTEN_BLACKLIST.contains(name) && !configMaterialToMoltenBlacklist.contains(name)) {
 						ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
