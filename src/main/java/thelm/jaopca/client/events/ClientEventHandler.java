@@ -41,7 +41,6 @@ public class ClientEventHandler {
 	public void onClientSetup(FMLClientSetupEvent event) {
 		MinecraftForge.EVENT_BUS.addListener(this::onPlayerLoggedIn);
 		MinecraftForge.EVENT_BUS.addListener(this::onTagsUpdated);
-		Minecraft mc = Minecraft.getInstance();
 		LocalizationRepoHandler.setup();
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
 			ItemBlockRenderTypes.setRenderLayer(block.toBlock(), RenderType.translucent());
@@ -57,7 +56,7 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event) {
-		event.registerReloadListener(new SimplePreparableReloadListener() {
+		event.registerReloadListener(new SimplePreparableReloadListener<>() {
 			@Override
 			protected Object prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
 				return null;

@@ -46,7 +46,7 @@ public class BloodMagicModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		return builder.build();
 	}
@@ -68,7 +68,6 @@ public class BloodMagicModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		BloodMagicHelper helper = BloodMagicHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
@@ -121,7 +120,6 @@ public class BloodMagicModule implements IModule {
 					}, false);
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation gravelLocation = miscHelper.getTagLocation("bloodmagic:gravels", material.getName());
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			if(material.getType() == MaterialType.INGOT) {

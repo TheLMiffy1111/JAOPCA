@@ -101,6 +101,13 @@ public class ThermalExpansionCompatModule implements IModule {
 				Collections.addAll(PACKING_NUGGET_BLACKLIST, "aluminium", "aluminum", "uranium");
 				Collections.addAll(PACKING_RAW_STORAGE_BLOCK_BLACKLIST, "aluminium", "aluminum", "uranium");
 			}
+			if(ModList.get().isLoaded("mekanism")) {
+				Collections.addAll(TO_DUST_BLACKLIST, "fluorite");
+				Collections.addAll(PACKING_STORAGE_BLOCK_BLACKLIST, "fluorite", "osmium", "refined_glowstone",
+						"refined_obsidian", "salt", "uranium");
+				Collections.addAll(PACKING_NUGGET_BLACKLIST, "osmium", "refined_glowstone", "refined_obsidian", "uranium");
+				Collections.addAll(PACKING_RAW_STORAGE_BLOCK_BLACKLIST, "osmium", "uranium");
+			}
 			if(ModList.get().isLoaded("tconstruct")) {
 				Collections.addAll(MOLTEN_TO_INGOT_BLACKLIST, "amethyst_bronze", "bronze", "cobalt", "constantan", "copper",
 						"debris", "electrum", "gold", "hepatizon", "invar", "iron", "knightslime", "lead", "manyullyn",
@@ -205,7 +212,6 @@ public class ThermalExpansionCompatModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Set<ResourceLocation> itemTags = api.getItemTags();
 		Set<ResourceLocation> fluidTags = api.getFluidTags();
-		Item richSlag = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:rich_slag"));
 		Item gearDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_gear_die"));
 		Item coinDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_coin_die"));
 		Item packingDie = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:press_packing_3x3_die"));

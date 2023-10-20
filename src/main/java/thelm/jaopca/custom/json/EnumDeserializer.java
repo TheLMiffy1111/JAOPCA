@@ -24,9 +24,10 @@ public class EnumDeserializer implements JsonDeserializer<Enum<?>> {
 	public Enum<?> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		IJsonHelper helper = JsonHelper.INSTANCE;
 		if(typeOfT instanceof Class && ((Class<?>)typeOfT).isEnum()) {
+			Enum<?>[] values = ((Class<Enum<?>>)typeOfT).getEnumConstants();
 			if(helper.isString(jsonElement)) {
 				Map<String, Enum<?>> stringToEnum = new TreeMap<>();
-				for(Enum<?> value : ((Class<Enum<?>>)typeOfT).getEnumConstants()) {
+				for(Enum<?> value : values) {
 					stringToEnum.put(value.name().toLowerCase(Locale.US), value);
 				}
 				String valueString = helper.getString(jsonElement, "value");
@@ -38,7 +39,6 @@ public class EnumDeserializer implements JsonDeserializer<Enum<?>> {
 			}
 			else if(helper.isNumber(jsonElement)) {
 				int valueOrdinal = helper.getInt(jsonElement, "value");
-				Enum<?>[] values = ((Class<Enum<?>>)typeOfT).getEnumConstants();
 				if(valueOrdinal >= values.length) {
 					throw new JsonSyntaxException("Invalid enum ordinal "+valueOrdinal);
 				}

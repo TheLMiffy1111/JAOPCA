@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.thermalexpansion;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +12,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.JAOPCAApi;
@@ -33,7 +35,9 @@ public class ThermalExpansionNonIngotModule implements IModule {
 	private static final Set<String> SMELTER_BLACKLIST = new TreeSet<>();
 
 	static {
-
+		if(ModList.get().isLoaded("mekanism")) {
+			Collections.addAll(BLACKLIST, "fluorite");
+		}
 	}
 
 	@Override
@@ -43,7 +47,7 @@ public class ThermalExpansionNonIngotModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(1, "dusts");
 		return builder.build();
 	}
@@ -60,7 +64,6 @@ public class ThermalExpansionNonIngotModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		ThermalExpansionHelper helper = ThermalExpansionHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Item richSlag = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:rich_slag"));

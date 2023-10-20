@@ -45,6 +45,9 @@ public class ThermalExpansionModule implements IModule {
 			if(ModList.get().isLoaded("immersiveengineering")) {
 				Collections.addAll(BLACKLIST, "aluminium", "aluminum", "uranium");
 			}
+			if(ModList.get().isLoaded("mekanism")) {
+				Collections.addAll(BLACKLIST, "osmium");
+			}
 			if(ModList.get().isLoaded("tconstruct")) {
 				Collections.addAll(BLACKLIST, "cobalt");
 			}
@@ -58,7 +61,7 @@ public class ThermalExpansionModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		builder.put(1, "dusts");
 		builder.put(1, "nuggets");
@@ -77,7 +80,6 @@ public class ThermalExpansionModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		ThermalExpansionHelper helper = ThermalExpansionHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Item richSlag = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:rich_slag"));
