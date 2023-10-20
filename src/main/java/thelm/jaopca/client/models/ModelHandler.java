@@ -118,7 +118,6 @@ public class ModelHandler {
 	}
 
 	public static void remapModels(ModelEvent.ModifyBakingResult event) {
-		ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 		Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
 		BakedModel missingModel = modelRegistry.get(ModelBakery.MISSING_MODEL_LOCATION);
 		for(Map.Entry<ResourceLocation, Collection<ResourceLocation>> entry : REMAPS.asMap().entrySet()) {

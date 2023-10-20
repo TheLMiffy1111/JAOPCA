@@ -1,5 +1,5 @@
 plugins {
-	id "net.neoforged.gradle" version "[6.0.13,)"
+	id "net.neoforged.gradle" version "[6.0.13,7)"
 	id "org.parchmentmc.librarian.forgegradle" version "[1,)"
 	id "org.spongepowered.mixin" version "0.7-SNAPSHOT"
 	id "eclipse"
@@ -112,7 +112,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.3.4.10"
+version = "4.3.4.11"
 
 archivesBaseName = "${modName}-${mcVersion}"
 

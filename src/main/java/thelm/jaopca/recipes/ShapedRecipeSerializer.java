@@ -51,7 +51,6 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		int width = 0;
 		List<String> pattern = new ArrayList<>();
 		int idx = 0;
 		if(input[idx] instanceof String[]) {

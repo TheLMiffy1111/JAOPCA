@@ -45,7 +45,7 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent event) {
-		event.registerReloadListener(new SimplePreparableReloadListener() {
+		event.registerReloadListener(new SimplePreparableReloadListener<>() {
 			@Override
 			protected Object prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
 				return null;

@@ -28,6 +28,7 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 
 	private MaterialEnumFunctionDeserializer() {}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Function<IMaterial, Enum<?>> deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 		IJsonHelper helper = JsonHelper.INSTANCE;
