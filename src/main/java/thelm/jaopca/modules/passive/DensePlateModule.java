@@ -37,7 +37,7 @@ public class DensePlateModule implements IModule {
 
 	@Override
 	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 		builder.put("platedense", "dense_plate");
 		return builder.build();
 	}

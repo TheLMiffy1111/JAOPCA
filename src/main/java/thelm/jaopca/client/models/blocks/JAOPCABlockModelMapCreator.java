@@ -32,7 +32,6 @@ public class JAOPCABlockModelMapCreator implements IBlockModelMapCreator {
 		Block block = materialFormBlock.asBlock();
 		ResourceLocation location = block.getRegistryName();
 		ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
-		ResourceLocation modelLocation;
 		if(MiscHelper.INSTANCE.hasResource(location1)) {
 			return location;
 		}

@@ -34,7 +34,6 @@ public class IntegratedDynamicsNonIngotModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		IntegratedDynamicsHelper helper = IntegratedDynamicsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {

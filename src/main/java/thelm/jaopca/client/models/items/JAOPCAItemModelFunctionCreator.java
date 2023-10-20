@@ -31,7 +31,6 @@ public class JAOPCAItemModelFunctionCreator implements IItemModelFunctionCreator
 		ResourceLocation location = item.getRegistryName();
 		ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
 		ResourceLocation location2 = new ResourceLocation(location.getNamespace(), "models/item/"+location.getPath()+".json");
-		ResourceLocation modelLocation;
 		if(MiscHelper.INSTANCE.hasResource(location1) || MiscHelper.INSTANCE.hasResource(location2)) {
 			return location;
 		}

@@ -89,11 +89,8 @@ public class GasFormType implements IGasFormType {
 			return;
 		}
 		registered = true;
-		ApiImpl api = ApiImpl.INSTANCE;
-		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IGasFormSettings settings = (IGasFormSettings)form.getSettings();
-			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
 				IMaterialFormGas materialFormGas = settings.getGasCreator().create(form, material, settings);
 				GASES.put(form, material, materialFormGas);

@@ -43,7 +43,7 @@ public class FuturepackModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dust");
 		builder.put(1, "dust");
 		return builder.build();
@@ -66,7 +66,6 @@ public class FuturepackModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		FuturepackHelper helper = FuturepackHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {

@@ -55,7 +55,6 @@ public class EssentialCraftModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		EssentialCraftHelper helper = EssentialCraftHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {

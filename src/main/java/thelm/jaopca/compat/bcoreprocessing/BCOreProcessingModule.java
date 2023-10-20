@@ -64,7 +64,6 @@ public class BCOreProcessingModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		BCOreProcessingHelper helper = BCOreProcessingHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IFluidFormType fluidFormType = FluidFormType.INSTANCE;
@@ -111,7 +110,7 @@ public class BCOreProcessingModule implements IModule {
 
 	@Override
 	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 		builder.put("searingmolten", "bcoreprocessing_searing");
 		builder.put("hotmolten", "bcoreprocessing_hot");
 		builder.put("coolmolten", "bcoreprocessing_cool");

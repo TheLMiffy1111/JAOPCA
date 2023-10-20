@@ -37,7 +37,7 @@ public class TechRebornIndustrialCrystalModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "small_dust");
 		builder.put(1, "small_dust");
 		return builder.build();
@@ -68,7 +68,6 @@ public class TechRebornIndustrialCrystalModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		TechRebornHelper helper = TechRebornHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {

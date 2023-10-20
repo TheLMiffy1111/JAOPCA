@@ -85,7 +85,7 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dust");
 		return builder.build();
 	}
@@ -107,7 +107,6 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
@@ -173,7 +172,7 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 		builder.put("dustdirty", "mekanism_dirty_dust");
 		builder.put("clump", "mekanism_clump");
 		builder.put("shard", "mekanism_shard");

@@ -46,10 +46,8 @@ public class MinestrappNonIngotModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		MinestrappHelper helper = MinestrappHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());

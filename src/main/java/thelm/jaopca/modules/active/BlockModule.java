@@ -72,7 +72,7 @@ public class BlockModule implements IModule {
 
 	@Override
 	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 		builder.put("block", "block");
 		return builder.build();
 	}

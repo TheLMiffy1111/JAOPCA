@@ -49,7 +49,7 @@ public class IC2Module implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dust");
 		builder.put(0, "tiny_dust");
 		builder.put(1, "tiny_dust");
@@ -126,7 +126,7 @@ public class IC2Module implements IModule {
 
 	@Override
 	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 		builder.put("crushed", "ic2_crushed");
 		builder.put("crushedpurified", "ic2_purified_crushed");
 		builder.put("purified", "ic2_purified_crushed");

@@ -84,6 +84,7 @@ public class CommonEventHandler {
 		OredictHandler.onOreRegister(event);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@SubscribeEvent
 	public void onMissingMappings(RegistryEvent.MissingMappings event) {
 		RegistryHandler.onMissingMappings(event);

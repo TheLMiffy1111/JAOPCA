@@ -32,7 +32,7 @@ public class AppliedEnergistics2Module implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dust");
 		return builder.build();
 	}
@@ -52,7 +52,6 @@ public class AppliedEnergistics2Module implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		AppliedEnergistics2Helper helper = AppliedEnergistics2Helper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		float chance = (float)(AEConfig.instance().getOreDoublePercentage()/100);

@@ -47,10 +47,8 @@ public class AppliedEnergistics2CompatModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		AppliedEnergistics2Helper helper = AppliedEnergistics2Helper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		Set<String> oredict = api.getOredict();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();

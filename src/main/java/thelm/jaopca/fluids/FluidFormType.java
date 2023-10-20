@@ -103,7 +103,6 @@ public class FluidFormType implements IFluidFormType {
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IFluidFormSettings settings = (IFluidFormSettings)form.getSettings();
-			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+helper.toLowercaseUnderscore(material.getName()));
 

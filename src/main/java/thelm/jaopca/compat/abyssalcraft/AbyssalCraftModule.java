@@ -246,7 +246,7 @@ public class AbyssalCraftModule implements IModule {
 
 	@Override
 	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 		builder.put("crystalfragment", "abyssalcraft_crystal_fragment");
 		builder.put("crystalshard", "abyssalcraft_crystal_shard");
 		builder.put("crystalabyss", "abyssalcraft_crystal");

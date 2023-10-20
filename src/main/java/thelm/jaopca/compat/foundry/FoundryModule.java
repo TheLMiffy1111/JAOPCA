@@ -37,7 +37,7 @@ public class FoundryModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "foundry_liquid");
 		return builder.build();
 	}
@@ -58,7 +58,6 @@ public class FoundryModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		FoundryHelper helper = FoundryHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		int oreAmount = FoundryAPI.getAmountOre();
@@ -75,7 +74,7 @@ public class FoundryModule implements IModule {
 
 	@Override
 	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 		builder.put("liquid", "foundry_liquid");
 		return builder.build();
 	}

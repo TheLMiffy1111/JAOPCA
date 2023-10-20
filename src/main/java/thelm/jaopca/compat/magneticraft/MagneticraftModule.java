@@ -52,7 +52,7 @@ public class MagneticraftModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(1, "dust");
 		builder.put(2, "dust");
 		return builder.build();
@@ -152,7 +152,7 @@ public class MagneticraftModule implements IModule {
 
 	@Override
 	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 		builder.put("rockychunk", "magneticraft_rocky_chunk");
 		builder.put("chunk", "magneticraft_chunk");
 		return builder.build();

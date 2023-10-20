@@ -39,7 +39,7 @@ public class SmallDustModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dust");
 		return builder.build();
 	}
@@ -56,7 +56,7 @@ public class SmallDustModule implements IModule {
 		for(IMaterial material : smallDustForm.getMaterials()) {
 			String smallDustOredict = miscHelper.getOredictName("dustSmall", material.getName());
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());
-			ApiImpl.INSTANCE.registerShapelessRecipe(
+			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("small_dust.to_dust", material.getName()),
 					dustOredict, 1, new Object[] {
 							smallDustOredict, smallDustOredict,
@@ -67,7 +67,7 @@ public class SmallDustModule implements IModule {
 
 	@Override
 	public Map<String, String> getLegacyRemaps() {
-		ImmutableMap.Builder builder = ImmutableMap.builder();
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 		builder.put("dustsmall", "small_dust");
 		return builder.build();
 	}

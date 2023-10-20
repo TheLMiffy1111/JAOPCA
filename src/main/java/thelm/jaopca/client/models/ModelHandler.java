@@ -28,7 +28,6 @@ import thelm.jaopca.items.ItemFormType;
 public class ModelHandler {
 
 	public static void registerModels() {
-		IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
 		for(IMaterialFormBlock materialFormBlock : BlockFormType.getBlocks()) {
 			Block block = materialFormBlock.asBlock();
 			IBlockFormSettings settings = (IBlockFormSettings)materialFormBlock.getForm().getSettings();

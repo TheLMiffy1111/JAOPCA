@@ -41,7 +41,7 @@ public class MinestrappModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dust");
 		return builder.build();
 	}
@@ -63,10 +63,8 @@ public class MinestrappModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		MinestrappHelper helper = MinestrappHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());
