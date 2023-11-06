@@ -166,7 +166,7 @@ dependencies {
 	implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.3-9.3.0-163")
 
 	//CurseMaven
-	implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3759881")
+	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:3909789")
 	implementation fg.deobf("curse.maven:voluminous-energy-416704:4627266")
 	implementation fg.deobf("curse.maven:cyclops-core-232758:4438259")
 	implementation fg.deobf("curse.maven:common-capabilities-247007:4391468")
