@@ -187,7 +187,7 @@ dependencies {
 	implementation fg.deobf("net.bdew:factorium:1.4.0.4-mc1.19.2")
 
 	//CurseMaven
-	implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3759881")
+	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:3909789")
 	implementation fg.deobf("curse.maven:ato-405593:4046926")
 	implementation fg.deobf("curse.maven:allthemodium-364466:4667332")
 	implementation fg.deobf("curse.maven:electrodynamics-316867:4518028")
