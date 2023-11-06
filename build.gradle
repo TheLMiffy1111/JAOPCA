@@ -195,6 +195,7 @@ dependencies {
 	implementation fg.deobf("com.enderio:EnderIO:1.20.1-6.0.21-alpha")
 
 	//CurseMaven
+	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:4680832")
 	implementation fg.deobf("curse.maven:ato-405593:4751952")
 	implementation fg.deobf("curse.maven:allthemodium-364466:4760433")
 	implementation fg.deobf("curse.maven:electrodynamics-316867:4788038")
