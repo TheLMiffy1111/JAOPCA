@@ -152,20 +152,20 @@ minecraft {
 }
 
 dependencies {
-	minecraft "net.neoforged:forge:1.20.1-47.1.79"
+	minecraft "net.neoforged:forge:1.20.1-47.1.84"
 	annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
 	implementation fg.deobf("mezz.jei:jei-1.20.1-forge:15.2.0.27")
-	implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.20.1:14.0.26") {
+	implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.20.1:14.0.27") {
 		transitive = false
 	}
-	implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.4.2+1.20.1")
-	implementation fg.deobf("software.bernie.geckolib:geckolib-neoforge-1.20.1:4.2.4")
-	implementation fg.deobf("vazkii.patchouli:Patchouli:1.20.1-82-FORGE")
+	implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.4.6+1.20.1")
+	implementation fg.deobf("software.bernie.geckolib:geckolib-neoforge-1.20.1:4.3.1")
+	implementation fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
 	//implementation fg.deobf("slimeknights.mantle:Mantle:1.20.1-")
 	implementation fg.deobf("com.teamcofh:cofh_core:1.20.1-11.0.0.51")
 	implementation fg.deobf("com.teamcofh:thermal_core:1.20.1-11.0.1.17")
-	implementation fg.deobf("dev.latvian.mods:rhino-forge:2001.2.2-build.13")
+	implementation fg.deobf("dev.latvian.mods:rhino-forge:2001.2.2-build.18")
 	implementation fg.deobf("dev.architectury:architectury-forge:9.1.12")
 	//implementation fg.deobf("dev.ftb.mods:ftb-library-forge:2001.1.4") {
 	//	transitive = false
@@ -173,7 +173,7 @@ dependencies {
 	implementation("com.kotori316:scalablecatsforce:3.3.0-build-2:with-library") {
 		transitive = false
 	}
-	implementation fg.deobf("dev.latvian.mods:kubejs-forge:2001.6.4-build.95") {
+	implementation fg.deobf("dev.latvian.mods:kubejs-forge:2001.6.4-build.114") {
 		transitive = false
 	}
 	implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.20.1:19.0.3")
@@ -192,32 +192,32 @@ dependencies {
 	implementation fg.deobf("com.teamcofh:thermal_expansion:1.20.1-11.0.0.27")
 	implementation fg.deobf("com.teamcofh:thermal_integration:1.20.1-11.0.0.23")
 	//implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.20.1-")
-	implementation fg.deobf("com.enderio:EnderIO:1.20.1-6.0.21-alpha")
+	implementation fg.deobf("com.enderio:EnderIO:1.20.1-6.0.23-alpha")
 
 	//CurseMaven
 	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:4680832")
 	implementation fg.deobf("curse.maven:ato-405593:4844097")
-	implementation fg.deobf("curse.maven:allthemodium-364466:4838986")
-	implementation fg.deobf("curse.maven:electrodynamics-316867:4877734")
+	implementation fg.deobf("curse.maven:allthemodium-364466:4892369")
+	implementation fg.deobf("curse.maven:electrodynamics-316867:4903241")
 	implementation fg.deobf("curse.maven:voluminous-energy-416704:4627288")
-	implementation fg.deobf("curse.maven:cyclops-core-232758:4808715")
+	implementation fg.deobf("curse.maven:cyclops-core-232758:4905983")
 	implementation fg.deobf("curse.maven:common-capabilities-247007:4620480")
-	implementation fg.deobf("curse.maven:integrated-dynamics-236307:4835141")
+	implementation fg.deobf("curse.maven:integrated-dynamics-236307:4925678")
 	implementation fg.deobf("curse.maven:essentials-293752:4640300")
 	//implementation fg.deobf("curse.maven:crossroads-mc-250231:")
 	//implementation fg.deobf("curse.maven:assemblylinemachines-388282:")
 	implementation fg.deobf("curse.maven:smartbrainlib-661293:4743400")
-	implementation fg.deobf("curse.maven:modonomicon-538392:4794693")
-	implementation fg.deobf("curse.maven:occultism-361026:4883718")
+	implementation fg.deobf("curse.maven:modonomicon-538392:4976313")
+	implementation fg.deobf("curse.maven:occultism-361026:4973420")
 	implementation fg.deobf("curse.maven:flib-661261:4724762")
-	implementation fg.deobf("curse.maven:cyclic-239286:4722579")
+	implementation fg.deobf("curse.maven:cyclic-239286:4976541")
     implementation fg.deobf("curse.maven:blood-magic-224791:4779711")
 	//implementation fg.deobf("curse.maven:industrial-reborn-358877:")
 	//implementation fg.deobf("curse.maven:ic2-classic-242942:")
 	implementation fg.deobf("curse.maven:bdlib-70496:4670650")
 	implementation fg.deobf("curse.maven:factorium-583423:4670915")
-	implementation fg.deobf("curse.maven:energized-power-782147:4899850")
-	implementation fg.deobf("curse.maven:embers-rekindled-300777:4842847")
+	implementation fg.deobf("curse.maven:energized-power-782147:4934066")
+	implementation fg.deobf("curse.maven:embers-rekindled-300777:4897329")
 }
 
 def manifestAttributes = [
