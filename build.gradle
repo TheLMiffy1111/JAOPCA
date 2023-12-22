@@ -178,7 +178,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:cyclic-239286:4578692")
 	implementation fg.deobf("curse.maven:bdlib-70496:4356501")
 	implementation fg.deobf("curse.maven:factorium-583423:4362035")
-	implementation fg.deobf("curse.maven:energized-power-782147:4757786")
+	implementation fg.deobf("curse.maven:energized-power-782147:4924275")
 }
 
 def manifestAttributes = [
