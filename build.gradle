@@ -163,8 +163,8 @@ dependencies {
 	implementation fg.deobf("software.bernie.geckolib:geckolib-neoforge-1.20.1:4.2.4")
 	implementation fg.deobf("vazkii.patchouli:Patchouli:1.20.1-82-FORGE")
 	//implementation fg.deobf("slimeknights.mantle:Mantle:1.20.1-")
-	//implementation fg.deobf("com.teamcofh:cofh_core:1.20.1-")
-	//implementation fg.deobf("com.teamcofh:thermal_core:1.20.1-")
+	implementation fg.deobf("com.teamcofh:cofh_core:1.20.1-11.0.0.51")
+	implementation fg.deobf("com.teamcofh:thermal_core:1.20.1-11.0.1.17")
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:2001.2.2-build.13")
 	implementation fg.deobf("dev.architectury:architectury-forge:9.1.12")
 	//implementation fg.deobf("dev.ftb.mods:ftb-library-forge:2001.1.4") {
@@ -188,9 +188,9 @@ dependencies {
 	//implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:2001.") {
 	//	transitive = false
 	//}
-	//implementation fg.deobf("com.teamcofh:thermal_foundation:1.20.1-")
-	//implementation fg.deobf("com.teamcofh:thermal_expansion:1.20.1-")
-	//implementation fg.deobf("com.teamcofh:thermal_integration:1.20.1-")
+	implementation fg.deobf("com.teamcofh:thermal_foundation:1.20.1-11.0.1.63:all")
+	implementation fg.deobf("com.teamcofh:thermal_expansion:1.20.1-11.0.0.27")
+	implementation fg.deobf("com.teamcofh:thermal_integration:1.20.1-11.0.0.23")
 	//implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.20.1-")
 	implementation fg.deobf("com.enderio:EnderIO:1.20.1-6.0.21-alpha")
 
