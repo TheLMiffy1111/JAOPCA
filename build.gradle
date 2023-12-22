@@ -205,9 +205,9 @@ dependencies {
 	}
 	implementation fg.deobf("codechicken:CodeChickenLib:1.12.2-3.2.3.358:universal")
 	implementation "net.shadowfacts:Forgelin:1.8.4"
-	implementation fg.deobf("CraftTweaker2:ZenScript:4.1.20.695")
-	implementation fg.deobf("CraftTweaker2:CraftTweaker2-API:4.1.20.695")
-	implementation fg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.695")
+	implementation fg.deobf("CraftTweaker2:ZenScript:4.1.20.697")
+	implementation fg.deobf("CraftTweaker2:CraftTweaker2-API:4.1.20.697")
+	implementation fg.deobf("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.697")
 	implementation fg.deobf("com.enderio.core:EnderCore:1.12.2-0.5.78")
 	implementation fg.deobf("com.enderio.core:EnderCore:1.12.2-0.5.78:core")
 	implementation fg.deobf("com.enderio:EnderIO:1.12.2-5.3.72") {
@@ -248,7 +248,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:thermal-foundation-222880:2926428")
 	implementation fg.deobf("curse.maven:thermal-expansion-69163:2926431")
 	implementation fg.deobf("curse.maven:thermal-dynamics-227443:2920505")
-	implementation fg.deobf("curse.maven:abyssalcraft-53686:3425234")
+	implementation fg.deobf("curse.maven:abyssalcraft-53686:4856547")
 	implementation fg.deobf("curse.maven:minestrappolation-5-233351:2860018")
 	implementation fg.deobf("curse.maven:buildcraft-compat-233140:3204471")
 	implementation fg.deobf("curse.maven:hbms-nuclear-tech-mod-reloaded-435883:4892080")
@@ -266,7 +266,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:forestry-59751:2918418")
 
 	implementation fg.deobf("zone.rong:mixinbooter:7.1")
-	implementation fg.deobf("curse.maven:jeid-296289:3581715")
+	implementation fg.deobf("curse.maven:reid-629017:4949840")
 	implementation fg.deobf("curse.maven:spark-361579:3245793")
 	implementation fg.deobf("curse.maven:lolasm-460609:4623985")
 }
