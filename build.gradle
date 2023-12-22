@@ -157,7 +157,7 @@ dependencies {
 	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:3.1.40")
 	implementation fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
 	implementation fg.deobf("com.teamcofh:cofh_core:1.19.2-10.3.1.48")
-	implementation fg.deobf("com.teamcofh:thermal_core:1.19.2-10.3.1.10")
+	implementation fg.deobf("com.teamcofh:thermal_core:1.19.2-10.3.2.11")
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:1902.2.2-build.280")
 	implementation fg.deobf("dev.architectury:architectury-forge:6.5.85")
 	implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1902.4.1-build.236") {
@@ -181,7 +181,7 @@ dependencies {
 	implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1900.1.7-build.221") {
 		transitive = false
 	}
-	implementation fg.deobf("com.teamcofh:thermal_foundation:1.19.2-10.3.1.57")
+	implementation fg.deobf("com.teamcofh:thermal_foundation:1.19.2-10.3.1.57:all")
 	implementation fg.deobf("com.teamcofh:thermal_expansion:1.19.2-10.3.1.25")
 	implementation fg.deobf("com.teamcofh:thermal_integration:1.19.2-10.3.0.19")
 	implementation fg.deobf("net.bdew:factorium:1.4.0.4-mc1.19.2")
