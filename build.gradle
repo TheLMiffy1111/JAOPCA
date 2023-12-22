@@ -155,7 +155,7 @@ dependencies {
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
 	implementation fg.deobf("mezz.jei:jei-1.18.2-forge:10.2.1.1005")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.209")
+    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.211")
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.1")
     implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.18:3.0.57")
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
@@ -177,7 +177,7 @@ dependencies {
     implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.18.2:12.0.1")
 	implementation fg.deobf("dev.gigaherz.jsonthings:JsonThings-1.18.2:0.4.15")
     implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.18.2-8.4.0-161")
-	implementation fg.deobf("com.simibubi.create:create-1.18.2:0.5.1.e-318:all") {
+	implementation fg.deobf("com.simibubi.create:create-1.18.2:0.5.1.f-332:all") {
 		transitive = false
 	}
     implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.18.2-3.6.4.113")
@@ -198,11 +198,11 @@ dependencies {
     implementation fg.deobf("curse.maven:allthemodium-364466:4019806")
     implementation fg.deobf("curse.maven:electrodynamics-316867:3928753")
     implementation fg.deobf("curse.maven:voluminous-energy-416704:4627233")
-    implementation fg.deobf("curse.maven:cyclops-core-232758:4724147")
+    implementation fg.deobf("curse.maven:cyclops-core-232758:4808709")
     implementation fg.deobf("curse.maven:common-capabilities-247007:4391353")
-    implementation fg.deobf("curse.maven:integrated-dynamics-236307:4724156")
+    implementation fg.deobf("curse.maven:integrated-dynamics-236307:4791797")
     implementation fg.deobf("curse.maven:essentials-293752:3796423")
-    implementation fg.deobf("curse.maven:crossroads-mc-250231:3813964")
+    implementation fg.deobf("curse.maven:crossroads-mc-250231:4811933")
     implementation fg.deobf("curse.maven:assemblylinemachines-388282:3949460")
     implementation fg.deobf("curse.maven:smartbrainlib-661293:4458592")
 	implementation fg.deobf("curse.maven:modonomicon-538392:4641770")
