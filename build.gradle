@@ -139,14 +139,19 @@ minecraft {
 			property "forge.logging.console.level", "debug"
 			property "mixin.env.remapRefMap", "true"
 			property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
+			jvmArgs "-Dmixin.hotSwap=true"
 			mods {
 				"${modId}" {
 					source sourceSets.main
 				}
 			}
 		}
-		client
-		server
+		client {
+			jvmArg "-Xmx7G"
+		}
+		server {
+			jvmArg "-Xmx3G"
+		}
 	}
 }
 
@@ -193,7 +198,6 @@ dependencies {
     implementation fg.deobf("net.bdew:factorium:1.1.0.10-mc1.18.2")
 
     //CurseMaven
-    implementation fg.deobf("curse.maven:yeetusexperimentus-635427:4377180")
     implementation fg.deobf("curse.maven:ato-405593:3975599")
     implementation fg.deobf("curse.maven:allthemodium-364466:4019806")
     implementation fg.deobf("curse.maven:electrodynamics-316867:3928753")
@@ -211,6 +215,12 @@ dependencies {
     implementation fg.deobf("curse.maven:blood-magic-224791:3953207")
     implementation fg.deobf("curse.maven:lavatech-533955:4154002")
     implementation fg.deobf("curse.maven:industrial-reborn-358877:4034099")
+
+	//Performance
+    implementation fg.deobf("curse.maven:yeetusexperimentus-635427:4377180")
+	implementation fg.deobf("curse.maven:modernfix-790626:4980942")
+	implementation fg.deobf("curse.maven:ferritecore-429235:4074294")
+	implementation fg.deobf("curse.maven:lazy-dfu-forge-460819:3544496")
 }
 
 def manifestAttributes = [
