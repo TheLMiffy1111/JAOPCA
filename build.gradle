@@ -143,16 +143,7 @@ minecraft {
 			property "mixin.env.remapRefMap", "true"
 			property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
 			environment "MC_VERSION", mcVersion
-			jvmArgs \
-				"-Xmn768m", "-XX:+DisableExplicitGC", "-XX:+UseConcMarkSweepGC", \
-				"-XX:+UseParNewGC", "-XX:+UseNUMA", "-XX:+CMSParallelRemarkEnabled", \
-				"-XX:MaxTenuringThreshold=15", "-XX:MaxGCPauseMillis=30", "-XX:GCPauseIntervalMillis=150", \
-				"-XX:+UseAdaptiveGCBoundary", "-XX:-UseGCOverheadLimit", "-XX:+UseBiasedLocking", \
-				"-XX:SurvivorRatio=8", "-XX:TargetSurvivorRatio=90", "-XX:MaxTenuringThreshold=15", \
-				"-XX:+UseFastAccessorMethods", "-XX:+UseCompressedOops", "-XX:+OptimizeStringConcat", \
-				"-XX:+AggressiveOpts", "-XX:ReservedCodeCacheSize=2048m", "-XX:+UseCodeCacheFlushing", \
-				"-XX:SoftRefLRUPolicyMSPerMB=10000", "-XX:ParallelGCThreads=10", "-Dmixin.hotSwap=true", \
-				"-Dmixin.checks.interfaces=true"
+			jvmArgs "-Dmixin.hotSwap=true"
 			mods {
 				"${modId}" {
 					source sourceSets.main
@@ -252,7 +243,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:minestrappolation-5-233351:2860018")
 	implementation fg.deobf("curse.maven:buildcraft-compat-233140:3204471")
 	implementation fg.deobf("curse.maven:hbms-nuclear-tech-mod-reloaded-435883:4892080")
-	implementation fg.deobf("curse.maven:railcraft-51195:2687757")
+	implementation fg.deobf("curse.maven:railcraft-51195:3853491")
 	implementation fg.deobf("curse.maven:cyclops-core-232758:3159497")
 	implementation fg.deobf("curse.maven:common-capabilities-247007:3053017")
 	implementation fg.deobf("curse.maven:integrated-dynamics-236307:3159505")
@@ -262,13 +253,18 @@ dependencies {
 	implementation fg.deobf("curse.maven:tesla-core-lib-254602:3438487")
 	implementation fg.deobf("curse.maven:powered-thingies-264283:2556740")
 	implementation fg.deobf("curse.maven:bc-ore-processing-277910:2882663")
-	implementation fg.deobf("curse.maven:industrial-craft-242638:2746892")
+	implementation fg.deobf("curse.maven:industrial-craft-242638:3838713")
 	implementation fg.deobf("curse.maven:forestry-59751:2918418")
+	implementation fg.deobf("curse.maven:nuclearcraft-overhauled-336895:3862197")
+	implementation fg.deobf("curse.maven:qmd-362056:4975576")
 
-	implementation fg.deobf("zone.rong:mixinbooter:7.1")
+	//Performance
 	implementation fg.deobf("curse.maven:reid-629017:4949840")
-	implementation fg.deobf("curse.maven:spark-361579:3245793")
-	implementation fg.deobf("curse.maven:lolasm-460609:4623985")
+	implementation("zone.rong:mixinbooter:7.1") {
+		transitive = false
+	}
+	implementation fg.deobf("curse.maven:vintagefix-871198:4800687")
+	implementation fg.deobf("curse.maven:lolasm-460609:4800875")
 }
 
 configurations.all {
