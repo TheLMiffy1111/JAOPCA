@@ -139,7 +139,6 @@ minecraft {
 			property "forge.logging.console.level", "debug"
 			property "mixin.env.remapRefMap", "true"
 			property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
-			jvmArgs "-Dmixin.hotSwap=true"
 			mods {
 				"${modId}" {
 					source sourceSets.main
