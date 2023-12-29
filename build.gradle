@@ -141,8 +141,12 @@ minecraft {
 				}
 			}
 		}
-		client
-		server
+		client {
+			jvmArg "-Xmx7G"
+		}
+		server {
+			jvmArg "-Xmx3G"
+		}
 	}
 }
 
@@ -166,7 +170,6 @@ dependencies {
 	implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.19.3-9.3.0-163")
 
 	//CurseMaven
-	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:3909789")
 	implementation fg.deobf("curse.maven:voluminous-energy-416704:4627266")
 	implementation fg.deobf("curse.maven:cyclops-core-232758:4438259")
 	implementation fg.deobf("curse.maven:common-capabilities-247007:4391468")
@@ -179,6 +182,11 @@ dependencies {
 	implementation fg.deobf("curse.maven:bdlib-70496:4356501")
 	implementation fg.deobf("curse.maven:factorium-583423:4362035")
 	implementation fg.deobf("curse.maven:energized-power-782147:4924275")
+
+	//Performance
+	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:3909789")
+	implementation fg.deobf("curse.maven:ferritecore-429235:4147336")
+	implementation fg.deobf("curse.maven:lazy-dfu-forge-460819:4327266")
 }
 
 def manifestAttributes = [
