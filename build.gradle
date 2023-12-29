@@ -147,7 +147,9 @@ minecraft {
 		client {
 			jvmArg "-Xmx7G"
 		}
-		server
+		server {
+			jvmArg "-Xmx3G"
+		}
 	}
 }
 
@@ -192,10 +194,9 @@ dependencies {
 	implementation fg.deobf("com.teamcofh:thermal_expansion:1.20.1-11.0.0.27")
 	implementation fg.deobf("com.teamcofh:thermal_integration:1.20.1-11.0.0.23")
 	//implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.20.1-")
-	implementation fg.deobf("com.enderio:EnderIO:1.20.1-6.0.23-alpha")
+	implementation fg.deobf("com.enderio:EnderIO:1.20.1-6.0.22-alpha")
 
 	//CurseMaven
-	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:4680832")
 	implementation fg.deobf("curse.maven:ato-405593:4844097")
 	implementation fg.deobf("curse.maven:allthemodium-364466:4892369")
 	implementation fg.deobf("curse.maven:electrodynamics-316867:4903241")
@@ -218,6 +219,11 @@ dependencies {
 	implementation fg.deobf("curse.maven:factorium-583423:4670915")
 	implementation fg.deobf("curse.maven:energized-power-782147:4934066")
 	implementation fg.deobf("curse.maven:embers-rekindled-300777:4897329")
+
+	//Performance
+	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:4680832")
+	implementation fg.deobf("curse.maven:modernfix-790626:4980929")
+	implementation fg.deobf("curse.maven:ferritecore-429235:4810975")
 }
 
 def manifestAttributes = [
