@@ -142,8 +142,12 @@ minecraft {
 				}
 			}
 		}
-		client
-		server
+		client {
+			jvmArg "-Xmx7G"
+		}
+		server {
+			jvmArg "-Xmx3G"
+		}
 	}
 }
 
@@ -187,7 +191,6 @@ dependencies {
 	implementation fg.deobf("net.bdew:factorium:1.4.0.4-mc1.19.2")
 
 	//CurseMaven
-	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:3909789")
 	implementation fg.deobf("curse.maven:ato-405593:4046926")
 	implementation fg.deobf("curse.maven:allthemodium-364466:4667332")
 	implementation fg.deobf("curse.maven:electrodynamics-316867:4518028")
@@ -210,6 +213,12 @@ dependencies {
 	implementation fg.deobf("curse.maven:silent-gear-297039:4585760")
 	implementation fg.deobf("curse.maven:energized-power-782147:4934038")
 	implementation fg.deobf("curse.maven:nuclearcraft-neoteric-840010:4975776")
+
+	//Performance
+	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:3909789")
+	implementation fg.deobf("curse.maven:modernfix-790626:4980941")
+	implementation fg.deobf("curse.maven:ferritecore-429235:4117906")
+	implementation fg.deobf("curse.maven:lazy-dfu-forge-460819:4327266")
 }
 
 def manifestAttributes = [
