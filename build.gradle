@@ -207,7 +207,7 @@ dependencies {
 	//implementation fg.deobf("curse.maven:crossroads-mc-250231:")
 	//implementation fg.deobf("curse.maven:assemblylinemachines-388282:")
 	implementation fg.deobf("curse.maven:smartbrainlib-661293:4743400")
-	implementation fg.deobf("curse.maven:modonomicon-538392:4976313")
+	implementation fg.deobf("curse.maven:modonomicon-538392:4986652")
 	implementation fg.deobf("curse.maven:occultism-361026:4973420")
 	implementation fg.deobf("curse.maven:flib-661261:4724762")
 	implementation fg.deobf("curse.maven:cyclic-239286:4976541")
