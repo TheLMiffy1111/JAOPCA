@@ -8,105 +8,105 @@ plugins {
 }
 
 repositories {
-    jcenter()
-    flatDir {
-        dirs "libs"
-    }
-    maven {
-        url = "https://libraries.minecraft.net/"
-    }
-    maven {
-        url = "https://maven.minecraftforge.net/"
-    }
-    maven {
-        url = "https://repo.spongepowered.org/maven"
-    }
-    maven {
-        url = "https://dvs1.progwml6.com/files/maven/"
-        content {
-            includeGroup "slimeknights.mantle"
-            includeGroup "slimeknights.tconstruct"
-        }
-    }
-    maven {
-        url = "https://maven.blamejared.com/"
-        content {
-            includeGroup "mezz.jei"
-            includeGroup "blusunrize.immersiveengineering"
-            includeGroup "com.blamejared.crafttweaker"
-            includeGroup "net.darkhax.openloader"
-            includeGroup "vazkii.patchouli"
-        }
-    }
-    maven {
-        url = "https://maven.theillusivec4.top/"
-        content {
-            includeGroup "top.theillusivec4.curios"
-        }
-    }
-    maven {
-        url = "https://maven.architectury.dev/"
-        content {
-            includeGroup "dev.architectury"
-        }
-    }
-    maven {
-        url = "https://maven.saps.dev/releases/"
-        content {
-            includeGroup "dev.ftb.mods"
-            includeGroup "dev.latvian.mods"
-        }
-    }
-    maven {
-        url = "https://maven.tterrag.com/"
-        content {
-            includeGroup "com.jozufozu.flywheel"
-            includeGroup "com.simibubi.create"
-        }
-    }
-    maven {
-        url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
-        content {
-            includeGroup "software.bernie.geckolib"
-        }
-    }
-    maven {
-        url = "https://maven.covers1624.net/"
-        content {
-            includeGroup "com.teamcofh"
-        }
-    }
-    maven {
-        url = "https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1/"
-        content {
-            includeGroup "com.kotori316"
-        }
-    }
-    maven {
-        url = "https://jenkins.bdew.net/maven/"
-        content {
-            includeGroup "net.bdew"
-        }
-    }
+	jcenter()
+	flatDir {
+		dirs "libs"
+	}
+	maven {
+		url = "https://libraries.minecraft.net/"
+	}
+	maven {
+		url = "https://maven.minecraftforge.net/"
+	}
+	maven {
+		url = "https://repo.spongepowered.org/maven"
+	}
+	maven {
+		url = "https://dvs1.progwml6.com/files/maven/"
+		content {
+			includeGroup "slimeknights.mantle"
+			includeGroup "slimeknights.tconstruct"
+		}
+	}
+	maven {
+		url = "https://maven.blamejared.com/"
+		content {
+			includeGroup "mezz.jei"
+			includeGroup "blusunrize.immersiveengineering"
+			includeGroup "com.blamejared.crafttweaker"
+			includeGroup "net.darkhax.openloader"
+			includeGroup "vazkii.patchouli"
+		}
+	}
+	maven {
+		url = "https://maven.theillusivec4.top/"
+		content {
+			includeGroup "top.theillusivec4.curios"
+		}
+	}
+	maven {
+		url = "https://maven.architectury.dev/"
+		content {
+			includeGroup "dev.architectury"
+		}
+	}
+	maven {
+		url = "https://maven.saps.dev/releases/"
+		content {
+			includeGroup "dev.ftb.mods"
+			includeGroup "dev.latvian.mods"
+		}
+	}
+	maven {
+		url = "https://maven.tterrag.com/"
+		content {
+			includeGroup "com.jozufozu.flywheel"
+			includeGroup "com.simibubi.create"
+		}
+	}
+	maven {
+		url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+		content {
+			includeGroup "software.bernie.geckolib"
+		}
+	}
+	maven {
+		url = "https://maven.covers1624.net/"
+		content {
+			includeGroup "com.teamcofh"
+		}
+	}
+	maven {
+		url = "https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1/"
+		content {
+			includeGroup "com.kotori316"
+		}
+	}
+	maven {
+		url = "https://jenkins.bdew.net/maven/"
+		content {
+			includeGroup "net.bdew"
+		}
+	}
 	maven {
 		url = "https://dogforce-games.com/maven/"
 		content {
 			includeGroup "dev.gigaherz.jsonthings"
 		}
 	}
-    maven {
-        url = "https://cursemaven.com/"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        url = "https://modmaven.dev/"
-    }
+	maven {
+		url = "https://cursemaven.com/"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+	maven {
+		url = "https://modmaven.dev/"
+	}
 }
 
 sourceSets {
-    main
+	main
 }
 
 def mcVersion = "1.18.2"
@@ -156,67 +156,67 @@ minecraft {
 
 dependencies {
 	minecraft "net.minecraftforge:forge:1.18.2-40.2.10"
-    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
+	annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
 	implementation fg.deobf("mezz.jei:jei-1.18.2-forge:10.2.1.1005")
-    implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.211")
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.1")
-    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.18:3.0.57")
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
-    implementation fg.deobf("slimeknights.mantle:Mantle:1.18.2-1.9.45")
-    implementation fg.deobf("com.teamcofh:cofh_core:1.18.2-9.2.3.47")
-    implementation fg.deobf("com.teamcofh:thermal_core:1.18.2-9.2.1.48")
-    implementation fg.deobf("dev.latvian.mods:rhino-forge:1802.2.1-build.255")
-    implementation fg.deobf("dev.architectury:architectury-forge:4.11.93")
-    implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1802.3.11-build.177") {
-        transitive = false
-    }
-    implementation("com.kotori316:scalablecatsforce:2.13.8-build-4:with-library") {
-        transitive = false
-    }
-    implementation fg.deobf("net.bdew:bdlib:1.19.3.7-mc1.18.2")
-    implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.5-build.569") {
-        transitive = false
-    }
-    implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.18.2:12.0.1")
+	implementation fg.deobf("com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.211")
+	implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.1")
+	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.18:3.0.57")
+	implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
+	implementation fg.deobf("slimeknights.mantle:Mantle:1.18.2-1.9.45")
+	implementation fg.deobf("com.teamcofh:cofh_core:1.18.2-9.2.3.47")
+	implementation fg.deobf("com.teamcofh:thermal_core:1.18.2-9.2.1.48")
+	implementation fg.deobf("dev.latvian.mods:rhino-forge:1802.2.1-build.255")
+	implementation fg.deobf("dev.architectury:architectury-forge:4.11.93")
+	implementation fg.deobf("dev.ftb.mods:ftb-library-forge:1802.3.11-build.177") {
+		transitive = false
+	}
+	implementation("com.kotori316:scalablecatsforce:2.13.8-build-4:with-library") {
+		transitive = false
+	}
+	implementation fg.deobf("net.bdew:bdlib:1.19.3.7-mc1.18.2")
+	implementation fg.deobf("dev.latvian.mods:kubejs-forge:1802.5.5-build.569") {
+		transitive = false
+	}
+	implementation fg.deobf("net.darkhax.openloader:OpenLoader-Forge-1.18.2:12.0.1")
 	implementation fg.deobf("dev.gigaherz.jsonthings:JsonThings-1.18.2:0.4.15")
-    implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.18.2-8.4.0-161")
+	implementation fg.deobf("blusunrize.immersiveengineering:ImmersiveEngineering:1.18.2-8.4.0-161")
 	implementation fg.deobf("com.simibubi.create:create-1.18.2:0.5.1.f-332:all") {
 		transitive = false
 	}
-    implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.18.2-3.6.4.113")
-    implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.5.465")
-    implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.5.465:generators")
-    implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1802.1.6-build.220") {
-        transitive = false
-    }
-    implementation fg.deobf("com.teamcofh:thermal_foundation:1.18.2-9.2.2.58")
-    implementation fg.deobf("com.teamcofh:thermal_expansion:1.18.2-9.2.2.24")
-    implementation fg.deobf("com.teamcofh:thermal_integration:1.18.2-9.2.1.18")
-    implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.18.2-33.0.7544")
-    implementation fg.deobf("net.bdew:factorium:1.1.0.10-mc1.18.2")
+	implementation fg.deobf("slimeknights.tconstruct:TConstruct:1.18.2-3.6.4.113")
+	implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.5.465")
+	implementation fg.deobf("mekanism:Mekanism:1.18.2-10.2.5.465:generators")
+	implementation fg.deobf("dev.ftb.mods:ftb-industrial-contraptions:1802.1.6-build.220") {
+		transitive = false
+	}
+	implementation fg.deobf("com.teamcofh:thermal_foundation:1.18.2-9.2.2.58")
+	implementation fg.deobf("com.teamcofh:thermal_expansion:1.18.2-9.2.2.24")
+	implementation fg.deobf("com.teamcofh:thermal_integration:1.18.2-9.2.1.18")
+	implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.18.2-33.0.7544")
+	implementation fg.deobf("net.bdew:factorium:1.1.0.10-mc1.18.2")
 
-    //CurseMaven
-    implementation fg.deobf("curse.maven:ato-405593:3975599")
-    implementation fg.deobf("curse.maven:allthemodium-364466:4019806")
-    implementation fg.deobf("curse.maven:electrodynamics-316867:3928753")
-    implementation fg.deobf("curse.maven:voluminous-energy-416704:4627233")
-    implementation fg.deobf("curse.maven:cyclops-core-232758:4808709")
-    implementation fg.deobf("curse.maven:common-capabilities-247007:4391353")
-    implementation fg.deobf("curse.maven:integrated-dynamics-236307:4791797")
-    implementation fg.deobf("curse.maven:essentials-293752:3796423")
-    implementation fg.deobf("curse.maven:crossroads-mc-250231:4811933")
-    implementation fg.deobf("curse.maven:assemblylinemachines-388282:3949460")
-    implementation fg.deobf("curse.maven:smartbrainlib-661293:4458592")
+	//CurseMaven
+	implementation fg.deobf("curse.maven:ato-405593:3975599")
+	implementation fg.deobf("curse.maven:allthemodium-364466:4019806")
+	implementation fg.deobf("curse.maven:electrodynamics-316867:3928753")
+	implementation fg.deobf("curse.maven:voluminous-energy-416704:4627233")
+	implementation fg.deobf("curse.maven:cyclops-core-232758:4808709")
+	implementation fg.deobf("curse.maven:common-capabilities-247007:4391353")
+	implementation fg.deobf("curse.maven:integrated-dynamics-236307:4791797")
+	implementation fg.deobf("curse.maven:essentials-293752:3796423")
+	implementation fg.deobf("curse.maven:crossroads-mc-250231:4811933")
+	implementation fg.deobf("curse.maven:assemblylinemachines-388282:3949460")
+	implementation fg.deobf("curse.maven:smartbrainlib-661293:4458592")
 	implementation fg.deobf("curse.maven:modonomicon-538392:4641770")
-    implementation fg.deobf("curse.maven:occultism-361026:4729072")
-    implementation fg.deobf("curse.maven:cyclic-239286:4658622")
-    implementation fg.deobf("curse.maven:blood-magic-224791:3953207")
-    implementation fg.deobf("curse.maven:lavatech-533955:4154002")
-    implementation fg.deobf("curse.maven:industrial-reborn-358877:4034099")
+	implementation fg.deobf("curse.maven:occultism-361026:4729072")
+	implementation fg.deobf("curse.maven:cyclic-239286:4658622")
+	implementation fg.deobf("curse.maven:blood-magic-224791:3953207")
+	implementation fg.deobf("curse.maven:lavatech-533955:4154002")
+	implementation fg.deobf("curse.maven:industrial-reborn-358877:4034099")
 
 	//Performance
-    implementation fg.deobf("curse.maven:yeetusexperimentus-635427:4377180")
+	implementation fg.deobf("curse.maven:yeetusexperimentus-635427:4377180")
 	implementation fg.deobf("curse.maven:modernfix-790626:4980942")
 	implementation fg.deobf("curse.maven:ferritecore-429235:4074294")
 	implementation fg.deobf("curse.maven:lazy-dfu-forge-460819:3544496")
