@@ -7,6 +7,8 @@ plugins {
 	id "com.github.johnrengelman.shadow"  version "[8,9)"
 }
 
+apply from: "mixinTweakFix.gradle"
+
 repositories {
 	jcenter()
 	flatDir {
@@ -143,7 +145,6 @@ minecraft {
 			property "mixin.env.remapRefMap", "true"
 			property "mixin.env.refMapRemappingFile", "${buildDir}/createSrgToMcp/output.srg"
 			environment "MC_VERSION", mcVersion
-			jvmArgs "-Dmixin.hotSwap=true"
 			mods {
 				"${modId}" {
 					source sourceSets.main
