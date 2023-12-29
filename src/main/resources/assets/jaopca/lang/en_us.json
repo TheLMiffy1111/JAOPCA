@@ -31,5 +31,10 @@
     "item.jaopca.mekanism_shards": "%s Shard",
     "item.jaopca.mekanism_crystals": "%s Crystal",
     "slurry.jaopca.mekanism_dirty": "Dirty %s Slurry",
-    "slurry.jaopca.mekanism_clean": "Clean %s Slurry"
+    "slurry.jaopca.mekanism_clean": "Clean %s Slurry",
+
+    "fluid_type.jaopca.nuclearcraft_slurries": "%s Slurry",
+    "item.jaopca.nuclearcraft_slurries": "%s Slurry Bucket",
+    "fluid_type.jaopca.nuclearcraft_clean_slurries": "%s Clean Slurry",
+    "item.jaopca.nuclearcraft_clean_slurries": "%s Clean Slurry Bucket"
 }

@@ -3,6 +3,6 @@
     "textures": {
         "layer0": "jaopca:item/blank",
         "layer1": "minecraft:item/bucket",
-        "layer2": "jaopca:item/metallic/electrodynamics_sulfates"
+        "layer2": "jaopca:item/metallic/nuclearcraft_clean_slurries"
     }
 }
