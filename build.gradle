@@ -211,7 +211,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:occultism-361026:4973420")
 	implementation fg.deobf("curse.maven:flib-661261:4724762")
 	implementation fg.deobf("curse.maven:cyclic-239286:4976541")
-    implementation fg.deobf("curse.maven:blood-magic-224791:4779711")
+	implementation fg.deobf("curse.maven:blood-magic-224791:4779711")
 	//implementation fg.deobf("curse.maven:industrial-reborn-358877:")
 	//implementation fg.deobf("curse.maven:ic2-classic-242942:")
 	implementation fg.deobf("curse.maven:bdlib-70496:4670650")
