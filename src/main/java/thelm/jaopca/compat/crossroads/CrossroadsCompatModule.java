@@ -97,28 +97,28 @@ public class CrossroadsCompatModule implements IModule {
 								new ResourceLocation("jaopca", "crossroads.material_to_molten."+name),
 								materialLocation, moltenLocation, baseAmount);
 					}
-				}
-				if(!type.isDust() && !MOLTEN_BLACKLIST.contains(name) && !configDustToMoltenBlacklist.contains(name)) {
-					ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
-					if(itemTags.contains(dustLocation)) {
-						helper.registerCrucibleRecipe(
-								new ResourceLocation("jaopca", "crossroads.dust_to_molten."+name),
-								dustLocation, moltenLocation, baseAmount);
+					if(!MOLTEN_BLACKLIST.contains(name) && !configDustToMoltenBlacklist.contains(name)) {
+						ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+						if(itemTags.contains(dustLocation)) {
+							helper.registerCrucibleRecipe(
+									new ResourceLocation("jaopca", "crossroads.dust_to_molten."+name),
+									dustLocation, moltenLocation, baseAmount);
+						}
 					}
-				}
-				if(!MOLTEN_BLACKLIST.contains(name) && !configNuggetToMoltenBlacklist.contains(name)) {
-					ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", name);
-					if(itemTags.contains(nuggetLocation)) {
-						helper.registerCrucibleRecipe(
-								new ResourceLocation("jaopca", "crossroads.nugget_to_molten."+name),
-								nuggetLocation, moltenLocation, (int)Math.floor(baseAmount/9F));
+					if(!MOLTEN_BLACKLIST.contains(name) && !configNuggetToMoltenBlacklist.contains(name)) {
+						ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", name);
+						if(itemTags.contains(nuggetLocation)) {
+							helper.registerCrucibleRecipe(
+									new ResourceLocation("jaopca", "crossroads.nugget_to_molten."+name),
+									nuggetLocation, moltenLocation, (int)Math.floor(baseAmount/9F));
+						}
 					}
-				}
-				if(!MOLTEN_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
-					ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
-					helper.registerFluidCoolingRecipe(
-							new ResourceLocation("jaopca", "crossroads.molten_to_material."+name),
-							moltenLocation, baseAmount, materialLocation, 1, 1500, 100);
+					if(!MOLTEN_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
+						ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+						helper.registerFluidCoolingRecipe(
+								new ResourceLocation("jaopca", "crossroads.molten_to_material."+name),
+								moltenLocation, baseAmount, materialLocation, 1, 1500, 100);
+					}
 				}
 			}
 		}

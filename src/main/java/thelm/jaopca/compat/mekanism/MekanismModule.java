@@ -26,6 +26,7 @@ import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.api.resources.IInMemoryResourcePack;
+import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormType;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryInfo;
 import thelm.jaopca.compat.mekanism.slurries.SlurryFormType;
 import thelm.jaopca.items.ItemFormType;
@@ -106,12 +107,13 @@ public class MekanismModule implements IModule {
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
+		ISlurryFormType slurryFormType = SlurryFormType.INSTANCE;
 		Set<ResourceLocation> itemTags = api.getItemTags();
 		ResourceLocation waterLocation = new ResourceLocation("minecraft:water");
 		for(IMaterial material : formRequest.getMaterials()) {
-			ISlurryInfo dirtySlurryInfo = SlurryFormType.INSTANCE.getMaterialFormInfo(dirtySlurryForm, material);
+			ISlurryInfo dirtySlurryInfo = slurryFormType.getMaterialFormInfo(dirtySlurryForm, material);
 			ResourceLocation dirtySlurryLocation = miscHelper.getTagLocation("mekanism:dirty", material.getName());
-			ISlurryInfo cleanSlurryInfo = SlurryFormType.INSTANCE.getMaterialFormInfo(cleanSlurryForm, material);
+			ISlurryInfo cleanSlurryInfo = slurryFormType.getMaterialFormInfo(cleanSlurryForm, material);
 			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());
 			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
 			ResourceLocation crystalLocation = miscHelper.getTagLocation("mekanism:crystals", material.getName());
