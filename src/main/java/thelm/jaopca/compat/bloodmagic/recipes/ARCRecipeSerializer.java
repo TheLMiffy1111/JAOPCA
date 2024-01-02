@@ -85,6 +85,7 @@ public class ARCRecipeSerializer implements IRecipeSerializer {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			if(result == null) {
 				result = stack;
@@ -94,7 +95,6 @@ public class ARCRecipeSerializer implements IRecipeSerializer {
 			}
 		}
 		if(result == null) {
-			LOGGER.warn("No main output in recipe {}", key);
 			result = ItemStack.EMPTY;
 		}
 		FluidStack fluidResult = MiscHelper.INSTANCE.getFluidStack(fluidOutput, fluidOutputAmount);

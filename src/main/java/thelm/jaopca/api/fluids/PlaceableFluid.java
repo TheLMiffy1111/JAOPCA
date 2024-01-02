@@ -143,6 +143,7 @@ public abstract class PlaceableFluid extends Fluid {
 		}
 		return flow.normalize();
 	}
+
 	private boolean affectsFlow(FluidState otherState) {
 		return otherState.isEmpty() || otherState.getType().isSame(this);
 	}

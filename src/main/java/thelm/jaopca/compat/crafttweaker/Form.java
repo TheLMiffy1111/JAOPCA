@@ -11,8 +11,10 @@ import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.tag.CraftTweakerTagRegistry;
 import com.blamejared.crafttweaker.api.tag.MCTag;
+import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
 
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -81,18 +83,26 @@ public class Form {
 
 	@ZenCodeType.Method
 	public MCTag getItemTag(String suffix) {
-		return getTag(Registry.ITEM_REGISTRY.location(), suffix);
+		return getTag(Registry.ITEM_REGISTRY, suffix);
 	}
 
 	@ZenCodeType.Method
 	public MCTag getFluidTag(String suffix) {
-		return getTag(Registry.FLUID_REGISTRY.location(), suffix);
+		return getTag(Registry.FLUID_REGISTRY, suffix);
 	}
 
 	@ZenCodeType.Method
 	public MCTag getTag(ResourceLocation registry, String suffix) {
-		return CraftTweakerTagRegistry.INSTANCE.tagManager(registry).
-				tag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix, form.getTagSeparator()));
+		return getTag(ResourceKey.createRegistryKey(registry), suffix);
+	}
+
+	public <T> MCTag getTag(ResourceKey<? extends Registry<T>> registry, String suffix) {
+		return getTag(CraftTweakerTagRegistry.INSTANCE.tagManager(registry), suffix);
+	}
+
+	@ZenCodeType.Method
+	public MCTag getTag(ITagManager<?> tagManager, String suffix) {
+		return tagManager.tag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix, form.getTagSeparator()));
 	}
 
 	@ZenCodeType.Method

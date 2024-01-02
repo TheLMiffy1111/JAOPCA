@@ -9,9 +9,11 @@ import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.tag.CraftTweakerTagRegistry;
 import com.blamejared.crafttweaker.api.tag.MCTag;
+import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
 import com.google.common.collect.TreeBasedTable;
 
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -61,20 +63,28 @@ public class MaterialForm {
 
 	@ZenCodeType.Method
 	public MCTag asItemTag() {
-		return asTag(Registry.ITEM_REGISTRY.location());
+		return asTag(Registry.ITEM_REGISTRY);
 	}
 
 	@ZenCodeType.Method
 	public MCTag asFluidTag() {
-		return asTag(Registry.FLUID_REGISTRY.location());
+		return asTag(Registry.FLUID_REGISTRY);
 	}
 
 	@ZenCodeType.Method
 	public MCTag asTag(ResourceLocation registry) {
-		return CraftTweakerTagRegistry.INSTANCE.tagManager(registry).
-				tag(MiscHelper.INSTANCE.getTagLocation(
-						info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName(),
-						info.getMaterialForm().getForm().getTagSeparator()));
+		return asTag(ResourceKey.createRegistryKey(registry));
+	}
+
+	public <T> MCTag asTag(ResourceKey<? extends Registry<T>> registry) {
+		return asTag(CraftTweakerTagRegistry.INSTANCE.tagManager(registry));
+	}
+
+	@ZenCodeType.Method
+	public MCTag asTag(ITagManager<?> tagManager) {
+		return tagManager.tag(MiscHelper.INSTANCE.getTagLocation(
+				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName(),
+				info.getMaterialForm().getForm().getTagSeparator()));
 	}
 
 	@ZenCodeType.Method

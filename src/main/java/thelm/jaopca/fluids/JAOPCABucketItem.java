@@ -120,7 +120,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		else {
 			BlockPos resultPos = blockHitResult.getBlockPos();
 			Direction direction = blockHitResult.getDirection();
-			BlockPos offsetPos = resultPos.relative(blockHitResult.getDirection());
+			BlockPos offsetPos = resultPos.relative(direction);
 			if(world.mayInteract(player, resultPos) && player.mayUseItemAt(offsetPos, direction, stack)) {
 				BlockState state = world.getBlockState(resultPos);
 				BlockPos placePos = canBlockContainFluid(world, resultPos, state) ? resultPos : offsetPos;

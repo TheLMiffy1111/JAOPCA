@@ -125,6 +125,7 @@ public class CrossroadsModule implements IModule {
 			helper.registerBlastFurnaceRecipe(
 					new ResourceLocation("jaopca", "crossroads.clump_to_molten."+material.getName()),
 					clumpLocation, moltenLocation, 90, 1);
+
 			api.registerSmeltingRecipe(
 					new ResourceLocation("jaopca", "crossroads.grit_to_nugget."+material.getName()),
 					gritLocation, nuggetLocation, 7, 0.7F, 200);

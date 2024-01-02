@@ -1,7 +1,5 @@
 package thelm.jaopca.compat.thermalexpansion.recipes;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
