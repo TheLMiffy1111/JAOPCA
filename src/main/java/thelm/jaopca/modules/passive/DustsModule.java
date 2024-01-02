@@ -7,7 +7,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
-import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;

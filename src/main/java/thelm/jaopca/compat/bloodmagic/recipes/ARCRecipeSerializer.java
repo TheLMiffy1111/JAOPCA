@@ -94,7 +94,6 @@ public class ARCRecipeSerializer implements IRecipeSerializer {
 			}
 		}
 		if(result == null) {
-			LOGGER.warn("No main output in recipe {}", key);
 			result = ItemStack.EMPTY;
 		}
 		FluidStack fluidResult = MiscHelper.INSTANCE.getFluidStack(fluidOutput, fluidOutputAmount);
