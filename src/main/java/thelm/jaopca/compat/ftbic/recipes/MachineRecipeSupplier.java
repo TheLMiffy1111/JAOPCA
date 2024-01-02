@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.ftbic.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -53,8 +54,8 @@ public abstract class MachineRecipeSupplier implements Supplier<MachineRecipe> {
 				++i;
 			}
 			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
-			if(ing.hasNoMatchingItems()) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
+			if(ing.isEmpty()) {
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			itemInputs.add(new IngredientWithCount(ing, count));
 		}
@@ -70,7 +71,7 @@ public abstract class MachineRecipeSupplier implements Supplier<MachineRecipe> {
 			}
 			FluidStack fs = MiscHelper.INSTANCE.getFluidStack(in, amount);
 			if(fs.isEmpty()) {
-				LOGGER.warn("Empty input in recipe {}: {}", key, in);
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			fluidInputs.add(fs);
 		}
@@ -92,6 +93,7 @@ public abstract class MachineRecipeSupplier implements Supplier<MachineRecipe> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			itemOutputs.add(new StackWithChance(stack, chance));
 		}
@@ -108,8 +110,12 @@ public abstract class MachineRecipeSupplier implements Supplier<MachineRecipe> {
 			FluidStack stack = MiscHelper.INSTANCE.getFluidStack(out, amount);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			fluidOutputs.add(stack);
+		}
+		if(itemOutputs.isEmpty() && fluidOutputs.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(itemOutput)+", "+Arrays.deepToString(fluidOutput));
 		}
 		MachineRecipe rec = new MachineRecipe(serializerSupplier().get(), key);
 		rec.inputItems.addAll(itemInputs);

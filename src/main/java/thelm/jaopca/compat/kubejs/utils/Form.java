@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import dev.latvian.kubejs.fluid.FluidStackJS;
 import dev.latvian.kubejs.item.ItemStackJS;
-import dev.latvian.kubejs.item.ingredient.TagIngredientJS;
+import me.shedaniel.architectury.hooks.forge.FluidStackHooksForge;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.utils.MiscHelper;
@@ -60,8 +62,8 @@ public class Form {
 		return form.getMaterials().contains(material.getInternal());
 	}
 
-	public TagIngredientJS getTag(String suffix) {
-		return TagIngredientJS.createTag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix, form.getTagSeparator()).toString());
+	public String getTag(String suffix) {
+		return MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix, form.getTagSeparator()).toString();
 	}
 
 	public ItemStackJS getItemStack(String suffix, int count) {
@@ -72,6 +74,12 @@ public class Form {
 
 	public ItemStackJS getItemStack(String suffix) {
 		return getItemStack(suffix, 1);
+	}
+
+	public FluidStackJS getFluidStack(String suffix, int count) {
+		MiscHelper helper = MiscHelper.INSTANCE;
+		FluidStack stack = helper.getFluidStack(helper.getTagLocation(form.getSecondaryName(), suffix), count);
+		return FluidStackJS.of(FluidStackHooksForge.fromForge(stack));
 	}
 
 	public MaterialForm getMaterialForm(Material material) {

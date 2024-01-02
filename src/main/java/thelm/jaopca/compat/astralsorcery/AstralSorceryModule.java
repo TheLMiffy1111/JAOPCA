@@ -55,10 +55,10 @@ public class AstralSorceryModule implements IModule {
 				break;
 			case GEM:
 			case CRYSTAL:
-				outputCount = 5;
+				outputCount = 4;
 				break;
 			case DUST:
-				outputCount = 6;
+				outputCount = 5;
 				break;
 			}
 			helper.registerInfuserRecipe(

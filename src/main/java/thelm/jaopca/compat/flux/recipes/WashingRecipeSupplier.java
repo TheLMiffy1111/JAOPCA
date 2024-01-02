@@ -60,14 +60,14 @@ public class WashingRecipeSupplier implements Supplier<WashingRecipe> {
 	public WashingRecipe get() {
 		MachineRecipeSerializer.Builder builder = new MachineRecipeSerializer.Builder();
 		Ingredient ing = FluxHelper.INSTANCE.getCountedIngredient(input, inputCount);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		builder.ingredients.add(ing);
 		if(secondInputCount > 0) {
 			Ingredient secondIng = FluxHelper.INSTANCE.getCountedIngredient(secondInput, secondInputCount);
-			if(secondIng.hasNoMatchingItems()) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, secondIng);
+			if(secondIng.isEmpty()) {
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+secondIng);
 			}
 			else {
 				builder.ingredients.add(secondIng);
@@ -75,7 +75,7 @@ public class WashingRecipeSupplier implements Supplier<WashingRecipe> {
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		builder.result = stack;
 		builder.experience = experience;

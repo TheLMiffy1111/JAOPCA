@@ -44,11 +44,11 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected Optional<Boolean> isFireSource = Optional.empty();
 
 	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings) {
-		super(Block.Properties.create(settings.getMaterialFunction().apply(material),
+		super(Block.Properties.of(settings.getMaterialFunction().apply(material),
 				settings.getMaterialColorFunction().apply(material)).
-				hardnessAndResistance((float)settings.getBlockHardnessFunction().applyAsDouble(material)).
-				setLightLevel(state->settings.getLightValueFunction().applyAsInt(material)).
-				notSolid());
+				strength((float)settings.getBlockHardnessFunction().applyAsDouble(material)).
+				lightLevel(state->settings.getLightValueFunction().applyAsInt(material)).
+				noOcclusion());
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -119,7 +119,7 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	@Override
-	public VoxelShape getRaytraceShape(BlockState blockState, IBlockReader world, BlockPos pos) {
+	public VoxelShape getInteractionShape(BlockState blockState, IBlockReader world, BlockPos pos) {
 		return raytraceShape;
 	}
 
@@ -164,7 +164,7 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	@Override
-	public IFormattableTextComponent getTranslatedName() {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+form.getName(), material, getTranslationKey());
+	public IFormattableTextComponent getName() {
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+form.getName(), material, getDescriptionId());
 	}
 }

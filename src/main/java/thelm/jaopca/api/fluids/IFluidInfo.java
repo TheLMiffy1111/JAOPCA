@@ -16,15 +16,15 @@ public interface IFluidInfo extends IMaterialFormInfo, IFluidProvider, IBlockPro
 	IMaterialFormBucketItem getMaterialFormBucketItem();
 
 	default Fluid getFluid() {
-		return getMaterialFormFluid().asFluid();
+		return getMaterialFormFluid().toFluid();
 	}
 
 	default Block getFluidBlock() {
-		return getMaterialFormFluidBlock().asBlock();
+		return getMaterialFormFluidBlock().toBlock();
 	}
 
 	default Item getBucketItem() {
-		return getMaterialFormBucketItem().asItem();
+		return getMaterialFormBucketItem().toItem();
 	}
 
 	@Override

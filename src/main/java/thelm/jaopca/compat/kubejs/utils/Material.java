@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import dev.latvian.kubejs.fluid.FluidStackJS;
 import dev.latvian.kubejs.item.ItemStackJS;
-import dev.latvian.kubejs.item.ingredient.TagIngredientJS;
 import me.shedaniel.architectury.hooks.forge.FluidStackHooksForge;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -50,12 +49,16 @@ public class Material {
 		return material.hasExtra(index);
 	}
 
-	public TagIngredientJS getTag(String prefix) {
+	public boolean isSmallStorageBlock() {
+		return material.isSmallStorageBlock();
+	}
+
+	public String getTag(String prefix) {
 		return getTag(prefix, "/");
 	}
 
-	public TagIngredientJS getTag(String prefix, String tagSeperator) {
-		return TagIngredientJS.createTag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator).toString());
+	public String getTag(String prefix, String tagSeperator) {
+		return MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator).toString();
 	}
 
 	public ItemStackJS getItemStack(String prefix, int count) {

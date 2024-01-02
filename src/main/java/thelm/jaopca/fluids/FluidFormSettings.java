@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import thelm.jaopca.api.fluids.IBucketItemCreator;
 import thelm.jaopca.api.fluids.IFluidAttributesCreator;
 import thelm.jaopca.api.fluids.IFluidBlockCreator;
@@ -28,8 +29,8 @@ public class FluidFormSettings implements IFluidFormSettings {
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->100;
 	private Predicate<IMaterial> canSourcesMultiplyFunction = material->false;
 	private IFluidAttributesCreator fluidAttributesCreator = JAOPCAFluidAttributes::new;
-	private Supplier<SoundEvent> fillSoundSupplier = ()->null;
-	private Supplier<SoundEvent> emptySoundSupplier = ()->null;
+	private Supplier<SoundEvent> fillSoundSupplier = ()->SoundEvents.BUCKET_FILL;
+	private Supplier<SoundEvent> emptySoundSupplier = ()->SoundEvents.BUCKET_EMPTY;
 	private ToIntFunction<IMaterial> densityFunction = material->1000;
 	private ToIntFunction<IMaterial> viscosityFunction = material->tickRateFunction.applyAsInt(material)*200;
 	private ToIntFunction<IMaterial> temperatureFunction = material->300;
@@ -39,18 +40,19 @@ public class FluidFormSettings implements IFluidFormSettings {
 	private Function<IMaterial, Material> materialFunction = material->Material.WATER;
 	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
 	//material->{
-		//int color = material.getColor();
-		//return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
-		//		min((matColor1, matColor2)->Integer.compare(
-		//				MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
-		//				MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
-		//		orElse(MaterialColor.IRON);
+	//int color = material.getColor();
+	//return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
+	//		min((matColor1, matColor2)->Integer.compare(
+	//				MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
+	//				MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
+	//		orElse(MaterialColor.IRON);
 	//};
 	private ToIntFunction<IMaterial> lightValueFunction = material->0;
 	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->100;
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
+	private ToIntFunction<IMaterial> fireTimeFunction = material->-1;
 	private IBucketItemCreator bucketItemCreator = JAOPCABucketItem::new;
 	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
@@ -290,6 +292,17 @@ public class FluidFormSettings implements IFluidFormSettings {
 	@Override
 	public Predicate<IMaterial> getIsFireSourceFunction() {
 		return isFireSourceFunction;
+	}
+
+	@Override
+	public IFluidFormSettings setFireTimeFunction(ToIntFunction<IMaterial> fireTimeFunction) {
+		this.fireTimeFunction = fireTimeFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getFireTimeFunction() {
+		return fireTimeFunction;
 	}
 
 	@Override

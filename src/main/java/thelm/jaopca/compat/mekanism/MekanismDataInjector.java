@@ -109,24 +109,24 @@ public class MekanismDataInjector {
 
 	static void putJsons(IInMemoryResourcePack pack) {
 		GAS_TAGS_INJECT.asMap().forEach((location, locations)->{
-			ITag.Builder builder = ITag.Builder.create();
-			locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
-			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/gases/"+location.getPath()+".json"), builder.serialize());
+			ITag.Builder builder = ITag.Builder.tag();
+			locations.forEach(l->builder.addElement(l, "inmemory:jaopca"));
+			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/gases/"+location.getPath()+".json"), builder.serializeToJson());
 		});
 		INFUSE_TYPE_TAGS_INJECT.asMap().forEach((location, locations)->{
-			ITag.Builder builder = ITag.Builder.create();
-			locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
-			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/infuse_types/"+location.getPath()+".json"), builder.serialize());
+			ITag.Builder builder = ITag.Builder.tag();
+			locations.forEach(l->builder.addElement(l, "inmemory:jaopca"));
+			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/infuse_types/"+location.getPath()+".json"), builder.serializeToJson());
 		});
 		PIGMENT_TAGS_INJECT.asMap().forEach((location, locations)->{
-			ITag.Builder builder = ITag.Builder.create();
-			locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
-			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/pigments/"+location.getPath()+".json"), builder.serialize());
+			ITag.Builder builder = ITag.Builder.tag();
+			locations.forEach(l->builder.addElement(l, "inmemory:jaopca"));
+			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/pigments/"+location.getPath()+".json"), builder.serializeToJson());
 		});
 		SLURRY_TAGS_INJECT.asMap().forEach((location, locations)->{
-			ITag.Builder builder = ITag.Builder.create();
-			locations.forEach(l->builder.addItemEntry(l, "inmemory:jaopca"));
-			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/slurries/"+location.getPath()+".json"), builder.serialize());
+			ITag.Builder builder = ITag.Builder.tag();
+			locations.forEach(l->builder.addElement(l, "inmemory:jaopca"));
+			pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/slurries/"+location.getPath()+".json"), builder.serializeToJson());
 		});
 	}
 }

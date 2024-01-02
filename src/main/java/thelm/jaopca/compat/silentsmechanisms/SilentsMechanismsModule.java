@@ -55,7 +55,7 @@ public class SilentsMechanismsModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		return builder.build();
 	}
@@ -76,9 +76,9 @@ public class SilentsMechanismsModule implements IModule {
 		SilentsMechanismsHelper helper = SilentsMechanismsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : chunkForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			IItemInfo chunksInfo = ItemFormType.INSTANCE.getMaterialFormInfo(chunkForm, material);
 			ResourceLocation chunksLocation = miscHelper.getTagLocation("silents_mechanisms:chunks", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
@@ -97,6 +97,7 @@ public class SilentsMechanismsModule implements IModule {
 							dustLocation, 1,
 							dustLocation, 1, 0.1F,
 					});
+
 			api.registerSmeltingRecipe(
 					new ResourceLocation("jaopca", "silents_mechanisms.chunks_to_material."+material.getName()),
 					chunksLocation, materialLocation, 1, 0.7F, 200);

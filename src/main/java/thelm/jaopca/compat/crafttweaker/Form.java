@@ -9,8 +9,12 @@ import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.impl.item.MCItemStack;
 import com.blamejared.crafttweaker.impl.tag.MCTag;
 import com.blamejared.crafttweaker.impl.tag.manager.TagManager;
+import com.blamejared.crafttweaker.impl.tag.manager.TagManagerFluid;
 import com.blamejared.crafttweaker.impl.tag.manager.TagManagerItem;
+import com.blamejared.crafttweaker.impl.tag.registry.CrTTagRegistry;
 
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.MaterialType;
@@ -76,13 +80,23 @@ public class Form {
 	}
 
 	@ZenCodeType.Method
-	public MCTag getTag(String suffix) {
+	public MCTag<Item> getItemTag(String suffix) {
 		return getTag(TagManagerItem.INSTANCE, suffix);
 	}
 
 	@ZenCodeType.Method
-	public MCTag getTag(TagManager manager, String suffix) {
-		return new MCTag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix, form.getTagSeparator()), manager);
+	public MCTag<Fluid> getFluidTag(String suffix) {
+		return getTag(TagManagerFluid.INSTANCE, suffix);
+	}
+
+	@ZenCodeType.Method
+	public <T> MCTag<T> getTag(String tagFolder, String suffix) {
+		return getTag(CrTTagRegistry.instance.getByTagFolder(tagFolder), suffix);
+	}
+
+	@ZenCodeType.Method
+	public <T> MCTag<T> getTag(TagManager<T> manager, String suffix) {
+		return manager.getTag(MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), suffix, form.getTagSeparator()));
 	}
 
 	@ZenCodeType.Method

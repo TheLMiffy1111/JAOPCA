@@ -35,9 +35,12 @@ public class CrystallizingRecipeSupplier implements Supplier<ChemicalCrystallize
 	@Override
 	public ChemicalCrystallizerIRecipe get() {
 		SlurryStackIngredient ing = MekanismHelper.INSTANCE.getSlurryStackIngredient(input, inputCount);
+		if(ing.getRepresentations().isEmpty()) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
+		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new ChemicalCrystallizerIRecipe(key, (ChemicalStackIngredient<?, ?>)ing, stack);
 	}

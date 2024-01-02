@@ -50,7 +50,7 @@ public class FluidCoolingRecipeSupplier implements Supplier<FluidCoolingRec> {
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new FluidCoolingRec(key, group, ing, stack, maxTemp, addedHeat, true);
 	}

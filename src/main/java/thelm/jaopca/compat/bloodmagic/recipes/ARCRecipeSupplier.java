@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.bloodmagic.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -51,11 +52,11 @@ public class ARCRecipeSupplier implements Supplier<RecipeARC> {
 	@Override
 	public RecipeARC get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		Ingredient ingTool = MiscHelper.INSTANCE.getIngredient(tool);
-		if(ingTool.hasNoMatchingItems()) {
+		if(ingTool.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+tool);
 		}
 		FluidStackIngredient fluidIng = BloodMagicHelper.INSTANCE.getFluidStackIngredient(fluidInput, fluidInputAmount);
@@ -78,6 +79,7 @@ public class ARCRecipeSupplier implements Supplier<RecipeARC> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			if(result == null) {
 				result = stack;
@@ -87,10 +89,12 @@ public class ARCRecipeSupplier implements Supplier<RecipeARC> {
 			}
 		}
 		if(result == null) {
-			LOGGER.warn("No output in recipe {}", key);
 			result = ItemStack.EMPTY;
 		}
 		FluidStack fluidResult = MiscHelper.INSTANCE.getFluidStack(fluidOutput, fluidOutputAmount);
+		if(result.isEmpty() && chanceOutputs.isEmpty() && fluidResult.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output)+", "+fluidOutput);
+		}
 		return new RecipeARC(key, ing, ingTool, fluidIng, result, chanceOutputs, fluidResult, consumeInput);
 	}
 }

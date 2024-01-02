@@ -9,8 +9,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.ToIntFunction;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -240,6 +238,8 @@ public class TConstructCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		TConstructHelper helper = TConstructHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
+		Set<ResourceLocation> fluidTags = api.getFluidTags();
 		Set<IMaterial> moltenMaterials = api.getForm("molten").getMaterials();
 		ToIntFunction<FluidStack> tempFunction = stack->stack.getFluid().getAttributes().getTemperature(stack)-300;
 		ToIntFunction<FluidStack> castTimeFunction = stack->ICastingRecipe.calcCoolingTime(stack);
@@ -260,10 +260,9 @@ public class TConstructCompatModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					(!jaopcaOnly || moltenMaterials.contains(material))) {
+			if(!type.isDust() && (!jaopcaOnly || moltenMaterials.contains(material))) {
 				ResourceLocation moltenLocation = miscHelper.getTagLocation("molten", material.getName(), "_");
-				if(api.getFluidTags().contains(moltenLocation)) {
+				if(fluidTags.contains(moltenLocation)) {
 					if(!MATERIAL_BLACKLIST.contains(name) && !configMaterialToMoltenBlacklist.contains(name)) {
 						ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 						helper.registerMeltingRecipe(
@@ -273,16 +272,16 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!STORAGE_BLOCK_BLACKLIST.contains(name) && !configStorageBlockToMoltenBlacklist.contains(name)) {
 						ResourceLocation storageBlockLocation = miscHelper.getTagLocation("storage_blocks", material.getName());
-						if(api.getItemTags().contains(storageBlockLocation)) {
+						if(itemTags.contains(storageBlockLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.storage_block_to_molten."+material.getName()),
-									storageBlockLocation, moltenLocation, 1296,
+									storageBlockLocation, moltenLocation, (material.isSmallStorageBlock() ? 576 : 1296),
 									tempFunction, getMeltTimeFunction(3F), false);
 						}
 					}
 					if(!NUGGET_BLACKLIST.contains(name) && !configNuggetToMoltenBlacklist.contains(name)) {
 						ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-						if(api.getItemTags().contains(nuggetLocation)) {
+						if(itemTags.contains(nuggetLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.nugget_to_molten."+material.getName()),
 									nuggetLocation, moltenLocation, 16,
@@ -291,7 +290,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!DUST_BLACKLIST.contains(name) && !configDustToMoltenBlacklist.contains(name)) {
 						ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-						if(api.getItemTags().contains(dustLocation)) {
+						if(itemTags.contains(dustLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.nugget_to_molten."+material.getName()),
 									dustLocation, moltenLocation, 144,
@@ -300,7 +299,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!PLATE_BLACKLIST.contains(name) && !configPlateToMoltenBlacklist.contains(name)) {
 						ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-						if(api.getItemTags().contains(plateLocation)) {
+						if(itemTags.contains(plateLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.plate_to_molten."+material.getName()),
 									plateLocation, moltenLocation, 144,
@@ -309,7 +308,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!GENERAL_BLACKLIST.contains(name) && !configGearToMoltenBlacklist.contains(name)) {
 						ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
-						if(api.getItemTags().contains(gearLocation)) {
+						if(itemTags.contains(gearLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.gear_to_molten."+material.getName()),
 									gearLocation, moltenLocation, 576,
@@ -318,7 +317,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!COIN_BLACKLIST.contains(name) && !configCoinToMoltenBlacklist.contains(name)) {
 						ResourceLocation coinLocation = miscHelper.getTagLocation("coins", material.getName());
-						if(api.getItemTags().contains(coinLocation)) {
+						if(itemTags.contains(coinLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.coin_to_molten."+material.getName()),
 									coinLocation, moltenLocation, 48,
@@ -327,7 +326,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!GENERAL_BLACKLIST.contains(name) && !configRodToMoltenBlacklist.contains(name)) {
 						ResourceLocation rodLocation = miscHelper.getTagLocation("rods", material.getName());
-						if(api.getItemTags().contains(rodLocation)) {
+						if(itemTags.contains(rodLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.rod_to_molten."+material.getName()),
 									rodLocation, moltenLocation, 72,
@@ -336,7 +335,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!GENERAL_BLACKLIST.contains(name) && !configSheetmetalToMoltenBlacklist.contains(name)) {
 						ResourceLocation sheetmetalLocation = miscHelper.getTagLocation("sheetmetals", material.getName());
-						if(api.getItemTags().contains(sheetmetalLocation)) {
+						if(itemTags.contains(sheetmetalLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "tconstruct.sheetmetal_to_molten."+material.getName()),
 									sheetmetalLocation, moltenLocation, 144,
@@ -345,7 +344,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!MATERIAL_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
 						ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-						if(ArrayUtils.contains(MaterialType.INGOTS, type)) {
+						if(type.isIngot()) {
 							helper.registerCastingTableRecipe(
 									new ResourceLocation("jaopca", "tconstruct.molten_to_material_gold_cast."+material.getName()),
 									ingotCastMultiLocation, moltenLocation, 144,
@@ -372,17 +371,17 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!STORAGE_BLOCK_BLACKLIST.contains(name) && !configToStorageBlockBlacklist.contains(name)) {
 						ResourceLocation storageBlockLocation = miscHelper.getTagLocation("storage_blocks", material.getName());
-						if(api.getItemTags().contains(storageBlockLocation)) {
+						if(itemTags.contains(storageBlockLocation)) {
 							helper.registerCastingBasinRecipe(
 									new ResourceLocation("jaopca", "tconstruct.molten_to_storage_block."+material.getName()),
-									Ingredient.EMPTY, moltenLocation, 1296,
+									Ingredient.EMPTY, moltenLocation, (material.isSmallStorageBlock() ? 576 : 1296),
 									storageBlockLocation, 1,
 									castTimeFunction, false, false);
 						}
 					}
 					if(!NUGGET_BLACKLIST.contains(name) && !configToNuggetBlacklist.contains(name)) {
 						ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-						if(api.getItemTags().contains(nuggetLocation)) {
+						if(itemTags.contains(nuggetLocation)) {
 							helper.registerCastingTableRecipe(
 									new ResourceLocation("jaopca", "tconstruct.molten_to_nugget_gold_cast."+material.getName()),
 									nuggetCastMultiLocation, moltenLocation, 16,
@@ -397,7 +396,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
 						ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-						if(api.getItemTags().contains(plateLocation)) {
+						if(itemTags.contains(plateLocation)) {
 							helper.registerCastingTableRecipe(
 									new ResourceLocation("jaopca", "tconstruct.molten_to_plate_gold_cast."+material.getName()),
 									plateCastMultiLocation, moltenLocation, 144,
@@ -412,7 +411,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!GENERAL_BLACKLIST.contains(name) && !configToGearBlacklist.contains(name)) {
 						ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
-						if(api.getItemTags().contains(gearLocation)) {
+						if(itemTags.contains(gearLocation)) {
 							helper.registerCastingTableRecipe(
 									new ResourceLocation("jaopca", "tconstruct.molten_to_gear_gold_cast."+material.getName()),
 									gearCastMultiLocation, moltenLocation, 576,
@@ -427,7 +426,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!GENERAL_BLACKLIST.contains(name) && !configToCoinBlacklist.contains(name)) {
 						ResourceLocation coinLocation = miscHelper.getTagLocation("coins", material.getName());
-						if(api.getItemTags().contains(coinLocation)) {
+						if(itemTags.contains(coinLocation)) {
 							helper.registerCastingTableRecipe(
 									new ResourceLocation("jaopca", "tconstruct.molten_to_coin_gold_cast."+material.getName()),
 									coinCastMultiLocation, moltenLocation, 48,
@@ -442,7 +441,7 @@ public class TConstructCompatModule implements IModule {
 					}
 					if(!GENERAL_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
 						ResourceLocation rodLocation = miscHelper.getTagLocation("rods", material.getName());
-						if(api.getItemTags().contains(rodLocation)) {
+						if(itemTags.contains(rodLocation)) {
 							helper.registerCastingTableRecipe(
 									new ResourceLocation("jaopca", "tconstruct.molten_to_rod_gold_cast."+material.getName()),
 									rodCastMultiLocation, moltenLocation, 72,

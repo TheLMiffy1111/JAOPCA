@@ -1,6 +1,7 @@
 package thelm.jaopca.materials;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -17,9 +18,11 @@ import net.minecraft.item.Rarity;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
+import thelm.jaopca.api.materials.MaterialColorEvent;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.client.colors.ColorHandler;
 import thelm.jaopca.config.ConfigHandler;
@@ -29,21 +32,30 @@ public class Material implements IMaterial {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
+	private static final Set<String> DEFAULT_SMALL_BLOCKS = new TreeSet<>(Arrays.asList(
+			"amethyst", "certus_quartz", "quartz"));
+
+	private static boolean ready = false;
+
 	private final String name;
 	private final MaterialType type;
-	private String modelType;
 	private final TreeSet<String> alternativeNames = new TreeSet<>();
-	private OptionalInt color = OptionalInt.empty();
-	private boolean hasEffect = false;
-	private Rarity displayRarity = Rarity.COMMON;
 	private final List<String> extras = new ArrayList<>();
+	private boolean hasEffect = false;
 	private final TreeSet<String> configModuleBlacklist = new TreeSet<>();
+	private boolean isSmallStorageBlock;
+	private String modelType;
+	private Rarity displayRarity = Rarity.COMMON;
+	private OptionalInt color = OptionalInt.empty();
 	private IDynamicSpecConfig config;
 	private ITag<Item> tag;
+	private boolean shouldFireColorEvent = true;
 
 	public Material(String name, MaterialType type) {
 		this.name = name;
 		this.type = type;
+
+		isSmallStorageBlock = DEFAULT_SMALL_BLOCKS.contains(name);
 
 		switch(type) {
 		case INGOT: case INGOT_PLAIN: default:
@@ -84,6 +96,11 @@ public class Material implements IMaterial {
 	}
 
 	@Override
+	public boolean isSmallStorageBlock() {
+		return isSmallStorageBlock;
+	}
+
+	@Override
 	public Set<String> getConfigModuleBlacklist() {
 		return Collections.unmodifiableNavigableSet(configModuleBlacklist);
 	}
@@ -95,26 +112,36 @@ public class Material implements IMaterial {
 
 	@Override
 	public int getColor() {
-		if(!color.isPresent() && config != null) {
-			DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
-				ITag<Item> tag = getTag();
-				try {
-					tag.getAllElements();
-				}
-				catch(Exception e) {
-					LOGGER.warn("Tried to get color for material {} when tag is not ready", name, e);
-					return;
-				}
-				color = OptionalInt.of(0xFFFFFF);
-				MiscHelper.INSTANCE.submitAsyncTask(()->{
-					try {
-						color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(tag), "The color of this material."));
-					}
-					catch(Exception e) {
-						LOGGER.warn("Unable to get color for material {}", name, e);
-					}
+		ITag<Item> tag = getTag();
+		if(!ready) {
+			try {
+				tag.getValues();
+				ready = true;
+			}
+			catch(Exception e) {
+				LOGGER.warn("Tried to get color for material {} when tag is not ready", name, e);
+			}
+		}
+		if(ready) {
+			if(!color.isPresent() && config != null) {
+				DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
+					shouldFireColorEvent = false;
+					color = OptionalInt.of(0xFFFFFF);
+					MiscHelper.INSTANCE.submitAsyncTask(()->{
+						try {
+							color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(tag), "The color of this material."));
+							MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
+						}
+						catch(Exception e) {
+							LOGGER.warn("Unable to get color for material {}", name, e);
+						}
+					});
 				});
-			});
+			}
+			if(color.isPresent() && shouldFireColorEvent) {
+				shouldFireColorEvent = false;
+				MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
+			}
 		}
 		return 0xFF000000 | color.orElse(0xFFFFFF);
 	}
@@ -140,6 +167,8 @@ public class Material implements IMaterial {
 		extras.clear();
 		extras.addAll(cfgList);
 
+		isSmallStorageBlock = config.getDefinedBoolean("general.isSmallStorageBlock", isSmallStorageBlock, "Is the storage block of this material small (2x2).");
+
 		MiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateModuleSet(
 				config.getDefinedStringList("general.moduleBlacklist", new ArrayList<>(configModuleBlacklist),
@@ -157,7 +186,7 @@ public class Material implements IMaterial {
 
 	private ITag<Item> getTag() {
 		if(tag == null) {
-			tag = ItemTags.makeWrapperTag("forge:"+type.getFormName()+'/'+name);
+			tag = ItemTags.bind("forge:"+type.getFormName()+'/'+name);
 		}
 		return tag;
 	}

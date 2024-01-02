@@ -66,7 +66,7 @@ public class FluxHelper {
 			itemListStream = Stream.of((Ingredient.IItemList[])obj);
 		}
 		else if(obj instanceof JsonElement) {
-			return Ingredient.deserialize((JsonElement)obj);
+			return Ingredient.fromJson((JsonElement)obj);
 		}
 		else {
 			itemListStream = Stream.empty();

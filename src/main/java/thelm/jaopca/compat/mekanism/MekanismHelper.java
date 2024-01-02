@@ -21,10 +21,7 @@ import mekanism.api.recipes.inputs.FluidStackIngredient;
 import mekanism.api.recipes.inputs.chemical.GasStackIngredient;
 import mekanism.api.recipes.inputs.chemical.SlurryStackIngredient;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.compat.mekanism.recipes.CombiningRecipeSupplier;
@@ -57,10 +54,10 @@ public class MekanismHelper {
 			return (FluidStackIngredient)obj;
 		}
 		else if(obj instanceof String) {
-			return FluidStackIngredient.from(getFluidTag(new ResourceLocation((String)obj)), amount);
+			return FluidStackIngredient.from(MiscHelper.INSTANCE.getFluidTag(new ResourceLocation((String)obj)), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return FluidStackIngredient.from(getFluidTag((ResourceLocation)obj), amount);
+			return FluidStackIngredient.from(MiscHelper.INSTANCE.getFluidTag((ResourceLocation)obj), amount);
 		}
 		else if(obj instanceof ITag<?>) {
 			return FluidStackIngredient.from((ITag<Fluid>)obj, amount);
@@ -162,13 +159,13 @@ public class MekanismHelper {
 			return new GasStack((IGasProvider)obj, amount);
 		}
 		else if(obj instanceof String) {
-			return getPreferredGasStack(getGasTag(new ResourceLocation((String)obj)).getAllElements(), amount);
+			return getPreferredGasStack(getGasTag(new ResourceLocation((String)obj)).getValues(), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return getPreferredGasStack(getGasTag((ResourceLocation)obj).getAllElements(), amount);
+			return getPreferredGasStack(getGasTag((ResourceLocation)obj).getValues(), amount);
 		}
 		else if(obj instanceof ITag<?>) {
-			return getPreferredGasStack(((ITag<Gas>)obj).getAllElements(), amount);
+			return getPreferredGasStack(((ITag<Gas>)obj).getValues(), amount);
 		}
 		return GasStack.EMPTY;
 	}
@@ -184,13 +181,13 @@ public class MekanismHelper {
 			return new SlurryStack((ISlurryProvider)obj, amount);
 		}
 		else if(obj instanceof String) {
-			return getPreferredSlurryStack(getSlurryTag(new ResourceLocation((String)obj)).getAllElements(), amount);
+			return getPreferredSlurryStack(getSlurryTag(new ResourceLocation((String)obj)).getValues(), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return getPreferredSlurryStack(getSlurryTag((ResourceLocation)obj).getAllElements(), amount);
+			return getPreferredSlurryStack(getSlurryTag((ResourceLocation)obj).getValues(), amount);
 		}
 		else if(obj instanceof ITag<?>) {
-			return getPreferredSlurryStack(((ITag<Slurry>)obj).getAllElements(), amount);
+			return getPreferredSlurryStack(((ITag<Slurry>)obj).getValues(), amount);
 		}
 		return SlurryStack.EMPTY;
 	}
@@ -228,8 +225,8 @@ public class MekanismHelper {
 	}
 
 	public ITag<Gas> getGasTag(ResourceLocation location) {
-		ITag<Gas> tag = ChemicalTags.GAS.getCollection().get(location);
-		return tag != null ? tag : Tag.getEmptyTag();
+		ITag<Gas> tag = ChemicalTags.GAS.getCollection().getTag(location);
+		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 
 	public GasStack getPreferredGasStack(Collection<Gas> collection, int amount) {
@@ -237,21 +234,11 @@ public class MekanismHelper {
 	}
 
 	public ITag<Slurry> getSlurryTag(ResourceLocation location) {
-		ITag<Slurry> tag = ChemicalTags.SLURRY.getCollection().get(location);
+		ITag<Slurry> tag = ChemicalTags.SLURRY.getCollection().getTag(location);
 		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 
 	public SlurryStack getPreferredSlurryStack(Collection<Slurry> collection, int amount) {
 		return new SlurryStack(MiscHelper.INSTANCE.getPreferredEntry(collection).orElse(MekanismAPI.EMPTY_SLURRY), amount);
-	}
-
-	public ITag<Fluid> getFluidTag(ResourceLocation location) {
-		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().get(location);
-		return tag != null ? tag : new EmptyNamedTag<>(location);
-	}
-
-	public ITag<Item> getItemTag(ResourceLocation location) {
-		ITag<Item> tag = TagCollectionManager.getManager().getItemTags().get(location);
-		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 }

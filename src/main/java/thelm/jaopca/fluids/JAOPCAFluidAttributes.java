@@ -1,6 +1,5 @@
 package thelm.jaopca.fluids;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -13,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class JAOPCAFluidAttributes extends FluidAttributes {
 
@@ -21,16 +21,16 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 
 	public JAOPCAFluidAttributes(IMaterialFormFluid fluid, IFluidFormSettings settings) {
 		super(FluidAttributes.builder(
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
+				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
 						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still"),
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
+				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
 						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow")).
 				sound(settings.getFillSoundSupplier().get(), settings.getEmptySoundSupplier().get()).
 				luminosity(settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
 				density(settings.getDensityFunction().applyAsInt(fluid.getMaterial())).
 				viscosity(settings.getViscosityFunction().applyAsInt(fluid.getMaterial())).
 				temperature(settings.getTemperatureFunction().applyAsInt(fluid.getMaterial())).
-				rarity(settings.getDisplayRarityFunction().apply(fluid.getMaterial())), fluid.asFluid());
+				rarity(settings.getDisplayRarityFunction().apply(fluid.getMaterial())), fluid.toFluid());
 		this.fluid = fluid;
 		this.settings = settings;
 	}
@@ -48,11 +48,11 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ResourceLocation getStillTexture() {
-		if(Minecraft.getInstance().getResourceManager().hasResource(
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-						"textures/fluid/"+fluid.asFluid().getRegistryName().getPath()+"_still.png"))) {
-			return new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-					"fluid/"+fluid.asFluid().getRegistryName().getPath()+"_still");
+		if(MiscHelper.INSTANCE.hasResource(
+				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
+						"textures/fluid/"+fluid.toFluid().getRegistryName().getPath()+"_still.png"))) {
+			return new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
+					"fluid/"+fluid.toFluid().getRegistryName().getPath()+"_still");
 		}
 		return super.getStillTexture();
 	}
@@ -60,11 +60,11 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ResourceLocation getFlowingTexture() {
-		if(Minecraft.getInstance().getResourceManager().hasResource(
-				new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-						"textures/fluid/"+fluid.asFluid().getRegistryName().getPath()+"_flow.png"))) {
-			return new ResourceLocation(fluid.asFluid().getRegistryName().getNamespace(),
-					"fluid/"+fluid.asFluid().getRegistryName().getPath()+"_flow");
+		if(MiscHelper.INSTANCE.hasResource(
+				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
+						"textures/fluid/"+fluid.toFluid().getRegistryName().getPath()+"_flow.png"))) {
+			return new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
+					"fluid/"+fluid.toFluid().getRegistryName().getPath()+"_flow");
 		}
 		return super.getFlowingTexture();
 	}

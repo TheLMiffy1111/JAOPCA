@@ -10,14 +10,12 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.compat.thermalexpansion.recipes.ChillerRecipeSupplier;
 import thelm.jaopca.compat.thermalexpansion.recipes.PressRecipeSupplier;
 import thelm.jaopca.compat.thermalexpansion.recipes.PulverizerRecipeSupplier;
 import thelm.jaopca.compat.thermalexpansion.recipes.SmelterRecipeSupplier;
-import thelm.jaopca.tags.EmptyNamedTag;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -29,7 +27,7 @@ public class ThermalExpansionHelper {
 
 	public Ingredient getCountedIngredient(Object obj, int count) {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(obj);
-		for(ItemStack stack : ing.getMatchingStacks()) {
+		for(ItemStack stack : ing.getItems()) {
 			stack.setCount(count);
 		}
 		return ing;
@@ -43,15 +41,15 @@ public class ThermalExpansionHelper {
 			return (FluidIngredient)obj;
 		}
 		else if(obj instanceof String) { // Tag fluid ingredients are broken right now
-			return FluidIngredient.of(getFluidTag(new ResourceLocation((String)obj)).getAllElements().stream().
+			return FluidIngredient.of(MiscHelper.INSTANCE.getFluidTag(new ResourceLocation((String)obj)).getValues().stream().
 					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof ResourceLocation) {
-			return FluidIngredient.of(getFluidTag((ResourceLocation)obj).getAllElements().stream().
+			return FluidIngredient.of(MiscHelper.INSTANCE.getFluidTag((ResourceLocation)obj).getValues().stream().
 					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof ITag<?>) {
-			return FluidIngredient.of(((ITag<Fluid>)obj).getAllElements().stream().
+			return FluidIngredient.of(((ITag<Fluid>)obj).getValues().stream().
 					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof FluidStack) {
@@ -95,10 +93,5 @@ public class ThermalExpansionHelper {
 
 	public boolean registerChillerRecipe(ResourceLocation key, Object fluidInput, int fluidInputAmount, Object itemInput, int itemInputCount, Object output, int outputCount, int energy, float experience) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new ChillerRecipeSupplier(key, fluidInput, fluidInputAmount, itemInput, itemInputCount, output, outputCount, energy, experience));
-	}
-
-	public ITag<Fluid> getFluidTag(ResourceLocation location) {
-		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().get(location);
-		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 }

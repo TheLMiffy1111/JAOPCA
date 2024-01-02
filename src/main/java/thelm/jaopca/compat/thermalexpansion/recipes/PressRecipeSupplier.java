@@ -60,13 +60,13 @@ public class PressRecipeSupplier implements Supplier<PressRecipe> {
 	public PressRecipe get() {
 		List<Ingredient> inputs = new ArrayList<>();
 		Ingredient ing = ThermalExpansionHelper.INSTANCE.getCountedIngredient(input, inputCount);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		inputs.add(ing);
 		if(secondInput != null) {
 			Ingredient secondIng = ThermalExpansionHelper.INSTANCE.getCountedIngredient(secondInput, secondInputCount);
-			if(secondIng != Ingredient.EMPTY && !secondIng.hasNoMatchingItems()) {
+			if(secondIng != Ingredient.EMPTY && !secondIng.isEmpty()) {
 				inputs.add(secondIng);
 			}
 		}

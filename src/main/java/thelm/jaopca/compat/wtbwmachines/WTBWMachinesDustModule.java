@@ -54,10 +54,12 @@ public class WTBWMachinesDustModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+
 			IDynamicSpecConfig config = configs.get(material);
 			String configByproduct = config.getDefinedString("wtbw_machines.byproduct", "minecraft:cobblestone",
 					s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s)), "The byproduct material to output in WTBW Machines' Crusher.");
 			Item byproduct = ForgeRegistries.ITEMS.getValue(new ResourceLocation(configByproduct));
+
 			helper.registerCrushingRecipe(
 					new ResourceLocation("jaopca", "wtbw_machines.ore_to_material."+material.getName()),
 					oreLocation, 1, 200, 4000, new Object[] {

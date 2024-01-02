@@ -61,24 +61,24 @@ public class ColorHandler {
 		BlockColors blockColors = event.getBlockColors();
 		ItemColors itemColors = event.getItemColors();
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
-			blockColors.register(BLOCK_COLOR, block.asBlock());
+			blockColors.register(BLOCK_COLOR, block.toBlock());
 		}
 		for(IMaterialFormBlockItem blockItem : BlockFormType.getBlockItems()) {
-			itemColors.register(ITEM_COLOR, blockItem.asBlockItem());
+			itemColors.register(ITEM_COLOR, blockItem.toBlockItem());
 		}
 		for(IMaterialFormItem item : ItemFormType.getItems()) {
-			itemColors.register(ITEM_COLOR, item.asItem());
+			itemColors.register(ITEM_COLOR, item.toItem());
 		}
 		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
-			blockColors.register(BLOCK_COLOR, fluidBlock.asBlock());
+			blockColors.register(BLOCK_COLOR, fluidBlock.toBlock());
 		}
 		for(IMaterialFormBucketItem bucketItem : FluidFormType.getBucketItems()) {
-			itemColors.register(ITEM_COLOR, bucketItem.asItem());
+			itemColors.register(ITEM_COLOR, bucketItem.toItem());
 		}
 	}
 
 	public static int getAverageColor(ITag<Item> tag) {
-		Vector4f color = weightedAverageColor(tag.getAllElements(), ConfigHandler.gammaValue);
+		Vector4f color = weightedAverageColor(tag.getValues(), ConfigHandler.gammaValue);
 		return toColorInt(color);
 	}
 
@@ -135,10 +135,10 @@ public class ColorHandler {
 			g = 1;
 			b = 1;
 			for(Vector4f color : colors) {
-				totalWeight += weight = color.getW();
-				r *= color.getX()*weight;
-				g *= color.getY()*weight;
-				b *= color.getZ()*weight;
+				totalWeight += weight = color.w();
+				r *= color.x()*weight;
+				g *= color.y()*weight;
+				b *= color.z()*weight;
 			}
 			r = Math.pow(r, 1/totalWeight);
 			g = Math.pow(g, 1/totalWeight);
@@ -146,10 +146,10 @@ public class ColorHandler {
 		}
 		else {
 			for(Vector4f color : colors) {
-				totalWeight += weight = color.getW();
-				r += Math.pow(color.getX(), gammaValue)*weight;
-				g += Math.pow(color.getY(), gammaValue)*weight;
-				b += Math.pow(color.getZ(), gammaValue)*weight;
+				totalWeight += weight = color.w();
+				r += Math.pow(color.x(), gammaValue)*weight;
+				g += Math.pow(color.y(), gammaValue)*weight;
+				b += Math.pow(color.z(), gammaValue)*weight;
 			}
 			r = Math.pow(r/totalWeight, 1/gammaValue);
 			g = Math.pow(g/totalWeight, 1/gammaValue);
@@ -174,27 +174,27 @@ public class ColorHandler {
 
 	public static Vector4f tintColor(Vector4f color, int tint) {
 		return new Vector4f(
-				color.getX()*(tint>>16&0xFF)/255F,
-				color.getY()*(tint>> 8&0xFF)/255F,
-				color.getZ()*(tint    &0xFF)/255F,
-				color.getW()
+				color.x()*(tint>>16&0xFF)/255F,
+				color.y()*(tint>> 8&0xFF)/255F,
+				color.z()*(tint    &0xFF)/255F,
+				color.w()
 				);
 	}
 
 	public static int toColorInt(Vector4f color) {
 		int ret = 0;
-		ret |= (Math.round(MathHelper.clamp(color.getX()*255, 0, 255))&0xFF)<<16;
-		ret |= (Math.round(MathHelper.clamp(color.getY()*255, 0, 255))&0xFF)<< 8;
-		ret |= (Math.round(MathHelper.clamp(color.getZ()*255, 0, 255))&0xFF);
+		ret |= (Math.round(MathHelper.clamp(color.x()*255, 0, 255))&0xFF)<<16;
+		ret |= (Math.round(MathHelper.clamp(color.y()*255, 0, 255))&0xFF)<< 8;
+		ret |= (Math.round(MathHelper.clamp(color.z()*255, 0, 255))&0xFF);
 		return ret;
 	}
 
 	public static List<BakedQuad> getBakedQuads(ItemStack stack) {
 		List<BakedQuad> quads = new ArrayList<>();
-		IBakedModel model = Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(stack, null, null);
-		model.getQuads(null, null, new Random(0)).stream().filter(quad->quad.getFace() == Direction.SOUTH).forEach(quads::add);
+		IBakedModel model = Minecraft.getInstance().getItemRenderer().getModel(stack, null, null);
+		model.getQuads(null, null, new Random(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
 		for(Direction facing : Direction.values()) {
-			model.getQuads(null, facing, new Random(0)).stream().filter(quad->quad.getFace() == Direction.SOUTH).forEach(quads::add);
+			model.getQuads(null, facing, new Random(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
 		}
 		return quads;
 	}

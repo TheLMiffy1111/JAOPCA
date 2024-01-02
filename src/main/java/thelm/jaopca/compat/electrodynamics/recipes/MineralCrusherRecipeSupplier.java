@@ -39,7 +39,7 @@ public class MineralCrusherRecipeSupplier implements Supplier<MineralCrusherReci
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new MineralCrusherRecipe(key, ing, stack);
 	}

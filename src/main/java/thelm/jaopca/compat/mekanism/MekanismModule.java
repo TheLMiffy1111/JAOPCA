@@ -78,7 +78,7 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		return builder.build();
 	}
@@ -97,11 +97,6 @@ public class MekanismModule implements IModule {
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
 		return BLACKLIST;
-	}
-
-	@Override
-	public void onMaterialComputeComplete(IModuleData moduleData) {
-		SlurryFormType.registerEntries();
 	}
 
 	@Override

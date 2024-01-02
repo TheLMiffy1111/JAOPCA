@@ -33,16 +33,16 @@ public class SmithingRecipeSupplier implements Supplier<SmithingRecipe> {
 	@Override
 	public SmithingRecipe get() {
 		Ingredient baseIng = MiscHelper.INSTANCE.getIngredient(base);
-		if(baseIng.hasNoMatchingItems()) {
+		if(baseIng.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+base);
 		}
 		Ingredient additionIng = MiscHelper.INSTANCE.getIngredient(addition);
-		if(additionIng.hasNoMatchingItems()) {
+		if(additionIng.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+addition);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new SmithingRecipe(key, baseIng, additionIng, stack);
 	}

@@ -24,14 +24,14 @@ public class LocalizationHandler {
 	}
 
 	public static String getLanguage() {
-		return DistExecutor.runForDist(()->()->{
+		return DistExecutor.unsafeRunForDist(()->()->{
 			Minecraft mc = Minecraft.getInstance();
 			if(mc != null) {
-				Language lang = mc.getLanguageManager().getCurrentLanguage();
+				Language lang = mc.getLanguageManager().getSelected();
 				if(lang != null) {
 					return lang.getCode();
 				}
-				return mc.gameSettings.language;
+				return mc.options.languageCode;
 			}
 			return "en_us";
 		}, ()->()->"en_us");

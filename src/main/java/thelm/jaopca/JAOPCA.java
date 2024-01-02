@@ -17,7 +17,7 @@ public class JAOPCA {
 		assert mixinLoaded;
 		core = this;
 		CommonEventHandler.getInstance().onConstruct();
-		DistExecutor.runWhenOn(Dist.CLIENT, ()->()->{
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
 			ClientEventHandler.getInstance().onConstruct();
 		});
 	}

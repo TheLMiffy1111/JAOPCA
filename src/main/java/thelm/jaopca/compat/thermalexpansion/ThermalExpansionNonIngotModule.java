@@ -15,14 +15,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "thermal_expansion@[1.4.0,)")
@@ -53,7 +51,7 @@ public class ThermalExpansionNonIngotModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(1, "dusts");
 		return builder.build();
 	}
@@ -70,7 +68,6 @@ public class ThermalExpansionNonIngotModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		ThermalExpansionHelper helper = ThermalExpansionHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Item richSlag = ForgeRegistries.ITEMS.getValue(new ResourceLocation("thermal:rich_slag"));
@@ -79,7 +76,7 @@ public class ThermalExpansionNonIngotModule implements IModule {
 			ResourceLocation extraDustLocation = miscHelper.getTagLocation("dusts", material.getExtra(1).getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			ResourceLocation extraMaterialLocation = miscHelper.getTagLocation(material.getExtra(1).getType().getFormName(), material.getExtra(1).getName());
-			float pulverizerChance = material.getType() != MaterialType.DUST ? 2.5F : 6.5F;
+			float pulverizerChance = material.getType() != MaterialType.DUST ? 2.5F : 5.5F;
 			float smelterChance = material.getType() != MaterialType.DUST ? 1.5F : 3.5F;
 			if(material.hasExtra(1)) {
 				if(!PULVERIZER_BLACKLIST.contains(material.getName())) {

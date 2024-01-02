@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.immersiveengineering.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -34,7 +35,7 @@ public class CrusherRecipeSupplier implements Supplier<CrusherRecipe> {
 	@Override
 	public CrusherRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack result = null;
@@ -59,14 +60,14 @@ public class CrusherRecipeSupplier implements Supplier<CrusherRecipe> {
 			}
 			if(result == null) {
 				result = stack;
+				continue;
 			}
 			else {
 				secondary.add(new StackWithChance(stack, chance));
 			}
 		}
 		if(result == null) {
-			LOGGER.warn("No output in recipe {}", key);
-			result = ItemStack.EMPTY;
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 		CrusherRecipe recipe = new CrusherRecipe(key, result, ing, energy);
 		for(StackWithChance stack : secondary) {

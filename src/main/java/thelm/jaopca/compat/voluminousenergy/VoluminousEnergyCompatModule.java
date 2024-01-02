@@ -6,8 +6,6 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -53,14 +51,14 @@ public class VoluminousEnergyCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		VoluminousEnergyHelper helper = VoluminousEnergyHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
+			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				if(itemTags.contains(plateLocation)) {
 					helper.registerCompressingRecipe(
 							new ResourceLocation("jaopca", "voluminousenergy.material_to_plate."+material.getName()),
 							materialLocation, 1, plateLocation, 1, 200);

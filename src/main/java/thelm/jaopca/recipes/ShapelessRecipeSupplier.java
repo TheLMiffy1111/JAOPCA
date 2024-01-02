@@ -46,8 +46,8 @@ public class ShapelessRecipeSupplier implements Supplier<ShapelessRecipe> {
 		NonNullList<Ingredient> inputList = NonNullList.create();
 		for(Object in : input){
 			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
-			if(ing.hasNoMatchingItems()) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
+			if(ing.isEmpty()) {
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			else {
 				inputList.add(ing);

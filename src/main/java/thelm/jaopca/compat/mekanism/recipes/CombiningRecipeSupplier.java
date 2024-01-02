@@ -38,16 +38,16 @@ public class CombiningRecipeSupplier implements Supplier<CombinerIRecipe> {
 	@Override
 	public CombinerIRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		Ingredient secondIng = MiscHelper.INSTANCE.getIngredient(secondInput);
-		if(secondIng.hasNoMatchingItems()) {
+		if(secondIng.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+secondInput);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new CombinerIRecipe(key, ItemStackIngredient.from(ing, inputCount), ItemStackIngredient.from(secondIng, secondInputCount), stack);
 	}

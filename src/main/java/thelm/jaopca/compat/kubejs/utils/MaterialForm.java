@@ -5,7 +5,6 @@ import com.google.common.collect.TreeBasedTable;
 import dev.latvian.kubejs.fluid.EmptyFluidStackJS;
 import dev.latvian.kubejs.fluid.FluidStackJS;
 import dev.latvian.kubejs.item.ItemStackJS;
-import dev.latvian.kubejs.item.ingredient.TagIngredientJS;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import thelm.jaopca.api.blocks.IBlockProvider;
@@ -45,11 +44,11 @@ public class MaterialForm {
 		return Material.getMaterialWrapper(info.getMaterialForm().getMaterial());
 	}
 
-	public TagIngredientJS asTag() {
-		return TagIngredientJS.createTag(MiscHelper.INSTANCE.getTagLocation(
+	public String asTag() {
+		return MiscHelper.INSTANCE.getTagLocation(
 				info.getMaterialForm().getForm().getSecondaryName(), info.getMaterialForm().getMaterial().getName(),
 				info.getMaterialForm().getForm().getTagSeparator()).
-				toString());
+				toString();
 	}
 
 	public ItemStackJS asItemStack(int count) {
@@ -78,6 +77,6 @@ public class MaterialForm {
 		if(!(info instanceof IBlockProvider)) {
 			return null;
 		}
-		return (((IBlockProvider)info).asBlock().getDefaultState());
+		return (((IBlockProvider)info).asBlock().defaultBlockState());
 	}
 }

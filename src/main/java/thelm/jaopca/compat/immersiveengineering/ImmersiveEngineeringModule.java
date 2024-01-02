@@ -36,7 +36,7 @@ public class ImmersiveEngineeringModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		builder.put(1, "dusts");
 		return builder.build();
@@ -85,7 +85,7 @@ public class ImmersiveEngineeringModule implements IModule {
 						}, 6000);
 			}
 			helper.registerArcFurnaceRecipe(
-					new ResourceLocation("jaopca", "immersiveengineering.ore_to_ingot."+material.getName()),
+					new ResourceLocation("jaopca", "immersiveengineering.ore_to_material."+material.getName()),
 					new Object[] {
 							oreLocation, 1,
 					}, slag, 1, new Object[] {

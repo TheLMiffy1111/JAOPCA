@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;
@@ -22,10 +21,8 @@ public class MoltenModule implements IModule {
 
 	private final IForm moltenForm = ApiImpl.INSTANCE.newForm(this, "molten", FluidFormType.INSTANCE).
 			setMaterialTypes(MaterialType.NON_DUSTS).setTagSeparator("_").
-			setSettings(FluidFormType.INSTANCE.getNewSettings().
-					setTickRateFunction(material->50).setDensityFunction(material->2000).
-					setTemperatureFunction(this::getTemperature).setLightValueFunction(material->10).
-					setMaterialFunction(material->Material.LAVA));
+			setSettings(FluidFormType.INSTANCE.getNewSettingsLava().
+					setTemperatureFunction(this::getTemperature).setLightValueFunction(material->10));
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
@@ -55,8 +52,8 @@ public class MoltenModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		for(IMaterial material : moltenForm.getMaterials()) {
-			//ApiImpl.INSTANCE.registerFluidTag(new ResourceLocation("lava"), FluidFormType.INSTANCE.getMaterialFormInfo(moltenForm, material).getFluid());
-		}
+		//for(IMaterial material : moltenForm.getMaterials()) {
+		//	ApiImpl.INSTANCE.registerFluidTag(new ResourceLocation("lava"), FluidFormType.INSTANCE.getMaterialFormInfo(moltenForm, material).getFluid());
+		//}
 	}
 }

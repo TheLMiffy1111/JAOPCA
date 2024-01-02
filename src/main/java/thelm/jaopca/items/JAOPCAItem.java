@@ -25,7 +25,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	protected OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCAItem(IForm form, IMaterial material, IItemFormSettings settings) {
-		super(new Item.Properties().group(ItemFormType.getItemGroup()));
+		super(new Item.Properties().tab(ItemFormType.getItemGroup()));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -50,11 +50,11 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack stack) {
+	public boolean isFoil(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
 			hasEffect = Optional.of(settings.getHasEffectFunction().test(material));
 		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.get() || super.isFoil(stack);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	}
 
 	@Override
-	public ITextComponent getDisplayName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+form.getName(), material, getTranslationKey());
+	public ITextComponent getName(ItemStack stack) {
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+form.getName(), material, getDescriptionId());
 	}
 }

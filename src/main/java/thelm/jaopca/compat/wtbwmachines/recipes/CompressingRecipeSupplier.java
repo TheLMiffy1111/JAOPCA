@@ -38,12 +38,12 @@ public class CompressingRecipeSupplier implements Supplier<CompressingRecipe> {
 	@Override
 	public CompressingRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new CompressingRecipe(key, ing, inputCount, stack, time, energy);
 	}

@@ -43,12 +43,12 @@ public class SmeltingRecipeSupplier implements Supplier<FurnaceRecipe> {
 	@Override
 	public FurnaceRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new FurnaceRecipe(key, group, ing, stack, experience, time);
 	}

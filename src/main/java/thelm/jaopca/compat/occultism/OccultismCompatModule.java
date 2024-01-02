@@ -6,8 +6,6 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -52,14 +50,14 @@ public class OccultismCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		OccultismHelper helper = OccultismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
+			if(!type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				if(itemTags.contains(dustLocation)) {
 					helper.registerCrushingRecipe(
 							new ResourceLocation("jaopca", "occultism.material_to_dust."+material.getName()),
 							materialLocation, dustLocation, 1, 200, true);

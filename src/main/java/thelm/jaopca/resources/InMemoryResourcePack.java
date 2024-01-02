@@ -104,7 +104,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	}
 
 	@Override
-	public InputStream getRootResourceStream(String fileName) throws IOException {
+	public InputStream getRootResource(String fileName) throws IOException {
 		if(fileName.contains("/") || fileName.contains("\\")) {
 			throw new IllegalArgumentException("Root resources can only be filenames, not paths (no / allowed!)");
 		}
@@ -115,7 +115,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	}
 
 	@Override
-	public InputStream getResourceStream(ResourcePackType type, ResourceLocation location) throws IOException {
+	public InputStream getResource(ResourcePackType type, ResourceLocation location) throws IOException {
 		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
 		if(map.containsKey(location)) {
 			return map.get(location).get();
@@ -124,7 +124,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	}
 
 	@Override
-	public Collection<ResourceLocation> getAllResourceLocations(ResourcePackType type, String namespace, String pathIn, int maxDepth, Predicate<String> filter) {
+	public Collection<ResourceLocation> getResources(ResourcePackType type, String namespace, String pathIn, int maxDepth, Predicate<String> filter) {
 		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
 		return map.keySet().stream().filter(rl->rl.getNamespace().equals(namespace)).
 				filter(rl->StringUtils.countMatches(rl.getPath(), '/') < maxDepth).
@@ -136,20 +136,20 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	}
 
 	@Override
-	public boolean resourceExists(ResourcePackType type, ResourceLocation location) {
+	public boolean hasResource(ResourcePackType type, ResourceLocation location) {
 		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
 		return map.containsKey(location);
 	}
 
 	@Override
-	public Set<String> getResourceNamespaces(ResourcePackType type) {
+	public Set<String> getNamespaces(ResourcePackType type) {
 		Map<ResourceLocation, Supplier<? extends InputStream>> map = type == ResourcePackType.CLIENT_RESOURCES ? assets : data;
 		return map.keySet().stream().map(rl->rl.getNamespace()).collect(Collectors.toSet());
 	}
 
 	@Override
-	public <T> T getMetadata(IMetadataSectionSerializer<T> deserializer) throws IOException {
-		return deserializer == PackMetadataSection.SERIALIZER ? deserializer.deserialize(metadata) : null;
+	public <T> T getMetadataSection(IMetadataSectionSerializer<T> deserializer) throws IOException {
+		return deserializer == PackMetadataSection.SERIALIZER ? deserializer.fromJson(metadata) : null;
 	}
 
 	@Override

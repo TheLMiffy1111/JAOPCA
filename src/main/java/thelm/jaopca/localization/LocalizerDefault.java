@@ -23,7 +23,7 @@ public class LocalizerDefault implements ILocalizer {
 	public IFormattableTextComponent localizeMaterialForm(String formTranslationKey, IMaterial material, String overrideKey) {
 		LanguageMap languageMap = LanguageMap.getInstance();
 		Map<String, String> locMap = ApiImpl.INSTANCE.currentMaterialLocalizationMap();
-		if(languageMap.func_230506_b_(overrideKey)) {
+		if(languageMap.has(overrideKey)) {
 			return new TranslationTextComponent(overrideKey);
 		}
 		else if(locMap.containsKey(overrideKey)) {
@@ -31,8 +31,8 @@ public class LocalizerDefault implements ILocalizer {
 		}
 		String materialName;
 		String materialKey = "jaopca.material."+material.getName();
-		if(languageMap.func_230506_b_(materialKey)) {
-			materialName = languageMap.func_230503_a_(materialKey);
+		if(languageMap.has(materialKey)) {
+			materialName = languageMap.getOrDefault(materialKey);
 		}
 		else if(locMap.containsKey(materialKey)) {
 			materialName = locMap.get(materialKey);
@@ -40,7 +40,7 @@ public class LocalizerDefault implements ILocalizer {
 		else {
 			materialName = splitAndCapitalize(material.getName());
 		}
-		if(languageMap.func_230506_b_(formTranslationKey) || !locMap.containsKey(formTranslationKey)) {
+		if(languageMap.has(formTranslationKey) || !locMap.containsKey(formTranslationKey)) {
 			return new TranslationTextComponent(formTranslationKey, materialName);
 		}
 		else {

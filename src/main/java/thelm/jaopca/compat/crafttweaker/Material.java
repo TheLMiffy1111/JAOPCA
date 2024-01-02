@@ -11,8 +11,12 @@ import com.blamejared.crafttweaker.impl.fluid.MCFluidStack;
 import com.blamejared.crafttweaker.impl.item.MCItemStack;
 import com.blamejared.crafttweaker.impl.tag.MCTag;
 import com.blamejared.crafttweaker.impl.tag.manager.TagManager;
+import com.blamejared.crafttweaker.impl.tag.manager.TagManagerFluid;
 import com.blamejared.crafttweaker.impl.tag.manager.TagManagerItem;
+import com.blamejared.crafttweaker.impl.tag.registry.CrTTagRegistry;
 
+import net.minecraft.fluid.Fluid;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.materials.IMaterial;
@@ -62,24 +66,49 @@ public class Material {
 		return material.hasExtra(index);
 	}
 
-	@ZenCodeType.Method
-	public MCTag getTag(String prefix) {
-		return getTag(TagManagerItem.INSTANCE, prefix, "/");
+	@ZenCodeType.Getter("isSmallStorageBlock")
+	public boolean isSmallStorageBlock() {
+		return material.isSmallStorageBlock();
 	}
 
 	@ZenCodeType.Method
-	public MCTag getTag(String prefix, String tagSeperator) {
+	public MCTag<Item> getItemTag(String prefix) {
+		return getItemTag(prefix, "/");
+	}
+
+	@ZenCodeType.Method
+	public MCTag<Item> getItemTag(String prefix, String tagSeperator) {
 		return getTag(TagManagerItem.INSTANCE, prefix, tagSeperator);
 	}
 
 	@ZenCodeType.Method
-	public MCTag getTag(TagManager manager, String prefix) {
+	public MCTag<Fluid> getFluidTag(String prefix) {
+		return getFluidTag(prefix, "/");
+	}
+
+	@ZenCodeType.Method
+	public MCTag<Fluid> getFluidTag(String prefix, String tagSeperator) {
+		return getTag(TagManagerFluid.INSTANCE, prefix, tagSeperator);
+	}
+
+	@ZenCodeType.Method
+	public <T> MCTag<T> getTag(String tagFolder, String prefix) {
+		return getTag(tagFolder, prefix, "/");
+	}
+
+	@ZenCodeType.Method
+	public <T> MCTag<T> getTag(String tagFolder, String prefix, String tagSeperator) {
+		return getTag(CrTTagRegistry.instance.getByTagFolder(tagFolder), prefix, tagSeperator);
+	}
+
+	@ZenCodeType.Method
+	public <T> MCTag<T> getTag(TagManager<T> manager, String prefix) {
 		return getTag(manager, prefix, "/");
 	}
 
 	@ZenCodeType.Method
-	public MCTag getTag(TagManager manager, String prefix, String tagSeperator) {
-		return new MCTag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator), manager);
+	public <T> MCTag<T> getTag(TagManager<T> manager, String prefix, String tagSeperator) {
+		return manager.getTag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator));
 	}
 
 	@ZenCodeType.Method

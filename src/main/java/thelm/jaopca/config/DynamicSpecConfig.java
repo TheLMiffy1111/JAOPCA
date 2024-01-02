@@ -1,5 +1,8 @@
 package thelm.jaopca.config;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,10 +13,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.EnumGetMethod;
 import com.electronwill.nightconfig.core.file.FileConfig;
+import com.electronwill.nightconfig.core.io.ParsingException;
 import com.electronwill.nightconfig.core.utils.CommentedConfigWrapper;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
@@ -22,13 +28,28 @@ import thelm.jaopca.api.config.IDynamicSpecConfig;
 
 public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> implements IDynamicSpecConfig {
 
+	private static final Logger LOGGER = LogManager.getLogger();
+	
 	final CommentedConfig config;
 
 	public DynamicSpecConfig(CommentedConfig config) {
 		super(config);
 		this.config = config;
 		if(config instanceof FileConfig) {
-			((FileConfig)config).load();
+			FileConfig fileConfig = (FileConfig)config;
+			try {
+				fileConfig.load();
+			}
+			catch(ParsingException e) {
+				Path path = fileConfig.getNioPath();
+				LOGGER.warn("Config with path {} is malformed, moving", path);
+				try {
+					Files.move(path, path.resolveSibling(path.getFileName()+".bak"), StandardCopyOption.REPLACE_EXISTING);
+				}
+				catch(Exception e1) {
+					LOGGER.error("Unable to move config with path {}", path, e1);
+				}
+			}
 		}
 	}
 

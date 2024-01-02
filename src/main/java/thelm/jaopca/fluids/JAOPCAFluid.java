@@ -45,7 +45,7 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	public int getTickRate(IWorldReader world) {
+	public int getTickDelay(IWorldReader world) {
 		if(!tickRate.isPresent()) {
 			tickRate = OptionalInt.of(settings.getTickRateFunction().applyAsInt(material));
 		}
@@ -82,17 +82,17 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	}
 
 	@Override
-	public Item getFilledBucket() {
+	public Item getBucket() {
 		return FluidFormType.INSTANCE.getMaterialFormInfo(form, material).getBucketItem();
 	}
 
 	@Override
 	protected PlaceableFluidBlock getFluidBlock() {
-		return (PlaceableFluidBlock)FluidFormType.INSTANCE.getMaterialFormInfo(form, material).getMaterialFormFluidBlock().asBlock();
+		return (PlaceableFluidBlock)FluidFormType.INSTANCE.getMaterialFormInfo(form, material).getMaterialFormFluidBlock().toBlock();
 	}
 
 	@Override
 	public FluidState getSourceState() {
-		return getDefaultState().with(levelProperty, maxLevel);
+		return defaultFluidState().setValue(levelProperty, maxLevel);
 	}
 }

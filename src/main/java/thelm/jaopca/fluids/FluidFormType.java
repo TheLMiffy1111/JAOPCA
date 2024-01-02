@@ -14,10 +14,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.fluids.IFluidInfo;
@@ -44,6 +46,7 @@ public class FluidFormType implements IFluidFormType {
 	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormFluidBlock> FLUID_BLOCKS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormBucketItem> BUCKET_ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IFluidInfo> FLUID_INFOS = TreeBasedTable.create();
+	private static boolean registered = false;
 
 	public static final Type SOUND_EVENT_SUPPLIER_TYPE = new TypeToken<Supplier<SoundEvent>>(){}.getType();
 
@@ -87,6 +90,13 @@ public class FluidFormType implements IFluidFormType {
 		return new FluidFormSettings();
 	}
 
+	public IFluidFormSettings getNewSettingsLava() {
+		return new FluidFormSettings().setTickRateFunction(material->30).
+				setDensityFunction(material->2000).setTemperatureFunction(material->1000).
+				setFillSoundSupplier(()->SoundEvents.BUCKET_FILL_LAVA).setEmptySoundSupplier(()->SoundEvents.BUCKET_EMPTY_LAVA).
+				setMaterialFunction(material->Material.LAVA).setFireTimeFunction(material->15);
+	}
+
 	@Override
 	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
 		return builder.registerTypeAdapter(SOUND_EVENT_SUPPLIER_TYPE, ForgeRegistryEntrySupplierDeserializer.INSTANCE);
@@ -97,7 +107,12 @@ public class FluidFormType implements IFluidFormType {
 		return FluidFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	public static void registerEntries() {
+	@Override
+	public void registerMaterialForms() {
+		if(registered) {
+			return;
+		}
+		registered = true;
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IFluidFormSettings settings = (IFluidFormSettings)form.getSettings();
@@ -107,19 +122,19 @@ public class FluidFormType implements IFluidFormType {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
 
 				IMaterialFormFluid materialFormFluid = settings.getFluidCreator().create(form, material, settings);
-				Fluid fluid = materialFormFluid.asFluid();
+				Fluid fluid = materialFormFluid.toFluid();
 				fluid.setRegistryName(registryName);
 				FLUIDS.put(form, material, materialFormFluid);
 				RegistryHandler.registerForgeRegistryEntry(fluid);
 
 				IMaterialFormFluidBlock materialFormFluidBlock = settings.getFluidBlockCreator().create(materialFormFluid, settings);
-				Block fluidBlock = materialFormFluidBlock.asBlock();
+				Block fluidBlock = materialFormFluidBlock.toBlock();
 				fluidBlock.setRegistryName(registryName);
 				FLUID_BLOCKS.put(form, material, materialFormFluidBlock);
 				RegistryHandler.registerForgeRegistryEntry(fluidBlock);
 
 				IMaterialFormBucketItem materialFormBucketItem = settings.getBucketItemCreator().create(materialFormFluid, settings);
-				Item bucketItem = materialFormBucketItem.asItem();
+				Item bucketItem = materialFormBucketItem.toItem();
 				bucketItem.setRegistryName(registryName);
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
 				RegistryHandler.registerForgeRegistryEntry(bucketItem);

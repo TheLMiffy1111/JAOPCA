@@ -40,7 +40,7 @@ public class PulverizerRecipeSupplier implements Supplier<PulverizerRecipe> {
 	@Override
 	public PulverizerRecipe get() {
 		Ingredient ing = ThermalExpansionHelper.INSTANCE.getCountedIngredient(input, inputCount);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		List<ItemStack> outputs = new ArrayList<>();
@@ -62,6 +62,7 @@ public class PulverizerRecipeSupplier implements Supplier<PulverizerRecipe> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			outputs.add(stack);
 			chances.add(chance);

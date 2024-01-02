@@ -50,7 +50,7 @@ public class CreateModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "nuggets");
 		return builder.build();
 	}
@@ -82,8 +82,11 @@ public class CreateModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;	
 		for(IMaterial material : crushedOreForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			IItemInfo crushedOreInfo = itemFormType.getMaterialFormInfo(crushedOreForm, material);
+			ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
+			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
 			IDynamicSpecConfig config = configs.get(material);
 			String configByproduct = config.getDefinedString("create.byproduct", "minecraft:cobblestone",
@@ -102,17 +105,12 @@ public class CreateModule implements IModule {
 							crushedOreInfo, 2, 0.3F,
 							byproduct, 1, 0.125F,
 					});
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", material.getName());
-			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
 			api.registerSmeltingRecipe(
-					new ResourceLocation("jaopca", "create.crushed_to_ingot_smelting."+material.getName()),
+					new ResourceLocation("jaopca", "create.crushed_to_material_smelting."+material.getName()),
 					crushedOreLocation, materialLocation, 1, 0.1F, 200);
 			api.registerBlastingRecipe(
-					new ResourceLocation("jaopca", "create.crushed_to_ingot_blasting."+material.getName()),
+					new ResourceLocation("jaopca", "create.crushed_to_material_blasting."+material.getName()),
 					crushedOreLocation, materialLocation, 1, 0.1F, 50);
 			helper.registerSplashingRecipe(
 					new ResourceLocation("jaopca", "create.crushed_to_nugget."+material.getName()),

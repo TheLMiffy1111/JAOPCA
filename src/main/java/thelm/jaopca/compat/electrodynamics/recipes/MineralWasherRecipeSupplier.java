@@ -38,10 +38,16 @@ public class MineralWasherRecipeSupplier implements Supplier<MineralWasherRecipe
 	@Override
 	public MineralWasherRecipe get() {
 		CountableIngredient ing = ElectrodynamicsHelper.INSTANCE.getCountableIngredient(itemInput, itemInputCount);
+		if(ing.fetchCountedStacks().isEmpty()) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+itemInput);
+		}
 		FluidIngredient fluidIng = ElectrodynamicsHelper.INSTANCE.getFluidIngredient(fluidInput, fluidInputAmount);
+		if(fluidIng.getMatchingFluidStacks().isEmpty()) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+fluidInput);
+		}
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, outputAmount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new MineralWasherRecipe(key, ing, fluidIng, stack);
 	}

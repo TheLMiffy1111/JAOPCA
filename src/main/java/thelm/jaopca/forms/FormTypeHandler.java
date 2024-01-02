@@ -16,6 +16,7 @@ import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
+import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.custom.CustomModule;
 import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.FormDeserializer;
@@ -24,6 +25,8 @@ import thelm.jaopca.custom.json.MaterialDoubleFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialIntFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialLongFunctionDeserializer;
 import thelm.jaopca.custom.json.MaterialPredicateDeserializer;
+import thelm.jaopca.fluids.FluidFormType;
+import thelm.jaopca.items.ItemFormType;
 
 public class FormTypeHandler {
 
@@ -58,5 +61,17 @@ public class FormTypeHandler {
 			builder = formType.configureGsonBuilder(builder);
 		}
 		CustomModule.instance.setGson(builder.create());
+	}
+
+	public static void registerMaterialForms() {
+		BlockFormType.INSTANCE.registerMaterialForms();
+		ItemFormType.INSTANCE.registerMaterialForms();
+		FluidFormType.INSTANCE.registerMaterialForms();
+		for(IFormType formType : FORM_TYPES.values()) {
+			if(formType == BlockFormType.INSTANCE || formType == ItemFormType.INSTANCE || formType == FluidFormType.INSTANCE) {
+				continue;
+			}
+			formType.registerMaterialForms();
+		}
 	}
 }

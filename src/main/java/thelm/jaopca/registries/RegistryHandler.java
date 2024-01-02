@@ -24,6 +24,7 @@ public class RegistryHandler {
 	}
 
 	public static void onRegister(RegistryEvent.Register<?> event) {
+		@SuppressWarnings("rawtypes")
 		IForgeRegistry registry = event.getRegistry();
 		Class<?> type = registry.getRegistrySuperType();
 		if(REGISTRY_ENTRIES.containsKey(type)) {

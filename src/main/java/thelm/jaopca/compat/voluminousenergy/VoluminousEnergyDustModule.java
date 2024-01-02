@@ -10,14 +10,12 @@ import com.google.common.collect.Multimap;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "voluminousenergy")
@@ -34,7 +32,7 @@ public class VoluminousEnergyDustModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(1, "dusts");
 		return builder.build();
 	}
@@ -51,7 +49,6 @@ public class VoluminousEnergyDustModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		VoluminousEnergyHelper helper = VoluminousEnergyHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
@@ -61,12 +58,12 @@ public class VoluminousEnergyDustModule implements IModule {
 			if(material.hasExtra(1)) {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "voluminousenergy.ore_to_material."+material.getName()),
-						oreLocation, 1, materialLocation, 6, extraDustLocation, 1, 0.5F, 200);
+						oreLocation, 1, materialLocation, 5, extraDustLocation, 1, 0.5F, 200);
 			}
 			else {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "voluminousenergy.ore_to_material."+material.getName()),
-						oreLocation, 1, materialLocation, 6, 200);
+						oreLocation, 1, materialLocation, 5, 200);
 			}
 		}
 	}

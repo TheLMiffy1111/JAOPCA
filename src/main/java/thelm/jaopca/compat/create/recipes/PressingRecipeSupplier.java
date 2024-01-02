@@ -34,13 +34,13 @@ public class PressingRecipeSupplier implements Supplier<PressingRecipe> {
 	public PressingRecipe get() {
 		ProcessingRecipeBuilder<PressingRecipe> builder = new ProcessingRecipeBuilder<>(PressingRecipe::new, key);
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		builder.require(ing);
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		builder.output(stack);
 		return builder.build();

@@ -48,8 +48,8 @@ public class SmelterRecipeSupplier implements Supplier<SmelterRecipe> {
 				++i;
 			}
 			Ingredient ing = ThermalExpansionHelper.INSTANCE.getCountedIngredient(in, count);
-			if(ing.hasNoMatchingItems()) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
+			if(ing.isEmpty()) {
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			inputs.add(ing);
 		}
@@ -72,6 +72,7 @@ public class SmelterRecipeSupplier implements Supplier<SmelterRecipe> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			outputs.add(stack);
 			chances.add(chance);

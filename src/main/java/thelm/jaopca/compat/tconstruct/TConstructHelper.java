@@ -10,7 +10,6 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,8 +18,8 @@ import slimeknights.mantle.recipe.ItemOutput;
 import thelm.jaopca.compat.tconstruct.recipes.CastingBasinRecipeSupplier;
 import thelm.jaopca.compat.tconstruct.recipes.CastingTableRecipeSupplier;
 import thelm.jaopca.compat.tconstruct.recipes.MeltingRecipeSupplier;
-import thelm.jaopca.tags.EmptyNamedTag;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class TConstructHelper {
 
@@ -36,10 +35,10 @@ public class TConstructHelper {
 			return (FluidIngredient)obj;
 		}
 		else if(obj instanceof String) {
-			return FluidIngredient.of(getFluidTag(new ResourceLocation((String)obj)), amount);
+			return FluidIngredient.of(MiscHelper.INSTANCE.getFluidTag(new ResourceLocation((String)obj)), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return FluidIngredient.of(getFluidTag((ResourceLocation)obj), amount);
+			return FluidIngredient.of(MiscHelper.INSTANCE.getFluidTag((ResourceLocation)obj), amount);
 		}
 		else if(obj instanceof ITag<?>) {
 			return FluidIngredient.of((ITag<Fluid>)obj, amount);
@@ -76,10 +75,10 @@ public class TConstructHelper {
 			return ItemOutput.fromStack(new ItemStack((IItemProvider)obj, count));
 		}
 		else if(obj instanceof String) {
-			return ItemOutput.fromTag(getItemTag(new ResourceLocation((String)obj)), count);
+			return ItemOutput.fromTag(MiscHelper.INSTANCE.getItemTag(new ResourceLocation((String)obj)), count);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return ItemOutput.fromTag(getItemTag((ResourceLocation)obj), count);
+			return ItemOutput.fromTag(MiscHelper.INSTANCE.getItemTag((ResourceLocation)obj), count);
 		}
 		else if(obj instanceof ITag<?>) {
 			return ItemOutput.fromTag((ITag<Item>)obj, count);
@@ -109,15 +108,5 @@ public class TConstructHelper {
 
 	public boolean registerCastingBasinRecipe(ResourceLocation key, Object cast, Object input, int inputAmount, Object output, int outputCount, ToIntFunction<FluidStack> time, boolean consumeCast, boolean switchSlots) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new CastingBasinRecipeSupplier(key, cast, input, inputAmount, output, outputCount, time, consumeCast, switchSlots));
-	}
-
-	public ITag<Item> getItemTag(ResourceLocation location) {
-		ITag<Item> tag = TagCollectionManager.getManager().getItemTags().get(location);
-		return tag != null ? tag : new EmptyNamedTag<>(location);
-	}
-
-	public ITag<Fluid> getFluidTag(ResourceLocation location) {
-		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().get(location);
-		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 }

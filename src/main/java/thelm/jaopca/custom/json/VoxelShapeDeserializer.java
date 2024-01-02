@@ -48,7 +48,7 @@ public class VoxelShapeDeserializer implements JsonDeserializer<VoxelShape> {
 			double xTo = helper.getDouble(jsonArrayFrom.get(0), "xTo");
 			double yTo = helper.getDouble(jsonArrayFrom.get(1), "yTo");
 			double zTo = helper.getDouble(jsonArrayFrom.get(2), "zTo");
-			shape = VoxelShapes.or(shape, VoxelShapes.create(xFrom, yFrom, zFrom, xTo, yTo, zTo));
+			shape = VoxelShapes.or(shape, VoxelShapes.box(xFrom, yFrom, zFrom, xTo, yTo, zTo));
 		}
 		return shape;
 	}

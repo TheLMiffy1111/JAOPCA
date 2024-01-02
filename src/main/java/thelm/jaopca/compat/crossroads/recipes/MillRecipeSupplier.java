@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.crossroads.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -39,7 +40,7 @@ public class MillRecipeSupplier implements Supplier<MillRec> {
 	@Override
 	public MillRec get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		List<ItemStack> stacks = new ArrayList<>();
@@ -55,8 +56,12 @@ public class MillRecipeSupplier implements Supplier<MillRec> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			stacks.add(stack);
+		}
+		if(stacks.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 		return new MillRec(key, group, ing, true, stacks.toArray(new ItemStack[stacks.size()]));
 	}

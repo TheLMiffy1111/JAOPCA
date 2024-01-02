@@ -38,10 +38,16 @@ public class WashingRecipeSupplier implements Supplier<FluidSlurryToSlurryIRecip
 	@Override
 	public FluidSlurryToSlurryIRecipe get() {
 		SlurryStackIngredient gasIng = MekanismHelper.INSTANCE.getSlurryStackIngredient(gasInput, gasInputCount);
+		if(gasIng.getRepresentations().isEmpty()) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+gasInput);
+		}
 		FluidStackIngredient fluidIng = MekanismHelper.INSTANCE.getFluidStackIngredient(fluidInput, fluidInputCount);
+		if(fluidIng.getRepresentations().isEmpty()) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+fluidInput);
+		}
 		SlurryStack stack = MekanismHelper.INSTANCE.getSlurryStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new FluidSlurryToSlurryIRecipe(key, fluidIng, gasIng, stack);
 	}

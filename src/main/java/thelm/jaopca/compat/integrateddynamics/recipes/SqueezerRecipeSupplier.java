@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.integrateddynamics.recipes;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -40,7 +41,7 @@ public class SqueezerRecipeSupplier implements Supplier<RecipeSqueezer> {
 	@Override
 	public RecipeSqueezer get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		NonNullList<RecipeSqueezer.ItemStackChance> itemResults = NonNullList.create();
@@ -61,10 +62,14 @@ public class SqueezerRecipeSupplier implements Supplier<RecipeSqueezer> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			itemResults.add(new RecipeSqueezer.ItemStackChance(stack, chance));
 		}
 		FluidStack fluidStack = MiscHelper.INSTANCE.getFluidStack(fluidOutput, fluidOutputAmount);
+		if(itemResults.isEmpty() && fluidStack.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(itemOutput)+", "+fluidOutput);
+		}
 		return new RecipeSqueezer(key, ing, itemResults, fluidStack);
 	}
 }

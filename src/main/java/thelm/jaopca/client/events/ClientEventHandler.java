@@ -10,7 +10,6 @@ import net.minecraft.resources.IResourceManager;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -40,9 +39,9 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public void onClientSetup(FMLClientSetupEvent event) {
 		Minecraft mc = event.getMinecraftSupplier().get();
-		mc.getResourcePackList().addPackFinder(ResourceInjector.PackFinder.INSTANCE);
+		mc.getResourcePackRepository().addPackFinder(ResourceInjector.PackFinder.INSTANCE);
 		LocalizationRepoHandler.setup();
-		((IReloadableResourceManager)mc.getResourceManager()).addReloadListener(new ReloadListener<Object>() {
+		((IReloadableResourceManager)mc.getResourceManager()).registerReloadListener(new ReloadListener<Object>() {
 			@Override
 			protected Object prepare(IResourceManager resourceManager, IProfiler profiler) {
 				return null;
@@ -53,13 +52,13 @@ public class ClientEventHandler {
 			}
 		});
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
-			RenderTypeLookup.setRenderLayer(block.asBlock(), RenderType.getTranslucent());
+			RenderTypeLookup.setRenderLayer(block.toBlock(), RenderType.translucent());
 		}
 		for(IMaterialFormFluid fluid : FluidFormType.getFluids()) {
-			RenderTypeLookup.setRenderLayer(fluid.asFluid(), RenderType.getTranslucent());
+			RenderTypeLookup.setRenderLayer(fluid.toFluid(), RenderType.translucent());
 		}
 		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
-			RenderTypeLookup.setRenderLayer(fluidBlock.asBlock(), RenderType.getTranslucent());
+			RenderTypeLookup.setRenderLayer(fluidBlock.toBlock(), RenderType.translucent());
 		}
 		ModuleHandler.onClientSetup(event);
 	}
@@ -77,9 +76,5 @@ public class ClientEventHandler {
 	@SubscribeEvent
 	public void onColorHandler(ColorHandlerEvent.Item event) {
 		ColorHandler.setup(event);
-	}
-
-	public void onTextureStitchPre(TextureStitchEvent.Pre event) {
-
 	}
 }

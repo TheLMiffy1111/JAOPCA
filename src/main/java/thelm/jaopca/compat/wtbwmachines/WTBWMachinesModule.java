@@ -37,7 +37,7 @@ public class WTBWMachinesModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		return builder.build();
 	}
@@ -64,10 +64,12 @@ public class WTBWMachinesModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			IDynamicSpecConfig config = configs.get(material);
 			String configByproduct = config.getDefinedString("wtbw_machines.byproduct", "minecraft:cobblestone",
 					s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s)), "The byproduct material to output in WTBW Machines' Crusher.");
 			Item byproduct = ForgeRegistries.ITEMS.getValue(new ResourceLocation(configByproduct));
+
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "wtbw_machines.ore_to_dust."+material.getName()),

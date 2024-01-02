@@ -7,8 +7,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -53,12 +51,13 @@ public class WTBWMachinesCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		WTBWMachinesHelper helper = WTBWMachinesHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) && !TO_DUST_BLACKLIST.contains(material.getName())) {
+			if(!type.isDust() && !TO_DUST_BLACKLIST.contains(material.getName())) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				if(itemTags.contains(dustLocation)) {
 					helper.registerCrushingRecipe(
 							new ResourceLocation("jaopca", "wtbw_machines.material_to_dust."+material.getName()),
 							materialLocation, 1, 180, 2500, new Object[] {
@@ -66,10 +65,10 @@ public class WTBWMachinesCompatModule implements IModule {
 							});
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) && !TO_PLATE_BLACKLIST.contains(material.getName())) {
+			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(material.getName())) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				if(itemTags.contains(plateLocation)) {
 					helper.registerCompressingRecipe(
 							new ResourceLocation("jaopca", "wtbw_machines.material_to_plate."+material.getName()),
 							materialLocation, 1, plateLocation, 1, 180, 2500);

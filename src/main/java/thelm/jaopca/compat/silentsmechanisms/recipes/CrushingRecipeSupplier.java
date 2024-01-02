@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.silentsmechanisms.recipes;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -34,7 +35,7 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 	@Override
 	public CrushingRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		Map<ItemStack, Float> results = new LinkedHashMap<>();
@@ -55,8 +56,12 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			results.put(stack, chance);
+		}
+		if(results.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 		try {
 			CrushingRecipe ret = new CrushingRecipe(key);

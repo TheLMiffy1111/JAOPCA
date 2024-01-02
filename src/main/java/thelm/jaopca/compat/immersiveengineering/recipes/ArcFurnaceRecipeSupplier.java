@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.immersiveengineering.recipes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -56,7 +57,7 @@ public class ArcFurnaceRecipeSupplier implements Supplier<ArcFurnaceRecipe> {
 			}
 			IngredientWithSize is = new IngredientWithSize(MiscHelper.INSTANCE.getIngredient(in), count);
 			if(is.hasNoMatchingItems()) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			if(ing == null) {
 				ing = is;
@@ -66,7 +67,7 @@ public class ArcFurnaceRecipeSupplier implements Supplier<ArcFurnaceRecipe> {
 			}
 		}
 		if(ing == null || ing.hasNoMatchingItems()) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+key);
+			throw new IllegalArgumentException("Empty ingredients in recipe "+key+": "+Arrays.deepToString(input));
 		}
 		ItemStack slagStack = MiscHelper.INSTANCE.getItemStack(slag, slagCount);
 		NonNullList<ItemStack> outputs = NonNullList.create();
@@ -82,8 +83,12 @@ public class ArcFurnaceRecipeSupplier implements Supplier<ArcFurnaceRecipe> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			outputs.add(stack);
+		}
+		if(outputs.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 		return new ArcFurnaceRecipe(key, outputs, ing, slagStack, time, energy, additives.toArray(new IngredientWithSize[additives.size()]));
 	}

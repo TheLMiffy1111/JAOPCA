@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.wtbwmachines.recipes;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -37,7 +38,7 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 	@Override
 	public CrushingRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStackChanceMap results = new ItemStackChanceMap();
@@ -59,9 +60,13 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, 1);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			results.add(chance, count, stack);
 			++j;
+		}
+		if(results.getChanceMap().isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
 		return new CrushingRecipe(key, ing, inputCount, results, time, energy);
 	}

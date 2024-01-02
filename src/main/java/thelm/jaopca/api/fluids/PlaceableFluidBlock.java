@@ -46,9 +46,9 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 		levelProperty = IntegerProperty.create("level", 0, maxLevel);
 
 		StateContainer.Builder<Block, BlockState> builder = new StateContainer.Builder<>(this);
-		fillStateContainer(builder);
-		stateContainer = builder.func_235882_a_(Block::getDefaultState, BlockState::new);
-		setDefaultState(stateContainer.getBaseState().with(levelProperty, maxLevel));
+		createBlockStateDefinition(builder);
+		stateContainer = builder.create(Block::defaultBlockState, BlockState::new);
+		registerDefaultState(stateContainer.any().setValue(levelProperty, maxLevel));
 	}
 
 	public IntegerProperty getLevelProperty() {
@@ -66,26 +66,26 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState blockState, IBlockReader world, BlockPos pos, PathType type) {
-		return !fluid.isIn(FluidTags.LAVA);
+	public boolean isPathfindable(BlockState blockState, IBlockReader world, BlockPos pos, PathType type) {
+		return !fluid.is(FluidTags.LAVA);
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState blockState) {
 		IntegerProperty fluidLevelProperty = fluid.getLevelProperty();
-		int blockLevel = blockState.get(levelProperty);
+		int blockLevel = blockState.getValue(levelProperty);
 		int fluidLevel = blockLevel >= maxLevel ? maxLevel+1 : maxLevel-blockLevel;
-		return fluid.getDefaultState().with(fluidLevelProperty, fluidLevel);
+		return fluid.defaultFluidState().setValue(fluidLevelProperty, fluidLevel);
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public boolean isSideInvisible(BlockState blockState, BlockState adjacentBlockState, Direction side) {
-		return adjacentBlockState.getFluidState().getFluid().isEquivalentTo(fluid);
+	public boolean skipRendering(BlockState blockState, BlockState adjacentBlockState, Direction side) {
+		return adjacentBlockState.getFluidState().getType().isSame(fluid);
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState blockState) {
+	public BlockRenderType getRenderShape(BlockState blockState) {
 		return BlockRenderType.INVISIBLE;
 	}
 
@@ -100,24 +100,24 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 	}
 
 	@Override
-	public void onBlockAdded(BlockState blockState, World world, BlockPos pos, BlockState oldBlockState, boolean isMoving) {
+	public void onPlace(BlockState blockState, World world, BlockPos pos, BlockState oldBlockState, boolean isMoving) {
 		if(reactWithNeighbors(world, pos, blockState)) {
-			world.getPendingFluidTicks().scheduleTick(pos, blockState.getFluidState().getFluid(), fluid.getTickRate(world));
+			world.getLiquidTicks().scheduleTick(pos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
 		}
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState blockState, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState blockState, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
 		if(blockState.getFluidState().isSource() || facingState.getFluidState().isSource()) {
-			world.getPendingFluidTicks().scheduleTick(currentPos, blockState.getFluidState().getFluid(), fluid.getTickRate(world));
+			world.getLiquidTicks().scheduleTick(currentPos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
 		}
-		return super.updatePostPlacement(blockState, facing, facingState, world, currentPos, facingPos);
+		return super.updateShape(blockState, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
 	public void neighborChanged(BlockState blockState, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		if(reactWithNeighbors(world, pos, blockState)) {
-			world.getPendingFluidTicks().scheduleTick(pos, blockState.getFluidState().getFluid(), fluid.getTickRate(world));
+			world.getLiquidTicks().scheduleTick(pos, blockState.getFluidState().getType(), fluid.getTickDelay(world));
 		}
 	}
 
@@ -126,21 +126,21 @@ public abstract class PlaceableFluidBlock extends Block implements IBucketPickup
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		if(levelProperty != null) {
 			builder.add(levelProperty);
 		}
 	}
 
 	@Override
-	public StateContainer<Block, BlockState> getStateContainer() {
+	public StateContainer<Block, BlockState> getStateDefinition() {
 		return stateContainer;
 	}
 
 	@Override
-	public Fluid pickupFluid(IWorld world, BlockPos pos, BlockState blockState) {
-		if(blockState.get(levelProperty) == 0) {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+	public Fluid takeLiquid(IWorld world, BlockPos pos, BlockState blockState) {
+		if(blockState.getValue(levelProperty) == 0) {
+			world.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
 			return fluid;
 		}
 		else {

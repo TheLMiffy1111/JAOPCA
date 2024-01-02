@@ -8,10 +8,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
@@ -33,13 +35,14 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	protected OptionalInt flammability = OptionalInt.empty();
 	protected OptionalInt fireSpreadSpeed = OptionalInt.empty();
 	protected Optional<Boolean> isFireSource = Optional.empty();
+	protected OptionalInt fireTime = OptionalInt.empty();
 
 	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(Block.Properties.create(settings.getMaterialFunction().apply(fluid.getMaterial()),
+		super(Block.Properties.of(settings.getMaterialFunction().apply(fluid.getMaterial()),
 				settings.getMaterialColorFunction().apply(fluid.getMaterial())).
-				hardnessAndResistance((float)settings.getBlockHardnessFunction().applyAsDouble(fluid.getMaterial())).
-				setLightLevel(state->settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
-				doesNotBlockMovement().tickRandomly().noDrops().notSolid(), (PlaceableFluid)fluid.asFluid(),
+				strength((float)settings.getBlockHardnessFunction().applyAsDouble(fluid.getMaterial())).
+				lightLevel(state->settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
+				noCollission().randomTicks().noDrops().noOcclusion(), (PlaceableFluid)fluid.toFluid(),
 				settings.getMaxLevelFunction().applyAsInt(fluid.getMaterial()));
 
 		this.fluid = fluid;
@@ -102,5 +105,16 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 			isFireSource = Optional.of(settings.getIsFireSourceFunction().test(getMaterial()));
 		}
 		return isFireSource.get();
+	}
+
+	@Override
+	public void entityInside(BlockState blockState, World world, BlockPos pos, Entity entity) {
+		if(!fireTime.isPresent()) {
+			fireTime = OptionalInt.of(settings.getFireTimeFunction().applyAsInt(getMaterial()));
+		}
+		int time = fireTime.getAsInt();
+		if(time > 0) {
+			entity.setSecondsOnFire(time);
+		}
 	}
 }

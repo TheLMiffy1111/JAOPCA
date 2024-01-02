@@ -27,6 +27,8 @@ public interface IFormType extends Comparable<IFormType> {
 
 	IMaterialFormInfo getMaterialFormInfo(IForm form, IMaterial material);
 
+	default void registerMaterialForms() {}
+
 	@Override
 	default int compareTo(IFormType other) {
 		return getName().compareTo(other.getName());

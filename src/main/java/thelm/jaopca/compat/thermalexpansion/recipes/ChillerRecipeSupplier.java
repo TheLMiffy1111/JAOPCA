@@ -47,7 +47,7 @@ public class ChillerRecipeSupplier implements Supplier<ChillerRecipe> {
 	public ChillerRecipe get() {
 		List<Ingredient> itemInputs = new ArrayList<>();
 		Ingredient ing = ThermalExpansionHelper.INSTANCE.getCountedIngredient(itemInput, itemInputCount);
-		if(ing != Ingredient.EMPTY && !ing.hasNoMatchingItems()) {
+		if(ing != Ingredient.EMPTY && !ing.isEmpty()) {
 			itemInputs.add(ing);
 		}
 		FluidIngredient fluidIng = ThermalExpansionHelper.INSTANCE.getFluidIngredient(fluidInput, fluidInputAmount);
@@ -56,7 +56,7 @@ public class ChillerRecipeSupplier implements Supplier<ChillerRecipe> {
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new ChillerRecipe(key, energy, experience, itemInputs, Collections.singletonList(fluidIng), Collections.singletonList(stack), Collections.singletonList(-1F), Collections.emptyList());
 	}

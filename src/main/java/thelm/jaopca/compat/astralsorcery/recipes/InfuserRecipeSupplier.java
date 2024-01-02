@@ -48,12 +48,12 @@ public class InfuserRecipeSupplier implements Supplier<LiquidInfusion> {
 			throw new IllegalArgumentException("Empty fluid in recipe "+key+": "+liquidInput);
 		}
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(itemInput);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+itemInput);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new LiquidInfusion(key, time, fluidStack.getFluid(), ing, stack, consumeChance, consumeMultiple, acceptChalice, copyNBT);
 	}

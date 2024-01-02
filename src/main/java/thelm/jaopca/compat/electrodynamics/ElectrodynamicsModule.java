@@ -10,11 +10,8 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.fluids.IFluidInfo;
 import thelm.jaopca.api.forms.IForm;
@@ -45,6 +42,8 @@ public class ElectrodynamicsModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("electrodynamics:crystals").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm mineralFluidForm = ApiImpl.INSTANCE.newForm(this, "electrodynamics_mineral_fluids", FluidFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("electrodynamics:mineral_fluids").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
+			impureDustForm, crystalForm, mineralFluidForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -53,15 +52,14 @@ public class ElectrodynamicsModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		return builder.build();
 	}
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this,
-				impureDustForm, crystalForm, mineralFluidForm));
+		return Collections.singletonList(formRequest);
 	}
 
 	@Override
@@ -76,48 +74,47 @@ public class ElectrodynamicsModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		ElectrodynamicsHelper helper = ElectrodynamicsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		IFluidFormType fluidFormType = FluidFormType.INSTANCE;
 		ResourceLocation sulfuricAcidLocation = new ResourceLocation("forge:sulfuric_acid");
 		for(IMaterial material : mineralFluidForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			IFluidInfo sulfateInfo = fluidFormType.getMaterialFormInfo(mineralFluidForm, material);
-			helper.registerMineralWasherRecipe(
-					new ResourceLocation("jaopca", "electrodynamics.ore_to_mineral_fluid."+material.getName()),
-					oreLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000);
-		}
-		for(IMaterial material : crystalForm.getMaterials()) {
-			ResourceLocation sulfateLocation = miscHelper.getTagLocation("electrodynamics:mineral_fluids", material.getName());
+			IFluidInfo mineralFluidInfo = fluidFormType.getMaterialFormInfo(mineralFluidForm, material);
+			ResourceLocation mineralFluidLocation = miscHelper.getTagLocation("electrodynamics:mineral_fluids", material.getName());
 			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
-			helper.registerChemicalCrystallizerRecipe(
-					new ResourceLocation("jaopca", "electrodynamics.mineral_fluid_to_crystal."+material.getName()),
-					sulfateLocation, 200, crystalInfo, 1);
-		}
-		Item sulfurTrioxide = ForgeRegistries.ITEMS.getValue(new ResourceLocation("electrodynamics:oxidetrisulfur"));
-		for(IMaterial material : impureDustForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation crystalLocation = miscHelper.getTagLocation("electrodynamics:crystals", material.getName());
 			IItemInfo impureDustInfo = itemFormType.getMaterialFormInfo(impureDustForm, material);
+			ResourceLocation impureDustLocation = miscHelper.getTagLocation("electrodynamics:impuredusts", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
+			helper.registerMineralWasherRecipe(
+					new ResourceLocation("jaopca", "electrodynamics.ore_to_mineral_fluid."+material.getName()),
+					oreLocation, 1, sulfuricAcidLocation, 1000, mineralFluidInfo, 1000);
+
+			helper.registerChemicalCrystallizerRecipe(
+					new ResourceLocation("jaopca", "electrodynamics.mineral_fluid_to_crystal."+material.getName()),
+					mineralFluidLocation, 200, crystalInfo, 1);
+
 			helper.registerMineralCrusherRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.ore_to_impure_dust."+material.getName()),
 					oreLocation, 1, impureDustInfo, 3);
 			helper.registerMineralCrusherRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.crystal_to_impure_dust."+material.getName()),
 					crystalLocation, 1, impureDustInfo, 1);
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation impureDustLocation = miscHelper.getTagLocation("electrodynamics:impuredusts", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-			helper.registerMineralGrinderRecipe(
-					new ResourceLocation("jaopca", "electrodynamics.ore_to_dust."+material.getName()),
-					oreLocation, 1, dustLocation, 2);
+
 			helper.registerMineralGrinderRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.impure_dust_to_dust."+material.getName()),
 					impureDustLocation, 1, dustLocation, 1);
+		}
+		for(IMaterial material : moduleData.getMaterials()) {
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
+			helper.registerMineralGrinderRecipe(
+					new ResourceLocation("jaopca", "electrodynamics.ore_to_dust."+material.getName()),
+					oreLocation, 1, dustLocation, 2);
 		}
 	}
 }

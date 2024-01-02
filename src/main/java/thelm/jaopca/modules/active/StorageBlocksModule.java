@@ -38,20 +38,31 @@ public class StorageBlocksModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : storageBlockForm.getMaterials()) {
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			IBlockInfo storageBlockInfo = BlockFormType.INSTANCE.getMaterialFormInfo(storageBlockForm, material);
 			ResourceLocation storageBlockLocation = miscHelper.getTagLocation("storage_blocks", material.getName());
-			api.registerShapedRecipe(
-					new ResourceLocation("jaopca", "storage_blocks.to_storage_block."+material.getName()),
-					storageBlockInfo, 1, new Object[] {
-							"MMM",
-							"MMM",
-							"MMM",
-							'M', materialLocation,
-					});
+			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+			if(material.isSmallStorageBlock()) {
+				api.registerShapedRecipe(
+						new ResourceLocation("jaopca", "storage_blocks.to_storage_block."+material.getName()),
+						storageBlockInfo, 1, new Object[] {
+								"MM",
+								"MM",
+								'M', materialLocation,
+						});
+			}
+			else {
+				api.registerShapedRecipe(
+						new ResourceLocation("jaopca", "storage_blocks.to_storage_block."+material.getName()),
+						storageBlockInfo, 1, new Object[] {
+								"MMM",
+								"MMM",
+								"MMM",
+								'M', materialLocation,
+						});
+			}
 			api.registerShapelessRecipe(
 					new ResourceLocation("jaopca", "storage_blocks.to_material."+material.getName()),
-					materialLocation, 9, new Object[] {
+					materialLocation, material.isSmallStorageBlock() ? 4 : 9, new Object[] {
 							storageBlockLocation,
 					});
 		}

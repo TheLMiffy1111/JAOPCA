@@ -40,13 +40,16 @@ public class DissolutionRecipeSupplier implements Supplier<ChemicalDissolutionIR
 	@Override
 	public ChemicalDissolutionIRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(itemInput);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+itemInput);
 		}
 		GasStackIngredient gasIng = MekanismHelper.INSTANCE.getGasStackIngredient(gasInput, gasInputCount);
+		if(gasIng.getRepresentations().isEmpty()) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+gasInput);
+		}
 		SlurryStack stack = MekanismHelper.INSTANCE.getSlurryStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new ChemicalDissolutionIRecipe(key, ItemStackIngredient.from(ing, itemInputCount), gasIng, stack);
 	}

@@ -150,6 +150,7 @@ public class MaterialEnumFunctionDeserializer implements JsonDeserializer<Functi
 						comment = "";
 					}
 					CustomModule.instance.addCustomConfigDefiner((material, config)->{
+						@SuppressWarnings("rawtypes")
 						Enum<?> value = config.getDefinedEnum(path, (Class<Enum>)parameterizedType, (Enum)map.get(material), comment);
 						if(value != null) {
 							map.put(material, value);

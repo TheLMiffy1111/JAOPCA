@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.futurepack;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,15 +15,17 @@ import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
+import thelm.jaopca.config.ConfigHandler;
 
-public class FuturepackDataInjector extends ReloadListener {
+public class FuturepackDataInjector extends ReloadListener<Void> {
 
 	private static final Logger LOGGER = LogManager.getLogger();
-	private static final List<Supplier<ZentrifugeRecipe>> ZENTRIFUGE_RECIPES_INJECT = new ArrayList<>();
+	private static final Map<ResourceLocation, Supplier<ZentrifugeRecipe>> ZENTRIFUGE_RECIPES_INJECT = new TreeMap<>();
 	private static MinecraftServer server;
 
 	public static void onConstruct() {
@@ -40,44 +42,52 @@ public class FuturepackDataInjector extends ReloadListener {
 		injectRecipes();
 	}
 
-	public static boolean registerZentrifugeRecipe(Supplier<ZentrifugeRecipe> recipeSupplier) {
+	public static boolean registerZentrifugeRecipe(ResourceLocation key, Supplier<ZentrifugeRecipe> recipeSupplier) {
+		Objects.requireNonNull(key);
 		Objects.requireNonNull(recipeSupplier);
-		return ZENTRIFUGE_RECIPES_INJECT.add(recipeSupplier);
+		if(ConfigHandler.RECIPE_BLACKLIST.contains(key) ||
+				ConfigHandler.RECIPE_REGEX_BLACKLIST.stream().anyMatch(p->p.matcher(key.toString()).matches())) {
+			return false;
+		}
+		return ZENTRIFUGE_RECIPES_INJECT.putIfAbsent(key, recipeSupplier) != null;
 	}
-
 
 	private FuturepackDataInjector() {
 
 	}
 
 	@Override
-	protected Object prepare(IResourceManager resourceManager, IProfiler profiler) {
+	protected Void prepare(IResourceManager resourceManager, IProfiler profiler) {
 		return null;
 	}
 
 	@Override
-	protected void apply(Object splashList, IResourceManager resourceManager, IProfiler profiler) {
+	protected void apply(Void splashList, IResourceManager resourceManager, IProfiler profiler) {
 		injectRecipes();
 	}
 
 	private static void injectRecipes() {
 		if(server != null) {
-			for(Supplier<ZentrifugeRecipe> supplier : ZENTRIFUGE_RECIPES_INJECT) {
+			ZENTRIFUGE_RECIPES_INJECT.forEach((key, supplier)->{
 				ZentrifugeRecipe recipe = null;
 				try {
 					recipe = supplier.get();
 				}
 				catch(IllegalArgumentException e) {
-					LOGGER.warn("Zentrifuge recipe received invalid arguments: {}", e.getMessage());
-					continue;
+					LOGGER.debug("Recipe with ID {} received invalid arguments: {}", key, e.getMessage());
+					return;
+				}
+				catch(Throwable e) {
+					LOGGER.warn("Recipe with ID {} errored", key, e);
+					return;
 				}
 				if(recipe == null) {
-					LOGGER.warn("A zentrifuge recipe returned null");
+					LOGGER.debug("Recipe with ID {} returned null", key);
+					return;
 				}
-				else {
-					FPZentrifugeManager.instance.addRecipe(recipe);
-				}
-			}
+				FPZentrifugeManager.instance.addRecipe(recipe);
+				LOGGER.debug("Injected recipe with ID {}", key);
+			});
 			RecipeManagerSyncer.INSTANCE.onRecipeReload(server);
 		}
 	}

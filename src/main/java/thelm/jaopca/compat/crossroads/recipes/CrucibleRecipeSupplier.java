@@ -39,12 +39,12 @@ public class CrucibleRecipeSupplier implements Supplier<CrucibleRec> {
 	@Override
 	public CrucibleRec get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, amount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new CrucibleRec(key, group, ing, stack, true);
 	}

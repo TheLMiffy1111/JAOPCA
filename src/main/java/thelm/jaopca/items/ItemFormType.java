@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Supplier;
 
 import com.google.common.collect.TreeBasedTable;
 import com.google.gson.GsonBuilder;
@@ -39,6 +38,7 @@ public class ItemFormType implements IItemFormType {
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
 	private static final TreeBasedTable<IForm, IMaterial, IMaterialFormItem> ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IItemInfo> ITEM_INFOS = TreeBasedTable.create();
+	private static boolean registered = false;
 	private static ItemGroup itemGroup;
 
 	public static void init() {
@@ -91,7 +91,12 @@ public class ItemFormType implements IItemFormType {
 		return ItemFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
 	}
 
-	public static void registerEntries() {
+	@Override
+	public void registerMaterialForms() {
+		if(registered) {
+			return;
+		}
+		registered = true;
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
@@ -101,12 +106,11 @@ public class ItemFormType implements IItemFormType {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+material.getName());
 
 				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, settings);
-				Item item = materialFormItem.asItem();
+				Item item = materialFormItem.toItem();
 				item.setRegistryName(registryName);
 				ITEMS.put(form, material, materialFormItem);
 				RegistryHandler.registerForgeRegistryEntry(item);
 
-				Supplier<Item> itemSupplier = ()->item;
 				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
@@ -120,7 +124,7 @@ public class ItemFormType implements IItemFormType {
 		if(itemGroup == null) {
 			itemGroup = new ItemGroup("jaopca") {
 				@Override
-				public ItemStack createIcon() {
+				public ItemStack makeIcon() {
 					return new ItemStack(Items.GLOWSTONE_DUST);
 				}
 			};

@@ -1,9 +1,9 @@
 package thelm.jaopca.custom;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,9 +51,9 @@ public class CustomModule implements IModule {
 		customConfigDefiners.add(customConfigDefiner);
 	}
 
-	public void setCustomFormConfigFile(File customFormConfigFile) {
+	public void setCustomFormConfigFile(Path customFormConfigFile) {
 		formRequests.clear();
-		try(InputStreamReader reader = new InputStreamReader(new FileInputStream(customFormConfigFile), StandardCharsets.UTF_8)) {
+		try(InputStreamReader reader = new InputStreamReader(Files.newInputStream(customFormConfigFile), StandardCharsets.UTF_8)) {
 			IFormRequest[] requests = gson.fromJson(reader, IFormRequest[].class);
 			if(requests != null) {
 				Collections.addAll(formRequests, requests);

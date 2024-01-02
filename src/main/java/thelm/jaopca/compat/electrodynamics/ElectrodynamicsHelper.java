@@ -10,8 +10,6 @@ import com.google.gson.JsonObject;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.compat.electrodynamics.recipes.ChemicalCrystallizerRecipeSupplier;
@@ -19,7 +17,6 @@ import thelm.jaopca.compat.electrodynamics.recipes.LatheRecipeSupplier;
 import thelm.jaopca.compat.electrodynamics.recipes.MineralCrusherRecipeSupplier;
 import thelm.jaopca.compat.electrodynamics.recipes.MineralGrinderRecipeSupplier;
 import thelm.jaopca.compat.electrodynamics.recipes.MineralWasherRecipeSupplier;
-import thelm.jaopca.tags.EmptyNamedTag;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -41,10 +38,10 @@ public class ElectrodynamicsHelper {
 			return (FluidIngredient)obj;
 		}
 		else if(obj instanceof String) {
-			return new FluidIngredient(getFluidTag(new ResourceLocation((String)obj)).getAllElements().stream().map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
+			return new FluidIngredient(MiscHelper.INSTANCE.getFluidTag(new ResourceLocation((String)obj)).getValues().stream().map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
 		}
 		else if(obj instanceof ResourceLocation) {
-			return new FluidIngredient(getFluidTag((ResourceLocation)obj).getAllElements().stream().map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
+			return new FluidIngredient(MiscHelper.INSTANCE.getFluidTag((ResourceLocation)obj).getValues().stream().map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
 		}
 		else if(obj instanceof FluidStack) {
 			return new FluidIngredient((FluidStack)obj);
@@ -82,10 +79,5 @@ public class ElectrodynamicsHelper {
 
 	public boolean registerMineralWasherRecipe(ResourceLocation key, Object itemInput, int itemInputCount, Object fluidInput, int fluidInputAmount, Object output, int outputAmount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new MineralWasherRecipeSupplier(key, itemInput, itemInputCount, fluidInput, fluidInputAmount, output, outputAmount));
-	}
-
-	public ITag<Fluid> getFluidTag(ResourceLocation location) {
-		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().get(location);
-		return tag != null ? tag : new EmptyNamedTag<>(location);
 	}
 }

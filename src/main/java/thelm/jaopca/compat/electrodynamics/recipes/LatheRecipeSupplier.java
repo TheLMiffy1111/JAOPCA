@@ -39,7 +39,7 @@ public class LatheRecipeSupplier implements Supplier<LatheRecipe> {
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new LatheRecipe(key, ing, stack);
 	}

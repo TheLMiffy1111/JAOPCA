@@ -65,17 +65,14 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 	@Override
 	public CrushingRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
-		if(secondChance > 0 && secondStack.isEmpty()) {
-			LOGGER.warn("Empty non-zero chance second output in recipe {}: {}", key, secondOutput);
-		}
 		try {
 			CrushingRecipe ret = new CrushingRecipe(key);
 			Field ingredientField = CrushingRecipe.class.getDeclaredField("ingredient");
@@ -96,7 +93,7 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 			experienceField.setAccessible(true);
 			ingredientField.set(ret, ing);
 			ingredientCountField.setInt(ret, inputCount);
-			ingredientListField.set(ret, Cache.create(()->NonNullList.from(ing)));
+			ingredientListField.set(ret, Cache.create(()->NonNullList.of(ing)));
 			resultField.set(ret, stack);
 			((RecipeChanceResult)bonusResultField.get(ret)).addChanceResult(secondStack, secondChance);
 			durationField.setInt(ret, time);

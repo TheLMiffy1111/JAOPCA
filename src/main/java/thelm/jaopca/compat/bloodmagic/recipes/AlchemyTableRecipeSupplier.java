@@ -41,14 +41,14 @@ public class AlchemyTableRecipeSupplier implements Supplier<RecipeAlchemyTable> 
 		List<Ingredient> inputList = new ArrayList<Ingredient>();
 		for(Object in : input) {
 			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
-			if(ing.hasNoMatchingItems()) {
-				LOGGER.warn("Empty input in recipe {}: {}", key, in);
+			if(ing.isEmpty()) {
+				throw new IllegalArgumentException("Empty input in recipe "+key+": "+in);
 			}
 			inputList.add(ing);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new RecipeAlchemyTable(key, inputList, stack, cost, time, minTier);
 	}

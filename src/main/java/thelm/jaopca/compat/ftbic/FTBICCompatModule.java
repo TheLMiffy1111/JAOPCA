@@ -5,8 +5,6 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -66,16 +64,16 @@ public class FTBICCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		FTBICHelper helper = FTBICHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		Set<String> generalBlacklist = helper.getBlacklist();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			boolean addToMaterials = false;
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!generalBlacklist.contains(name) && !configToDustBlacklist.contains(name)) {
+			if(!type.isDust() && !generalBlacklist.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				if(itemTags.contains(dustLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerMaceratingRecipe(
 								new ResourceLocation("jaopca", "ftbic.material_to_dust."+material.getName()),
@@ -88,11 +86,10 @@ public class FTBICCompatModule implements IModule {
 					}
 				}
 			}
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!generalBlacklist.contains(name) && !configToPlateBlacklist.contains(name)) {
+			if(!type.isDust() && !generalBlacklist.contains(name) && !configToPlateBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
-				if(api.getItemTags().contains(plateLocation)) {
+				if(itemTags.contains(plateLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerRollingRecipe(
 								new ResourceLocation("jaopca", "ftbic.material_to_plate."+material.getName()),
@@ -103,11 +100,10 @@ public class FTBICCompatModule implements IModule {
 					}
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.INGOTS, type) &&
-					!generalBlacklist.contains(name) && !configToGearBlacklist.contains(name)) {
+			if(type.isIngot() && !generalBlacklist.contains(name) && !configToGearBlacklist.contains(name)) {
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", material.getName());
 				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
-				if(api.getItemTags().contains(plateLocation) && api.getItemTags().contains(gearLocation)) {
+				if(itemTags.contains(plateLocation) && itemTags.contains(gearLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerRollingRecipe(
 								new ResourceLocation("jaopca", "ftbic.plate_to_gear."+material.getName()),
@@ -118,11 +114,10 @@ public class FTBICCompatModule implements IModule {
 					}
 				}
 			}
-			if((ArrayUtils.contains(MaterialType.GEMS, type) || ArrayUtils.contains(MaterialType.CRYSTALS, type)) &&
-					!generalBlacklist.contains(name) && !configToGearBlacklist.contains(name)) {
+			if(type.isCrystalline() && !generalBlacklist.contains(name) && !configToGearBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation gearLocation = miscHelper.getTagLocation("gears", material.getName());
-				if(api.getItemTags().contains(gearLocation)) {
+				if(itemTags.contains(gearLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerRollingRecipe(
 								new ResourceLocation("jaopca", "ftbic.material_to_gear."+material.getName()),
@@ -133,11 +128,10 @@ public class FTBICCompatModule implements IModule {
 					}
 				}
 			}
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!generalBlacklist.contains(name) && !configToRodBlacklist.contains(name)) {
+			if(!type.isDust() && !generalBlacklist.contains(name) && !configToRodBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", material.getName());
-				if(api.getItemTags().contains(rodLocation)) {
+				if(itemTags.contains(rodLocation)) {
 					if(!addToFTBICMaterials) {
 						helper.registerExtrudingRecipe(
 								new ResourceLocation("jaopca", "ftbic.material_to_rod."+material.getName()),

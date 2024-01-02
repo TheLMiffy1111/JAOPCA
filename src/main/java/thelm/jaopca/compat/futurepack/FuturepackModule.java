@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -23,7 +22,6 @@ import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "futurepack")
@@ -47,7 +45,7 @@ public class FuturepackModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		builder.put(1, "dusts");
 		return builder.build();
@@ -70,7 +68,6 @@ public class FuturepackModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		FuturepackHelper helper = FuturepackHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
@@ -102,7 +99,9 @@ public class FuturepackModule implements IModule {
 				output = ArrayUtils.addAll(output, exLocation, 2);
 			}
 
-			helper.registerZentrifugeRecipe(oreLocation, 4, 6, 200, output);
+			helper.registerZentrifugeRecipe(
+					new ResourceLocation("jaopca", "futurepack.ore_to_dust."+material.getName()),
+					oreLocation, 4, 6, 200, output);
 		}
 	}
 }

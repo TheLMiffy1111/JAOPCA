@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.item.Item;
@@ -82,34 +81,32 @@ public class MekanismCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(!ArrayUtils.contains(MaterialType.DUSTS, type) &&
-					!TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
+			if(!type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				if(itemTags.contains(dustLocation)) {
 					helper.registerCrushingRecipe(
 							new ResourceLocation("jaopca", "mekanism.material_to_dust."+material.getName()),
 							materialLocation, 1, dustLocation, 1);
 				}
 			}
-			if((ArrayUtils.contains(MaterialType.GEMS, type) || ArrayUtils.contains(MaterialType.CRYSTALS, type)) &&
-					!TO_CRYSTAL_BLACKLIST.contains(material.getName()) && !configToCrystalBlacklist.contains(name)) {
+			if(type.isCrystalline() && !TO_CRYSTAL_BLACKLIST.contains(material.getName()) && !configToCrystalBlacklist.contains(name)) {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				if(itemTags.contains(dustLocation)) {
 					helper.registerEnrichingRecipe(
 							new ResourceLocation("jaopca", "mekanism.dust_to_material."+material.getName()),
 							dustLocation, 1, materialLocation, 1);
 				}
 			}
-			if(ArrayUtils.contains(MaterialType.ORE, type) &&
-					!TO_ORE_BLACKLIST.contains(material.getName()) && !configToOreBlacklist.contains(name)) {
+			if(type.isOre() && !TO_ORE_BLACKLIST.contains(material.getName()) && !configToOreBlacklist.contains(name)) {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 				ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-				if(api.getItemTags().contains(dustLocation)) {
+				if(itemTags.contains(dustLocation)) {
 					IDynamicSpecConfig config = configs.get(material);
 					String configOreBase = config.getDefinedString("mekanism.ore_base", "#forge:cobblestone",
 							this::isTagOrItemValid, "The base to use in Mekanism's Combiner to recreate ores.");
@@ -146,7 +143,7 @@ public class MekanismCompatModule implements IModule {
 
 	public Object getTagOrItem(String s) {
 		if(StringUtils.startsWith(s, "#")) {
-			return (Supplier<ITag<Item>>)()->MekanismHelper.INSTANCE.getItemTag(new ResourceLocation(s.substring(1)));
+			return (Supplier<ITag<Item>>)()->MiscHelper.INSTANCE.getItemTag(new ResourceLocation(s.substring(1)));
 		}
 		else {
 			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(s));

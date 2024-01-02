@@ -52,7 +52,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	private OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCABucketItem(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(new Item.Properties().containerItem(Items.BUCKET).group(ItemFormType.getItemGroup()));
+		super(new Item.Properties().craftRemainder(Items.BUCKET).tab(ItemFormType.getItemGroup()));
 		this.fluid = fluid;
 		this.settings = settings;
 	}
@@ -76,11 +76,11 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack stack) {
+	public boolean isFoil(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
 			hasEffect = Optional.of(settings.getHasEffectFunction().test(getMaterial()));
 		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.get() || super.isFoil(stack);
 	}
 
 	@Override
@@ -100,9 +100,9 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
-		RayTraceResult rayTraceResult = rayTrace(world, player, RayTraceContext.FluidMode.NONE);
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		RayTraceResult rayTraceResult = getPlayerPOVHitResult(world, player, RayTraceContext.FluidMode.NONE);
 		ActionResult<ItemStack> ret = ForgeEventFactory.onBucketUse(player, world, stack, rayTraceResult);
 		if(ret != null) {
 			return ret;
@@ -115,15 +115,15 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		}
 		else {
 			BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult)rayTraceResult;
-			BlockPos resultPos = blockRayTraceResult.getPos();
-			if(world.isBlockModifiable(player, resultPos) && player.canPlayerEdit(resultPos, blockRayTraceResult.getFace(), stack)) {
-				BlockPos pos = blockRayTraceResult.getPos().offset(blockRayTraceResult.getFace());
+			BlockPos resultPos = blockRayTraceResult.getBlockPos();
+			if(world.mayInteract(player, resultPos) && player.mayUseItemAt(resultPos, blockRayTraceResult.getDirection(), stack)) {
+				BlockPos pos = blockRayTraceResult.getBlockPos().relative(blockRayTraceResult.getDirection());
 				if(tryPlaceContainedLiquid(player, world, pos, blockRayTraceResult)) {
 					onLiquidPlaced(world, stack, pos);
 					if(player instanceof ServerPlayerEntity) {
 						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, pos, stack);
 					}
-					player.addStat(Stats.ITEM_USED.get(this));
+					player.awardStat(Stats.ITEM_USED.get(this));
 					return new ActionResult<>(ActionResultType.SUCCESS, emptyBucket(stack, player));
 				}
 				else {
@@ -137,7 +137,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	protected ItemStack emptyBucket(ItemStack stack, PlayerEntity player) {
-		return !player.abilities.isCreativeMode ? new ItemStack(Items.BUCKET) : stack;
+		return !player.abilities.instabuild ? new ItemStack(Items.BUCKET) : stack;
 	}
 
 	public void onLiquidPlaced(World world, ItemStack stack, BlockPos pos) {}
@@ -147,35 +147,35 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		Material blockMaterial = blockState.getMaterial();
 		boolean flag = !blockMaterial.isSolid();
 		boolean flag1 = blockMaterial.isReplaceable();
-		if(world.isAirBlock(pos) || flag || flag1) {
-			FluidStack stack = new FluidStack(fluid.asFluid(), FluidAttributes.BUCKET_VOLUME);
-			if(world.getDimensionType().isUltrawarm() && fluid.asFluid().isIn(FluidTags.WATER)) {
+		if(world.isEmptyBlock(pos) || flag || flag1) {
+			FluidStack stack = new FluidStack(fluid.toFluid(), FluidAttributes.BUCKET_VOLUME);
+			if(world.dimensionType().ultraWarm() && fluid.toFluid().is(FluidTags.WATER)) {
 				int i = pos.getX();
 				int j = pos.getY();
 				int k = pos.getZ();
-				world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F+(world.rand.nextFloat()-world.rand.nextFloat())*0.8F);
+				world.playSound(player, pos, SoundEvents.FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F+(world.random.nextFloat()-world.random.nextFloat())*0.8F);
 				for(int l = 0; l < 8; ++l) {
-					world.addOptionalParticle(ParticleTypes.LARGE_SMOKE, i+Math.random(), j+Math.random(), k+Math.random(), 0, 0, 0);
+					world.addParticle(ParticleTypes.LARGE_SMOKE, i+Math.random(), j+Math.random(), k+Math.random(), 0, 0, 0);
 				}
 			}
 			else {
-				if(!world.isRemote && (flag || flag1) && !blockMaterial.isLiquid()) {
+				if(!world.isClientSide && (flag || flag1) && !blockMaterial.isLiquid()) {
 					world.destroyBlock(pos, true);
 				}
 				playEmptySound(player, world, pos);
-				world.setBlockState(pos, fluid.asFluid().getAttributes().getStateForPlacement(world, pos, stack).getBlockState(), 11);
+				world.setBlock(pos, fluid.toFluid().getAttributes().getStateForPlacement(world, pos, stack).createLegacyBlock(), 11);
 			}
 			return true;
 		}
 		else {
-			return rayTraceResult == null ? false : tryPlaceContainedLiquid(player, world, rayTraceResult.getPos().offset(rayTraceResult.getFace()), null);
+			return rayTraceResult == null ? false : tryPlaceContainedLiquid(player, world, rayTraceResult.getBlockPos().relative(rayTraceResult.getDirection()), null);
 		}
 	}
 
 	protected void playEmptySound(PlayerEntity player, IWorld world, BlockPos pos) {
-		SoundEvent soundEvent = fluid.asFluid().getAttributes().getEmptySound();
+		SoundEvent soundEvent = fluid.toFluid().getAttributes().getEmptySound();
 		if(soundEvent == null) {
-			soundEvent = fluid.asFluid().isIn(FluidTags.LAVA) ? SoundEvents.ITEM_BUCKET_EMPTY_LAVA : SoundEvents.ITEM_BUCKET_EMPTY;
+			soundEvent = fluid.toFluid().is(FluidTags.LAVA) ? SoundEvents.BUCKET_EMPTY_LAVA : SoundEvents.BUCKET_EMPTY;
 		}
 		world.playSound(player, pos, soundEvent, SoundCategory.BLOCKS, 1, 1);
 	}
@@ -186,7 +186,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	}
 
 	@Override
-	public ITextComponent getDisplayName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+getForm().getName(), getMaterial(), getTranslationKey());
+	public ITextComponent getName(ItemStack stack) {
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+getForm().getName(), getMaterial(), getDescriptionId(stack));
 	}
 }

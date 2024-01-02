@@ -47,7 +47,7 @@ public class CrushingRecipeSupplier implements Supplier<CrusherRecipe> {
 	@Override
 	public CrusherRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
@@ -55,9 +55,6 @@ public class CrushingRecipeSupplier implements Supplier<CrusherRecipe> {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
-		if(secondOutput != ItemStack.EMPTY && secondStack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, secondOutput);
-		}
 		try {
 			CrusherRecipe ret = new CrusherRecipe(key);
 			ret.ingredient = ing;

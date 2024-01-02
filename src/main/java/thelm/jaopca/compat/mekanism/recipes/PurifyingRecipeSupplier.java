@@ -40,13 +40,16 @@ public class PurifyingRecipeSupplier implements Supplier<PurifyingIRecipe> {
 	@Override
 	public PurifyingIRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(itemInput);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+itemInput);
 		}
 		GasStackIngredient gasIng = MekanismHelper.INSTANCE.getGasStackIngredient(gasInput, gasInputCount);
+		if(gasIng.getRepresentations().isEmpty()) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+gasInput);
+		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new PurifyingIRecipe(key, ItemStackIngredient.from(ing, itemInputCount), gasIng, stack);
 	}

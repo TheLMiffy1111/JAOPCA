@@ -7,14 +7,12 @@ import java.util.TreeSet;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "flux@[4.16.1,)")
@@ -40,7 +38,6 @@ public class FluxNonIngotModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		FluxHelper helper = FluxHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
@@ -54,7 +51,7 @@ public class FluxNonIngotModule implements IModule {
 			else {
 				helper.registerWashingRecipe(
 						new ResourceLocation("jaopca", "flux.ore_to_material."+material.getName()),
-						oreLocation, 1, materialLocation, 6, 0F, 200);
+						oreLocation, 1, materialLocation, 5, 0F, 200);
 			}
 		}
 	}

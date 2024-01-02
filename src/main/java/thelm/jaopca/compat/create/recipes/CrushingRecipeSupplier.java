@@ -1,8 +1,12 @@
 package thelm.jaopca.compat.create.recipes;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,10 +38,11 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 	public CrushingRecipe get() {
 		ProcessingRecipeBuilder<CrushingRecipe> builder = new ProcessingRecipeBuilder<>(CrushingRecipe::new, key);
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		builder.require(ing);
+		List<Pair<ItemStack, Float>> outputs = new ArrayList<>();
 		int i = 0;
 		while(i < output.length) {
 			Object out = output[i];
@@ -55,8 +60,15 @@ public class CrushingRecipeSupplier implements Supplier<CrushingRecipe> {
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
-			builder.output(chance, stack);
+			outputs.add(Pair.of(stack, chance));
+		}
+		if(outputs.isEmpty()) {
+			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
+		}
+		for(Pair<ItemStack, Float> out : outputs) {
+			builder.output(out.getRight(), out.getLeft());
 		}
 		return builder.duration(time).build();
 	}

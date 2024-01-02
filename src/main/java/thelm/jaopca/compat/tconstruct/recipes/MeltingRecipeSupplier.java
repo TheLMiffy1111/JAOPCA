@@ -51,12 +51,12 @@ public class MeltingRecipeSupplier implements Supplier<MeltingRecipe> {
 	@Override
 	public MeltingRecipe get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing.hasNoMatchingItems()) {
+		if(ing.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, outputAmount);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		List<FluidStack> bys = new ArrayList<>();
 		int i = 0;
@@ -71,6 +71,7 @@ public class MeltingRecipeSupplier implements Supplier<MeltingRecipe> {
 			FluidStack by = MiscHelper.INSTANCE.getFluidStack(out, amount);
 			if(stack.isEmpty()) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				continue;
 			}
 			bys.add(by);
 		}

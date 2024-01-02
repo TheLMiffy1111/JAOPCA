@@ -27,7 +27,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	protected OptionalInt burnTime = OptionalInt.empty();
 
 	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
-		super(block.asBlock(), new Item.Properties().group(ItemFormType.getItemGroup()));
+		super(block.toBlock(), new Item.Properties().tab(ItemFormType.getItemGroup()));
 		this.settings = settings;
 	}
 
@@ -50,11 +50,11 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack stack) {
+	public boolean isFoil(ItemStack stack) {
 		if(!hasEffect.isPresent()) {
 			hasEffect = Optional.of(settings.getHasEffectFunction().test(getMaterial()));
 		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.get() || super.isFoil(stack);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	}
 
 	@Override
-	public ITextComponent getDisplayName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getTranslationKey());
+	public ITextComponent getName(ItemStack stack) {
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getDescriptionId());
 	}
 }

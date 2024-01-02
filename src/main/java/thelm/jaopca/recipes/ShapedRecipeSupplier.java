@@ -43,7 +43,7 @@ public class ShapedRecipeSupplier implements Supplier<ShapedRecipe> {
 	public ShapedRecipe get() {
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		int width = 0, height = 0;
 		String shape = "";
@@ -76,8 +76,8 @@ public class ShapedRecipeSupplier implements Supplier<ShapedRecipe> {
 			if(' ' == chr.charValue()) {
 				throw new IllegalArgumentException("Invalid key entry in recipe "+key+": ' ' is a reserved symbol");
 			}
-			if(ing.hasNoMatchingItems()) {
-				LOGGER.warn("Empty ingredient in recipe {}: {}", key, in);
+			if(ing.isEmpty()) {
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			itemMap.put(chr, ing);
 		}

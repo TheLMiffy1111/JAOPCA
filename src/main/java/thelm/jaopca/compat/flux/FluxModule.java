@@ -12,7 +12,6 @@ import com.google.common.collect.Multimap;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -43,7 +42,7 @@ public class FluxModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		return builder.build();
 	}
@@ -65,24 +64,27 @@ public class FluxModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		FluxHelper helper = FluxHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		for(IMaterial material : gritForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			IItemInfo gritInfo = itemFormType.getMaterialFormInfo(gritForm, material);
+			ResourceLocation gritLocation = miscHelper.getTagLocation("grits", material.getName());
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			helper.registerWashingRecipe(
 					new ResourceLocation("jaopca", "flux.ore_to_grit."+material.getName()),
 					oreLocation, 1, gritInfo, 3, 0F, 200);
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation gritLocation = miscHelper.getTagLocation("grits", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			helper.registerGrindingRecipe(
 					new ResourceLocation("jaopca", "flux.grit_to_dust."+material.getName()),
 					gritLocation, 1, dustLocation, 1, 0F, 200);
+		}
+		for(IMaterial material : moduleData.getMaterials()) {
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			helper.registerGrindingRecipe(
 					new ResourceLocation("jaopca", "flux.ore_to_dust."+material.getName()),
 					oreLocation, 1, dustLocation, 2, 0F, 200);

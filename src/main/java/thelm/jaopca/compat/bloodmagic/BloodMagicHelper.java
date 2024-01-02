@@ -7,13 +7,12 @@ import com.google.gson.JsonElement;
 
 import net.minecraft.fluid.Fluid;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollectionManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.compat.bloodmagic.recipes.ARCRecipeSupplier;
 import thelm.jaopca.compat.bloodmagic.recipes.AlchemyTableRecipeSupplier;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 import wayoftime.bloodmagic.recipe.helper.FluidStackIngredient;
 
 public class BloodMagicHelper {
@@ -30,10 +29,10 @@ public class BloodMagicHelper {
 			return (FluidStackIngredient)obj;
 		}
 		else if(obj instanceof String) {
-			return FluidStackIngredient.from(getFluidTag(new ResourceLocation((String)obj)), amount);
+			return FluidStackIngredient.from(MiscHelper.INSTANCE.getFluidTag(new ResourceLocation((String)obj)), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return FluidStackIngredient.from(getFluidTag((ResourceLocation)obj), amount);
+			return FluidStackIngredient.from(MiscHelper.INSTANCE.getFluidTag((ResourceLocation)obj), amount);
 		}
 		else if(obj instanceof ITag<?>) {
 			return FluidStackIngredient.from((ITag<Fluid>)obj, amount);
@@ -66,10 +65,5 @@ public class BloodMagicHelper {
 
 	public boolean registerARCRecipe(ResourceLocation key, Object input, Object tool, Object[] output, boolean consumeInput) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new ARCRecipeSupplier(key, input, tool, output, consumeInput));
-	}
-
-	public ITag<Fluid> getFluidTag(ResourceLocation location) {
-		ITag<Fluid> tag = TagCollectionManager.getManager().getFluidTags().get(location);
-		return tag != null ? tag : Tag.getEmptyTag();
 	}
 }

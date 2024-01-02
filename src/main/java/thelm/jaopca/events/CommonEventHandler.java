@@ -55,12 +55,11 @@ public class CommonEventHandler {
 		ModuleHandler.computeValidMaterials();
 		FormHandler.computeValidMaterials();
 		ConfigHandler.setupModuleConfigs();
-		BlockFormType.registerEntries();
-		ItemFormType.registerEntries();
-		FluidFormType.registerEntries();
+		FormTypeHandler.registerMaterialForms();
 		ModuleHandler.onMaterialComputeComplete();
 	}
 
+	@SuppressWarnings("rawtypes")
 	@SubscribeEvent
 	public void onRegister(RegistryEvent.Register event) {
 		RegistryHandler.onRegister(event);

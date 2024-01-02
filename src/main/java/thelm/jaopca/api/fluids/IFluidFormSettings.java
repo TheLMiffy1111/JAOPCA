@@ -99,6 +99,10 @@ public interface IFluidFormSettings extends IFormSettings {
 
 	Predicate<IMaterial> getIsFireSourceFunction();
 
+	IFluidFormSettings setFireTimeFunction(ToIntFunction<IMaterial> fireTimeFunction);
+
+	ToIntFunction<IMaterial> getFireTimeFunction();
+
 	IFluidFormSettings setBucketItemCreator(IBucketItemCreator bucketItemCreator);
 
 	IBucketItemCreator getBucketItemCreator();

@@ -20,7 +20,7 @@ public class EmptyNamedTag<T> implements Tags.IOptionalNamedTag<T> {
 	}
 
 	@Override
-	public List<T> getAllElements() {
+	public List<T> getValues() {
 		return Collections.emptyList();
 	}
 

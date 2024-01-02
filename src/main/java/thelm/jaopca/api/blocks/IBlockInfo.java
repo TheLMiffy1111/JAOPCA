@@ -14,11 +14,11 @@ public interface IBlockInfo extends IMaterialFormInfo, IBlockProvider, IItemProv
 	IMaterialFormBlockItem getMaterialFormBlockItem();
 
 	default Block getBlock() {
-		return getMaterialFormBlock().asBlock();
+		return getMaterialFormBlock().toBlock();
 	}
 
 	default BlockItem getBlockItem() {
-		return getMaterialFormBlockItem().asBlockItem();
+		return getMaterialFormBlockItem().toBlockItem();
 	}
 
 	@Override
@@ -33,6 +33,6 @@ public interface IBlockInfo extends IMaterialFormInfo, IBlockProvider, IItemProv
 
 	@Override
 	default Block asBlock() {
-		return getMaterialFormBlock().asBlock();
+		return getMaterialFormBlock().toBlock();
 	}
 }

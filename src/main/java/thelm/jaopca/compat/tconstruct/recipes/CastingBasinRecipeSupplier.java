@@ -60,7 +60,7 @@ public class CastingBasinRecipeSupplier implements Supplier<ItemCastingRecipe.Ba
 		FluidStack funcStack = MiscHelper.INSTANCE.getFluidStack(input, inputAmount);
 		ItemOutput out = TConstructHelper.INSTANCE.getItemOutput(output, outputCount);
 		if(out.get().isEmpty()) {
-			LOGGER.warn("Empty output in recipe {}: {}", key, output);
+			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		return new ItemCastingRecipe.Basin(key, group, ing, fluidIng, out, time.applyAsInt(funcStack), consumeCast, switchSlots);
 	}

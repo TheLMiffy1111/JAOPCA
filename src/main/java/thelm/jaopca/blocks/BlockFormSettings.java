@@ -30,7 +30,7 @@ public class BlockFormSettings implements IBlockFormSettings {
 	BlockFormSettings() {}
 
 	private IBlockCreator blockCreator = JAOPCABlock::new;
-	private Function<IMaterial, Material> materialFunction = material->Material.IRON;
+	private Function<IMaterial, Material> materialFunction = material->Material.METAL;
 	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
 	//material->{
 	//	int color = material.getColor();
@@ -47,7 +47,7 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->6;
 	private ToDoubleFunction<IMaterial> slipperinessFunction = material->0.6;
 	private boolean isFull = true;
-	private VoxelShape shape = VoxelShapes.fullCube();
+	private VoxelShape shape = VoxelShapes.block();
 	private VoxelShape raytraceShape = VoxelShapes.empty();
 	private Function<IMaterial, ToolType> harvestToolFunction = material->ToolType.PICKAXE;
 	private ToIntFunction<IMaterial> harvestLevelFunction = material->0;
@@ -55,10 +55,10 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
 	private Predicate<IMaterial> isFireSourceFunction = material->false;
 	private IBlockLootTableCreator blockLootTableCreator = (block, settings)->{
-		return LootTable.builder().setParameterSet(LootParameterSets.BLOCK).
-				addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).
-						addEntry(ItemLootEntry.builder(block.asBlock())).
-						acceptCondition(SurvivesExplosion.builder())).build();
+		return LootTable.lootTable().setParamSet(LootParameterSets.BLOCK).
+				withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).
+						add(ItemLootEntry.lootTableItem(block.toBlock())).
+						when(SurvivesExplosion.survivesExplosion())).build();
 	};
 
 	private IBlockItemCreator itemBlockCreator = JAOPCABlockItem::new;
