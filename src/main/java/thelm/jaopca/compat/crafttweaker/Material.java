@@ -11,6 +11,7 @@ import com.blamejared.crafttweaker.api.item.IItemStack;
 import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.tag.CraftTweakerTagRegistry;
 import com.blamejared.crafttweaker.api.tag.MCTag;
+import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -71,7 +72,7 @@ public class Material {
 
 	@ZenCodeType.Method
 	public MCTag getItemTag(String prefix) {
-		return getTag(Registry.ITEM_REGISTRY, prefix, "/");
+		return getItemTag(prefix, "/");
 	}
 
 	@ZenCodeType.Method
@@ -81,7 +82,7 @@ public class Material {
 
 	@ZenCodeType.Method
 	public MCTag getFluidTag(String prefix) {
-		return getTag(Registry.FLUID_REGISTRY, prefix, "/");
+		return getFluidTag(prefix, "/");
 	}
 
 	@ZenCodeType.Method
@@ -96,13 +97,25 @@ public class Material {
 
 	@ZenCodeType.Method
 	public MCTag getTag(ResourceLocation registry, String prefix, String tagSeperator) {
-		return CraftTweakerTagRegistry.INSTANCE.tagManager(registry).
-				tag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator));
+		return getTag(ResourceKey.createRegistryKey(registry), prefix, tagSeperator);
+	}
+
+	public <T> MCTag getTag(ResourceKey<? extends Registry<T>> registry, String prefix) {
+		return getTag(registry, prefix, "/");
 	}
 
 	public <T> MCTag getTag(ResourceKey<? extends Registry<T>> registry, String prefix, String tagSeperator) {
-		return CraftTweakerTagRegistry.INSTANCE.tagManager(registry).
-				tag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator));
+		return getTag(CraftTweakerTagRegistry.INSTANCE.tagManager(registry), prefix, tagSeperator);
+	}
+
+	@ZenCodeType.Method
+	public MCTag getTag(ITagManager<?> tagManager, String prefix) {
+		return getTag(tagManager, prefix, "/");
+	}
+
+	@ZenCodeType.Method
+	public MCTag getTag(ITagManager<?> tagManager, String prefix, String tagSeperator) {
+		return tagManager.tag(MiscHelper.INSTANCE.getTagLocation(prefix, material.getName(), tagSeperator));
 	}
 
 	@ZenCodeType.Method
