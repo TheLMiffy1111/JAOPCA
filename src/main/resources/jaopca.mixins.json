@@ -2,7 +2,7 @@
     "required": true,
     "minVersion": "0.8",
     "package": "thelm.jaopca.mixins",
-    "refmap": "mixins.jaopca.refmap.json",
+    "refmap": "jaopca.refmap.json",
     "target": "@env(DEFAULT)",
     "compatibilityLevel": "JAVA_8",
     "mixins": [
