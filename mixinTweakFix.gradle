@@ -36,7 +36,8 @@ abstract class RenameForMixinFmlAgent implements TransformAction<TransformParame
 	void transform(TransformOutputs outputs) {
 		def inputFile = inputArtifact.get().asFile
 		def inputJar = new JarFile(inputFile)
-		if("true".equalsIgnoreCase(inputJar.manifest?.mainAttributes?.getValue("FMLCorePluginContainsFMLMod"))) {
+		def attr = inputJar.manifest?.mainAttributes
+		if("true".equalsIgnoreCase(attr?.getValue("ForceLoadAsMod")) && attr?.getValue("FMLCorePluginContainsFMLMod")) {
 			println "Renaming ${inputFile.name}"
 			def baseName = inputFile.name.substring(0, inputFile.name.length()-4)
 			def renamedFile = outputs.file("${baseName}-deobfedDeps.jar")
