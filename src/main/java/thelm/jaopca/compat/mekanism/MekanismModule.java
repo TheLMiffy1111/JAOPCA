@@ -161,7 +161,7 @@ public class MekanismModule implements IModule {
 					miscHelper.getRecipeKey("mekanism.dirty_dust_to_dust", material.getName()),
 					dirtyDustOredict, 1, dustOredict, 1);
 		}
-		for(IMaterial material : Sets.difference(moduleData.getMaterials(), MODULE_BLACKLIST)) {
+		for(IMaterial material : Sets.filter(moduleData.getMaterials(), m->!MODULE_BLACKLIST.contains(m.getName()))) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			helper.registerEnrichmentChamberRecipe(

@@ -10,7 +10,7 @@ plugins {
 apply from: "mixinTweakFix.gradle"
 
 repositories {
-	jcenter()
+	mavenCentral()
 	flatDir {
 		dirs "libs"
 	}
@@ -121,7 +121,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.9.14"
+version = "2.3.9.15"
 
 archivesBaseName = "${modName}-${mcVersion}"
 

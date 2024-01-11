@@ -132,7 +132,7 @@ public class HBMModule implements IModule {
 						});
 			}
 		}
-		for(IMaterial material : Sets.difference(moduleData.getMaterials(), MODULE_BLACKLIST)) {
+		for(IMaterial material : Sets.filter(moduleData.getMaterials(), m->!MODULE_BLACKLIST.contains(m.getName()))) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String dustOredict = miscHelper.getOredictName("dust", material.getName());
 			String extraDustOredict = miscHelper.getOredictName("dust", material.getExtra(1).getName());
