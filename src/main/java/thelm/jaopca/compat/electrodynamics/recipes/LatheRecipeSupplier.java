@@ -6,8 +6,10 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import electrodynamics.common.recipe.categories.o2o.specificmachines.LatheRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.LatheRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
+import electrodynamics.common.recipe.recipeutils.ProbableFluid;
+import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.compat.electrodynamics.ElectrodynamicsHelper;
@@ -22,13 +24,29 @@ public class LatheRecipeSupplier implements Supplier<LatheRecipe> {
 	public final int inputCount;
 	public final Object output;
 	public final int outputCount;
+	public final Object secondOutput;
+	public final int secondOutputCount;
+	public final double secondChance;
+	public final double experience;
+	public final int time;
+	public final double energy;
 
-	public LatheRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
+	public LatheRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double experience, int time, double energy) {
+		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, experience, time, energy);
+	}
+
+	public LatheRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, double secondChance, double experience, int time, double energy) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.inputCount = inputCount;
 		this.output = output;
 		this.outputCount = outputCount;
+		this.secondOutput = secondOutput;
+		this.secondOutputCount = secondOutputCount;
+		this.secondChance = secondChance;
+		this.experience = experience;
+		this.time = time;
+		this.energy = energy;
 	}
 
 	@Override
@@ -41,6 +59,8 @@ public class LatheRecipeSupplier implements Supplier<LatheRecipe> {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		return new LatheRecipe(key, ing, stack);
+		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
+		ProbableItem[] itembi = secondStack.isEmpty() ? new ProbableItem[0] : new ProbableItem[] {new ProbableItem(secondStack, secondChance)};
+		return new LatheRecipe(key, new CountableIngredient[] {ing}, stack, experience, time, energy, itembi, new ProbableFluid[0]);
 	}
 }

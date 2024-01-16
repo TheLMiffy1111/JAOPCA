@@ -4,14 +4,18 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
+import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.fluids.IFluidInfo;
 import thelm.jaopca.api.forms.IForm;
@@ -29,21 +33,23 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "electrodynamics")
+@JAOPCAModule(modDependencies = "electrodynamics@[1.16.5-0.5.1-0,)")
 public class ElectrodynamicsModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
 			"aluminum", "aluminium", "chromium", "copper", "gold", "iron", "lead", "lithium", "molybdenum",
 			"netherite", "netherite_scrap", "silver", "tin", "titanium", "vanadium"));
 
+	private Map<IMaterial, IDynamicSpecConfig> configs;
+
 	private final IForm impureDustForm = ApiImpl.INSTANCE.newForm(this, "electrodynamics_impuredusts", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("electrodynamics:impuredusts").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm crystalForm = ApiImpl.INSTANCE.newForm(this, "electrodynamics_crystals", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("electrodynamics:crystals").setDefaultMaterialBlacklist(BLACKLIST);
-	private final IForm mineralFluidForm = ApiImpl.INSTANCE.newForm(this, "electrodynamics_mineral_fluids", FluidFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("electrodynamics:mineral_fluids").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IForm sulfateForm = ApiImpl.INSTANCE.newForm(this, "electrodynamics_mineral_fluids", FluidFormType.INSTANCE).
+			setMaterialTypes(MaterialType.INGOT).setSecondaryName("electrodynamics:sulfates").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
-			impureDustForm, crystalForm, mineralFluidForm).setGrouped(true);
+			impureDustForm, crystalForm, sulfateForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -73,15 +79,21 @@ public class ElectrodynamicsModule implements IModule {
 	}
 
 	@Override
+	public void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {
+		this.configs = configs;
+	}
+
+	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		ElectrodynamicsHelper helper = ElectrodynamicsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		IFluidFormType fluidFormType = FluidFormType.INSTANCE;
 		ResourceLocation sulfuricAcidLocation = new ResourceLocation("forge:sulfuric_acid");
-		for(IMaterial material : mineralFluidForm.getMaterials()) {
-			IFluidInfo mineralFluidInfo = fluidFormType.getMaterialFormInfo(mineralFluidForm, material);
-			ResourceLocation mineralFluidLocation = miscHelper.getTagLocation("electrodynamics:mineral_fluids", material.getName());
+		Item sulfurTrioxide = ForgeRegistries.ITEMS.getValue(new ResourceLocation("electrodynamics:oxidetrisulfur"));
+		for(IMaterial material : sulfateForm.getMaterials()) {
+			IFluidInfo sulfateInfo = fluidFormType.getMaterialFormInfo(sulfateForm, material);
+			ResourceLocation sulfateLocation = miscHelper.getTagLocation("electrodynamics:sulfates", material.getName());
 			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
 			ResourceLocation crystalLocation = miscHelper.getTagLocation("electrodynamics:crystals", material.getName());
 			IItemInfo impureDustInfo = itemFormType.getMaterialFormInfo(impureDustForm, material);
@@ -90,31 +102,36 @@ public class ElectrodynamicsModule implements IModule {
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 
 			helper.registerMineralWasherRecipe(
-					new ResourceLocation("jaopca", "electrodynamics.ore_to_mineral_fluid."+material.getName()),
-					oreLocation, 1, sulfuricAcidLocation, 1000, mineralFluidInfo, 1000);
+					new ResourceLocation("jaopca", "electrodynamics.ore_to_sulfate."+material.getName()),
+					oreLocation, 1, sulfuricAcidLocation, 1000, sulfateInfo, 1000, 0, 200, 400);
 
 			helper.registerChemicalCrystallizerRecipe(
-					new ResourceLocation("jaopca", "electrodynamics.mineral_fluid_to_crystal."+material.getName()),
-					mineralFluidLocation, 200, crystalInfo, 1);
+					new ResourceLocation("jaopca", "electrodynamics.sulfate_to_crystal."+material.getName()),
+					sulfateLocation, 200, crystalInfo, 1, 0, 200, 800);
 
 			helper.registerMineralCrusherRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.ore_to_impure_dust."+material.getName()),
-					oreLocation, 1, impureDustInfo, 3);
+					oreLocation, 1, impureDustInfo, 3, 0.3, 200, 450);
 			helper.registerMineralCrusherRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.crystal_to_impure_dust."+material.getName()),
-					crystalLocation, 1, impureDustInfo, 1);
+					crystalLocation, 1, impureDustInfo, 1, sulfurTrioxide, 1, 0, 0.1, 200, 450);
 
 			helper.registerMineralGrinderRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.impure_dust_to_dust."+material.getName()),
-					impureDustLocation, 1, dustLocation, 1);
+					impureDustLocation, 1, dustLocation, 1, 0.1, 200, 350);
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 
+			IDynamicSpecConfig config = configs.get(material);
+			String configByproduct = config.getDefinedString("electrodynamics.byproduct", "minecraft:cobblestone",
+					s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s)), "The byproduct material to output in Create's crushing.");
+			Item byproduct = ForgeRegistries.ITEMS.getValue(new ResourceLocation(configByproduct));
+
 			helper.registerMineralGrinderRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.ore_to_dust."+material.getName()),
-					oreLocation, 1, dustLocation, 2);
+					oreLocation, 1, dustLocation, 2, byproduct, 1, 0.1, 0.3, 200, 350);
 		}
 	}
 }

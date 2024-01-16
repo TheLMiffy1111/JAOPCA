@@ -61,23 +61,35 @@ public class ElectrodynamicsHelper {
 		return new FluidIngredient(Collections.emptyList());
 	}
 
-	public boolean registerMineralCrusherRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new MineralCrusherRecipeSupplier(key, input, inputCount, output, outputCount));
+	public boolean registerMineralCrusherRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, double secondChance, double experience, int time, double energy) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new MineralCrusherRecipeSupplier(key, input, inputCount, output, outputCount, secondOutput, secondOutputCount, secondChance, experience, time, energy));
 	}
 
-	public boolean registerMineralGrinderRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new MineralGrinderRecipeSupplier(key, input, inputCount, output, outputCount));
+	public boolean registerMineralCrusherRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double experience, int time, double energy) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new MineralCrusherRecipeSupplier(key, input, inputCount, output, outputCount, experience, time, energy));
 	}
 
-	public boolean registerLatheRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new LatheRecipeSupplier(key, input, inputCount, output, outputCount));
+	public boolean registerMineralGrinderRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, double secondChance, double experience, int time, double energy) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new MineralGrinderRecipeSupplier(key, input, inputCount, output, outputCount, secondOutput, secondOutputCount, secondChance, experience, time, energy));
 	}
 
-	public boolean registerChemicalCrystallizerRecipe(ResourceLocation key, Object input, int inputAmount, Object output, int outputCount) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new ChemicalCrystallizerRecipeSupplier(key, input, inputAmount, output, outputCount));
+	public boolean registerMineralGrinderRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double experience, int time, double energy) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new MineralGrinderRecipeSupplier(key, input, inputCount, output, outputCount, experience, time, energy));
 	}
 
-	public boolean registerMineralWasherRecipe(ResourceLocation key, Object itemInput, int itemInputCount, Object fluidInput, int fluidInputAmount, Object output, int outputAmount) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new MineralWasherRecipeSupplier(key, itemInput, itemInputCount, fluidInput, fluidInputAmount, output, outputAmount));
+	public boolean registerLatheRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, double secondChance, double experience, int time, double energy) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new LatheRecipeSupplier(key, input, inputCount, output, outputCount, secondOutput, secondOutputCount, secondChance, experience, time, energy));
+	}
+
+	public boolean registerLatheRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double experience, int time, double energy) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new LatheRecipeSupplier(key, input, inputCount, output, outputCount, experience, time, energy));
+	}
+
+	public boolean registerChemicalCrystallizerRecipe(ResourceLocation key, Object input, int inputAmount, Object output, int outputCount, double experience, int time, double energy) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new ChemicalCrystallizerRecipeSupplier(key, input, inputAmount, output, outputCount, experience, time, energy));
+	}
+
+	public boolean registerMineralWasherRecipe(ResourceLocation key, Object itemInput, int itemInputCount, Object fluidInput, int fluidInputAmount, Object output, int outputAmount, double experience, int time, double energy) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new MineralWasherRecipeSupplier(key, itemInput, itemInputCount, fluidInput, fluidInputAmount, output, outputAmount, experience, time, energy));
 	}
 }

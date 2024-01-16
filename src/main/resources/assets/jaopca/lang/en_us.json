@@ -29,9 +29,9 @@
     "item.jaopca.bloodmagic_fragments": "%s Ore Fragment",
 
     "item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
-    "item.jaopca.electrodynamics_crystals": "%s Crystal",
-    "fluid.jaopca.electrodynamics_mineral_fluids": "%s Mineral Fluid",
-    "item.jaopca.electrodynamics_mineral_fluids": "%s Mineral Fluid Bucket",
+    "item.jaopca.electrodynamics_crystals": "%s Sulfate Crystal",
+    "fluid.jaopca.electrodynamics_mineral_fluids": "%s Sulfate",
+    "item.jaopca.electrodynamics_mineral_fluids": "%s Sulfate Bucket",
 
     "item.jaopca.exnihilosequentia_pieces": "%s Ore Piece",
     "item.jaopca.exnihilosequentia_chunks": "%s Ore Chunk"

@@ -105,7 +105,7 @@ def specVersion = "3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "3.4.4.28"
+version = "3.4.4.29"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -179,7 +179,6 @@ dependencies {
 	}
 	implementation fg.deobf("com.teamcofh:thermal_foundation:1.16.5-1.5.2.30")
 	implementation fg.deobf("com.teamcofh:thermal_expansion:1.16.5-1.5.2.16")
-	implementation fg.deobf("redsnakegames.mcenderdragon:futurepack:1.16.5-31.3.7006")
 
 	//CurseMaven
 	implementation fg.deobf("curse.maven:ato-405593:3405905")
@@ -196,7 +195,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:blood-magic-224791:3870899")
 	implementation fg.deobf("curse.maven:occultism-361026:3861416")
 	implementation fg.deobf("curse.maven:themcbros-useless-mod-322455:3364720")
-	implementation fg.deobf("curse.maven:electrodynamics-316867:3605071")
+	implementation fg.deobf("curse.maven:electrodynamics-316867:5002149")
 	implementation fg.deobf("curse.maven:cyclops-core-232758:3517568")
 	implementation fg.deobf("curse.maven:common-capabilities-247007:3482420")
 	implementation fg.deobf("curse.maven:integrated-dynamics-236307:3640128")
@@ -206,6 +205,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:wtbw_core-357091:3087383")
 	implementation fg.deobf("curse.maven:wtbw_machines-357095:3087391")
 	implementation fg.deobf("curse.maven:json-things-541617:3655282")
+	implementation fg.deobf("curse.maven:futurepack-237333:4019689")
 
 	//Performance
 	implementation fg.deobf("curse.maven:shutup-experimental-settings-407174:3188120")

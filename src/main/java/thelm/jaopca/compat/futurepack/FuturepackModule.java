@@ -24,7 +24,7 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "futurepack")
+@JAOPCAModule(modDependencies = "futurepack@[31.3.7008,)")
 public class FuturepackModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
