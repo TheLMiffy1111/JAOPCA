@@ -193,7 +193,7 @@ dependencies {
 	//CurseMaven
 	implementation fg.deobf("curse.maven:ato-405593:4046926")
 	implementation fg.deobf("curse.maven:allthemodium-364466:4667332")
-	implementation fg.deobf("curse.maven:electrodynamics-316867:4518028")
+	implementation fg.deobf("curse.maven:electrodynamics-316867:5022888")
 	implementation fg.deobf("curse.maven:voluminous-energy-416704:4627252")
 	implementation fg.deobf("curse.maven:cyclops-core-232758:4905969")
 	implementation fg.deobf("curse.maven:common-capabilities-247007:4391413")
