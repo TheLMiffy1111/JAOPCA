@@ -47,11 +47,11 @@ public class ElectrodynamicsNonIngotModule implements IModule {
 
 			helper.registerMineralGrinderRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.ore_to_material_grinder."+material.getName()),
-					oreLocation, 1, materialLocation, isCrystal ? 3 : 2, isCrystal ? 1 : 0.3);
+					oreLocation, 1, materialLocation, isCrystal ? 3 : 2, isCrystal ? 1 : 0.2, 200, 350);
 			if(!isCrystal) {
 				helper.registerMineralCrusherRecipe(
 						new ResourceLocation("jaopca", "electrodynamics.ore_to_material_crusher."+material.getName()),
-						oreLocation, 1, materialLocation, 4, 0.3);
+						oreLocation, 1, materialLocation, 4, 0.1, 200, 450);
 			}
 		}
 	}

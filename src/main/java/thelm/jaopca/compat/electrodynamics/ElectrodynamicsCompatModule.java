@@ -76,7 +76,7 @@ public class ElectrodynamicsCompatModule implements IModule {
 				if(itemTags.contains(dustLocation)) {
 					helper.registerMineralGrinderRecipe(
 							new ResourceLocation("jaopca", "electrodynamics.material_to_dust."+name),
-							materialLocation, 1, dustLocation, 1, 0.1);
+							materialLocation, 1, dustLocation, 1, 0, 200, 350);
 				}
 			}
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
@@ -85,7 +85,7 @@ public class ElectrodynamicsCompatModule implements IModule {
 				if(itemTags.contains(plateLocation)) {
 					helper.registerMineralCrusherRecipe(
 							new ResourceLocation("jaopca", "electrodynamics.material_to_plate."+name),
-							materialLocation, 1, plateLocation, 1, 0.1);
+							materialLocation, 1, plateLocation, 1, 0.1, 200, 450);
 				}
 			}
 			if(type.isIngot() && !TO_ROD_BLACKLIST.contains(name) && !configToRodBlacklist.contains(name)) {
@@ -96,12 +96,12 @@ public class ElectrodynamicsCompatModule implements IModule {
 					if(itemTags.contains(nuggetLocation)) {
 						helper.registerLatheRecipe(
 								new ResourceLocation("jaopca", "electrodynamics.material_to_rod."+name),
-								materialLocation, 2, rodLocation, 1, nuggetLocation, 2, 1, 0.1);
+								materialLocation, 2, rodLocation, 1, nuggetLocation, 2, 1, 0.1, 200, 350);
 					}
 					else {
 						helper.registerLatheRecipe(
 								new ResourceLocation("jaopca", "electrodynamics.material_to_rod."+name),
-								materialLocation, 2, rodLocation, 1, 0.1);
+								materialLocation, 2, rodLocation, 1, 0.1, 200, 350);
 					}
 				}
 			}

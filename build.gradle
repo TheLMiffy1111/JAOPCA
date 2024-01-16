@@ -116,7 +116,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.1.16.34"
+version = "4.1.16.35"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -199,7 +199,7 @@ dependencies {
 	//CurseMaven
 	implementation fg.deobf("curse.maven:ato-405593:3975599")
 	implementation fg.deobf("curse.maven:allthemodium-364466:4019806")
-	implementation fg.deobf("curse.maven:electrodynamics-316867:3928753")
+	implementation fg.deobf("curse.maven:electrodynamics-316867:5012980")
 	implementation fg.deobf("curse.maven:voluminous-energy-416704:4627233")
 	implementation fg.deobf("curse.maven:cyclops-core-232758:4808709")
 	implementation fg.deobf("curse.maven:common-capabilities-247007:4391353")

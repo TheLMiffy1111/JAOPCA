@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -25,14 +26,18 @@ public class ChemicalCrystallizerRecipeSerializer implements IRecipeSerializer {
 	public final Object output;
 	public final int outputCount;
 	public final double experience;
+	public final int time;
+	public final double energy;
 
-	public ChemicalCrystallizerRecipeSerializer(ResourceLocation key, Object input, int inputAmount, Object output, int outputCount, double experience) {
+	public ChemicalCrystallizerRecipeSerializer(ResourceLocation key, Object input, int inputAmount, Object output, int outputCount, double experience, int time, double energy) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.inputAmount = inputAmount;
 		this.output = output;
 		this.outputCount = outputCount;
 		this.experience = experience;
+		this.time = time;
+		this.energy = energy;
 	}
 
 	@Override
@@ -53,14 +58,16 @@ public class ChemicalCrystallizerRecipeSerializer implements IRecipeSerializer {
 		if(input instanceof String || input instanceof ResourceLocation) {
 			ingJson.addProperty("tag", input.toString());
 		}
-		else if(input instanceof Fluid) {
-			ingJson.addProperty("fluid", ((Fluid)input).getRegistryName().toString());
+		else if(input instanceof Fluid fluid) {
+			ingJson.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(fluid).toString());
 		}
 		ingJson.addProperty("amount", inputAmount);
 		fluidInputJson.add("0", ingJson);
 		json.add("fluidinputs", fluidInputJson);
 		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("experience", experience);
+		json.addProperty("ticks", time);
+		json.addProperty("usagepertick", energy);
 
 		return json;
 	}
