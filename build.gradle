@@ -4,7 +4,7 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "com.github.johnrengelman.shadow"  version "[8,9)"
+	id "com.github.johnrengelman.shadow" version "[8,9)"
 }
 
 apply from: "mixinTweakFix.gradle"
@@ -46,13 +46,6 @@ repositories {
 			includeGroup "MCMultiPart2"
 		}
 	}
-	//maven {
-	//	url = "https://maven.ic2.player.to/"
-	//	content {
-	//		includeGroup "net.industrial-craft"
-	//		includeGroup "net.sengir.forestry"
-	//	}
-	//}
 	maven {
 		url = "https://maven.tterrag.com/"
 		content {
@@ -94,7 +87,7 @@ repositories {
 		}
 	}
 	maven {
-		url = "https://maven.cleanroommc.com/"
+		url = "https://repo.cleanroommc.com/releases/"
 		content {
 			includeGroup "zone.rong"
 		}
@@ -280,8 +273,7 @@ def manifestAttributes = [
 	"Specification-Version": specVersion,
 	"Implementation-Title": archivesBaseName,
 	"Implementation-Version": version,
-	"Implementation-Vendor": vendor,
-	"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+	"Implementation-Vendor": vendor
 ]
 
 jar {
