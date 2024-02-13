@@ -1,6 +1,5 @@
 package thelm.jaopca.compat.thermalfoundation;
 
-import cofh.thermalfoundation.item.TFItems;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.oredict.IOredictModule;
 import thelm.jaopca.api.oredict.JAOPCAOredictModule;
@@ -17,6 +16,6 @@ public class ThermalFoundationOredictModule implements IOredictModule {
 	@Override
 	public void register() {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		api.registerOredict("dustMana", TFItems.dustMana);
+		api.registerOredict("dustMana", "thermalfoundation:material@516");
 	}
 }

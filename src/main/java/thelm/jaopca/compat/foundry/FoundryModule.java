@@ -13,14 +13,12 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import exter.foundry.api.FoundryAPI;
 import exter.foundry.registry.LiquidMetalRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "foundry")
@@ -35,7 +33,7 @@ public class FoundryModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "foundry_liquid");
 		return builder.build();
 	}
@@ -56,7 +54,6 @@ public class FoundryModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		FoundryHelper helper = FoundryHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		int oreAmount = FoundryAPI.FLUID_AMOUNT_ORE;

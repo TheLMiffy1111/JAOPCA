@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.ToIntFunction;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +14,6 @@ import exter.foundry.api.FoundryAPI;
 import exter.foundry.registry.LiquidMetalRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import tconstruct.plugins.gears.TinkerGears;
 import tconstruct.smeltery.TinkerSmeltery;
 import thelm.jaopca.api.JAOPCAApi;
@@ -27,7 +25,6 @@ import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.compat.tconstruct.TConstructHelper;
-import thelm.jaopca.compat.tconstruct.TConstructModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -82,7 +79,6 @@ public class FoundryTConstructModule implements IModule {
 		TConstructHelper helper = TConstructHelper.INSTANCE;
 		Set<String> oredict = api.getOredict();
 		int baseAmount = FoundryAPI.FLUID_AMOUNT_INGOT;
-		ToIntFunction<FluidStack> tempFunction = stack->stack.getFluid().getTemperature(stack)-300;
 		ItemStack ingotCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 0);
 		ItemStack nuggetCast = new ItemStack(TinkerSmeltery.metalPattern, 1, 27);
 		ItemStack gearCast = new ItemStack(TinkerGears.gearCast);
@@ -91,7 +87,6 @@ public class FoundryTConstructModule implements IModule {
 			String name = material.getName();
 			if(type.isIngot() && !BLACKLIST.contains(name)) {
 				String liquidName = miscHelper.getFluidName("foundry_liquid", name);
-				int baseTemp = TConstructModule.tempFunction.applyAsInt(material);
 				if(FluidRegistry.isFluidRegistered(liquidName)) {
 					if(!configToMaterialBlacklist.contains(name)) {
 						String materialOredict = miscHelper.getOredictName(type.getFormName(), name);

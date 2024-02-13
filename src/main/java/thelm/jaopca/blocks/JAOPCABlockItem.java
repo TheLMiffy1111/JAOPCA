@@ -25,7 +25,7 @@ public class JAOPCABlockItem extends ItemBlock implements IMaterialFormBlockItem
 	protected Optional<EnumRarity> rarity = Optional.empty();
 
 	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
-		super(block.asBlock());
+		super(block.toBlock());
 		this.settings = settings;
 	}
 

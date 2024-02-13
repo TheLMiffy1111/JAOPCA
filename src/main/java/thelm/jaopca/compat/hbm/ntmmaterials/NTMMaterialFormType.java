@@ -19,8 +19,6 @@ import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialColorEvent;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.utils.ApiImpl;
-import thelm.jaopca.utils.MiscHelper;
 
 /**
  * This form type only supports a single form.
@@ -94,8 +92,6 @@ public class NTMMaterialFormType implements IFormType {
 			return;
 		}
 		registered = true;
-		ApiImpl api = ApiImpl.INSTANCE;
-		MiscHelper helper = MiscHelper.INSTANCE;
 		if(form != null) {
 			for(IMaterial material : form.getMaterials()) {
 				while(Mats.matById.containsKey(id)) {

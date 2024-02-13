@@ -135,7 +135,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 			if(!world.isRemote && flag && !material.isLiquid()) {
 				world.func_147480_a(x, y, z, true);
 			}
-			world.setBlock(x, y, z, fluid.asFluid().getBlock(), 0, 3);
+			world.setBlock(x, y, z, fluid.toFluid().getBlock(), 0, 3);
 			return true;
 		}
 	}

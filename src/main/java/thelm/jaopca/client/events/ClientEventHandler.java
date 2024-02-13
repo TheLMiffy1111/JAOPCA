@@ -40,7 +40,7 @@ public class ClientEventHandler extends CommonEventHandler {
 		for(IMaterialFormItem item : ItemFormType.getItems()) {
 			IItemRenderer renderer = item.getRenderer();
 			if(renderer != null) {
-				MinecraftForgeClient.registerItemRenderer(item.asItem(), renderer);
+				MinecraftForgeClient.registerItemRenderer(item.toItem(), renderer);
 			}
 		}
 	}

@@ -37,7 +37,7 @@ public class JAOPCAFluidBlock extends BlockFluidClassic implements IMaterialForm
 	protected Optional<Boolean> isFireSource = Optional.empty();
 
 	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(fluid.asFluid(), Material.water);
+		super(fluid.toFluid(), Material.water);
 		this.fluid = fluid;
 		this.settings = settings;
 
@@ -128,7 +128,7 @@ public class JAOPCAFluidBlock extends BlockFluidClassic implements IMaterialForm
 		else {
 			flowIcon = iconRegister.registerIcon("jaopca:"+getIMaterial().getModelType()+'/'+getForm().getName()+"_flow");
 		}
-		fluid.asFluid().setIcons(blockIcon, flowIcon);
+		fluid.toFluid().setIcons(blockIcon, flowIcon);
 	}
 
 	@SideOnly(Side.CLIENT)

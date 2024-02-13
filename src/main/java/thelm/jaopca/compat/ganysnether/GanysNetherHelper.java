@@ -19,7 +19,7 @@ public class GanysNetherHelper {
 
 	private GanysNetherHelper() {}
 
-	public RecipeInput getRecipeInput(Object obj, int count) {
+	public RecipeInput<?> getRecipeInput(Object obj, int count) {
 		if(obj instanceof Supplier<?>) {
 			return getRecipeInput(((Supplier<?>)obj).get(), count);
 		}
@@ -43,8 +43,8 @@ public class GanysNetherHelper {
 		if(obj instanceof IItemProvider) {
 			return new RecipeInput.RecipeInputItemStack(new ItemStack(((IItemProvider)obj).asItem(), count, OreDictionary.WILDCARD_VALUE));
 		}
-		if(obj instanceof RecipeInput) {
-			return (RecipeInput)obj;
+		if(obj instanceof RecipeInput<?>) {
+			return (RecipeInput<?>)obj;
 		}
 		return null;
 	}

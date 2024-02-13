@@ -3,7 +3,7 @@ package thelm.jaopca.compat.rotarycraft.mixins;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import com.gtnewhorizon.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 import Reika.DragonAPI.Interfaces.Registry.OreType;
 import Reika.RotaryCraft.TileEntities.Processing.TileEntityExtractor;
@@ -18,8 +18,7 @@ public class TileEntityExtractorMixin {
 		return original == null ? RotaryCraftRecipeHandler.getExtractorRecipe(stack) : original;
 	}
 
-	// The annotation processor is not working
-	@ModifyReturnValue(method = {"isItemValidForSlot", "func_94041_b"}, at = @At("RETURN"), remap = false)
+	@ModifyReturnValue(method = "isItemValidForSlot", at = @At("RETURN"))
 	private boolean modifyIsItemValidForSlot(boolean original, int slot, ItemStack stack) {
 		return original ||
 				slot == 0 && RotaryCraftRecipeHandler.isExtractorOre(stack) ||

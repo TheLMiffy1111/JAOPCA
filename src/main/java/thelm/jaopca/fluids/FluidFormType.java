@@ -101,22 +101,21 @@ public class FluidFormType implements IFluidFormType {
 		MiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IFluidFormSettings settings = (IFluidFormSettings)form.getSettings();
-			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
 				String registryName = form.getName()+'.'+helper.toLowercaseUnderscore(material.getName());
 
 				IMaterialFormFluid materialFormFluid = settings.getFluidCreator().create(form, material, settings);
-				Fluid fluid = materialFormFluid.asFluid();
+				Fluid fluid = materialFormFluid.toFluid();
 				FLUIDS.put(form, material, materialFormFluid);
 				FluidRegistry.registerFluid(fluid);
 
 				IMaterialFormFluidBlock materialFormFluidBlock = settings.getFluidBlockCreator().create(materialFormFluid, settings);
-				Block fluidBlock = materialFormFluidBlock.asBlock();
+				Block fluidBlock = materialFormFluidBlock.toBlock();
 				FLUID_BLOCKS.put(form, material, materialFormFluidBlock);
 				GameRegistry.registerBlock(fluidBlock, null, registryName);
 
 				IMaterialFormBucketItem materialFormBucketItem = settings.getBucketItemCreator().create(materialFormFluid, settings);
-				Item bucketItem = materialFormBucketItem.asItem();
+				Item bucketItem = materialFormBucketItem.toItem();
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
 				GameRegistry.registerItem(bucketItem, registryName);
 				FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucketItem), new ItemStack(Items.bucket));

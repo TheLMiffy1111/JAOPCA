@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import appeng.core.AEConfig;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -16,7 +15,6 @@ import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "appliedenergistics2")
@@ -47,10 +45,8 @@ public class AppliedEnergistics2CompatModule implements IModule {
 
 	@Override
 	public void onInit(IModuleData moduleData, FMLInitializationEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		AppliedEnergistics2Helper helper = AppliedEnergistics2Helper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		Set<String> oredict = api.getOredict();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();

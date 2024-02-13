@@ -48,7 +48,7 @@ public class TConstructModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "molten");
 		return builder.build();
 	}
@@ -89,7 +89,6 @@ public class TConstructModule implements IModule {
 			if(!jaopcaOnly || moltenMaterials.contains(material)) {
 				String oreOredict = miscHelper.getOredictName("ore", material.getName());
 				String moltenName = miscHelper.getFluidName(".molten", material.getName());
-				boolean isIngot = material.getType().isIngot();
 				int amount = (int)Math.floor(144*PHConstruct.ingotsPerOre);
 				int temperature = tempFunction.applyAsInt(material);
 				helper.registerMeltingRecipe(

@@ -85,7 +85,7 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	@Override
-	public Block asBlock() {
+	public Block toBlock() {
 		return this;
 	}
 

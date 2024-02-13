@@ -5,7 +5,7 @@ import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public interface IMaterialFormGas extends IMaterialForm {
 
-	default Gas asGas() {
+	default Gas toGas() {
 		return (Gas)this;
 	}
 }

@@ -50,7 +50,7 @@ public class MaricultureModule implements IModule {
 
 	@Override
 	public Multimap<Integer, String> getModuleDependencies() {
-		ImmutableSetMultimap.Builder builder = ImmutableSetMultimap.builder();
+		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "molten");
 		builder.put(1, "dust");
 		return builder.build();
@@ -86,7 +86,6 @@ public class MaricultureModule implements IModule {
 			if(!jaopcaOnly || moltenMaterials.contains(material)) {
 				String oreOredict = miscHelper.getOredictName("ore", material.getName());
 				String moltenName = miscHelper.getFluidName(".molten", material.getName());
-				boolean isIngot = material.getType().isIngot();
 				int amount = MetalRates.ORE;
 				int temperature = tempFunction.applyAsInt(material);
 				if(material.hasExtra(1)) {

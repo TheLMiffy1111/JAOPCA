@@ -8,7 +8,7 @@ import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public interface IMaterialFormItem extends IMaterialForm {
 
-	default Item asItem() {
+	default Item toItem() {
 		return (Item)this;
 	}
 

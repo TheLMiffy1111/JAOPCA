@@ -5,7 +5,7 @@ import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public interface IMaterialFormBucketItem extends IMaterialForm {
 
-	default Item asItem() {
+	default Item toItem() {
 		return (Item)this;
 	}
 }

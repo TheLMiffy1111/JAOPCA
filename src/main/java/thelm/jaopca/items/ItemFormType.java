@@ -107,7 +107,7 @@ public class ItemFormType implements IItemFormType {
 				String registryName = form.getName()+'.'+helper.toLowercaseUnderscore(material.getName());
 
 				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, settings);
-				Item item = materialFormItem.asItem();
+				Item item = materialFormItem.toItem();
 				item.setCreativeTab(creativeTab);
 				ITEMS.put(form, material, materialFormItem);
 				GameRegistry.registerItem(item, registryName);

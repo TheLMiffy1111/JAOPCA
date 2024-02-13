@@ -121,13 +121,13 @@ public class BlockFormType implements IBlockFormType {
 				String registryName = form.getName()+'.'+helper.toLowercaseUnderscore(material.getName());
 
 				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
-				Block block = materialFormBlock.asBlock();
+				Block block = materialFormBlock.toBlock();
 				block.setCreativeTab(api.creativeTab());
 				BLOCKS.put(form, material, materialFormBlock);
 				GameRegistry.registerBlock(block, null, registryName);
 
 				IMaterialFormBlockItem materialFormBlockItem = settings.getBlockItemCreator().create(materialFormBlock, settings);
-				ItemBlock blockItem = materialFormBlockItem.asBlockItem();
+				ItemBlock blockItem = materialFormBlockItem.toBlockItem();
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
 				GameRegistry.registerItem(blockItem, registryName);
 

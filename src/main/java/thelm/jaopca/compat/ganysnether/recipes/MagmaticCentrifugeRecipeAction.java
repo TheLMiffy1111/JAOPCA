@@ -37,11 +37,11 @@ public class MagmaticCentrifugeRecipeAction implements IRecipeAction {
 
 	@Override
 	public boolean register() {
-		RecipeInput ing1 = GanysNetherHelper.INSTANCE.getRecipeInput(firstInput, firstInputCount);
+		RecipeInput<?> ing1 = GanysNetherHelper.INSTANCE.getRecipeInput(firstInput, firstInputCount);
 		if(ing1 == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+firstInput);
 		}
-		RecipeInput ing2 = GanysNetherHelper.INSTANCE.getRecipeInput(secondInput, secondInputCount);
+		RecipeInput<?> ing2 = GanysNetherHelper.INSTANCE.getRecipeInput(secondInput, secondInputCount);
 		if(ing2 == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+secondInput);
 		}

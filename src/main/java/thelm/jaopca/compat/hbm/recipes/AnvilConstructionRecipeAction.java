@@ -44,7 +44,6 @@ public class AnvilConstructionRecipeAction implements IRecipeAction {
 				count = (Integer)output[i];
 				++i;
 			}
-			List<RecipesCommon.AStack> list = new ArrayList<>();
 			RecipesCommon.AStack ing = HBMHelper.INSTANCE.getAStack(in, count);
 			if(ing == null) {
 				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);

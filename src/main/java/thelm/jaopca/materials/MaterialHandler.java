@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 
-import cpw.mods.fml.common.Loader;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.utils.ApiImpl;

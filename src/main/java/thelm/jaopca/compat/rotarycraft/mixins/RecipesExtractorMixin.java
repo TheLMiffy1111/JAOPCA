@@ -3,7 +3,7 @@ package thelm.jaopca.compat.rotarycraft.mixins;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import com.gtnewhorizon.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipesExtractor;
 import net.minecraft.item.ItemStack;

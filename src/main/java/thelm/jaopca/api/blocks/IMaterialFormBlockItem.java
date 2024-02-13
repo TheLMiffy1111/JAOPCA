@@ -5,7 +5,7 @@ import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public interface IMaterialFormBlockItem extends IMaterialForm {
 
-	default ItemBlock asBlockItem() {
+	default ItemBlock toBlockItem() {
 		return (ItemBlock)this;
 	}
 }
