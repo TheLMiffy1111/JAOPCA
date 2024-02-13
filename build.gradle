@@ -212,7 +212,7 @@ loom {
 	forge {
 		mixinConfig "${modId}.mixins.json"
 		useForgeLoggerConfig = true
-    }
+	}
 	mixin.defaultRefmapName = "${modId}.refmap.json"
 	interfaceInjection.enableDependencyInterfaceInjection = false
 	runs {
