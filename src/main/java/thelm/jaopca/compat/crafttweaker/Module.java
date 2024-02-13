@@ -20,8 +20,8 @@ public class Module {
 	private final IModule module;
 	private final IModuleData moduleData;
 
-	public static Module getModuleWrapper(IModule form) {
-		return MODULE_WRAPPERS.computeIfAbsent(form, Module::new);
+	public static Module getModuleWrapper(IModule module) {
+		return MODULE_WRAPPERS.computeIfAbsent(module, Module::new);
 	}
 
 	private Module(IModule module) {

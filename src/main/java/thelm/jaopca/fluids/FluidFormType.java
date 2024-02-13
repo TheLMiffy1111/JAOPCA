@@ -107,13 +107,13 @@ public class FluidFormType implements IFluidFormType {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+helper.toLowercaseUnderscore(material.getName()));
 
 				IMaterialFormFluid materialFormFluid = settings.getFluidCreator().create(form, material, settings);
-				Fluid fluid = materialFormFluid.asFluid();
+				Fluid fluid = materialFormFluid.toFluid();
 				FLUIDS.put(form, material, materialFormFluid);
 				FluidRegistry.registerFluid(fluid);
 				FluidRegistry.addBucketForFluid(fluid);
 
 				IMaterialFormFluidBlock materialFormFluidBlock = settings.getFluidBlockCreator().create(materialFormFluid, settings);
-				Block fluidBlock = materialFormFluidBlock.asBlock();
+				Block fluidBlock = materialFormFluidBlock.toBlock();
 				fluidBlock.setRegistryName(registryName);
 				FLUID_BLOCKS.put(form, material, materialFormFluidBlock);
 				ForgeRegistries.BLOCKS.register(fluidBlock);

@@ -15,11 +15,11 @@ public interface IBlockInfo extends IMaterialFormInfo, IBlockProvider, IItemProv
 
 	@Override
 	default Block asBlock() {
-		return getMaterialFormBlock().asBlock();
+		return getMaterialFormBlock().toBlock();
 	}
 
 	default ItemBlock asBlockItem() {
-		return getMaterialFormBlockItem().asBlockItem();
+		return getMaterialFormBlockItem().toBlockItem();
 	}
 
 	@Override

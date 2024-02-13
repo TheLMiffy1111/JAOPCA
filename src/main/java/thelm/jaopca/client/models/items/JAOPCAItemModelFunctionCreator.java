@@ -27,7 +27,7 @@ public class JAOPCAItemModelFunctionCreator implements IItemModelFunctionCreator
 	}
 
 	public ResourceLocation getBaseModelLocation(IMaterialFormItem materialFormItem) {
-		Item item = materialFormItem.asItem();
+		Item item = materialFormItem.toItem();
 		ResourceLocation location = item.getRegistryName();
 		ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
 		ResourceLocation location2 = new ResourceLocation(location.getNamespace(), "models/item/"+location.getPath()+".json");

@@ -29,12 +29,12 @@ public class ModelHandler {
 
 	public static void registerModels() {
 		for(IMaterialFormBlock materialFormBlock : BlockFormType.getBlocks()) {
-			Block block = materialFormBlock.asBlock();
+			Block block = materialFormBlock.toBlock();
 			IBlockFormSettings settings = (IBlockFormSettings)materialFormBlock.getForm().getSettings();
 			ModelLoader.setCustomStateMapper(block, b->settings.getBlockModelMapCreator().create(materialFormBlock, settings));
 		}
 		for(IMaterialFormBlockItem materialFormBlockItem : BlockFormType.getBlockItems()) {
-			ItemBlock blockItem = materialFormBlockItem.asBlockItem();
+			ItemBlock blockItem = materialFormBlockItem.toBlockItem();
 			IBlockFormSettings settings = (IBlockFormSettings)materialFormBlockItem.getForm().getSettings();
 			Pair<Function<ItemStack, ModelResourceLocation>, Set<ModelResourceLocation>> funcPair =
 					settings.getBlockItemModelFunctionCreator().create(materialFormBlockItem, settings);
@@ -44,7 +44,7 @@ public class ModelHandler {
 			}
 		}
 		for(IMaterialFormItem materialFormItem : ItemFormType.getItems()) {
-			Item item = materialFormItem.asItem();
+			Item item = materialFormItem.toItem();
 			IItemFormSettings settings = (IItemFormSettings)materialFormItem.getForm().getSettings();
 			Pair<Function<ItemStack, ModelResourceLocation>, Set<ModelResourceLocation>> funcPair =
 					settings.getItemModelFunctionCreator().create(materialFormItem, settings);
@@ -54,7 +54,7 @@ public class ModelHandler {
 			}
 		}
 		for(IMaterialFormFluidBlock materialFormFluidBlock : FluidFormType.getFluidBlocks()) {
-			Block fluidBlock = materialFormFluidBlock.asBlock();
+			Block fluidBlock = materialFormFluidBlock.toBlock();
 			IFluidFormSettings settings = (IFluidFormSettings)materialFormFluidBlock.getForm().getSettings();
 			ModelLoader.setCustomStateMapper(fluidBlock, b->settings.getFluidBlockModelMapCreator().create(materialFormFluidBlock, settings));
 		}

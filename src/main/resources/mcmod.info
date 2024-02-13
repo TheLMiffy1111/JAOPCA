@@ -1,0 +1,12 @@
+[
+	{
+		"modid": "jaopca",
+		"version": "0@VERSION@",
+		"name": "JAOPCA",
+		"description": "A mod that aims to make mods with ore processing support more ores.",
+		"logoFile": "jaopca.logo.png",
+		"credits": "Inspired by AOBD, a mod by ganymedes01",
+		"authorList": ["TheLMiffy1111"],
+		"url": "https://www.curseforge.com/minecraft/mc-mods/jaopca"
+	}
+]

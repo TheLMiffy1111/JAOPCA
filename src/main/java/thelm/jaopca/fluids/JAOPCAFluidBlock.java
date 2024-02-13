@@ -33,7 +33,7 @@ public class JAOPCAFluidBlock extends BlockFluidClassic implements IMaterialForm
 	protected Optional<Boolean> isFireSource = Optional.empty();
 
 	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(fluid.asFluid(), Material.WATER);
+		super(fluid.toFluid(), Material.WATER);
 		this.fluid = fluid;
 		this.settings = settings;
 

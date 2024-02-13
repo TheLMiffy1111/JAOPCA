@@ -10,7 +10,7 @@ public interface IGasInfo extends IMaterialFormInfo, IGasProvider {
 
 	@Override
 	default Gas asGas() {
-		return getMaterialFormGas().asGas();
+		return getMaterialFormGas().toGas();
 	}
 
 	@Override

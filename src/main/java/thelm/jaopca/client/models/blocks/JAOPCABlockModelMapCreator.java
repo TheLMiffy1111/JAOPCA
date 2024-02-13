@@ -22,14 +22,14 @@ public class JAOPCABlockModelMapCreator implements IBlockModelMapCreator {
 	public Map<IBlockState, ModelResourceLocation> create(IMaterialFormBlock block, IBlockFormSettings settings) {
 		ResourceLocation baseModelLocation = getBaseModelLocation(block);
 		Map<IBlockState, ModelResourceLocation> map = new LinkedHashMap<>();
-		for(IBlockState state : block.asBlock().getBlockState().getValidStates()) {
+		for(IBlockState state : block.toBlock().getBlockState().getValidStates()) {
 			map.put(state, getModelLocation(baseModelLocation, state));
 		}
 		return map;
 	}
 
 	public ResourceLocation getBaseModelLocation(IMaterialFormBlock materialFormBlock) {
-		Block block = materialFormBlock.asBlock();
+		Block block = materialFormBlock.toBlock();
 		ResourceLocation location = block.getRegistryName();
 		ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
 		if(MiscHelper.INSTANCE.hasResource(location1)) {

@@ -106,7 +106,7 @@ public class ItemFormType implements IItemFormType {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+helper.toLowercaseUnderscore(material.getName()));
 
 				IMaterialFormItem materialFormItem = settings.getItemCreator().create(form, material, settings);
-				Item item = materialFormItem.asItem();
+				Item item = materialFormItem.toItem();
 				item.setRegistryName(registryName);
 				item.setCreativeTab(creativeTab);
 				ITEMS.put(form, material, materialFormItem);

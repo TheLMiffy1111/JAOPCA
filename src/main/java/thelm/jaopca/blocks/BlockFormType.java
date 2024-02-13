@@ -122,14 +122,14 @@ public class BlockFormType implements IBlockFormType {
 				ResourceLocation registryName = new ResourceLocation("jaopca", form.getName()+'.'+helper.toLowercaseUnderscore(material.getName()));
 
 				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
-				Block block = materialFormBlock.asBlock();
+				Block block = materialFormBlock.toBlock();
 				block.setRegistryName(registryName);
 				block.setCreativeTab(api.creativeTab());
 				BLOCKS.put(form, material, materialFormBlock);
 				ForgeRegistries.BLOCKS.register(block);
 
 				IMaterialFormBlockItem materialFormBlockItem = settings.getBlockItemCreator().create(materialFormBlock, settings);
-				ItemBlock blockItem = materialFormBlockItem.asBlockItem();
+				ItemBlock blockItem = materialFormBlockItem.toBlockItem();
 				blockItem.setRegistryName(registryName);
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
 				ForgeRegistries.ITEMS.register(blockItem);

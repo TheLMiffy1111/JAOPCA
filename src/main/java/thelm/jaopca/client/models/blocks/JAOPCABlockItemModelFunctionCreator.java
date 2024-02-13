@@ -27,7 +27,7 @@ public class JAOPCABlockItemModelFunctionCreator implements IBlockItemModelFunct
 	}
 
 	public ResourceLocation getBaseModelLocation(IMaterialFormBlockItem materialFormBlockItem) {
-		ItemBlock blockItem = materialFormBlockItem.asBlockItem();
+		ItemBlock blockItem = materialFormBlockItem.toBlockItem();
 		ResourceLocation location = blockItem.getRegistryName();
 		ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
 		ResourceLocation location2 = new ResourceLocation(location.getNamespace(), "models/item/"+location.getPath()+".json");

@@ -94,7 +94,7 @@ public class GasFormType implements IGasFormType {
 			for(IMaterial material : form.getMaterials()) {
 				IMaterialFormGas materialFormGas = settings.getGasCreator().create(form, material, settings);
 				GASES.put(form, material, materialFormGas);
-				Gas gas = materialFormGas.asGas();
+				Gas gas = materialFormGas.toGas();
 				GasRegistry.register(gas);
 			}
 		}

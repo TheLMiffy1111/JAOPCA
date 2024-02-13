@@ -23,14 +23,14 @@ public class JAOPCAFluidBlockModelMapCreator implements IFluidBlockModelMapCreat
 	public Map<IBlockState, ModelResourceLocation> create(IMaterialFormFluidBlock fluidBlock, IFluidFormSettings settings) {
 		ResourceLocation baseModelLocation = getBaseModelLocation(fluidBlock);
 		Map<IBlockState, ModelResourceLocation> map = new LinkedHashMap<>();
-		for(IBlockState state : fluidBlock.asBlock().getBlockState().getValidStates()) {
+		for(IBlockState state : fluidBlock.toBlock().getBlockState().getValidStates()) {
 			map.put(state, getModelLocation(baseModelLocation, state));
 		}
 		return map;
 	}
 
 	public ResourceLocation getBaseModelLocation(IMaterialFormFluidBlock materialFormFluidBlock) {
-		Block block = materialFormFluidBlock.asBlock();
+		Block block = materialFormFluidBlock.toBlock();
 		ResourceLocation location = block.getRegistryName();
 		ResourceLocation location1 = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
 		if(MiscHelper.INSTANCE.hasResource(location1)) {
