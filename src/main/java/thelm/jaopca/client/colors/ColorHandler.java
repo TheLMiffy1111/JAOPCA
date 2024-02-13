@@ -99,7 +99,7 @@ public class ColorHandler {
 		}
 		List<Vector4f> colors = new ArrayList<>();
 		for(BakedQuad quad : quads) {
-			Vector4f color = weightedAverageColor(quad.getSprite(), gammaValue);
+			Vector4f color = weightedAverageColor(quad.func_187508_a(), gammaValue);
 			color = tintColor(color, getTint(stack, quad));
 			colors.add(color);
 		}

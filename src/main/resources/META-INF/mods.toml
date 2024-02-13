@@ -1,19 +1,19 @@
-modLoader="javafml"
-loaderVersion="[34,)"
-license="MIT"
-issueTrackerURL="https://github.com/TheLMiffy1111/JAOPCA/issues"
-displayURL="https://minecraft.curseforge.com/projects/jaopca"
-credits="Inspired by AOBD, a mod made by ganymedes01 for Minecraft 1.7"
-authors="TheLMiffy1111"
+modLoader = "javafml"
+loaderVersion = "[34,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/TheLMiffy1111/JAOPCA/issues"
+
 [[mods]]
-modId="jaopca"
-version="${file.jarVersion}"
-displayName="JAOPCA"
-description="A mod that aims to make mods with ore processing support more ores."
+	modId = "jaopca"
+	version = "0@VERSION@"
+	displayName = "JAOPCA"
+	description = "A mod that aims to make mods with ore processing support more ores."
+	logoFile = "jaopca.logo.png"
+	credits = "Inspired by AOBD, a mod by ganymedes01"
+	authors = "TheLMiffy1111"
+	displayURL = "https://www.curseforge.com/minecraft/mc-mods/jaopca"
 
 [[dependencies.jaopca]]
-    modId="forge"
-    mandatory=false
-    versionRange="[34.0.0,)"
-    ordering="NONE"
-    side="BOTH"
+	modId = "forge"
+	versionRange = "[34,)"
+	mandatory = true
