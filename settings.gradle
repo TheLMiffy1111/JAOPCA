@@ -1,14 +1,25 @@
 pluginManagement {
 	repositories {
+		mavenCentral()
 		gradlePluginPortal()
 		maven {
-			url = "https://maven.neoforged.net/releases/"
+			url = "https://jitpack.io/"
 		}
 		maven {
-			url = "https://repo.spongepowered.org/maven/"
+			url = "https://maven.architectury.dev/"
 		}
 		maven {
-			url = "https://maven.parchmentmc.org/"
+			url = "https://maven.fabricmc.net/"
+		}
+		maven {
+			url = "https://maven.minecraftforge.net/"
+		}
+	}
+	resolutionStrategy {
+		eachPlugin {
+			if(requested.id.id == "com.crystaelix.loom" && requested.version.startsWith("jitpack-")) {
+				useModule("com.github.TheLMiffy1111:crystaelix-loom:${requested.version.substring(8)}")
+			}
 		}
 	}
 }
