@@ -3,7 +3,8 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "cl.franciscosolis.blossom-extended" version "[1,2)"
+	id "net.kyori.blossom" version "[1,2)"
+	id "me.modmuss50.mod-publish-plugin" version "0.5.0"
 }
 
 repositories {
@@ -309,9 +310,9 @@ dependencies {
 	modImplementation "mekanism:Mekanism:1.20.1-10.4.5.19"
 
 	// Occultism
-    forgeRuntimeLibrary "org.commonmark:commonmark:0.21.0"
-    forgeRuntimeLibrary "org.commonmark:commonmark-ext-gfm-strikethrough:0.21.0"
-    forgeRuntimeLibrary "org.commonmark:commonmark-ext-ins:0.21.0"
+	forgeRuntimeLibrary "org.commonmark:commonmark:0.21.0"
+	forgeRuntimeLibrary "org.commonmark:commonmark-ext-gfm-strikethrough:0.21.0"
+	forgeRuntimeLibrary "org.commonmark:commonmark-ext-ins:0.21.0"
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.20.1:1.13"
 	modImplementation("com.klikli_dev:modonomicon-1.20.1-forge:1.58.0") {transitive = false}
 	modImplementation("com.klikli_dev:occultism-1.20.1:1.114.0") {transitive = false}
@@ -340,8 +341,21 @@ dependencies {
 	modImplementation "curse.maven:ferritecore-429235:4810975"
 }
 
+def replacements = [
+	"0@VERSION@": version
+]
+
 blossom {
-	replaceToken "0@VERSION@", version
+	replaceToken(replacements)
+}
+
+processResources {
+	inputs.properties(replacements)
+	filesMatching("META-INF/mods.toml") {
+		filter {
+			it.replace(replacements)
+		}
+	}
 }
 
 def manifestAttributes = [
@@ -360,4 +374,25 @@ jar {
 
 sourcesJar {
 	manifest.attributes(manifestAttributes)
+}
+
+publishMods {
+	file = remapJar.archiveFile
+	version = displayName = "${mcVersion}-${project.version}"
+	changelog = file("changelog.md").text
+	type = STABLE
+	modLoaders.addAll("forge", "neoforge")
+	additionalFiles.from(remapSourcesJar.archiveFile)
+
+	curseforge {
+		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+		projectId = "266936"
+		minecraftVersions.add(mcVersion)
+	}
+
+	modrinth {
+		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		projectId = "P48mHi2j"
+		minecraftVersions.add(mcVersion)
+	}
 }
