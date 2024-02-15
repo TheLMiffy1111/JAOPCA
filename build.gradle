@@ -3,8 +3,9 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "cl.franciscosolis.blossom-extended" version "[1,2)"
+	id "net.kyori.blossom" version "[1,2)"
 	id "com.github.johnrengelman.shadow" version "[8,9)"
+	id "me.modmuss50.mod-publish-plugin" version "0.5.0"
 }
 
 repositories {
@@ -160,7 +161,7 @@ loom {
 	silentMojangMappingsLicense()
 	forge {
 		mixinConfig "${modId}.mixins.rotarycraft.json"
-    }
+	}
 	mixin.defaultRefmapName = "${modId}.refmap.json"
 	interfaceInjection.enableDependencyInterfaceInjection = false
 	runs {
@@ -198,8 +199,8 @@ dependencies {
 	shadowImplementation "com.electronwill.night-config:toml:3.6.4"
 
 	// Mixin
-	implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.15") {transitive = false}
-	annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.15") {transitive = false}
+	implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.16") {transitive = false}
+	annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.16") {transitive = false}
 
 	// Common
 	modImplementation("com.github.GTNewHorizons:CodeChickenLib:1.2.1") {transitive = false}
@@ -301,8 +302,21 @@ dependencies {
 	modImplementation "curse.maven:archaicfix-677782:5094856"
 }
 
+def replacements = [
+	"0@VERSION@": version
+]
+
 blossom {
-	replaceToken "0@VERSION@", version
+	replaceToken(replacements)
+}
+
+processResources {
+	inputs.properties(replacements)
+	filesMatching("mcmod.info") {
+		filter {
+			it.replace(replacements)
+		}
+	}
 }
 
 def manifestAttributes = [
@@ -335,4 +349,28 @@ remapJar {
 
 sourcesJar {
 	manifest.attributes(manifestAttributes)
+}
+
+publishMods {
+	file = remapJar.archiveFile
+	version = displayName = "${mcVersion}-${project.version}"
+	changelog = file("changelog.md").text
+	type = ALPHA
+	modLoaders.add("forge")
+	additionalFiles.from(remapSourcesJar.archiveFile)
+
+	curseforge {
+		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+		projectId = "266936"
+		minecraftVersions.add(mcVersion)
+		javaVersions.add(JavaVersion.VERSION_1_8)
+		requires "unimixins"
+	}
+
+	modrinth {
+		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		projectId = "P48mHi2j"
+		minecraftVersions.add(mcVersion)
+		requires "unimixins"
+	}
 }
