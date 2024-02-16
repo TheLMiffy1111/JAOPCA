@@ -20,7 +20,7 @@ public class SmasherRecipeAction implements IRecipeAction {
 	public final Object input;
 	public final Object output;
 	public final int count;
-	
+
 	public SmasherRecipeAction(String key, Object input, Object output, int count) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;

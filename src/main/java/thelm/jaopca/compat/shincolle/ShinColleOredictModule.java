@@ -23,7 +23,7 @@ public class ShinColleOredictModule implements IOredictModule {
 		api.registerOredict("blockGrudgeHeavy", "shincolle:BlockGrudgeHeavy");
 		api.registerOredict("dustGrudge", "shincolle:Grudge");
 		api.registerOredict("nuggetAbyssium", "shincolle:AbyssNugget@0");
-		api.registerOredict("dustTinyManganese", "shincolle:AbyssNugget@1");			
+		api.registerOredict("dustTinyManganese", "shincolle:AbyssNugget@1");
 		api.registerOredict("ingotAbyssium", "shincolle:AbyssMetal@0");
 		api.registerOredict("dustManganese", "shincolle:AbyssMetal@1");
 	}

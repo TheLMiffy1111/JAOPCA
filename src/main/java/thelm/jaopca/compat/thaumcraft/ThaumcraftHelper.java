@@ -16,7 +16,7 @@ public class ThaumcraftHelper {
 
 	public Aspect getAspect(Object obj) {
 		if(obj instanceof Supplier<?>) {
-			return getAspect((Supplier<?>)obj);	
+			return getAspect((Supplier<?>)obj);
 		}
 		if(obj instanceof String) {
 			return Aspect.getAspect((String)obj);

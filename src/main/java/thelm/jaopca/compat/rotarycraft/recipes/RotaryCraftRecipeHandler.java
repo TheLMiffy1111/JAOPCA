@@ -28,7 +28,7 @@ public class RotaryCraftRecipeHandler {
 		}
 		@Override
 		public boolean equals(ItemStack s1, ItemStack s2) {
-			return s1.getItem() == s2.getItem() && 
+			return s1.getItem() == s2.getItem() &&
 					(s1.getItemDamage() == OreDictionary.WILDCARD_VALUE ||
 					s2.getItemDamage() == OreDictionary.WILDCARD_VALUE ||
 					s1.getItemDamage() == s2.getItemDamage());

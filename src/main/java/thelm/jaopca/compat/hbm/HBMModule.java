@@ -57,7 +57,7 @@ public class HBMModule implements IModule {
 
 	private final IForm crystalForm = ApiImpl.INSTANCE.newForm(this, "hbm_crystal", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.ORE).setSecondaryName("hbm:crystal").setDefaultMaterialBlacklist(BLACKLIST);
-	
+
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	@Override

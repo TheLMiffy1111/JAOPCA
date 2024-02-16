@@ -31,7 +31,7 @@ public class HBMMaterialModule implements IModule {
 	public HBMMaterialModule() {
 		NTMMaterialFormType.init();
 	}
-	
+
 	private final IForm ntmMaterialForm = ApiImpl.INSTANCE.newForm(this, "hbm_material", NTMMaterialFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOTS).setSecondaryName("").setDefaultMaterialBlacklist(BLACKLIST);
 

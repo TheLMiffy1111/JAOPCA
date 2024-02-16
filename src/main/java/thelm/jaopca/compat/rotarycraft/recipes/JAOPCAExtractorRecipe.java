@@ -38,7 +38,7 @@ public class JAOPCAExtractorRecipe implements OreType {
 	}
 
 	/* UNUSED */
-	
+
 	@Override
 	public String[] getOreDictNames() {
 		return new String[0];
