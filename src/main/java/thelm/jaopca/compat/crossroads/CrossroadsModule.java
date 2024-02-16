@@ -97,14 +97,14 @@ public class CrossroadsModule implements IModule {
 			helper.registerStampMillRecipe(
 					new ResourceLocation("jaopca", "crossroads.ore_to_grit."+material.getName()),
 					oreLocation, gritInfo, 3);
-			
+
 			helper.registerOreCleanserRecipe(
 					new ResourceLocation("jaopca", "crossroads.ore_to_clump."+material.getName()),
 					oreLocation, clumpInfo, 2);
 			helper.registerOreCleanserRecipe(
 					new ResourceLocation("jaopca", "crossroads.grit_to_clump."+material.getName()),
 					gritLocation, clumpInfo, 1);
-			
+
 			helper.registerBlastFurnaceRecipe(
 					new ResourceLocation("jaopca", "crossroads.grit_to_molten."+material.getName()),
 					gritLocation, moltenLocation, 144, 2);

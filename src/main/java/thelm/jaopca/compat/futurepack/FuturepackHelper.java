@@ -52,7 +52,7 @@ public class FuturepackHelper {
 		}
 		return new NullPredicate();
 	}
-	
+
 	public boolean registerZentrifugeRecipe(ResourceLocation key, Object input, int inputCount, int support, int time, Object... output) {
 		return FuturepackDataInjector.registerZentrifugeRecipe(key, new ZentrifugeRecipeSupplier(key, input, inputCount, support, time, output));
 	}

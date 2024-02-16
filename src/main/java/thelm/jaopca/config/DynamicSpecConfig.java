@@ -29,7 +29,7 @@ import thelm.jaopca.api.config.IDynamicSpecConfig;
 public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> implements IDynamicSpecConfig {
 
 	private static final Logger LOGGER = LogManager.getLogger();
-	
+
 	final CommentedConfig config;
 
 	public DynamicSpecConfig(CommentedConfig config) {

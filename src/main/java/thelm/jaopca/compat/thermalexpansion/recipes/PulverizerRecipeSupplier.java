@@ -27,7 +27,7 @@ public class PulverizerRecipeSupplier implements Supplier<PulverizerRecipe> {
 	public final Object[] output;
 	public final int energy;
 	public final float experience;
-	
+
 	public PulverizerRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object[] output, int energy, float experience) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;

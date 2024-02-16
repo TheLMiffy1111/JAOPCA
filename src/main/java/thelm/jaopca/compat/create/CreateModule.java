@@ -80,7 +80,7 @@ public class CreateModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		CreateHelper helper = CreateHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		IItemFormType itemFormType = ItemFormType.INSTANCE;	
+		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		for(IMaterial material : crushedOreForm.getMaterials()) {
 			IItemInfo crushedOreInfo = itemFormType.getMaterialFormInfo(crushedOreForm, material);
 			ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", material.getName());

@@ -251,7 +251,7 @@ public class MiscHelper implements IMiscHelper {
 	@Override
 	public Predicate<String> configModulePredicate() {
 		return CONFIG_MODULE_PREDICATE;
-	}		
+	}
 
 	@Override
 	public boolean hasResource(ResourceLocation location) {

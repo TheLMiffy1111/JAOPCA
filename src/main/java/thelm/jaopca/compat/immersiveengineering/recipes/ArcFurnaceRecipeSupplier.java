@@ -41,7 +41,7 @@ public class ArcFurnaceRecipeSupplier implements Supplier<ArcFurnaceRecipe> {
 		this.time = time;
 		this.energy = energy;
 	}
-	
+
 	@Override
 	public ArcFurnaceRecipe get() {
 		IngredientWithSize ing = null;

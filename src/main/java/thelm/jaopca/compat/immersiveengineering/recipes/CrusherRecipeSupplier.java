@@ -24,7 +24,7 @@ public class CrusherRecipeSupplier implements Supplier<CrusherRecipe> {
 	public final Object input;
 	public final Object[] output;
 	public final int energy;
-	
+
 	public CrusherRecipeSupplier(ResourceLocation key, Object input, Object[] output, int energy) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
