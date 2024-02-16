@@ -90,15 +90,15 @@ public class EmbersHelper {
 	public boolean registerMeltingRecipe(ResourceLocation key, Object input, Object output, int outputAmount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new MeltingRecipeSerializer(key, input, output, outputAmount));
 	}
-	
+
 	public boolean registerStampingRecipe(ResourceLocation key, Object stamp, Object itemInput, Object fluidInput, int fluidInputAmount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new StampingRecipeSerializer(key, stamp, itemInput, fluidInput, fluidInputAmount, output, outputCount));
 	}
-	
+
 	public boolean registerStampingRecipe(ResourceLocation key, Object stamp, Object itemInput, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new StampingRecipeSerializer(key, stamp, itemInput, output, outputCount));
 	}
-	
+
 	public boolean registerStampingRecipe(ResourceLocation key, Object stamp, Object fluidInput, int fluidInputAmount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new StampingRecipeSerializer(key, stamp, fluidInput, fluidInputAmount, output, outputCount));
 	}
