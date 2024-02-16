@@ -29,7 +29,7 @@ public class ManufactoryRecipeSerializer implements IRecipeSerializer {
 	public final double radiation;
 	public final double time;
 	public final double power;
-	
+
 	public ManufactoryRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double radiation, double time, double power) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
@@ -65,7 +65,7 @@ public class ManufactoryRecipeSerializer implements IRecipeSerializer {
 		json.addProperty("radiation", radiation);
 		json.addProperty("timeModifier", time);
 		json.addProperty("powerModifier", power);
-		
+
 		return json;
 	}
 }

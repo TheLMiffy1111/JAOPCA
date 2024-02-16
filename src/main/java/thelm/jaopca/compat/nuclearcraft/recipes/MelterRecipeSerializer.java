@@ -29,7 +29,7 @@ public class MelterRecipeSerializer implements IRecipeSerializer {
 	public final double radiation;
 	public final double time;
 	public final double power;
-	
+
 	public MelterRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputAmount, double radiation, double time, double power) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
@@ -65,7 +65,7 @@ public class MelterRecipeSerializer implements IRecipeSerializer {
 		json.addProperty("radiation", radiation);
 		json.addProperty("timeModifier", time);
 		json.addProperty("powerModifier", power);
-		
+
 		return json;
 	}
 }

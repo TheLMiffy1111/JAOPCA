@@ -28,7 +28,7 @@ public class CrystallizerRecipeSerializer implements IRecipeSerializer {
 	public final double radiation;
 	public final double time;
 	public final double power;
-	
+
 	public CrystallizerRecipeSerializer(ResourceLocation key, Object input, int inputAmount, Object output, int outputCount, double radiation, double time, double power) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
@@ -62,7 +62,7 @@ public class CrystallizerRecipeSerializer implements IRecipeSerializer {
 		json.addProperty("radiation", radiation);
 		json.addProperty("timeModifier", time);
 		json.addProperty("powerModifier", power);
-		
+
 		return json;
 	}
 }

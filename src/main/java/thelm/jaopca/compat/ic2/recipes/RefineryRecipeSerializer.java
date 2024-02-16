@@ -44,7 +44,7 @@ public class RefineryRecipeSerializer implements IRecipeSerializer {
 	public final double energy;
 
 	public RefineryRecipeSerializer(ResourceLocation key, Object itemInput, int itemInputCount, Object fluidInput, int fluidInputAmount, Object itemOutput, int itemOutputCountMin, int itemOutputCountMax, double time, double energy) {
-		this(key, itemInput, itemInputCount, fluidInput, fluidInputAmount, FluidStack.EMPTY, 0, itemOutput, itemOutputCountMin, itemOutputCountMax, FluidStack.EMPTY, 0, 0, time, energy);	
+		this(key, itemInput, itemInputCount, fluidInput, fluidInputAmount, FluidStack.EMPTY, 0, itemOutput, itemOutputCountMin, itemOutputCountMax, FluidStack.EMPTY, 0, 0, time, energy);
 	}
 
 	public RefineryRecipeSerializer(ResourceLocation key, Object itemInput, int itemInputCount, Object fluidInput, int fluidInputAmount, Object secondFluidInput, int secondFluidInputAmount, Object itemOutput, int itemOutputCountMin, int itemOutputCountMax, Object fluidOutput, int fluidOutputAmountMin, int fluidOutputAmountMax, double time, double energy) {
