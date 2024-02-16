@@ -19,12 +19,12 @@ public class MaterialExpansion {
 		String oreDict = MiscHelper.INSTANCE.getOredictName(prefix, material.getName());
 		return oreDict.contains("*") ? OreDictWildcardIngredient.of(oreDict) : new OreDictIngredient(oreDict);
 	}
-	
+
 	public static ItemStack item(IMaterial material, String prefix, int count) {
 		MiscHelper helper = MiscHelper.INSTANCE;
 		return helper.getItemStack(helper.getOredictName(prefix, material.getName()), count);
 	}
-	
+
 	public static ItemStack item(IMaterial material, String prefix) {
 		return item(material, prefix, 1);
 	}

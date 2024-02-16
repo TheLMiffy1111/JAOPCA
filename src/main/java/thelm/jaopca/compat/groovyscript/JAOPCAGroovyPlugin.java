@@ -26,7 +26,7 @@ public class JAOPCAGroovyPlugin implements GroovyPlugin {
 		GameObjectHandlerManager.registerGameObjectHandler("jaopca", "module", IGameObjectHandler.wrapStringGetter(ModuleHandler::getModuleData));
 		GameObjectHandlerManager.registerGameObjectHandler("jaopca", "form", IGameObjectHandler.wrapStringGetter(FormHandler::getForm));
 		GameObjectHandlerManager.registerGameObjectHandler("jaopca", "material", IGameObjectHandler.wrapStringGetter(MaterialHandler::getMaterial));
-		
+
 		ExpansionHelper.mixinClass(IModuleData.class, ModuleDataExpansion.class);
 		ExpansionHelper.mixinClass(IForm.class, FormExpansion.class);
 		ExpansionHelper.mixinClass(IMaterial.class, MaterialExpansion.class);
