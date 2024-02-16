@@ -42,7 +42,7 @@ public class InductionFurnaceRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		
+
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "lavaplus:inductionfurnace");
 		JsonArray ingJson = new JsonArray();

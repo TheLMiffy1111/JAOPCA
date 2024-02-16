@@ -203,11 +203,11 @@ public class MekanismModule implements IModule {
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerEnrichingRecipe(
 						new ResourceLocation("jaopca", "mekanism.raw_material_to_dust."+material.getName()),
-						rawMaterialLocation, 3, dustLocation, 4);	
+						rawMaterialLocation, 3, dustLocation, 4);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerEnrichingRecipe(
 							new ResourceLocation("jaopca", "mekanism.raw_storage_block_to_dust."+material.getName()),
-							rawStorageBlockLocation, 1, dustLocation, 12);	
+							rawStorageBlockLocation, 1, dustLocation, 12);
 				}
 			}
 		}
