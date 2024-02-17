@@ -209,7 +209,7 @@ dependencies {
 	shadowImplementation "com.electronwill.night-config:toml:3.6.4"
 
 	// Common
-	modImplementation "curse.maven:wrapup-275153:2486198"
+	implementation "curse.maven:wrapup-275153:2486198"
 	modImplementation "mezz.jei:jei_1.12.2:4.16.1.1012"
 	modImplementation "codechicken:CodeChickenLib:1.12.2-3.2.3.358:universal"
 	implementation "net.shadowfacts:Forgelin:1.8.4"
