@@ -30,16 +30,6 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://mvn.falsepattern.com/releases/"
-			}
-		}
-		filter {
-			includeGroup "com.falsepattern"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
 				url = "https://maven.tterrag.com/"
 			}
 		}
@@ -144,7 +134,7 @@ def specVersion = "W"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "W.0.4.12"
+version = "W.0.4.13"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
