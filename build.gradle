@@ -372,7 +372,7 @@ publishMods {
 	version = displayName = "${mcVersion}-${project.version}"
 	changelog = file("changelog.md").text
 	type = STABLE
-	modLoaders.addAll("forge")
+	modLoaders.add("forge")
 	additionalFiles.from(remapSourcesJar.archiveFile)
 
 	curseforge {
