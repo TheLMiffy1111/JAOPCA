@@ -11,6 +11,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import thelm.jaopca.blocks.BlockFormType;
@@ -35,10 +36,9 @@ public class CommonEventHandler {
 		return INSTANCE;
 	}
 
-	public void onConstruct() {
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+	@SubscribeEvent
+	public void onConstruct(FMLConstructModEvent event) {
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::onAddReloadListener);
-
 		ApiImpl.INSTANCE.init();
 		BlockFormType.init();
 		ItemFormType.init();
@@ -46,6 +46,7 @@ public class CommonEventHandler {
 		DataCollector.collectData();
 		ModuleHandler.findModules();
 		ConfigHandler.setupMainConfig();
+		DataInjector.findDataModules();
 		MaterialHandler.findMaterials();
 		ConfigHandler.setupMaterialConfigs();
 		FormTypeHandler.setupGson();

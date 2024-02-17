@@ -32,10 +32,6 @@ public class ClientEventHandler {
 		return INSTANCE;
 	}
 
-	public void onConstruct() {
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
-	}
-
 	@SubscribeEvent
 	public void onClientSetup(FMLClientSetupEvent event) {
 		Minecraft mc = event.getMinecraftSupplier().get();
