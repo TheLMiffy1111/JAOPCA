@@ -80,16 +80,6 @@ repositories {
 	}
 	exclusiveContent {
 		forRepository {
-			maven {
-				url = "https://gregtech.overminddl1.com/"
-			}
-		}
-		filter {
-			includeGroup "Reika"
-		}
-	}
-	exclusiveContent {
-		forRepository {
 			ivy {
 				artifactPattern "https://asie.pl/files/mods/[orgPath]/[module]-[revision](-[classifier]).[ext]"
 				metadataSources {
