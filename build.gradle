@@ -223,7 +223,7 @@ dependencies {
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.19.2"
-	mappings loom.layered() {
+	mappings loom.layered {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.19.2:2022.11.27@zip"
 	}
