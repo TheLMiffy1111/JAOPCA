@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "jaopca:block/metallic/molten" }
-    }
+	"variants": {
+		"": { "model": "jaopca:block/metallic/molten" }
+	}
 }

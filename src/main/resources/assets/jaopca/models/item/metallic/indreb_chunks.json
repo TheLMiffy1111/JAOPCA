@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/indreb_chunks"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "jaopca:item/metallic/indreb_chunks"
+	}
 }

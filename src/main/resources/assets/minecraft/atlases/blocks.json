@@ -1,14 +1,14 @@
 {
-    "sources": [
-        {
-            "type": "directory",
-            "source": "fluid",
-            "prefix": "fluid/"
-        },
-        {
-            "type": "directory",
-            "source": "slurry",
-            "prefix": "slurry/"
-        }
-    ]
+	"sources": [
+		{
+			"type": "directory",
+			"source": "fluid",
+			"prefix": "fluid/"
+		},
+		{
+			"type": "directory",
+			"source": "slurry",
+			"prefix": "slurry/"
+		}
+	]
 }
