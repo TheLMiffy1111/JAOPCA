@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "jaopca:block/metallic/electrodynamics_sulfates" }
-    }
+	"variants": {
+		"": { "model": "jaopca:block/metallic/electrodynamics_sulfates" }
+	}
 }
