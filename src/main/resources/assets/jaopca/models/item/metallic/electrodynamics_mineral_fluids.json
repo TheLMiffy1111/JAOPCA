@@ -1,8 +1,8 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/blank",
-        "layer1": "minecraft:item/bucket",
-        "layer2": "jaopca:item/metallic/electrodynamics_mineral_fluids"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "jaopca:item/blank",
+		"layer1": "minecraft:item/bucket",
+		"layer2": "jaopca:item/metallic/electrodynamics_mineral_fluids"
+	}
 }

@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "jaopca:block/metallic/electrodynamics_mineral_fluids" }
-    }
+	"variants": {
+		"": { "model": "jaopca:block/metallic/electrodynamics_mineral_fluids" }
+	}
 }

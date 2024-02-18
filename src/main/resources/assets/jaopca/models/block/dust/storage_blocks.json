@@ -1,6 +1,6 @@
 {
-    "parent": "jaopca:block/cube_colored",
-    "textures": {
-        "base": "jaopca:block/dust/storage_blocks"
-    }
+	"parent": "jaopca:block/cube_colored",
+	"textures": {
+		"base": "jaopca:block/dust/storage_blocks"
+	}
 }

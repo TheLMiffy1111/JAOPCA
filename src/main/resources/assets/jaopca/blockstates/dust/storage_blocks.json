@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "jaopca:block/dust/storage_blocks" }
-    }
+	"variants": {
+		"": { "model": "jaopca:block/dust/storage_blocks" }
+	}
 }

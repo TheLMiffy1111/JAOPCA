@@ -1,7 +1,7 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/exnihilosequentia_chunks",
-        "layer1": "jaopca:item/metallic/exnihilosequentia_chunks_overlay"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "jaopca:item/metallic/exnihilosequentia_chunks",
+		"layer1": "jaopca:item/metallic/exnihilosequentia_chunks_overlay"
+	}
 }

@@ -1,31 +1,31 @@
 {
-    "block.jaopca.storage_blocks": "%s磚",
-    "item.jaopca.dusts": "%s粉",
-    "item.jaopca.nuggets": "%s粒",
-    "item.jaopca.tiny_dusts": "小撮%s粉",
-    "item.jaopca.small_dusts": "小%s粉",
-    "fluid.jaopca.molten": "熔融%s",
-    "item.jaopca.molten": "熔融%s桶",
+	"block.jaopca.storage_blocks": "%s磚",
+	"item.jaopca.dusts": "%s粉",
+	"item.jaopca.nuggets": "%s粒",
+	"item.jaopca.tiny_dusts": "小撮%s粉",
+	"item.jaopca.small_dusts": "小%s粉",
+	"fluid.jaopca.molten": "熔融%s",
+	"item.jaopca.molten": "熔融%s桶",
 
-    "item.jaopca.mekanism_dirty_dusts": "污濁%s粉",
-    "item.jaopca.mekanism_clumps": "%s碎塊",
-    "item.jaopca.mekanism_shards": "%s碎片",
-    "item.jaopca.mekanism_crystals": "%s晶體",
-    "slurry.jaopca.mekanism_dirty": "污濁%s漿液",
-    "slurry.jaopca.mekanism_clean": "純淨%s漿液",
+	"item.jaopca.mekanism_dirty_dusts": "污濁%s粉",
+	"item.jaopca.mekanism_clumps": "%s碎塊",
+	"item.jaopca.mekanism_shards": "%s碎片",
+	"item.jaopca.mekanism_crystals": "%s晶體",
+	"slurry.jaopca.mekanism_dirty": "污濁%s漿液",
+	"slurry.jaopca.mekanism_clean": "純淨%s漿液",
 
-    "item.jaopca.flux_grits": "%s礦砂",
+	"item.jaopca.flux_grits": "%s礦砂",
 
-    "item.jaopca.silents_mechanisms_chunks": "%s礦碎塊",
+	"item.jaopca.silents_mechanisms_chunks": "%s礦碎塊",
 
-    "item.jaopca.create_crushed_ores": "碎%s礦",
+	"item.jaopca.create_crushed_ores": "碎%s礦",
 
-    "item.jaopca.crossroads_grits": "粗%s砂",
-    "item.jaopca.crossroads_clumps": "%s團塊",
+	"item.jaopca.crossroads_grits": "粗%s砂",
+	"item.jaopca.crossroads_clumps": "%s團塊",
 
-    "item.jaopca.bloodmagic_gravels": "%s礦礫石",
-    "item.jaopca.bloodmagic_fragments": "%s礦碎片",
+	"item.jaopca.bloodmagic_gravels": "%s礦礫石",
+	"item.jaopca.bloodmagic_fragments": "%s礦碎片",
 
-    "item.jaopca.exnihilosequentia_pieces": "%s礦碎粒",
-    "item.jaopca.exnihilosequentia_chunks": "%s礦碎塊"
+	"item.jaopca.exnihilosequentia_pieces": "%s礦碎粒",
+	"item.jaopca.exnihilosequentia_chunks": "%s礦碎塊"
 }
