@@ -1,7 +1,7 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/abyssalcraft_crystal_fragment",
-        "layer1": "jaopca:item/metallic/abyssalcraft_crystal_fragment_overlay"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "jaopca:item/metallic/abyssalcraft_crystal_fragment",
+		"layer1": "jaopca:item/metallic/abyssalcraft_crystal_fragment_overlay"
+	}
 }

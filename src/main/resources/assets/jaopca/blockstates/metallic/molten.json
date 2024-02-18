@@ -1,13 +1,13 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "jaopca:fluid",
-        "textures": {
-            "still": "jaopca:fluid/metallic/molten_still",
-            "flowing": "jaopca:fluid/metallic/molten_flow"
-        }
-    },
-    "variants": {
-        "normal": [{}]
-    }
+	"forge_marker": 1,
+	"defaults": {
+		"model": "jaopca:fluid",
+		"textures": {
+			"still": "jaopca:fluid/metallic/molten_still",
+			"flowing": "jaopca:fluid/metallic/molten_flow"
+		}
+	},
+	"variants": {
+		"normal": [{}]
+	}
 }

@@ -1,7 +1,7 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/teslathingies_tesla_lump",
-        "layer1": "jaopca:item/metallic/teslathingies_tesla_lump_overlay"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "jaopca:item/metallic/teslathingies_tesla_lump",
+		"layer1": "jaopca:item/metallic/teslathingies_tesla_lump_overlay"
+	}
 }

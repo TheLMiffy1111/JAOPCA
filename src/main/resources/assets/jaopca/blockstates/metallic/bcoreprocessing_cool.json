@@ -1,13 +1,13 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "jaopca:fluid",
-        "textures": {
-            "still": "jaopca:fluid/metallic/bcoreprocessing_cool_still",
-            "flowing": "jaopca:fluid/metallic/bcoreprocessing_cool_flow"
-        }
-    },
-    "variants": {
-        "normal": [{}]
-    }
+	"forge_marker": 1,
+	"defaults": {
+		"model": "jaopca:fluid",
+		"textures": {
+			"still": "jaopca:fluid/metallic/bcoreprocessing_cool_still",
+			"flowing": "jaopca:fluid/metallic/bcoreprocessing_cool_flow"
+		}
+	},
+	"variants": {
+		"normal": [{}]
+	}
 }

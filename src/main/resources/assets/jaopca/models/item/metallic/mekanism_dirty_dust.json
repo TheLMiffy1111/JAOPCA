@@ -1,7 +1,7 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "jaopca:item/metallic/mekanism_dirty_dust",
-        "layer1": "jaopca:item/metallic/mekanism_dirty_dust_overlay"
-    }
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "jaopca:item/metallic/mekanism_dirty_dust",
+		"layer1": "jaopca:item/metallic/mekanism_dirty_dust_overlay"
+	}
 }
