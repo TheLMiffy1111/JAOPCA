@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "jaopca:block/crystal/molten" }
-    }
+	"variants": {
+		"": { "model": "jaopca:block/crystal/molten" }
+	}
 }

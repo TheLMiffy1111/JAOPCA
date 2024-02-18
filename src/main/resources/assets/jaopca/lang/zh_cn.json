@@ -1,19 +1,19 @@
 {
-    "block.jaopca.storage_blocks": "%s块",
-    "block.jaopca.raw_storage_blocks": "粗%s块",
-    "item.jaopca.dusts": "%s粉",
-    "item.jaopca.nuggets": "%s粒",
-    "item.jaopca.tiny_dusts": "小撮%s粉",
-    "item.jaopca.small_dusts": "小%s粉",
-    "fluid_type.jaopca.molten": "熔融%s",
-    "item.jaopca.molten": "熔融%s桶",
+	"block.jaopca.storage_blocks": "%s块",
+	"block.jaopca.raw_storage_blocks": "粗%s块",
+	"item.jaopca.dusts": "%s粉",
+	"item.jaopca.nuggets": "%s粒",
+	"item.jaopca.tiny_dusts": "小撮%s粉",
+	"item.jaopca.small_dusts": "小%s粉",
+	"fluid_type.jaopca.molten": "熔融%s",
+	"item.jaopca.molten": "熔融%s桶",
 
-    "item.jaopca.create_crushed_ores": "碎%s礦",
+	"item.jaopca.create_crushed_ores": "碎%s礦",
 
-    "item.jaopca.mekanism_dirty_dusts": "污浊%s粉",
-    "item.jaopca.mekanism_clumps": "%s碎块",
-    "item.jaopca.mekanism_shards": "%s碎片",
-    "item.jaopca.mekanism_crystals": "%s晶体",
-    "slurry.jaopca.mekanism_dirty": "污浊%s浆液",
-    "slurry.jaopca.mekanism_clean": "纯净%s浆液"
+	"item.jaopca.mekanism_dirty_dusts": "污浊%s粉",
+	"item.jaopca.mekanism_clumps": "%s碎块",
+	"item.jaopca.mekanism_shards": "%s碎片",
+	"item.jaopca.mekanism_crystals": "%s晶体",
+	"slurry.jaopca.mekanism_dirty": "污浊%s浆液",
+	"slurry.jaopca.mekanism_clean": "纯净%s浆液"
 }

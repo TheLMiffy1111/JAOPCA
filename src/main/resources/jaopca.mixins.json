@@ -1,14 +1,14 @@
 {
-    "required": true,
-    "minVersion": "0.8",
-    "package": "thelm.jaopca.mixins",
-    "refmap": "jaopca.refmap.json",
-    "target": "@env(DEFAULT)",
-    "compatibilityLevel": "JAVA_17",
-    "mixins": [
-        "SimplePreparableReloadListenerMixin"
-    ],
-    "injectors": {
-        "defaultRequire": 1
-    }
+	"required": true,
+	"minVersion": "0.8",
+	"package": "thelm.jaopca.mixins",
+	"refmap": "jaopca.refmap.json",
+	"target": "@env(DEFAULT)",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"SimplePreparableReloadListenerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

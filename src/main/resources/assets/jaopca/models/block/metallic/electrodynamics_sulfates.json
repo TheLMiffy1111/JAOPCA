@@ -1,5 +1,5 @@
 {
-    "textures": {
-        "particle": "jaopca:fluid/metallic/electrodynamics_sulfates_still"
-    }
+	"textures": {
+		"particle": "jaopca:fluid/metallic/electrodynamics_sulfates_still"
+	}
 }

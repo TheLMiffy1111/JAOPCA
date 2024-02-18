@@ -1,5 +1,5 @@
 {
-    "variants": {
-        "": { "model": "jaopca:block/metallic/raw_storage_blocks" }
-    }
+	"variants": {
+		"": { "model": "jaopca:block/metallic/raw_storage_blocks" }
+	}
 }
