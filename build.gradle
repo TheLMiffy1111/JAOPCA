@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-afd363f1"
+	id "com.crystaelix.loom" version "jitpack-f5998d25"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -340,7 +340,7 @@ publishMods {
 	additionalFiles.from(remapSourcesJar.archiveFile)
 
 	curseforge {
-		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+		accessToken = providers.gradleProperty("curseforge.token")
 		projectId = "266936"
 		minecraftVersions.add(mcVersion)
 		javaVersions.add(JavaVersion.VERSION_1_8)
@@ -348,7 +348,7 @@ publishMods {
 	}
 
 	modrinth {
-		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		accessToken = providers.gradleProperty("modrinth.token")
 		projectId = "P48mHi2j"
 		minecraftVersions.add(mcVersion)
 		requires "unimixins"
