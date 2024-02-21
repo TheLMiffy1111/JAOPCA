@@ -1,2 +1,2 @@
-Change asset indentation to tabs  
-Remove unnecessary mod instance  
+Lowercase form names automatically  
+Add default legacy remaps to custom module  

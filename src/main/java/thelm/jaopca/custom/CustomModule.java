@@ -9,13 +9,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import thelm.jaopca.api.config.IDynamicSpecConfig;
+import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
@@ -76,5 +79,14 @@ public class CustomModule implements IModule {
 				customConfigDefiner.accept(material, configs.get(material));
 			}
 		}
+	}
+
+	@Override
+	public Map<String, String> getLegacyRemaps() {
+		return formRequests.stream().
+				flatMap(r->r.getForms().stream()).
+				map(IForm::getName).
+				distinct().
+				collect(ImmutableMap.toImmutableMap(Function.identity(), Function.identity()));
 	}
 }

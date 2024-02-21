@@ -158,7 +158,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.9.17"
+version = "2.3.9.18"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -369,6 +369,47 @@ sourcesJar {
 	manifest.attributes(manifestAttributes)
 }
 
+def curseforgeDependencies = [
+	"abyssalcraft",
+	"advanced-rocketry",
+	"applied-energistics-2",
+	"astral-sorcery",
+	"bc-ore-processing",
+	"crafttweaker",
+	"embers-rekindled",
+	"ender-io",
+	"essentialcraft-4-unofficial",
+	"futurepack",
+	"groovyscript",
+	"hbms-nuclear-tech-mod-reloaded",
+	"ignition-foundry",
+	"industrial-craft",
+	"integrated-dynamics",
+	"magneticraft",
+	"mekanism",
+	"minestrappolation-5",
+	"powered-thingies",
+	"qmd",
+	"railcraft",
+	"techreborn",
+	"tinkers-construct",
+	"thaumcraft"
+]
+
+def modrinthDependencies = [
+	"ae2",
+	"crafttweaker",
+	"embers",
+	"enderio",
+	"futurepack",
+	"groovyscript",
+	"hbm-reloaded",
+	"industrial-craft",
+	"integrated-dynamics",
+	"mekanism",
+	"tinkers-construct",
+]
+
 publishMods {
 	file = remapJar.archiveFile
 	version = displayName = "${mcVersion}-${project.version}"
@@ -383,6 +424,7 @@ publishMods {
 		minecraftVersions.add(mcVersion)
 		javaVersions.add(JavaVersion.VERSION_1_8)
 		requires "wrapup"
+		optional curseforgeDependencies as String[]
 	}
 
 	modrinth {
@@ -390,5 +432,6 @@ publishMods {
 		projectId = "P48mHi2j"
 		minecraftVersions.add(mcVersion)
 		requires "wrapup"
+		optional modrinthDependencies as String[]
 	}
 }
