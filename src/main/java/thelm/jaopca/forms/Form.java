@@ -3,6 +3,7 @@ package thelm.jaopca.forms;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -35,7 +36,7 @@ public class Form implements IForm {
 
 	public Form(IModule module, String name, IFormType type) {
 		this.module = Objects.requireNonNull(module);
-		this.name = Objects.requireNonNull(name);
+		this.name = Objects.requireNonNull(name).toLowerCase(Locale.US);
 		this.type = Objects.requireNonNull(type);
 		secondaryName = name;
 		settings = type.getNewSettings();

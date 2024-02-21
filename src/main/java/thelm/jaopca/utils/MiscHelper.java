@@ -212,7 +212,7 @@ public class MiscHelper implements IMiscHelper {
 		LinkedList<String> list = new LinkedList<>();
 		for(String s : StringUtils.splitByCharacterTypeCamelCase(camelCase)) {
 			if(StringUtils.isAllUpperCase(s)) {
-				list.add(StringUtils.lowerCase(s).chars().mapToObj(c->String.valueOf((char)c)).collect(Collectors.joining("_")));
+				list.add(s.toLowerCase(Locale.US).chars().mapToObj(c->String.valueOf((char)c)).collect(Collectors.joining("_")));
 			}
 			else if(StringUtils.isAllLowerCase(s) && !list.isEmpty()) {
 				list.add(list.pollLast()+s);

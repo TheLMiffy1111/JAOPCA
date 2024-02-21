@@ -124,7 +124,7 @@ def specVersion = "W"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "W.0.4.14"
+version = "W.0.4.15"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -331,6 +331,43 @@ sourcesJar {
 	manifest.attributes(manifestAttributes)
 }
 
+def curseforgeDependencies = [
+	"abyssalcraft",
+	"applied-energistics-2",
+	"buildcraft-additions",
+	"crafttweaker",
+	"electrical-age",
+	"ender-io",
+	"engineers-toolbox",
+	"essentialcraft-3",
+	"flaxbeards-steam-power",
+	"foundry",
+	"ganys-nether",
+	"hbms-nuclear-tech-mod",
+	"hydraulicraft",
+	"industrial-craft",
+	"magneticraft",
+	"mariculture",
+	"mekanism",
+	"railcraft",
+	"rotarycraft",
+	"techreborn",
+	"tinkers-construct",
+	"thaumcraft"
+]
+
+def modrinthDependencies = [
+	"ae2",
+	"crafttweaker",
+	"enderio",
+	"factorization",
+	"flaxbeards-steam-power",
+	"industrial-craft",
+	"mekanism",
+	"ntm",
+	"tinkers-construct"
+]
+
 publishMods {
 	file = remapJar.archiveFile
 	version = displayName = "${mcVersion}-${project.version}"
@@ -345,6 +382,7 @@ publishMods {
 		minecraftVersions.add(mcVersion)
 		javaVersions.add(JavaVersion.VERSION_1_8)
 		requires "unimixins"
+		optional curseforgeDependencies as String[]
 	}
 
 	modrinth {
@@ -352,5 +390,6 @@ publishMods {
 		projectId = "P48mHi2j"
 		minecraftVersions.add(mcVersion)
 		requires "unimixins"
+		optional modrinthDependencies as String[]
 	}
 }
