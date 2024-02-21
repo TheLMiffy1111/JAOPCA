@@ -380,7 +380,6 @@ publishMods {
 		accessToken = providers.gradleProperty("curseforge.token")
 		projectId = "266936"
 		minecraftVersions.add(mcVersion)
-		javaVersions.add(JavaVersion.VERSION_1_8)
 		requires "unimixins"
 		optional curseforgeDependencies as String[]
 	}
