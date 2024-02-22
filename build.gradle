@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-f5998d25"
+	id "com.crystaelix.loom" version "jitpack-06d03f31"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -346,6 +346,53 @@ sourcesJar {
 	manifest.attributes(manifestAttributes)
 }
 
+def curseforgeDependencies = [
+	"applied-energistics-2",
+	"assemblylinemachines",
+	"astral-sorcery",
+	"blood-magic",
+	"crafttweaker",
+	"create",
+	"crossroads-mc",
+	"electrodynamics",
+	"flux-machinery",
+	"ftb-industrial-contraptions-forge",
+	"futurepack",
+	"immersive-engineering",
+	"industrial-reborn",
+	"integrated-dynamics",
+	"json-things",
+	"kubejs",
+	"mekanism",
+	"occultism",
+	"open-loader",
+	"silents-mechanisms",
+	"tinkers-construct",
+	"thermal-expansion",
+	"voluminous-energy",
+	"wtbw_machines"
+]
+
+def modrinthDependencies = [
+	"ae2",
+	"blood-magic",
+	"crafttweaker",
+	"create",
+	"crossroads",
+	"electrodynamics",
+	"futurepack",
+	"immersiveengineering",
+	"industrial-reborn",
+	"integrated-dynamics",
+	"kubejs",
+	"mekanism",
+	"occultism",
+	"open-loader",
+	"tinkers-construct",
+	"thermal-expansion",
+	"voluminous_energy"
+]
+
 publishMods {
 	file = remapJar.archiveFile
 	version = displayName = "${mcVersion}-${project.version}"
@@ -358,11 +405,13 @@ publishMods {
 		accessToken = providers.gradleProperty("curseforge.token")
 		projectId = "266936"
 		minecraftVersions.add(mcVersion)
+		optional curseforgeDependencies as String[]
 	}
 
 	modrinth {
 		accessToken = providers.gradleProperty("modrinth.token")
 		projectId = "P48mHi2j"
 		minecraftVersions.add(mcVersion)
+		optional modrinthDependencies as String[]
 	}
 }
