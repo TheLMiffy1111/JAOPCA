@@ -1,2 +1,2 @@
-Change asset indentation to tabs  
-Remove unnecessary mod instance  
+Add Nuclearcraft: Neoteric support  
+Completely convert asset indents to tabs  

@@ -184,7 +184,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.1.16.37"
+version = "4.1.17.38"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -299,6 +299,9 @@ dependencies {
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.18.2-10.2.5.465"
 
+	// NuclearCraft: Neoteric
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:5127366"
+
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.18.2:1.9"
 	modImplementation "curse.maven:modonomicon-538392:4641770"
@@ -383,6 +386,7 @@ def curseforgeDependencies = [
 	"kubejs",
 	"lavatech",
 	"mekanism",
+	"nuclearcraft-neoteric",
 	"occultism",
 	"open-loader",
 	"tinkers-construct",
