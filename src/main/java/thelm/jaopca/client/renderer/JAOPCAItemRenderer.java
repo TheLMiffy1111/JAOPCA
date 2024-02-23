@@ -15,7 +15,6 @@ import net.minecraftforge.client.IItemRenderer;
 public class JAOPCAItemRenderer implements IItemRenderer {
 
 	public static final JAOPCAItemRenderer INSTANCE = new JAOPCAItemRenderer();
-	public boolean rendering = false;
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {

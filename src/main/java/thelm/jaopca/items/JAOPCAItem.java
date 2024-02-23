@@ -92,6 +92,7 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+getForm().getName(), getIMaterial(), getUnlocalizedName(stack));
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
 	public IItemRenderer getRenderer() {
 		return JAOPCAItemRenderer.INSTANCE;
