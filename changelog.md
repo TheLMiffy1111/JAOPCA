@@ -1,2 +1,2 @@
-Change asset indentation to tabs  
-Remove unnecessary mod instance  
+Fix Nuclearcraft: Neoteric slurry particles  
+Completely convert asset indents to tabs  
