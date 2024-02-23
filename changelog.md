@@ -1,2 +1,1 @@
-Lowercase form names automatically  
-Add default legacy remaps to custom module  
+Completely convert asset indents to tabs  
