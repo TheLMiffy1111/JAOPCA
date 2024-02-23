@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-5113aab1"
+	id "com.crystaelix.loom" version "jitpack-a0ab4404"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
