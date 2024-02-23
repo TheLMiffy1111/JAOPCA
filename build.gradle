@@ -367,6 +367,48 @@ sourcesJar {
 	manifest.attributes(manifestAttributes)
 }
 
+def curseforgeDependencies = [
+	"assemblylinemachines",
+	"crafttweaker",
+	"create",
+	"crossroads-mc",
+	"cyclic",
+	"electrodynamics",
+	"energized-power",
+	"factorium",
+	"ftb-industrial-contraptions-forge",
+	"ic2-classic",
+	"immersive-engineering",
+	"industrial-reborn",
+	"integrated-dynamics",
+	"json-things",
+	"kubejs",
+	"mekanism",
+	"nuclearcraft-neoteric",
+	"occultism",
+	"open-loader",
+	"thermal-expansion",
+	"voluminous-energy"
+]
+
+def modrinthDependencies = [
+	"crafttweaker",
+	"create",
+	"crossroads",
+	"electrodynamics",
+	"energized-power",
+	"factorium",
+	"immersiveengineering",
+	"industrial-reborn",
+	"integrated-dynamics",
+	"kubejs",
+	"mekanism",
+	"occultism",
+	"open-loader",
+	"thermal-expansion",
+	"voluminous_energy"
+]
+
 publishMods {
 	file = remapJar.archiveFile
 	version = displayName = "${mcVersion}-${project.version}"
@@ -379,11 +421,13 @@ publishMods {
 		accessToken = providers.gradleProperty("curseforge.token")
 		projectId = "266936"
 		minecraftVersions.add(mcVersion)
+		optional curseforgeDependencies as String[]
 	}
 
 	modrinth {
 		accessToken = providers.gradleProperty("modrinth.token")
 		projectId = "P48mHi2j"
 		minecraftVersions.add(mcVersion)
+		optional modrinthDependencies as String[]
 	}
 }
