@@ -49,7 +49,7 @@ public class RotaryCraftRecipeHandler {
 		}
 		String modid = modContainer.getModId();
 		if(!"jaopca".equals(modid)) {
-			LOGGER.warn("External mod {} tried to register JAOPCA RotaryCraft extractor recipe, ignoring", modid);
+			LOGGER.warn("External mod {} tried to register JAOPCA RotaryCraft extractor recipe, ignoring", new Object[] {modid});
 			return false;
 		}
 		if(HASH.equals(dust, slurry) || HASH.equals(slurry, solution) || HASH.equals(solution, dust)) {

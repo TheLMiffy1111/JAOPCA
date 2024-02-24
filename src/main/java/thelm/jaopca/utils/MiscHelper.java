@@ -315,7 +315,7 @@ public class MiscHelper implements IMiscHelper {
 				versionRange = VersionRange.createFromVersionSpec(spec);
 			}
 			catch(InvalidVersionSpecificationException e) {
-				logger.warn("Unable to parse version spec {} for mod id {}", spec, modId, e);
+				logger.warn("Unable to parse version spec {} for mod id {}", new Object[] {spec, modId, e});
 				return true;
 			}
 			if(Loader.isModLoaded(modId)) {
@@ -324,7 +324,7 @@ public class MiscHelper implements IMiscHelper {
 					return false;
 				}
 				else {
-					logger.warn("Mod {} in version range {} was requested, was {}", modId, versionRange, version);
+					logger.warn("Mod {} in version range {} was requested, was {}", new Object[] {modId, versionRange, version});
 					return true;
 				}
 			}

@@ -46,7 +46,7 @@ public class CrucibleSmeltingRecipeAction implements IRecipeAction {
 			}
 			Mats.MaterialStack stack = HBMHelper.INSTANCE.getMaterialStack(out, amount);
 			if(stack == null) {
-				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				LOGGER.warn("Empty output in recipe {}: {}", new Object[] {key, out});
 				continue;
 			}
 			outputs.add(stack);

@@ -52,7 +52,7 @@ public class MeltingRecipeAction implements IRecipeAction {
 			defaultMeta = ren.getItemDamage();
 		}
 		else {
-			LOGGER.debug("No valid specified render blocks in recipe {}, defaulting to glue", key);
+			LOGGER.debug("No valid specified render blocks in recipe {}, defaulting to glue", new Object[] {key});
 		}
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, outputAmount);
 		if(stack == null) {

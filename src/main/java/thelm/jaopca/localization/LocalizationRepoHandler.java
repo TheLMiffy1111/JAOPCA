@@ -41,7 +41,7 @@ public class LocalizationRepoHandler {
 		if(!Files.exists(langDir) || !Files.isDirectory(langDir)) {
 			try {
 				if(Files.exists(langDir) && !Files.isDirectory(langDir)) {
-					LOGGER.warn("Directory {} is a file, deleting", langDir);
+					LOGGER.warn("Directory {} is a file, deleting", new Object[] {langDir});
 					Files.delete(langDir);
 				}
 				Files.createDirectory(langDir);
@@ -61,21 +61,21 @@ public class LocalizationRepoHandler {
 			if(ConfigHandler.checkL10nUpdates) {
 				try {
 					if(!Files.exists(langFile) || System.currentTimeMillis()-Files.getLastModifiedTime(langFile).toMillis() > ConfigHandler.updateInterval*24*3600*1000) {
-						LOGGER.info("Downloading localization file for language {}", language);
+						LOGGER.info("Downloading localization file for language {}", new Object[] {language});
 						URL url = new URL("https://raw.githubusercontent.com/TheLMiffy1111/JAOPCAMaterialLocalizations/v2/lang/"+language+".json");
 						InputStream con = openUrlStream(url);
 						Files.copy(con, langFile, StandardCopyOption.REPLACE_EXISTING);
-						LOGGER.info("Downloaded localization file for language {}", language);
+						LOGGER.info("Downloaded localization file for language {}", new Object[] {language});
 					}
 				}
 				catch(Exception e) {
-					LOGGER.info("Unable to download localization file for language {}", language, e);
+					LOGGER.info("Unable to download localization file for language {}", new Object[] {language, e});
 					currentLocalizationMap = ImmutableSortedMap.of();
 				}
 			}
 			if(Files.exists(langFile)) {
 				try(InputStreamReader reader = new InputStreamReader(Files.newInputStream(langFile), StandardCharsets.UTF_8)) {
-					LOGGER.info("Reading localization file", language);
+					LOGGER.info("Reading localization file", new Object[] {language});
 					JsonElement jsonElement = new JsonParser().parse(reader);
 					JsonObject json = jsonHelper.getJsonObject(jsonElement, "file");
 					ImmutableSortedMap.Builder<String, String> builder = ImmutableSortedMap.naturalOrder();
@@ -91,7 +91,7 @@ public class LocalizationRepoHandler {
 						}
 					}
 					currentLocalizationMap = builder.build();
-					LOGGER.info("Finished reading localization file", language);
+					LOGGER.info("Finished reading localization file", new Object[] {language});
 				}
 				catch(Exception e) {
 					LOGGER.info("Unable to read localization file", e);

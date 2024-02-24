@@ -57,7 +57,7 @@ public class MagmaticCentrifugeRecipeAction implements IRecipeAction {
 			}
 			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count, false);
 			if(stack == null) {
-				LOGGER.warn("Empty output in recipe {}: {}", key, out);
+				LOGGER.warn("Empty output in recipe {}: {}", new Object[] {key, out});
 				continue;
 			}
 			outputs.add(stack);

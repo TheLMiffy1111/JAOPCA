@@ -46,26 +46,26 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 					Path realPath = oldPath.toRealPath();
 					String realFileName = realPath.getFileName().toString();
 					if(!realFileName.equals(fileName)) {
-						LOGGER.debug("Moving config with path {} to path {}", oldPath, path);
+						LOGGER.debug("Moving config with path {} to path {}", new Object[] {oldPath, path});
 						Path tempPath = Files.createTempFile(path.getParent(), null, null);
 						Files.move(oldPath, tempPath, StandardCopyOption.REPLACE_EXISTING);
 						Files.move(tempPath, path, StandardCopyOption.REPLACE_EXISTING);
 					}
 				}
 				catch(Exception e) {
-					LOGGER.error("Unable to move config with path {}", oldPath, e);
+					LOGGER.error("Unable to move config with path {}", new Object[] {oldPath, e});
 				}
 			}
 			try {
 				fileConfig.load();
 			}
 			catch(ParsingException e) {
-				LOGGER.warn("Config with path {} is malformed, moving", path);
+				LOGGER.warn("Config with path {} is malformed, moving", new Object[] {path});
 				try {
 					Files.move(path, path.resolveSibling(fileName+".bak"), StandardCopyOption.REPLACE_EXISTING);
 				}
 				catch(Exception e1) {
-					LOGGER.error("Unable to move config with path {}", path, e1);
+					LOGGER.error("Unable to move config with path {}", new Object[] {path, e1});
 				}
 			}
 		}

@@ -59,7 +59,7 @@ public class CastingRecipeAction implements IRecipeAction {
 		List<Object> itemIns = new ArrayList<>();
 		if(itemInput instanceof String) {
 			if(!ApiImpl.INSTANCE.getOredict().contains(itemInput)) {
-				LOGGER.warn("Empty input in recipe {}: {}", key, itemInput);
+				LOGGER.warn("Empty input in recipe {}: {}", new Object[] {key, itemInput});
 			}
 			itemIns.add(new OreStack((String)itemInput, itemInputCount));
 		}

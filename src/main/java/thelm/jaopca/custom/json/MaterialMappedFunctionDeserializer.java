@@ -41,7 +41,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 		String defaultString = helper.getString(json, "default");
 		T defaultValue = stringToValue.apply(defaultString);
 		if(defaultValue == null) {
-			LOGGER.warn("Null default value: {}", defaultString);
+			LOGGER.warn("Null default value: {}", new Object[] {defaultString});
 		}
 		Map<IMaterial, T> map = new TreeMap<>();
 		if(json.has("materialTypes")) {
@@ -50,7 +50,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 				String materialTypeString = helper.getString(entry.getValue(), "element");
 				T materialTypeValue = stringToValue.apply(materialTypeString.toLowerCase(Locale.US));
 				if(materialTypeValue == null) {
-					LOGGER.warn("Null value for material type {}: {}", entry.getKey(), materialTypeString);
+					LOGGER.warn("Null value for material type {}: {}", new Object[] {entry.getKey(), materialTypeString});
 				}
 				switch(entry.getKey()) {
 				case "ingot":
@@ -83,7 +83,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 					String materialString = helper.getString(entry.getValue(), "element");
 					T materialValue = stringToValue.apply(materialString);
 					if(materialValue == null) {
-						LOGGER.warn("Null value for material {}: {}", entry.getKey(), materialString);
+						LOGGER.warn("Null value for material {}: {}", new Object[] {entry.getKey(), materialString});
 					}
 					map.put(MaterialHandler.getMaterial(entry.getKey()), materialValue);
 				}
@@ -102,7 +102,7 @@ public class MaterialMappedFunctionDeserializer<T> implements JsonDeserializer<F
 				CustomModule.instance.addCustomConfigDefiner((material, config)->{
 					T value = stringToValue.apply(config.getDefinedString(path, ""+valueToString.apply(map.getOrDefault(material, defaultValue)), comment));
 					if(value == null) {
-						LOGGER.warn("Null config value for material {}", material.getName());
+						LOGGER.warn("Null config value for material {}", new Object[] {material.getName()});
 					}
 					map.put(material, value);
 				});

@@ -68,7 +68,7 @@ public class ModuleHandler {
 			List<String> deps = (List<String>)aData.getAnnotationInfo().get("modDependencies");
 			String className = aData.getClassName();
 			if(deps != null && deps.stream().filter(Objects::nonNull).anyMatch(modVersionNotLoaded)) {
-				LOGGER.info("Module {} has missing mod dependencies, skipping", className);
+				LOGGER.info("Module {} has missing mod dependencies, skipping", new Object[] {className});
 				continue;
 			}
 			try {
@@ -83,15 +83,15 @@ public class ModuleHandler {
 					module = moduleInstanceClass.newInstance();
 				}
 				if(MODULES.putIfAbsent(module.getName(), module) != null) {
-					LOGGER.fatal("Module name conflict: {} for {} and {}", module.getName(), MODULES.get(module.getName()).getClass(), module.getClass());
+					LOGGER.fatal("Module name conflict: {} for {} and {}", new Object[] {module.getName(), MODULES.get(module.getName()).getClass(), module.getClass()});
 					continue;
 				}
 				ModuleData mData = new ModuleData(module);
 				MODULE_DATAS.put(module, mData);
-				LOGGER.debug("Loaded module {}", module.getName());
+				LOGGER.debug("Loaded module {}", new Object[] {module.getName()});
 			}
 			catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				LOGGER.fatal("Unable to load module {}", className, e);
+				LOGGER.fatal("Unable to load module {}", new Object[] {className, e});
 			}
 		}
 	}

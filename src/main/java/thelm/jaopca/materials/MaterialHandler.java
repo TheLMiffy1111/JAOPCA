@@ -134,44 +134,44 @@ public class MaterialHandler {
 		for(String name : ingots) {
 			Material material = new Material(name, MaterialType.INGOT);
 			MATERIALS.put(name, material);
-			LOGGER.debug("Added ingot material {}", name);
+			LOGGER.debug("Added ingot material {}", new Object[] {name});
 		}
 		for(String name : gems) {
 			Material material = new Material(name, MaterialType.GEM);
 			MATERIALS.put(name, material);
-			LOGGER.debug("Added gem material {}", name);
+			LOGGER.debug("Added gem material {}", new Object[] {name});
 		}
 		for(String name : crystals) {
 			Material material = new Material(name, MaterialType.CRYSTAL);
 			MATERIALS.put(name, material);
-			LOGGER.debug("Added crystal material {}", name);
+			LOGGER.debug("Added crystal material {}", new Object[] {name});
 		}
 		for(String name : dusts) {
 			Material material = new Material(name, MaterialType.DUST);
 			MATERIALS.put(name, material);
-			LOGGER.debug("Added dust material {}", name);
+			LOGGER.debug("Added dust material {}", new Object[] {name});
 		}
 		for(String name : ingotsPlain) {
 			Material material = new Material(name, MaterialType.INGOT_PLAIN);
 			MATERIALS.put(name, material);
-			LOGGER.debug("Added plain ingot material {}", name);
+			LOGGER.debug("Added plain ingot material {}", new Object[] {name});
 		}
 		for(String name : gemsPlain) {
 			Material material = new Material(name, MaterialType.GEM_PLAIN);
 			MATERIALS.put(name, material);
-			LOGGER.debug("Added plain gem material {}", name);
+			LOGGER.debug("Added plain gem material {}", new Object[] {name});
 		}
 		for(String name : crystalsPlain) {
 			Material material = new Material(name, MaterialType.CRYSTAL_PLAIN);
 			MATERIALS.put(name, material);
-			LOGGER.debug("Added plain crystal material {}", name);
+			LOGGER.debug("Added plain crystal material {}", new Object[] {name});
 		}
 		for(String name : dustsPlain) {
 			Material material = new Material(name, MaterialType.DUST_PLAIN);
 			MATERIALS.put(name, material);
-			LOGGER.debug("Added plain dust material {}", name);
+			LOGGER.debug("Added plain dust material {}", new Object[] {name});
 		}
-		LOGGER.info("Added {} materials", MATERIALS.size());
+		LOGGER.info("Added {} materials", new Object[] {MATERIALS.size()});
 	}
 
 	protected static Set<String> find(Set<String> entries, Set<String> nameBlacklist, Set<String> prefixBlacklist, String mainPrefix, String... prefixes) {

@@ -79,7 +79,7 @@ public class ConfigHandler {
 		if(!Files.exists(configDir) || !Files.isDirectory(configDir)) {
 			try {
 				if(Files.exists(configDir) && !Files.isDirectory(configDir)) {
-					LOGGER.warn("Config directory {} is a file, deleting", configDir);
+					LOGGER.warn("Config directory {} is a file, deleting", new Object[] {configDir});
 					Files.delete(configDir);
 				}
 				Files.createDirectory(configDir);
@@ -149,7 +149,7 @@ public class ConfigHandler {
 		if(!Files.exists(materialConfigDir) || !Files.isDirectory(materialConfigDir)) {
 			try {
 				if(Files.exists(materialConfigDir) && !Files.isDirectory(materialConfigDir)) {
-					LOGGER.warn("Config directory {} is a file, deleting", materialConfigDir);
+					LOGGER.warn("Config directory {} is a file, deleting", new Object[] {materialConfigDir});
 					Files.delete(materialConfigDir);
 				}
 				Files.createDirectory(materialConfigDir);
@@ -171,7 +171,7 @@ public class ConfigHandler {
 		if(!Files.exists(moduleConfigDir) || !Files.isDirectory(moduleConfigDir)) {
 			try {
 				if(Files.exists(moduleConfigDir) && !Files.isDirectory(moduleConfigDir)) {
-					LOGGER.warn("Config directory {} is a file, deleting", moduleConfigDir);
+					LOGGER.warn("Config directory {} is a file, deleting", new Object[] {moduleConfigDir});
 					Files.delete(moduleConfigDir);
 				}
 				Files.createDirectory(moduleConfigDir);
