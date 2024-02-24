@@ -1,1 +1,1 @@
-Force varargs when logging  
+Fix Thermal mana dust oredict registration  

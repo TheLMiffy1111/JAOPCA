@@ -16,6 +16,6 @@ public class ThermalFoundationOredictModule implements IOredictModule {
 	@Override
 	public void register() {
 		JAOPCAApi api = ApiImpl.INSTANCE;
-		api.registerOredict("dustMana", "thermalfoundation:material@516");
+		api.registerOredict("dustMana", "ThermalFoundation:material@516");
 	}
 }
