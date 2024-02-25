@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-a0ab4404"
+	id "com.crystaelix.loom" version "jitpack-f4853e7a"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -191,7 +191,7 @@ sourceSets {
 def mcVersion = "1.20.1"
 def modName = "JAOPCA"
 def modId = "jaopca"
-def specVersion = "3"
+def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
