@@ -14,6 +14,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -392,6 +394,10 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerRecipe(ResourceLocation key, IRecipeSerializer recipeSerializer);
 
+	public abstract boolean registerShapedRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input);
+
+	public abstract boolean registerShapedRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input);
+
 	/**
 	 * Creates a shaped recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -415,6 +421,10 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input);
 
+	public abstract boolean registerShapelessRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input);
+
+	public abstract boolean registerShapelessRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input);
+
 	/**
 	 * Creates a shapeless recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -437,6 +447,10 @@ public abstract class JAOPCAApi {
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
 	public abstract boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input);
+
+	public abstract boolean registerSmeltingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerSmeltingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a furnace recipe supplier that is then registered for injection.
@@ -463,6 +477,10 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
 
+	public abstract boolean registerBlastingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerBlastingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+
 	/**
 	 * Creates a blasting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -488,6 +506,10 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerBlastingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
 
+	public abstract boolean registerSmokingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerSmokingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+	
 	/**
 	 * Creates a smoking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -513,6 +535,10 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerSmokingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
 
+	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, int time);
+
+	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, int time);
+	
 	/**
 	 * Creates a campfire cooking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -557,7 +583,7 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count);
 
-	public abstract boolean registerSmithingRecipe(ResourceLocation key, Object base, Object addition, Object output, int count);
+	public abstract boolean registerSmithingRecipe(ResourceLocation key, Object template, Object base, Object addition, Object output, int count);
 
 	/**
 	 * Registers a loot table supplier to be added by JAOPCA's in memory data pack.

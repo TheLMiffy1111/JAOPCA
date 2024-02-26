@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
@@ -22,6 +23,7 @@ public class BlastingRecipeSerializer implements IRecipeSerializer {
 
 	public final ResourceLocation key;
 	public final String group;
+	public final CookingBookCategory category;
 	public final Object input;
 	public final Object output;
 	public final int count;
@@ -29,12 +31,21 @@ public class BlastingRecipeSerializer implements IRecipeSerializer {
 	public final int time;
 
 	public BlastingRecipeSerializer(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
-		this(key, "", input, output, count, experience, time);
+		this(key, "", CookingBookCategory.MISC, input, output, count, experience, time);
 	}
 
 	public BlastingRecipeSerializer(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+		this(key, group, CookingBookCategory.MISC, input, output, count, experience, time);
+	}
+
+	public BlastingRecipeSerializer(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+		this(key, "", category, input, output, count, experience, time);
+	}
+
+	public BlastingRecipeSerializer(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
 		this.key = Objects.requireNonNull(key);
 		this.group = Strings.nullToEmpty(group);
+		this.category = Objects.requireNonNull(category);
 		this.input = input;
 		this.output = output;
 		this.count = count;
@@ -58,6 +69,7 @@ public class BlastingRecipeSerializer implements IRecipeSerializer {
 		if(!group.isEmpty()) {
 			json.addProperty("group", group);
 		}
+		json.addProperty("category", category.getSerializedName());
 		json.add("ingredient", ing.toJson());
 		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("experience", experience);

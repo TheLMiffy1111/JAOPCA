@@ -20,13 +20,15 @@ public class SmithingRecipeSerializer implements IRecipeSerializer {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	public final ResourceLocation key;
+	public final Object template;
 	public final Object base;
 	public final Object addition;
 	public final Object output;
 	public final int count;
 
-	public SmithingRecipeSerializer(ResourceLocation key, Object base, Object addition, Object output, int count) {
+	public SmithingRecipeSerializer(ResourceLocation key, Object template, Object base, Object addition, Object output, int count) {
 		this.key = Objects.requireNonNull(key);
+		this.template = template;
 		this.base = base;
 		this.addition = addition;
 		this.output = output;
@@ -35,6 +37,10 @@ public class SmithingRecipeSerializer implements IRecipeSerializer {
 
 	@Override
 	public JsonElement get() {
+		Ingredient templateIng = MiscHelper.INSTANCE.getIngredient(template);
+		if(templateIng == EmptyIngredient.INSTANCE) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+template);
+		}
 		Ingredient baseIng = MiscHelper.INSTANCE.getIngredient(base);
 		if(baseIng == EmptyIngredient.INSTANCE) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+base);
@@ -50,6 +56,7 @@ public class SmithingRecipeSerializer implements IRecipeSerializer {
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "minecraft:smithing");
+		json.add("template", templateIng.toJson());
 		json.add("base", baseIng.toJson());
 		json.add("addition", additionIng.toJson());
 		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));

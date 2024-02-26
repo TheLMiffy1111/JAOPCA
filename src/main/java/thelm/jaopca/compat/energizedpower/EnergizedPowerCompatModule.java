@@ -68,7 +68,7 @@ public class EnergizedPowerCompatModule implements IModule {
 				if(itemTags.contains(dustLocation)) {
 					helper.registerPulverizerRecipe(
 							new ResourceLocation("jaopca", "energizedpower.material_to_dust."+name),
-							materialLocation, dustLocation, TO_DUST_CHANCES);
+							materialLocation, dustLocation, TO_DUST_CHANCES, TO_DUST_CHANCES);
 				}
 			}
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {

@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
@@ -29,17 +30,27 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 
 	public final ResourceLocation key;
 	public final String group;
+	public final CraftingBookCategory category;
 	public final Object output;
 	public final int count;
 	public final Object[] input;
 
 	public ShapedRecipeSerializer(ResourceLocation key, Object output, int count, Object... input) {
-		this(key, "", output, count, input);
+		this(key, "", CraftingBookCategory.MISC, output, count, input);
 	}
 
 	public ShapedRecipeSerializer(ResourceLocation key, String group, Object output, int count, Object... input) {
+		this(key, group, CraftingBookCategory.MISC, output, count, input);
+	}
+
+	public ShapedRecipeSerializer(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input) {
+		this(key, "", category, output, count, input);
+	}
+
+	public ShapedRecipeSerializer(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input) {
 		this.key = Objects.requireNonNull(key);
 		this.group = Strings.nullToEmpty(group);
+		this.category = Objects.requireNonNull(category);
 		this.output = output;
 		this.count = count;
 		this.input = Objects.requireNonNull(input);
@@ -107,6 +118,7 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 		if(!group.isEmpty()) {
 			json.addProperty("group", group);
 		}
+		json.addProperty("category", category.getSerializedName());
 		JsonArray patternJson = new JsonArray();
 		for(String str : pattern) {
 			patternJson.add(str);

@@ -11,12 +11,12 @@ public class EnergizedPowerHelper {
 
 	private EnergizedPowerHelper() {}
 
-	public boolean registerPulverizerRecipe(ResourceLocation key, Object input, Object output, double[] chances, Object secondOutput, double[] secondChances) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new PulverizerRecipeSerializer(key, input, output, chances, secondOutput, secondChances));
+	public boolean registerPulverizerRecipe(ResourceLocation key, Object input, Object output, double[] chances, double[] chancesAdvanced, Object secondOutput, double[] secondChances, double[] secondChancesAdvanced) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new PulverizerRecipeSerializer(key, input, output, chances, chancesAdvanced, secondOutput, secondChances, secondChancesAdvanced));
 	}
 
-	public boolean registerPulverizerRecipe(ResourceLocation key, Object input, Object output, double[] chances) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new PulverizerRecipeSerializer(key, input, output, chances));
+	public boolean registerPulverizerRecipe(ResourceLocation key, Object input, Object output, double[] chances, double[] chancesAdvanced) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new PulverizerRecipeSerializer(key, input, output, chances, chancesAdvanced));
 	}
 
 	public boolean registerCompressorRecipe(ResourceLocation key, Object input, Object output, int count) {

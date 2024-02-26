@@ -21,6 +21,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -345,6 +347,16 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerShapedRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input) {
+		return registerRecipe(key, new ShapedRecipeSerializer(key, group, category, output, count, input));
+	}
+
+	@Override
+	public boolean registerShapedRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input) {
+		return registerRecipe(key, new ShapedRecipeSerializer(key, category, output, count, input));
+	}
+
+	@Override
 	public boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapedRecipeSerializer(key, group, output, count, input));
 	}
@@ -352,6 +364,16 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapedRecipeSerializer(key, output, count, input));
+	}
+
+	@Override
+	public boolean registerShapelessRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input) {
+		return registerRecipe(key, new ShapelessRecipeSerializer(key, group, category, output, count, input));
+	}
+
+	@Override
+	public boolean registerShapelessRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input) {
+		return registerRecipe(key, new ShapelessRecipeSerializer(key, category, output, count, input));
 	}
 
 	@Override
@@ -365,6 +387,16 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerSmeltingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new SmeltingRecipeSerializer(key, group, category, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerSmeltingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new SmeltingRecipeSerializer(key, category, input, output, count, experience, time));
+	}
+
+	@Override
 	public boolean registerSmeltingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmeltingRecipeSerializer(key, group, input, output, count, experience, time));
 	}
@@ -372,6 +404,16 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmeltingRecipeSerializer(key, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerBlastingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new BlastingRecipeSerializer(key, group, category, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerBlastingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new BlastingRecipeSerializer(key, category, input, output, count, experience, time));
 	}
 
 	@Override
@@ -385,6 +427,16 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerSmokingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new SmokingRecipeSerializer(key, group, category, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerSmokingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+		return registerRecipe(key, new SmokingRecipeSerializer(key, category, input, output, count, experience, time));
+	}
+
+	@Override
 	public boolean registerSmokingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmokingRecipeSerializer(key, group, input, output, count, experience, time));
 	}
@@ -392,6 +444,16 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerSmokingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmokingRecipeSerializer(key, input, output, count, experience, time));
+	}
+
+	@Override
+	public boolean registerCampfireCookingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, int time) {
+		return registerRecipe(key, new CampfireCookingRecipeSerializer(key, group, category, input, output, count, time));
+	}
+
+	@Override
+	public boolean registerCampfireCookingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, int time) {
+		return registerRecipe(key, new CampfireCookingRecipeSerializer(key, category, input, output, count, time));
 	}
 
 	@Override
@@ -415,8 +477,8 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerSmithingRecipe(ResourceLocation key, Object base, Object addition, Object output, int count) {
-		return registerRecipe(key, new SmithingRecipeSerializer(key, base, addition, output, count));
+	public boolean registerSmithingRecipe(ResourceLocation key, Object template, Object base, Object addition, Object output, int count) {
+		return registerRecipe(key, new SmithingRecipeSerializer(key, template, base, addition, output, count));
 	}
 
 	@Override
