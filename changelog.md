@@ -1,2 +1,1 @@
-Fix Nuclearcraft: Neoteric slurry particles  
-Completely convert asset indents to tabs  
+Add advanced chances to Energized Power pulverizer recipes  

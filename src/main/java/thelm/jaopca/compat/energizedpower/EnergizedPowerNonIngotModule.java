@@ -19,7 +19,9 @@ import thelm.jaopca.utils.MiscHelper;
 public class EnergizedPowerNonIngotModule implements IModule {
 
 	private static final double[] CRYSTAL_CHANCES = {1, 0.67, 0.17};
+	private static final double[] CRYSTAL_CHANCES_ADVANCED = {1, 0.67, 0.33, 0.17};
 	private static final double[] DUST_CHANCES = {1, 1, 1, 1, 0.5, 0.33, 0.17};
+	private static final double[] DUST_CHANCES_ADVANCED = {1, 1, 1, 1, 0.5, 0.33, 0.33, 0.17};
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"coal", "diamond", "emerald", "lapis", "quartz", "redstone"));
 
@@ -46,9 +48,10 @@ public class EnergizedPowerNonIngotModule implements IModule {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			double[] outputChances = material.getType() != MaterialType.DUST ? CRYSTAL_CHANCES : DUST_CHANCES;
+			double[] outputChancesAdvanced = material.getType() != MaterialType.DUST ? CRYSTAL_CHANCES_ADVANCED : DUST_CHANCES_ADVANCED;
 			helper.registerPulverizerRecipe(
 					new ResourceLocation("jaopca", "energizedpower.ore_to_material."+material.getName()),
-					oreLocation, materialLocation, outputChances);
+					oreLocation, materialLocation, outputChances, outputChancesAdvanced);
 		}
 	}
 }
