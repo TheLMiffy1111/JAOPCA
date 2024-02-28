@@ -3,6 +3,7 @@ package thelm.jaopca.api.fluids;
 import java.util.EnumMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -13,6 +14,7 @@ import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public abstract class PlaceableFluid extends Fluid {
@@ -454,6 +457,11 @@ public abstract class PlaceableFluid extends Fluid {
 	public VoxelShape getShape(FluidState fluidState, BlockGetter world, BlockPos pos) {
 		return shapeMap.computeIfAbsent(fluidState, s->Shapes.box(0, 0, 0, 1, s.getHeight(world, pos), 1));
 	}
+
+    @Override
+    public Optional<SoundEvent> getPickupSound() {
+        return Optional.ofNullable(getFluidType().getSound(SoundActions.BUCKET_FILL));
+    }
 
 	public static int ceilDiv(int x, int y) {
 		int r = x/y;

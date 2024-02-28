@@ -56,7 +56,7 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	public static BlockBehaviour.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings) {
-		BlockBehaviour.Properties prop = Block.Properties.of();
+		BlockBehaviour.Properties prop = BlockBehaviour.Properties.of();
 		prop.strength((float)settings.getBlockHardnessFunction().applyAsDouble(material));
 		prop.lightLevel(state->settings.getLightValueFunction().applyAsInt(material));
 		if(settings.getReplaceable()) {

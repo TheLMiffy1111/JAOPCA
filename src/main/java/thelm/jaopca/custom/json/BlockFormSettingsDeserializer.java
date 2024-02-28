@@ -88,7 +88,7 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 			if(!functionJson.has("default")) {
 				functionJson.addProperty("default", false);
 			}
-			settings.setIsFireSourceFunction(helper.deserializeType(json, "requiresTool", context, FormTypeHandler.PREDICATE_TYPE));
+			settings.setRequiresToolFunction(helper.deserializeType(json, "requiresTool", context, FormTypeHandler.PREDICATE_TYPE));
 		}
 		if(json.has("harvestToolTag")) {
 			JsonObject functionJson = helper.getJsonObject(json, "harvestToolTag");
