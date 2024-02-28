@@ -79,6 +79,13 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 		if(json.has("raytraceShape")) {
 			settings.setRaytraceShape(helper.deserializeType(json, "raytraceShape", context, VoxelShape.class));
 		}
+		if(json.has("requiresTool")) {
+			JsonObject functionJson = helper.getJsonObject(json, "requiresTool");
+			if(!functionJson.has("default")) {
+				functionJson.addProperty("default", false);
+			}
+			settings.setRequiresToolFunction(helper.deserializeType(json, "requiresTool", context, FormTypeHandler.PREDICATE_TYPE));
+		}
 		if(json.has("harvestTool")) {
 			JsonObject functionJson = helper.getJsonObject(json, "harvestTool");
 			if(!functionJson.has("default")) {

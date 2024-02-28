@@ -49,6 +49,7 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private boolean isFull = true;
 	private VoxelShape shape = VoxelShapes.block();
 	private VoxelShape raytraceShape = VoxelShapes.empty();
+	private Predicate<IMaterial> requiresToolFunction = material->false;
 	private Function<IMaterial, ToolType> harvestToolFunction = material->ToolType.PICKAXE;
 	private ToIntFunction<IMaterial> harvestLevelFunction = material->0;
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
@@ -191,6 +192,17 @@ public class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public VoxelShape getRaytraceShape() {
 		return raytraceShape;
+	}
+
+	@Override
+	public IBlockFormSettings setRequiresToolFunction(Predicate<IMaterial> requiresToolFunction) {
+		this.requiresToolFunction = requiresToolFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getRequiresToolFunction() {
+		return requiresToolFunction;
 	}
 
 	@Override

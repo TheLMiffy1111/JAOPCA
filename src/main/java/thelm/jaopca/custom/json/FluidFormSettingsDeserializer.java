@@ -146,6 +146,13 @@ public class FluidFormSettingsDeserializer implements JsonDeserializer<IFluidFor
 			}
 			settings.setIsFireSourceFunction(helper.deserializeType(json, "isFireSource", context, FormTypeHandler.PREDICATE_TYPE));
 		}
+		if(json.has("fireTime")) {
+			JsonObject functionJson = helper.getJsonObject(json, "fireTime");
+			if(!functionJson.has("default")) {
+				functionJson.addProperty("default", 0);
+			}
+			settings.setFireTimeFunction(helper.deserializeType(json, "fireTime", context, FormTypeHandler.INT_FUNCTION_TYPE));
+		}
 		if(json.has("itemStackLimit")) {
 			JsonObject functionJson = helper.getJsonObject(json, "itemStackLimit");
 			if(!functionJson.has("default")) {

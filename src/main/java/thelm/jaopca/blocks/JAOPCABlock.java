@@ -44,11 +44,7 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected Optional<Boolean> isFireSource = Optional.empty();
 
 	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings) {
-		super(Block.Properties.of(settings.getMaterialFunction().apply(material),
-				settings.getMaterialColorFunction().apply(material)).
-				strength((float)settings.getBlockHardnessFunction().applyAsDouble(material)).
-				lightLevel(state->settings.getLightValueFunction().applyAsInt(material)).
-				noOcclusion());
+		super(getProperties(form, material, settings));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -56,6 +52,19 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		blocksMovement = settings.getBlocksMovement();
 		shape = settings.getShape();
 		raytraceShape = settings.getRaytraceShape();
+	}
+
+	public static Block.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings) {
+		Block.Properties prop = Block.Properties.of(
+				settings.getMaterialFunction().apply(material),
+				settings.getMaterialColorFunction().apply(material));
+		prop.strength((float)settings.getBlockHardnessFunction().applyAsDouble(material));
+		prop.lightLevel(state->settings.getLightValueFunction().applyAsInt(material));
+		if(settings.getRequiresToolFunction().test(material)) {
+			prop.requiresCorrectToolForDrops();
+		}
+		prop.noOcclusion();
+		return prop;
 	}
 
 	@Override

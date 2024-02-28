@@ -16,7 +16,8 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagCollectionManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
@@ -112,20 +113,11 @@ public class Material implements IMaterial {
 
 	@Override
 	public int getColor() {
-		ITag<Item> tag = getTag();
-		if(!ready) {
-			try {
-				tag.getValues();
-				ready = true;
-			}
-			catch(Exception e) {
-				LOGGER.warn("Tried to get color for material {} when tag is not ready", name, e);
-			}
-		}
-		if(ready) {
+		if(MaterialHandler.clientTagsBound) {
 			if(!color.isPresent() && config != null) {
 				DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
 					shouldFireColorEvent = false;
+					ITag<Item> tag = getTag();
 					color = OptionalInt.of(0xFFFFFF);
 					MiscHelper.INSTANCE.submitAsyncTask(()->{
 						try {
@@ -142,6 +134,9 @@ public class Material implements IMaterial {
 				shouldFireColorEvent = false;
 				MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
 			}
+		}
+		else {
+			LOGGER.warn("Tried to get color for material {} when tags are not bound", name);
 		}
 		return 0xFF000000 | color.orElse(0xFFFFFF);
 	}
@@ -186,7 +181,7 @@ public class Material implements IMaterial {
 
 	private ITag<Item> getTag() {
 		if(tag == null) {
-			tag = ItemTags.bind("forge:"+type.getFormName()+'/'+name);
+			tag = TagCollectionManager.getInstance().getItems().getTagOrEmpty(new ResourceLocation("forge:"+type.getFormName()+'/'+name));
 		}
 		return tag;
 	}

@@ -60,6 +60,10 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	VoxelShape getRaytraceShape();
 
+	IBlockFormSettings setRequiresToolFunction(Predicate<IMaterial> requiresToolFunction);
+
+	Predicate<IMaterial> getRequiresToolFunction();
+
 	IBlockFormSettings setHarvestToolFunction(Function<IMaterial, ToolType> harvestToolFunction);
 
 	Function<IMaterial, ToolType> getHarvestToolFunction();

@@ -42,6 +42,9 @@ public class FormDeserializer implements JsonDeserializer<IForm> {
 		if(json.has("skipGroupedCheck")) {
 			form.setSkipGroupedCheck(helper.getBoolean(json, "skipGroupedCheck"));
 		}
+		if(json.has("tagSeparator")) {
+			form.setTagSeparator(helper.getString(json, "tagSeparator"));
+		}
 		if(json.has("settings")) {
 			form.setSettings(type.deserializeSettings(json.get("settings"), context));
 		}
