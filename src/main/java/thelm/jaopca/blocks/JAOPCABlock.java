@@ -12,6 +12,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -41,11 +42,7 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected Optional<Boolean> isFireSource = Optional.empty();
 
 	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings) {
-		super(Block.Properties.of(settings.getMaterialFunction().apply(material),
-				settings.getMaterialColorFunction().apply(material)).
-				strength((float)settings.getBlockHardnessFunction().applyAsDouble(material)).
-				lightLevel(state->settings.getLightValueFunction().applyAsInt(material)).
-				noOcclusion());
+		super(getProperties(form, material, settings));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -53,6 +50,19 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		blocksMovement = settings.getBlocksMovement();
 		shape = settings.getShape();
 		interactionShape = settings.getInteractionShape();
+	}
+
+	public static BlockBehaviour.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings) {
+		BlockBehaviour.Properties prop = BlockBehaviour.Properties.of(
+				settings.getMaterialFunction().apply(material),
+				settings.getMaterialColorFunction().apply(material));
+		prop.strength((float)settings.getBlockHardnessFunction().applyAsDouble(material));
+		prop.lightLevel(state->settings.getLightValueFunction().applyAsInt(material));
+		if(settings.getRequiresToolFunction().test(material)) {
+			prop.requiresCorrectToolForDrops();
+		}
+		prop.noOcclusion();
+		return prop;
 	}
 
 	@Override

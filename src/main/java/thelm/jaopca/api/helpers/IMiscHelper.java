@@ -2,8 +2,10 @@ package thelm.jaopca.api.helpers;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import com.google.gson.JsonObject;
 
@@ -66,6 +68,10 @@ public interface IMiscHelper {
 	Predicate<String> configMaterialPredicate();
 
 	Predicate<String> configModulePredicate();
+
+	Runnable conditionalRunnable(BooleanSupplier conditionSupplier, Supplier<Runnable> trueRunnable, Supplier<Runnable> falseRunnable);
+
+	<T> Supplier<T> conditionalSupplier(BooleanSupplier conditionSupplier, Supplier<Supplier<T>> trueSupplier, Supplier<Supplier<T>> falseSupplier);
 
 	boolean hasResource(ResourceLocation location);
 }

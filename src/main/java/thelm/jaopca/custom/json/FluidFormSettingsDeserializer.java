@@ -122,12 +122,12 @@ public class FluidFormSettingsDeserializer implements JsonDeserializer<IFluidFor
 			}
 			settings.setFallDistanceModifierFunction(helper.deserializeType(json, "fallDistanceModifier", context, FormTypeHandler.DOUBLE_FUNCTION_TYPE));
 		}
-		if(json.has("canExtingush")) {
-			JsonObject functionJson = helper.getJsonObject(json, "canExtingush");
+		if(json.has("canExtinguish")) {
+			JsonObject functionJson = helper.getJsonObject(json, "canExtinguish");
 			if(!functionJson.has("default")) {
 				functionJson.addProperty("default", false);
 			}
-			settings.setCanExtinguishFunction(helper.deserializeType(json, "canExtingush", context, FormTypeHandler.PREDICATE_TYPE));
+			settings.setCanExtinguishFunction(helper.deserializeType(json, "canExtinguish", context, FormTypeHandler.PREDICATE_TYPE));
 		}
 		if(json.has("canDrown")) {
 			JsonObject functionJson = helper.getJsonObject(json, "canDrown");
@@ -206,6 +206,13 @@ public class FluidFormSettingsDeserializer implements JsonDeserializer<IFluidFor
 				functionJson.addProperty("default", false);
 			}
 			settings.setIsFireSourceFunction(helper.deserializeType(json, "isFireSource", context, FormTypeHandler.PREDICATE_TYPE));
+		}
+		if(json.has("fireTime")) {
+			JsonObject functionJson = helper.getJsonObject(json, "fireTime");
+			if(!functionJson.has("default")) {
+				functionJson.addProperty("default", 0);
+			}
+			settings.setFireTimeFunction(helper.deserializeType(json, "fireTime", context, FormTypeHandler.INT_FUNCTION_TYPE));
 		}
 		if(json.has("maxStackSize")) {
 			JsonObject functionJson = helper.getJsonObject(json, "maxStackSize");

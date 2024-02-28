@@ -14,6 +14,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -398,6 +399,16 @@ public class MiscHelper implements IMiscHelper {
 	@Override
 	public Predicate<String> configModulePredicate() {
 		return CONFIG_MODULE_PREDICATE;
+	}
+
+	@Override
+	public Runnable conditionalRunnable(BooleanSupplier conditionSupplier, Supplier<Runnable> trueRunnable, Supplier<Runnable> falseRunnable) {
+		return ()->(conditionSupplier.getAsBoolean() ? trueRunnable : falseRunnable).get().run();
+	}
+
+	@Override
+	public <T> Supplier<T> conditionalSupplier(BooleanSupplier conditionSupplier, Supplier<Supplier<T>> trueSupplier, Supplier<Supplier<T>> falseSupplier) {
+		return ()->(conditionSupplier.getAsBoolean() ? trueSupplier : falseSupplier).get().get();
 	}
 
 	@Override
