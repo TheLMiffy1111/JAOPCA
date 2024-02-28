@@ -1,1 +1,2 @@
-Fix Thermal mana dust oredict registration  
+Fix item form settings using wrong function  
+Change conditional runnable/supplier implementation
