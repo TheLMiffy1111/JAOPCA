@@ -48,6 +48,7 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private boolean isFull = true;
 	private VoxelShape shape = Shapes.block();
 	private VoxelShape interactionShape = Shapes.empty();
+	private Predicate<IMaterial> requiresToolFunction = material->false;
 	private Function<IMaterial, String> harvestToolTagFunction = material->"minecraft:mineable/pickaxe";
 	private Function<IMaterial, String> harvestTierTagFunction = material->"";
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
@@ -189,6 +190,17 @@ public class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public VoxelShape getInteractionShape() {
 		return interactionShape;
+	}
+
+	@Override
+	public IBlockFormSettings setRequiresToolFunction(Predicate<IMaterial> requiresToolFunction) {
+		this.requiresToolFunction = requiresToolFunction;
+		return this;
+	}
+
+	@Override
+	public Predicate<IMaterial> getRequiresToolFunction() {
+		return requiresToolFunction;
 	}
 
 	@Override

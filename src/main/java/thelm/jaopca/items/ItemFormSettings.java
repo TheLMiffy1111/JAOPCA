@@ -1,9 +1,8 @@
 package thelm.jaopca.items;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
-
-import com.google.common.base.Function;
 
 import net.minecraft.world.item.Rarity;
 import thelm.jaopca.api.forms.IFormType;

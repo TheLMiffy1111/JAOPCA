@@ -38,8 +38,8 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public void onClientSetup(FMLClientSetupEvent event) {
-		MinecraftForge.EVENT_BUS.addListener(this::onPlayerLoggedIn);
 		MinecraftForge.EVENT_BUS.addListener(this::onTagsUpdated);
+		MinecraftForge.EVENT_BUS.addListener(this::onPlayerLoggedOut);
 		LocalizationRepoHandler.setup();
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
 			ItemBlockRenderTypes.setRenderLayer(block.toBlock(), RenderType.translucent());
@@ -89,13 +89,13 @@ public class ClientEventHandler {
 		}
 	}
 
-	public void onPlayerLoggedIn(ClientPlayerNetworkEvent.LoggedInEvent event) {
-		MaterialHandler.setClientTagsBound(false);
-	}
-
 	public void onTagsUpdated(TagsUpdatedEvent event) {
 		if(event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED) {
 			MaterialHandler.setClientTagsBound(true);
 		}
+	}
+
+	public void onPlayerLoggedOut(ClientPlayerNetworkEvent.LoggedOutEvent event) {
+		MaterialHandler.setClientTagsBound(false);
 	}
 }

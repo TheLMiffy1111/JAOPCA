@@ -59,6 +59,10 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	VoxelShape getInteractionShape();
 
+	IBlockFormSettings setRequiresToolFunction(Predicate<IMaterial> requiresToolFunction);
+
+	Predicate<IMaterial> getRequiresToolFunction();
+
 	IBlockFormSettings setHarvestToolTagFunction(Function<IMaterial, String> harvestToolTagFunction);
 
 	Function<IMaterial, String> getHarvestToolTagFunction();
