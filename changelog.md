@@ -1,3 +1,4 @@
+Add Theurgy support  
 Add pickup sound to fluids  
 Fix item form settings using wrong function  
 Add conditional runnable/supplier methods  

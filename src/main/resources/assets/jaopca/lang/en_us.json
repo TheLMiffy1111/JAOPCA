@@ -39,5 +39,8 @@
 	"fluid_type.jaopca.nuclearcraft_slurries": "%s Slurry",
 	"item.jaopca.nuclearcraft_slurries": "%s Slurry Bucket",
 	"fluid_type.jaopca.nuclearcraft_clean_slurries": "%s Clean Slurry",
-	"item.jaopca.nuclearcraft_clean_slurries": "%s Clean Slurry Bucket"
+	"item.jaopca.nuclearcraft_clean_slurries": "%s Clean Slurry Bucket",
+
+	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
+	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }
