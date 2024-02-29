@@ -248,7 +248,7 @@ dependencies {
 	forgeRuntimeLibrary "com.eliotlash.mclib:mclib:20"
 	modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:4.4.2") {transitive = false}
 	modImplementation "vazkii.patchouli:Patchouli:1.20.1-84-FORGE"
-	modImplementation("com.klikli_dev:modonomicon-1.20.1-forge:1.58.0") {transitive = false}
+	modImplementation("com.klikli_dev:modonomicon-1.20.1-forge:1.60.0") {transitive = false}
 	modImplementation "dev.architectury:architectury-forge:9.1.13"
 
 	// CraftTweaker
@@ -318,7 +318,7 @@ dependencies {
 	forgeRuntimeLibrary "org.commonmark:commonmark-ext-gfm-strikethrough:0.21.0"
 	forgeRuntimeLibrary "org.commonmark:commonmark-ext-ins:0.21.0"
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.20.1:1.13"
-	modImplementation("com.klikli_dev:occultism-1.20.1:1.114.0") {transitive = false}
+	modImplementation("com.klikli_dev:occultism-1.20.1:1.117.0") {transitive = false}
 
 	// Railcraft Reborn
 	modImplementation "curse.maven:railcraft-reborn-901491:5018052"
@@ -331,7 +331,7 @@ dependencies {
 	modImplementation("com.teamcofh:thermal_integration:1.20.1-11.0.0.23") {transitive = false}
 	
 	// Theurgy
-	modImplementation("com.klikli_dev:theurgy-1.20.1:1.16.1") {transitive = false}
+	modImplementation("com.klikli_dev:theurgy-1.20.1:1.17.1") {transitive = false}
 
 	// Voluminous Energy
 	modImplementation "curse.maven:voluminous-energy-416704:4627288"
