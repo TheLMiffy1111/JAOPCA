@@ -156,7 +156,7 @@ public class FluidFormType implements IFluidFormType {
 
 	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-		getBucketItems().forEach(mf->output.accept(mf.toItem()));
+		getBucketItems().forEach(mf->mf.addToCreativeModeTab(parameters, output));
 	}
 
 	public static Collection<IMaterialFormFluid> getFluids() {

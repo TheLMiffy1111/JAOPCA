@@ -2,14 +2,17 @@ package thelm.jaopca.compat.theurgy.items;
 
 import java.util.List;
 
+import com.klikli_dev.theurgy.TheurgyConstants;
 import com.klikli_dev.theurgy.content.item.AlchemicalSulfurItem;
 import com.klikli_dev.theurgy.content.item.AlchemicalSulfurType;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -20,6 +23,7 @@ import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.theurgy.TheurgyModule;
 import thelm.jaopca.utils.ApiImpl;
+import thelm.jaopca.utils.MiscHelper;
 
 public class JAOPCAAlchemicalSulfurItem extends AlchemicalSulfurItem implements IMaterialFormItem {
 
@@ -46,6 +50,15 @@ public class JAOPCAAlchemicalSulfurItem extends AlchemicalSulfurItem implements 
 	@Override
 	public IMaterial getMaterial() {
 		return material;
+	}
+
+	@Override
+	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+		CompoundTag nbt = new CompoundTag();
+		nbt.putString(TheurgyConstants.Nbt.SULFUR_SOURCE_ID, "#"+MiscHelper.INSTANCE.getTagLocation(material.getType().getFormName(), material.getName()));
+		ItemStack stack = new ItemStack(this);
+		stack.setTag(nbt);
+		output.accept(stack);
 	}
 
 	@Override

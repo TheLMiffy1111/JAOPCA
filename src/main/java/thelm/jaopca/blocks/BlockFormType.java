@@ -166,7 +166,7 @@ public class BlockFormType implements IBlockFormType {
 
 	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-		getBlockItems().forEach(mf->output.accept(mf.toBlockItem()));
+		getBlockItems().forEach(mf->mf.addToCreativeModeTab(parameters, output));
 	}
 
 	public static Collection<IMaterialFormBlock> getBlocks() {

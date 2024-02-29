@@ -122,7 +122,7 @@ public class ItemFormType implements IItemFormType {
 
 	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-		getItems().forEach(mf->output.accept(mf.toItem()));
+		getItems().forEach(mf->mf.addToCreativeModeTab(parameters, output));
 	}
 
 	public static Collection<IMaterialFormItem> getItems() {

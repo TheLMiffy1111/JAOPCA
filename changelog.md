@@ -7,3 +7,4 @@ Fix typo of requires tool property in custom block
 Fix typo of can extinguish property in custom fluid  
 Add missing fire time property to custom fluid  
 Fix molten crystal bucket model  
+Move creative tab addition handling to items 
