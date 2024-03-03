@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.IntersectionIngredient;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
@@ -75,7 +74,7 @@ public class OreWashingRecipeSerializer implements IRecipeSerializer {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "indreb:ore_washing");
 		JsonArray ingsJson = new JsonArray();
-		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
+		JsonObject ingJson = MiscHelper.INSTANCE.wrapIngredient(ing).toJson().getAsJsonObject();
 		ingJson.addProperty("count", itemInputCount);
 		ingsJson.add(ingJson);
 		json.add("ingredients", ingsJson);

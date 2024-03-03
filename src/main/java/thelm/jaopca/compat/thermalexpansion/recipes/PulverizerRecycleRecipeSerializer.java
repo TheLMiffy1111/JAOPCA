@@ -16,7 +16,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.IntersectionIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
@@ -76,7 +75,8 @@ public class PulverizerRecycleRecipeSerializer implements IRecipeSerializer {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "thermal:pulverizer_recycle");
 		JsonArray ingsJson = new JsonArray();
-		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
+		JsonObject ingJson = new JsonObject();
+		ingJson.add("value", ing.toJson());
 		ingJson.addProperty("count", inputCount);
 		ingsJson.add(ingJson);
 		json.add("ingredients", ingsJson);

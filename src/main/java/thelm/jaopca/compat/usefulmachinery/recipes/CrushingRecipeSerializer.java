@@ -1,11 +1,11 @@
-package thelm.jaopca.compat.indreb.recipes;
+package thelm.jaopca.compat.usefulmachinery.recipes;
 
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.gson.JsonArray;
+import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -21,33 +21,37 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	public final ResourceLocation key;
+	public final String group;
 	public final Object input;
-	public final int inputCount;
 	public final Object output;
 	public final int outputCount;
 	public final Object secondOutput;
 	public final int secondOutputCount;
-	public final float secondChance;
+	public final float secondOutputChance;
 	public final int time;
-	public final int power;
-	public final float experience;
 
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, int time, int power, float experience) {
-		this(key, input, inputCount, output, outputCount, ItemStack.EMPTY, 0, 0, time, power, experience);
+	public CrushingRecipeSerializer(ResourceLocation key, Object input, Object output, int outputCount, int time) {
+		this(key, "", input, output, outputCount, ItemStack.EMPTY, 0, 0, time);
 	}
 
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondChance, int time, int power, float experience) {
+	public CrushingRecipeSerializer(ResourceLocation key, String group, Object input, Object output, int outputCount, int time) {
+		this(key, group, input, output, outputCount, ItemStack.EMPTY, 0, 0, time);
+	}
+
+	public CrushingRecipeSerializer(ResourceLocation key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondOutputChance, int time) {
+		this(key, "", input, output, outputCount, secondOutput, secondOutputCount, secondOutputChance, time);
+	}
+
+	public CrushingRecipeSerializer(ResourceLocation key, String group, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, float secondOutputChance, int time) {
 		this.key = Objects.requireNonNull(key);
+		this.group = Strings.nullToEmpty(group);
 		this.input = input;
-		this.inputCount = inputCount;
 		this.output = output;
 		this.outputCount = outputCount;
 		this.secondOutput = secondOutput;
 		this.secondOutputCount = secondOutputCount;
-		this.secondChance = secondChance;
+		this.secondOutputChance = secondOutputChance;
 		this.time = time;
-		this.power = power;
-		this.experience = experience;
 	}
 
 	@Override
@@ -63,24 +67,18 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
 
 		JsonObject json = new JsonObject();
-		json.addProperty("type", "indreb:crushing");
-		JsonArray ingsJson = new JsonArray();
-		JsonObject ingJson = MiscHelper.INSTANCE.wrapIngredient(ing).toJson().getAsJsonObject();
-		ingJson.addProperty("count", inputCount);
-		ingsJson.add(ingJson);
-		json.add("ingredients", ingsJson);
-		JsonObject resultJson = MiscHelper.INSTANCE.serializeItemStack(stack);
-		json.add("result", resultJson);
-		JsonArray chanceJson = new JsonArray();
-		if(!secondStack.isEmpty()) {
-			JsonObject secondJson = MiscHelper.INSTANCE.serializeItemStack(secondStack);
-			secondJson.addProperty("chance", secondChance);
-			chanceJson.add(secondJson);
+		json.addProperty("type", "usefulmachinery:crushing");
+		if(!group.isEmpty()) {
+			json.addProperty("group", group);
 		}
-		json.add("chance_result", chanceJson);
-		json.addProperty("duration", time);
-		json.addProperty("tick_energy_cost", power);
-		json.addProperty("experience", experience);
+		json.add("ingredient", ing.toJson());
+		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
+		if(!secondStack.isEmpty()) {
+			JsonObject secondaryJson = MiscHelper.INSTANCE.serializeItemStack(stack);
+			secondaryJson.addProperty("chance", secondOutputChance);
+			json.add("secondary", secondaryJson);
+		}
+		json.addProperty("processingtime", time);
 
 		return json;
 	}
