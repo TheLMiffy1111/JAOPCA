@@ -205,7 +205,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.4.9.12"
+version = "4.4.9.13"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -300,7 +300,7 @@ dependencies {
 	modImplementation "curse.maven:ender-io-64578:4920828"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:5057080"
+	modImplementation "curse.maven:energized-power-782147:5153687"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:3.3.0-build-2:with-library") {transitive = false}

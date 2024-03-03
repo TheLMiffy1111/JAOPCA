@@ -30,7 +30,7 @@ public class EnergizedPowerModule implements IModule {
 	private static final double[] RAW_BLOCK_CHANCES = {1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 0.5, 0.25};
 	private static final double[] RAW_BLOCK_CHANCES_ADVANCED = {1, 1, 1, 1, 1, 1, 1, 1, 1, 0.75, 0.5, 0.25, 0.25};
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "iron", "netherite", "netherite_scrap"));
+			"copper", "gold", "iron", "netherite", "netherite_scrap", "tin"));
 
 	@Override
 	public String getName() {

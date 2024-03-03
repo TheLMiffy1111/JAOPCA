@@ -1,16 +1,1 @@
-Add Theurgy support  
-Add Railcraft Reborn support  
-Readd Useful Machinery support  
-Add advanced chances to Energized Power pulverizer recipes  
-Add category to crafting and cooking recipes  
-Fix smithing recipes  
-Add utility method to wrap ingredients  
-Add pickup sound to fluids  
-Fix item form settings using wrong function  
-Add conditional runnable/supplier methods  
-Add missing tag separator property to custom form  
-Fix typo of requires tool property in custom block  
-Fix typo of can extinguish property in custom fluid  
-Add missing fire time property to custom fluid  
-Fix molten crystal bucket model  
-Move creative tab addition handling to items 
+Add tin to Energized Power blacklists  
