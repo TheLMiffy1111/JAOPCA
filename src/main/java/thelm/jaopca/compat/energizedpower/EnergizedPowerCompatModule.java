@@ -24,9 +24,9 @@ public class EnergizedPowerCompatModule implements IModule {
 
 	private static final double[] TO_DUST_CHANCES = {1};
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "iron"));
+			"copper", "gold", "iron", "tin"));
 	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(List.of(
-			"copper", "energized_copper", "energized_gold", "gold", "iron"));
+			"copper", "energized_copper", "energized_gold", "gold", "iron", "tin"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToPlateBlacklist = new TreeSet<>();
 
