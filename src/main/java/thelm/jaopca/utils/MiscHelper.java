@@ -66,6 +66,7 @@ import thelm.jaopca.api.ingredients.CompoundIngredientObject;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.ingredients.EmptyIngredient;
+import thelm.jaopca.ingredients.WrappedIngredient;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
 
@@ -366,6 +367,11 @@ public class MiscHelper implements IMiscHelper {
 		list.remove("*", listCount);
 		actualSet.clear();
 		list.entrySet().stream().filter(e->(e.getCount() & 1) == 1).map(Multiset.Entry::getElement).forEach(actualSet::add);
+	}
+
+	@Override
+	public Ingredient wrapIngredient(Ingredient ing) {
+		return WrappedIngredient.of(ing);
 	}
 
 	@Override

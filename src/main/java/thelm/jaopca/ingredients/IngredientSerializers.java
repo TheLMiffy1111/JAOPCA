@@ -6,5 +6,6 @@ public class IngredientSerializers {
 
 	public static void init() {
 		CraftingHelper.register(EmptyIngredient.ID, EmptyIngredient.SERIALIZER);
+		CraftingHelper.register(WrappedIngredient.ID, WrappedIngredient.SERIALIZER);
 	}
 }

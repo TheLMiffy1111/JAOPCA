@@ -13,7 +13,6 @@ import cofh.lib.common.fluid.FluidIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.IntersectionIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.compat.thermalexpansion.ThermalExpansionHelper;
 import thelm.jaopca.ingredients.EmptyIngredient;
@@ -70,7 +69,8 @@ public class ChillerRecipeSerializer implements IRecipeSerializer {
 			ingsJson.add(fluidIng.toJson());
 		}
 		if(ing != EmptyIngredient.INSTANCE) {
-			JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
+			JsonObject ingJson = new JsonObject();
+			ingJson.add("value", ing.toJson());
 			ingJson.addProperty("count", itemInputCount);
 			ingsJson.add(ingJson);
 		}

@@ -16,7 +16,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.IntersectionIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
@@ -90,7 +89,8 @@ public class SmelterRecipeSerializer implements IRecipeSerializer {
 		json.addProperty("type", "thermal:smelter");
 		JsonArray ingsJson = new JsonArray();
 		for(Pair<Ingredient, Integer> in : inputs) {
-			JsonObject ingJson = IntersectionIngredient.of(in.getLeft()).toJson().getAsJsonObject();
+			JsonObject ingJson = new JsonObject();
+			ingJson.add("value", in.getLeft().toJson());
 			ingJson.addProperty("count", in.getRight());
 			ingsJson.add(ingJson);
 		}

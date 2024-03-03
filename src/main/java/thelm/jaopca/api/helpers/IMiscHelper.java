@@ -61,6 +61,8 @@ public interface IMiscHelper {
 
 	void caclulateModuleSet(Collection<String> configList, Collection<String> actualSet);
 
+	Ingredient wrapIngredient(Ingredient ing);
+
 	JsonObject serializeItemStack(ItemStack stack);
 
 	JsonObject serializeFluidStack(FluidStack stack);

@@ -1,4 +1,10 @@
 Add Theurgy support  
+Add Railcraft Reborn support  
+Readd Useful Machinery support  
+Add advanced chances to Energized Power pulverizer recipes  
+Add category to crafting and cooking recipes  
+Fix smithing recipes  
+Add utility method to wrap ingredients  
 Add pickup sound to fluids  
 Fix item form settings using wrong function  
 Add conditional runnable/supplier methods  
