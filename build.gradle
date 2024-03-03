@@ -315,9 +315,9 @@ dependencies {
 	modImplementation "slimeknights:TConstruct:1.12.2-2.13.0.183"
 
 	// Performance
-	modImplementation "curse.maven:reid-629017:4949840"
+	modImplementation "curse.maven:reid-629017:5143492"
 	modImplementation "curse.maven:vintagefix-871198:5010926"
-	modImplementation "curse.maven:lolasm-460609:4800875"
+	modImplementation "curse.maven:lolasm-460609:5120166"
 }
 
 def replacements = [
