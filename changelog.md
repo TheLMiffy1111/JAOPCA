@@ -1,3 +1,5 @@
+Readd Useful Machinery support  
+Add utility method to wrap ingredients  
 Add requires tool setting to blocks  
 Add pickup sound to fluids  
 Fix item form settings using wrong function  

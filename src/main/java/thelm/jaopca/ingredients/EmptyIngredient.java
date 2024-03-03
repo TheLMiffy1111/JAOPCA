@@ -1,7 +1,5 @@
 package thelm.jaopca.ingredients;
 
-import java.util.stream.Stream;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -9,11 +7,10 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.AbstractIngredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 
-// Need a serializable empty ingredient for compound ingredients
-public class EmptyIngredient extends Ingredient {
+public class EmptyIngredient extends AbstractIngredient {
 
 	public static final ResourceLocation ID = new ResourceLocation("jaopca:empty");
 	public static final IIngredientSerializer<EmptyIngredient> SERIALIZER = new Serializer();
@@ -22,9 +19,7 @@ public class EmptyIngredient extends Ingredient {
 	private static final ItemStack[] filteredMatchingStacks = new ItemStack[0];
 	private static final IntList packedMatchingStacks = IntList.of();
 
-	protected EmptyIngredient() {
-		super(Stream.empty());
-	}
+	protected EmptyIngredient() {}
 
 	@Override
 	public boolean test(ItemStack stack) {

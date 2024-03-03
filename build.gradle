@@ -153,6 +153,16 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
+				url = "https://nexus.themcbrothers.net/repository/maven-releases/"
+			}
+		}
+		filter {
+			includeGroup "net.themcbrothers"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
 				url = "https://cursemaven.com/"
 			}
 		}
@@ -184,7 +194,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.1.17.39"
+version = "4.1.18.39"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -318,6 +328,11 @@ dependencies {
 	modImplementation "com.teamcofh:thermal_expansion:1.18.2-9.2.2.24"
 	modImplementation "com.teamcofh:thermal_integration:1.18.2-9.2.1.18"
 
+	// Useful Machinery
+	modImplementation "net.themcbrothers:TheMCBrosLib:1.18.2-2.0.5"
+	modImplementation "net.themcbrothers:useful-foundation:1.18.2-9.0.0"
+	modImplementation "net.themcbrothers:useful-machinery:1.18.2-5.7.0"
+
 	// Voluminous Energy
 	modImplementation "curse.maven:voluminous-energy-416704:4627233"
 
@@ -391,6 +406,7 @@ def curseforgeDependencies = [
 	"open-loader",
 	"tinkers-construct",
 	"thermal-expansion",
+	"useful-machinery",
 	"voluminous-energy"
 ]
 
@@ -411,6 +427,7 @@ def modrinthDependencies = [
 	"open-loader",
 	"tinkers-construct",
 	"thermal-expansion",
+	"useful-machinery",
 	"voluminous_energy"
 ]
 

@@ -2,8 +2,6 @@ package thelm.jaopca.api.ingredients;
 
 import java.util.Arrays;
 
-import thelm.jaopca.api.ingredients.CompoundIngredientObject.Type;
-
 public record CompoundIngredientObject(Type type, Object... ingredients) {
 
 	public static CompoundIngredientObject of(Type type, Object... ingredients) {

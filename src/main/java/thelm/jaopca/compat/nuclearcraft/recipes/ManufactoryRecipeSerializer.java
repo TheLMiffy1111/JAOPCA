@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.IntersectionIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
@@ -55,7 +54,7 @@ public class ManufactoryRecipeSerializer implements IRecipeSerializer {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "nuclearcraft:manufactory");
 		JsonArray inputJson = new JsonArray();
-		JsonObject ingJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
+		JsonObject ingJson = MiscHelper.INSTANCE.wrapIngredient(ing).toJson().getAsJsonObject();
 		ingJson.addProperty("count", inputCount);
 		inputJson.add(ingJson);
 		json.add("input", inputJson);

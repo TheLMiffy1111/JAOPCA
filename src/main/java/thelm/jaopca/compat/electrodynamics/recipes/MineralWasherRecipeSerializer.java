@@ -11,7 +11,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.crafting.IntersectionIngredient;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
@@ -57,7 +56,7 @@ public class MineralWasherRecipeSerializer implements IRecipeSerializer {
 		json.addProperty("type", "electrodynamics:mineral_washer_recipe");
 		JsonObject itemInputJson = new JsonObject();
 		itemInputJson.addProperty("count", 1);
-		JsonObject itemIngJson = IntersectionIngredient.of(ing).toJson().getAsJsonObject();
+		JsonObject itemIngJson = MiscHelper.INSTANCE.wrapIngredient(ing).toJson().getAsJsonObject();
 		itemIngJson.addProperty("count", itemInputCount);
 		itemInputJson.add("0", itemIngJson);
 		json.add("iteminputs", itemInputJson);

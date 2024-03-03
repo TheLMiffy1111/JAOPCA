@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
 import igentuman.nc.recipes.ingredient.FluidStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.crafting.IntersectionIngredient;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.compat.nuclearcraft.NuclearCraftHelper;
@@ -65,7 +64,7 @@ public class LeacherRecipeSerializer implements IRecipeSerializer {
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "nuclearcraft:leacher");
 		JsonArray itemInputJson = new JsonArray();
-		JsonObject itemIngJson = IntersectionIngredient.of(itemIng).toJson().getAsJsonObject();
+		JsonObject itemIngJson = MiscHelper.INSTANCE.wrapIngredient(itemIng).toJson().getAsJsonObject();
 		itemIngJson.addProperty("count", itemInputCount);
 		itemInputJson.add(itemIngJson);
 		json.add("input", itemInputJson);
