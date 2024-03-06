@@ -134,8 +134,8 @@ public class CustomCodecs {
 	}
 
 	public static Codec<Predicate<IMaterial>> materialPredicate(boolean defaultValue) {
-		return Codec.<Boolean, Predicate<IMaterial>>either(
-				Codec.BOOL, RecordCodecBuilder.create(
+		return Codec.either(
+				Codec.BOOL, RecordCodecBuilder.<MaterialPredicate>create(
 						instance->instance.group(
 								Codec.BOOL.optionalFieldOf("default", defaultValue).forGetter(f->f.defaultValue),
 								obj2BoolMap(MATERIAL_TYPE).
@@ -146,14 +146,14 @@ public class CustomCodecs {
 								forGetter(f->f.materials),
 								Codec.STRING.optionalFieldOf("path", "").forGetter(f->f.path),
 								Codec.STRING.optionalFieldOf("comment", "").forGetter(f->f.comment)).
-						apply(instance, MaterialPredicate::of)).
-				xmap(Function.identity(), f->MaterialPredicate.of(defaultValue, f))).
-				xmap(either->either.map(MaterialPredicate::of, Functions.identity()), Either::right);
+						apply(instance, MaterialPredicate::of))).
+				xmap(either->either.map(MaterialPredicate::of, Functions.identity()), Either::right).
+				xmap(Function.identity(), f->MaterialPredicate.of(defaultValue, f));
 	}
 
 	public static Codec<ToIntFunction<IMaterial>> materialIntFunction(int defaultValue) {
-		return Codec.<Integer, ToIntFunction<IMaterial>>either(
-				Codec.INT, RecordCodecBuilder.create(
+		return Codec.either(
+				Codec.INT, RecordCodecBuilder.<MaterialIntFunction>create(
 						instance->instance.group(
 								Codec.INT.optionalFieldOf("default", defaultValue).forGetter(f->f.defaultValue),
 								obj2IntMap(MATERIAL_TYPE).
@@ -164,14 +164,14 @@ public class CustomCodecs {
 								forGetter(f->f.materials),
 								Codec.STRING.optionalFieldOf("path", "").forGetter(f->f.path),
 								Codec.STRING.optionalFieldOf("comment", "").forGetter(f->f.comment)).
-						apply(instance, MaterialIntFunction::of)).
-				xmap(Function.identity(), f->MaterialIntFunction.of(defaultValue, f))).
-				xmap(either->either.map(MaterialIntFunction::of, Functions.identity()), Either::right);
+						apply(instance, MaterialIntFunction::of))).
+				xmap(either->either.map(MaterialIntFunction::of, Functions.identity()), Either::right).
+				xmap(Function.identity(), f->MaterialIntFunction.of(defaultValue, f));
 	}
 
 	public static Codec<ToDoubleFunction<IMaterial>> materialDoubleFunction(double defaultValue) {
-		return Codec.<Double, ToDoubleFunction<IMaterial>>either(
-				Codec.DOUBLE, RecordCodecBuilder.create(
+		return Codec.either(
+				Codec.DOUBLE, RecordCodecBuilder.<MaterialDoubleFunction>create(
 						instance->instance.group(
 								Codec.DOUBLE.optionalFieldOf("default", defaultValue).forGetter(f->f.defaultValue),
 								obj2DoubleMap(MATERIAL_TYPE).
@@ -182,14 +182,14 @@ public class CustomCodecs {
 								forGetter(f->f.materials),
 								Codec.STRING.optionalFieldOf("path", "").forGetter(f->f.path),
 								Codec.STRING.optionalFieldOf("comment", "").forGetter(f->f.comment)).
-						apply(instance, MaterialDoubleFunction::of)).
-				xmap(Function.identity(), f->MaterialDoubleFunction.of(defaultValue, f))).
-				xmap(either->either.map(MaterialDoubleFunction::of, Functions.identity()), Either::right);
+						apply(instance, MaterialDoubleFunction::of))).
+				xmap(either->either.map(MaterialDoubleFunction::of, Functions.identity()), Either::right).
+				xmap(Function.identity(), f->MaterialDoubleFunction.of(defaultValue, f));
 	}
 
 	public static Codec<ToLongFunction<IMaterial>> materialLongFunction(long defaultValue) {
-		return Codec.<Long, ToLongFunction<IMaterial>>either(
-				Codec.LONG, RecordCodecBuilder.create(
+		return Codec.either(
+				Codec.LONG, RecordCodecBuilder.<MaterialLongFunction>create(
 						instance->instance.group(
 								Codec.LONG.optionalFieldOf("default", defaultValue).forGetter(f->f.defaultValue),
 								obj2LongMap(MATERIAL_TYPE).
@@ -200,14 +200,14 @@ public class CustomCodecs {
 								forGetter(f->f.materials),
 								Codec.STRING.optionalFieldOf("path", "").forGetter(f->f.path),
 								Codec.STRING.optionalFieldOf("comment", "").forGetter(f->f.comment)).
-						apply(instance, MaterialLongFunction::of)).
-				xmap(Function.identity(), f->MaterialLongFunction.of(defaultValue, f))).
-				xmap(either->either.map(MaterialLongFunction::of, Functions.identity()), Either::right);
+						apply(instance, MaterialLongFunction::of))).
+				xmap(either->either.map(MaterialLongFunction::of, Functions.identity()), Either::right).
+				xmap(Function.identity(), f->MaterialLongFunction.of(defaultValue, f));
 	}
 
 	public static <T> Codec<Function<IMaterial, T>> materialMappedFunction(Function<String, T> nameToValue, Function<T, String> valueToName, T defaultValue) {
-		return Codec.<T, Function<IMaterial, T>>either(
-				Codec.STRING.xmap(nameToValue, valueToName), RecordCodecBuilder.create(
+		return Codec.either(
+				Codec.STRING.xmap(nameToValue, valueToName), RecordCodecBuilder.<MaterialMappedFunction<T>>create(
 						instance->instance.group(
 								Codec.STRING.xmap(nameToValue, valueToName).
 								optionalFieldOf("default", defaultValue).
@@ -222,9 +222,9 @@ public class CustomCodecs {
 								Codec.STRING.optionalFieldOf("comment", "").forGetter(f->f.comment),
 								Codec.unit(nameToValue).fieldOf("nameToValue").forGetter(f->f.nameToValue),
 								Codec.unit(valueToName).fieldOf("valueToName").forGetter(f->f.valueToName)).
-						apply(instance, MaterialMappedFunction::of)).
-				xmap(Function.identity(), f->MaterialMappedFunction.of(defaultValue, f, nameToValue, valueToName))).
-				xmap(either->either.map(v->MaterialMappedFunction.of(v, nameToValue, valueToName), Functions.identity()), Either::right);
+						apply(instance, MaterialMappedFunction::of))).
+				xmap(either->either.map(v->MaterialMappedFunction.of(v, nameToValue, valueToName), Functions.identity()), Either::right).
+				xmap(Function.identity(), f->MaterialMappedFunction.of(defaultValue, f, nameToValue, valueToName));
 	}
 
 	public static Codec<Function<IMaterial, String>> materialStringFunction(String defaultValue) {
@@ -239,8 +239,8 @@ public class CustomCodecs {
 	}
 
 	public static <T> Codec<Function<IMaterial, T>> materialFunction(Codec<T> codec, T defaultValue) {
-		return Codec.<T, Function<IMaterial, T>>either(
-				codec, RecordCodecBuilder.create(
+		return Codec.either(
+				codec, RecordCodecBuilder.<MaterialFunction<T>>create(
 						instance->instance.group(
 								codec.optionalFieldOf("default", defaultValue).forGetter(f->f.defaultValue),
 								Codec.unboundedMap(CustomCodecs.MATERIAL_TYPE, codec).
@@ -249,9 +249,9 @@ public class CustomCodecs {
 								Codec.unboundedMap(CustomCodecs.MATERIAL, codec).
 								optionalFieldOf("materials", Map.of()).
 								forGetter(f->f.materials)).
-						apply(instance, MaterialFunction::of)).
-				xmap(Function.identity(), f->MaterialFunction.of(defaultValue, f))).
-				xmap(either->either.map(MaterialFunction::of, Functions.identity()), Either::right);
+						apply(instance, MaterialFunction::of))).
+				xmap(either->either.map(MaterialFunction::of, Functions.identity()), Either::right).
+				xmap(Function.identity(), f->MaterialFunction.of(defaultValue, f));
 	}
 
 	public static final Codec<MapColor> MAP_COLOR = StringRepresentable.fromValues(MapColorType::values).

@@ -22,7 +22,7 @@ public interface IFormType extends Comparable<IFormType> {
 	IFormSettings getNewSettings();
 
 	Codec<IFormSettings> formSettingsCodec();
-	
+
 	IMaterialFormInfo getMaterialFormInfo(IForm form, IMaterial material);
 
 	default void registerMaterialForms() {}

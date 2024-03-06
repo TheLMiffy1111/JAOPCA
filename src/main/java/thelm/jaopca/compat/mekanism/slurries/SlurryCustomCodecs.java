@@ -14,7 +14,7 @@ public class SlurryCustomCodecs {
 	private SlurryCustomCodecs() {}
 
 	public static final Codec<IFormSettings> SLURRY_FORM_SETTINGS =
-			CustomCodecs.builder(
+			CustomCodecs.<ISlurryFormSettings>builder(
 					instance->RecordCodecBuilder.point(SlurryFormType.INSTANCE.getNewSettings())).
 			withField(
 					Codec.BOOL.optionalFieldOf("isHidden"),
