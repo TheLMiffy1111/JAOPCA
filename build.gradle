@@ -279,7 +279,7 @@ dependencies {
 	// Performance
 	modImplementation "com.github.GTNewHorizons:GTNHLib:0.2.3"
 	modImplementation("com.github.GTNewHorizons:NotEnoughIds:2.0.1") {transitive = false}
-	modImplementation "curse.maven:archaicfix-677782:5094856"
+	modImplementation "curse.maven:archaicfix-677782:5157231"
 }
 
 def replacements = [
