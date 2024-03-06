@@ -6,7 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -44,15 +45,23 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
+		CrushingRecipeObject recipe = new CrushingRecipeObject(ing, stack, time, ignoreMultiplier);
+		return MiscHelper.INSTANCE.serialize(CrushingRecipeObject.CODEC, recipe);
+	}
 
-		// Occultism crushing recipe codec is broken for serialization
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "occultism:crushing");
-		json.add("ingredient", MiscHelper.INSTANCE.serializeIngredient(ing));
-		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
-		json.addProperty("crushing_time", time);
-		json.addProperty("ignore_crushing_multiplier", ignoreMultiplier);
+	// Occultism crushing recipe codec is broken for serialization
+	public static record CrushingRecipeObject(String type, Ingredient ingredient, ItemStack result, int crushingTime, boolean ignoreCrushingMultiplier) {
+		public static final Codec<CrushingRecipeObject> CODEC = RecordCodecBuilder.create(
+				instance->instance.group(
+						Codec.STRING.fieldOf("type").forGetter(CrushingRecipeObject::type),
+						Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(CrushingRecipeObject::ingredient),
+						ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter(CrushingRecipeObject::result),
+						Codec.INT.fieldOf("crushing_time").forGetter(CrushingRecipeObject::crushingTime),
+						Codec.BOOL.fieldOf("ignore_crushing_multiplier").forGetter(CrushingRecipeObject::ignoreCrushingMultiplier)).
+				apply(instance, CrushingRecipeObject::new));
 
-		return json;
+		public CrushingRecipeObject(Ingredient ingredient, ItemStack result, int crushingTime, boolean ignoreCrushingMultiplier) {
+			this("occultism:crushing", ingredient, result, crushingTime, ignoreCrushingMultiplier);
+		}
 	}
 }

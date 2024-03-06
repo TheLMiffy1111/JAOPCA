@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import aztech.modern_industrialization.materials.MIMaterials;
-import aztech.modern_industrialization.materials.MaterialRegistry;
-import aztech.modern_industrialization.materials.recipe.StandardRecipes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -134,9 +131,6 @@ public class ModernIndustrializationCompatModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		StandardRecipes.class.arrayType();
-		MaterialRegistry.getMaterials();
-		MIMaterials.ALUMINUM.getClass();
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		ModernIndustrializationHelper helper = ModernIndustrializationHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
