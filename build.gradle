@@ -306,7 +306,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:shutup-experimental-settings-407174:3188120"
-	modImplementation "curse.maven:modernfix-790626:5077294"
+	modImplementation "curse.maven:modernfix-790626:5157663"
 	modImplementation "curse.maven:ferritecore-429235:3435176"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:3249059"
 }
