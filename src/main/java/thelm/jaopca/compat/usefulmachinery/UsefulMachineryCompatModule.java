@@ -111,7 +111,7 @@ public class UsefulMachineryCompatModule implements IModule {
 				if(itemTags.contains(storageBlockLocation)) {
 					helper.registerCompactingRecipe(
 							new ResourceLocation("jaopca", "usefulmachinery.material_to_storage_block."+name),
-							materialLocation, 9, storageBlockLocation, 1, 250, "block");
+							materialLocation, material.isSmallStorageBlock() ? 4 : 9, storageBlockLocation, 1, 250, "block");
 				}
 			}
 			if(type.isIngot() && !BLACKLIST.contains(name) && !configHammerToPlateBlacklist.contains(name)) {
