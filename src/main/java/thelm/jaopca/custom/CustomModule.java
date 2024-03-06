@@ -61,7 +61,7 @@ public class CustomModule implements IModule {
 					IForm::setSettings).
 			build());
 	private final Codec<IFormRequest> formRequestCodec = Codec.either(formCodec, formCodec.listOf()).
-			xmap(either->either.map(IForm::toRequest, forms->new FormRequest(this, forms.toArray(new IForm[0]))),
+			xmap(either->either.map(IForm::toRequest, forms->new FormRequest(this, forms.stream().toArray(IForm[]::new))),
 					request->Either.right(request.getForms()));
 
 	private final List<IFormRequest> formRequests = new ArrayList<>();

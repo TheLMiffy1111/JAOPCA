@@ -369,16 +369,20 @@ def curseforgeDependencies = [
 	"energized-power",
 	"json-things",
 	"mekanism",
+	"modern-industrialization",
 	"occultism",
 	"open-loader",
+	"useful-machinery"
 ]
 
 def modrinthDependencies = [
 	"crafttweaker",
 	"energized-power",
 	"mekanism",
+	"modern-industrialization",
 	"occultism",
 	"open-loader",
+	"useful-machinery"
 ]
 
 publishMods {
