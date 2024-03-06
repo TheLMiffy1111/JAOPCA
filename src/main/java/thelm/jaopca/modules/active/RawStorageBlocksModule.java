@@ -3,7 +3,8 @@ package thelm.jaopca.modules.active;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.forms.IForm;
@@ -44,6 +45,7 @@ public class RawStorageBlocksModule implements IModule {
 			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			api.registerShapedRecipe(
 					new ResourceLocation("jaopca", "raw_storage_blocks.to_raw_storage_block."+material.getName()),
+					CraftingBookCategory.BUILDING,
 					rawStorageBlockInfo, 1, new Object[] {
 							"MMM",
 							"MMM",

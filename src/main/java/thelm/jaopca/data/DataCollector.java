@@ -23,9 +23,9 @@ import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResourcesBuilder;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
-import net.minecraftforge.resource.ResourcePackLoader;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.resource.ResourcePackLoader;
+import net.neoforged.neoforgespi.language.ModFileScanData.AnnotationData;
 import thelm.jaopca.api.resources.IPackSupplier;
 import thelm.jaopca.api.resources.JAOPCAPackSupplier;
 import thelm.jaopca.utils.MiscHelper;
@@ -54,7 +54,7 @@ public class DataCollector {
 		List<PackResources> resourcePacks = new ArrayList<>();
 		resourcePacks.add(new VanillaPackResourcesBuilder().build());
 		ModList.get().getModFiles().stream().
-		map(ResourcePackLoader::createPackForMod).
+		map(mf->ResourcePackLoader.createPackForMod(mf).openPrimary(mf.getFile().getFileName())).
 		forEach(resourcePacks::add);
 		List<AnnotationData> annotationData = ModList.get().getAllScanData().stream().
 				flatMap(data->data.getAnnotations().stream()).

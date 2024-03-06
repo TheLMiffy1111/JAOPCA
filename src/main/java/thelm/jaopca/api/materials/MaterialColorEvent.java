@@ -1,6 +1,6 @@
 package thelm.jaopca.api.materials;
 
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
 public class MaterialColorEvent extends Event {
 

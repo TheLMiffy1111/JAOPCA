@@ -3,16 +3,15 @@ package thelm.jaopca.compat.mekanism;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -25,7 +24,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism@[10.2.0,)")
+@JAOPCAModule(modDependencies = "mekanism")
 public class MekanismCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
@@ -54,8 +53,6 @@ public class MekanismCompatModule implements IModule {
 		}
 	}
 
-	private Map<IMaterial, IDynamicSpecConfig> configs;
-
 	@Override
 	public String getName() {
 		return "mekanism_compat";
@@ -81,11 +78,6 @@ public class MekanismCompatModule implements IModule {
 				config.getDefinedStringList("recipes.toOreMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have combining to ore recipes added."),
 				configToOreBlacklist);
-	}
-
-	@Override
-	public void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {
-		this.configs = configs;
 	}
 
 	@Override
@@ -125,7 +117,7 @@ public class MekanismCompatModule implements IModule {
 				ResourceLocation ingLocation = miscHelper.getTagLocation(type == MaterialType.INGOT ? "raw_materials" : "dusts", name);
 				ResourceLocation oreLocation = miscHelper.getTagLocation("ores", name);
 				if(itemTags.contains(ingLocation)) {
-					IDynamicSpecConfig config = configs.get(material);
+					IDynamicSpecConfig config = api.getMaterialConfig(material);
 					String configOreBase = config.getDefinedString("mekanism.oreBase", "#forge:cobblestone/normal",
 							this::isTagOrItemValid, "The default base to use in Mekanism's Combiner to recreate ores.");
 					Object oreBase = getTagOrItem(configOreBase);
@@ -173,7 +165,7 @@ public class MekanismCompatModule implements IModule {
 			return ApiImpl.INSTANCE.getItemTags().contains(new ResourceLocation(s.substring(1)));
 		}
 		else {
-			return ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s));
+			return BuiltInRegistries.ITEM.containsKey(new ResourceLocation(s));
 		}
 	}
 
@@ -182,7 +174,7 @@ public class MekanismCompatModule implements IModule {
 			return new ResourceLocation(s.substring(1));
 		}
 		else {
-			return ForgeRegistries.ITEMS.getValue(new ResourceLocation(s));
+			return BuiltInRegistries.ITEM.get(new ResourceLocation(s));
 		}
 	}
 }

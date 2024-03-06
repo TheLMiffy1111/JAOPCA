@@ -4,7 +4,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 import thelm.jaopca.api.blocks.IBlockLike;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 

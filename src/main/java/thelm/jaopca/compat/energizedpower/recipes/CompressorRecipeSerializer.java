@@ -6,13 +6,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
+import me.jddev0.ep.recipe.CompressorRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
-import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class CompressorRecipeSerializer implements IRecipeSerializer {
@@ -34,19 +33,14 @@ public class CompressorRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing == EmptyIngredient.INSTANCE) {
+		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "energizedpower:compressor");
-		json.add("ingredient", ing.toJson());
-		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
-
-		return json;
+		CompressorRecipe recipe = new CompressorRecipe(stack, ing);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

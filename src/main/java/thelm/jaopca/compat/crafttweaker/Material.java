@@ -18,7 +18,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -148,7 +148,7 @@ public class Material {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Material other)) {
+		if(!(obj instanceof Material other)) {	
 			return false;
 		}
 		return material == other.material;

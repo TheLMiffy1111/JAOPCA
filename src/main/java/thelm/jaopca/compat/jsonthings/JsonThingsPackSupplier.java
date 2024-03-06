@@ -12,7 +12,8 @@ import org.apache.logging.log4j.Logger;
 import dev.gigaherz.jsonthings.things.parsers.ThingResourceManager;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.repository.FolderRepositorySource;
-import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.world.level.storage.LevelStorageSource;
+import net.neoforged.fml.loading.FMLPaths;
 import thelm.jaopca.api.resources.IPackSupplier;
 import thelm.jaopca.api.resources.JAOPCAPackSupplier;
 
@@ -25,12 +26,11 @@ public class JsonThingsPackSupplier implements IPackSupplier {
 	public void addPacks(Consumer<PackResources> resourcePacks) {
 		Path thingpacks = ThingResourceManager.instance().getThingPacksLocation();
 		try(DirectoryStream<Path> directorystream = Files.newDirectoryStream(thingpacks)) {
-			for(Path path : directorystream) {
-				Pack.ResourcesSupplier supplier = FolderRepositorySource.detectPackResources(path, false);
-				if(supplier != null) {
-					resourcePacks.accept(supplier.open(path.getFileName().toString()));
-				}
-			}
+			FolderRepositorySource.discoverPacks(
+					thingpacks,
+					LevelStorageSource.parseValidator(FMLPaths.GAMEDIR.get().resolve("allowed_symlinks.txt")),
+					false,
+					(path, supplier)->resourcePacks.accept(supplier.openPrimary(path.getFileName().toString())));
 		}
 		catch(IOException e) {
 			LOGGER.error("Could not read from {}.", thingpacks, e);

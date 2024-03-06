@@ -11,60 +11,65 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import thelm.jaopca.api.custom.MapColorType;
 import thelm.jaopca.api.fluids.IBucketItemCreator;
 import thelm.jaopca.api.fluids.IFluidBlockCreator;
 import thelm.jaopca.api.fluids.IFluidCreator;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IFluidTypeCreator;
 import thelm.jaopca.api.forms.IFormType;
+import thelm.jaopca.api.functions.MaterialDoubleFunction;
+import thelm.jaopca.api.functions.MaterialIntFunction;
+import thelm.jaopca.api.functions.MaterialMappedFunction;
+import thelm.jaopca.api.functions.MaterialPredicate;
 import thelm.jaopca.api.materials.IMaterial;
 
 class FluidFormSettings implements IFluidFormSettings {
 
 	private IFluidCreator fluidCreator = JAOPCAFluid::new;
-	private ToIntFunction<IMaterial> maxLevelFunction = material->8;
-	private ToIntFunction<IMaterial> tickRateFunction = material->5;
-	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->100;
+	private ToIntFunction<IMaterial> maxLevelFunction = MaterialIntFunction.of(8);
+	private ToIntFunction<IMaterial> tickRateFunction = MaterialIntFunction.of(5);
+	private ToDoubleFunction<IMaterial> explosionResistanceFunction = MaterialDoubleFunction.of(100);
 	private IFluidTypeCreator fluidTypeCreator = JAOPCAFluidType::new;
-	private ToIntFunction<IMaterial> lightValueFunction = material->0;
-	private ToIntFunction<IMaterial> densityFunction = material->1000;
-	private ToIntFunction<IMaterial> temperatureFunction = material->300;
-	private ToIntFunction<IMaterial> viscosityFunction = material->tickRateFunction.applyAsInt(material)*200;
-	private Function<IMaterial, Rarity> displayRarityFunction = material->Rarity.COMMON;
+	private ToIntFunction<IMaterial> lightValueFunction = MaterialIntFunction.of(0);
+	private ToIntFunction<IMaterial> densityFunction = MaterialIntFunction.of(1000);
+	private ToIntFunction<IMaterial> temperatureFunction = MaterialIntFunction.of(300);
+	private ToIntFunction<IMaterial> viscosityFunction = MaterialIntFunction.of(1000);
+	private Function<IMaterial, Rarity> displayRarityFunction = MaterialMappedFunction.of(Rarity.class, Rarity.COMMON);
 	private Supplier<SoundEvent> fillSoundSupplier = ()->SoundEvents.BUCKET_FILL;
 	private Supplier<SoundEvent> emptySoundSupplier = ()->SoundEvents.BUCKET_EMPTY;
 	private Supplier<SoundEvent> vaporizeSoundSupplier = ()->SoundEvents.FIRE_EXTINGUISH;
-	private ToDoubleFunction<IMaterial> motionScaleFunction = material->0.014D;
-	private Predicate<IMaterial> canPushEntityFunction = material->true;
-	private Predicate<IMaterial> canSwimFunction = material->true;
-	private ToDoubleFunction<IMaterial> fallDistanceModifierFunction = material->0.5D;
-	private Predicate<IMaterial> canExtinguishFunction = material->false;
-	private Predicate<IMaterial> canDrownFunction = material->true;
-	private Predicate<IMaterial> supportsBoatingFunction = material->false;
-	private Predicate<IMaterial> canHydrateFunction = material->false;
-	private Predicate<IMaterial> canConvertToSourceFunction = material->false;
-	private Function<IMaterial, BlockPathTypes> pathTypeFunction = material->BlockPathTypes.WATER;
-	private Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction = material->BlockPathTypes.WATER_BORDER;
+	private ToDoubleFunction<IMaterial> motionScaleFunction = MaterialDoubleFunction.of(0.014);
+	private Predicate<IMaterial> canPushEntityFunction = MaterialPredicate.of(true);
+	private Predicate<IMaterial> canSwimFunction = MaterialPredicate.of(true);
+	private ToDoubleFunction<IMaterial> fallDistanceModifierFunction = MaterialDoubleFunction.of(0.5);
+	private Predicate<IMaterial> canExtinguishFunction = MaterialPredicate.of(false);
+	private Predicate<IMaterial> canDrownFunction = MaterialPredicate.of(true);
+	private Predicate<IMaterial> supportsBoatingFunction = MaterialPredicate.of(false);
+	private Predicate<IMaterial> canHydrateFunction = MaterialPredicate.of(false);
+	private Predicate<IMaterial> canConvertToSourceFunction = MaterialPredicate.of(false);
+	private Function<IMaterial, BlockPathTypes> pathTypeFunction = MaterialMappedFunction.of(BlockPathTypes.class, BlockPathTypes.WATER);
+	private Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction = MaterialMappedFunction.of(BlockPathTypes.class, BlockPathTypes.WATER_BORDER);
 	private IFluidBlockCreator fluidBlockCreator = JAOPCAFluidBlock::new;
-	private ToIntFunction<IMaterial> levelDecreasePerBlockFunction = material->1;
-	private Function<IMaterial, MapColor> mapColorFunction = material->MapColor.WATER;
+	private ToIntFunction<IMaterial> levelDecreasePerBlockFunction = MaterialIntFunction.of(1);
+	private Function<IMaterial, MapColor> mapColorFunction = MapColorType.functionOf(MapColor.WATER);
 	//material->{
 	//	int color = material.getColor();
 	//	return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
 	//			min((matColor1, matColor2)->Integer.compare(
 	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
 	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
-	//			orElse(MaterialColor.IRON);
+	//			orElse(MaterialColor.WATER);
 	//};
-	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->100;
-	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
-	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
-	private Predicate<IMaterial> isFireSourceFunction = material->false;
-	private ToIntFunction<IMaterial> fireTimeFunction = material->-1;
+	private ToDoubleFunction<IMaterial> blockHardnessFunction = MaterialDoubleFunction.of(100);
+	private ToIntFunction<IMaterial> flammabilityFunction = MaterialIntFunction.of(0);
+	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = MaterialIntFunction.of(0);
+	private Predicate<IMaterial> isFireSourceFunction = MaterialPredicate.of(false);
+	private ToIntFunction<IMaterial> fireTimeFunction = MaterialIntFunction.of(1);
 	private IBucketItemCreator bucketItemCreator = JAOPCABucketItem::new;
-	private ToIntFunction<IMaterial> maxStackSizeFunction = material->1;
-	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
-	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
+	private ToIntFunction<IMaterial> maxStackSizeFunction = MaterialIntFunction.of(1);
+	private Predicate<IMaterial> hasEffectFunction = MaterialPredicate.of(false);
+	private ToIntFunction<IMaterial> burnTimeFunction = MaterialIntFunction.of(-1);
 
 	@Override
 	public IFormType getType() {

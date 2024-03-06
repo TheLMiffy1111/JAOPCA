@@ -4,8 +4,9 @@ import java.util.Objects;
 import java.util.TreeMap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.DistExecutor;
+import net.neoforged.fml.loading.FMLEnvironment;
 import thelm.jaopca.api.localization.ILocalizer;
+import thelm.jaopca.utils.MiscHelper;
 
 public class LocalizationHandler {
 
@@ -23,13 +24,13 @@ public class LocalizationHandler {
 	}
 
 	public static String getLanguage() {
-		return DistExecutor.unsafeRunForDist(()->()->{
+		return MiscHelper.INSTANCE.conditionalSupplier(FMLEnvironment.dist::isClient, ()->()->{
 			Minecraft mc = Minecraft.getInstance();
 			if(mc != null) {
 				String lang = mc.getLanguageManager().getSelected();
 				return lang != null ? lang : mc.options.languageCode;
 			}
 			return "en_us";
-		}, ()->()->"en_us");
+		}, ()->()->"en_us").get();
 	}
 }

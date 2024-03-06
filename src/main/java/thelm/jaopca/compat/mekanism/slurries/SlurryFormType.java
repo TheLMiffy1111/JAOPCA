@@ -9,13 +9,12 @@ import java.util.function.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
+import com.mojang.serialization.Codec;
 
 import mekanism.api.MekanismAPI;
 import net.minecraft.resources.ResourceLocation;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.MekanismDataInjector;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
@@ -23,7 +22,6 @@ import thelm.jaopca.compat.mekanism.api.slurries.IMaterialFormSlurry;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormSettings;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormType;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryInfo;
-import thelm.jaopca.compat.mekanism.custom.json.SlurryFormSettingsDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.MiscHelper;
@@ -79,13 +77,8 @@ public class SlurryFormType implements ISlurryFormType {
 	}
 
 	@Override
-	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
-		return builder;
-	}
-
-	@Override
-	public ISlurryFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context) {
-		return SlurryFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
+	public Codec<IFormSettings> formSettingsCodec() {
+		return SlurryCustomCodecs.SLURRY_FORM_SETTINGS;
 	}
 
 	@Override
@@ -104,7 +97,7 @@ public class SlurryFormType implements ISlurryFormType {
 
 				Supplier<IMaterialFormSlurry> materialFormSlurry = Suppliers.memoize(()->settings.getSlurryCreator().create(form, material, settings));
 				SLURRIES.put(form, material, materialFormSlurry);
-				RegistryHandler.registerForgeRegistryEntry(MekanismAPI.SLURRY_REGISTRY_NAME, name, ()->materialFormSlurry.get().toSlurry());
+				RegistryHandler.registerRegistryEntry(MekanismAPI.SLURRY_REGISTRY_NAME, name, ()->materialFormSlurry.get().toSlurry());
 
 				MekanismDataInjector.registerSlurryTag(helper.createResourceLocation(secondaryName), registryName);
 				MekanismDataInjector.registerSlurryTag(helper.getTagLocation(secondaryName, material.getName()), registryName);

@@ -6,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
+import mekanism.api.recipes.basic.BasicEnrichingRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -43,12 +43,7 @@ public class EnrichingRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "mekanism:enriching");
-		json.add("input", ing.serialize());
-		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
-
-		return json;
+		BasicEnrichingRecipe recipe = new BasicEnrichingRecipe(ing, stack);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

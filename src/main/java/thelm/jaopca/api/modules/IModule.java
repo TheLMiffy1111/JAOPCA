@@ -8,9 +8,9 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.materials.IMaterial;
@@ -27,7 +27,7 @@ public interface IModule extends Comparable<IModule> {
 
 	default void defineModuleConfigPre(IModuleData moduleData, IDynamicSpecConfig config) {}
 
-	default void defineMaterialConfigPre(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {}
+	default void onMaterialConfigAvailable(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {}
 
 	default Multimap<Integer, String> getModuleDependencies() {
 		return ImmutableSetMultimap.of();
@@ -46,8 +46,6 @@ public interface IModule extends Comparable<IModule> {
 	}
 
 	default void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {}
-
-	default void defineMaterialConfig(IModuleData moduleData, Map<IMaterial, IDynamicSpecConfig> configs) {}
 
 	default void onMaterialComputeComplete(IModuleData moduleData) {}
 

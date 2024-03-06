@@ -10,10 +10,8 @@ import java.util.function.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import com.mojang.serialization.Codec;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +19,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.fluids.IFluidInfo;
@@ -30,10 +29,13 @@ import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
 import thelm.jaopca.api.fluids.IMaterialFormFluidType;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.forms.IFormSettings;
+import thelm.jaopca.api.functions.MaterialDoubleFunction;
+import thelm.jaopca.api.functions.MaterialIntFunction;
+import thelm.jaopca.api.functions.MaterialMappedFunction;
+import thelm.jaopca.api.functions.MaterialPredicate;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.custom.json.FluidFormSettingsDeserializer;
-import thelm.jaopca.custom.json.ForgeRegistryEntrySupplierDeserializer;
 import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.registries.RegistryHandler;
@@ -96,22 +98,19 @@ public class FluidFormType implements IFluidFormType {
 	}
 
 	public IFluidFormSettings getNewSettingsLava() {
-		return new FluidFormSettings().setTickRateFunction(material->30).
-				setDensityFunction(material->2000).setTemperatureFunction(material->1000).
+		return getNewSettings().
+				setTickRateFunction(MaterialIntFunction.of(30)).setDensityFunction(MaterialIntFunction.of(2000)).
+				setTemperatureFunction(MaterialIntFunction.of(1000)).setViscosityFunction(MaterialIntFunction.of(6000)).
 				setFillSoundSupplier(()->SoundEvents.BUCKET_FILL_LAVA).setEmptySoundSupplier(()->SoundEvents.BUCKET_EMPTY_LAVA).
-				setMotionScaleFunction(material->0.007D/3).setCanDrownFunction(material->false).
-				setPathTypeFunction(material->BlockPathTypes.LAVA).setAdjacentPathTypeFunction(material->null).
-				setFireTimeFunction(material->15);
+				setMotionScaleFunction(MaterialDoubleFunction.of(0.007/3)).setCanDrownFunction(MaterialPredicate.of(false)).
+				setPathTypeFunction(MaterialMappedFunction.of(BlockPathTypes.class, BlockPathTypes.LAVA)).
+				setAdjacentPathTypeFunction(MaterialMappedFunction.of(BlockPathTypes.class, null)).
+				setFireTimeFunction(MaterialIntFunction.of(15));
 	}
 
 	@Override
-	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
-		return builder.registerTypeAdapter(SOUND_EVENT_SUPPLIER_TYPE, ForgeRegistryEntrySupplierDeserializer.INSTANCE);
-	}
-
-	@Override
-	public IFluidFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context) {
-		return FluidFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
+	public Codec<IFormSettings> formSettingsCodec() {
+		return FluidCustomCodecs.FLUID_FORM_SETTINGS;
 	}
 
 	@Override
@@ -131,19 +130,19 @@ public class FluidFormType implements IFluidFormType {
 
 				Supplier<IMaterialFormFluid> materialFormFluid = Suppliers.memoize(()->settings.getFluidCreator().create(form, material, settings));
 				FLUIDS.put(form, material, materialFormFluid);
-				RegistryHandler.registerForgeRegistryEntry(Registries.FLUID, name, ()->materialFormFluid.get().toFluid());
+				RegistryHandler.registerRegistryEntry(Registries.FLUID, name, ()->materialFormFluid.get().toFluid());
 
 				Supplier<IMaterialFormFluidType> materialFormFluidType = Suppliers.memoize(()->settings.getFluidTypeCreator().create(materialFormFluid.get(), settings));
 				FLUID_TYPES.put(form, material, materialFormFluidType);
-				RegistryHandler.registerForgeRegistryEntry(ForgeRegistries.Keys.FLUID_TYPES, name, ()->materialFormFluidType.get().toFluidType());
+				RegistryHandler.registerRegistryEntry(NeoForgeRegistries.Keys.FLUID_TYPES, name, ()->materialFormFluidType.get().toFluidType());
 
 				Supplier<IMaterialFormFluidBlock> materialFormFluidBlock = Suppliers.memoize(()->settings.getFluidBlockCreator().create(materialFormFluid.get(), settings));
 				FLUID_BLOCKS.put(form, material, materialFormFluidBlock);
-				RegistryHandler.registerForgeRegistryEntry(Registries.BLOCK, name, ()->materialFormFluidBlock.get().toBlock());
+				RegistryHandler.registerRegistryEntry(Registries.BLOCK, name, ()->materialFormFluidBlock.get().toBlock());
 
 				Supplier<IMaterialFormBucketItem> materialFormBucketItem = Suppliers.memoize(()->settings.getBucketItemCreator().create(materialFormFluid.get(), settings));
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
-				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormBucketItem.get().toItem());
+				RegistryHandler.registerRegistryEntry(Registries.ITEM, name, ()->materialFormBucketItem.get().toItem());
 
 				DataInjector.registerFluidTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
@@ -155,8 +154,14 @@ public class FluidFormType implements IFluidFormType {
 	}
 
 	@Override
+	public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+		getFluidBlocks().forEach(mf->mf.onRegisterCapabilities(event));
+		getBucketItems().forEach(mf->mf.onRegisterCapabilities(event));
+	}
+
+	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-		getBucketItems().forEach(mf->output.accept(mf.toItem()));
+		getBucketItems().forEach(mf->mf.addToCreativeModeTab(parameters, output));
 	}
 
 	public static Collection<IMaterialFormFluid> getFluids() {

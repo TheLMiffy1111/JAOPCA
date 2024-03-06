@@ -7,14 +7,12 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.item.crafting.StonecutterRecipe;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
-import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class StonecuttingRecipeSerializer implements IRecipeSerializer {
@@ -42,23 +40,14 @@ public class StonecuttingRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing == EmptyIngredient.INSTANCE) {
+		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "minecraft:stonecutting");
-		if(!group.isEmpty()) {
-			json.addProperty("group", group);
-		}
-		json.add("ingredient", ing.toJson());
-		json.addProperty("result", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
-		json.addProperty("count", stack.getCount());
-
-		return json;
+		StonecutterRecipe recipe = new StonecutterRecipe(group, ing, stack);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

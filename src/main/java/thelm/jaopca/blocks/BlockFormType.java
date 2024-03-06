@@ -1,42 +1,30 @@
 package thelm.jaopca.blocks;
 
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
+import com.mojang.serialization.Codec;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
-import thelm.jaopca.custom.json.MaterialEnumFunctionDeserializer;
-import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
-import thelm.jaopca.custom.json.VoxelShapeDeserializer;
-import thelm.jaopca.custom.utils.BlockDeserializationHelper;
 import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.registries.RegistryHandler;
@@ -53,10 +41,6 @@ public class BlockFormType implements IBlockFormType {
 	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormBlockItem>> BLOCK_ITEMS = TreeBasedTable.create();
 	private static final TreeBasedTable<IForm, IMaterial, IBlockInfo> BLOCK_INFOS = TreeBasedTable.create();
 	private static boolean registered = false;
-
-	public static final Type MAP_COLOR_FUNCTION_TYPE = new TypeToken<Function<IMaterial, MapColor>>(){}.getType();
-	public static final Type SOUND_TYPE_FUNCTION_TYPE = new TypeToken<Function<IMaterial, SoundType>>(){}.getType();
-	public static final Type INSTRUMENT_FUNCTION_TYPE = new TypeToken<Function<IMaterial, NoteBlockInstrument>>(){}.getType();
 
 	public static void init() {
 		FormTypeHandler.registerFormType(INSTANCE);
@@ -99,21 +83,8 @@ public class BlockFormType implements IBlockFormType {
 	}
 
 	@Override
-	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
-		return builder.
-				registerTypeAdapter(MAP_COLOR_FUNCTION_TYPE,
-						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getMapColor,
-								BlockDeserializationHelper.INSTANCE::getMapColorName)).
-				registerTypeAdapter(SOUND_TYPE_FUNCTION_TYPE,
-						new MaterialMappedFunctionDeserializer<>(BlockDeserializationHelper.INSTANCE::getSoundType,
-								BlockDeserializationHelper.INSTANCE::getSoundTypeName)).
-				registerTypeAdapter(VoxelShape.class, VoxelShapeDeserializer.INSTANCE).
-				registerTypeAdapter(INSTRUMENT_FUNCTION_TYPE, MaterialEnumFunctionDeserializer.INSTANCE);
-	}
-
-	@Override
-	public IBlockFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context) {
-		return BlockFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
+	public Codec<IFormSettings> formSettingsCodec() {
+		return BlockCustomCodecs.BLOCK_FORM_SETTINGS;
 	}
 
 	@Override
@@ -136,11 +107,11 @@ public class BlockFormType implements IBlockFormType {
 
 				Supplier<IMaterialFormBlock> materialFormBlock = Suppliers.memoize(()->settings.getBlockCreator().create(form, material, settings));
 				BLOCKS.put(form, material, materialFormBlock);
-				RegistryHandler.registerForgeRegistryEntry(Registries.BLOCK, name, ()->materialFormBlock.get().toBlock());
+				RegistryHandler.registerRegistryEntry(Registries.BLOCK, name, ()->materialFormBlock.get().toBlock());
 
 				Supplier<IMaterialFormBlockItem> materialFormBlockItem = Suppliers.memoize(()->settings.getBlockItemCreator().create(materialFormBlock.get(), settings));
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
-				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormBlockItem.get().toBlockItem());
+				RegistryHandler.registerRegistryEntry(Registries.ITEM, name, ()->materialFormBlockItem.get().toBlockItem());
 
 				DataInjector.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock.get(), settings));
 
@@ -165,8 +136,14 @@ public class BlockFormType implements IBlockFormType {
 	}
 
 	@Override
+	public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+		getBlocks().forEach(mf->mf.onRegisterCapabilities(event));
+		getBlockItems().forEach(mf->mf.onRegisterCapabilities(event));
+	}
+
+	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-		getBlockItems().forEach(mf->output.accept(mf.toBlockItem()));
+		getBlockItems().forEach(mf->mf.addToCreativeModeTab(parameters, output));
 	}
 
 	public static Collection<IMaterialFormBlock> getBlocks() {

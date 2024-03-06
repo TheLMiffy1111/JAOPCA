@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
@@ -15,7 +15,7 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism@[10.1.0,)")
+@JAOPCAModule(modDependencies = "mekanism")
 public class MekanismNonIngotModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(

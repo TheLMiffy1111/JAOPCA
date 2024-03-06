@@ -9,23 +9,20 @@ import java.util.function.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
+import com.mojang.serialization.Codec;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Rarity;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.custom.json.EnumDeserializer;
-import thelm.jaopca.custom.json.ItemFormSettingsDeserializer;
 import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.registries.RegistryHandler;
@@ -83,13 +80,8 @@ public class ItemFormType implements IItemFormType {
 	}
 
 	@Override
-	public GsonBuilder configureGsonBuilder(GsonBuilder builder) {
-		return builder.registerTypeAdapter(Rarity.class, EnumDeserializer.INSTANCE);
-	}
-
-	@Override
-	public IItemFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context) {
-		return ItemFormSettingsDeserializer.INSTANCE.deserialize(jsonElement, context);
+	public Codec<IFormSettings> formSettingsCodec() {
+		return ItemCustomCodecs.ITEM_FORM_SETTINGS;
 	}
 
 	@Override
@@ -109,7 +101,7 @@ public class ItemFormType implements IItemFormType {
 
 				Supplier<IMaterialFormItem> materialFormItem = Suppliers.memoize(()->settings.getItemCreator().create(form, material, settings));
 				ITEMS.put(form, material, materialFormItem);
-				RegistryHandler.registerForgeRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().toItem());
+				RegistryHandler.registerRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().toItem());
 
 				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
 				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
@@ -121,8 +113,13 @@ public class ItemFormType implements IItemFormType {
 	}
 
 	@Override
+	public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+		getItems().forEach(mf->mf.onRegisterCapabilities(event));
+	}
+
+	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-		getItems().forEach(mf->output.accept(mf.toItem()));
+		getItems().forEach(mf->mf.addToCreativeModeTab(parameters, output));
 	}
 
 	public static Collection<IMaterialFormItem> getItems() {

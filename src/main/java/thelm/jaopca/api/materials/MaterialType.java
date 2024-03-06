@@ -5,7 +5,9 @@ import java.util.Locale;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-public enum MaterialType {
+import net.minecraft.util.StringRepresentable;
+
+public enum MaterialType implements StringRepresentable {
 
 	INGOT("ingots"),
 	INGOT_LEGACY("ingots"),
@@ -32,6 +34,11 @@ public enum MaterialType {
 
 	public String getName() {
 		return name().toLowerCase(Locale.US);
+	}
+
+	@Override
+	public String getSerializedName() {
+		return getName();
 	}
 
 	public String getFormName() {

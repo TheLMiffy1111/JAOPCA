@@ -6,16 +6,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import mekanism.api.SerializerHelper;
-import mekanism.api.chemical.merged.BoxedChemicalStack;
 import mekanism.api.chemical.slurry.SlurryStack;
+import mekanism.api.recipes.basic.BasicChemicalDissolutionRecipe;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient.GasStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
+import thelm.jaopca.utils.MiscHelper;
 
 public class DissolutionRecipeSerializer implements IRecipeSerializer {
 
@@ -53,13 +52,7 @@ public class DissolutionRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "mekanism:dissolution");
-		json.add("itemInput", ing.serialize());
-		json.add("gasInput", gasIng.serialize());
-		json.add("output", SerializerHelper.serializeBoxedChemicalStack(BoxedChemicalStack.box(stack)));
-
-		return json;
+		BasicChemicalDissolutionRecipe recipe = new BasicChemicalDissolutionRecipe(ing, gasIng, stack);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

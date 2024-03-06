@@ -6,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
+import mekanism.api.recipes.basic.BasicChemicalCrystallizerRecipe;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient.SlurryStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -43,13 +43,7 @@ public class CrystallizingRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "mekanism:crystallizing");
-		json.addProperty("chemicalType", "slurry");
-		json.add("input", ing.serialize());
-		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
-
-		return json;
+		BasicChemicalCrystallizerRecipe recipe = new BasicChemicalCrystallizerRecipe(ing, stack);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

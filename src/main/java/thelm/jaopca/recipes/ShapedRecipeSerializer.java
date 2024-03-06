@@ -12,15 +12,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Strings;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
-import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class ShapedRecipeSerializer implements IRecipeSerializer {
@@ -29,17 +29,27 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 
 	public final ResourceLocation key;
 	public final String group;
+	public final CraftingBookCategory category;
 	public final Object output;
 	public final int count;
 	public final Object[] input;
 
 	public ShapedRecipeSerializer(ResourceLocation key, Object output, int count, Object... input) {
-		this(key, "", output, count, input);
+		this(key, "", CraftingBookCategory.MISC, output, count, input);
 	}
 
 	public ShapedRecipeSerializer(ResourceLocation key, String group, Object output, int count, Object... input) {
+		this(key, group, CraftingBookCategory.MISC, output, count, input);
+	}
+
+	public ShapedRecipeSerializer(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input) {
+		this(key, "", category, output, count, input);
+	}
+
+	public ShapedRecipeSerializer(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input) {
 		this.key = Objects.requireNonNull(key);
 		this.group = Strings.nullToEmpty(group);
+		this.category = Objects.requireNonNull(category);
 		this.output = output;
 		this.count = count;
 		this.input = Objects.requireNonNull(input);
@@ -79,7 +89,7 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 			if(' ' == chr.charValue()) {
 				throw new IllegalArgumentException("Invalid key entry in recipe "+key+": Symbol ' ' is reserved");
 			}
-			if(ing == EmptyIngredient.INSTANCE) {
+			if(ing == null) {
 				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			keyMap.put(chr, ing);
@@ -101,24 +111,7 @@ public class ShapedRecipeSerializer implements IRecipeSerializer {
 		if(!set.isEmpty()) {
 			throw new IllegalArgumentException("Ingredients are defined but not used in pattern for recipe "+key);
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "minecraft:crafting_shaped");
-		if(!group.isEmpty()) {
-			json.addProperty("group", group);
-		}
-		JsonArray patternJson = new JsonArray();
-		for(String str : pattern) {
-			patternJson.add(str);
-		}
-		json.add("pattern", patternJson);
-		JsonObject keyJson = new JsonObject();
-		for(Map.Entry<Character, Ingredient> entry : keyMap.entrySet()) {
-			keyJson.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
-		}
-		json.add("key", keyJson);
-		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
-
-		return json;
+		ShapedRecipe recipe = new ShapedRecipe(group, category, ShapedRecipePattern.of(keyMap, pattern), stack);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

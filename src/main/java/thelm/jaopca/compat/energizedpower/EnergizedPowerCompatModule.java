@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -24,9 +24,9 @@ public class EnergizedPowerCompatModule implements IModule {
 
 	private static final double[] TO_DUST_CHANCES = {1};
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "iron"));
+			"copper", "gold", "iron", "tin"));
 	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(List.of(
-			"copper", "energized_copper", "energized_gold", "gold", "iron"));
+			"copper", "energized_copper", "energized_gold", "gold", "iron", "tin"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToPlateBlacklist = new TreeSet<>();
 
@@ -68,7 +68,7 @@ public class EnergizedPowerCompatModule implements IModule {
 				if(itemTags.contains(dustLocation)) {
 					helper.registerPulverizerRecipe(
 							new ResourceLocation("jaopca", "energizedpower.material_to_dust."+name),
-							materialLocation, dustLocation, TO_DUST_CHANCES);
+							materialLocation, dustLocation, TO_DUST_CHANCES, TO_DUST_CHANCES);
 				}
 			}
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {

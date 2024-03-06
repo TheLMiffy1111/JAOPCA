@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
-import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class CrushingRecipeSerializer implements IRecipeSerializer {
@@ -38,7 +37,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing == EmptyIngredient.INSTANCE) {
+		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
@@ -46,9 +45,10 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 
+		// Occultism crushing recipe codec is broken for serialization
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "occultism:crushing");
-		json.add("ingredient", ing.toJson());
+		json.add("ingredient", MiscHelper.INSTANCE.serializeIngredient(ing));
 		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
 		json.addProperty("crushing_time", time);
 		json.addProperty("ignore_crushing_multiplier", ignoreMultiplier);

@@ -15,6 +15,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -23,6 +24,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
@@ -36,9 +38,12 @@ import com.google.common.collect.SetMultimap;
 import com.google.common.collect.TreeMultiset;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -48,29 +53,29 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.crafting.CompoundIngredient;
-import net.minecraftforge.common.crafting.DifferenceIngredient;
-import net.minecraftforge.common.crafting.IntersectionIngredient;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryManager;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+import net.neoforged.neoforge.common.crafting.DifferenceIngredient;
+import net.neoforged.neoforge.common.crafting.IntersectionIngredient;
+import net.neoforged.neoforge.fluids.FluidStack;
 import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.ingredients.CompoundIngredientObject;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.config.ConfigHandler;
-import thelm.jaopca.ingredients.EmptyIngredient;
+import thelm.jaopca.ingredients.WrappedIngredient;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
 
 public class MiscHelper implements IMiscHelper {
 
 	public static final MiscHelper INSTANCE = new MiscHelper();
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	private MiscHelper() {}
 
@@ -123,7 +128,7 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	public Pair<Ingredient, Set<Item>> getIngredientResolved(Object obj) {
-		Ingredient ing = EmptyIngredient.INSTANCE;
+		Ingredient ing = null;
 		Set<Item> items = new LinkedHashSet<>();
 		if(obj instanceof Supplier<?>) {
 			Pair<Ingredient, Set<Item>> pair = getIngredientResolved(((Supplier<?>)obj).get());
@@ -143,7 +148,7 @@ public class MiscHelper implements IMiscHelper {
 					if(ings.stream().allMatch(p->p.getRight().isEmpty())) {
 						break;
 					}
-					ing = CompoundIngredient.of(ings.stream().map(Pair::getLeft).toArray(Ingredient[]::new));
+					ing = CompoundIngredient.of(ings.stream().filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(Ingredient[]::new));
 					items.addAll(ings.stream().map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
 						s1.addAll(s2);
 						return s1;
@@ -154,7 +159,7 @@ public class MiscHelper implements IMiscHelper {
 						break;
 					}
 					ing = IntersectionIngredient.of(ings.stream().map(Pair::getLeft).toArray(Ingredient[]::new));
-					items.addAll(ings.stream().map(Pair::getRight).reduce(new HashSet<>(ForgeRegistries.ITEMS.getValues()), (s1, s2)->{
+					items.addAll(ings.stream().map(Pair::getRight).reduce(BuiltInRegistries.ITEM.stream().collect(Collectors.toSet()), (s1, s2)->{
 						s1.retainAll(s2);
 						return s1;
 					}));
@@ -164,7 +169,7 @@ public class MiscHelper implements IMiscHelper {
 					if(firstPair.getRight().isEmpty()) {
 						break;
 					}
-					ing = DifferenceIngredient.of(firstPair.getLeft(), CompoundIngredient.of(ings.stream().skip(1).map(Pair::getLeft).toArray(Ingredient[]::new)));
+					ing = DifferenceIngredient.of(firstPair.getLeft(), CompoundIngredient.of(ings.stream().skip(1).filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(Ingredient[]::new)));
 					items.addAll(firstPair.getRight());
 					items.removeAll(ings.stream().skip(1).map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
 						s1.addAll(s2);
@@ -177,7 +182,7 @@ public class MiscHelper implements IMiscHelper {
 		else if(obj instanceof Ingredient) {
 			ing = (Ingredient)obj;
 			// We can't know what items the ingredient can have so assume all
-			items.addAll(ForgeRegistries.ITEMS.getValues());
+			BuiltInRegistries.ITEM.forEach(items::add);
 		}
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
@@ -211,24 +216,24 @@ public class MiscHelper implements IMiscHelper {
 		else if(obj instanceof Ingredient.Value) {
 			ing = Ingredient.fromValues(Stream.of((Ingredient.Value)obj));
 			// We can't know what items the ingredient can have so assume all
-			items.addAll(ForgeRegistries.ITEMS.getValues());
+			BuiltInRegistries.ITEM.forEach(items::add);
 		}
 		else if(obj instanceof Ingredient.Value[]) {
 			ing = Ingredient.fromValues(Stream.of((Ingredient.Value[])obj));
 			// We can't know what items the ingredient can have so assume all
-			items.addAll(ForgeRegistries.ITEMS.getValues());
+			BuiltInRegistries.ITEM.forEach(items::add);
 		}
 		else if(obj instanceof JsonElement) {
-			ing = Ingredient.fromJson((JsonElement)obj);
+			ing = Ingredient.fromJson((JsonElement)obj, true);
 			// We can't know what items the ingredient can have so assume all
-			items.addAll(ForgeRegistries.ITEMS.getValues());
+			BuiltInRegistries.ITEM.forEach(items::add);
 		}
-		return Pair.of(items.isEmpty() ? EmptyIngredient.INSTANCE : ing, items);
+		return Pair.of(items.isEmpty() ? null : ing, items);
 	}
 
 	@Override
 	public TagKey<Item> getItemTagKey(ResourceLocation location) {
-		return getTagKey(Registries.ITEM, location);
+		return TagKey.create(Registries.ITEM, location);
 	}
 
 	@Override
@@ -238,7 +243,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ItemStack getPreferredItemStack(Iterable<Item> iterable, int count) {
-		return new ItemStack(getPreferredEntry(ForgeRegistries.ITEMS::getKey, iterable).orElse(Items.AIR), count);
+		return new ItemStack(getPreferredEntry(BuiltInRegistries.ITEM::getKey, iterable).orElse(Items.AIR), count);
 	}
 
 	@Override
@@ -270,7 +275,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public TagKey<Fluid> getFluidTagKey(ResourceLocation location) {
-		return getTagKey(Registries.FLUID, location);
+		return TagKey.create(Registries.FLUID, location);
 	}
 
 	@Override
@@ -280,17 +285,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public FluidStack getPreferredFluidStack(Iterable<Fluid> iterable, int amount) {
-		return new FluidStack(getPreferredEntry(ForgeRegistries.FLUIDS::getKey, iterable).orElse(Fluids.EMPTY), amount);
-	}
-
-	@Override
-	public <T> TagKey<T> getTagKey(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
-		return RegistryManager.ACTIVE.getRegistry(registry).tags().createTagKey(location);
-	}
-
-	@Override
-	public <T> TagKey<T> getTagKey(ResourceLocation registry, ResourceLocation location) {
-		return RegistryManager.ACTIVE.<T>getRegistry(registry).tags().createTagKey(location);
+		return new FluidStack(getPreferredEntry(BuiltInRegistries.FLUID::getKey, iterable).orElse(Fluids.EMPTY), amount);
 	}
 
 	@Override
@@ -316,7 +311,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public <T> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location) {
-		return getTagValues(RegistryManager.ACTIVE.<T>getRegistry(registry).getRegistryKey(), location);
+		return getTagValues(ResourceKey.createRegistryKey(registry), location);
 	}
 
 	//Modified from Immersive Engineering
@@ -368,25 +363,33 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	@Override
+	public Ingredient wrapIngredient(Ingredient ing) {
+		return WrappedIngredient.of(ing);
+	}
+
+	@Override
+	public JsonElement serializeIngredient(Ingredient ing) {
+		return serialize(Ingredient.CODEC, ing);
+	}
+
+	@Override
 	public JsonObject serializeItemStack(ItemStack stack) {
-		JsonObject json = new JsonObject();
-		json.addProperty("item", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
-		json.addProperty("count", stack.getCount());
-		if(stack.hasTag()) {
-			json.addProperty("nbt", stack.getTag().toString());
-		}
-		return json;
+		return serialize(ItemStack.ITEM_WITH_COUNT_CODEC, stack).getAsJsonObject();
 	}
 
 	@Override
 	public JsonObject serializeFluidStack(FluidStack stack) {
-		JsonObject json = new JsonObject();
-		json.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(stack.getFluid()).toString());
-		json.addProperty("amount", stack.getAmount());
-		if(stack.hasTag()) {
-			json.addProperty("nbt", stack.getTag().toString());
-		}
-		return json;
+		return serialize(FluidStack.CODEC, stack).getAsJsonObject();
+	}
+
+	@Override
+	public JsonElement serializeRecipe(Recipe<?> recipe) {
+		return serialize(Recipe.CODEC, recipe);
+	}
+
+	@Override
+	public <T> JsonElement serialize(Codec<T> codec, T obj) {
+		return codec.encodeStart(JsonOps.INSTANCE, obj).resultOrPartial(LOGGER::warn).get();
 	}
 
 	private static final Predicate<String> CONFIG_MATERIAL_PREDICATE = s->s.equals("*") || s.startsWith("*") && MaterialType.fromName(s.substring(1)) != null || MaterialHandler.containsMaterial(s);
@@ -403,8 +406,18 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	@Override
+	public Runnable conditionalRunnable(BooleanSupplier conditionSupplier, Supplier<Runnable> trueRunnable, Supplier<Runnable> falseRunnable) {
+		return ()->(conditionSupplier.getAsBoolean() ? trueRunnable : falseRunnable).get().run();
+	}
+
+	@Override
+	public <T> Supplier<T> conditionalSupplier(BooleanSupplier conditionSupplier, Supplier<Supplier<T>> trueSupplier, Supplier<Supplier<T>> falseSupplier) {
+		return ()->(conditionSupplier.getAsBoolean() ? trueSupplier : falseSupplier).get().get();
+	}
+
+	@Override
 	public boolean hasResource(ResourceLocation location) {
-		return DistExecutor.unsafeRunForDist(()->()->Minecraft.getInstance().getResourceManager().getResource(location).isPresent(), ()->()->false);
+		return conditionalSupplier(FMLEnvironment.dist::isClient, ()->()->Minecraft.getInstance().getResourceManager().getResource(location).isPresent(), ()->()->false).get();
 	}
 
 	public <T> Future<T> submitAsyncTask(Callable<T> task) {

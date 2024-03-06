@@ -7,13 +7,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.SmokingRecipe;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
-import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class SmokingRecipeSerializer implements IRecipeSerializer {
@@ -22,6 +22,7 @@ public class SmokingRecipeSerializer implements IRecipeSerializer {
 
 	public final ResourceLocation key;
 	public final String group;
+	public final CookingBookCategory category;
 	public final Object input;
 	public final Object output;
 	public final int count;
@@ -29,12 +30,21 @@ public class SmokingRecipeSerializer implements IRecipeSerializer {
 	public final int time;
 
 	public SmokingRecipeSerializer(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
-		this(key, "", input, output, count, experience, time);
+		this(key, "", CookingBookCategory.MISC, input, output, count, experience, time);
 	}
 
 	public SmokingRecipeSerializer(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+		this(key, group, CookingBookCategory.MISC, input, output, count, experience, time);
+	}
+
+	public SmokingRecipeSerializer(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+		this(key, "", category, input, output, count, experience, time);
+	}
+
+	public SmokingRecipeSerializer(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
 		this.key = Objects.requireNonNull(key);
 		this.group = Strings.nullToEmpty(group);
+		this.category = Objects.requireNonNull(category);
 		this.input = input;
 		this.output = output;
 		this.count = count;
@@ -45,24 +55,14 @@ public class SmokingRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing == EmptyIngredient.INSTANCE) {
+		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "minecraft:smoking");
-		if(!group.isEmpty()) {
-			json.addProperty("group", group);
-		}
-		json.add("ingredient", ing.toJson());
-		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
-		json.addProperty("experience", experience);
-		json.addProperty("cookingtime", time);
-
-		return json;
+		SmokingRecipe recipe = new SmokingRecipe(group, category, ing, stack, experience, time);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

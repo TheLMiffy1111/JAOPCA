@@ -20,7 +20,6 @@ import org.objectweb.asm.Type;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 
@@ -28,16 +27,16 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.BuiltInPackSource;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagFile;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.storage.loot.Deserializers;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforgespi.language.ModFileScanData.AnnotationData;
 import thelm.jaopca.api.data.IDataModule;
 import thelm.jaopca.api.data.JAOPCADataModule;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
@@ -58,7 +57,6 @@ public class DataInjector {
 	private static final TreeMap<ResourceLocation, IRecipeSerializer> RECIPES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
-	private static final Gson GSON = Deserializers.createLootTableSerializer().create();
 
 	public static void init() {
 		RELOAD_INJECTORS.put(RecipeManager.class, DataInjector::injectRecipes);
@@ -228,7 +226,7 @@ public class DataInjector {
 
 		@Override
 		public void loadPacks(Consumer<Pack> packConsumer) {
-			Pack packInfo = Pack.readMetaAndCreate("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), true, packId->{
+			Pack packInfo = Pack.readMetaAndCreate("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), true, BuiltInPackSource.fromName(packId->{
 				InMemoryResourcePack pack = new InMemoryResourcePack(packId, true);
 				BLOCK_TAGS_INJECT.asMap().forEach((location, locations)->{
 					TagBuilder builder = TagBuilder.create();
@@ -251,14 +249,14 @@ public class DataInjector {
 					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), serializeTag(builder));
 				});
 				LOOT_TABLES_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "loot_tables/"+location.getPath()+".json"), GSON.toJsonTree(supplier.get()));
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "loot_tables/"+location.getPath()+".json"), serializeLootTable(supplier.get()));
 				});
 				ADVANCEMENTS_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), supplier.get().serializeToJson());
+					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "advancements/"+location.getPath()+".json"), serializeAdvancement(supplier.get()));
 				});
 				ModuleHandler.onCreateDataPack(pack);
 				return pack;
-			}, PackType.SERVER_DATA, Pack.Position.BOTTOM, PackSource.BUILT_IN);
+			}), PackType.SERVER_DATA, Pack.Position.BOTTOM, PackSource.BUILT_IN);
 			if(packInfo != null) {
 				packConsumer.accept(packInfo);
 			}
@@ -266,6 +264,14 @@ public class DataInjector {
 	}
 
 	public static JsonElement serializeTag(TagBuilder tagBuilder) {
-		return TagFile.CODEC.encodeStart(JsonOps.INSTANCE, new TagFile(tagBuilder.build(), false)).getOrThrow(false, LOGGER::error);
+		return TagFile.CODEC.encodeStart(JsonOps.INSTANCE, new TagFile(tagBuilder.build(), false, List.of())).getOrThrow(false, LOGGER::error);
+	}
+
+	public static JsonElement serializeLootTable(LootTable lootTable) {
+		return LootTable.CODEC.encodeStart(JsonOps.INSTANCE, lootTable).getOrThrow(false, LOGGER::error);
+	}
+
+	public static JsonElement serializeAdvancement(Advancement.Builder advancementBuilder) {
+		return Advancement.CODEC.encodeStart(JsonOps.INSTANCE, advancementBuilder.build(null).value()).getOrThrow(false, LOGGER::error);
 	}
 }

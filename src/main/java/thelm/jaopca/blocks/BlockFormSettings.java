@@ -22,13 +22,19 @@ import thelm.jaopca.api.blocks.IBlockCreator;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockItemCreator;
 import thelm.jaopca.api.blocks.IBlockLootTableCreator;
+import thelm.jaopca.api.custom.MapColorType;
 import thelm.jaopca.api.forms.IFormType;
+import thelm.jaopca.api.functions.MaterialDoubleFunction;
+import thelm.jaopca.api.functions.MaterialFunction;
+import thelm.jaopca.api.functions.MaterialIntFunction;
+import thelm.jaopca.api.functions.MaterialMappedFunction;
+import thelm.jaopca.api.functions.MaterialPredicate;
 import thelm.jaopca.api.materials.IMaterial;
 
 class BlockFormSettings implements IBlockFormSettings {
 
 	private IBlockCreator blockCreator = JAOPCABlock::new;
-	private Function<IMaterial, MapColor> mapColorFunction = material->MapColor.METAL;
+	private Function<IMaterial, MapColor> mapColorFunction = MapColorType.functionOf(MapColor.METAL);
 	//material->{
 	//	int color = material.getColor();
 	//	return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
@@ -39,22 +45,22 @@ class BlockFormSettings implements IBlockFormSettings {
 	//};
 	private boolean blocksMovement = true;
 	private boolean replaceable = false;
-	private Function<IMaterial, SoundType> soundTypeFunction = material->SoundType.METAL;
-	private ToIntFunction<IMaterial> lightValueFunction = material->0;
-	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->5;
-	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->6;
-	private ToDoubleFunction<IMaterial> frictionFunction = material->0.6;
+	private Function<IMaterial, SoundType> soundTypeFunction = MaterialFunction.of(SoundType.METAL);
+	private ToIntFunction<IMaterial> lightValueFunction = MaterialIntFunction.of(0);
+	private ToDoubleFunction<IMaterial> blockHardnessFunction = MaterialDoubleFunction.of(5);
+	private ToDoubleFunction<IMaterial> explosionResistanceFunction = MaterialDoubleFunction.of(6);
+	private ToDoubleFunction<IMaterial> frictionFunction = MaterialDoubleFunction.of(0.6);
 	private boolean isFull = true;
 	private VoxelShape shape = Shapes.block();
 	private VoxelShape interactionShape = Shapes.empty();
-	private Predicate<IMaterial> requiresToolFunction = material->false;
-	private Function<IMaterial, String> harvestToolTagFunction = material->"minecraft:mineable/pickaxe";
-	private Function<IMaterial, String> harvestTierTagFunction = material->"";
-	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
-	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
-	private Predicate<IMaterial> isFireSourceFunction = material->false;
-	private Function<IMaterial, PushReaction> pushReactionFunction = material->PushReaction.NORMAL;
-	private Function<IMaterial, NoteBlockInstrument> instrumentFunction = material->NoteBlockInstrument.HARP;
+	private Predicate<IMaterial> requiresToolFunction = MaterialPredicate.of(false);
+	private Function<IMaterial, String> harvestToolTagFunction = MaterialMappedFunction.of("minecraft:mineable/pickaxe");
+	private Function<IMaterial, String> harvestTierTagFunction = MaterialMappedFunction.of("");
+	private ToIntFunction<IMaterial> flammabilityFunction = MaterialIntFunction.of(0);
+	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = MaterialIntFunction.of(0);
+	private Predicate<IMaterial> isFireSourceFunction = MaterialPredicate.of(false);
+	private Function<IMaterial, PushReaction> pushReactionFunction = MaterialMappedFunction.of(PushReaction.class, PushReaction.NORMAL);
+	private Function<IMaterial, NoteBlockInstrument> instrumentFunction = MaterialMappedFunction.of(NoteBlockInstrument.class, NoteBlockInstrument.HARP);
 	private IBlockLootTableCreator blockLootTableCreator = (block, settings)->{
 		return LootTable.lootTable().setParamSet(LootContextParamSets.BLOCK).
 				withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).
@@ -62,10 +68,10 @@ class BlockFormSettings implements IBlockFormSettings {
 						when(ExplosionCondition.survivesExplosion())).build();
 	};
 	private IBlockItemCreator itemBlockCreator = JAOPCABlockItem::new;
-	private ToIntFunction<IMaterial> maxStackSizeFunction = material->64;
-	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
-	private Function<IMaterial, Rarity> displayRarityFunction = material->material.getDisplayRarity();
-	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
+	private ToIntFunction<IMaterial> maxStackSizeFunction = MaterialIntFunction.of(64);
+	private Predicate<IMaterial> hasEffectFunction = IMaterial::hasEffect;
+	private Function<IMaterial, Rarity> displayRarityFunction = IMaterial::getDisplayRarity;
+	private ToIntFunction<IMaterial> burnTimeFunction = MaterialIntFunction.of(-1);
 
 	@Override
 	public IFormType getType() {

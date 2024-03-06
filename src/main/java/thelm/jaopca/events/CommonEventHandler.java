@@ -10,13 +10,14 @@ import net.minecraft.tags.TagManager;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
+import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.data.DataCollector;
@@ -24,7 +25,7 @@ import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.forms.FormHandler;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.ingredients.IngredientSerializers;
+import thelm.jaopca.ingredients.IngredientTypes;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.materials.MaterialHandler;
 import thelm.jaopca.modules.ModuleHandler;
@@ -43,20 +44,19 @@ public class CommonEventHandler {
 
 	@SubscribeEvent
 	public void onConstruct(FMLConstructModEvent event) {
-		MinecraftForge.EVENT_BUS.addListener(this::onAddReloadListener);
+		NeoForge.EVENT_BUS.addListener(this::onAddReloadListener);
 		ApiImpl.INSTANCE.init();
 		DataInjector.init();
 		BlockFormType.init();
 		ItemFormType.init();
 		FluidFormType.init();
-		IngredientSerializers.init();
+		IngredientTypes.init();
 		DataCollector.collectData();
 		ModuleHandler.findModules();
 		ConfigHandler.setupMainConfig();
 		DataInjector.findDataModules();
 		MaterialHandler.findMaterials();
 		ConfigHandler.setupMaterialConfigs();
-		FormTypeHandler.setupGson();
 		ConfigHandler.setupCustomFormConfig();
 		ConfigHandler.setupModuleConfigsPre();
 		FormHandler.collectForms();
@@ -65,7 +65,7 @@ public class CommonEventHandler {
 		ConfigHandler.setupModuleConfigs();
 		FormTypeHandler.registerMaterialForms();
 		ModuleHandler.onMaterialComputeComplete();
-		RegistryHandler.registerForgeRegistryEntry(Registries.CREATIVE_MODE_TAB, "tab",
+		RegistryHandler.registerRegistryEntry(Registries.CREATIVE_MODE_TAB, "tab",
 				()->CreativeModeTab.builder().
 				title(Component.translatable("itemGroup.jaopca")).
 				icon(()->new ItemStack(Items.GLOWSTONE_DUST)).
@@ -76,6 +76,11 @@ public class CommonEventHandler {
 	@SubscribeEvent
 	public void onCommonSetup(FMLCommonSetupEvent event) {
 		ModuleHandler.onCommonSetup(event);
+	}
+
+	@SubscribeEvent
+	public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+		FormTypeHandler.onRegisterCapabilities(event);
 	}
 
 	@SubscribeEvent

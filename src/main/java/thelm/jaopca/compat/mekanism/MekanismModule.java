@@ -11,8 +11,8 @@ import com.google.common.collect.Multimap;
 
 import mekanism.common.registries.MekanismGases;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;
@@ -33,7 +33,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism@[10.2.0,)")
+@JAOPCAModule(modDependencies = "mekanism")
 public class MekanismModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(

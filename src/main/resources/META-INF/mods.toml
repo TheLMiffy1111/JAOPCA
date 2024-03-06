@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[46,)"
+loaderVersion = "[2,)"
 license = "MIT"
 issueTrackerURL = "https://github.com/TheLMiffy1111/JAOPCA/issues"
 
@@ -14,6 +14,6 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/JAOPCA/issues"
 	displayURL = "https://www.curseforge.com/minecraft/mc-mods/jaopca"
 
 [[dependencies.jaopca]]
-	modId = "forge"
-	versionRange = "[46,)"
-	mandatory = true
+	modId = "neoforge"
+	versionRange = "[20.4,)"
+	type = "required"

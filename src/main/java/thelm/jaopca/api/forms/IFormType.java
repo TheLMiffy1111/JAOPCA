@@ -2,11 +2,10 @@ package thelm.jaopca.api.forms;
 
 import java.util.Set;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
+import com.mojang.serialization.Codec;
 
 import net.minecraft.world.item.CreativeModeTab;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
 
@@ -22,13 +21,13 @@ public interface IFormType extends Comparable<IFormType> {
 
 	IFormSettings getNewSettings();
 
-	GsonBuilder configureGsonBuilder(GsonBuilder builder);
-
-	IFormSettings deserializeSettings(JsonElement jsonElement, JsonDeserializationContext context);
-
+	Codec<IFormSettings> formSettingsCodec();
+	
 	IMaterialFormInfo getMaterialFormInfo(IForm form, IMaterial material);
 
 	default void registerMaterialForms() {}
+
+	default void onRegisterCapabilities(RegisterCapabilitiesEvent event) {}
 
 	default void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {}
 

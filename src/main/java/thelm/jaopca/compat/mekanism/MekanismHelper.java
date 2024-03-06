@@ -12,6 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 
 import mekanism.api.MekanismAPI;
 import mekanism.api.chemical.gas.Gas;
@@ -27,12 +28,12 @@ import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.api.recipes.ingredients.creator.IChemicalStackIngredientCreator;
 import mekanism.api.recipes.ingredients.creator.IFluidStackIngredientCreator;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.fluids.FluidStack;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.compat.mekanism.recipes.CombiningRecipeSerializer;
 import thelm.jaopca.compat.mekanism.recipes.CrushingRecipeSerializer;
@@ -42,7 +43,6 @@ import thelm.jaopca.compat.mekanism.recipes.EnrichingRecipeSerializer;
 import thelm.jaopca.compat.mekanism.recipes.InjectingRecipeSerializer;
 import thelm.jaopca.compat.mekanism.recipes.PurifyingRecipeSerializer;
 import thelm.jaopca.compat.mekanism.recipes.WashingRecipeSerializer;
-import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -58,7 +58,7 @@ public class MekanismHelper {
 
 	public ItemStackIngredient getItemStackIngredient(Object obj, int count) {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(obj);
-		return ing == EmptyIngredient.INSTANCE ? null : IngredientCreatorAccess.item().from(ing, count);
+		return ing == null ? null : IngredientCreatorAccess.item().from(ing, count);
 	}
 
 	public FluidStackIngredient getFluidStackIngredient(Object obj, int amount) {
@@ -78,7 +78,7 @@ public class MekanismHelper {
 		else if(obj instanceof FluidStackIngredient) {
 			ing = (FluidStackIngredient)obj;
 			// We can't know what fluids the ingredient can have so assume all
-			fluids.addAll(ForgeRegistries.FLUIDS.getValues());
+			BuiltInRegistries.FLUID.forEach(fluids::add);
 		}
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
@@ -110,9 +110,9 @@ public class MekanismHelper {
 			Collections.addAll(fluids, fluidz);
 		}
 		else if(obj instanceof JsonElement) {
-			ing = creator.deserialize((JsonElement)obj);
+			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).result().get();
 			// We can't know what fluids the ingredient can have so assume all
-			fluids.addAll(ForgeRegistries.FLUIDS.getValues());
+			BuiltInRegistries.FLUID.forEach(fluids::add);
 		}
 		return Pair.of(fluids.isEmpty() ? null : ing, fluids);
 	}
@@ -133,7 +133,7 @@ public class MekanismHelper {
 		else if(obj instanceof GasStackIngredient) {
 			ing = (GasStackIngredient)obj;
 			// We can't know what gases the ingredient can have so assume all
-			gases.addAll(MekanismAPI.gasRegistry().getValues());
+			MekanismAPI.GAS_REGISTRY.forEach(gases::add);
 		}
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
@@ -165,9 +165,9 @@ public class MekanismHelper {
 			Arrays.stream(gasez).map(IGasProvider::getChemical).forEach(gases::add);
 		}
 		else if(obj instanceof JsonElement) {
-			ing = creator.deserialize((JsonElement)obj);
+			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).result().get();
 			// We can't know what gases the ingredient can have so assume all
-			gases.addAll(MekanismAPI.gasRegistry().getValues());
+			MekanismAPI.GAS_REGISTRY.forEach(gases::add);
 		}
 		return Pair.of(gases.isEmpty() ? null : ing, gases);
 	}
@@ -188,7 +188,7 @@ public class MekanismHelper {
 		else if(obj instanceof SlurryStackIngredient) {
 			ing = (SlurryStackIngredient)obj;
 			// We can't know what slurries the ingredient can have so assume all
-			slurries.addAll(MekanismAPI.slurryRegistry().getValues());
+			MekanismAPI.SLURRY_REGISTRY.forEach(slurries::add);
 		}
 		else if(obj instanceof String) {
 			ResourceLocation location = new ResourceLocation((String)obj);
@@ -220,9 +220,9 @@ public class MekanismHelper {
 			Arrays.stream(slurriez).map(ISlurryProvider::getChemical).forEach(slurries::add);
 		}
 		else if(obj instanceof JsonElement) {
-			ing = creator.deserialize((JsonElement)obj);
+			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).result().get();
 			// We can't know what slurries the ingredient can have so assume all
-			slurries.addAll(MekanismAPI.slurryRegistry().getValues());
+			MekanismAPI.SLURRY_REGISTRY.forEach(slurries::add);
 		}
 		return Pair.of(slurries.isEmpty() ? null : ing, slurries);
 	}
@@ -270,7 +270,7 @@ public class MekanismHelper {
 	}
 
 	public TagKey<Gas> getGasTagKey(ResourceLocation location) {
-		return MiscHelper.INSTANCE.getTagKey(MekanismAPI.GAS_REGISTRY_NAME, location);
+		return TagKey.create(MekanismAPI.GAS_REGISTRY_NAME, location);
 	}
 
 	public Collection<Gas> getGasTagValues(ResourceLocation location) {
@@ -278,11 +278,11 @@ public class MekanismHelper {
 	}
 
 	public GasStack getPreferredGasStack(Iterable<Gas> collection, int amount) {
-		return new GasStack(MiscHelper.INSTANCE.getPreferredEntry(MekanismAPI.gasRegistry()::getKey, collection).orElse(MekanismAPI.EMPTY_GAS), amount);
+		return new GasStack(MiscHelper.INSTANCE.getPreferredEntry(MekanismAPI.GAS_REGISTRY::getKey, collection).orElse(MekanismAPI.EMPTY_GAS), amount);
 	}
 
 	public TagKey<Slurry> getSlurryTagKey(ResourceLocation location) {
-		return MiscHelper.INSTANCE.getTagKey(MekanismAPI.SLURRY_REGISTRY_NAME, location);
+		return TagKey.create(MekanismAPI.SLURRY_REGISTRY_NAME, location);
 	}
 
 	public Collection<Slurry> getSlurryTagValues(ResourceLocation location) {
@@ -290,6 +290,6 @@ public class MekanismHelper {
 	}
 
 	public SlurryStack getPreferredSlurryStack(Iterable<Slurry> collection, int amount) {
-		return new SlurryStack(MiscHelper.INSTANCE.getPreferredEntry(MekanismAPI.slurryRegistry()::getKey, collection).orElse(MekanismAPI.EMPTY_SLURRY), amount);
+		return new SlurryStack(MiscHelper.INSTANCE.getPreferredEntry(MekanismAPI.SLURRY_REGISTRY::getKey, collection).orElse(MekanismAPI.EMPTY_SLURRY), amount);
 	}
 }

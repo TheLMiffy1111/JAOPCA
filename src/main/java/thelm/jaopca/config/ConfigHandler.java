@@ -18,7 +18,7 @@ import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.google.common.collect.Lists;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLPaths;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
@@ -39,8 +39,8 @@ public class ConfigHandler {
 	private static Path materialConfigDir;
 	private static Path moduleConfigDir;
 	private static IDynamicSpecConfig mainConfig;
-	private static final TreeMap<IMaterial, IDynamicSpecConfig> MATERIAL_CONFIGS = new TreeMap<>();
-	private static final TreeMap<IModule, IDynamicSpecConfig> MODULE_CONFIGS = new TreeMap<>();
+	public static final TreeMap<IMaterial, IDynamicSpecConfig> MATERIAL_CONFIGS = new TreeMap<>();
+	public static final TreeMap<IModule, IDynamicSpecConfig> MODULE_CONFIGS = new TreeMap<>();
 
 	public static boolean ingot = true;
 	public static boolean ingotLegacy = true;
@@ -224,7 +224,7 @@ public class ConfigHandler {
 			ModuleData data = ModuleHandler.getModuleData(module);
 			data.setConfig(config);
 			module.defineModuleConfigPre(data, config);
-			module.defineMaterialConfigPre(data, Collections.unmodifiableNavigableMap(MATERIAL_CONFIGS));
+			module.onMaterialConfigAvailable(data, Collections.unmodifiableNavigableMap(MATERIAL_CONFIGS));
 		}
 	}
 
@@ -233,7 +233,6 @@ public class ConfigHandler {
 			IDynamicSpecConfig config = MODULE_CONFIGS.get(module);
 			ModuleData data = ModuleHandler.getModuleData(module);
 			module.defineModuleConfig(data, config);
-			module.defineMaterialConfig(data, Collections.unmodifiableNavigableMap(MATERIAL_CONFIGS));
 		}
 	}
 }

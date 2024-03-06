@@ -1,6 +1,6 @@
 package thelm.jaopca.api.fluids;
 
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public interface IMaterialFormFluidType extends IMaterialForm {

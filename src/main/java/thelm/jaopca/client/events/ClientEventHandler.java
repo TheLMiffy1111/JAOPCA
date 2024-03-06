@@ -6,15 +6,15 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddPackFindersEvent;
-import net.minecraftforge.event.TagsUpdatedEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.client.colors.ColorHandler;
 import thelm.jaopca.client.models.ModelHandler;
@@ -34,8 +34,8 @@ public class ClientEventHandler {
 
 	@SubscribeEvent
 	public void onClientSetup(FMLClientSetupEvent event) {
-		MinecraftForge.EVENT_BUS.addListener(this::onPlayerLoggingIn);
-		MinecraftForge.EVENT_BUS.addListener(this::onTagsUpdated);
+		NeoForge.EVENT_BUS.addListener(this::onTagsUpdated);
+		NeoForge.EVENT_BUS.addListener(this::onPlayerLoggingOut);
 		LocalizationRepoHandler.setup();
 		for(IMaterialFormFluid fluid : FluidFormType.getFluids()) {
 			ItemBlockRenderTypes.setRenderLayer(fluid.toFluid(), RenderType.translucent());
@@ -79,13 +79,13 @@ public class ClientEventHandler {
 		}
 	}
 
-	public void onPlayerLoggingIn(ClientPlayerNetworkEvent.LoggingIn event) {
-		MaterialHandler.setClientTagsBound(false);
-	}
-
 	public void onTagsUpdated(TagsUpdatedEvent event) {
 		if(event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED) {
 			MaterialHandler.setClientTagsBound(true);
 		}
+	}
+
+	public void onPlayerLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+		MaterialHandler.setClientTagsBound(false);
 	}
 }

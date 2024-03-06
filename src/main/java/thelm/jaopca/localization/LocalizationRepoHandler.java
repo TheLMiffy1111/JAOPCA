@@ -20,9 +20,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.minecraftforge.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.FMLPaths;
 import thelm.jaopca.config.ConfigHandler;
-import thelm.jaopca.utils.JsonHelper;
 import thelm.jaopca.utils.MiscHelper;
 
 public class LocalizationRepoHandler {
@@ -56,7 +55,6 @@ public class LocalizationRepoHandler {
 
 	public static void reload() {
 		MiscHelper.INSTANCE.submitAsyncTask(()->{
-			JsonHelper jsonHelper = JsonHelper.INSTANCE;
 			String language = LocalizationHandler.getLanguage();
 			Path langFile = langDir.resolve(language+".json");
 			if(ConfigHandler.checkL10nUpdates) {
@@ -78,11 +76,11 @@ public class LocalizationRepoHandler {
 				try(InputStreamReader reader = new InputStreamReader(Files.newInputStream(langFile), StandardCharsets.UTF_8)) {
 					LOGGER.info("Reading localization file", language);
 					JsonElement jsonElement = JsonParser.parseReader(reader);
-					JsonObject json = jsonHelper.getJsonObject(jsonElement, "file");
+					JsonObject json = jsonElement.getAsJsonObject();
 					ImmutableSortedMap.Builder<String, String> builder = ImmutableSortedMap.naturalOrder();
 					for(Map.Entry<String, JsonElement> entry : json.entrySet()) {
 						if(entry.getValue().isJsonPrimitive()) {
-							String string = jsonHelper.getString(entry.getValue(), entry.getKey());
+							String string = entry.getValue().getAsString();
 							if(!string.isEmpty()) {
 								builder.put(entry.getKey(), string);
 							}

@@ -6,7 +6,6 @@ import java.util.OptionalInt;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -17,6 +16,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -31,11 +31,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.SoundActions;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
@@ -43,7 +44,7 @@ import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
 
-public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
+public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem, DispensibleContainerItem {
 
 	private final IMaterialFormFluid fluid;
 	private final IFluidFormSettings settings;
@@ -105,7 +106,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		BlockHitResult blockHitResult = getPlayerPOVHitResult(world, player, ClipContext.Fluid.NONE);
-		InteractionResultHolder<ItemStack> ret = ForgeEventFactory.onBucketUse(player, world, stack, blockHitResult);
+		InteractionResultHolder<ItemStack> ret = EventHooks.onBucketUse(player, world, stack, blockHitResult);
 		if(ret != null) {
 			return ret;
 		}
@@ -121,7 +122,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 			BlockPos offsetPos = resultPos.relative(blockHitResult.getDirection());
 			if(world.mayInteract(player, resultPos) && player.mayUseItemAt(offsetPos, direction, stack)) {
 				BlockState state = world.getBlockState(resultPos);
-				BlockPos placePos = canBlockContainFluid(world, resultPos, state) ? resultPos : offsetPos;
+				BlockPos placePos = canBlockContainFluid(player, world, resultPos, state) ? resultPos : offsetPos;
 				if(emptyContents(player, world, placePos, blockHitResult)) {
 					checkExtraContent(player, world, stack, placePos);
 					if(player instanceof ServerPlayer) {
@@ -144,14 +145,16 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		return !player.getAbilities().instabuild ? new ItemStack(Items.BUCKET) : stack;
 	}
 
+	@Override
 	public void checkExtraContent(Player player, Level world, ItemStack stack, BlockPos pos) {}
 
+	@Override
 	public boolean emptyContents(Player player, Level world, BlockPos pos, BlockHitResult blockHitResult) {
 		BlockState blockState = world.getBlockState(pos);
 		Block block = blockState.getBlock();
 		boolean flag = blockState.canBeReplaced(fluid.toFluid());
 		boolean flag1 = blockState.isAir() || flag || (block instanceof LiquidBlockContainer container
-				&& container.canPlaceLiquid(world, pos, blockState, fluid.toFluid()));
+				&& container.canPlaceLiquid(player, world, pos, blockState, fluid.toFluid()));
 		if(!flag1) {
 			return blockHitResult != null && emptyContents(player, world, blockHitResult.getBlockPos().relative(blockHitResult.getDirection()), null);
 		}
@@ -160,7 +163,7 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 			fluid.toFluid().getFluidType().onVaporize(player, world, pos, stack);
 			return true;
 		}
-		if(block instanceof LiquidBlockContainer container && container.canPlaceLiquid(world, pos, blockState, fluid.toFluid())) {
+		if(block instanceof LiquidBlockContainer container && container.canPlaceLiquid(player, world, pos, blockState, fluid.toFluid())) {
 			container.placeLiquid(world, pos, blockState, fluid.toFluid().defaultFluidState());
 			playEmptySound(player, world, pos);
 			return true;
@@ -184,13 +187,13 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 		world.gameEvent(player, GameEvent.FLUID_PLACE, pos);
 	}
 
-	protected boolean canBlockContainFluid(Level worldIn, BlockPos posIn, BlockState blockstate) {
-		return blockstate.getBlock() instanceof LiquidBlockContainer && ((LiquidBlockContainer)blockstate.getBlock()).canPlaceLiquid(worldIn, posIn, blockstate, fluid.toFluid());
+	protected boolean canBlockContainFluid(Player player, Level worldIn, BlockPos posIn, BlockState blockstate) {
+		return blockstate.getBlock() instanceof LiquidBlockContainer && ((LiquidBlockContainer)blockstate.getBlock()).canPlaceLiquid(player, worldIn, posIn, blockstate, fluid.toFluid());
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new JAOPCAFluidHandlerItem(fluid, stack);
+	public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+		event.registerItem(Capabilities.FluidHandler.ITEM, (stack, context)->new JAOPCAFluidHandlerItem(fluid, stack), this);
 	}
 
 	@Override

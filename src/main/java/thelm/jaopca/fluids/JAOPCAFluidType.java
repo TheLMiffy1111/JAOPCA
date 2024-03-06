@@ -6,6 +6,7 @@ import java.util.OptionalInt;
 import java.util.function.Consumer;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -17,11 +18,10 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.common.SoundActions;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidType;
@@ -229,7 +229,7 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 			}
 			@Override
 			public ResourceLocation getStillTexture() {
-				ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.toFluid());
+				ResourceLocation location = BuiltInRegistries.FLUID.getKey(fluid.toFluid());
 				if(MiscHelper.INSTANCE.hasResource(
 						new ResourceLocation(location.getNamespace(),
 								"textures/fluid/"+location.getPath()+"_still.png"))) {
@@ -240,7 +240,7 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 			}
 			@Override
 			public ResourceLocation getFlowingTexture() {
-				ResourceLocation location = ForgeRegistries.FLUIDS.getKey(fluid.toFluid());
+				ResourceLocation location = BuiltInRegistries.FLUID.getKey(fluid.toFluid());
 				if(MiscHelper.INSTANCE.hasResource(
 						new ResourceLocation(location.getNamespace(),
 								"textures/fluid/"+location.getPath()+"_flow.png"))) {

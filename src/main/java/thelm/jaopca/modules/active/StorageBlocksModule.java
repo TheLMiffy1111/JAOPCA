@@ -3,7 +3,8 @@ package thelm.jaopca.modules.active;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.forms.IForm;
@@ -43,6 +44,7 @@ public class StorageBlocksModule implements IModule {
 			if(material.isSmallStorageBlock()) {
 				api.registerShapedRecipe(
 						new ResourceLocation("jaopca", "storage_blocks.to_storage_block."+material.getName()),
+						CraftingBookCategory.BUILDING,
 						storageBlockInfo, 1, new Object[] {
 								"MM",
 								"MM",
@@ -52,6 +54,7 @@ public class StorageBlocksModule implements IModule {
 			else {
 				api.registerShapedRecipe(
 						new ResourceLocation("jaopca", "storage_blocks.to_storage_block."+material.getName()),
+						CraftingBookCategory.BUILDING,
 						storageBlockInfo, 1, new Object[] {
 								"MMM",
 								"MMM",

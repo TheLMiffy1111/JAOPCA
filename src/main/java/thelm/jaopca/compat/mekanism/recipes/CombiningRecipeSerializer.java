@@ -6,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
+import mekanism.api.recipes.basic.BasicCombinerRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -51,13 +51,7 @@ public class CombiningRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "mekanism:combining");
-		json.add("mainInput", ing.serialize());
-		json.add("extraInput", secondIng.serialize());
-		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
-
-		return json;
+		BasicCombinerRecipe recipe = new BasicCombinerRecipe(ing, secondIng, stack);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

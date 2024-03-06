@@ -10,16 +10,6 @@
 	"fluid_type.jaopca.molten": "녹인 %s",
 	"item.jaopca.molten": "녹인 %s 양동이",
 
-	"item.jaopca.create_crushed": "분쇄된 %s 광석",
-
-	"item.jaopca.crossroads_grits": "%s 원석 가루",
-	"item.jaopca.crossroads_clumps": "%s 덩어리",
-
-	"item.jaopca.electrodynamics_impuredusts": "불순물이 섞인 %s 가루",
-	"item.jaopca.electrodynamics_crystals": "황산 %s 결정",
-	"fluid_type.jaopca.electrodynamics_sulfates": "황산 %s",
-	"item.jaopca.electrodynamics_sulfates": "황산 %s 양동이",
-
 	"item.jaopca.mekanism_dirty_dusts": "불순물이 섞인 %s 가루",
 	"item.jaopca.mekanism_clumps": "%s 덩어리",
 	"item.jaopca.mekanism_shards": "%s 파편",

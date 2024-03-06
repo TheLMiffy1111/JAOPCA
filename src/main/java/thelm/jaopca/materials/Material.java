@@ -12,16 +12,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.tags.ITag;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialColorEvent;
@@ -48,7 +47,7 @@ public class Material implements IMaterial {
 	private Rarity displayRarity = Rarity.COMMON;
 	private OptionalInt color = OptionalInt.empty();
 	private IDynamicSpecConfig config;
-	private ITag<Item> tag;
+	private HolderSet<Item> tag;
 	private boolean shouldFireColorEvent = true;
 
 	public Material(String name, MaterialType type) {
@@ -108,24 +107,24 @@ public class Material implements IMaterial {
 	public int getColor() {
 		if(MaterialHandler.clientTagsBound) {
 			if(!color.isPresent() && config != null) {
-				DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
+				MiscHelper.INSTANCE.conditionalRunnable(FMLEnvironment.dist::isClient, ()->()->{
 					shouldFireColorEvent = false;
-					ITag<Item> tag = getTag();
+					HolderSet<Item> tag = getTag();
 					color = OptionalInt.of(0xFFFFFF);
 					MiscHelper.INSTANCE.submitAsyncTask(()->{
 						try {
 							color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(tag), "The color of this material."));
-							MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
+							NeoForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
 						}
 						catch(Exception e) {
 							LOGGER.warn("Unable to get color for material {}", name, e);
 						}
 					});
-				});
+				}, ()->()->{}).run();
 			}
 			if(color.isPresent() && shouldFireColorEvent) {
 				shouldFireColorEvent = false;
-				MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
+				NeoForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
 			}
 		}
 		else {
@@ -172,9 +171,9 @@ public class Material implements IMaterial {
 		color = config.getOptionalInt("general.color");
 	}
 
-	private ITag<Item> getTag() {
+	private HolderSet<Item> getTag() {
 		if(tag == null) {
-			tag = ForgeRegistries.ITEMS.tags().getTag(TagKey.create(Registries.ITEM, new ResourceLocation("forge:"+type.getFormName()+'/'+name)));
+			tag = BuiltInRegistries.ITEM.getOrCreateTag(TagKey.create(Registries.ITEM, new ResourceLocation("forge:"+type.getFormName()+'/'+name)));
 		}
 		return tag;
 	}

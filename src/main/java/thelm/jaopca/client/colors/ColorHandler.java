@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joml.Vector4f;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 
 import net.minecraft.client.Minecraft;
@@ -16,13 +17,14 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.registries.tags.ITag;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
@@ -77,8 +79,8 @@ public class ColorHandler {
 		}
 	}
 
-	public static int getAverageColor(ITag<Item> tag) {
-		Vector4f color = weightedAverageColor(tag, ConfigHandler.gammaValue);
+	public static int getAverageColor(HolderSet<Item> tag) {
+		Vector4f color = weightedAverageColor(Iterables.transform(tag, Holder::value), ConfigHandler.gammaValue);
 		return toColorInt(color);
 	}
 

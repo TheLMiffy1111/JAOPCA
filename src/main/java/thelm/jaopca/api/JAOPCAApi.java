@@ -3,10 +3,7 @@ package thelm.jaopca.api;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
-
-import com.google.gson.JsonDeserializer;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.Registry;
@@ -14,18 +11,20 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import thelm.jaopca.api.blocks.IBlockFormType;
+import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormType;
-import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.localization.ILocalizer;
@@ -126,57 +125,6 @@ public abstract class JAOPCAApi {
 	public abstract IMiscHelper miscHelper();
 
 	/**
-	 * Returns the implementation instance of {@link IJsonHelper}.
-	 * @return The JSON helper instance
-	 */
-	public abstract IJsonHelper jsonHelper();
-
-	/**
-	 * Returns the enum JSON deserializer instance used by JAOPCA. The deserializer deserializes enums with
-	 * case-insensitive names and enum ordinals.
-	 * @return The enum deserializer instance
-	 */
-	public abstract JsonDeserializer<Enum<?>> enumDeserializer();
-
-	/**
-	 * Returns the material to enum function JSON deserializer instance used by JAOPCA. The deserializer
-	 * creates a {@linkplain it.unimi.dsi.fastutil.objects.Object2ObjectMap Object2ObjectMap} tha may
-	 * have its values based on the configuration files, and deserializes default enum values with
-	 * case-insensitive names and enum ordinals.
-	 * @return The material to enum function deserializer instance
-	 */
-	public abstract JsonDeserializer<Function<IMaterial, Enum<?>>> materialEnumFunctionDeserializer();
-
-	/**
-	 * Creates an instance of a mapped material function JSON deserializer using the provided functions.
-	 * The deserializer creates a {@linkplain it.unimi.dsi.fastutil.objects.Object2ObjectMap Object2ObjectMap}
-	 * that may have its values based on the configuration files. The deserializer will use the stringToValue
-	 * function to read default values and configuration values, and use the valueToString function to
-	 * put the default values into configuration files.
-	 * @param <T> The type of the value in the function
-	 * @param stringToValue The function used to convert a string into a value.
-	 * @param valueToString The function used to convert a value into a string.
-	 * @return The instance of a mapped material function deserializer using the provided functions
-	 */
-	public abstract <T> JsonDeserializer<Function<IMaterial, T>> materialMappedFunctionDeserializer(Function<String, T> stringToValue, Function<T, String> valueToString);
-
-	/**
-	 * Returns the material function JSON deserializer instance used by JAOPCA. The deserializer creates a
-	 * {@linkplain it.unimi.dsi.fastutil.objects.Object2ObjectMap Object2ObjectMap} that will not have
-	 * its values based on the configuration files. The values will be deserialized using the type adapters
-	 * present.
-	 * @return The material function JSON deserializer instance
-	 */
-	public abstract JsonDeserializer<Function<IMaterial, ?>> materialFunctionDeserializer();
-
-	/**
-	 * Returns the forge registry entry supplier JSON deserializer instance used by JAOPCA. The deserializer
-	 * deserializes registry entries with locations.
-	 * @return The forge registry entry deserializer instance
-	 */
-	public abstract JsonDeserializer<Supplier<?>> forgeRegistryEntrySupplierDeserializer();
-
-	/**
 	 * Gets an {@link IForm} by name.
 	 * @param name The name of the form
 	 * @return The form with the name provided, null if no form registered has this name
@@ -193,6 +141,8 @@ public abstract class JAOPCAApi {
 	public abstract IMaterial getMaterial(String name);
 
 	public abstract Set<IMaterial> getMaterials();
+
+	public abstract IDynamicSpecConfig getMaterialConfig(IMaterial material);
 
 	/**
 	 * Returns the set of known block tag locations, which is the union of defined block tag locations
@@ -272,9 +222,9 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerFormType(IFormType type);
 
-	public abstract <T, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry);
+	public abstract <T, I extends T> DeferredHolder<T, I> registerRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry);
 
-	public abstract <T, I extends T> RegistryObject<I> registerForgeRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry);
+	public abstract <T, I extends T> DeferredHolder<T, I> registerRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry);
 
 	/**
 	 * Registers a block tag location that may be added externally and should be known to JAOPCA.
@@ -392,6 +342,10 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerRecipe(ResourceLocation key, IRecipeSerializer recipeSerializer);
 
+	public abstract boolean registerShapedRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input);
+
+	public abstract boolean registerShapedRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input);
+
 	/**
 	 * Creates a shaped recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -415,6 +369,10 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input);
 
+	public abstract boolean registerShapelessRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input);
+
+	public abstract boolean registerShapelessRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input);
+
 	/**
 	 * Creates a shapeless recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -437,6 +395,10 @@ public abstract class JAOPCAApi {
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
 	public abstract boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input);
+
+	public abstract boolean registerSmeltingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerSmeltingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a furnace recipe supplier that is then registered for injection.
@@ -463,6 +425,10 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
 
+	public abstract boolean registerBlastingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerBlastingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+
 	/**
 	 * Creates a blasting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -488,6 +454,10 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerBlastingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
 
+	public abstract boolean registerSmokingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerSmokingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+
 	/**
 	 * Creates a smoking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -512,6 +482,10 @@ public abstract class JAOPCAApi {
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
 	public abstract boolean registerSmokingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
+
+	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, int time);
+
+	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, int time);
 
 	/**
 	 * Creates a campfire cooking recipe supplier that is then registered for injection.
@@ -557,7 +531,7 @@ public abstract class JAOPCAApi {
 	 */
 	public abstract boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count);
 
-	public abstract boolean registerSmithingRecipe(ResourceLocation key, Object base, Object addition, Object output, int count);
+	public abstract boolean registerSmithingRecipe(ResourceLocation key, Object template, Object base, Object addition, Object output, int count);
 
 	/**
 	 * Registers a loot table supplier to be added by JAOPCA's in memory data pack.

@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -24,10 +24,13 @@ import thelm.jaopca.utils.MiscHelper;
 public class EnergizedPowerModule implements IModule {
 
 	private static final double[] ORE_CHANCES = {1, 1, 0.25};
+	private static final double[] ORE_CHANCES_ADVANCED = {1, 1, 0.5, 0.25};
 	private static final double[] RAW_CHANCES = {1, 0.25};
+	private static final double[] RAW_CHANCES_ADVANCED = {1, 0.5};
 	private static final double[] RAW_BLOCK_CHANCES = {1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 0.5, 0.25};
+	private static final double[] RAW_BLOCK_CHANCES_ADVANCED = {1, 1, 1, 1, 1, 1, 1, 1, 1, 0.75, 0.5, 0.25, 0.25};
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "iron", "netherite", "netherite_scrap"));
+			"copper", "gold", "iron", "netherite", "netherite_scrap", "tin"));
 
 	@Override
 	public String getName() {
@@ -62,17 +65,17 @@ public class EnergizedPowerModule implements IModule {
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerPulverizerRecipe(
 					new ResourceLocation("jaopca", "energizedpower.ore_to_dust."+material.getName()),
-					oreLocation, dustLocation, ORE_CHANCES);
+					oreLocation, dustLocation, ORE_CHANCES, ORE_CHANCES_ADVANCED);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerPulverizerRecipe(
 						new ResourceLocation("jaopca", "energizedpower.raw_material_to_dust."+material.getName()),
-						rawMaterialLocation, dustLocation, RAW_CHANCES);
+						rawMaterialLocation, dustLocation, RAW_CHANCES, RAW_CHANCES_ADVANCED);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerPulverizerRecipe(
 							new ResourceLocation("jaopca", "energizedpower.raw_storage_block_to_dust."+material.getName()),
-							rawStorageBlockLocation, dustLocation, RAW_BLOCK_CHANCES);
+							rawStorageBlockLocation, dustLocation, RAW_BLOCK_CHANCES, RAW_BLOCK_CHANCES_ADVANCED);
 				}
 			}
 		}

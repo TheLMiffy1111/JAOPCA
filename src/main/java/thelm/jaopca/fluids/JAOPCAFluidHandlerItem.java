@@ -1,25 +1,18 @@
 package thelm.jaopca.fluids;
 
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 
-public class JAOPCAFluidHandlerItem implements IFluidHandlerItem, ICapabilityProvider {
+public class JAOPCAFluidHandlerItem implements IFluidHandlerItem {
 
-	private final LazyOptional<IFluidHandlerItem> holder;
 	protected final IMaterialFormFluid fluid;
 	protected ItemStack container;
 
 	public JAOPCAFluidHandlerItem(IMaterialFormFluid fluid, ItemStack container) {
-		holder = LazyOptional.of(()->this);
 		this.fluid = fluid;
 		this.container = container;
 	}
@@ -90,10 +83,5 @@ public class JAOPCAFluidHandlerItem implements IFluidHandlerItem, ICapabilityPro
 			return fluidStack;
 		}
 		return FluidStack.EMPTY;
-	}
-
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-		return ForgeCapabilities.FLUID_HANDLER_ITEM.orEmpty(capability, holder);
 	}
 }

@@ -6,8 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
+import mekanism.api.recipes.basic.BasicInjectingRecipe;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient.GasStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
@@ -52,13 +52,7 @@ public class InjectingRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "mekanism:injecting");
-		json.add("itemInput", ing.serialize());
-		json.add("chemicalInput", gasIng.serialize());
-		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));
-
-		return json;
+		BasicInjectingRecipe recipe = new BasicInjectingRecipe(ing, gasIng, stack);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

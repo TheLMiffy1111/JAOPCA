@@ -6,16 +6,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.base.Strings;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
-import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class ShapelessRecipeSerializer implements IRecipeSerializer {
@@ -24,17 +23,27 @@ public class ShapelessRecipeSerializer implements IRecipeSerializer {
 
 	public final ResourceLocation key;
 	public final String group;
+	public final CraftingBookCategory category;
 	public final Object output;
 	public final int count;
 	public final Object[] input;
 
 	public ShapelessRecipeSerializer(ResourceLocation key, Object output, int count, Object... input) {
-		this(key, "", output, count, input);
+		this(key, "", CraftingBookCategory.MISC, output, count, input);
 	}
 
 	public ShapelessRecipeSerializer(ResourceLocation key, String group, Object output, int count, Object... input) {
+		this(key, group, CraftingBookCategory.MISC, output, count, input);
+	}
+
+	public ShapelessRecipeSerializer(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input) {
+		this(key, "", category, output, count, input);
+	}
+
+	public ShapelessRecipeSerializer(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input) {
 		this.key = Objects.requireNonNull(key);
 		this.group = Strings.nullToEmpty(group);
+		this.category = Objects.requireNonNull(category);
 		this.output = output;
 		this.count = count;
 		this.input = Objects.requireNonNull(input);
@@ -49,26 +58,14 @@ public class ShapelessRecipeSerializer implements IRecipeSerializer {
 		NonNullList<Ingredient> ingredients = NonNullList.create();
 		for(Object in : input) {
 			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
-			if(ing == EmptyIngredient.INSTANCE) {
+			if(ing == null) {
 				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+in);
 			}
 			else {
 				ingredients.add(ing);
 			}
 		}
-
-		JsonObject json = new JsonObject();
-		json.addProperty("type", "minecraft:crafting_shapeless");
-		if(!group.isEmpty()) {
-			json.addProperty("group", group);
-		}
-		JsonArray ingJson = new JsonArray();
-		for(Ingredient ingredient : ingredients) {
-			ingJson.add(ingredient.toJson());
-		}
-		json.add("ingredients", ingJson);
-		json.add("result", MiscHelper.INSTANCE.serializeItemStack(stack));
-
-		return json;
+		ShapelessRecipe recipe = new ShapelessRecipe(group, category, stack, ingredients);
+		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }
