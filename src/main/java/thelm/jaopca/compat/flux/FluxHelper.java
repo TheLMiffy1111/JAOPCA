@@ -26,9 +26,7 @@ public class FluxHelper {
 
 	private FluxHelper() {}
 
-	static {
-
-	}
+	static {}
 
 	public Ingredient getCountedIngredient(Object obj, int count) {
 		Stream<Ingredient.IItemList> itemListStream;

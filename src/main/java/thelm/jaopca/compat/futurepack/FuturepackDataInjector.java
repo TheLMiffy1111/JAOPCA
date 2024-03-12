@@ -52,9 +52,7 @@ public class FuturepackDataInjector extends ReloadListener<Void> {
 		return ZENTRIFUGE_RECIPES_INJECT.putIfAbsent(key, recipeSupplier) != null;
 	}
 
-	private FuturepackDataInjector() {
-
-	}
+	private FuturepackDataInjector() {}
 
 	@Override
 	protected Void prepare(IResourceManager resourceManager, IProfiler profiler) {
