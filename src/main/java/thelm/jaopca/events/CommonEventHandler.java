@@ -63,9 +63,7 @@ public class CommonEventHandler {
 		RecipeHandler.registerEarlyRecipes();
 	}
 
-	public void onInit(FMLInitializationEvent event) {
-
-	}
+	public void onInit(FMLInitializationEvent event) {}
 
 	@SubscribeEvent
 	public void onInitWrapUp2(InitializationWrapUpEvent.Event2 event) {
