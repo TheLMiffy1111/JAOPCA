@@ -33,9 +33,7 @@ public class FuturepackDataInjector {
 		return FP_RECIPES_INJECT.row(type).putIfAbsent(key, recipeSupplier) != null;
 	}
 
-	private FuturepackDataInjector() {
-
-	}
+	private FuturepackDataInjector() {}
 
 	public static void setupInjectRecipes() {
 		try {
