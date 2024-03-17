@@ -1,0 +1,32 @@
+{
+    "itemGroup.jaopca": "JAOPCA",
+
+    "block.jaopca.storage_blocks": "Блок %s",
+    "item.jaopca.dusts": "Пыль %s",
+    "item.jaopca.nuggets": "Самородок %s",
+    "item.jaopca.tiny_dusts": "Крошечная кучка %s пыли",
+    "item.jaopca.small_dusts": "Маленькая кучка %s пыли",
+    "fluid.jaopca.molten": "Расплавленный %s",
+    "item.jaopca.molten": "Расплавленное ведро %s",
+
+    "item.jaopca.mekanism_dirty_dusts": "Загрязнённая %s пыль",
+    "item.jaopca.mekanism_clumps": "%s глыба",
+    "item.jaopca.mekanism_shards": "%s осколок",
+    "item.jaopca.mekanism_crystals": "%s кристалл",
+    "slurry.jaopca.mekanism_dirty": "Загрязнённая %s взвесть",
+    "slurry.jaopca.mekanism_clean": "Чистая %s взвесь",
+
+    "item.jaopca.flux_grits": "%s зерно",
+
+    "item.jaopca.omegacraft_dirty_dusts": "Загрязнённая %s пыль",
+
+    "item.jaopca.silents_mechanisms_chunks": "%s кусочки руды",
+
+    "item.jaopca.create_crushed_ores": "Измельченноая %s руда",
+
+    "item.jaopca.crossroads_grits": "Грязная %s зерно",
+    "item.jaopca.crossroads_clumps": "%s комок",
+
+    "item.jaopca.bloodmagic_gravels": "%s гравевая",
+    "item.jaopca.bloodmagic_fragments": "%s фрагмент руды"
+}
