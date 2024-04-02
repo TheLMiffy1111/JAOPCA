@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-e3412050"
+	id "com.crystaelix.loom" version "jitpack-1ab64651"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -194,7 +194,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.1.18.40"
+version = "4.1.19.41"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -301,7 +301,7 @@ dependencies {
 	// Integrated Dynamics
 	modImplementation "curse.maven:cyclops-core-232758:4905958"
 	modImplementation "curse.maven:common-capabilities-247007:4987177"
-	modImplementation "curse.maven:integrated-dynamics-236307:4987211"
+	modImplementation "curse.maven:integrated-dynamics-236307:5099616"
 
 	// LavaTech
 	modImplementation "curse.maven:lavatech-533955:4154002"
@@ -310,7 +310,7 @@ dependencies {
 	modImplementation "mekanism:Mekanism:1.18.2-10.2.5.465"
 
 	// NuclearCraft: Neoteric
-	modImplementation "curse.maven:nuclearcraft-neoteric-840010:5127366"
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:5222362"
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.18.2:1.9"
@@ -318,8 +318,8 @@ dependencies {
 	modImplementation "curse.maven:occultism-361026:4729072"
 
 	// Tinkers' Construct
-	modImplementation "slimeknights.mantle:Mantle:1.18.2-1.9.45"
-	modImplementation "slimeknights.tconstruct:TConstruct:1.18.2-3.6.4.113"
+	modImplementation "slimeknights.mantle:Mantle:1.18.2-1.9.50"
+	modImplementation "slimeknights.tconstruct:TConstruct:1.18.2-3.7.1.155"
 
 	// Thermal Expansion
 	modImplementation "com.teamcofh:cofh_core:1.18.2-9.2.3.47"
@@ -343,7 +343,7 @@ dependencies {
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:4377180"
 	implementation "io.github.llamalad7:mixinextras-forge:0.3.5"
-	modImplementation "curse.maven:modernfix-790626:5157929"
+	modImplementation "curse.maven:modernfix-790626:5203341"
 	modImplementation "curse.maven:ferritecore-429235:4074294"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:3544496"
 }
