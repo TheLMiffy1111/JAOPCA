@@ -1,1 +1,1 @@
-Update to 1.20.4  
+Added class requirement specification for modules  
