@@ -64,11 +64,17 @@ public class ModuleHandler {
 		MODULES.clear();
 		Set<ASMData> annotationData = asmDataTable.getAll(JAOPCA_MODULE);
 		Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
+		Predicate<String> classNotExists = MiscHelper.INSTANCE::classNotExists;
 		for(ASMData aData : annotationData) {
-			List<String> deps = (List<String>)aData.getAnnotationInfo().get("modDependencies");
+			List<String> modDeps = (List<String>)aData.getAnnotationInfo().get("modDependencies");
+			List<String> classDeps = (List<String>)aData.getAnnotationInfo().get("classDependencies");
 			String className = aData.getClassName();
-			if(deps != null && deps.stream().filter(Objects::nonNull).anyMatch(modVersionNotLoaded)) {
-				LOGGER.info("Module {} has missing mod dependencies, skipping", new Object[] {className});
+			if(modDeps != null && modDeps.stream().filter(Objects::nonNull).anyMatch(modVersionNotLoaded)) {
+				LOGGER.info("Module {} has missing mod dependencies, skipping", className);
+				continue;
+			}
+			if(classDeps != null && classDeps.stream().filter(Objects::nonNull).anyMatch(classNotExists)) {
+				LOGGER.info("Module {} has missing class dependencies, skipping", className);
 				continue;
 			}
 			try {

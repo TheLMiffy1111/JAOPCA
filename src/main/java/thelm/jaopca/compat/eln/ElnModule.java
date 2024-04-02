@@ -17,7 +17,7 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "Eln")
+@JAOPCAModule(modDependencies = "Eln", classDependencies = "mods.eln.Eln")
 public class ElnModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(

@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface JAOPCAModule {
 
 	String[] modDependencies() default {};
+
+	String[] classDependencies() default {};
 }

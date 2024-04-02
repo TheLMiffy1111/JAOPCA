@@ -329,6 +329,16 @@ public class MiscHelper implements IMiscHelper {
 		};
 	}
 
+	public boolean classNotExists(String className) {
+		try {
+			Class.forName(className, false, getClass().getClassLoader());
+			return false;
+		}
+		catch(ClassNotFoundException e) {
+			return true;
+		}
+	}
+
 	public <T> List<List<T>> guavaCartesianProduct(List<? extends List<? extends T>> lists) {
 		try {
 			Method method = Lists.class.getDeclaredMethod("cartesianProduct", List.class);

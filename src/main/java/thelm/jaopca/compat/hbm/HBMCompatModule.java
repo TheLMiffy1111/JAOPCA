@@ -20,7 +20,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "hbm@[1.0.27_X4515,)")
+@JAOPCAModule(modDependencies = "hbm@[1.0.27_X4515,)", classDependencies = "com.hbm.main.MainRegistry")
 public class HBMCompatModule implements IModule {
 
 	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
