@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-e3412050"
+	id "com.crystaelix.loom" version "jitpack-1ab64651"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -193,7 +193,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.2.10.27"
+version = "4.2.11.28"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -240,7 +240,7 @@ dependencies {
 	forge "net.minecraftforge:forge:1.19.2-43.3.8"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.19.2-forge:11.6.0.1018") {transitive = false}
+	modImplementation("mezz.jei:jei-1.19.2-forge:11.6.0.1019") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.19-1.1.5"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.19.2-5.1.6.1"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.19:3.1.40"
@@ -248,11 +248,11 @@ dependencies {
 	modImplementation "dev.architectury:architectury-forge:6.5.90"
 
 	// CraftTweaker
-	modImplementation "com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.53"
+	modImplementation "com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.55"
 
 	// KubeJS
 	modImplementation "dev.latvian.mods:rhino-forge:1902.2.3-build.284"
-	modImplementation("dev.latvian.mods:kubejs-forge:1902.6.2-build.59") {transitive = false}
+	modImplementation("dev.latvian.mods:kubejs-forge:1902.6.2-build.63") {transitive = false}
 
 	// Json Things
 	modImplementation "dev.gigaherz.jsonthings:JsonThings-1.19.2:0.7.15"
@@ -301,18 +301,18 @@ dependencies {
 	// Integrated Dynamics
 	modImplementation "curse.maven:cyclops-core-232758:5080403"
 	modImplementation "curse.maven:common-capabilities-247007:4987191"
-	modImplementation "curse.maven:integrated-dynamics-236307:5087866"
+	modImplementation "curse.maven:integrated-dynamics-236307:5099627"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
 
 	// NuclearCraft: Neoteric
-	modImplementation "curse.maven:nuclearcraft-neoteric-840010:4975776"
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:5182803"
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.19.2:1.9"
 	modImplementation "com.klikli_dev:modonomicon-1.19.2:1.34.0"
-	modImplementation("com.github.klikli_dev:occultism-1.19.2:1.89.0") {transitive = false}
+	modImplementation("com.github.klikli_dev:occultism-1.19.2:1.90.0") {transitive = false}
 
 	// Silent's Mechanisms
 	modImplementation "curse.maven:silent-lib-242998:3968715"
@@ -342,7 +342,7 @@ dependencies {
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:3909789"
 	implementation "io.github.llamalad7:mixinextras-forge:0.3.5"
-	modImplementation "curse.maven:modernfix-790626:5157931"
+	modImplementation "curse.maven:modernfix-790626:5203333"
 	modImplementation "curse.maven:ferritecore-429235:4117906"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:4327266"
 }
