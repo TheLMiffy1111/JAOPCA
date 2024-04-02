@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-e3412050"
+	id "com.crystaelix.loom" version "jitpack-1ab64651"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -154,7 +154,7 @@ def specVersion = "3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "3.4.4.33"
+version = "3.4.5.34"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -207,14 +207,14 @@ dependencies {
 	forge "net.minecraftforge:forge:1.16.5-36.2.39"
 
 	// Common
-	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1009"
+	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1011"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.0.8.2"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.16.5:3.0.106"
 	modImplementation "vazkii.patchouli:Patchouli:1.16.4-53.3"
 	modImplementation("me.shedaniel:architectury-forge:1.32.68") {transitive = false}
 
 	// CraftTweaker
-	modImplementation "com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.526"
+	modImplementation "com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.527"
 
 	// KubeJS
 	modImplementation "dev.latvian.mods:rhino-forge:1605.1.5-build.75"
@@ -306,7 +306,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:shutup-experimental-settings-407174:3188120"
-	modImplementation "curse.maven:modernfix-790626:5157663"
+	modImplementation "curse.maven:modernfix-790626:5203334"
 	modImplementation "curse.maven:ferritecore-429235:3435176"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:3249059"
 }

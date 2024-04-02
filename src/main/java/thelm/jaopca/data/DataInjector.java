@@ -137,11 +137,17 @@ public class DataInjector extends ReloadListener<Object> {
 				filter(data->JAOPCA_DATA_MODULE.equals(data.getAnnotationType())).
 				collect(Collectors.toList());
 		Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
+		Predicate<String> classNotExists = MiscHelper.INSTANCE::classNotExists;
 		for(AnnotationData aData : annotationData) {
-			List<String> deps = (List<String>)aData.getAnnotationData().get("modDependencies");
+			List<String> modDeps = (List<String>)aData.getAnnotationData().get("modDependencies");
+			List<String> classDeps = (List<String>)aData.getAnnotationData().get("classDependencies");
 			String className = aData.getClassType().getClassName();
-			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
+			if(modDeps != null && modDeps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
 				LOGGER.info("Data module {} has missing mod dependencies, skipping", className);
+				continue;
+			}
+			if(classDeps != null && classDeps.stream().filter(Predicates.notNull()).anyMatch(classNotExists)) {
+				LOGGER.info("Data module {} has missing class dependencies, skipping", className);
 				continue;
 			}
 			try {

@@ -19,7 +19,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "flux@[4.16.1,)")
+@JAOPCAModule(modDependencies = "flux@[4.16.1,)", classDependencies = "szewek.flux.Flux")
 public class FluxCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(Arrays.asList(
