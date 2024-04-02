@@ -462,4 +462,14 @@ public class MiscHelper implements IMiscHelper {
 			return true;
 		};
 	}
+
+	public boolean classNotExists(String className) {
+		try {
+			Class.forName(className, false, getClass().getClassLoader());
+			return false;
+		}
+		catch(ClassNotFoundException e) {
+			return true;
+		}
+	}
 }

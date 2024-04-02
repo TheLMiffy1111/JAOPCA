@@ -60,11 +60,17 @@ public class DataCollector {
 				flatMap(data->data.getAnnotations().stream()).
 				filter(data->JAOPCA_PACK_SUPPLIER.equals(data.annotationType())).toList();
 		Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
+		Predicate<String> classNotExists = MiscHelper.INSTANCE::classNotExists;
 		for(AnnotationData aData : annotationData) {
-			List<String> deps = (List<String>)aData.annotationData().get("modDependencies");
+			List<String> modDeps = (List<String>)aData.annotationData().get("modDependencies");
+			List<String> classDeps = (List<String>)aData.annotationData().get("classDependencies");
 			String className = aData.clazz().getClassName();
-			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
+			if(modDeps != null && modDeps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
 				LOGGER.info("Pack supplier {} has missing mod dependencies, skipping", className);
+				continue;
+			}
+			if(classDeps != null && classDeps.stream().filter(Predicates.notNull()).anyMatch(classNotExists)) {
+				LOGGER.info("Pack supplier {} has missing class dependencies, skipping", className);
 				continue;
 			}
 			try {
