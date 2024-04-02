@@ -6,6 +6,9 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.hbm.forgefluid.ModForgeFluids;
+
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -18,7 +21,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "hbm")
+@JAOPCAModule(modDependencies = "hbm", classDependencies = "com.hbm.main.MainRegistry")
 public class HBMCompatModule implements IModule {
 
 	private static final Set<String> TO_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(
@@ -58,6 +61,7 @@ public class HBMCompatModule implements IModule {
 		HBMHelper helper = HBMHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Set<String> oredict = api.getOredict();
+		Fluid acid = ModForgeFluids.acid;
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
@@ -80,7 +84,7 @@ public class HBMCompatModule implements IModule {
 				if(oredict.contains(dustOredict)) {
 					helper.registerCrystallizerRecipe(
 							miscHelper.getRecipeKey("hbm.dust_to_material", name),
-							dustOredict, materialOredict, 1);
+							dustOredict, acid, 500, materialOredict, 1);
 				}
 			}
 		}

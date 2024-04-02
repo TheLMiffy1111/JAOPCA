@@ -74,8 +74,7 @@ public class CentrifugeRecipeAction implements IRecipeAction {
 		}
 		ItemStack[] out = outputs.toArray(new ItemStack[outputs.size()]);
 		try {
-			Field mapField = Arrays.stream(CentrifugeRecipes.class.getDeclaredFields()).
-					filter(f->Map.class.isAssignableFrom(f.getType())).findFirst().get();
+			Field mapField = CentrifugeRecipes.class.getDeclaredField("recipes");
 			mapField.setAccessible(true);
 			Map<Object, ItemStack[]> map = (Map<Object, ItemStack[]>)mapField.get(null);
 			for(Object in : ins) {

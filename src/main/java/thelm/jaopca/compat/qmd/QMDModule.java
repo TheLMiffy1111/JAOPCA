@@ -19,7 +19,7 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "qmd")
+@JAOPCAModule(modDependencies = "qmd", classDependencies = "lach_01298.qmd.QMD")
 public class QMDModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(

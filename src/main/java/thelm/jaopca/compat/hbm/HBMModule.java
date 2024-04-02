@@ -11,10 +11,12 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.items.ModItems;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -32,7 +34,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "hbm")
+@JAOPCAModule(modDependencies = "hbm", classDependencies = "com.hbm.main.MainRegistry")
 public class HBMModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
@@ -96,6 +98,7 @@ public class HBMModule implements IModule {
 		HBMHelper helper = HBMHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
+		Fluid acid = ModForgeFluids.acid;
 		Item tinyLithium = ModItems.powder_lithium_tiny;
 		for(IMaterial material : crystalForm.getMaterials()) {
 			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
@@ -107,7 +110,7 @@ public class HBMModule implements IModule {
 
 			helper.registerCrystallizerRecipe(
 					miscHelper.getRecipeKey("hbm.ore_to_crystal", material.getName()),
-					oreOredict, crystalInfo, 1);
+					oreOredict, acid, 500, crystalInfo, 1);
 
 			api.registerSmeltingRecipe(
 					miscHelper.getRecipeKey("hbm.crystal_to_material", material.getName()),

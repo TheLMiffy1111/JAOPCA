@@ -17,12 +17,8 @@ import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 import net.minecraftforge.fml.common.discovery.ASMDataTable.ASMData;
-import net.minecraftforge.fml.common.versioning.ArtifactVersion;
-import net.minecraftforge.fml.common.versioning.InvalidVersionSpecificationException;
-import net.minecraftforge.fml.common.versioning.VersionRange;
 import net.minecraftforge.oredict.OreDictionary;
 import thelm.jaopca.api.oredict.IOredictModule;
 import thelm.jaopca.api.oredict.JAOPCAOredictModule;
@@ -66,11 +62,17 @@ public class OredictHandler {
 		OREDICT_MODULES.clear();
 		Set<ASMData> annotationData = asmDataTable.getAll(JAOPCA_OREDICT_MODULE);
 		Predicate<String> modVersionNotLoaded = MiscHelper.INSTANCE.modVersionNotLoaded(LOGGER);
+		Predicate<String> classNotExists = MiscHelper.INSTANCE::classNotExists;
 		for(ASMData aData : annotationData) {
-			List<String> deps = (List<String>)aData.getAnnotationInfo().get("modDependencies");
+			List<String> modDeps = (List<String>)aData.getAnnotationInfo().get("modDependencies");
+			List<String> classDeps = (List<String>)aData.getAnnotationInfo().get("classDependencies");
 			String className = aData.getClassName();
-			if(deps != null && deps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
+			if(modDeps != null && modDeps.stream().filter(Predicates.notNull()).anyMatch(modVersionNotLoaded)) {
 				LOGGER.info("Oredict module {} has missing mod dependencies, skipping", className);
+				continue;
+			}
+			if(classDeps != null && classDeps.stream().filter(Predicates.notNull()).anyMatch(classNotExists)) {
+				LOGGER.info("Oredict module {} has missing class dependencies, skipping", className);
 				continue;
 			}
 			try {

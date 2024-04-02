@@ -46,8 +46,8 @@ public class HBMHelper {
 		return null;
 	}
 
-	public boolean registerCrystallizerRecipe(ResourceLocation key, Object input, Object output, int count) {
-		return ApiImpl.INSTANCE.registerLateRecipe(key, new CrystallizerRecipeAction(key, input, output, count));
+	public boolean registerCrystallizerRecipe(ResourceLocation key, Object input, Object fluidInput, int fluidInputAmount, Object output, int count) {
+		return ApiImpl.INSTANCE.registerLateRecipe(key, new CrystallizerRecipeAction(key, input, fluidInput, fluidInputAmount, output, count));
 	}
 
 	public boolean registerShredderRecipe(ResourceLocation key, Object input, Object output, int count) {
