@@ -1,1 +1,1 @@
-Added class requirement specification for modules  
+Fix logging crash again  

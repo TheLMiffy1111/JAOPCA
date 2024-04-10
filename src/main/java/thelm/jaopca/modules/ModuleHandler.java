@@ -70,11 +70,11 @@ public class ModuleHandler {
 			List<String> classDeps = (List<String>)aData.getAnnotationInfo().get("classDependencies");
 			String className = aData.getClassName();
 			if(modDeps != null && modDeps.stream().filter(Objects::nonNull).anyMatch(modVersionNotLoaded)) {
-				LOGGER.info("Module {} has missing mod dependencies, skipping", className);
+				LOGGER.info("Module {} has missing mod dependencies, skipping", new Object[] {className});
 				continue;
 			}
 			if(classDeps != null && classDeps.stream().filter(Objects::nonNull).anyMatch(classNotExists)) {
-				LOGGER.info("Module {} has missing class dependencies, skipping", className);
+				LOGGER.info("Module {} has missing class dependencies, skipping", new Object[] {className});
 				continue;
 			}
 			try {
