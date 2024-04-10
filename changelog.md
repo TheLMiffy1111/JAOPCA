@@ -1,1 +1,1 @@
-Added class requirement specification for modules  
+Readded Tinkers' Construct support  

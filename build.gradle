@@ -163,6 +163,17 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
+				url = "https://dvs1.progwml6.com/files/maven/"
+			}
+		}
+		filter {
+			includeGroup "slimeknights.mantle"
+			includeGroup "slimeknights.tconstruct"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
 				url = "https://cursemaven.com/"
 			}
 		}
@@ -327,6 +338,10 @@ dependencies {
 	modImplementation "com.teamcofh:thermal_expansion:1.19.2-10.3.1.25"
 	modImplementation "com.teamcofh:thermal_integration:1.19.2-10.3.0.19"
 
+	// Tinkers' Construct
+	modImplementation "slimeknights.mantle:Mantle:1.19.2-1.10.24"
+	modImplementation "slimeknights.tconstruct:TConstruct:1.19.2-3.8.1.16"
+
 	// Useful Machinery
 	modImplementation "net.themcbrothers:TheMCBrosLib:1.19.2-2.0.5"
 	modImplementation "net.themcbrothers:useful-foundation:1.19.2-3.0.0"
@@ -403,6 +418,7 @@ def curseforgeDependencies = [
 	"occultism",
 	"open-loader",
 	"thermal-expansion",
+	"tinkers-construct",
 	"useful-machinery",
 	"voluminous-energy"
 ]
@@ -422,6 +438,7 @@ def modrinthDependencies = [
 	"occultism",
 	"open-loader",
 	"thermal-expansion",
+	"tinkers-construct",
 	"useful-machinery",
 	"voluminous_energy"
 ]
