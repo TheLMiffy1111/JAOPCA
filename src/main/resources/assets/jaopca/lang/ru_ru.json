@@ -1,0 +1,46 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "Блок из %s",
+	"block.jaopca.raw_storage_blocks": "Блок из сырого %s",
+	"item.jaopca.dusts": "Пыль из %s",
+	"item.jaopca.nuggets": "Самородок из %s",
+	"item.jaopca.tiny_dusts": "Крошечная кучка пыли из %s",
+	"item.jaopca.small_dusts": "Маленькая куча пыли из %s",
+	"fluid_type.jaopca.molten": "Рассплавленный %s",
+	"item.jaopca.molten": "Ведро из расплавленного %s",
+
+	"item.jaopca.create_crushed": "Дробленное сырое %s",
+
+	"item.jaopca.crossroads_grits": "Сырое песчанное %s",
+	"item.jaopca.crossroads_clumps": "%s Clumps",
+
+	"item.jaopca.electrodynamics_impuredusts": "Неочищенная %s пыль",
+	"item.jaopca.electrodynamics_crystals": "%s сульфатовый кристалл",
+	"fluid_type.jaopca.electrodynamics_sulfates": "%s сульфат",
+	"item.jaopca.electrodynamics_sulfates": "%s ведро сульфата",
+
+	"item.jaopca.bloodmagic_gravels": "%s гравий",
+	"item.jaopca.bloodmagic_fragments": "%s осколок",
+
+	"item.jaopca.factorium_chunks": "%s кусок",
+	"item.jaopca.factorium_powders": "%s порошок",
+
+	"item.jaopca.indreb_purified": "Очищенный %s",
+	"item.jaopca.indreb_chunks": "%s кусок",
+
+	"item.jaopca.mekanism_dirty_dusts": "Загрязненная %s пыль",
+	"item.jaopca.mekanism_clumps": "%s глыба",
+	"item.jaopca.mekanism_shards": "%s осколо",
+	"item.jaopca.mekanism_crystals": "%s кристалл",
+	"slurry.jaopca.mekanism_dirty": "Загрязнённая %s известь",
+	"slurry.jaopca.mekanism_clean": "Очищенная %s известь",
+
+	"fluid_type.jaopca.nuclearcraft_slurries": "%s известь",
+	"item.jaopca.nuclearcraft_slurries": "%s ведро извести",
+	"fluid_type.jaopca.nuclearcraft_clean_slurries": "Очищенная %s известь",
+	"item.jaopca.nuclearcraft_clean_slurries": "Очищенное %s ведро извести",
+
+	"item.jaopca.theurgy_alchemical_sulfurs": "Алхимическая сера %s",
+	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Алхимическая сера, созданная из %s %s %s."
+}
