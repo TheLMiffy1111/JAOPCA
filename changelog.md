@@ -1,1 +1,2 @@
-Added class requirement specification for modules  
+Added Actually Additions support  
+Readded Immersive Engineering support  
