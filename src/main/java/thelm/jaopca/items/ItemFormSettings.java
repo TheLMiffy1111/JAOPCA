@@ -4,6 +4,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import thelm.jaopca.api.forms.IFormType;
 import thelm.jaopca.api.items.IItemCreator;
@@ -17,7 +18,7 @@ public class ItemFormSettings implements IItemFormSettings {
 	ItemFormSettings() {}
 
 	private IItemCreator itemCreator = JAOPCAItem::new;
-	private ToIntFunction<IMaterial> itemStackLimitFunction = material->64;
+	private ToIntFunction<IMaterial> itemStackLimitFunction = material->Items.AIR.getItemStackLimit();
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private Function<IMaterial, EnumRarity> displayRarityFunction = material->material.getDisplayRarity();
 	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;

@@ -20,7 +20,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "magneticraft")
+@JAOPCAModule(modDependencies = "magneticraft", classDependencies = "com.cout970.magneticraft.api.registries.machines.grinder.IGrinderRecipeManager")
 public class MagneticraftCompatModule implements IModule {
 
 	private static final Set<String> BLOCK_PLATE_BLACKLIST = new TreeSet<>(Arrays.asList(

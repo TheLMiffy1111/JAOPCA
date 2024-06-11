@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.api.items.IItemFormSettings;
@@ -33,7 +34,7 @@ public class ItemFormSettingsDeserializer implements JsonDeserializer<IItemFormS
 		if(json.has("itemStackLimit")) {
 			JsonObject functionJson = helper.getJsonObject(json, "itemStackLimit");
 			if(!functionJson.has("default")) {
-				functionJson.addProperty("default", 64);
+				functionJson.addProperty("default", Items.AIR.getItemStackLimit());
 			}
 			settings.setItemStackLimitFunction(helper.deserializeType(json, "itemStackLimit", context, FormTypeHandler.INT_FUNCTION_TYPE));
 		}

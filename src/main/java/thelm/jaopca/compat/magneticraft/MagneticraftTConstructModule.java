@@ -22,7 +22,7 @@ import thelm.jaopca.compat.tconstruct.TConstructHelper;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = {"magneticraft", "tconstruct"})
+@JAOPCAModule(modDependencies = {"magneticraft", "tconstruct"}, classDependencies = "com.cout970.magneticraft.api.registries.machines.grinder.IGrinderRecipeManager")
 public class MagneticraftTConstructModule implements IModule {
 
 	private static final Set<String> CHUNK_BLACKLIST = new TreeSet<>(Arrays.asList(

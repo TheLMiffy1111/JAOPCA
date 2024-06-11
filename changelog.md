@@ -1,3 +1,1 @@
-Added class requirement specification for modules  
-Updated GroovyScript  
-Changed HBM to Extended  
+Check for existence of grinder in Magneticraft module  

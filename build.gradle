@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-1ab64651"
+	id "com.crystaelix.loom" version "jitpack-39f2e017"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -158,7 +158,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.10.21"
+version = "2.3.10.22"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -242,7 +242,7 @@ dependencies {
 	modImplementation "net.sengir.forestry:forestry_1.12.2:5.8.2.422"
 	modImplementation "com.mod-buildcraft:buildcraft-main:7.99.24.8"
 	modImplementation "curse.maven:buildcraft-compat-233140:3204471"
-	modImplementation("net.ndrei:bc-ore-processing:7.99.24.4-1.18") {transitive = false}
+	modImplementation "curse.maven:bc-ore-processing-277910:2882663"
 
 	// Embers Rekindled
 	modImplementation "curse.maven:embers-rekindled-300777:3695248"
@@ -291,8 +291,8 @@ dependencies {
 	modImplementation "curse.maven:minestrappolation-5-233351:2860018"
 
 	// Powered Thingies
-	modImplementation("net.ndrei:tesla-core-lib:1.12.2-1.0.18.28") {transitive = false}
-	modImplementation("net.ndrei:powered-thingies:1.12.2-1.0.15.25") {transitive = false}
+	modImplementation "curse.maven:tesla-core-lib-254602:3438487"
+	modImplementation "curse.maven:powered-thingies-264283:2556740"
 
 	// QMD
 	modImplementation "curse.maven:nuclearcraft-overhauled-336895:3862197"
