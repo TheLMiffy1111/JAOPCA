@@ -343,9 +343,10 @@ sourcesJar {
 }
 
 def curseforgeDependencies = [
+	"actually-additions",
 	"crafttweaker",
 	"energized-power",
-	"immersiveengineering",
+	"immersive-engineering",
 	"json-things",
 	"mekanism",
 	"modern-industrialization",
