@@ -1,1 +1,1 @@
-Added class requirement specification for modules  
+Fix Railcraft Reborn compat raw block recipes  

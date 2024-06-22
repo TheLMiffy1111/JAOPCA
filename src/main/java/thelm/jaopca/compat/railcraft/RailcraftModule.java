@@ -89,7 +89,7 @@ public class RailcraftModule implements IModule {
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerCrusherRecipe(
 							new ResourceLocation("jaopca", "railcraft.raw_storage_block_to_dust."+material.getName()),
-							rawMaterialLocation, 200, new Object[] {
+							rawStorageBlockLocation, 200, new Object[] {
 									dustLocation, 12, 1F,
 							});
 				}
