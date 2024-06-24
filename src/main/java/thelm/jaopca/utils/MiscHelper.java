@@ -2,6 +2,7 @@ package thelm.jaopca.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Streams;
 import com.google.common.collect.TreeMultiset;
 import com.google.common.primitives.Ints;
 
@@ -37,6 +39,7 @@ import net.minecraftforge.fml.common.versioning.ArtifactVersion;
 import net.minecraftforge.fml.common.versioning.InvalidVersionSpecificationException;
 import net.minecraftforge.fml.common.versioning.VersionRange;
 import net.minecraftforge.oredict.OreIngredient;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemProvider;
@@ -130,22 +133,8 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ItemStack getPreferredItemStack(Iterable<ItemStack> iterable, int count) {
-		ItemStack preferredEntry = null;
-		int currBest = ConfigHandler.PREFERRED_MODS.size();
-		for(ItemStack entry : iterable) {
-			ResourceLocation rl = entry.getItem().getRegistryName();
-			if(rl != null) {
-				String modId = rl.getNamespace();
-				int idx = ConfigHandler.PREFERRED_MODS.indexOf(modId);
-				if(preferredEntry == null || idx >= 0 && idx < currBest) {
-					preferredEntry = entry;
-					if(idx >= 0) {
-						currBest = idx;
-					}
-				}
-			}
-		}
-		return resizeItemStack(preferredEntry, count);
+		Optional<ItemStack> preferredEntry = Streams.stream(iterable).min(Comparator.comparing(ItemStack::getItem, entryPreferenceComparator()));
+		return preferredEntry.map(stack->resizeItemStack(stack, count)).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
@@ -186,6 +175,25 @@ public class MiscHelper implements IMiscHelper {
 			return ret;
 		}
 		return null;
+	}
+
+	private static final Comparator<IForgeRegistryEntry<?>> ENTRY_PREFERENCE_COMPARATOR = (entry1, entry2)->{
+		ResourceLocation key1 = entry1.getRegistryName();
+		ResourceLocation key2 = entry2.getRegistryName();
+		if(key1 == key2) return 0;
+		if(key1 == null) return 1;
+		if(key2 == null) return -1;
+		int index1 = ConfigHandler.PREFERRED_MODS.indexOf(key1.getNamespace());
+		int index2 = ConfigHandler.PREFERRED_MODS.indexOf(key2.getNamespace());
+		if(index1 == index2) return 0;
+		if(index1 == -1) return 1;
+		if(index2 == -1) return -1;
+		return Integer.compare(index1, index2);
+	};
+
+	@Override
+	public Comparator<IForgeRegistryEntry<?>> entryPreferenceComparator() {
+		return ENTRY_PREFERENCE_COMPARATOR;
 	}
 
 	private static final Predicate<String> META_ITEM_PREDICATE = s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s.split("@(?=\\d*$)")[0]));

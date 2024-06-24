@@ -1,1 +1,1 @@
-Check for existence of grinder in Magneticraft module  
+Changed item preference to be based on comparators  

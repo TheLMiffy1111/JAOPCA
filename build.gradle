@@ -158,7 +158,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.10.22"
+version = "2.3.10.23"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -218,15 +218,15 @@ dependencies {
 	implementation("zone.rong:mixinbooter:9.1") {transitive = false}
 
 	// CraftTweaker
-	modImplementation("CraftTweaker2:ZenScript:4.1.20.698") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.698") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.698") {transitive = false}
+	modImplementation("CraftTweaker2:ZenScript:4.1.20.699") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.699") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.699") {transitive = false}
 
 	// GroovyScript
-	modImplementation("com.cleanroommc:groovyscript:1.0.1") {transitive = false}
+	modImplementation("com.cleanroommc:groovyscript:1.1.0") {transitive = false}
 
 	// AbyssalCraft
-	modImplementation "curse.maven:abyssalcraft-53686:4856547"
+	modImplementation "curse.maven:abyssalcraft-53686:5330323"
 
 	// Advanced Rocketry
 	modImplementation "curse.maven:libvulpes-236541:3801015"
@@ -256,7 +256,7 @@ dependencies {
 
 	// EssentialCraft
 	modImplementation "curse.maven:dummycore-unofficial-266491:2611426"
-	modImplementation "curse.maven:essentialcraft-4-unofficial-254817:2611428"
+	modImplementation "curse.maven:essentialcraft-4-unofficial-254817:5416404"
 
 	// Foundry
 	modImplementation "curse.maven:cofh-core-69162:2920433"
@@ -269,7 +269,7 @@ dependencies {
 	modImplementation "curse.maven:futurepack-237333:2856874"
 
 	// HBM's Nuclear Tech Mod
-	modImplementation "curse.maven:hbms-nuclear-tech-mod-extended-edition-708939:5110918"
+	modImplementation "curse.maven:hbms-nuclear-tech-mod-extended-edition-708939:5254559"
 
 	// IndustrialCraft 2
 	modImplementation "net.industrial-craft:industrialcraft-2:2.8.222-ex112"
@@ -295,8 +295,8 @@ dependencies {
 	modImplementation "curse.maven:powered-thingies-264283:2556740"
 
 	// QMD
-	modImplementation "curse.maven:nuclearcraft-overhauled-336895:3862197"
-	modImplementation "curse.maven:qmd-362056:5204308"
+	modImplementation "curse.maven:nuclearcraft-overhauled-336895:5446445"
+	modImplementation "curse.maven:qmd-362056:5391435"
 
 	// Thaumcraft
 	modImplementation "curse.maven:thaumcraft-223628:2629023"
@@ -315,9 +315,9 @@ dependencies {
 	modImplementation "slimeknights:TConstruct:1.12.2-2.13.0.183"
 
 	// Performance
-	modImplementation "curse.maven:reid-629017:5143492"
-	modImplementation "curse.maven:vintagefix-871198:5175094"
-	modImplementation "curse.maven:lolasm-460609:5120166"
+	modImplementation "curse.maven:reid-629017:5272391"
+	modImplementation "curse.maven:vintagefix-871198:5348800"
+	modImplementation "curse.maven:lolasm-460609:5257348"
 }
 
 def replacements = [
