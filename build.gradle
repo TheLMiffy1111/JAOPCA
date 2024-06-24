@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-1ab64651"
+	id "com.crystaelix.loom" version "jitpack-39f2e017"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -154,7 +154,7 @@ def specVersion = "3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "3.4.5.34"
+version = "3.4.5.35"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -204,11 +204,11 @@ dependencies {
 		}
 		parchment "org.parchmentmc.data:parchment-1.16.5:2022.03.06@zip"
 	}
-	forge "net.minecraftforge:forge:1.16.5-36.2.39"
+	forge "net.minecraftforge:forge:1.16.5-36.2.42"
 
 	// Common
 	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1011"
-	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.0.8.2"
+	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.1.0.0"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.16.5:3.0.106"
 	modImplementation "vazkii.patchouli:Patchouli:1.16.4-53.3"
 	modImplementation("me.shedaniel:architectury-forge:1.32.68") {transitive = false}
@@ -306,7 +306,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:shutup-experimental-settings-407174:3188120"
-	modImplementation "curse.maven:modernfix-790626:5203334"
+	modImplementation "curse.maven:modernfix-790626:5399356"
 	modImplementation "curse.maven:ferritecore-429235:3435176"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:3249059"
 }

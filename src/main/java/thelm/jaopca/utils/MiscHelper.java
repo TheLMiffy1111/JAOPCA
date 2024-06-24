@@ -1,6 +1,7 @@
 package thelm.jaopca.utils;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -8,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -19,11 +21,14 @@ import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.VersionRange;
 
+import com.google.common.base.Functions;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Streams;
 import com.google.common.collect.TreeMultiset;
 import com.google.gson.JsonElement;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
@@ -190,28 +195,46 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public FluidStack getPreferredFluidStack(Collection<Fluid> collection, int amount) {
-		return new FluidStack(getPreferredEntry(collection).orElse(Fluids.EMPTY), amount);
+		return new FluidStack(getPreferredEntry(flowingFluidComparator(), collection).orElse(Fluids.EMPTY), amount);
 	}
 
-	//Modified from Immersive Engineering
 	@Override
 	public <T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Collection<T> list) {
-		T preferredEntry = null;
-		int currBest = ConfigHandler.PREFERRED_MODS.size();
-		for(T entry : list) {
-			ResourceLocation rl = entry.getRegistryName();
-			if(rl != null) {
-				String modId = rl.getNamespace();
-				int idx = ConfigHandler.PREFERRED_MODS.indexOf(modId);
-				if(preferredEntry == null || idx >= 0 && idx < currBest) {
-					preferredEntry = entry;
-					if(idx >= 0) {
-						currBest = idx;
-					}
-				}
-			}
-		}
-		return Optional.ofNullable(preferredEntry);
+		return list.stream().min(entryPreferenceComparator());
+	}
+
+	@Override
+	public <T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Comparator<T> comparator, Collection<T> list) {
+		return list.stream().min(comparator.thenComparing(entryPreferenceComparator()));
+	}
+
+	private static final Comparator<IForgeRegistryEntry<?>> ENTRY_PREFERENCE_COMPARATOR = (entry1, entry2)->{
+		ResourceLocation key1 = entry1.getRegistryName();
+		ResourceLocation key2 = entry2.getRegistryName();
+		if(key1 == key2) return 0;
+		if(key1 == null) return 1;
+		if(key2 == null) return -1;
+		int index1 = ConfigHandler.PREFERRED_MODS.indexOf(key1.getNamespace());
+		int index2 = ConfigHandler.PREFERRED_MODS.indexOf(key2.getNamespace());
+		if(index1 == index2) return 0;
+		if(index1 == -1) return 1;
+		if(index2 == -1) return -1;
+		return Integer.compare(index1, index2);
+	};
+	private static final Comparator<Fluid> FLOWING_FLUID_COMPARATOR = (fluid1, fluid2)->{
+		boolean flag1 = fluid1 instanceof FlowingFluid && fluid1 == ((FlowingFluid)fluid1).getFlowing();
+		boolean flag2 = fluid2 instanceof FlowingFluid && fluid2 == ((FlowingFluid)fluid2).getFlowing();
+		return Boolean.compare(flag1, flag2);
+	};
+
+	@Override
+	public Comparator<IForgeRegistryEntry<?>> entryPreferenceComparator() {
+		return ENTRY_PREFERENCE_COMPARATOR;
+	}
+
+	@Override
+	public Comparator<Fluid> flowingFluidComparator() {
+		return FLOWING_FLUID_COMPARATOR;
 	}
 
 	@Override

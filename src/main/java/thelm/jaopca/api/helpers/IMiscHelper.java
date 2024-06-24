@@ -1,6 +1,7 @@
 package thelm.jaopca.api.helpers;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
@@ -40,6 +41,12 @@ public interface IMiscHelper {
 	FluidStack getPreferredFluidStack(Collection<Fluid> iterable, int amount);
 
 	<T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Collection<T> list);
+
+	<T extends IForgeRegistryEntry<T>> Optional<T> getPreferredEntry(Comparator<T> comparator, Collection<T> list);
+
+	Comparator<IForgeRegistryEntry<?>> entryPreferenceComparator();
+
+	Comparator<Fluid> flowingFluidComparator();
 
 	void caclulateMaterialSet(Collection<String> configList, Collection<String> actualSet);
 
