@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-1ab64651"
+	id "com.crystaelix.loom" version "jitpack-39f2e017"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -194,7 +194,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.1.19.41"
+version = "4.1.19.42"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -237,7 +237,7 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.18.2:2022.11.06@zip"
 	}
-	forge "net.minecraftforge:forge:1.18.2-40.2.17"
+	forge "net.minecraftforge:forge:1.18.2-40.2.21"
 
 	// Common
 	modImplementation("mezz.jei:jei-1.18.2-forge:10.2.1.1006") {transitive = false}
@@ -245,7 +245,7 @@ dependencies {
 	modImplementation "top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.2"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.18:3.0.57"
 	modImplementation "vazkii.patchouli:Patchouli:1.18.2-71.1"
-	modImplementation "dev.architectury:architectury-forge:4.11.93"
+	modImplementation "dev.architectury:architectury-forge:4.12.94"
 
 	// CraftTweaker
 	modImplementation "com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.211"
@@ -275,7 +275,7 @@ dependencies {
 	modImplementation "curse.maven:crossroads-mc-250231:4811933"
 
 	// Cyclic
-	modImplementation "curse.maven:cyclic-239286:4658622"
+	modImplementation "curse.maven:cyclic-239286:5258947"
 
 	// Electrodynamics
 	modImplementation "curse.maven:electrodynamics-316867:5012980"
@@ -299,9 +299,9 @@ dependencies {
 	modImplementation "curse.maven:industrial-reborn-358877:4034099"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:4905958"
+	modImplementation "curse.maven:cyclops-core-232758:5262021"
 	modImplementation "curse.maven:common-capabilities-247007:4987177"
-	modImplementation "curse.maven:integrated-dynamics-236307:5099616"
+	modImplementation "curse.maven:integrated-dynamics-236307:5262070"
 
 	// LavaTech
 	modImplementation "curse.maven:lavatech-533955:4154002"
@@ -310,16 +310,12 @@ dependencies {
 	modImplementation "mekanism:Mekanism:1.18.2-10.2.5.465"
 
 	// NuclearCraft: Neoteric
-	modImplementation "curse.maven:nuclearcraft-neoteric-840010:5222362"
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:5328259"
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.18.2:1.9"
 	modImplementation "curse.maven:modonomicon-538392:4641770"
 	modImplementation "curse.maven:occultism-361026:4729072"
-
-	// Tinkers' Construct
-	modImplementation "slimeknights.mantle:Mantle:1.18.2-1.9.50"
-	modImplementation "slimeknights.tconstruct:TConstruct:1.18.2-3.7.1.155"
 
 	// Thermal Expansion
 	modImplementation "com.teamcofh:cofh_core:1.18.2-9.2.3.47"
@@ -328,13 +324,17 @@ dependencies {
 	modImplementation "com.teamcofh:thermal_expansion:1.18.2-9.2.2.24"
 	modImplementation "com.teamcofh:thermal_integration:1.18.2-9.2.1.18"
 
+	// Tinkers' Construct
+	modImplementation "slimeknights.mantle:Mantle:1.18.2-1.9.50"
+	modImplementation "slimeknights.tconstruct:TConstruct:1.18.2-3.7.1.155"
+
 	// Useful Machinery
 	modImplementation "net.themcbrothers:TheMCBrosLib:1.18.2-2.0.5"
 	modImplementation "net.themcbrothers:useful-foundation:1.18.2-9.0.0"
 	modImplementation "net.themcbrothers:useful-machinery:1.18.2-5.7.0"
 
 	// Voluminous Energy
-	modImplementation "curse.maven:voluminous-energy-416704:4627233"
+	modImplementation "curse.maven:voluminous-energy-416704:5170867"
 
 	// Testing
 	modImplementation "curse.maven:ato-405593:3975599"
@@ -342,8 +342,8 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:4377180"
-	implementation "io.github.llamalad7:mixinextras-forge:0.3.5"
-	modImplementation "curse.maven:modernfix-790626:5203341"
+	implementation "io.github.llamalad7:mixinextras-forge:0.3.6"
+	modImplementation "curse.maven:modernfix-790626:5399365"
 	modImplementation "curse.maven:ferritecore-429235:4074294"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:3544496"
 }
@@ -404,8 +404,8 @@ def curseforgeDependencies = [
 	"nuclearcraft-neoteric",
 	"occultism",
 	"open-loader",
-	"tinkers-construct",
 	"thermal-expansion",
+	"tinkers-construct",
 	"useful-machinery",
 	"voluminous-energy"
 ]
@@ -425,8 +425,8 @@ def modrinthDependencies = [
 	"mekanism",
 	"occultism",
 	"open-loader",
-	"tinkers-construct",
 	"thermal-expansion",
+	"tinkers-construct",
 	"useful-machinery",
 	"voluminous_energy"
 ]
