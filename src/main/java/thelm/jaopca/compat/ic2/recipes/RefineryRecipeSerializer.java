@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import ic2.api.recipes.RecipeRegistry;
+import ic2.api.recipes.ingridients.generators.ItemGenerator;
 import ic2.api.recipes.ingridients.inputs.IInput;
 import ic2.api.recipes.ingridients.inputs.IngredientInput;
 import ic2.api.recipes.ingridients.recipes.IFluidRecipeOutput;
@@ -86,7 +87,7 @@ public class RefineryRecipeSerializer implements IRecipeSerializer {
 		if(energy != 1) {
 			RecipeMods.ENERGY_USAGE.create(mods, energy);
 		}
-		IFluidRecipeOutput output = new RangeFluidOutput(stack, itemOutputCountMin, itemOutputCountMax, fluidStack, fluidOutputAmountMin, fluidOutputAmountMax, mods);
+		IFluidRecipeOutput output = new RangeFluidOutput(new ItemGenerator(stack.getItem(), stack.getCount()), itemOutputCountMin, itemOutputCountMax, fluidStack, fluidOutputAmountMin, fluidOutputAmountMax, mods);
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "ic2:refinery");

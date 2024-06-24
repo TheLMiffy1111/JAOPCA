@@ -2,6 +2,7 @@ package thelm.jaopca.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -33,6 +34,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Streams;
 import com.google.common.collect.TreeMultiset;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -48,6 +50,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.crafting.CompoundIngredient;
@@ -280,7 +283,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public FluidStack getPreferredFluidStack(Iterable<Fluid> iterable, int amount) {
-		return new FluidStack(getPreferredEntry(ForgeRegistries.FLUIDS::getKey, iterable).orElse(Fluids.EMPTY), amount);
+		return new FluidStack(getPreferredEntry(flowingFluidComparator(), ForgeRegistries.FLUIDS::getKey, iterable).orElse(Fluids.EMPTY), amount);
 	}
 
 	@Override
@@ -319,25 +322,42 @@ public class MiscHelper implements IMiscHelper {
 		return getTagValues(RegistryManager.ACTIVE.<T>getRegistry(registry).getRegistryKey(), location);
 	}
 
-	//Modified from Immersive Engineering
 	@Override
 	public <T> Optional<T> getPreferredEntry(Function<T, ResourceLocation> keyGetter, Iterable<T> iterable) {
-		T preferredEntry = null;
-		int currBest = ConfigHandler.PREFERRED_MODS.size();
-		for(T entry : iterable) {
-			ResourceLocation rl = keyGetter.apply(entry);
-			if(rl != null) {
-				String modId = rl.getNamespace();
-				int idx = ConfigHandler.PREFERRED_MODS.indexOf(modId);
-				if(preferredEntry == null || idx >= 0 && idx < currBest) {
-					preferredEntry = entry;
-					if(idx >= 0) {
-						currBest = idx;
-					}
-				}
-			}
-		}
-		return Optional.ofNullable(preferredEntry);
+		return Streams.stream(iterable).min(entryPreferenceComparator(keyGetter));
+	}
+
+	@Override
+	public <T> Optional<T> getPreferredEntry(Comparator<T> comparator, Function<T, ResourceLocation> keyGetter, Iterable<T> iterable) {
+		return Streams.stream(iterable).min(comparator.thenComparing(entryPreferenceComparator(keyGetter)));
+	}
+
+	private static final Comparator<Fluid> FLOWING_FLUID_COMPARATOR = (fluid1, fluid2)->{
+		boolean flag1 = fluid1 instanceof FlowingFluid fFluid && fFluid == fFluid.getFlowing();
+		boolean flag2 = fluid2 instanceof FlowingFluid fFluid && fFluid == fFluid.getFlowing();
+		return Boolean.compare(flag1, flag2);
+	};
+
+	@Override
+	public <T> Comparator<T> entryPreferenceComparator(Function<T, ResourceLocation> keyGetter) {
+		return (entry1, entry2)->{
+			ResourceLocation key1 = keyGetter.apply(entry1);
+			ResourceLocation key2 = keyGetter.apply(entry2);
+			if(key1 == key2) return 0;
+			if(key1 == null) return 1;
+			if(key2 == null) return -1;
+			int index1 = ConfigHandler.PREFERRED_MODS.indexOf(key1.getNamespace());
+			int index2 = ConfigHandler.PREFERRED_MODS.indexOf(key2.getNamespace());
+			if(index1 == index2) return 0;
+			if(index1 == -1) return 1;
+			if(index2 == -1) return -1;
+			return Integer.compare(index1, index2);
+		};
+	}
+
+	@Override
+	public Comparator<Fluid> flowingFluidComparator() {
+		return FLOWING_FLUID_COMPARATOR;
 	}
 
 	@Override

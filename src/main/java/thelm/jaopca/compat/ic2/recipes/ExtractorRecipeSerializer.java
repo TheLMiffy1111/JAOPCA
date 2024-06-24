@@ -10,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import ic2.api.recipes.RecipeRegistry;
+import ic2.api.recipes.ingridients.generators.ItemGenerator;
 import ic2.api.recipes.ingridients.inputs.IInput;
 import ic2.api.recipes.ingridients.inputs.IngredientInput;
 import ic2.api.recipes.ingridients.recipes.IRecipeOutput;
@@ -65,7 +66,7 @@ public class ExtractorRecipeSerializer implements IRecipeSerializer {
 		if(energy != 1) {
 			RecipeMods.ENERGY_USAGE.create(mods, energy);
 		}
-		IRecipeOutput output = new SimpleRecipeOutput(List.of(stack), mods, experience);
+		IRecipeOutput output = new SimpleRecipeOutput(List.of(new ItemGenerator(stack.getItem(), stack.getCount())), mods, experience);
 
 		JsonObject json = new JsonObject();
 		json.addProperty("type", "ic2:extractor");

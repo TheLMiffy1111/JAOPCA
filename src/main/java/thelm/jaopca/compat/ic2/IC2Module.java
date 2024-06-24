@@ -26,7 +26,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "ic2@[1.19,1.20)")
+@JAOPCAModule(modDependencies = "ic2@[1.19.2-2.0.9,1.20)")
 public class IC2Module implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(

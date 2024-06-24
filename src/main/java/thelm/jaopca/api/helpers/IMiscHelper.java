@@ -1,6 +1,7 @@
 package thelm.jaopca.api.helpers;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
@@ -56,6 +57,12 @@ public interface IMiscHelper {
 	<T> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location);
 
 	<T> Optional<T> getPreferredEntry(Function<T, ResourceLocation> keyGetter, Iterable<T> iterable);
+
+	<T> Optional<T> getPreferredEntry(Comparator<T> comparator, Function<T, ResourceLocation> keyGetter, Iterable<T> iterable);
+
+	Comparator<Fluid> flowingFluidComparator();
+
+	<T> Comparator<T> entryPreferenceComparator(Function<T, ResourceLocation> keyGetter);
 
 	void caclulateMaterialSet(Collection<String> configList, Collection<String> actualSet);
 
