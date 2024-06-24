@@ -3,8 +3,8 @@ package thelm.jaopca.compat.theurgy.items;
 import java.util.List;
 
 import com.klikli_dev.theurgy.TheurgyConstants;
-import com.klikli_dev.theurgy.content.item.AlchemicalSulfurItem;
-import com.klikli_dev.theurgy.content.item.AlchemicalSulfurType;
+import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurItem;
+import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurType;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;

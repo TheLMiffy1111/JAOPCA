@@ -8,8 +8,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import com.klikli_dev.theurgy.content.item.AlchemicalSulfurTier;
-import com.klikli_dev.theurgy.content.item.AlchemicalSulfurType;
+import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurTier;
+import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurType;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +34,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "theurgy")
+@JAOPCAModule(modDependencies = "theurgy@[1.18,)")
 public class TheurgyModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(

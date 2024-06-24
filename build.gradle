@@ -208,7 +208,7 @@ def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.a.0.2"
+version = "5.a.0.3"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -247,22 +247,22 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.20.4:2024.02.25@zip"
 	}
-	neoForge "net.neoforged:neoforge:20.4.234"
+	neoForge "net.neoforged:neoforge:20.4.237"
 
 	// Common
-	implementation("mezz.jei:jei-1.20.4-neoforge:17.3.0.49") {transitive = false}
-	implementation "top.theillusivec4.curios:curios-neoforge:7.3.4+1.20.4"
+	implementation("mezz.jei:jei-1.20.4-neoforge:17.3.0.56") {transitive = false}
+	implementation "top.theillusivec4.curios:curios-neoforge:7.4.3+1.20.4"
 	implementation("software.bernie.geckolib:geckolib-neoforge-1.20.4:4.4.4") {transitive = false}
-	implementation("com.klikli_dev:modonomicon-1.20.4-neoforge:1.66.2") {transitive = false}
+	implementation("com.klikli_dev:modonomicon-1.20.4-neoforge:1.73.1") {transitive = false}
 	implementation "dev.architectury:architectury-neoforge:11.1.17"
 
 	// CraftTweaker
-	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.20.4:17.0.13") {transitive = false}
+	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.20.4:17.0.19") {transitive = false}
 
 	// KubeJS
 
 	// Json Things
-	implementation "dev.gigaherz.rhinolib:rhino-lib:1.0-SNAPSHOT"
+	implementation "dev.latvian.mods:rhino-neoforge:2004.2.3-build.4"
 	implementation("dev.gigaherz.jsonthings:JsonThings-1.20.4:0.10.0") {transitive = false}
 
 	// Open Loader
@@ -274,25 +274,25 @@ dependencies {
 	// Ender IO
 
 	// Energized Power
-	implementation "curse.maven:energized-power-782147:5153719"
+	implementation "curse.maven:energized-power-782147:5401190"
 
 	// Immersive Engineering
-	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.4-11.3.0-174"
+	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.4-11.4.3-178"
 
 	// Mekanism
-	implementation "mekanism:Mekanism:1.20.4-10.5.19.40"
+	implementation "mekanism:Mekanism:1.20.4-10.5.20.41"
 
 	// Modern Industrialization
 	implementation "me.shedaniel.cloth:cloth-config-neoforge:13.0.121"
 	implementation "dev.technici4n:GrandPower:1.0.0"
-	implementation "curse.maven:modern-industrialization-405388:5193390"
+	implementation "curse.maven:modern-industrialization-405388:5458313"
 
 	// Occultism
-	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.20.4:1.13"
-	implementation("com.klikli_dev:occultism-1.20.4-neoforge:1.124.1") {transitive = false}
+	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.20.4:1.14.1"
+	implementation("com.klikli_dev:occultism-1.20.4-neoforge:1.132.1") {transitive = false}
 
 	// Theurgy
-	implementation("com.klikli_dev:theurgy-1.20.4-neoforge:1.17.1") {transitive = false}
+	implementation("com.klikli_dev:theurgy-1.20.4-neoforge:1.19.3") {transitive = false}
 
 	// Useful Machinery
 	implementation "net.themcbrothers:themcbroslib:1.20.4-6.1.0"
@@ -302,8 +302,8 @@ dependencies {
 	// Testing
 
 	// Performance
-	implementation "curse.maven:yeetusexperimentus-635427:5084420"
-	implementation "curse.maven:modernfix-790626:5203337"
+	implementation "curse.maven:yeetusexperimentus-635427:5415033"
+	implementation "curse.maven:modernfix-790626:5288162"
 	implementation "curse.maven:ferritecore-429235:4954175"
 }
 
