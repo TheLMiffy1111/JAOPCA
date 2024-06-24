@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +17,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
@@ -129,22 +131,8 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public ItemStack getPreferredItemStack(Iterable<ItemStack> iterable, int count) {
-		ItemStack preferredEntry = null;
-		int currBest = ConfigHandler.PREFERRED_MODS.size();
-		for(ItemStack entry : iterable) {
-			String name = Item.itemRegistry.getNameForObject(entry.getItem());
-			if(name != null) {
-				String modId = name.split(":")[0];
-				int idx = ConfigHandler.PREFERRED_MODS.indexOf(modId);
-				if(preferredEntry == null || idx >= 0 && idx < currBest) {
-					preferredEntry = entry;
-					if(idx >= 0) {
-						currBest = idx;
-					}
-				}
-			}
-		}
-		return resizeItemStack(preferredEntry, count);
+		Optional<ItemStack> preferredEntry = StreamSupport.stream(iterable.spliterator(), false).min(Comparator.comparing(ItemStack::getItem, itemPreferenceComparator()));
+		return preferredEntry.map(stack->resizeItemStack(stack, count)).orElse(null);
 	}
 
 	@Override
@@ -185,6 +173,25 @@ public class MiscHelper implements IMiscHelper {
 			return ret;
 		}
 		return null;
+	}
+
+	private static final Comparator<Item> ITEM_PREFERENCE_COMPARATOR = (item1, item2)->{
+		String key1 = Item.itemRegistry.getNameForObject(item1);
+		String key2 = Item.itemRegistry.getNameForObject(item2);
+		if(key1 == key2) return 0;
+		if(key1 == null) return 1;
+		if(key2 == null) return -1;
+		int index1 = ConfigHandler.PREFERRED_MODS.indexOf(key1.split(":")[0]);
+		int index2 = ConfigHandler.PREFERRED_MODS.indexOf(key2.split(":")[0]);
+		if(index1 == index2) return 0;
+		if(index1 == -1) return 1;
+		if(index2 == -1) return -1;
+		return Integer.compare(index1, index2);
+	};
+
+	@Override
+	public Comparator<Item> itemPreferenceComparator() {
+		return ITEM_PREFERENCE_COMPARATOR;
 	}
 
 	private static final Predicate<String> META_ITEM_PREDICATE = s->Item.itemRegistry.containsKey(s.split("@(?=\\d*$)")[0]);

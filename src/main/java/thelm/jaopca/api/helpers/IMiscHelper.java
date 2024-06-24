@@ -1,11 +1,13 @@
 package thelm.jaopca.api.helpers;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,6 +31,8 @@ public interface IMiscHelper {
 	FluidStack getFluidStack(Object obj, int amount);
 
 	FluidStack resizeFluidStack(FluidStack stack, int amount);
+
+	Comparator<Item> itemPreferenceComparator();
 
 	Predicate<String> metaItemPredicate();
 

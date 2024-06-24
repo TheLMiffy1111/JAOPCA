@@ -1,1 +1,1 @@
-Fix logging crash again  
+Changed item preference to be based on comparators  
