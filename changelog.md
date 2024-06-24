@@ -1,1 +1,2 @@
-Fix Railcraft Reborn compat raw block recipes  
+Changed entry preference to be based on comparators  
+Prefer source fluids in fluid preference  
