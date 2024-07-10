@@ -1,9 +1,8 @@
 package thelm.jaopca.compat.groovyscript;
 
 import com.cleanroommc.groovyscript.api.GroovyPlugin;
-import com.cleanroommc.groovyscript.api.IGameObjectParser;
+import com.cleanroommc.groovyscript.api.IObjectParser;
 import com.cleanroommc.groovyscript.compat.mods.GroovyContainer;
-import com.cleanroommc.groovyscript.gameobjects.GameObjectHandler;
 import com.cleanroommc.groovyscript.sandbox.expand.ExpansionHelper;
 
 import thelm.jaopca.api.forms.IForm;
@@ -29,19 +28,19 @@ public class JAOPCAGroovyPlugin implements GroovyPlugin {
 
 	@Override
 	public void onCompatLoaded(GroovyContainer<?> container) {
-		GameObjectHandler.builder("module", IModuleData.class).mod("jaopca").
+		container.objectMapperBuilder("module", IModuleData.class).mod("jaopca").
 		addSignature(String.class).
-		parser(IGameObjectParser.wrapStringGetter(ModuleHandler::getModuleData)).
+		parser(IObjectParser.wrapStringGetter(ModuleHandler::getModuleData)).
 		completerOfNamed(ModuleHandler::getModules, IModule::getName);
 
-		GameObjectHandler.builder("form", IForm.class).mod("jaopca").
+		container.objectMapperBuilder("form", IForm.class).mod("jaopca").
 		addSignature(String.class).
-		parser(IGameObjectParser.wrapStringGetter(FormHandler::getForm)).
+		parser(IObjectParser.wrapStringGetter(FormHandler::getForm)).
 		completerOfNamed(FormHandler::getForms, IForm::getName);
 
-		GameObjectHandler.builder("material", IMaterial.class).mod("jaopca").
+		container.objectMapperBuilder("material", IMaterial.class).mod("jaopca").
 		addSignature(String.class).
-		parser(IGameObjectParser.wrapStringGetter(MaterialHandler::getMaterial)).
+		parser(IObjectParser.wrapStringGetter(MaterialHandler::getMaterial)).
 		completerOfNamed(MaterialHandler::getMaterials, IMaterial::getName);
 
 		ExpansionHelper.mixinClass(IModuleData.class, ModuleDataExpansion.class);

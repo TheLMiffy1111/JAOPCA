@@ -158,7 +158,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.10.23"
+version = "2.3.10.24"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -223,7 +223,7 @@ dependencies {
 	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.699") {transitive = false}
 
 	// GroovyScript
-	modImplementation("com.cleanroommc:groovyscript:1.1.0") {transitive = false}
+	modImplementation("com.cleanroommc:groovyscript:1.1.1") {transitive = false}
 
 	// AbyssalCraft
 	modImplementation "curse.maven:abyssalcraft-53686:5330323"
@@ -296,7 +296,8 @@ dependencies {
 
 	// QMD
 	modImplementation "curse.maven:nuclearcraft-overhauled-336895:5446445"
-	modImplementation "curse.maven:qmd-362056:5391435"
+	modImplementation "curse.maven:nco-java-legacy-lib-1032769:5414463"
+	modImplementation "curse.maven:qmd-362056:5467081"
 
 	// Thaumcraft
 	modImplementation "curse.maven:thaumcraft-223628:2629023"
