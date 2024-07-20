@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6453f0f4"
+	id "com.crystaelix.loom" version "jitpack-ae847f1f"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -236,7 +236,7 @@ dependencies {
 	modImplementation "curse.maven:ganys-nether-222302:2274606"
 
 	// HBM's Nuclear Tech Mod
-	modImplementation "curse.maven:hbms-nuclear-tech-mod-235439:5436208"
+	modImplementation "curse.maven:hbms-nuclear-tech-mod-235439:5534354"
 
 	// Hydaulicraft
 	modImplementation "k4unl:k4lib:1.7.10-0.1.75:universal"
