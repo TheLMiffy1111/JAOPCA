@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6453f0f4"
+	id "com.crystaelix.loom" version "jitpack-ae847f1f"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -218,9 +218,9 @@ dependencies {
 	implementation("zone.rong:mixinbooter:9.1") {transitive = false}
 
 	// CraftTweaker
-	modImplementation("CraftTweaker2:ZenScript:4.1.20.699") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.699") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.699") {transitive = false}
+	modImplementation("CraftTweaker2:ZenScript:4.1.20.700") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.700") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.700") {transitive = false}
 
 	// GroovyScript
 	modImplementation("com.cleanroommc:groovyscript:1.1.1") {transitive = false}
@@ -316,8 +316,8 @@ dependencies {
 	modImplementation "slimeknights:TConstruct:1.12.2-2.13.0.183"
 
 	// Performance
-	modImplementation "curse.maven:reid-629017:5272391"
-	modImplementation "curse.maven:vintagefix-871198:5348800"
+	modImplementation "curse.maven:reid-629017:5502915"
+	modImplementation "curse.maven:vintagefix-871198:5536276"
 	modImplementation "curse.maven:lolasm-460609:5257348"
 }
 
