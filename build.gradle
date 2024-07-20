@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-39f2e017"
+	id "com.crystaelix.loom" version "jitpack-6453f0f4"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -302,7 +302,7 @@ dependencies {
 	// Testing
 
 	// Performance
-	implementation "curse.maven:yeetusexperimentus-635427:5415033"
+	implementation "curse.maven:yeetusexperimentus-635427:5084420"
 	implementation "curse.maven:modernfix-790626:5288162"
 	implementation "curse.maven:ferritecore-429235:4954175"
 }
