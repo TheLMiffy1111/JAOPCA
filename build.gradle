@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6453f0f4"
+	id "com.crystaelix.loom" version "jitpack-ae847f1f"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -20,17 +20,6 @@ repositories {
 		}
 		filter {
 			includeGroup "org.parchmentmc.data"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://dvs1.progwml6.com/files/maven/"
-			}
-		}
-		filter {
-			includeGroup "slimeknights.mantle"
-			includeGroup "slimeknights.tconstruct"
 		}
 	}
 	exclusiveContent {
@@ -75,20 +64,7 @@ repositories {
 			}
 		}
 		filter {
-			includeGroup "dev.ftb.mods"
 			includeGroup "dev.latvian.mods"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.tterrag.com/"
-			}
-		}
-		filter {
-			includeGroup "com.tterrag.registrate"
-			includeGroup "com.jozufozu.flywheel"
-			includeGroup "com.simibubi.create"
 		}
 	}
 	exclusiveContent {
@@ -98,38 +74,7 @@ repositories {
 			}
 		}
 		filter {
-			includeGroup "com.eliotlash.mclib"
 			includeGroup "software.bernie.geckolib"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.covers1624.net/"
-			}
-		}
-		filter {
-			includeGroup "com.teamcofh"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1/"
-			}
-		}
-		filter {
-			includeGroup "com.kotori316"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://jenkins.bdew.net/maven/"
-			}
-		}
-		filter {
-			includeGroup "net.bdew"
 		}
 	}
 	exclusiveContent {
@@ -139,9 +84,7 @@ repositories {
 			}
 		}
 		filter {
-			includeGroup "dev.gigaherz.rhinolib"
 			includeGroup "dev.gigaherz.jsonthings"
-			includeGroup "dev.gigaherz.graph"
 		}
 	}
 	exclusiveContent {
@@ -250,19 +193,21 @@ dependencies {
 	neoForge "net.neoforged:neoforge:20.4.237"
 
 	// Common
-	implementation("mezz.jei:jei-1.20.4-neoforge:17.3.0.56") {transitive = false}
+	implementation("mezz.jei:jei-1.20.4-neoforge:17.3.1.3") {transitive = false}
 	implementation "top.theillusivec4.curios:curios-neoforge:7.4.3+1.20.4"
 	implementation("software.bernie.geckolib:geckolib-neoforge-1.20.4:4.4.4") {transitive = false}
-	implementation("com.klikli_dev:modonomicon-1.20.4-neoforge:1.73.1") {transitive = false}
+	implementation "vazkii.patchouli:Patchouli:1.20.4-85-NEOFORGE"
+	implementation("com.klikli_dev:modonomicon-1.20.4-neoforge:1.73.2") {transitive = false}
 	implementation "dev.architectury:architectury-neoforge:11.1.17"
+	implementation "dev.latvian.mods:rhino-neoforge:2004.2.3-build.4"
 
 	// CraftTweaker
 	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.20.4:17.0.19") {transitive = false}
 
 	// KubeJS
+	implementation("dev.latvian.mods:kubejs-neoforge:2004.7.0-build.26") {transitive = false}
 
 	// Json Things
-	implementation "dev.latvian.mods:rhino-neoforge:2004.2.3-build.4"
 	implementation("dev.gigaherz.jsonthings:JsonThings-1.20.4:0.10.0") {transitive = false}
 
 	// Open Loader
@@ -271,13 +216,11 @@ dependencies {
 	// Actually Additions
 	implementation "curse.maven:actually-additions-228404:5416363"
 
-	// Ender IO
-
 	// Energized Power
 	implementation "curse.maven:energized-power-782147:5401190"
 
 	// Immersive Engineering
-	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.4-11.4.3-178"
+	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.4-11.5.0-179"
 
 	// Mekanism
 	implementation "mekanism:Mekanism:1.20.4-10.5.20.41"
@@ -285,14 +228,14 @@ dependencies {
 	// Modern Industrialization
 	implementation "me.shedaniel.cloth:cloth-config-neoforge:13.0.121"
 	implementation "dev.technici4n:GrandPower:1.0.0"
-	implementation "curse.maven:modern-industrialization-405388:5458313"
+	implementation "curse.maven:modern-industrialization-405388:5521723"
 
 	// Occultism
 	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.20.4:1.14.1"
-	implementation("com.klikli_dev:occultism-1.20.4-neoforge:1.132.1") {transitive = false}
+	implementation("com.klikli_dev:occultism-1.20.4-neoforge:1.132.2") {transitive = false}
 
 	// Theurgy
-	implementation("com.klikli_dev:theurgy-1.20.4-neoforge:1.19.3") {transitive = false}
+	implementation("com.klikli_dev:theurgy-1.20.4-neoforge:1.19.4") {transitive = false}
 
 	// Useful Machinery
 	implementation "net.themcbrothers:themcbroslib:1.20.4-6.1.0"
@@ -352,8 +295,7 @@ def curseforgeDependencies = [
 	"modern-industrialization",
 	"occultism",
 	"open-loader",
-	"useful-machinery",
-	"voluminous-energy"
+	"useful-machinery"
 ]
 
 def modrinthDependencies = [
@@ -364,8 +306,7 @@ def modrinthDependencies = [
 	"modern-industrialization",
 	"occultism",
 	"open-loader",
-	"useful-machinery",
-	"voluminous_energy"
+	"useful-machinery"
 ]
 
 publishMods {
