@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6453f0f4"
+	id "com.crystaelix.loom" version "jitpack-ae847f1f"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -207,7 +207,7 @@ dependencies {
 	forge "net.minecraftforge:forge:1.16.5-36.2.42"
 
 	// Common
-	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1011"
+	modImplementation "mezz.jei:jei-1.16.5:7.8.0.1012"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.16.5-4.1.0.0"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.16.5:3.0.106"
 	modImplementation "vazkii.patchouli:Patchouli:1.16.4-53.3"
