@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-39f2e017"
+	id "com.crystaelix.loom" version "jitpack-6453f0f4"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -183,9 +183,9 @@ dependencies {
 	annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.17") {transitive = false}
 
 	// Common
-	modImplementation("com.github.GTNewHorizons:CodeChickenLib:1.2.1") {transitive = false}
-	modImplementation("com.github.GTNewHorizons:CodeChickenCore:1.2.1") {transitive = false}
-	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.6.10-GTNH-pre") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:CodeChickenLib:1.3.0") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:CodeChickenCore:1.3.4") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.6.14-GTNH") {transitive = false}
 	modImplementation "curse.maven:nei-integration-225251:2282522"
 	modImplementation "curse.maven:baubles-227083:2224857"
 
@@ -220,7 +220,7 @@ dependencies {
 	modImplementation "curse.maven:engineers-toolbox-224613:2248029"
 
 	// EssentialCraft
-	modImplementation("com.github.GTNewHorizons:DummyCore:2.0.3") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:DummyCore:1.19.0") {transitive = false}
 	modImplementation "curse.maven:essentialcraft-4-unofficial-254817:2394702"
 
 	// Factorization
@@ -274,12 +274,12 @@ dependencies {
 	// Thaumcraft
 	modImplementation "curse.maven:thaumcraft-223628:2227552"
 	modImplementation "curse.maven:thaumcraft-nei-plugin-225095:2241913"
-	modImplementation("com.github.GTNewHorizons:TCNEIAdditions:1.3.2") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:TCNEIAdditions:1.4.0") {transitive = false}
 
 	// Performance
-	modImplementation "com.github.GTNewHorizons:GTNHLib:0.2.11"
+	modImplementation "com.github.GTNewHorizons:GTNHLib:0.3.2"
 	modImplementation("com.github.GTNewHorizons:NotEnoughIds:2.1.0") {transitive = false}
-	modImplementation "curse.maven:archaicfix-677782:5157231"
+	modImplementation "curse.maven:archaicfix-677782:5474850"
 }
 
 def replacements = [
