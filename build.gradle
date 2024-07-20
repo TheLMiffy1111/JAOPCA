@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6453f0f4"
+	id "com.crystaelix.loom" version "jitpack-ae847f1f"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -251,9 +251,9 @@ dependencies {
 	forge "net.minecraftforge:forge:1.19.2-43.4.0"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.19.2-forge:11.6.0.1020") {transitive = false}
+	modImplementation("mezz.jei:jei-1.19.2-forge:11.6.0.1024") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.19-1.1.5"
-	modImplementation "top.theillusivec4.curios:curios-forge:1.19.2-5.1.6.2"
+	modImplementation "top.theillusivec4.curios:curios-forge:1.19.2-5.1.6.3"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.19:3.1.40"
 	modImplementation "vazkii.patchouli:Patchouli:1.19.2-77"
 	modImplementation "dev.architectury:architectury-forge:6.6.92"
@@ -289,7 +289,7 @@ dependencies {
 	modImplementation "curse.maven:electrodynamics-316867:5040593"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:5421211"
+	modImplementation "curse.maven:energized-power-782147:5510672"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:2.13.8-build-8:with-library") {transitive = false}
@@ -310,15 +310,15 @@ dependencies {
 	modImplementation "curse.maven:industrial-reborn-358877:4651636"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:5262031"
+	modImplementation "curse.maven:cyclops-core-232758:5467203"
 	modImplementation "curse.maven:common-capabilities-247007:4987191"
-	modImplementation "curse.maven:integrated-dynamics-236307:5297713"
+	modImplementation "curse.maven:integrated-dynamics-236307:5467157"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
 
 	// NuclearCraft: Neoteric
-	modImplementation "curse.maven:nuclearcraft-neoteric-840010:5328287"
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:5479570"
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.19.2:1.9"
