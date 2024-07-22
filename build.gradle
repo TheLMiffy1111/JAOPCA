@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-ae847f1f"
+	id "com.crystaelix.loom" version "jitpack-af214fdb"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -310,9 +310,9 @@ dependencies {
 	modImplementation "curse.maven:industrial-reborn-358877:4651636"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:5467203"
+	modImplementation "curse.maven:cyclops-core-232758:5550859"
 	modImplementation "curse.maven:common-capabilities-247007:4987191"
-	modImplementation "curse.maven:integrated-dynamics-236307:5467157"
+	modImplementation "curse.maven:integrated-dynamics-236307:5550867"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
