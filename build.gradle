@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-ae847f1f"
+	id "com.crystaelix.loom" version "jitpack-af214fdb"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -208,7 +208,7 @@ dependencies {
 	implementation("dev.latvian.mods:kubejs-neoforge:2004.7.0-build.26") {transitive = false}
 
 	// Json Things
-	implementation("dev.gigaherz.jsonthings:JsonThings-1.20.4:0.10.0") {transitive = false}
+	modImplementation("dev.gigaherz.jsonthings:JsonThings-1.20.4:0.10.0") {transitive = false}
 
 	// Open Loader
 	implementation "net.darkhax.openloader:OpenLoader-NeoForge-1.20.4:22.1.7"
@@ -220,7 +220,12 @@ dependencies {
 	implementation "curse.maven:energized-power-782147:5401190"
 
 	// Immersive Engineering
-	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.4-11.5.0-179"
+	implementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.4-11.5.0-179"
+
+	// Integrated Dynamics
+	implementation "curse.maven:cyclops-core-232758:5540296"
+	implementation "curse.maven:common-capabilities-247007:5457951"
+	implementation "curse.maven:integrated-dynamics-236307:5540334"
 
 	// Mekanism
 	implementation "mekanism:Mekanism:1.20.4-10.5.20.41"
@@ -290,11 +295,14 @@ def curseforgeDependencies = [
 	"crafttweaker",
 	"energized-power",
 	"immersive-engineering",
+	"integrated-dynamics",
 	"json-things",
+	"kubejs",
 	"mekanism",
 	"modern-industrialization",
 	"occultism",
 	"open-loader",
+	"theurgy",
 	"useful-machinery"
 ]
 
@@ -302,10 +310,13 @@ def modrinthDependencies = [
 	"crafttweaker",
 	"energized-power",
 	"immersiveengineering",
+	"integrated-dynamics",
+	"kubejs",
 	"mekanism",
 	"modern-industrialization",
 	"occultism",
 	"open-loader",
+	"theurgy",
 	"useful-machinery"
 ]
 
