@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-ae847f1f"
+	id "com.crystaelix.loom" version "jitpack-af214fdb"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -222,7 +222,6 @@ loom {
 	silentMojangMappingsLicense()
 	forge {
 		mixinConfig "${modId}.mixins.json"
-		useForgeLoggerConfig = true
 	}
 	mixin.defaultRefmapName = "${modId}.refmap.json"
 	interfaceInjection.enableDependencyInterfaceInjection = false
@@ -313,12 +312,10 @@ dependencies {
 	// Immersive Engineering
 	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.1-10.0.0-169.40"
 
-	// Industrial Reborn
-
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:5467217"
+	modImplementation "curse.maven:cyclops-core-232758:5550871"
 	modImplementation "curse.maven:common-capabilities-247007:4987207"
-	modImplementation "curse.maven:integrated-dynamics-236307:5467171"
+	modImplementation "curse.maven:integrated-dynamics-236307:5550888"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.20.1-10.4.8.43"
