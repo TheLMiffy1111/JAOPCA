@@ -18,10 +18,6 @@ public class MemoizingIntSupplier implements IntSupplier {
 		return new MemoizingIntSupplier(delegate);
 	}
 
-	public static <T> MemoizingIntSupplier of(ToIntFunction<T> function, T value) {
-		return new MemoizingIntSupplier(()->function.applyAsInt(value));
-	}
-
 	public static <T> MemoizingIntSupplier of(ToIntFunction<T> function, Supplier<T> value) {
 		return new MemoizingIntSupplier(()->function.applyAsInt(value.get()));
 	}
