@@ -1,7 +1,7 @@
 package thelm.jaopca.fluids;
 
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.LevelReader;
@@ -12,6 +12,7 @@ import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.PlaceableFluid;
 import thelm.jaopca.api.fluids.PlaceableFluidBlock;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 
 public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
@@ -20,15 +21,19 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 	private final IMaterial material;
 	protected final IFluidFormSettings settings;
 
-	protected OptionalInt tickRate = OptionalInt.empty();
-	protected OptionalDouble explosionResistance = OptionalDouble.empty();
-	protected OptionalInt levelDecreasePerBlock = OptionalInt.empty();
+	protected IntSupplier tickRate;
+	protected DoubleSupplier explosionResistance;
+	protected IntSupplier levelDecreasePerBlock;
 
 	public JAOPCAFluid(IForm form, IMaterial material, IFluidFormSettings settings) {
 		super(settings.getMaxLevelFunction().applyAsInt(material));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
+
+		tickRate = MemoizingSuppliers.of(settings.getTickRateFunction(), material);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), material);
+		levelDecreasePerBlock = MemoizingSuppliers.of(settings.getLevelDecreasePerBlockFunction(), material);
 	}
 
 	@Override
@@ -43,25 +48,16 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 
 	@Override
 	public int getTickDelay(LevelReader world) {
-		if(!tickRate.isPresent()) {
-			tickRate = OptionalInt.of(settings.getTickRateFunction().applyAsInt(material));
-		}
 		return tickRate.getAsInt();
 	}
 
 	@Override
 	protected float getExplosionResistance() {
-		if(!explosionResistance.isPresent()) {
-			explosionResistance = OptionalDouble.of(settings.getExplosionResistanceFunction().applyAsDouble(material));
-		}
 		return (float)explosionResistance.getAsDouble();
 	}
 
 	@Override
 	protected int getDropOff(LevelReader world) {
-		if(!levelDecreasePerBlock.isPresent()) {
-			levelDecreasePerBlock = OptionalInt.of(settings.getLevelDecreasePerBlockFunction().applyAsInt(material));
-		}
 		return levelDecreasePerBlock.getAsInt();
 	}
 

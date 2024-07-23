@@ -145,6 +145,14 @@ public abstract class JAOPCAApi {
 	public abstract IDynamicSpecConfig getMaterialConfig(IMaterial material);
 
 	/**
+	 * Returns the set of known tag locations for a registry, which is the union of defined tag locations
+	 * and registered tag locations. Note that tags added by custom data packs may not be included.
+	 * @param registry The registry of the tags
+	 * @return The set of tag locations known by JAOPCA
+	 */
+	public abstract Set<ResourceLocation> getTags(ResourceKey<? extends Registry<?>> registry);
+
+	/**
 	 * Returns the set of known block tag locations, which is the union of defined block tag locations
 	 * and registered block tag locations. Note that tags added by custom data packs may not be included.
 	 * @return The set of block tag locations known by JAOPCA
@@ -227,6 +235,14 @@ public abstract class JAOPCAApi {
 	public abstract <T, I extends T> DeferredHolder<T, I> registerRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry);
 
 	/**
+	 * Registers a tag location that may be added externally and should be known to JAOPCA.
+	 * @param registry The registry of the tag
+	 * @param key The tag location that should be known by JAOPCA
+	 * @return true if the tag location was not already defined
+	 */
+	public abstract boolean registerDefinedTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key);
+
+	/**
 	 * Registers a block tag location that may be added externally and should be known to JAOPCA.
 	 * @param key The tag location that should be known by JAOPCA
 	 * @return true if the tag location was not already defined
@@ -255,6 +271,28 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerDefinedEntityTypeTag(ResourceLocation key);
 
 	public abstract boolean registerReloadInjector(Class<?> clazz, Consumer<Object> injector);
+
+	/**
+	 * Registers a registry object location to be added to a tag by JAOPCA's in memory data pack.
+	 * Locations that do not correspond to a registry object will effectively be ignored by the data pack.
+	 * This method ignores the blacklists in the configuration file.
+	 * @param registry The registry of the tag
+	 * @param key The location of the tag
+	 * @param objKey The registry object location to be added
+	 * @return true if the tag location was added
+	 */
+	public abstract boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key, ResourceLocation objKey);
+
+	/**
+	 * Registers a registry object to be added to a tag by JAOPCA's in memory data pack.Locations that do
+	 * not correspond to a registry object will effectively be ignored by the data pack.
+	 * This method ignores the blacklists in the configuration file.
+	 * @param registry The registry of the tag
+	 * @param key The location of the tag
+	 * @param obj The registry object to be added
+	 * @return true if the tag location was added
+	 */
+	public abstract <T> boolean registerTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation key, T obj);
 
 	/**
 	 * Registers a block location to be added to a tag by JAOPCA's in memory data pack. Locations that do

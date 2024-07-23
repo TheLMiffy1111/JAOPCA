@@ -20,6 +20,10 @@ public class SlurryCustomCodecs {
 					Codec.BOOL.optionalFieldOf("isHidden"),
 					s->s.getIsHidden(),
 					(s, f)->s.setIsHidden(f)).
+			withField(
+					CustomCodecs.materialStringFunction("").optionalFieldOf("oreTag"),
+					s->s.getOreTagFunction(),
+					(s, f)->s.setOreTagFunction(f)).
 			build().
 			flatComapMap(Functions.identity(),
 					s->s instanceof ISlurryFormSettings ss ? DataResult.success(ss) : DataResult.error(()->"Not slurry form settings"));

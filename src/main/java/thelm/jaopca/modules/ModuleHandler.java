@@ -92,7 +92,6 @@ public class ModuleHandler {
 					module = moduleInstanceClass.newInstance();
 				}
 				if(MODULES.putIfAbsent(module.getName(), module) != null) {
-					//throw new IllegalStateException(String.format("Module name conflict: %s for %s and %s", module.getName(), MODULES.get(module.getName()).getClass(), module.getClass()));
 					LOGGER.fatal("Module name conflict: {} for {} and {}", module.getName(), MODULES.get(module.getName()).getClass(), module.getClass());
 					continue;
 				}

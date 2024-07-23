@@ -22,6 +22,7 @@ import net.minecraft.world.item.Rarity;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialColorEvent;
 import thelm.jaopca.api.materials.MaterialType;
@@ -156,7 +157,7 @@ public class Material implements IMaterial {
 
 		isSmallStorageBlock = config.getDefinedBoolean("general.isSmallStorageBlock", isSmallStorageBlock, "Is the storage block of this material small (2x2).");
 
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateModuleSet(
 				config.getDefinedStringList("general.moduleBlacklist", new ArrayList<>(configModuleBlacklist),
 						helper.configModulePredicate(), "The module blacklist of this material."),

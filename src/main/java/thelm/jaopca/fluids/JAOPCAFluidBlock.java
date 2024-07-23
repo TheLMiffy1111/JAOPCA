@@ -1,8 +1,9 @@
 package thelm.jaopca.fluids;
 
-import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,6 +21,7 @@ import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
 import thelm.jaopca.api.fluids.PlaceableFluid;
 import thelm.jaopca.api.fluids.PlaceableFluidBlock;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 
 public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFormFluidBlock {
@@ -27,19 +29,27 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	private final IMaterialFormFluid fluid;
 	protected final IFluidFormSettings settings;
 
-	protected Optional<MapColor> mapColor = Optional.empty();
-	protected OptionalInt lightValue = OptionalInt.empty();
-	protected OptionalDouble explosionResistance = OptionalDouble.empty();
-	protected OptionalInt flammability = OptionalInt.empty();
-	protected OptionalInt fireSpreadSpeed = OptionalInt.empty();
-	protected Optional<Boolean> isFireSource = Optional.empty();
-	protected OptionalInt fireTime = OptionalInt.empty();
+	protected Supplier<MapColor> mapColor;
+	protected IntSupplier lightValue;
+	protected DoubleSupplier explosionResistance;
+	protected IntSupplier flammability;
+	protected IntSupplier fireSpreadSpeed;
+	protected BooleanSupplier isFireSource;
+	protected IntSupplier fireTime;
 
 	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings) {
 		super(getProperties(fluid, settings), (PlaceableFluid)fluid.toFluid(),
 				settings.getMaxLevelFunction().applyAsInt(fluid.getMaterial()));
 		this.fluid = fluid;
 		this.settings = settings;
+
+		mapColor = MemoizingSuppliers.of(settings.getMapColorFunction(), fluid::getMaterial);
+		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), fluid::getMaterial);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), fluid::getMaterial);
+		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), fluid::getMaterial);
+		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), fluid::getMaterial);
+		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), fluid::getMaterial);
+		fireTime = MemoizingSuppliers.of(settings.getFireTimeFunction(), fluid::getMaterial);
 	}
 
 	public static BlockBehaviour.Properties getProperties(IMaterialFormFluid fluid, IFluidFormSettings settings) {
@@ -68,57 +78,36 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 
 	@Override
 	public MapColor getMapColor(BlockState state, BlockGetter level, BlockPos pos, MapColor defaultColor) {
-		if(!mapColor.isPresent()) {
-			mapColor = Optional.of(settings.getMapColorFunction().apply(getMaterial()));
-		}
 		return mapColor.get();
 	}
 
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-		if(!lightValue.isPresent()) {
-			lightValue = OptionalInt.of(settings.getLightValueFunction().applyAsInt(getMaterial()));
-		}
 		return lightValue.getAsInt();
 	}
 
 	@Override
 	public float getExplosionResistance() {
-		if(!explosionResistance.isPresent()) {
-			explosionResistance = OptionalDouble.of(settings.getExplosionResistanceFunction().applyAsDouble(getMaterial()));
-		}
 		return (float)explosionResistance.getAsDouble();
 	}
 
 	@Override
 	public int getFlammability(BlockState blockState, BlockGetter world, BlockPos pos, Direction face) {
-		if(!flammability.isPresent()) {
-			flammability = OptionalInt.of(settings.getFireSpreadSpeedFunction().applyAsInt(getMaterial()));
-		}
 		return flammability.getAsInt();
 	}
 
 	@Override
 	public int getFireSpreadSpeed(BlockState blockState, BlockGetter world, BlockPos pos, Direction face) {
-		if(!fireSpreadSpeed.isPresent()) {
-			fireSpreadSpeed = OptionalInt.of(settings.getFlammabilityFunction().applyAsInt(getMaterial()));
-		}
 		return fireSpreadSpeed.getAsInt();
 	}
 
 	@Override
 	public boolean isFireSource(BlockState blockState, LevelReader world, BlockPos pos, Direction side) {
-		if(!isFireSource.isPresent()) {
-			isFireSource = Optional.of(settings.getIsFireSourceFunction().test(getMaterial()));
-		}
-		return isFireSource.get();
+		return isFireSource.getAsBoolean();
 	}
 
 	@Override
 	public void entityInside(BlockState blockState, Level world, BlockPos pos, Entity entity) {
-		if(!fireTime.isPresent()) {
-			fireTime = OptionalInt.of(settings.getFireTimeFunction().applyAsInt(getMaterial()));
-		}
 		int time = fireTime.getAsInt();
 		if(time > 0) {
 			entity.setSecondsOnFire(time);

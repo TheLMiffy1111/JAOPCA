@@ -6,15 +6,17 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
-import com.google.common.base.Suppliers;
 import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
 import com.mojang.serialization.Codec;
 
 import mekanism.api.MekanismAPI;
 import net.minecraft.resources.ResourceLocation;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormSettings;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.MekanismDataInjector;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
@@ -23,7 +25,7 @@ import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormSettings;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormType;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryInfo;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.registries.RegistryHandler;
+import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 public class SlurryFormType implements ISlurryFormType {
@@ -87,7 +89,8 @@ public class SlurryFormType implements ISlurryFormType {
 			return;
 		}
 		registered = true;
-		MiscHelper helper = MiscHelper.INSTANCE;
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			ISlurryFormSettings settings = (ISlurryFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
@@ -95,9 +98,9 @@ public class SlurryFormType implements ISlurryFormType {
 				String name = form.getName()+'.'+material.getName();
 				ResourceLocation registryName = new ResourceLocation("jaopca", name);
 
-				Supplier<IMaterialFormSlurry> materialFormSlurry = Suppliers.memoize(()->settings.getSlurryCreator().create(form, material, settings));
+				Supplier<IMaterialFormSlurry> materialFormSlurry = MemoizingSuppliers.of(()->settings.getSlurryCreator().create(form, material, settings));
 				SLURRIES.put(form, material, materialFormSlurry);
-				RegistryHandler.registerRegistryEntry(MekanismAPI.SLURRY_REGISTRY_NAME, name, ()->materialFormSlurry.get().toSlurry());
+				api.registerRegistryEntry(MekanismAPI.SLURRY_REGISTRY_NAME, name, ()->materialFormSlurry.get().toSlurry());
 
 				MekanismDataInjector.registerSlurryTag(helper.createResourceLocation(secondaryName), registryName);
 				MekanismDataInjector.registerSlurryTag(helper.getTagLocation(secondaryName, material.getName()), registryName);

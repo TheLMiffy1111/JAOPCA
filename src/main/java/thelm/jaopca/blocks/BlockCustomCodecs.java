@@ -34,6 +34,10 @@ public class BlockCustomCodecs {
 					s->s.getSoundTypeFunction(),
 					(s, f)->s.setSoundTypeFunction(f)).
 			withField(
+					CustomCodecs.materialIntFunction(15).optionalFieldOf("lightOpacity"),
+					s->s.getLightOpacityFunction(),
+					(s, f)->s.setLightOpacityFunction(f)).
+			withField(
 					CustomCodecs.materialIntFunction(0).optionalFieldOf("lightValue"),
 					s->s.getLightValueFunction(),
 					(s, f)->s.setLightValueFunction(f)).

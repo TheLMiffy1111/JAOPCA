@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
-import com.google.common.base.Suppliers;
 import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
 import com.mojang.serialization.Codec;
@@ -15,17 +14,17 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormSettings;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
-import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -90,6 +89,7 @@ public class ItemFormType implements IItemFormType {
 			return;
 		}
 		registered = true;
+		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
@@ -99,14 +99,14 @@ public class ItemFormType implements IItemFormType {
 				String name = form.getName()+'.'+material.getName();
 				ResourceLocation registryName = new ResourceLocation("jaopca", name);
 
-				Supplier<IMaterialFormItem> materialFormItem = Suppliers.memoize(()->settings.getItemCreator().create(form, material, settings));
+				Supplier<IMaterialFormItem> materialFormItem = MemoizingSuppliers.of(()->settings.getItemCreator().create(form, material, settings));
 				ITEMS.put(form, material, materialFormItem);
-				RegistryHandler.registerRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().toItem());
+				api.registerRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().toItem());
 
-				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
-				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
+				api.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
+				api.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
+					api.registerItemTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 			}
 		}

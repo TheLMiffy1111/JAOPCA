@@ -1,9 +1,10 @@
 package thelm.jaopca.fluids;
 
-import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -26,6 +27,7 @@ import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidType;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
@@ -35,30 +37,50 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 	private final IMaterialFormFluid fluid;
 	private final IFluidFormSettings settings;
 
-	private OptionalInt lightValue = OptionalInt.empty();
-	private OptionalInt density = OptionalInt.empty();
-	private OptionalInt temperature = OptionalInt.empty();
-	private OptionalInt viscosity = OptionalInt.empty();
-	private Optional<Rarity> rarity = Optional.empty();
-	private OptionalDouble motionScale = OptionalDouble.empty();
-	private Optional<Boolean> canPushEntity = Optional.empty();
-	private Optional<Boolean> canSwim = Optional.empty();
-	private OptionalDouble fallDistanceModifier = OptionalDouble.empty();
-	private Optional<Boolean> canExtinguish = Optional.empty();
-	private Optional<Boolean> canDrown = Optional.empty();
-	private Optional<Boolean> supportsBoating = Optional.empty();
-	private Optional<Boolean> canHydrate = Optional.empty();
-	private Optional<Boolean> canConvertToSource = Optional.empty();
+	private IntSupplier lightValue;
+	private IntSupplier density;
+	private IntSupplier temperature;
+	private IntSupplier viscosity;
+	private Supplier<Rarity> rarity;
+	private DoubleSupplier motionScale;
+	private BooleanSupplier canPushEntity;
+	private BooleanSupplier canSwim;
+	private DoubleSupplier fallDistanceModifier;
+	private BooleanSupplier canExtinguish;
+	private BooleanSupplier canDrown;
+	private BooleanSupplier supportsBoating;
+	private BooleanSupplier canHydrate;
+	private BooleanSupplier canConvertToSource;
 
 	public JAOPCAFluidType(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(FluidType.Properties.create().
-				pathType(settings.getPathTypeFunction().apply(fluid.getMaterial())).
-				adjacentPathType(settings.getAdjacentPathTypeFunction().apply(fluid.getMaterial())).
-				sound(SoundActions.BUCKET_FILL, settings.getFillSoundSupplier().get()).
-				sound(SoundActions.BUCKET_EMPTY, settings.getEmptySoundSupplier().get()).
-				sound(SoundActions.FLUID_VAPORIZE, settings.getVaporizeSoundSupplier().get()));
+		super(getProperties(fluid, settings));
 		this.fluid = fluid;
 		this.settings = settings;
+
+		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), fluid::getMaterial);
+		density = MemoizingSuppliers.of(settings.getDensityFunction(), fluid::getMaterial);
+		temperature = MemoizingSuppliers.of(settings.getTemperatureFunction(), fluid::getMaterial);
+		viscosity = MemoizingSuppliers.of(settings.getViscosityFunction(), fluid::getMaterial);
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), fluid::getMaterial);
+		motionScale = MemoizingSuppliers.of(settings.getMotionScaleFunction(), fluid::getMaterial);
+		canPushEntity = MemoizingSuppliers.of(settings.getCanPushEntityFunction(), fluid::getMaterial);
+		canSwim = MemoizingSuppliers.of(settings.getCanSwimFunction(), fluid::getMaterial);
+		fallDistanceModifier = MemoizingSuppliers.of(settings.getFallDistanceModifierFunction(), fluid::getMaterial);
+		canSwim = MemoizingSuppliers.of(settings.getCanExtinguishFunction(), fluid::getMaterial);
+		canDrown = MemoizingSuppliers.of(settings.getCanDrownFunction(), fluid::getMaterial);
+		supportsBoating = MemoizingSuppliers.of(settings.getSupportsBoatingFunction(), fluid::getMaterial);
+		canHydrate = MemoizingSuppliers.of(settings.getCanHydrateFunction(), fluid::getMaterial);
+		canConvertToSource = MemoizingSuppliers.of(settings.getCanConvertToSourceFunction(), fluid::getMaterial);
+	}
+
+	public static FluidType.Properties getProperties(IMaterialFormFluid fluid, IFluidFormSettings settings) {
+		FluidType.Properties prop = FluidType.Properties.create();
+		prop.pathType(settings.getPathTypeFunction().apply(fluid.getMaterial()));
+		prop.adjacentPathType(settings.getAdjacentPathTypeFunction().apply(fluid.getMaterial()));
+		prop.sound(SoundActions.BUCKET_FILL, settings.getFillSoundSupplier().get());
+		prop.sound(SoundActions.BUCKET_EMPTY, settings.getEmptySoundSupplier().get());
+		prop.sound(SoundActions.FLUID_VAPORIZE, settings.getVaporizeSoundSupplier().get());
+		return prop;
 	}
 
 	@Override
@@ -78,146 +100,92 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 
 	@Override
 	public int getLightLevel() {
-		if(!lightValue.isPresent()) {
-			lightValue = OptionalInt.of(settings.getLightValueFunction().applyAsInt(getMaterial()));
-		}
 		return lightValue.getAsInt();
 	}
 
 	@Override
 	public int getDensity() {
-		if(!density.isPresent()) {
-			density = OptionalInt.of(settings.getDensityFunction().applyAsInt(getMaterial()));
-		}
 		return density.getAsInt();
 	}
 
 	@Override
 	public int getTemperature() {
-		if(!temperature.isPresent()) {
-			temperature = OptionalInt.of(settings.getTemperatureFunction().applyAsInt(getMaterial()));
-		}
 		return temperature.getAsInt();
 	}
 
 	@Override
 	public int getViscosity() {
-		if(!viscosity.isPresent()) {
-			viscosity = OptionalInt.of(settings.getViscosityFunction().applyAsInt(getMaterial()));
-		}
 		return viscosity.getAsInt();
 	}
 
 	@Override
 	public Rarity getRarity() {
-		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.getDisplayRarityFunction().apply(getMaterial()));
-		}
 		return rarity.get();
 	}
 
 	@Override
 	public double motionScale(Entity entity) {
-		if(!motionScale.isPresent()) {
-			motionScale = OptionalDouble.of(settings.getMotionScaleFunction().applyAsDouble(getMaterial()));
-		}
 		return motionScale.getAsDouble();
 	}
 
 	@Override
 	public boolean canPushEntity(Entity entity) {
-		if(!canPushEntity.isPresent()) {
-			canPushEntity = Optional.of(settings.getCanPushEntityFunction().test(getMaterial()));
-		}
-		return canPushEntity.get();
+		return canPushEntity.getAsBoolean();
 	}
 
 	@Override
 	public boolean canSwim(Entity entity) {
-		if(!canSwim.isPresent()) {
-			canSwim = Optional.of(settings.getCanSwimFunction().test(getMaterial()));
-		}
-		return canSwim.get();
+		return canSwim.getAsBoolean();
 	}
 
 	@Override
 	public float getFallDistanceModifier(Entity entity) {
-		if(!fallDistanceModifier.isPresent()) {
-			fallDistanceModifier = OptionalDouble.of(settings.getFallDistanceModifierFunction().applyAsDouble(getMaterial()));
-		}
 		return (float)fallDistanceModifier.getAsDouble();
 	}
 
 	@Override
 	public boolean canExtinguish(Entity entity) {
-		if(!canExtinguish.isPresent()) {
-			canExtinguish = Optional.of(settings.getCanExtinguishFunction().test(getMaterial()));
-		}
-		return canExtinguish.get();
+		return canExtinguish.getAsBoolean();
 	}
 
 	@Override
 	public boolean canExtinguish(FluidState state, BlockGetter getter, BlockPos pos) {
-		if(!canExtinguish.isPresent()) {
-			canExtinguish = Optional.of(settings.getCanExtinguishFunction().test(getMaterial()));
-		}
-		return canExtinguish.get();
+		return canExtinguish.getAsBoolean();
 	}
 
 	@Override
 	public boolean canDrownIn(LivingEntity entity) {
-		if(!canDrown.isPresent()) {
-			canDrown = Optional.of(settings.getCanDrownFunction().test(getMaterial()));
-		}
-		return canDrown.get();
+		return canDrown.getAsBoolean();
 	}
 
 	@Override
 	public boolean supportsBoating(Boat boat) {
-		if(!supportsBoating.isPresent()) {
-			supportsBoating = Optional.of(settings.getSupportsBoatingFunction().test(getMaterial()));
-		}
-		return supportsBoating.get();
+		return supportsBoating.getAsBoolean();
 	}
 
 	@Override
 	public boolean canHydrate(Entity entity) {
-		if(!canHydrate.isPresent()) {
-			canHydrate = Optional.of(settings.getCanHydrateFunction().test(getMaterial()));
-		}
-		return canHydrate.get();
+		return canHydrate.getAsBoolean();
 	}
 
 	@Override
 	public boolean canHydrate(FluidState state, BlockGetter getter, BlockPos pos, BlockState source, BlockPos sourcePos) {
-		if(!canHydrate.isPresent()) {
-			canHydrate = Optional.of(settings.getCanHydrateFunction().test(getMaterial()));
-		}
-		return canHydrate.get();
+		return canHydrate.getAsBoolean();
 	}
 
 	@Override
 	public boolean canHydrate(FluidStack stack) {
-		if(!canHydrate.isPresent()) {
-			canHydrate = Optional.of(settings.getCanHydrateFunction().test(getMaterial()));
-		}
-		return canHydrate.get();
+		return canHydrate.getAsBoolean();
 	}
 
 	@Override
 	public boolean canConvertToSource(FluidState state, LevelReader reader, BlockPos pos) {
-		if(!canConvertToSource.isPresent()) {
-			canConvertToSource = Optional.of(settings.getCanConvertToSourceFunction().test(getMaterial()));
-		}
-		return canConvertToSource.get();
+		return canConvertToSource.getAsBoolean();
 	}
 
 	@Override
 	public boolean canConvertToSource(FluidStack stack) {
-		if(!canConvertToSource.isPresent()) {
-			canConvertToSource = Optional.of(settings.getCanConvertToSourceFunction().test(getMaterial()));
-		}
-		return canConvertToSource.get();
+		return canConvertToSource.getAsBoolean();
 	}
 
 	@Override
@@ -231,23 +199,19 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 			public ResourceLocation getStillTexture() {
 				ResourceLocation location = BuiltInRegistries.FLUID.getKey(fluid.toFluid());
 				if(MiscHelper.INSTANCE.hasResource(
-						new ResourceLocation(location.getNamespace(),
-								"textures/fluid/"+location.getPath()+"_still.png"))) {
-					return new ResourceLocation(location.getNamespace(), "fluid/"+location.getPath()+"_still");
+						location.withPath("textures/fluid/"+location.getPath()+"_still.png"))) {
+					return location.withPath("fluid/"+location.getPath()+"_still");
 				}
-				return new ResourceLocation(location.getNamespace(),
-						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still");
+				return location.withPath("fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still");
 			}
 			@Override
 			public ResourceLocation getFlowingTexture() {
 				ResourceLocation location = BuiltInRegistries.FLUID.getKey(fluid.toFluid());
 				if(MiscHelper.INSTANCE.hasResource(
-						new ResourceLocation(location.getNamespace(),
-								"textures/fluid/"+location.getPath()+"_flow.png"))) {
-					return new ResourceLocation(location.getNamespace(), "fluid/"+location.getPath()+"_flow");
+						location.withPath("textures/fluid/"+location.getPath()+"_flow.png"))) {
+					return location.withPath("fluid/"+location.getPath()+"_flow");
 				}
-				return new ResourceLocation(location.getNamespace(),
-						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow");
+				return location.withPath("fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow");
 			}
 		});
 	}

@@ -21,7 +21,7 @@ public class WrappedIngredient extends Ingredient {
 	private final Ingredient wrapped;
 
 	protected WrappedIngredient(Ingredient wrapped) {
-		super(Stream.empty(), IngredientTypes.COMPOUND_INGREDIENT_TYPE);
+		super(Stream.empty(), IngredientTypes.WRAPPED_INGREDIENT_TYPE);
 		this.wrapped = wrapped;
 	}
 

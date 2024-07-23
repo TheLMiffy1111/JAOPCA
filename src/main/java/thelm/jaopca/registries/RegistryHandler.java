@@ -7,8 +7,6 @@ import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.base.Suppliers;
-
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +15,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 
 public class RegistryHandler {
 
@@ -24,7 +23,7 @@ public class RegistryHandler {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final TreeMap<ResourceLocation, DeferredRegister<?>> DEFERRED_REGISTERS = new TreeMap<>();
-	private static final Supplier<IEventBus> EVENT_BUS = Suppliers.memoize(
+	private static final Supplier<IEventBus> EVENT_BUS = MemoizingSuppliers.of(
 			()->((FMLModContainer)ModList.get().getModContainerById("jaopca").get()).getEventBus());
 
 	public static <T, I extends T> DeferredHolder<T, I> registerRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry) {

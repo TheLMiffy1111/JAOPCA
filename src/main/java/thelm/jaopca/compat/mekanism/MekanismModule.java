@@ -25,7 +25,6 @@ import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.api.resources.IInMemoryResourcePack;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormType;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryInfo;
 import thelm.jaopca.compat.mekanism.slurries.SlurryFormType;
@@ -62,10 +61,12 @@ public class MekanismModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:crystals").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm cleanSlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_clean", SlurryFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:clean").setDefaultMaterialBlacklist(BLACKLIST).
-			setSkipGroupedCheck(true);
+			setSkipGroupedCheck(true).setSettings(SlurryFormType.INSTANCE.getNewSettings().
+					setOreTagFunction(material->MiscHelper.INSTANCE.getTagLocation("ores", material.getName()).toString()));
 	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty", SlurryFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:dirty").setDefaultMaterialBlacklist(BLACKLIST).
-			setSkipGroupedCheck(true);
+			setSkipGroupedCheck(true).setSettings(SlurryFormType.INSTANCE.getNewSettings().
+					setOreTagFunction(material->MiscHelper.INSTANCE.getTagLocation("ores", material.getName()).toString()));
 	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
 			dirtyDustForm, clumpForm, shardForm, crystalForm, dirtySlurryForm, cleanSlurryForm).setGrouped(true);
 
@@ -211,10 +212,5 @@ public class MekanismModule implements IModule {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void onCreateDataPack(IModuleData moduleData, IInMemoryResourcePack resourcePack) {
-		MekanismDataInjector.putJsons(resourcePack);
 	}
 }

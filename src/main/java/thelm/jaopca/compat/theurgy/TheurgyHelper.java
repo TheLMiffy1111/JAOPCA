@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.theurgy;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -17,7 +17,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
+import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.compat.theurgy.recipes.IncubationRecipeSerializer;
 import thelm.jaopca.compat.theurgy.recipes.LiquefactionRecipeSerializer;
@@ -62,26 +64,50 @@ public class TheurgyHelper {
 			fluids.addAll(helper.getFluidTagValues(key.location()));
 		}
 		else if(obj instanceof FluidStack stack) {
-			ing = FluidIngredient.ofFluid(stack);
-			fluids.add(stack.getFluid());
+			if(!stack.isEmpty()) {
+				ing = FluidIngredient.ofFluid(stack);
+				fluids.add(stack.getFluid());
+			}
 		}
 		else if(obj instanceof FluidStack[] stacks) {
-			ing = FluidIngredient.ofFluid(stacks);
-			Arrays.stream(stacks).map(FluidStack::getFluid).forEach(fluids::add);
+			List<FluidStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.ofFluid(nonEmpty.stream());
+				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
+			}
 		}
 		else if(obj instanceof Fluid fluid) {
-			ing = FluidIngredient.ofFluid(fluid);
-			fluids.add(fluid);
+			if(fluid != Fluids.EMPTY) {
+				ing = FluidIngredient.ofFluid(fluid);
+				fluids.add(fluid);
+			}
 		}
 		else if(obj instanceof Fluid[] fluidz) {
-			ing = FluidIngredient.ofFluid(fluidz);
-			Collections.addAll(fluids, fluidz);
+			List<Fluid> nonEmpty = Arrays.stream(fluidz).filter(f->f != Fluids.EMPTY).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.ofFluid(nonEmpty.toArray(Fluid[]::new));
+				fluids.addAll(nonEmpty);
+			}
+		}
+		else if(obj instanceof IFluidLike fluid) {
+			if(fluid.asFluid() != Fluids.EMPTY) {
+				ing = FluidIngredient.ofFluid(fluid.asFluid());
+				fluids.add(fluid.asFluid());
+			}
+		}
+		else if(obj instanceof IFluidLike[] fluidz) {
+			List<Fluid> nonEmpty = Arrays.stream(fluidz).map(IFluidLike::asFluid).filter(f->f != Fluids.EMPTY).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.ofFluid(nonEmpty.toArray(Fluid[]::new));
+				fluids.addAll(nonEmpty);
+			}
 		}
 		else if(obj instanceof JsonElement) {
 			ing = Util.getOrThrow(FluidIngredient.CODEC_NONEMPTY.parse(JsonOps.INSTANCE, (JsonElement)obj), IllegalArgumentException::new);
 			// We can't know what fluids the ingredient can have so assume all
 			BuiltInRegistries.FLUID.forEach(fluids::add);
 		}
+		fluids.remove(Fluids.EMPTY);
 		return Pair.of(fluids.isEmpty() ? null : ing, fluids);
 	}
 

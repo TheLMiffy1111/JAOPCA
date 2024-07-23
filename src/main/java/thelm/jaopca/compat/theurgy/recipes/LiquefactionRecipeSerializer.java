@@ -50,15 +50,15 @@ public class LiquefactionRecipeSerializer implements IRecipeSerializer {
 		}
 		FluidIngredient fluidIng = TheurgyHelper.INSTANCE.getFluidIngredient(fluidInput);
 		if(fluidIng == null) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+fluidIng);
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+fluidInput);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		CompoundTag nbt = new CompoundTag();
-		if(itemInput instanceof String tag) {
-			nbt.putString(TheurgyConstants.Nbt.SULFUR_SOURCE_ID, "#"+tag);
+		if(itemInput instanceof String || itemInput instanceof ResourceLocation) {
+			nbt.putString(TheurgyConstants.Nbt.SULFUR_SOURCE_ID, "#"+itemInput.toString());
 		}
 		else if(itemInput instanceof TagKey<?> tag) {
 			nbt.putString(TheurgyConstants.Nbt.SULFUR_SOURCE_ID, "#"+tag.location());

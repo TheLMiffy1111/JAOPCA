@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -121,7 +122,7 @@ public class Material {
 
 	@ZenCodeType.Method
 	public IItemStack getItemStack(String prefix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		ItemStack stack = helper.getItemStack(helper.getTagLocation(prefix, material.getName()), count);
 		return new MCItemStack(stack);
 	}
@@ -133,7 +134,7 @@ public class Material {
 
 	@ZenCodeType.Method
 	public IFluidStack getFluidStack(String prefix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		FluidStack stack = helper.getFluidStack(helper.getTagLocation(prefix, material.getName()), count);
 		return new MCFluidStack(stack);
 	}
@@ -148,7 +149,7 @@ public class Material {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Material other)) {	
+		if(!(obj instanceof Material other)) {
 			return false;
 		}
 		return material == other.material;
