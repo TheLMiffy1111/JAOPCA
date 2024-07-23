@@ -18,10 +18,6 @@ public class MemoizingBooleanSupplier implements BooleanSupplier {
 		return new MemoizingBooleanSupplier(delegate);
 	}
 
-	public static <T> MemoizingBooleanSupplier of(Predicate<T> function, T value) {
-		return new MemoizingBooleanSupplier(()->function.test(value));
-	}
-
 	public static <T> MemoizingBooleanSupplier of(Predicate<T> function, Supplier<T> value) {
 		return new MemoizingBooleanSupplier(()->function.test(value.get()));
 	}
