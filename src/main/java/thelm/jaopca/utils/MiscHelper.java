@@ -1,5 +1,6 @@
 package thelm.jaopca.utils;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Locale;
@@ -9,7 +10,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.BooleanSupplier;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -21,9 +21,7 @@ import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.VersionRange;
 
-import com.google.common.base.Functions;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.Streams;
 import com.google.common.collect.TreeMultiset;
 import com.google.gson.JsonElement;
 
@@ -92,10 +90,16 @@ public class MiscHelper implements IMiscHelper {
 			return getItemStack(((Supplier<?>)obj).get(), count);
 		}
 		else if(obj instanceof ItemStack) {
-			return ((ItemStack)obj);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				return stack;
+			}
 		}
 		else if(obj instanceof IItemProvider) {
-			return new ItemStack((IItemProvider)obj, count);
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return new ItemStack(item, count);
+			}
 		}
 		else if(obj instanceof String) {
 			return getPreferredItemStack(getItemTag(new ResourceLocation((String)obj)).getValues(), count);
@@ -127,16 +131,22 @@ public class MiscHelper implements IMiscHelper {
 			return Ingredient.of((ITag<Item>)obj);
 		}
 		else if(obj instanceof ItemStack) {
-			return Ingredient.of((ItemStack)obj);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				return Ingredient.of(stack);
+			}
 		}
 		else if(obj instanceof ItemStack[]) {
-			return Ingredient.of((ItemStack[])obj);
+			return Ingredient.of(Arrays.stream((ItemStack[])obj).filter(s->!s.isEmpty()));
 		}
 		else if(obj instanceof IItemProvider) {
-			return Ingredient.of((IItemProvider)obj);
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return Ingredient.of(item);
+			}
 		}
 		else if(obj instanceof IItemProvider[]) {
-			return Ingredient.of((IItemProvider[])obj);
+			return Ingredient.of(Arrays.stream((IItemProvider[])obj).map(IItemProvider::asItem).filter(i->i != Items.AIR).toArray(Item[]::new));
 		}
 		else if(obj instanceof Ingredient.IItemList) {
 			return Ingredient.fromValues(Stream.of((Ingredient.IItemList)obj));
@@ -167,13 +177,22 @@ public class MiscHelper implements IMiscHelper {
 			return getFluidStack(((Supplier<?>)obj).get(), amount);
 		}
 		else if(obj instanceof FluidStack) {
-			return ((FluidStack)obj);
+			FluidStack stack = (FluidStack)obj;
+			if(!stack.isEmpty()) {
+				return stack;
+			}
 		}
 		else if(obj instanceof Fluid) {
-			return new FluidStack((Fluid)obj, amount);
+			Fluid fluid = (Fluid)obj;
+			if(fluid != Fluids.EMPTY) {
+				return new FluidStack(fluid, amount);
+			}
 		}
 		else if(obj instanceof IFluidProvider) {
-			return new FluidStack(((IFluidProvider)obj).asFluid(), amount);
+			Fluid fluid = ((IFluidProvider)obj).asFluid();
+			if(fluid != Fluids.EMPTY) {
+				return new FluidStack(fluid, amount);
+			}
 		}
 		else if(obj instanceof String) {
 			return getPreferredFluidStack(getFluidTag(new ResourceLocation((String)obj)).getValues(), amount);

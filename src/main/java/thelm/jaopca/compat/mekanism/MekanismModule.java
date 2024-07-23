@@ -15,7 +15,6 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
@@ -27,7 +26,6 @@ import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.api.resources.IInMemoryResourcePack;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryInfo;
 import thelm.jaopca.compat.mekanism.slurries.SlurryFormType;
 import thelm.jaopca.items.ItemFormType;
@@ -62,9 +60,15 @@ public class MekanismModule implements IModule {
 	private final IForm crystalForm = ApiImpl.INSTANCE.newForm(this, "mekanism_crystals", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:crystals").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty", SlurryFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:dirty").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:dirty").setDefaultMaterialBlacklist(BLACKLIST).
+			setSkipGroupedCheck(true).setSettings(SlurryFormType.INSTANCE.getNewSettings().
+					setOreTagFunction(material->MiscHelper.INSTANCE.getTagLocation("ores", material.getName()).toString()));
 	private final IForm cleanSlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_clean", SlurryFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:clean").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT).setSecondaryName("mekanism:clean").setDefaultMaterialBlacklist(BLACKLIST).
+			setSkipGroupedCheck(true).setSettings(SlurryFormType.INSTANCE.getNewSettings().
+					setOreTagFunction(material->MiscHelper.INSTANCE.getTagLocation("ores", material.getName()).toString()));
+	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
+			dirtyDustForm, clumpForm, shardForm, crystalForm, dirtySlurryForm, cleanSlurryForm).setGrouped(true);
 
 	@Override
 	public String getName() {
@@ -85,8 +89,7 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return Collections.singletonList(ApiImpl.INSTANCE.newFormRequest(this,
-				dirtyDustForm, clumpForm, shardForm, crystalForm, cleanSlurryForm, dirtySlurryForm));
+		return Collections.singletonList(formRequest);
 	}
 
 	@Override
@@ -101,82 +104,65 @@ public class MekanismModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		JAOPCAApi api = ApiImpl.INSTANCE;
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
-		for(IMaterial material : dirtySlurryForm.getMaterials()) {
+		for(IMaterial material : formRequest.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ISlurryInfo dirtySlurryInfo = SlurryFormType.INSTANCE.getMaterialFormInfo(dirtySlurryForm, material);
+			ResourceLocation dirtySlurryLocation = miscHelper.getTagLocation("mekanism:dirty", material.getName());
+			ISlurryInfo cleanSlurryInfo = SlurryFormType.INSTANCE.getMaterialFormInfo(cleanSlurryForm, material);
+			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());
+			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
+			ResourceLocation crystalLocation = miscHelper.getTagLocation("mekanism:crystals", material.getName());
+			IItemInfo shardInfo = itemFormType.getMaterialFormInfo(shardForm, material);
+			ResourceLocation shardLocation = miscHelper.getTagLocation("mekanism:shards", material.getName());
+			IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
+			ResourceLocation clumpLocation = miscHelper.getTagLocation("mekanism:clumps", material.getName());
+			IItemInfo dirtyDustInfo = itemFormType.getMaterialFormInfo(dirtyDustForm, material);
+			ResourceLocation dirtyDustLocation = miscHelper.getTagLocation("mekanism:dirty_dusts", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+
 			helper.registerDissolutionRecipe(
 					new ResourceLocation("jaopca", "mekanism.ore_to_dirty_slurry."+material.getName()),
 					oreLocation, 1, MekanismGases.SULFURIC_ACID, 1, dirtySlurryInfo, 1000);
-		}
-		for(IMaterial material : cleanSlurryForm.getMaterials()) {
-			ResourceLocation dirtySlurryLocation = miscHelper.getTagLocation("mekanism:dirty", material.getName());
-			ISlurryInfo cleanSlurryInfo = SlurryFormType.INSTANCE.getMaterialFormInfo(cleanSlurryForm, material);
+
 			helper.registerWashingRecipe(
 					new ResourceLocation("jaopca", "mekanism.dirty_to_clean_slurry."+material.getName()),
 					Fluids.WATER, 5, dirtySlurryLocation, 1, cleanSlurryInfo, 1);
-			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());
-			ResourceLocation crystalLocation = miscHelper.getTagLocation("mekanism:crystals", material.getName());
-			if(!crystalForm.getMaterials().contains(material) && api.getItemTags().contains(crystalLocation)) {
-				helper.registerCrystallizingRecipe(
-						new ResourceLocation("jaopca", "mekanism.clean_slurry_to_crystal."+material.getName()),
-						cleanSlurryLocation, 200, crystalLocation, 1);
-			}
-		}
-		for(IMaterial material : crystalForm.getMaterials()) {
-			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());
-			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
+
 			helper.registerCrystallizingRecipe(
 					new ResourceLocation("jaopca", "mekanism.clean_slurry_to_crystal."+material.getName()),
 					cleanSlurryLocation, 200, crystalInfo, 1);
-		}
-		for(IMaterial material : shardForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation crystalLocation = miscHelper.getTagLocation("mekanism:crystals", material.getName());
-			IItemInfo shardInfo = itemFormType.getMaterialFormInfo(shardForm, material);
+
 			helper.registerInjectingRecipe(
 					new ResourceLocation("jaopca", "mekanism.ore_to_shard."+material.getName()),
 					oreLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 4);
 			helper.registerInjectingRecipe(
 					new ResourceLocation("jaopca", "mekanism.crystal_to_shard."+material.getName()),
 					crystalLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 1);
-		}
-		for(IMaterial material : clumpForm.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation shardLocation = miscHelper.getTagLocation("mekanism:shards", material.getName());
-			IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
+
 			helper.registerPurifyingRecipe(
 					new ResourceLocation("jaopca", "mekanism.ore_to_clump."+material.getName()),
 					oreLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 3);
 			helper.registerPurifyingRecipe(
 					new ResourceLocation("jaopca", "mekanism.shard_to_clump."+material.getName()),
 					shardLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 1);
-		}
-		for(IMaterial material : dirtyDustForm.getMaterials()) {
-			ResourceLocation clumpLocation = miscHelper.getTagLocation("mekanism:clumps", material.getName());
-			IItemInfo dirtyDustInfo = itemFormType.getMaterialFormInfo(dirtyDustForm, material);
+
 			helper.registerCrushingRecipe(
 					new ResourceLocation("jaopca", "mekanism.clump_to_dirty_dust."+material.getName()),
 					clumpLocation, 1, dirtyDustInfo, 1);
-		}
-		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation dirtyDustLocation = miscHelper.getTagLocation("mekanism:dirty_dusts", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
-			helper.registerEnrichingRecipe(
-					new ResourceLocation("jaopca", "mekanism.ore_to_dust."+material.getName()),
-					oreLocation, 1, dustLocation, 2);
+
 			helper.registerEnrichingRecipe(
 					new ResourceLocation("jaopca", "mekanism.dirty_dust_to_dust."+material.getName()),
 					dirtyDustLocation, 1, dustLocation, 1);
 		}
-	}
-
-	@Override
-	public void onCreateDataPack(IModuleData moduleData, IInMemoryResourcePack resourcePack) {
-		MekanismDataInjector.putJsons(resourcePack);
+		for(IMaterial material : moduleData.getMaterials()) {
+			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+			helper.registerEnrichingRecipe(
+					new ResourceLocation("jaopca", "mekanism.ore_to_dust."+material.getName()),
+					oreLocation, 1, dustLocation, 2);
+		}
 	}
 }

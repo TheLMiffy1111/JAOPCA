@@ -1,8 +1,9 @@
 package thelm.jaopca.blocks;
 
-import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.ToolType;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
 
@@ -30,18 +32,18 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected final IBlockFormSettings settings;
 
 	protected boolean blocksMovement;
-	protected Optional<SoundType> soundType = Optional.empty();
-	protected OptionalInt lightValue = OptionalInt.empty();
-	//protected OptionalDouble blockHardness = OptionalDouble.empty();
-	protected OptionalDouble explosionResistance = OptionalDouble.empty();
-	protected OptionalDouble slipperiness = OptionalDouble.empty();
+	protected Supplier<SoundType> soundType;
+	protected IntSupplier lightOpacity;
+	protected IntSupplier lightValue;
+	protected DoubleSupplier explosionResistance;
+	protected DoubleSupplier slipperiness;
 	protected VoxelShape shape;
 	protected VoxelShape raytraceShape;
-	protected Optional<ToolType> harvestTool = Optional.empty();
-	protected OptionalInt harvestLevel = OptionalInt.empty();
-	protected OptionalInt flammability = OptionalInt.empty();
-	protected OptionalInt fireSpreadSpeed = OptionalInt.empty();
-	protected Optional<Boolean> isFireSource = Optional.empty();
+	protected Supplier<ToolType> harvestTool;
+	protected IntSupplier harvestLevel;
+	protected IntSupplier flammability;
+	protected IntSupplier fireSpreadSpeed;
+	protected BooleanSupplier isFireSource;
 
 	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings) {
 		super(getProperties(form, material, settings));
@@ -50,8 +52,17 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		this.settings = settings;
 
 		blocksMovement = settings.getBlocksMovement();
+		soundType = MemoizingSuppliers.of(settings.getSoundTypeFunction(), material);
+		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), material);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), material);
+		slipperiness = MemoizingSuppliers.of(settings.getSlipperinessFunction(), material);
 		shape = settings.getShape();
 		raytraceShape = settings.getRaytraceShape();
+		harvestTool = MemoizingSuppliers.of(settings.getHarvestToolFunction(), material);
+		harvestLevel = MemoizingSuppliers.of(settings.getHarvestLevelFunction(), material);
+		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), material);
+		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), material);
+		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), material);
 	}
 
 	public static Block.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings) {
@@ -79,41 +90,26 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 
 	@Override
 	public SoundType getSoundType(BlockState blockState) {
-		if(!soundType.isPresent()) {
-			soundType = Optional.of(settings.getSoundTypeFunction().apply(material));
-		}
 		return soundType.get();
 	}
 
 	@Override
+	public int getLightBlock(BlockState state, IBlockReader world, BlockPos pos) {
+		return lightOpacity.getAsInt();
+	}
+
+	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		if(!lightValue.isPresent()) {
-			lightValue = OptionalInt.of(settings.getLightValueFunction().applyAsInt(material));
-		}
 		return lightValue.getAsInt();
 	}
 
-	//@Override
-	//public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos) {
-	//	if(!blockHardness.isPresent()) {
-	//		blockHardness = OptionalDouble.of(settings.getBlockHardnessFunction().applyAsDouble(material));
-	//	}
-	//	return (float)blockHardness.getAsDouble();
-	//}
-
 	@Override
 	public float getExplosionResistance() {
-		if(!explosionResistance.isPresent()) {
-			explosionResistance = OptionalDouble.of(settings.getExplosionResistanceFunction().applyAsDouble(material));
-		}
 		return (float)explosionResistance.getAsDouble();
 	}
 
 	@Override
 	public float getSlipperiness(BlockState blockState, IWorldReader world, BlockPos pos, Entity entity) {
-		if(!slipperiness.isPresent()) {
-			slipperiness = OptionalDouble.of(settings.getSlipperinessFunction().applyAsDouble(material));
-		}
 		return (float)slipperiness.getAsDouble();
 	}
 
@@ -134,42 +130,27 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 
 	@Override
 	public ToolType getHarvestTool(BlockState blockState) {
-		if(!harvestTool.isPresent()) {
-			harvestTool = Optional.ofNullable(settings.getHarvestToolFunction().apply(material));
-		}
-		return harvestTool.orElse(null);
+		return harvestTool.get();
 	}
 
 	@Override
 	public int getHarvestLevel(BlockState blockState) {
-		if(!harvestLevel.isPresent()) {
-			harvestLevel = OptionalInt.of(settings.getHarvestLevelFunction().applyAsInt(material));
-		}
 		return harvestLevel.getAsInt();
 	}
 
 	@Override
 	public int getFlammability(BlockState blockState, IBlockReader world, BlockPos pos, Direction face) {
-		if(!flammability.isPresent()) {
-			flammability = OptionalInt.of(settings.getFireSpreadSpeedFunction().applyAsInt(material));
-		}
 		return flammability.getAsInt();
 	}
 
 	@Override
 	public int getFireSpreadSpeed(BlockState blockState, IBlockReader world, BlockPos pos, Direction face) {
-		if(!fireSpreadSpeed.isPresent()) {
-			fireSpreadSpeed = OptionalInt.of(settings.getFlammabilityFunction().applyAsInt(material));
-		}
 		return fireSpreadSpeed.getAsInt();
 	}
 
 	@Override
 	public boolean isFireSource(BlockState blockState, IWorldReader world, BlockPos pos, Direction side) {
-		if(!isFireSource.isPresent()) {
-			isFireSource = Optional.of(settings.getIsFireSourceFunction().test(material));
-		}
-		return isFireSource.get();
+		return isFireSource.getAsBoolean();
 	}
 
 	@Override

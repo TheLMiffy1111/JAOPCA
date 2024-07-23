@@ -198,6 +198,14 @@ public abstract class JAOPCAApi {
 	public abstract ItemGroup itemGroup();
 
 	/**
+	 * Returns the set of known tag locations of the supplied type, which is the registered tag locations.
+	 * Note that tags added by custom data packs may not be included.
+	 * @param type The type of the tag
+	 * @return The set of tag locations known by JAOPCA
+	 */
+	public abstract Set<ResourceLocation> getTags(String type);
+
+	/**
 	 * Returns the set of known block tag locations, which is the union of defined block tag locations
 	 * and registered block tag locations. Note that tags added by custom data packs may not be included.
 	 * @return The set of block tag locations known by JAOPCA
@@ -225,14 +233,6 @@ public abstract class JAOPCAApi {
 	 * @return The set of entity type tag locations known by JAOPCA
 	 */
 	public abstract Set<ResourceLocation> getEntityTypeTags();
-
-	/**
-	 * Returns the set of known tag locations of the supplied type, which is the registered tag locations.
-	 * Note that tags added by custom data packs may not be included.
-	 * @param type The type of the tag
-	 * @return The set of tag locations known by JAOPCA
-	 */
-	public abstract Set<ResourceLocation> getTags(String type);
 
 	/**
 	 * Returns the set of known recipe locations, which is the union of defined recipe locations and
@@ -276,6 +276,14 @@ public abstract class JAOPCAApi {
 	public abstract void registerForgeRegistryEntry(IForgeRegistryEntry<?> entry);
 
 	/**
+	 * Registers a tag location that may be added externally and should be known to JAOPCA.
+	 * @param type The registry of the tag
+	 * @param key The tag location that should be known by JAOPCA
+	 * @return true if the tag location was not already defined
+	 */
+	public abstract boolean registerDefinedTag(String type, ResourceLocation key);
+
+	/**
 	 * Registers a block tag location that may be added externally and should be known to JAOPCA.
 	 * @param key The tag location that should be known by JAOPCA
 	 * @return true if the tag location was not already defined
@@ -302,6 +310,28 @@ public abstract class JAOPCAApi {
 	 * @return true if the tag location was not already defined
 	 */
 	public abstract boolean registerDefinedEntityTypeTag(ResourceLocation key);
+
+	/**
+	 * Registers a registry object location to be added to a tag by JAOPCA's in memory data pack.
+	 * Locations that do not correspond to a registry object will effectively be ignored by the data pack.
+	 * This method ignores the blacklists in the configuration file.
+	 * @param type The type of the tag
+	 * @param key The location of the tag
+	 * @param objKey The registry object location to be added
+	 * @return true if the tag location was added
+	 */
+	public abstract boolean registerTag(String type, ResourceLocation key, ResourceLocation objKey);
+
+	/**
+	 * Registers a registry object to be added to a tag by JAOPCA's in memory data pack.Locations that do
+	 * not correspond to a registry object will effectively be ignored by the data pack.
+	 * This method ignores the blacklists in the configuration file.
+	 * @param type The type of the tag
+	 * @param key The location of the tag
+	 * @param obj The registry object to be added
+	 * @return true if the tag location was added
+	 */
+	public abstract boolean registerTag(String type, ResourceLocation key, IForgeRegistryEntry<?> obj);
 
 	/**
 	 * Registers a block location to be added to a tag by JAOPCA's in memory data pack. Locations that do

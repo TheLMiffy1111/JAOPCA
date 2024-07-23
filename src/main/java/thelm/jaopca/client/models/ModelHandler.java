@@ -50,9 +50,8 @@ public class ModelHandler {
 		}
 		for(IMaterialFormBlockItem materialFormBlockItem : BlockFormType.getBlockItems()) {
 			BlockItem blockItem = materialFormBlockItem.toBlockItem();
-			//TODO Change if Forge supports using blockstates in item models
 			ResourceLocation location = blockItem.getRegistryName();
-			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
+			location = new ResourceLocation(location.getNamespace(), "models/item/"+location.getPath()+".json");
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
@@ -66,7 +65,7 @@ public class ModelHandler {
 		for(IMaterialFormItem materialFormItem : ItemFormType.getItems()) {
 			Item item = materialFormItem.toItem();
 			ResourceLocation location = item.getRegistryName();
-			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
+			location = new ResourceLocation(location.getNamespace(), "models/item/"+location.getPath()+".json");
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
@@ -97,7 +96,7 @@ public class ModelHandler {
 		for(IMaterialFormBucketItem materialFormBucketItem : FluidFormType.getBucketItems()) {
 			Item bucketItem = materialFormBucketItem.toItem();
 			ResourceLocation location = bucketItem.getRegistryName();
-			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
+			location = new ResourceLocation(location.getNamespace(), "models/item/"+location.getPath()+".json");
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}

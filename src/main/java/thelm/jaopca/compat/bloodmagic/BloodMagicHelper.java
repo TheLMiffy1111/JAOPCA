@@ -6,9 +6,11 @@ import java.util.function.Supplier;
 import com.google.gson.JsonElement;
 
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.compat.bloodmagic.recipes.ARCRecipeSupplier;
 import thelm.jaopca.compat.bloodmagic.recipes.AlchemyTableRecipeSupplier;
 import thelm.jaopca.utils.ApiImpl;
@@ -38,16 +40,30 @@ public class BloodMagicHelper {
 			return FluidStackIngredient.from((ITag<Fluid>)obj, amount);
 		}
 		else if(obj instanceof FluidStack) {
-			return FluidStackIngredient.from((FluidStack)obj);
+			FluidStack stack = (FluidStack)obj;
+			if(!stack.isEmpty()) {
+				return FluidStackIngredient.from(stack);
+			}
 		}
 		else if(obj instanceof FluidStack[]) {
-			return FluidStackIngredient.createMulti(Arrays.stream((FluidStack[])obj).map(FluidStackIngredient::from).toArray(FluidStackIngredient[]::new));
+			return FluidStackIngredient.createMulti(Arrays.stream((FluidStack[])obj).filter(s->!s.isEmpty()).map(FluidStackIngredient::from).toArray(FluidStackIngredient[]::new));
 		}
 		else if(obj instanceof Fluid) {
-			return FluidStackIngredient.from((Fluid)obj, amount);
+			if(obj != Fluids.EMPTY) {
+				return FluidStackIngredient.from((Fluid)obj, amount);
+			}
 		}
 		else if(obj instanceof Fluid[]) {
-			return FluidStackIngredient.createMulti(Arrays.stream((Fluid[])obj).map(g->FluidStackIngredient.from(g, amount)).toArray(FluidStackIngredient[]::new));
+			return FluidStackIngredient.createMulti(Arrays.stream((Fluid[])obj).filter(f->f != Fluids.EMPTY).map(g->FluidStackIngredient.from(g, amount)).toArray(FluidStackIngredient[]::new));
+		}
+		else if(obj instanceof IFluidProvider) {
+			Fluid fluid = ((IFluidProvider)obj).asFluid();
+			if(fluid != Fluids.EMPTY) {
+				return FluidStackIngredient.from(fluid, amount);
+			}
+		}
+		else if(obj instanceof IFluidProvider[]) {
+			return FluidStackIngredient.createMulti(Arrays.stream((IFluidProvider[])obj).map(IFluidProvider::asFluid).filter(f->f != Fluids.EMPTY).map(g->FluidStackIngredient.from(g, amount)).toArray(FluidStackIngredient[]::new));
 		}
 		else if(obj instanceof JsonElement) {
 			return FluidStackIngredient.deserialize((JsonElement)obj);

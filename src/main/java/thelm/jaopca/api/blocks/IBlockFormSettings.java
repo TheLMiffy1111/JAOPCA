@@ -36,6 +36,10 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	Function<IMaterial, SoundType> getSoundTypeFunction();
 
+	IBlockFormSettings setLightOpacityFunction(ToIntFunction<IMaterial> lightOpacityFunction);
+
+	ToIntFunction<IMaterial> getLightOpacityFunction();
+
 	IBlockFormSettings setLightValueFunction(ToIntFunction<IMaterial> lightValueFunction);
 
 	ToIntFunction<IMaterial> getLightValueFunction();
@@ -83,14 +87,6 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setIsFireSourceFunction(Predicate<IMaterial> isFireSourceFunction);
 
 	Predicate<IMaterial> getIsFireSourceFunction();
-
-	//IBlockFormSettings setIsWaterLoggable(boolean waterLoggable);
-
-	//boolean getIsWaterLoggable();
-
-	//IBlockFormSettings setIsFallable(boolean fallable);
-
-	//boolean getIsFallable();
 
 	IBlockFormSettings setBlockLootTableCreator(IBlockLootTableCreator blockLootTableCreator);
 

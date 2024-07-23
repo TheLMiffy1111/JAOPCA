@@ -11,7 +11,9 @@ import futurepack.depend.api.ListPredicate;
 import futurepack.depend.api.NullPredicate;
 import futurepack.depend.api.VanillaTagPredicate;
 import futurepack.depend.api.helper.HelperJSON;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.compat.futurepack.recipes.ZentrifugeRecipeSupplier;
@@ -36,16 +38,22 @@ public class FuturepackHelper {
 			return new VanillaTagPredicate((ResourceLocation)obj, count);
 		}
 		else if(obj instanceof ItemStack) {
-			return new ItemPredicate((ItemStack)obj);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				return new ItemPredicate(stack);
+			}
 		}
 		else if(obj instanceof ItemStack[]) {
-			return new ListPredicate(true, Stream.of((ItemStack[])obj).map(ItemPredicate::new).toArray(ItemPredicateBase[]::new));
+			return new ListPredicate(true, Stream.of((ItemStack[])obj).filter(s->!s.isEmpty()).map(ItemPredicate::new).toArray(ItemPredicateBase[]::new));
 		}
 		else if(obj instanceof IItemProvider) {
-			return new ItemPredicate(((IItemProvider)obj).asItem(), count);
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return new ItemPredicate(item, count);
+			}
 		}
 		else if(obj instanceof IItemProvider[]) {
-			return new ListPredicate(true, Stream.of((IItemProvider[])obj).map(ItemStack::new).map(ItemPredicate::new).toArray(ItemPredicateBase[]::new));
+			return new ListPredicate(true, Stream.of((IItemProvider[])obj).filter(i->i != Items.AIR).map(ItemStack::new).map(ItemPredicate::new).toArray(ItemPredicateBase[]::new));
 		}
 		else if(obj instanceof JsonElement) {
 			return HelperJSON.getItemPredicateFromJSON((JsonElement)obj);

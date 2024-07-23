@@ -15,7 +15,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;

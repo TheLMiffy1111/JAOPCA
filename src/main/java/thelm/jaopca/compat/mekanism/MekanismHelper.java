@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import com.google.common.collect.ImmutableSortedSet;
-import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 
 import mekanism.api.MekanismAPI;
@@ -21,9 +19,11 @@ import mekanism.api.recipes.inputs.FluidStackIngredient;
 import mekanism.api.recipes.inputs.chemical.GasStackIngredient;
 import mekanism.api.recipes.inputs.chemical.SlurryStackIngredient;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.compat.mekanism.recipes.CombiningRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.CrushingRecipeSupplier;
 import thelm.jaopca.compat.mekanism.recipes.CrystallizingRecipeSupplier;
@@ -43,7 +43,7 @@ public class MekanismHelper {
 	private MekanismHelper() {}
 
 	public Set<ResourceLocation> getSlurryTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(ApiImpl.INSTANCE.getTags("slurries"), MekanismDataInjector.getInjectSlurryTags()));
+		return ApiImpl.INSTANCE.getTags("slurries");
 	}
 
 	public FluidStackIngredient getFluidStackIngredient(Object obj, int amount) {
@@ -63,16 +63,30 @@ public class MekanismHelper {
 			return FluidStackIngredient.from((ITag<Fluid>)obj, amount);
 		}
 		else if(obj instanceof FluidStack) {
-			return FluidStackIngredient.from((FluidStack)obj);
+			FluidStack stack = (FluidStack)obj;
+			if(!stack.isEmpty()) {
+				return FluidStackIngredient.from(stack);
+			}
 		}
 		else if(obj instanceof FluidStack[]) {
-			return FluidStackIngredient.createMulti(Arrays.stream((FluidStack[])obj).map(FluidStackIngredient::from).toArray(FluidStackIngredient[]::new));
+			return FluidStackIngredient.createMulti(Arrays.stream((FluidStack[])obj).filter(s->!s.isEmpty()).map(FluidStackIngredient::from).toArray(FluidStackIngredient[]::new));
 		}
 		else if(obj instanceof Fluid) {
-			return FluidStackIngredient.from((Fluid)obj, amount);
+			if(obj != Fluids.EMPTY) {
+				return FluidStackIngredient.from((Fluid)obj, amount);
+			}
 		}
 		else if(obj instanceof Fluid[]) {
-			return FluidStackIngredient.createMulti(Arrays.stream((Fluid[])obj).map(g->FluidStackIngredient.from(g, amount)).toArray(FluidStackIngredient[]::new));
+			return FluidStackIngredient.createMulti(Arrays.stream((Fluid[])obj).filter(f->f != Fluids.EMPTY).map(f->FluidStackIngredient.from(f, amount)).toArray(FluidStackIngredient[]::new));
+		}
+		else if(obj instanceof IFluidProvider) {
+			Fluid fluid = ((IFluidProvider)obj).asFluid();
+			if(fluid != Fluids.EMPTY) {
+				return FluidStackIngredient.from(fluid, amount);
+			}
+		}
+		else if(obj instanceof IFluidProvider[]) {
+			return FluidStackIngredient.createMulti(Arrays.stream((IFluidProvider[])obj).map(IFluidProvider::asFluid).map(g->FluidStackIngredient.from(g, amount)).toArray(FluidStackIngredient[]::new));
 		}
 		else if(obj instanceof JsonElement) {
 			return FluidStackIngredient.deserialize((JsonElement)obj);
@@ -97,16 +111,22 @@ public class MekanismHelper {
 			return GasStackIngredient.from((ITag<Gas>)obj, amount);
 		}
 		else if(obj instanceof GasStack) {
-			return GasStackIngredient.from((GasStack)obj);
+			GasStack stack = (GasStack)obj;
+			if(!stack.isEmpty()) {
+				return GasStackIngredient.from(stack);
+			}
 		}
 		else if(obj instanceof GasStack[]) {
-			return GasStackIngredient.createMulti(Arrays.stream((GasStack[])obj).map(GasStackIngredient::from).toArray(GasStackIngredient[]::new));
+			return GasStackIngredient.createMulti(Arrays.stream((GasStack[])obj).filter(s->!s.isEmpty()).map(GasStackIngredient::from).toArray(GasStackIngredient[]::new));
 		}
 		else if(obj instanceof IGasProvider) {
-			return GasStackIngredient.from((IGasProvider)obj, amount);
+			Gas gas = ((IGasProvider)obj).getChemical();
+			if(!gas.isEmptyType()) {
+				return GasStackIngredient.from(gas, amount);
+			}
 		}
 		else if(obj instanceof IGasProvider[]) {
-			return GasStackIngredient.createMulti(Arrays.stream((IGasProvider[])obj).map(g->GasStackIngredient.from(g, amount)).toArray(GasStackIngredient[]::new));
+			return GasStackIngredient.createMulti(Arrays.stream((IGasProvider[])obj).map(IGasProvider::getChemical).filter(g->!g.isEmptyType()).map(g->GasStackIngredient.from(g, amount)).toArray(GasStackIngredient[]::new));
 		}
 		else if(obj instanceof JsonElement) {
 			return GasStackIngredient.deserialize((JsonElement)obj);
@@ -131,16 +151,22 @@ public class MekanismHelper {
 			return SlurryStackIngredient.from((ITag<Slurry>)obj, amount);
 		}
 		else if(obj instanceof SlurryStack) {
-			return SlurryStackIngredient.from((SlurryStack)obj);
+			SlurryStack stack = (SlurryStack)obj;
+			if(!stack.isEmpty()) {
+				return SlurryStackIngredient.from(stack);
+			}
 		}
 		else if(obj instanceof SlurryStack[]) {
-			return SlurryStackIngredient.createMulti(Arrays.stream((SlurryStack[])obj).map(SlurryStackIngredient::from).toArray(SlurryStackIngredient[]::new));
+			return SlurryStackIngredient.createMulti(Arrays.stream((SlurryStack[])obj).filter(s->!s.isEmpty()).map(SlurryStackIngredient::from).toArray(SlurryStackIngredient[]::new));
 		}
 		else if(obj instanceof ISlurryProvider) {
-			return SlurryStackIngredient.from((ISlurryProvider)obj, amount);
+			Slurry slurry = ((ISlurryProvider)obj).getChemical();
+			if(!slurry.isEmptyType()) {
+				return SlurryStackIngredient.from((ISlurryProvider)obj, amount);
+			}
 		}
 		else if(obj instanceof ISlurryProvider[]) {
-			return SlurryStackIngredient.createMulti(Arrays.stream((ISlurryProvider[])obj).map(g->SlurryStackIngredient.from(g, amount)).toArray(SlurryStackIngredient[]::new));
+			return SlurryStackIngredient.createMulti(Arrays.stream((ISlurryProvider[])obj).map(ISlurryProvider::getChemical).filter(s->!s.isEmptyType()).map(g->SlurryStackIngredient.from(g, amount)).toArray(SlurryStackIngredient[]::new));
 		}
 		else if(obj instanceof JsonElement) {
 			return SlurryStackIngredient.deserialize((JsonElement)obj);

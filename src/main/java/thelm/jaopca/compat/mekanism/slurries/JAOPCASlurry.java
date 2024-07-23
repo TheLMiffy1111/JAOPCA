@@ -1,10 +1,17 @@
 package thelm.jaopca.compat.mekanism.slurries;
 
+import java.util.function.Supplier;
+
+import com.google.common.base.Strings;
+
 import mekanism.api.chemical.slurry.Slurry;
 import mekanism.api.chemical.slurry.SlurryBuilder;
+import net.minecraft.item.Item;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.api.slurries.IMaterialFormSlurry;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormSettings;
@@ -18,6 +25,7 @@ public class JAOPCASlurry extends Slurry implements IMaterialFormSlurry {
 	protected final ISlurryFormSettings settings;
 
 	protected boolean isHidden;
+	protected Supplier<String> oreTag;
 
 	public JAOPCASlurry(IForm form, IMaterial material, ISlurryFormSettings settings) {
 		super(SlurryBuilder.builder(new ResourceLocation("jaopca", "slurry/"+material.getModelType()+'/'+form.getName())));
@@ -26,6 +34,7 @@ public class JAOPCASlurry extends Slurry implements IMaterialFormSlurry {
 		this.settings = settings;
 
 		isHidden = settings.getIsHidden();
+		oreTag = MemoizingSuppliers.of(()->settings.getOreTagFunction().apply(material));
 	}
 
 	@Override
@@ -41,6 +50,12 @@ public class JAOPCASlurry extends Slurry implements IMaterialFormSlurry {
 	@Override
 	public boolean isHidden() {
 		return isHidden;
+	}
+
+	@Override
+	public ITag<Item> getOreTag() {
+		String oreTag = this.oreTag.get();
+		return Strings.isNullOrEmpty(oreTag) ? null : MiscHelper.INSTANCE.getItemTag(new ResourceLocation(oreTag));
 	}
 
 	@Override

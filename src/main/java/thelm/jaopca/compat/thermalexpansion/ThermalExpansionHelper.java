@@ -7,11 +7,13 @@ import com.google.gson.JsonElement;
 
 import cofh.lib.fluid.FluidIngredient;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.compat.thermalexpansion.recipes.ChillerRecipeSupplier;
 import thelm.jaopca.compat.thermalexpansion.recipes.PressRecipeSupplier;
 import thelm.jaopca.compat.thermalexpansion.recipes.PulverizerRecipeSupplier;
@@ -41,29 +43,39 @@ public class ThermalExpansionHelper {
 			return (FluidIngredient)obj;
 		}
 		else if(obj instanceof String) { // Tag fluid ingredients are broken right now
-			return FluidIngredient.of(MiscHelper.INSTANCE.getFluidTag(new ResourceLocation((String)obj)).getValues().stream().
-					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
+			return FluidIngredient.of(MiscHelper.INSTANCE.getFluidTag(new ResourceLocation((String)obj)).getValues().stream().map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof ResourceLocation) {
-			return FluidIngredient.of(MiscHelper.INSTANCE.getFluidTag((ResourceLocation)obj).getValues().stream().
-					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
+			return FluidIngredient.of(MiscHelper.INSTANCE.getFluidTag((ResourceLocation)obj).getValues().stream().map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof ITag<?>) {
-			return FluidIngredient.of(((ITag<Fluid>)obj).getValues().stream().
-					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
+			return FluidIngredient.of(((ITag<Fluid>)obj).getValues().stream().map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof FluidStack) {
-			return FluidIngredient.of((FluidStack)obj);
+			FluidStack stack = (FluidStack)obj;
+			if(!stack.isEmpty()) {
+				return FluidIngredient.of(stack);
+			}
 		}
 		else if(obj instanceof FluidStack[]) {
-			return FluidIngredient.of((FluidStack[])obj);
+			return FluidIngredient.of(Arrays.stream((FluidStack[])obj).filter(s->!s.isEmpty()).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof Fluid) {
-			return FluidIngredient.of(new FluidStack((Fluid)obj, amount));
+			if(obj != Fluids.EMPTY) {
+				return FluidIngredient.of(new FluidStack((Fluid)obj, amount));
+			}
 		}
 		else if(obj instanceof Fluid[]) {
-			return FluidIngredient.of(Arrays.stream((Fluid[])obj).
-					map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
+			return FluidIngredient.of(Arrays.stream((Fluid[])obj).filter(f->f != Fluids.EMPTY).map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
+		}
+		else if(obj instanceof IFluidProvider) {
+			Fluid fluid = ((IFluidProvider)obj).asFluid();
+			if(fluid != Fluids.EMPTY) {
+				return FluidIngredient.of(new FluidStack(fluid, amount));
+			}
+		}
+		else if(obj instanceof IFluidProvider[]) {
+			return FluidIngredient.of(Arrays.stream((IFluidProvider[])obj).map(IFluidProvider::asFluid).filter(f->f != Fluids.EMPTY).map(f->new FluidStack(f, amount)).toArray(FluidStack[]::new));
 		}
 		else if(obj instanceof JsonElement) {
 			return FluidIngredient.fromJson((JsonElement)obj);

@@ -20,20 +20,20 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.common.ToolType;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.custom.json.VoxelShapeDeserializer;
 import thelm.jaopca.custom.utils.BlockDeserializationHelper;
-import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -117,7 +117,8 @@ public class BlockFormType implements IBlockFormType {
 			return;
 		}
 		registered = true;
-		MiscHelper helper = MiscHelper.INSTANCE;
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
@@ -130,26 +131,26 @@ public class BlockFormType implements IBlockFormType {
 				Block block = materialFormBlock.toBlock();
 				block.setRegistryName(registryName);
 				BLOCKS.put(form, material, materialFormBlock);
-				RegistryHandler.registerForgeRegistryEntry(block);
+				api.registerForgeRegistryEntry(block);
 
 				IMaterialFormBlockItem materialFormBlockItem = settings.getBlockItemCreator().create(materialFormBlock, settings);
 				BlockItem blockItem = materialFormBlockItem.toBlockItem();
 				blockItem.setRegistryName(registryName);
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
-				RegistryHandler.registerForgeRegistryEntry(blockItem);
+				api.registerForgeRegistryEntry(blockItem);
 
-				DataInjector.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock, settings));
+				api.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock, settings));
 
-				DataInjector.registerBlockTag(helper.createResourceLocation(secondaryName), registryName);
-				DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
+				api.registerBlockTag(helper.createResourceLocation(secondaryName), registryName);
+				api.registerBlockTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerBlockTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
+					api.registerBlockTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 
-				DataInjector.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
-				DataInjector.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
+				api.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
+				api.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerItemTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
+					api.registerItemTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 			}
 		}

@@ -3,6 +3,7 @@ package thelm.jaopca.data;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -24,6 +25,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.packs.ModFileResourcePack;
 import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
+import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.RegistryManager;
 import thelm.jaopca.api.resources.IPackSupplier;
 import thelm.jaopca.api.resources.JAOPCAPackSupplier;
 import thelm.jaopca.utils.MiscHelper;
@@ -132,6 +135,17 @@ public class DataCollector {
 		}
 		LOGGER.info("Found {} unique defined advancements", DEFINED_ADVANCEMENTS.size());
 		resourceManager.close();
+	}
+
+	public static Set<ResourceLocation> getDefinedTags(ResourceLocation registry) {
+		ForgeRegistry<?> forgeRegistry = RegistryManager.ACTIVE.getRegistry(registry);
+		if(forgeRegistry != null) {
+			String tagFolder = RegistryManager.ACTIVE.getRegistry(registry).getTagFolder();
+			if(tagFolder != null) {
+				return getDefinedTags(tagFolder);
+			}
+		}
+		return Collections.emptySet();
 	}
 
 	public static Set<ResourceLocation> getDefinedTags(String type) {

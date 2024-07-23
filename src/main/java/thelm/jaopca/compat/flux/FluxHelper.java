@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
@@ -46,16 +47,16 @@ public class FluxHelper {
 			itemListStream = Stream.of(new Ingredient.TagList((Tag<Item>)obj));
 		}
 		else if(obj instanceof ItemStack) {
-			itemListStream = Stream.of(new Ingredient.SingleItemList((ItemStack)obj));
+			itemListStream = Stream.of((ItemStack)obj).filter(s->!s.isEmpty()).map(Ingredient.SingleItemList::new);
 		}
 		else if(obj instanceof ItemStack[]) {
-			itemListStream = Stream.of((ItemStack[])obj).map(Ingredient.SingleItemList::new);
+			itemListStream = Stream.of((ItemStack[])obj).filter(s->!s.isEmpty()).map(Ingredient.SingleItemList::new);
 		}
 		else if(obj instanceof IItemProvider) {
-			itemListStream = Stream.of(new Ingredient.SingleItemList(new ItemStack((IItemProvider)obj)));
+			itemListStream = Stream.of((IItemProvider)obj).map(IItemProvider::asItem).filter(i->i != Items.AIR).map(ItemStack::new).map(Ingredient.SingleItemList::new);
 		}
 		else if(obj instanceof IItemProvider[]) {
-			itemListStream = Stream.of((IItemProvider[])obj).map(ItemStack::new).map(Ingredient.SingleItemList::new);
+			itemListStream = Stream.of((IItemProvider[])obj).map(IItemProvider::asItem).filter(i->i != Items.AIR).map(ItemStack::new).map(Ingredient.SingleItemList::new);
 		}
 		else if(obj instanceof Ingredient.IItemList) {
 			itemListStream = Stream.of((Ingredient.IItemList)obj);

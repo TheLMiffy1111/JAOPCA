@@ -20,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.fluids.IFluidInfo;
@@ -27,12 +28,11 @@ import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.FluidFormSettingsDeserializer;
 import thelm.jaopca.custom.json.ForgeRegistryEntrySupplierDeserializer;
-import thelm.jaopca.data.DataInjector;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -113,7 +113,8 @@ public class FluidFormType implements IFluidFormType {
 			return;
 		}
 		registered = true;
-		MiscHelper helper = MiscHelper.INSTANCE;
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IFluidFormSettings settings = (IFluidFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
@@ -125,24 +126,24 @@ public class FluidFormType implements IFluidFormType {
 				Fluid fluid = materialFormFluid.toFluid();
 				fluid.setRegistryName(registryName);
 				FLUIDS.put(form, material, materialFormFluid);
-				RegistryHandler.registerForgeRegistryEntry(fluid);
+				api.registerForgeRegistryEntry(fluid);
 
 				IMaterialFormFluidBlock materialFormFluidBlock = settings.getFluidBlockCreator().create(materialFormFluid, settings);
 				Block fluidBlock = materialFormFluidBlock.toBlock();
 				fluidBlock.setRegistryName(registryName);
 				FLUID_BLOCKS.put(form, material, materialFormFluidBlock);
-				RegistryHandler.registerForgeRegistryEntry(fluidBlock);
+				api.registerForgeRegistryEntry(fluidBlock);
 
 				IMaterialFormBucketItem materialFormBucketItem = settings.getBucketItemCreator().create(materialFormFluid, settings);
 				Item bucketItem = materialFormBucketItem.toItem();
 				bucketItem.setRegistryName(registryName);
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
-				RegistryHandler.registerForgeRegistryEntry(bucketItem);
+				api.registerForgeRegistryEntry(bucketItem);
 
-				DataInjector.registerFluidTag(helper.createResourceLocation(secondaryName), registryName);
-				DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
+				api.registerFluidTag(helper.createResourceLocation(secondaryName), registryName);
+				api.registerFluidTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					DataInjector.registerFluidTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
+					api.registerFluidTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 			}
 		}

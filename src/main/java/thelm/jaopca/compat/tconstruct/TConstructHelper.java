@@ -7,14 +7,17 @@ import java.util.function.ToIntFunction;
 import com.google.gson.JsonElement;
 
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import slimeknights.mantle.recipe.FluidIngredient;
 import slimeknights.mantle.recipe.ItemOutput;
+import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.compat.tconstruct.recipes.CastingBasinRecipeSupplier;
 import thelm.jaopca.compat.tconstruct.recipes.CastingTableRecipeSupplier;
 import thelm.jaopca.compat.tconstruct.recipes.MeltingRecipeSupplier;
@@ -44,16 +47,30 @@ public class TConstructHelper {
 			return FluidIngredient.of((ITag<Fluid>)obj, amount);
 		}
 		else if(obj instanceof FluidStack) {
-			return FluidIngredient.of((FluidStack)obj);
+			FluidStack stack = (FluidStack)obj;
+			if(!stack.isEmpty()) {
+				return FluidIngredient.of(stack);
+			}
 		}
 		else if(obj instanceof FluidStack[]) {
-			return FluidIngredient.of(Arrays.stream((FluidStack[])obj).map(FluidIngredient::of).toArray(FluidIngredient[]::new));
+			return FluidIngredient.of(Arrays.stream((FluidStack[])obj).filter(s->!s.isEmpty()).map(FluidIngredient::of).toArray(FluidIngredient[]::new));
 		}
 		else if(obj instanceof Fluid) {
-			return FluidIngredient.of((Fluid)obj, amount);
+			if(obj != Fluids.EMPTY) {
+				return FluidIngredient.of((Fluid)obj, amount);
+			}
 		}
 		else if(obj instanceof Fluid[]) {
-			return FluidIngredient.of(Arrays.stream((Fluid[])obj).map(g->FluidIngredient.of(g, amount)).toArray(FluidIngredient[]::new));
+			return FluidIngredient.of(Arrays.stream((Fluid[])obj).filter(f->f != Fluids.EMPTY).map(f->FluidIngredient.of(f, amount)).toArray(FluidIngredient[]::new));
+		}
+		else if(obj instanceof IFluidProvider) {
+			Fluid fluid = ((IFluidProvider)obj).asFluid();
+			if(fluid != Fluids.EMPTY) {
+				return FluidIngredient.of(fluid, amount);
+			}
+		}
+		else if(obj instanceof IFluidProvider[]) {
+			return FluidIngredient.of(Arrays.stream((IFluidProvider[])obj).map(IFluidProvider::asFluid).filter(f->f != Fluids.EMPTY).map(f->FluidIngredient.of(f, amount)).toArray(FluidIngredient[]::new));
 		}
 		else if(obj instanceof JsonElement) {
 			return FluidIngredient.deserialize((JsonElement)obj, "ingredient");
@@ -69,10 +86,16 @@ public class TConstructHelper {
 			return ((ItemOutput)obj);
 		}
 		else if(obj instanceof ItemStack) {
-			return ItemOutput.fromStack((ItemStack)obj);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				return ItemOutput.fromStack((ItemStack)obj);
+			}
 		}
 		else if(obj instanceof IItemProvider) {
-			return ItemOutput.fromStack(new ItemStack((IItemProvider)obj, count));
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return ItemOutput.fromStack(new ItemStack(item, count));
+			}
 		}
 		else if(obj instanceof String) {
 			return ItemOutput.fromTag(MiscHelper.INSTANCE.getItemTag(new ResourceLocation((String)obj)), count);

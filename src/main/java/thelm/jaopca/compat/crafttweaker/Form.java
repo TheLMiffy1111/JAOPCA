@@ -17,6 +17,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -101,7 +102,7 @@ public class Form {
 
 	@ZenCodeType.Method
 	public IItemStack getItemStack(String suffix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		ItemStack stack = helper.getItemStack(helper.getTagLocation(form.getSecondaryName(), suffix), count);
 		return new MCItemStack(stack);
 	}

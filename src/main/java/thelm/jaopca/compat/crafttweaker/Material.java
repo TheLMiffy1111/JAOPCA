@@ -19,6 +19,7 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -113,7 +114,7 @@ public class Material {
 
 	@ZenCodeType.Method
 	public IItemStack getItemStack(String prefix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		ItemStack stack = helper.getItemStack(helper.getTagLocation(prefix, material.getName()), count);
 		return new MCItemStack(stack);
 	}
@@ -125,7 +126,7 @@ public class Material {
 
 	@ZenCodeType.Method
 	public IFluidStack getFluidStack(String prefix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		FluidStack stack = helper.getFluidStack(helper.getTagLocation(prefix, material.getName()), count);
 		return new MCFluidStack(stack);
 	}

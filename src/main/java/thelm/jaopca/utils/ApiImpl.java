@@ -173,28 +173,28 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public Set<ResourceLocation> getTags(String type) {
+		return Sets.union(DataCollector.getDefinedTags(type), DataInjector.getInjectTags(type));
+	}
+
+	@Override
 	public Set<ResourceLocation> getBlockTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("blocks"), DataInjector.getInjectBlockTags()));
+		return getTags("blocks");
 	}
 
 	@Override
 	public Set<ResourceLocation> getItemTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("items"), DataInjector.getInjectItemTags()));
+		return getTags("items");
 	}
 
 	@Override
 	public Set<ResourceLocation> getFluidTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("fluids"), DataInjector.getInjectFluidTags()));
+		return getTags("fluids");
 	}
 
 	@Override
 	public Set<ResourceLocation> getEntityTypeTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(DataCollector.getDefinedTags("entity_types"), DataInjector.getInjectEntityTypeTags()));
-	}
-
-	@Override
-	public Set<ResourceLocation> getTags(String type) {
-		return ImmutableSortedSet.copyOf(DataCollector.getDefinedTags(type));
+		return getTags("entity_types");
 	}
 
 	@Override
@@ -233,23 +233,38 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerDefinedTag(String type, ResourceLocation key) {
+		return DataCollector.getDefinedTags(type).add(key);
+	}
+
+	@Override
 	public boolean registerDefinedBlockTag(ResourceLocation key) {
-		return DataCollector.getDefinedTags("blocks").add(key);
+		return registerDefinedTag("blocks", key);
 	}
 
 	@Override
 	public boolean registerDefinedItemTag(ResourceLocation key) {
-		return DataCollector.getDefinedTags("items").add(key);
+		return registerDefinedTag("items", key);
 	}
 
 	@Override
 	public boolean registerDefinedFluidTag(ResourceLocation key) {
-		return DataCollector.getDefinedTags("fluids").add(key);
+		return registerDefinedTag("fluids", key);
 	}
 
 	@Override
 	public boolean registerDefinedEntityTypeTag(ResourceLocation key) {
-		return DataCollector.getDefinedTags("entity_types").add(key);
+		return registerDefinedTag("entity_types", key);
+	}
+
+	@Override
+	public boolean registerTag(String type, ResourceLocation key, ResourceLocation objKey) {
+		return DataInjector.registerTag(type, key, objKey);
+	}
+
+	@Override
+	public boolean registerTag(String type, ResourceLocation key, IForgeRegistryEntry<?> obj) {
+		return registerTag(type, key, obj.getRegistryName());
 	}
 
 	@Override
@@ -257,7 +272,7 @@ public class ApiImpl extends JAOPCAApi {
 		if(ConfigHandler.BLOCK_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerBlockTag(key, blockKey);
+		return registerTag("blocks", key, blockKey);
 	}
 
 	@Override
@@ -270,7 +285,7 @@ public class ApiImpl extends JAOPCAApi {
 		if(ConfigHandler.ITEM_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerItemTag(key, itemKey);
+		return registerTag("items", key, itemKey);
 	}
 
 	@Override
@@ -283,7 +298,7 @@ public class ApiImpl extends JAOPCAApi {
 		if(ConfigHandler.FLUID_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerFluidTag(key, fluidKey);
+		return registerTag("fluids", key, fluidKey);
 	}
 
 	@Override
@@ -296,7 +311,7 @@ public class ApiImpl extends JAOPCAApi {
 		if(ConfigHandler.ENTITY_TYPE_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerEntityTypeTag(key, entityTypeKey);
+		return registerTag("entity_types", key, entityTypeKey);
 	}
 
 	@Override

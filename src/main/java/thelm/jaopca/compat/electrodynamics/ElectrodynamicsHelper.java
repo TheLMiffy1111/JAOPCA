@@ -10,8 +10,10 @@ import com.google.gson.JsonObject;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import thelm.jaopca.api.fluids.IFluidProvider;
 import thelm.jaopca.compat.electrodynamics.recipes.ChemicalCrystallizerRecipeSupplier;
 import thelm.jaopca.compat.electrodynamics.recipes.LatheRecipeSupplier;
 import thelm.jaopca.compat.electrodynamics.recipes.MineralCrusherRecipeSupplier;
@@ -44,16 +46,30 @@ public class ElectrodynamicsHelper {
 			return new FluidIngredient(MiscHelper.INSTANCE.getFluidTag((ResourceLocation)obj).getValues().stream().map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
 		}
 		else if(obj instanceof FluidStack) {
-			return new FluidIngredient((FluidStack)obj);
+			FluidStack stack = (FluidStack)obj;
+			if(!stack.isEmpty()) {
+				return new FluidIngredient(stack);
+			}
 		}
 		else if(obj instanceof FluidStack[]) {
-			return new FluidIngredient(Arrays.asList((FluidStack[])obj));
+			return new FluidIngredient(Arrays.stream((FluidStack[])obj).filter(s->!s.isEmpty()).collect(Collectors.toList()));
 		}
 		else if(obj instanceof Fluid) {
-			return new FluidIngredient(new FluidStack((Fluid)obj, amount));
+			if(obj != Fluids.EMPTY) {
+				return new FluidIngredient(new FluidStack((Fluid)obj, amount));
+			}
 		}
 		else if(obj instanceof Fluid[]) {
-			return new FluidIngredient(Arrays.stream((Fluid[])obj).map(g->new FluidStack(g, amount)).collect(Collectors.toList()));
+			return new FluidIngredient(Arrays.stream((Fluid[])obj).filter(f->f != Fluids.EMPTY).map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
+		}
+		else if(obj instanceof IFluidProvider) {
+			Fluid fluid = ((IFluidProvider)obj).asFluid();
+			if(fluid != Fluids.EMPTY) {
+				return new FluidIngredient(new FluidStack(fluid, amount));
+			}
+		}
+		else if(obj instanceof IFluidProvider[]) {
+			return new FluidIngredient(Arrays.stream((IFluidProvider[])obj).map(IFluidProvider::asFluid).filter(f->f != Fluids.EMPTY).map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
 		}
 		else if(obj instanceof JsonObject) {
 			return FluidIngredient.deserialize((JsonObject)obj);

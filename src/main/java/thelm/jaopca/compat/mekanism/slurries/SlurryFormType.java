@@ -12,7 +12,9 @@ import com.google.gson.JsonElement;
 
 import mekanism.api.chemical.slurry.Slurry;
 import net.minecraft.util.ResourceLocation;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.MekanismDataInjector;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
@@ -22,7 +24,7 @@ import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormType;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryInfo;
 import thelm.jaopca.compat.mekanism.custom.json.SlurryFormSettingsDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.registries.RegistryHandler;
+import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 public class SlurryFormType implements ISlurryFormType {
@@ -91,7 +93,8 @@ public class SlurryFormType implements ISlurryFormType {
 			return;
 		}
 		registered = true;
-		MiscHelper helper = MiscHelper.INSTANCE;
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			ISlurryFormSettings settings = (ISlurryFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
@@ -102,7 +105,7 @@ public class SlurryFormType implements ISlurryFormType {
 				Slurry slurry = materialFormSlurry.toSlurry();
 				slurry.setRegistryName(registryName);
 				SLURRIES.put(form, material, materialFormSlurry);
-				RegistryHandler.registerForgeRegistryEntry(slurry);
+				api.registerForgeRegistryEntry(slurry);
 
 				MekanismDataInjector.registerSlurryTag(helper.createResourceLocation(secondaryName), registryName);
 				MekanismDataInjector.registerSlurryTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
