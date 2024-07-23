@@ -36,8 +36,8 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 		setViscosity(settings.getViscosityFunction().applyAsInt(material));
 		setGaseous(settings.getIsGaseousFunction().test(material));
 
-		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), material);
-		opacity = MemoizingSuppliers.of(settings.getOpacityFunction(), material);
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), ()->material);
+		opacity = MemoizingSuppliers.of(settings.getOpacityFunction(), ()->material);
 		translationKey = MemoizingSuppliers.of(()->"fluid.jaopca."+MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName()));
 	}
 

@@ -66,19 +66,19 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		slipperiness = (float)settings.getSlipperinessFunction().applyAsDouble(material);
 
 		blocksMovement = settings.getBlocksMovement();
-		blockMaterial = MemoizingSuppliers.of(settings.getMaterialFunction(), material);
-		mapColor = MemoizingSuppliers.of(settings.getMapColorFunction(), material);
-		lightOpacity = MemoizingSuppliers.of(settings.getLightOpacityFunction(), material);
-		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), material);
-		blockHardness = MemoizingSuppliers.of(settings.getBlockHardnessFunction(), material);
-		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), material);
+		blockMaterial = MemoizingSuppliers.of(settings.getMaterialFunction(), ()->material);
+		mapColor = MemoizingSuppliers.of(settings.getMapColorFunction(), ()->material);
+		lightOpacity = MemoizingSuppliers.of(settings.getLightOpacityFunction(), ()->material);
+		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), ()->material);
+		blockHardness = MemoizingSuppliers.of(settings.getBlockHardnessFunction(), ()->material);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), ()->material);
 		boundingBox = settings.getBoundingBox();
-		harvestTool = MemoizingSuppliers.of(settings.getHarvestToolFunction(), material);
-		harvestLevel = MemoizingSuppliers.of(settings.getHarvestLevelFunction(), material);
-		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), material);
-		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), material);
-		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), material);
-		isBeaconBase = MemoizingSuppliers.of(settings.getIsBeaconBaseFunction(), material);
+		harvestTool = MemoizingSuppliers.of(settings.getHarvestToolFunction(), ()->material);
+		harvestLevel = MemoizingSuppliers.of(settings.getHarvestLevelFunction(), ()->material);
+		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), ()->material);
+		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), ()->material);
+		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), ()->material);
+		isBeaconBase = MemoizingSuppliers.of(settings.getIsBeaconBaseFunction(), ()->material);
 		translationKey = MemoizingSuppliers.of(()->{
 			String name = blockRegistry.getNameForObject(JAOPCABlock.this);
 			return "block."+name.replaceFirst(":", ".").replace('/', '.');

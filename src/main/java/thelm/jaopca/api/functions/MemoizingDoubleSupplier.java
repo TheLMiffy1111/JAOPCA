@@ -18,10 +18,6 @@ public class MemoizingDoubleSupplier implements DoubleSupplier {
 		return new MemoizingDoubleSupplier(delegate);
 	}
 
-	public static <T> MemoizingDoubleSupplier of(ToDoubleFunction<T> function, T value) {
-		return new MemoizingDoubleSupplier(()->function.applyAsDouble(value));
-	}
-
 	public static <T> MemoizingDoubleSupplier of(ToDoubleFunction<T> function, Supplier<T> value) {
 		return new MemoizingDoubleSupplier(()->function.applyAsDouble(value.get()));
 	}
