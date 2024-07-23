@@ -33,10 +33,10 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 		this.material = material;
 		this.settings = settings;
 
-		itemStackLimit = MemoizingSuppliers.of(settings.getItemStackLimitFunction(), material);
-		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), material);
-		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), material);
-		burnTime = MemoizingSuppliers.of(settings.getBurnTimeFunction(), material);
+		itemStackLimit = MemoizingSuppliers.of(settings.getItemStackLimitFunction(), ()->material);
+		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), ()->material);
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), ()->material);
+		burnTime = MemoizingSuppliers.of(settings.getBurnTimeFunction(), ()->material);
 	}
 
 	@Override

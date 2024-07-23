@@ -17,10 +17,6 @@ public class MemoizingSupplier<T> implements Supplier<T> {
 		return new MemoizingSupplier<>(delegate);
 	}
 
-	public static <V, T> MemoizingSupplier<T> of(Function<V, T> function, V value) {
-		return new MemoizingSupplier<>(()->function.apply(value));
-	}
-
 	public static <V, T> MemoizingSupplier<T> of(Function<V, T> function, Supplier<V> value) {
 		return new MemoizingSupplier<>(()->function.apply(value.get()));
 	}

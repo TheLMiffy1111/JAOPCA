@@ -50,16 +50,16 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		this.settings = settings;
 
 		blocksMovement = settings.getBlocksMovement();
-		soundType = MemoizingSuppliers.of(settings.getSoundTypeFunction(), material);
-		lightOpacity = MemoizingSuppliers.of(settings.getLightOpacityFunction(), material);
-		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), material);
-		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), material);
-		friction = MemoizingSuppliers.of(settings.getFrictionFunction(), material);
+		soundType = MemoizingSuppliers.of(settings.getSoundTypeFunction(), ()->material);
+		lightOpacity = MemoizingSuppliers.of(settings.getLightOpacityFunction(), ()->material);
+		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), ()->material);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), ()->material);
+		friction = MemoizingSuppliers.of(settings.getFrictionFunction(), ()->material);
 		shape = settings.getShape();
 		interactionShape = settings.getInteractionShape();
-		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), material);
-		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), material);
-		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), material);
+		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), ()->material);
+		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), ()->material);
+		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), ()->material);
 	}
 
 	public static BlockBehaviour.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings) {
