@@ -13,6 +13,7 @@ import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -76,7 +77,7 @@ public class Form {
 
 	@ZenMethod
 	public IItemStack getItemStack(String suffix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		ItemStack stack = helper.getItemStack(helper.getOredictName(form.getSecondaryName(), suffix), count, false);
 		return MineTweakerMC.getIItemStack(stack);
 	}
@@ -88,7 +89,7 @@ public class Form {
 
 	@ZenMethod
 	public ILiquidStack getLiquidStack(String suffix, int amount) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		FluidStack stack = helper.getFluidStack(helper.getFluidName(form.getSecondaryName(), suffix), amount);
 		return new MCLiquidStack(stack);
 	}

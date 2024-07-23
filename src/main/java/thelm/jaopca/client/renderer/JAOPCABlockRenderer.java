@@ -55,7 +55,7 @@ public class JAOPCABlockRenderer implements ISimpleBlockRenderingHandler {
 		boolean flag = renderer.renderStandardBlock(block, x, y, z);
 		if(((JAOPCABlock)block).hasOverlay()) {
 			renderingOverlay = true;
-			double offset = 0.000001;
+			double offset = 0.00001;
 			renderer.renderMinX -= offset;
 			renderer.renderMinY -= offset;
 			renderer.renderMinZ -= offset;

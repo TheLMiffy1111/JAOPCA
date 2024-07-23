@@ -23,14 +23,6 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private IBlockCreator blockCreator = JAOPCABlock::new;
 	private Function<IMaterial, Material> materialFunction = material->Material.iron;
 	private Function<IMaterial, MapColor> mapColorFunction = materialFunction.andThen(Material::getMaterialMapColor);
-	//material->{
-	//	int color = material.getColor();
-	//	return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
-	//			min((matColor1, matColor2)->Integer.compare(
-	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
-	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
-	//			orElse(MaterialColor.IRON);
-	//};
 	private boolean blocksMovement = true;
 	private Function<IMaterial, Block.SoundType> soundTypeFunction = material->Block.soundTypeMetal;
 	private ToIntFunction<IMaterial> lightOpacityFunction = material->15;

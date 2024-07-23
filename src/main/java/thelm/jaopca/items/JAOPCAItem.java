@@ -1,7 +1,8 @@
 package thelm.jaopca.items;
 
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,6 +14,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
@@ -26,16 +28,23 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	private final IMaterial material;
 	protected final IItemFormSettings settings;
 
-	protected OptionalInt itemStackLimit = OptionalInt.empty();
-	protected Optional<Boolean> hasEffect = Optional.empty();
-	protected Optional<EnumRarity> rarity = Optional.empty();
-	protected OptionalInt burnTime = OptionalInt.empty();
-	protected Optional<String> translationKey = Optional.empty();
+	protected IntSupplier itemStackLimit;
+	protected BooleanSupplier hasEffect;
+	protected Supplier<EnumRarity> rarity;
+	protected Supplier<String> translationKey;
 
 	public JAOPCAItem(IForm form, IMaterial material, IItemFormSettings settings) {
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
+
+		itemStackLimit = MemoizingSuppliers.of(settings.getItemStackLimitFunction(), material);
+		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), material);
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), material);
+		translationKey = MemoizingSuppliers.of(()->{
+			String name = itemRegistry.getNameForObject(JAOPCAItem.this);
+			return "item."+name.replaceFirst(":", ".").replace('/', '.');
+		});
 	}
 
 	@Override
@@ -50,35 +59,22 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
-		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(material));
-		}
 		return itemStackLimit.getAsInt();
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean hasEffect(ItemStack stack) {
-		if(!hasEffect.isPresent()) {
-			hasEffect = Optional.of(settings.getHasEffectFunction().test(material));
-		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.getAsBoolean() || super.hasEffect(stack);
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.getDisplayRarityFunction().apply(material));
-		}
 		return rarity.get();
 	}
 
 	@Override
 	public String getUnlocalizedName() {
-		if(!translationKey.isPresent()) {
-			String name = itemRegistry.getNameForObject(this);
-			translationKey = Optional.of("item."+name.replaceFirst(":", ".").replace('/', '.'));
-		}
 		return translationKey.get();
 	}
 

@@ -14,6 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.collect.ImmutableSortedSet;
 
 import thelm.jaopca.api.config.IDynamicSpecConfig;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
@@ -62,7 +63,7 @@ public class ModuleData implements IModuleData {
 
 	public void setConfig(IDynamicSpecConfig config) {
 		this.config = config;
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("general.materialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The material blacklist of this module."),

@@ -83,10 +83,6 @@ public interface IBlockFormSettings extends IFormSettings {
 
 	Predicate<IMaterial> getIsBeaconBaseFunction();
 
-	//IBlockFormSettings setIsFallableFunction(Predicate<IMaterial> isFallableFunction);
-
-	//Predicate<IMaterial> getIsFallableFunction();
-
 	IBlockFormSettings setBlockItemCreator(IBlockItemCreator blockItemCreator);
 
 	IBlockItemCreator getBlockItemCreator();

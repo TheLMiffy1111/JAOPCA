@@ -18,7 +18,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.items.IItemInfo;
@@ -27,7 +29,6 @@ import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.EnumDeserializer;
 import thelm.jaopca.custom.json.ItemFormSettingsDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.oredict.OredictHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -64,7 +65,7 @@ public class ItemFormType implements IItemFormType {
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
 		String oredictName = MiscHelper.INSTANCE.getOredictName(form.getSecondaryName(), material.getName());
-		return !OredictHandler.getOredict().contains(oredictName);
+		return !ApiImpl.INSTANCE.getOredict().contains(oredictName);
 	}
 
 	@Override
@@ -98,8 +99,8 @@ public class ItemFormType implements IItemFormType {
 			return;
 		}
 		registered = true;
-		ApiImpl api = ApiImpl.INSTANCE;
-		MiscHelper helper = MiscHelper.INSTANCE;
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();

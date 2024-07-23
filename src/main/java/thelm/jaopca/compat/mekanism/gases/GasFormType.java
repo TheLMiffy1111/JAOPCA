@@ -13,6 +13,7 @@ import com.google.gson.JsonElement;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
 import net.minecraft.util.ResourceLocation;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.api.gases.IGasFormSettings;
@@ -90,7 +91,7 @@ public class GasFormType implements IGasFormType {
 			return;
 		}
 		registered = true;
-		ApiImpl api = ApiImpl.INSTANCE;
+		JAOPCAApi api = ApiImpl.INSTANCE;
 		for(IForm form : FORMS) {
 			IGasFormSettings settings = (IGasFormSettings)form.getSettings();
 			for(IMaterial material : form.getMaterials()) {

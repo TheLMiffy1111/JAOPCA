@@ -1,8 +1,9 @@
 package thelm.jaopca.blocks;
 
-import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import com.google.common.base.Strings;
 
@@ -24,6 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.client.renderer.JAOPCABlockRenderer;
 import thelm.jaopca.utils.ApiImpl;
@@ -39,21 +41,20 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected final IBlockFormSettings settings;
 
 	protected boolean blocksMovement;
-	protected Optional<Material> blockMaterial = Optional.empty();
-	protected Optional<MapColor> mapColor = Optional.empty();
-	protected Optional<Block.SoundType> soundType = Optional.empty();
-	protected OptionalInt lightOpacity = OptionalInt.empty();
-	protected OptionalInt lightValue = OptionalInt.empty();
-	protected OptionalDouble blockHardness = OptionalDouble.empty();
-	protected OptionalDouble explosionResistance = OptionalDouble.empty();
+	protected Supplier<Material> blockMaterial;
+	protected Supplier<MapColor> mapColor;
+	protected IntSupplier lightOpacity;
+	protected IntSupplier lightValue;
+	protected DoubleSupplier blockHardness;
+	protected DoubleSupplier explosionResistance;
 	protected AxisAlignedBB boundingBox;
-	protected Optional<String> harvestTool = Optional.empty();
-	protected OptionalInt harvestLevel = OptionalInt.empty();
-	protected OptionalInt flammability = OptionalInt.empty();
-	protected OptionalInt fireSpreadSpeed = OptionalInt.empty();
-	protected Optional<Boolean> isFireSource = Optional.empty();
-	protected Optional<Boolean> isBeaconBase = Optional.empty();
-	protected Optional<String> translationKey = Optional.empty();
+	protected Supplier<String> harvestTool;
+	protected IntSupplier harvestLevel;
+	protected IntSupplier flammability;
+	protected IntSupplier fireSpreadSpeed;
+	protected BooleanSupplier isFireSource;
+	protected BooleanSupplier isBeaconBase;
+	protected Supplier<String> translationKey;
 
 	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings) {
 		super(Material.iron);
@@ -65,7 +66,24 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		slipperiness = (float)settings.getSlipperinessFunction().applyAsDouble(material);
 
 		blocksMovement = settings.getBlocksMovement();
+		blockMaterial = MemoizingSuppliers.of(settings.getMaterialFunction(), material);
+		mapColor = MemoizingSuppliers.of(settings.getMapColorFunction(), material);
+		lightOpacity = MemoizingSuppliers.of(settings.getLightOpacityFunction(), material);
+		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), material);
+		blockHardness = MemoizingSuppliers.of(settings.getBlockHardnessFunction(), material);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), material);
 		boundingBox = settings.getBoundingBox();
+		harvestTool = MemoizingSuppliers.of(settings.getHarvestToolFunction(), material);
+		harvestLevel = MemoizingSuppliers.of(settings.getHarvestLevelFunction(), material);
+		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), material);
+		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), material);
+		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), material);
+		isBeaconBase = MemoizingSuppliers.of(settings.getIsBeaconBaseFunction(), material);
+		translationKey = MemoizingSuppliers.of(()->{
+			String name = blockRegistry.getNameForObject(JAOPCABlock.this);
+			return "block."+name.replaceFirst(":", ".").replace('/', '.');
+		});
+
 		minX = boundingBox.minX;
 		minY = boundingBox.minY;
 		minZ = boundingBox.minZ;
@@ -91,49 +109,31 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 
 	@Override
 	public Material getMaterial() {
-		if(!blockMaterial.isPresent()) {
-			blockMaterial = Optional.of(settings.getMaterialFunction().apply(material));
-		}
 		return blockMaterial.get();
 	}
 
 	@Override
 	public MapColor getMapColor(int meta) {
-		if(!mapColor.isPresent()) {
-			mapColor = Optional.of(settings.getMapColorFunction().apply(material));
-		}
 		return mapColor.get();
 	}
 
 	@Override
 	public int getLightOpacity() {
-		if(!lightOpacity.isPresent()) {
-			lightOpacity = OptionalInt.of(settings.getLightOpacityFunction().applyAsInt(material));
-		}
 		return lightOpacity.getAsInt();
 	}
 
 	@Override
 	public int getLightValue() {
-		if(!lightValue.isPresent()) {
-			lightValue = OptionalInt.of(settings.getLightValueFunction().applyAsInt(material));
-		}
 		return lightValue.getAsInt();
 	}
 
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
-		if(!blockHardness.isPresent()) {
-			blockHardness = OptionalDouble.of(settings.getBlockHardnessFunction().applyAsDouble(material));
-		}
 		return (float)blockHardness.getAsDouble();
 	}
 
 	@Override
 	public float getExplosionResistance(Entity exploder) {
-		if(!explosionResistance.isPresent()) {
-			explosionResistance = OptionalDouble.of(settings.getExplosionResistanceFunction().applyAsDouble(material));
-		}
 		return (float)explosionResistance.getAsDouble();
 	}
 
@@ -144,50 +144,32 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 
 	@Override
 	public String getHarvestTool(int meta) {
-		if(!harvestTool.isPresent()) {
-			harvestTool = Optional.of(settings.getHarvestToolFunction().apply(material));
-		}
 		return Strings.emptyToNull(harvestTool.get());
 	}
 
 	@Override
 	public int getHarvestLevel(int meta) {
-		if(!harvestLevel.isPresent()) {
-			harvestLevel = OptionalInt.of(settings.getHarvestLevelFunction().applyAsInt(material));
-		}
 		return harvestLevel.getAsInt();
 	}
 
 	@Override
 	public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-		if(!flammability.isPresent()) {
-			flammability = OptionalInt.of(settings.getFireSpreadSpeedFunction().applyAsInt(material));
-		}
 		return flammability.getAsInt();
 	}
 
 	@Override
 	public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-		if(!fireSpreadSpeed.isPresent()) {
-			fireSpreadSpeed = OptionalInt.of(settings.getFlammabilityFunction().applyAsInt(material));
-		}
 		return fireSpreadSpeed.getAsInt();
 	}
 
 	@Override
 	public boolean isFireSource(World world, int x, int y, int z, ForgeDirection side) {
-		if(!isFireSource.isPresent()) {
-			isFireSource = Optional.of(settings.getIsFireSourceFunction().test(material));
-		}
-		return isFireSource.get();
+		return isFireSource.getAsBoolean();
 	}
 
 	@Override
 	public boolean isBeaconBase(IBlockAccess worldObj, int x, int y, int z, int beaconX, int beaconY, int beaconZ) {
-		if(!isBeaconBase.isPresent()) {
-			isBeaconBase = Optional.of(settings.getIsBeaconBaseFunction().test(material));
-		}
-		return isBeaconBase.get();
+		return isBeaconBase.getAsBoolean();
 	}
 
 	@Override
@@ -202,10 +184,6 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 
 	@Override
 	public String getUnlocalizedName() {
-		if(!translationKey.isPresent()) {
-			String name = blockRegistry.getNameForObject(this);
-			translationKey = Optional.of("block."+name.replaceFirst(":", ".").replace('/', '.'));
-		}
 		return translationKey.get();
 	}
 

@@ -1,7 +1,8 @@
 package thelm.jaopca.blocks;
 
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,6 +13,7 @@ import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
@@ -20,13 +22,17 @@ public class JAOPCABlockItem extends ItemBlock implements IMaterialFormBlockItem
 
 	protected final IBlockFormSettings settings;
 
-	protected OptionalInt itemStackLimit = OptionalInt.empty();
-	protected Optional<Boolean> hasEffect = Optional.empty();
-	protected Optional<EnumRarity> rarity = Optional.empty();
+	protected IntSupplier itemStackLimit;
+	protected BooleanSupplier hasEffect;
+	protected Supplier<EnumRarity> rarity;
 
 	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
 		super(block.toBlock());
 		this.settings = settings;
+
+		itemStackLimit = MemoizingSuppliers.of(settings.getItemStackLimitFunction(), block::getIMaterial);
+		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), block::getIMaterial);
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), block::getIMaterial);
 	}
 
 	@Override
@@ -41,26 +47,17 @@ public class JAOPCABlockItem extends ItemBlock implements IMaterialFormBlockItem
 
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
-		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(getIMaterial()));
-		}
 		return itemStackLimit.getAsInt();
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean hasEffect(ItemStack stack) {
-		if(!hasEffect.isPresent()) {
-			hasEffect = Optional.of(settings.getHasEffectFunction().test(getIMaterial()));
-		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.getAsBoolean() || super.hasEffect(stack);
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.getDisplayRarityFunction().apply(getIMaterial()));
-		}
 		return rarity.get();
 	}
 

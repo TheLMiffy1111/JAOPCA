@@ -40,7 +40,7 @@ public class HBMHelper {
 			}
 		}
 		if(obj instanceof ItemStack) {
-			return new RecipesCommon.ComparableStack(MiscHelper.INSTANCE.resizeItemStack((ItemStack)obj, count)	);
+			return new RecipesCommon.ComparableStack(MiscHelper.INSTANCE.resizeItemStack((ItemStack)obj, count));
 		}
 		if(obj instanceof Item) {
 			return new RecipesCommon.ComparableStack(new ItemStack((Item)obj, count, OreDictionary.WILDCARD_VALUE));

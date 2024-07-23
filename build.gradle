@@ -124,7 +124,7 @@ def specVersion = "W"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "W.0.5.22"
+version = "W.0.6.23"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -292,7 +292,7 @@ blossom {
 
 processResources {
 	inputs.properties(replacements)
-	filesMatching(["mcmod.info", "META-INF/mods.toml"]) {
+	filesMatching(["mcmod.info", "META-INF/mods.toml", "META-INF/neoforge.mods.toml"]) {
 		filter {
 			it.replace(replacements)
 		}

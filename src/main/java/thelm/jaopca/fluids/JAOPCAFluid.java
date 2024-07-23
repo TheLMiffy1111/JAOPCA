@@ -1,7 +1,7 @@
 package thelm.jaopca.fluids;
 
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fluids.Fluid;
@@ -9,6 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
@@ -19,10 +20,9 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 	private final IMaterial material;
 	protected final IFluidFormSettings settings;
 
-	protected Optional<Boolean> gaseous = Optional.empty();
-	protected Optional<EnumRarity> rarity = Optional.empty();
-	protected OptionalInt opacity = OptionalInt.empty();
-	protected Optional<String> translationKey = Optional.empty();
+	protected Supplier<EnumRarity> rarity;
+	protected IntSupplier opacity;
+	protected Supplier<String> translationKey;
 
 	public JAOPCAFluid(IForm form, IMaterial material, IFluidFormSettings settings) {
 		super(MiscHelper.INSTANCE.getFluidName(form.getSecondaryName(), material.getName()));
@@ -35,6 +35,10 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 		setTemperature(settings.getTemperatureFunction().applyAsInt(material));
 		setViscosity(settings.getViscosityFunction().applyAsInt(material));
 		setGaseous(settings.getIsGaseousFunction().test(material));
+
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), material);
+		opacity = MemoizingSuppliers.of(settings.getOpacityFunction(), material);
+		translationKey = MemoizingSuppliers.of(()->"fluid.jaopca."+MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName()));
 	}
 
 	@Override
@@ -49,16 +53,10 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 
 	@Override
 	public EnumRarity getRarity() {
-		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.getDisplayRarityFunction().apply(material));
-		}
 		return rarity.get();
 	}
 
 	public int getOpacity() {
-		if(!opacity.isPresent()) {
-			opacity = OptionalInt.of(settings.getOpacityFunction().applyAsInt(material));
-		}
 		return opacity.getAsInt();
 	}
 
@@ -69,9 +67,6 @@ public class JAOPCAFluid extends Fluid implements IMaterialFormFluid {
 
 	@Override
 	public String getUnlocalizedName() {
-		if(!translationKey.isPresent()) {
-			translationKey = Optional.of("fluid.jaopca."+MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName()));
-		}
 		return translationKey.get();
 	}
 

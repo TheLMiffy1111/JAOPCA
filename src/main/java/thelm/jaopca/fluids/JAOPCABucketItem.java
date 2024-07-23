@@ -1,7 +1,8 @@
 package thelm.jaopca.fluids;
 
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.relauncher.Side;
@@ -23,6 +24,7 @@ import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
@@ -32,14 +34,22 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	private final IMaterialFormFluid fluid;
 	private final IFluidFormSettings settings;
 
-	protected OptionalInt itemStackLimit = OptionalInt.empty();
-	protected Optional<Boolean> hasEffect = Optional.empty();
-	protected Optional<EnumRarity> rarity = Optional.empty();
-	protected Optional<String> translationKey = Optional.empty();
+	protected IntSupplier itemStackLimit;
+	protected BooleanSupplier hasEffect;
+	protected Supplier<EnumRarity> rarity;
+	protected Supplier<String> translationKey;
 
 	public JAOPCABucketItem(IMaterialFormFluid fluid, IFluidFormSettings settings) {
 		this.fluid = fluid;
 		this.settings = settings;
+
+		itemStackLimit = MemoizingSuppliers.of(settings.getItemStackLimitFunction(), fluid::getIMaterial);
+		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), fluid::getIMaterial);
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), fluid::getIMaterial);
+		translationKey = MemoizingSuppliers.of(()->{
+			String name = itemRegistry.getNameForObject(this);
+			return "item."+name.replaceFirst(":", ".").replace('/', '.');
+		});
 	}
 
 	@Override
@@ -54,26 +64,17 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
-		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(getIMaterial()));
-		}
 		return itemStackLimit.getAsInt();
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public boolean hasEffect(ItemStack stack) {
-		if(!hasEffect.isPresent()) {
-			hasEffect = Optional.of(settings.getHasEffectFunction().test(getIMaterial()));
-		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.getAsBoolean() || super.hasEffect(stack);
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.getDisplayRarityFunction().apply(getIMaterial()));
-		}
 		return rarity.get();
 	}
 
@@ -142,10 +143,6 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 
 	@Override
 	public String getUnlocalizedName() {
-		if(!translationKey.isPresent()) {
-			String name = itemRegistry.getNameForObject(this);
-			translationKey = Optional.of("item."+name.replaceFirst(":", ".").replace('/', '.'));
-		}
 		return translationKey.get();
 	}
 
