@@ -33,10 +33,10 @@ public class JAOPCAFluid extends PlaceableFluid implements IMaterialFormFluid {
 		this.material = material;
 		this.settings = settings;
 
-		tickRate = MemoizingSuppliers.of(settings.getTickRateFunction(), material);
-		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), material);
-		canSourcesMultiply = MemoizingSuppliers.of(settings.getCanSourcesMultiplyFunction(), material);
-		levelDecreasePerBlock = MemoizingSuppliers.of(settings.getLevelDecreasePerBlockFunction(), material);
+		tickRate = MemoizingSuppliers.of(settings.getTickRateFunction(), ()->material);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), ()->material);
+		canSourcesMultiply = MemoizingSuppliers.of(settings.getCanSourcesMultiplyFunction(), ()->material);
+		levelDecreasePerBlock = MemoizingSuppliers.of(settings.getLevelDecreasePerBlockFunction(), ()->material);
 	}
 
 	@Override

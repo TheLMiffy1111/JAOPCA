@@ -52,17 +52,17 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		this.settings = settings;
 
 		blocksMovement = settings.getBlocksMovement();
-		soundType = MemoizingSuppliers.of(settings.getSoundTypeFunction(), material);
-		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), material);
-		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), material);
-		slipperiness = MemoizingSuppliers.of(settings.getSlipperinessFunction(), material);
+		soundType = MemoizingSuppliers.of(settings.getSoundTypeFunction(), ()->material);
+		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), ()->material);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), ()->material);
+		slipperiness = MemoizingSuppliers.of(settings.getSlipperinessFunction(), ()->material);
 		shape = settings.getShape();
 		raytraceShape = settings.getRaytraceShape();
-		harvestTool = MemoizingSuppliers.of(settings.getHarvestToolFunction(), material);
-		harvestLevel = MemoizingSuppliers.of(settings.getHarvestLevelFunction(), material);
-		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), material);
-		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), material);
-		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), material);
+		harvestTool = MemoizingSuppliers.of(settings.getHarvestToolFunction(), ()->material);
+		harvestLevel = MemoizingSuppliers.of(settings.getHarvestLevelFunction(), ()->material);
+		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), ()->material);
+		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), ()->material);
+		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), ()->material);
 	}
 
 	public static Block.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings) {
