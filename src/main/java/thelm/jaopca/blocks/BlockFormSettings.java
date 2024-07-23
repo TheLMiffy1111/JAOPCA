@@ -64,7 +64,6 @@ class BlockFormSettings implements IBlockFormSettings {
 	private ToIntFunction<IMaterial> maxStackSizeFunction = MaterialIntFunction.of(64);
 	private Predicate<IMaterial> hasEffectFunction = IMaterial::hasEffect;
 	private Function<IMaterial, Rarity> displayRarityFunction = IMaterial::getDisplayRarity;
-	private ToIntFunction<IMaterial> burnTimeFunction = MaterialIntFunction.of(-1);
 
 	@Override
 	public IFormType getType() {
@@ -344,16 +343,5 @@ class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public Function<IMaterial, Rarity> getDisplayRarityFunction() {
 		return displayRarityFunction;
-	}
-
-	@Override
-	public IBlockFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction) {
-		this.burnTimeFunction = burnTimeFunction;
-		return this;
-	}
-
-	@Override
-	public ToIntFunction<IMaterial> getBurnTimeFunction() {
-		return burnTimeFunction;
 	}
 }

@@ -174,7 +174,7 @@ public class Material implements IMaterial {
 
 	private HolderSet<Item> getTag() {
 		if(tag == null) {
-			tag = BuiltInRegistries.ITEM.getOrCreateTag(TagKey.create(Registries.ITEM, new ResourceLocation("forge:"+type.getFormName()+'/'+name)));
+			tag = BuiltInRegistries.ITEM.getOrCreateTag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", type.getFormName()+'/'+name)));
 		}
 		return tag;
 	}

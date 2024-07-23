@@ -45,13 +45,13 @@ public class IntegratedDynamicsModule implements IModule {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			helper.registerSqueezerRecipe(
-					new ResourceLocation("jaopca", "integrateddynamics.ore_to_raw_material."+material.getName()),
+					miscHelper.getRecipeKey("integrateddynamics.ore_to_raw_material", material.getName()),
 					oreLocation, new Object[] {
 							rawMaterialLocation, 2, 1F,
 							rawMaterialLocation, 1, 0.75F,
 					});
 			helper.registerMechanicalSqueezerRecipe(
-					new ResourceLocation("jaopca", "integrateddynamics.ore_to_raw_material_mechanical."+material.getName()),
+					miscHelper.getRecipeKey("integrateddynamics.ore_to_raw_material_mechanical", material.getName()),
 					oreLocation, new Object[] {
 							rawMaterialLocation, 3, 1F,
 							rawMaterialLocation, 2, 0.5F,

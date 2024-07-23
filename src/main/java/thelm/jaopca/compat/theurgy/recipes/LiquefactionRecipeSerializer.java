@@ -6,18 +6,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
-import com.klikli_dev.theurgy.TheurgyConstants;
 import com.klikli_dev.theurgy.content.recipe.LiquefactionRecipe;
-import com.klikli_dev.theurgy.content.recipe.ingredient.FluidIngredient;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
-import thelm.jaopca.compat.theurgy.TheurgyHelper;
 import thelm.jaopca.utils.MiscHelper;
 
 public class LiquefactionRecipeSerializer implements IRecipeSerializer {
@@ -48,7 +43,7 @@ public class LiquefactionRecipeSerializer implements IRecipeSerializer {
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+itemInput);
 		}
-		FluidIngredient fluidIng = TheurgyHelper.INSTANCE.getFluidIngredient(fluidInput);
+		SizedFluidIngredient fluidIng = MiscHelper.INSTANCE.getSizedFluidIngredient(fluidInput, fluidInputAmount);
 		if(fluidIng == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+fluidInput);
 		}
@@ -56,19 +51,7 @@ public class LiquefactionRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		CompoundTag nbt = new CompoundTag();
-		if(itemInput instanceof String || itemInput instanceof ResourceLocation) {
-			nbt.putString(TheurgyConstants.Nbt.SULFUR_SOURCE_ID, "#"+itemInput.toString());
-		}
-		else if(itemInput instanceof TagKey<?> tag) {
-			nbt.putString(TheurgyConstants.Nbt.SULFUR_SOURCE_ID, "#"+tag.location());
-		}
-		else {
-			ItemStack inputStack = MiscHelper.INSTANCE.getItemStack(itemInput, 1);
-			nbt.putString(TheurgyConstants.Nbt.SULFUR_SOURCE_ID, BuiltInRegistries.ITEM.getKey(inputStack.getItem()).toString());
-		}
-		stack.setTag(nbt);
-		LiquefactionRecipe recipe = new LiquefactionRecipe(ing, fluidIng, fluidInputAmount, stack, time);
+		LiquefactionRecipe recipe = new LiquefactionRecipe(ing, fluidIng, stack, time);
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

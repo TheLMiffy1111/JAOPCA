@@ -45,13 +45,13 @@ public class IntegratedDynamicsNonIngotModule implements IModule {
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			if(material.getType() != MaterialType.DUST) {
 				helper.registerSqueezerRecipe(
-						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material."+material.getName()),
+						miscHelper.getRecipeKey("integrateddynamics.ore_to_material", material.getName()),
 						oreLocation, new Object[] {
 								materialLocation, 1, 1F,
 								materialLocation, 1, 0.75F,
 						});
 				helper.registerMechanicalSqueezerRecipe(
-						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material_mechanical."+material.getName()),
+						miscHelper.getRecipeKey("integrateddynamics.ore_to_material_mechanical", material.getName()),
 						oreLocation, new Object[] {
 								materialLocation, 2, 1F,
 								materialLocation, 1, 0.5F,
@@ -59,14 +59,14 @@ public class IntegratedDynamicsNonIngotModule implements IModule {
 			}
 			else {
 				helper.registerSqueezerRecipe(
-						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material."+material.getName()),
+						miscHelper.getRecipeKey("integrateddynamics.ore_to_material", material.getName()),
 						oreLocation, new Object[] {
 								materialLocation, 3, 1F,
 								materialLocation, 1, 0.5F,
 								materialLocation, 1, 0.5F,
 						});
 				helper.registerMechanicalSqueezerRecipe(
-						new ResourceLocation("jaopca", "integrateddynamics.ore_to_material_mechanical."+material.getName()),
+						miscHelper.getRecipeKey("integrateddynamics.ore_to_material_mechanical", material.getName()),
 						oreLocation, new Object[] {
 								materialLocation, 5, 1F,
 								materialLocation, 1, 0.5F,

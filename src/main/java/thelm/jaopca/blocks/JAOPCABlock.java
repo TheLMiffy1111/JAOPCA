@@ -56,16 +56,16 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		blocksMovement = settings.getBlocksMovement();
 		mapColor = MemoizingSuppliers.of(settings.getMapColorFunction(), ()->material);
 		soundType = MemoizingSuppliers.of(settings.getSoundTypeFunction(), ()->material);
-		lightOpacity = MemoizingSuppliers.of(()->settings.getLightOpacityFunction().applyAsInt(material));
-		lightValue = MemoizingSuppliers.of(()->settings.getLightValueFunction().applyAsInt(material));
-		explosionResistance = MemoizingSuppliers.of(()->settings.getExplosionResistanceFunction().applyAsDouble(material));
-		friction = MemoizingSuppliers.of(()->settings.getFrictionFunction().applyAsDouble(material));
+		lightOpacity = MemoizingSuppliers.of(settings.getLightOpacityFunction(), ()->material);
+		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), ()->material);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), ()->material);
+		friction = MemoizingSuppliers.of(settings.getFrictionFunction(), ()->material);
 		shape = settings.getShape();
 		interactionShape = settings.getInteractionShape();
-		flammability = MemoizingSuppliers.of(()->settings.getFlammabilityFunction().applyAsInt(material));
-		fireSpreadSpeed = MemoizingSuppliers.of(()->settings.getFireSpreadSpeedFunction().applyAsInt(material));
-		isFireSource = MemoizingSuppliers.of(()->settings.getIsFireSourceFunction().test(material));
-		pushReaction = MemoizingSuppliers.of(()->settings.getPushReactionFunction().apply(material));
+		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), ()->material);
+		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), ()->material);
+		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), ()->material);
+		pushReaction = MemoizingSuppliers.of(settings.getPushReactionFunction(), ()->material);
 	}
 
 	public static BlockBehaviour.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings) {

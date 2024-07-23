@@ -91,4 +91,5 @@ public final class MaterialPredicate implements Predicate<IMaterial> {
 		}
 		return false;
 	}
+
 }

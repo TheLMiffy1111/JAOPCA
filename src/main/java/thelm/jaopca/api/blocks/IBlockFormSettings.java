@@ -115,8 +115,4 @@ public interface IBlockFormSettings extends IFormSettings {
 	IBlockFormSettings setDisplayRarityFunction(Function<IMaterial, Rarity> displayRarityFunction);
 
 	Function<IMaterial, Rarity> getDisplayRarityFunction();
-
-	IBlockFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction);
-
-	ToIntFunction<IMaterial> getBurnTimeFunction();
 }

@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 
 import mekanism.api.recipes.basic.BasicPurifyingRecipe;
-import mekanism.api.recipes.ingredients.ChemicalStackIngredient.GasStackIngredient;
+import mekanism.api.recipes.ingredients.GasStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

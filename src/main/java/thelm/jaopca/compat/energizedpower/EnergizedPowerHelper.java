@@ -19,7 +19,7 @@ public class EnergizedPowerHelper {
 		return ApiImpl.INSTANCE.registerRecipe(key, new PulverizerRecipeSerializer(key, input, output, chances, chancesAdvanced));
 	}
 
-	public boolean registerCompressorRecipe(ResourceLocation key, Object input, Object output, int count) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new CompressorRecipeSerializer(key, input, output, count));
+	public boolean registerCompressorRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new CompressorRecipeSerializer(key, input, inputCount, output, outputCount));
 	}
 }

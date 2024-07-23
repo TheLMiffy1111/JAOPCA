@@ -8,7 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import thelm.jaopca.api.custom.CustomCodecs;
 import thelm.jaopca.api.custom.MapColorType;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
@@ -102,11 +102,11 @@ public class FluidCustomCodecs {
 					s->s.getCanConvertToSourceFunction(),
 					(s, f)->s.setCanConvertToSourceFunction(f)).
 			withField(
-					CustomCodecs.materialEnumFunction(BlockPathTypes.class, BlockPathTypes.WATER).optionalFieldOf("pathType"),
+					CustomCodecs.materialEnumFunction(PathType.class, PathType.WATER).optionalFieldOf("pathType"),
 					s->s.getPathTypeFunction(),
 					(s, f)->s.setPathTypeFunction(f)).
 			withField(
-					CustomCodecs.materialEnumFunction(BlockPathTypes.class, BlockPathTypes.WATER_BORDER).optionalFieldOf("adjacentPathType"),
+					CustomCodecs.materialEnumFunction(PathType.class, PathType.WATER_BORDER).optionalFieldOf("adjacentPathType"),
 					s->s.getAdjacentPathTypeFunction(),
 					(s, f)->s.setAdjacentPathTypeFunction(f)).
 			withField(
@@ -145,10 +145,6 @@ public class FluidCustomCodecs {
 					CustomCodecs.materialPredicate(false).optionalFieldOf("hasEffect"),
 					s->s.getHasEffectFunction(),
 					(s, f)->s.setHasEffectFunction(f)).
-			withField(
-					CustomCodecs.materialIntFunction(-1).optionalFieldOf("burnTime"),
-					s->s.getBurnTimeFunction(),
-					(s, f)->s.setBurnTimeFunction(f)).
 			build().
 			flatComapMap(Functions.identity(),
 					s->s instanceof IFluidFormSettings fs ? DataResult.success(fs) : DataResult.error(()->"Not fluid form settings"));

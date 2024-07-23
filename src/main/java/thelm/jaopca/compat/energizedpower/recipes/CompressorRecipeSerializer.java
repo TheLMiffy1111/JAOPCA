@@ -20,14 +20,16 @@ public class CompressorRecipeSerializer implements IRecipeSerializer {
 
 	public final ResourceLocation key;
 	public final Object input;
+	public final int inputCount;
 	public final Object output;
-	public final int count;
+	public final int outputCount;
 
-	public CompressorRecipeSerializer(ResourceLocation key, Object input, Object output, int count) {
+	public CompressorRecipeSerializer(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
+		this.inputCount = inputCount;
 		this.output = output;
-		this.count = count;
+		this.outputCount = outputCount;
 	}
 
 	@Override
@@ -36,11 +38,11 @@ public class CompressorRecipeSerializer implements IRecipeSerializer {
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
+		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
 			LOGGER.warn("Empty output in recipe {}: {}", key, output);
 		}
-		CompressorRecipe recipe = new CompressorRecipe(stack, ing);
+		CompressorRecipe recipe = new CompressorRecipe(stack, ing, inputCount);
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

@@ -135,8 +135,8 @@ public class ModernIndustrializationCompatModule implements IModule {
 		ModernIndustrializationHelper helper = ModernIndustrializationHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Set<ResourceLocation> itemTags = api.getItemTags();
-		Fluid lubricant = BuiltInRegistries.FLUID.get(new ResourceLocation("modern_industrialization:lubricant"));
-		Item packerBlockTemplate = BuiltInRegistries.ITEM.get(new ResourceLocation("modern_industrialization:packer_block_template"));
+		Fluid lubricant = BuiltInRegistries.FLUID.get(ResourceLocation.parse("modern_industrialization:lubricant"));
+		Item packerBlockTemplate = BuiltInRegistries.ITEM.get(ResourceLocation.parse("modern_industrialization:packer_block_template"));
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
@@ -145,7 +145,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 				if(itemTags.contains(dustLocation)) {
 					helper.registerCompressorRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.dust_to_material_compressor."+name),
+							miscHelper.getRecipeKey("modern_industrialization.dust_to_material_compressor", name),
 							dustLocation, 1, 1F, materialLocation, 1, 1F, 2, 100);
 				}
 			}
@@ -154,7 +154,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 				if(itemTags.contains(dustLocation)) {
 					helper.registerImplosionCompressorRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.dust_to_material_implosion."+name),
+							miscHelper.getRecipeKey("modern_industrialization.dust_to_material_implosion", name),
 							new Object[] {
 									dustLocation, 1, 1F,
 									Blocks.TNT, 1, 1F,
@@ -168,7 +168,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
 				if(itemTags.contains(plateLocation)) {
 					helper.registerCompressorRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.material_to_plate."+name),
+							miscHelper.getRecipeKey("modern_industrialization.material_to_plate", name),
 							materialLocation, 1, 1F, plateLocation, 1, 1F, 2, 200);
 				}
 			}
@@ -177,7 +177,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation rodLocation = miscHelper.getTagLocation("rods", name);
 				if(itemTags.contains(rodLocation)) {
 					helper.registerCuttingMachineRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.material_to_rod."+name),
+							miscHelper.getRecipeKey("modern_industrialization.material_to_rod", name),
 							materialLocation, 1, 1F, lubricant, 1, 1F, rodLocation, 2, 1F, 2, 200);
 				}
 			}
@@ -186,13 +186,13 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation storageBlockLocation = miscHelper.getTagLocation("storage_blocks", name);
 				if(itemTags.contains(storageBlockLocation)) {
 					helper.registerPackerRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.material_to_storage_block."+name),
+							miscHelper.getRecipeKey("modern_industrialization.material_to_storage_block", name),
 							new Object[] {
 									materialLocation, (material.isSmallStorageBlock() ? 4 : 9), 1F,
 									packerBlockTemplate, 1, 0F,
 							}, storageBlockLocation, 1, 1F, 2, 200);
 					helper.registerUnpackerRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.storage_block_to_material."+name),
+							miscHelper.getRecipeKey("modern_industrialization.storage_block_to_material", name),
 							storageBlockLocation, 1, 1F, new Object[] {
 									materialLocation, (material.isSmallStorageBlock() ? 4 : 9), 1F,	
 							}, 2, 200);
@@ -203,12 +203,12 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 				if(itemTags.contains(nuggetLocation)) {
 					helper.registerPackerRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.nugget_to_material."+name),
+							miscHelper.getRecipeKey("modern_industrialization.nugget_to_material", name),
 							new Object[] {
 									nuggetLocation, 9, 1F,	
 							}, materialLocation, 1, 1F, 2, 200);
 					helper.registerUnpackerRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.material_to_nugget."+name),
+							miscHelper.getRecipeKey("modern_industrialization.material_to_nugget", name),
 							materialLocation, 1, 1F, new Object[] {
 									nuggetLocation, 9, 1F,	
 							}, 2, 200);
@@ -219,12 +219,12 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", name, "_");
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerPackerRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.raw_material_to_raw_storage_block."+name),
+							miscHelper.getRecipeKey("modern_industrialization.raw_material_to_raw_storage_block", name),
 							new Object[] {
 									rawMaterialLocation, 9, 1F,	
 							}, rawStorageBlockLocation, 1, 1F, 2, 200);
 					helper.registerUnpackerRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.raw_storage_block_to_raw_material."+name),
+							miscHelper.getRecipeKey("modern_industrialization.raw_storage_block_to_raw_material", name),
 							rawStorageBlockLocation, 1, 1F, new Object[] {
 									rawMaterialLocation, 9, 1F,	
 							}, 2, 200);
@@ -235,12 +235,12 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(tinyDustLocation) && itemTags.contains(dustLocation)) {
 					helper.registerPackerRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.tiny_dust_to_dust."+name),
+							miscHelper.getRecipeKey("modern_industrialization.tiny_dust_to_dust", name),
 							new Object[] {
 									tinyDustLocation, 9, 1F,	
 							}, dustLocation, 1, 1F, 2, 200);
 					helper.registerUnpackerRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.dust_to_tiny_dust."+name),
+							miscHelper.getRecipeKey("modern_industrialization.dust_to_tiny_dust", name),
 							dustLocation, 1, 1F, new Object[] {
 									tinyDustLocation, 9, 1F,	
 							}, 2, 200);
@@ -251,7 +251,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("tiny_dusts", name);
 				if(itemTags.contains(dustLocation)) {
 					helper.registerMaceratorRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.material_to_dust."+name),
+							miscHelper.getRecipeKey("modern_industrialization.material_to_dust", name),
 							materialLocation, 1, 1F, new Object[] {
 									dustLocation, 1, 1F,	
 							}, 2, 200);
@@ -262,7 +262,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation tinyDustLocation = miscHelper.getTagLocation("tiny_dusts", name);
 				if(itemTags.contains(nuggetLocation) && itemTags.contains(tinyDustLocation)) {
 					helper.registerMaceratorRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.nugget_to_tiny_dust."+name),
+							miscHelper.getRecipeKey("modern_industrialization.nugget_to_tiny_dust", name),
 							nuggetLocation, 1, 1F, new Object[] {
 									tinyDustLocation, 1, 1F,	
 							}, 2, 200);
@@ -273,7 +273,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(plateLocation) && itemTags.contains(dustLocation)) {
 					helper.registerMaceratorRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.plate_to_dust."+name),
+							miscHelper.getRecipeKey("modern_industrialization.plate_to_dust", name),
 							plateLocation, 1, 1F, new Object[] {
 									dustLocation, 1, 1F,	
 							}, 2, 200);
@@ -284,7 +284,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(gearLocation) && itemTags.contains(dustLocation)) {
 					helper.registerMaceratorRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.gear_to_dust."+name),
+							miscHelper.getRecipeKey("modern_industrialization.gear_to_dust", name),
 							gearLocation, 1, 1F, new Object[] {
 									dustLocation, 2, 1F,	
 							}, 2, 200);
@@ -295,7 +295,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 				ResourceLocation tinyDustLocation = miscHelper.getTagLocation("tiny_dusts", name);
 				if(itemTags.contains(rodLocation) && itemTags.contains(tinyDustLocation)) {
 					helper.registerMaceratorRecipe(
-							new ResourceLocation("jaopca", "modern_industrialization.rod_to_tiny_dust."+name),
+							miscHelper.getRecipeKey("modern_industrialization.rod_to_tiny_dust", name),
 							rodLocation, 1, 1F, new Object[] {
 									tinyDustLocation, 4, 1F,	
 							}, 2, 200);

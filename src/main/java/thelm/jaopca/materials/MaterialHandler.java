@@ -48,53 +48,53 @@ public class MaterialHandler {
 
 		Set<String> allMaterials = new TreeSet<>();
 
-		Set<String> ingots = ConfigHandler.ingot ? findItemTagNamesWithPaths(tags, "forge:ingots/", "forge:raw_materials/", "forge:ores/") : new LinkedHashSet<>();
+		Set<String> ingots = ConfigHandler.ingot ? findItemTagNamesWithPaths(tags, "c:ingots/", "c:raw_materials/", "c:ores/") : new LinkedHashSet<>();
 		ingots.removeAll(ConfigHandler.GEM_OVERRIDES);
 		ingots.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
 		ingots.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(ingots);
 
-		Set<String> ingotsLegacy = ConfigHandler.ingotLegacy ? findItemTagNamesWithPaths(tags, "forge:ingots/", "forge:ores/") : new LinkedHashSet<>();
+		Set<String> ingotsLegacy = ConfigHandler.ingotLegacy ? findItemTagNamesWithPaths(tags, "c:ingots/", "c:ores/") : new LinkedHashSet<>();
 		ingotsLegacy.removeAll(allMaterials);
 		ingotsLegacy.removeAll(ConfigHandler.GEM_OVERRIDES);
 		ingotsLegacy.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
 		ingotsLegacy.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(ingotsLegacy);
 
-		Set<String> gems = ConfigHandler.gem ? findItemTagNamesWithPaths(tags, "forge:gems/", "forge:ores/") : new LinkedHashSet<>();
+		Set<String> gems = ConfigHandler.gem ? findItemTagNamesWithPaths(tags, "c:gems/", "c:ores/") : new LinkedHashSet<>();
 		gems.removeAll(allMaterials);
 		gems.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
 		gems.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(gems);
 
-		Set<String> crystals = ConfigHandler.crystal ? findItemTagNamesWithPaths(tags, "forge:crystals/", "forge:ores/") : new LinkedHashSet<>();
+		Set<String> crystals = ConfigHandler.crystal ? findItemTagNamesWithPaths(tags, "c:crystals/", "c:ores/") : new LinkedHashSet<>();
 		crystals.removeAll(allMaterials);
 		crystals.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(crystals);
 
-		Set<String> dusts = ConfigHandler.dust ? findItemTagNamesWithPaths(tags, "forge:dusts/", "forge:ores/") : new LinkedHashSet<>();
+		Set<String> dusts = ConfigHandler.dust ? findItemTagNamesWithPaths(tags, "c:dusts/", "c:ores/") : new LinkedHashSet<>();
 		dusts.removeAll(allMaterials);
 		allMaterials.addAll(dusts);
 
-		Set<String> ingotsPlain = ConfigHandler.ingotPlain ? findItemTagNamesWithPaths(tags, "forge:ingots/") : new LinkedHashSet<>();
+		Set<String> ingotsPlain = ConfigHandler.ingotPlain ? findItemTagNamesWithPaths(tags, "c:ingots/") : new LinkedHashSet<>();
 		ingotsPlain.removeAll(allMaterials);
 		ingotsPlain.removeAll(ConfigHandler.GEM_OVERRIDES);
 		ingotsPlain.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
 		ingotsPlain.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(ingotsPlain);
 
-		Set<String> gemsPlain = ConfigHandler.gemPlain ? findItemTagNamesWithPaths(tags, "forge:gems/") : new LinkedHashSet<>();
+		Set<String> gemsPlain = ConfigHandler.gemPlain ? findItemTagNamesWithPaths(tags, "c:gems/") : new LinkedHashSet<>();
 		gemsPlain.removeAll(allMaterials);
 		gemsPlain.removeAll(ConfigHandler.CRYSTAL_OVERRIDES);
 		gemsPlain.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(gemsPlain);
 
-		Set<String> crystalsPlain = ConfigHandler.crystalPlain ? findItemTagNamesWithPaths(tags, "forge:crystals/") : new LinkedHashSet<>();
+		Set<String> crystalsPlain = ConfigHandler.crystalPlain ? findItemTagNamesWithPaths(tags, "c:crystals/") : new LinkedHashSet<>();
 		crystalsPlain.removeAll(allMaterials);
 		crystalsPlain.removeAll(ConfigHandler.DUST_OVERRIDES);
 		allMaterials.addAll(crystalsPlain);
 
-		Set<String> dustsPlain = ConfigHandler.dustPlain ? findItemTagNamesWithPaths(tags, "forge:dusts/") : new LinkedHashSet<>();
+		Set<String> dustsPlain = ConfigHandler.dustPlain ? findItemTagNamesWithPaths(tags, "c:dusts/") : new LinkedHashSet<>();
 		dustsPlain.removeAll(allMaterials);
 		allMaterials.addAll(dustsPlain);
 

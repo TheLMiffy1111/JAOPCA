@@ -9,8 +9,8 @@ import com.google.gson.JsonElement;
 
 import mekanism.api.chemical.slurry.SlurryStack;
 import mekanism.api.recipes.basic.BasicFluidSlurryToSlurryRecipe;
-import mekanism.api.recipes.ingredients.ChemicalStackIngredient.SlurryStackIngredient;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
+import mekanism.api.recipes.ingredients.SlurryStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.compat.mekanism.MekanismHelper;

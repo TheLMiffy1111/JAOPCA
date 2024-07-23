@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Tables;
@@ -25,6 +26,7 @@ import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -97,11 +99,11 @@ public class ItemFormType implements IItemFormType {
 			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
 				String name = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = new ResourceLocation("jaopca", name);
+				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath("jaopca", name);
 
 				Supplier<IMaterialFormItem> materialFormItem = MemoizingSuppliers.of(()->settings.getItemCreator().create(form, material, settings));
 				ITEMS.put(form, material, materialFormItem);
-				api.registerRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().toItem());
+				RegistryHandler.registerRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().toItem());
 
 				api.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
 				api.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
@@ -120,6 +122,11 @@ public class ItemFormType implements IItemFormType {
 	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
 		getItems().forEach(mf->mf.addToCreativeModeTab(parameters, output));
+	}
+
+	@Override
+	public void addItemModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+		getItems().forEach(mf->mf.addItemModelRemaps(allLocations, output));
 	}
 
 	public static Collection<IMaterialFormItem> getItems() {

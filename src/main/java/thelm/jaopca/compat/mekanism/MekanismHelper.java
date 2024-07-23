@@ -8,7 +8,10 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 
@@ -19,22 +22,19 @@ import mekanism.api.chemical.slurry.Slurry;
 import mekanism.api.chemical.slurry.SlurryStack;
 import mekanism.api.providers.IGasProvider;
 import mekanism.api.providers.ISlurryProvider;
-import mekanism.api.recipes.ingredients.ChemicalStackIngredient.GasStackIngredient;
-import mekanism.api.recipes.ingredients.ChemicalStackIngredient.SlurryStackIngredient;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
+import mekanism.api.recipes.ingredients.GasStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
-import mekanism.api.recipes.ingredients.creator.IChemicalStackIngredientCreator;
-import mekanism.api.recipes.ingredients.creator.IFluidStackIngredientCreator;
+import mekanism.api.recipes.ingredients.SlurryStackIngredient;
+import mekanism.api.recipes.ingredients.chemical.IGasIngredient;
+import mekanism.api.recipes.ingredients.chemical.ISlurryIngredient;
+import mekanism.api.recipes.ingredients.creator.IChemicalIngredientCreator;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
-import thelm.jaopca.api.fluids.IFluidLike;
-import thelm.jaopca.api.helpers.IMiscHelper;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
+import thelm.jaopca.api.ingredients.CompoundIngredientObject;
 import thelm.jaopca.compat.mekanism.recipes.CombiningRecipeSerializer;
 import thelm.jaopca.compat.mekanism.recipes.CrushingRecipeSerializer;
 import thelm.jaopca.compat.mekanism.recipes.CrystallizingRecipeSerializer;
@@ -49,6 +49,7 @@ import thelm.jaopca.utils.MiscHelper;
 public class MekanismHelper {
 
 	public static final MekanismHelper INSTANCE = new MekanismHelper();
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	private MekanismHelper() {}
 
@@ -57,149 +58,128 @@ public class MekanismHelper {
 	}
 
 	public ItemStackIngredient getItemStackIngredient(Object obj, int count) {
-		Ingredient ing = MiscHelper.INSTANCE.getIngredient(obj);
-		return ing == null ? null : IngredientCreatorAccess.item().from(ing, count);
+		SizedIngredient ing = MiscHelper.INSTANCE.getSizedIngredient(obj, count);
+		return ing == null ? null : ItemStackIngredient.of(ing);
 	}
 
 	public FluidStackIngredient getFluidStackIngredient(Object obj, int amount) {
-		return getFluidStackIngredientResolved(obj, amount).getLeft();
+		SizedFluidIngredient ing = MiscHelper.INSTANCE.getSizedFluidIngredient(obj, amount);
+		return ing == null ? null : FluidStackIngredient.of(ing);
 	}
 
-	public Pair<FluidStackIngredient, Set<Fluid>> getFluidStackIngredientResolved(Object obj, int amount) {
-		FluidStackIngredient ing = null;
-		Set<Fluid> fluids = new HashSet<>();
-		IMiscHelper helper = MiscHelper.INSTANCE;
-		IFluidStackIngredientCreator creator = IngredientCreatorAccess.fluid();
-		if(obj instanceof Supplier<?>) {
-			Pair<FluidStackIngredient, Set<Fluid>> pair = getFluidStackIngredientResolved(((Supplier<?>)obj).get(), amount);
-			ing = pair.getLeft();
-			fluids.addAll(pair.getRight());
-		}
-		else if(obj instanceof FluidStackIngredient) {
-			ing = (FluidStackIngredient)obj;
-			// We can't know what fluids the ingredient can have so assume all
-			BuiltInRegistries.FLUID.forEach(fluids::add);
-		}
-		else if(obj instanceof String) {
-			ResourceLocation location = new ResourceLocation((String)obj);
-			ing = creator.from(helper.getFluidTagKey(location), amount);
-			fluids.addAll(helper.getFluidTagValues(location));
-		}
-		else if(obj instanceof ResourceLocation location) {
-			ing = creator.from(helper.getFluidTagKey(location), amount);
-			fluids.addAll(helper.getFluidTagValues(location));
-		}
-		else if(obj instanceof TagKey key) {
-			ing = creator.from(key, amount);
-			fluids.addAll(helper.getFluidTagValues(key.location()));
-		}
-		else if(obj instanceof FluidStack stack) {
-			if(!stack.isEmpty()) {
-				ing = creator.from(stack);
-				fluids.add(stack.getFluid());
-			}
-		}
-		else if(obj instanceof FluidStack[] stacks) {
-			List<FluidStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
-			if(!nonEmpty.isEmpty()) {
-				ing = creator.from(nonEmpty.stream().map(creator::from));
-				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
-			}
-		}
-		else if(obj instanceof Fluid fluid) {
-			if(fluid != Fluids.EMPTY) {
-				ing = creator.from(fluid, amount);
-				fluids.add(fluid);
-			}
-		}
-		else if(obj instanceof Fluid[] fluidz) {
-			List<Fluid> nonEmpty = Arrays.stream(fluidz).filter(f->f != Fluids.EMPTY).toList();
-			if(!nonEmpty.isEmpty()) {
-				ing = creator.from(nonEmpty.stream().map(f->creator.from(f, amount)));
-				fluids.addAll(nonEmpty);
-			}
-		}
-		else if(obj instanceof IFluidLike fluid) {
-			if(fluid.asFluid() != Fluids.EMPTY) {
-				ing = creator.from(fluid.asFluid(), amount);
-				fluids.add(fluid.asFluid());
-			}
-		}
-		else if(obj instanceof IFluidLike[] fluidz) {
-			List<Fluid> nonEmpty = Arrays.stream(fluidz).map(IFluidLike::asFluid).filter(f->f != Fluids.EMPTY).toList();
-			if(!nonEmpty.isEmpty()) {
-				ing = creator.from(nonEmpty.stream().map(f->creator.from(f, amount)));
-				fluids.addAll(nonEmpty);
-			}
-		}
-		else if(obj instanceof JsonElement) {
-			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).result().get();
-			// We can't know what fluids the ingredient can have so assume all
-			BuiltInRegistries.FLUID.forEach(fluids::add);
-		}
-		fluids.remove(Fluids.EMPTY);
-		return Pair.of(fluids.isEmpty() ? null : ing, fluids);
+	public GasStack getGasStack(Object obj, int amount) {
+		GasStack ret = getPreferredGasStack(getGasIngredientResolved(obj).getRight(), amount);
+		return ret.isEmpty() ? GasStack.EMPTY : ret;
+	}
+
+	public IGasIngredient getGasIngredient(Object obj) {
+		return getGasIngredientResolved(obj).getLeft();
 	}
 
 	public GasStackIngredient getGasStackIngredient(Object obj, int amount) {
-		return getGasStackIngredientResolved(obj, amount).getLeft();
+		IGasIngredient ing = getGasIngredient(obj);
+		return ing == null ? null : GasStackIngredient.of(ing, amount);
 	}
 
-	public Pair<GasStackIngredient, Set<Gas>> getGasStackIngredientResolved(Object obj, int amount) {
-		GasStackIngredient ing = null;
+	public Pair<IGasIngredient, Set<Gas>> getGasIngredientResolved(Object obj) {
+		IGasIngredient ing = null;
 		Set<Gas> gases = new HashSet<>();
-		IChemicalStackIngredientCreator<Gas, GasStack, GasStackIngredient> creator = IngredientCreatorAccess.gas();
+		IChemicalIngredientCreator<Gas, IGasIngredient> creator = IngredientCreatorAccess.gas();
 		if(obj instanceof Supplier<?>) {
-			Pair<GasStackIngredient, Set<Gas>> pair = getGasStackIngredientResolved(((Supplier<?>)obj).get(), amount);
+			Pair<IGasIngredient, Set<Gas>> pair = getGasIngredientResolved(((Supplier<?>)obj).get());
 			ing = pair.getLeft();
 			gases.addAll(pair.getRight());
 		}
-		else if(obj instanceof GasStackIngredient) {
-			ing = (GasStackIngredient)obj;
+		else if(obj instanceof CompoundIngredientObject cObj) {
+			List<Pair<IGasIngredient, Set<Gas>>> ings = Arrays.stream(cObj.ingredients()).map(this::getGasIngredientResolved).toList();
+			if(ings.size() == 1) {
+				Pair<IGasIngredient, Set<Gas>> pair = ings.get(0);
+				ing = pair.getLeft();
+				gases.addAll(pair.getRight());
+			}
+			else if(ings.size() > 1) {
+				switch(cObj.type()) {
+				case UNION -> {
+					if(ings.stream().allMatch(p->p.getRight().isEmpty())) {
+						break;
+					}
+					ing = creator.ofIngredients(ings.stream().filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(IGasIngredient[]::new));
+					gases.addAll(ings.stream().map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+						s1.addAll(s2);
+						return s1;
+					}));
+				}
+				case INTERSECTION -> {
+					if(ings.stream().anyMatch(p->p.getRight().isEmpty())) {
+						break;
+					}
+					ing = creator.intersection(ings.stream().map(Pair::getLeft).toArray(IGasIngredient[]::new));
+					gases.addAll(ings.stream().map(Pair::getRight).reduce(Sets.newHashSet(MekanismAPI.GAS_REGISTRY), (s1, s2)->{
+						s1.retainAll(s2);
+						return s1;
+					}));
+				}
+				case DIFFERENCE -> {
+					Pair<IGasIngredient, Set<Gas>> firstPair = ings.get(0);
+					if(firstPair.getRight().isEmpty()) {
+						break;
+					}
+					ing = creator.difference(firstPair.getLeft(), creator.ofIngredients(ings.stream().skip(1).filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(IGasIngredient[]::new)));
+					gases.addAll(firstPair.getRight());
+					gases.removeAll(ings.stream().skip(1).map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+						s1.addAll(s2);
+						return s1;
+					}));
+				}
+				}
+			}
+		}
+		else if(obj instanceof IGasIngredient) {
+			ing = (IGasIngredient)obj;
 			// We can't know what gases the ingredient can have so assume all
 			MekanismAPI.GAS_REGISTRY.forEach(gases::add);
 		}
 		else if(obj instanceof String) {
-			ResourceLocation location = new ResourceLocation((String)obj);
-			ing = creator.from(getGasTagKey(location), amount);
+			ResourceLocation location = ResourceLocation.parse((String)obj);
+			ing = creator.tag(getGasTagKey(location));
 			gases.addAll(getGasTagValues(location));
 		}
 		else if(obj instanceof ResourceLocation location) {
-			ing = creator.from(getGasTagKey(location), amount);
+			ing = creator.tag(getGasTagKey(location));
 			gases.addAll(getGasTagValues(location));
 		}
 		else if(obj instanceof TagKey key) {
-			ing = creator.from(key, amount);
+			ing = creator.tag(key);
 			gases.addAll(getGasTagValues(key.location()));
 		}
 		else if(obj instanceof GasStack stack) {
 			if(!stack.isEmpty()) {
-				ing = creator.from(stack);
-				gases.add(stack.getType());
+				ing = creator.of(stack);
+				gases.add(stack.getChemical());
 			}
 		}
 		else if(obj instanceof GasStack[] stacks) {
 			List<GasStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
 			if(!nonEmpty.isEmpty()) {
-				ing = creator.from(nonEmpty.stream().map(creator::from));
-				nonEmpty.stream().map(GasStack::getType).forEach(gases::add);
+				ing = creator.of(nonEmpty.toArray(GasStack[]::new));
+				nonEmpty.stream().map(GasStack::getChemical).forEach(gases::add);
 			}
 		}
 		else if(obj instanceof IGasProvider gas) {
 			if(!gas.getChemical().isEmptyType()) {
-				ing = creator.from(gas, amount);
+				ing = creator.of(gas);
 				gases.add(gas.getChemical());
 			}
 		}
 		else if(obj instanceof IGasProvider[] gasez) {
 			List<Gas> nonEmpty = Arrays.stream(gasez).map(IGasProvider::getChemical).filter(g->!g.isEmptyType()).toList();
 			if(!nonEmpty.isEmpty()) {
-				ing = creator.from(nonEmpty.stream().map(g->creator.from(g, amount)));
+				ing = creator.of(nonEmpty.stream());
 				gases.addAll(nonEmpty);
 			}
 		}
 		else if(obj instanceof JsonElement) {
-			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).result().get();
+			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).resultOrPartial(LOGGER::warn).orElse(null);
 			// We can't know what gases the ingredient can have so assume all
 			MekanismAPI.GAS_REGISTRY.forEach(gases::add);
 		}
@@ -207,80 +187,148 @@ public class MekanismHelper {
 		return Pair.of(gases.isEmpty() ? null : ing, gases);
 	}
 
-	public SlurryStackIngredient getSlurryStackIngredient(Object obj, int amount) {
-		return getSlurryStackIngredientResolved(obj, amount).getLeft();
+	public TagKey<Gas> getGasTagKey(ResourceLocation location) {
+		return TagKey.create(MekanismAPI.GAS_REGISTRY_NAME, location);
 	}
 
-	public Pair<SlurryStackIngredient, Set<Slurry>> getSlurryStackIngredientResolved(Object obj, int amount) {
-		SlurryStackIngredient ing = null;
+	public Collection<Gas> getGasTagValues(ResourceLocation location) {
+		return MiscHelper.INSTANCE.getTagValues(MekanismAPI.GAS_REGISTRY_NAME, location);
+	}
+
+	public GasStack getPreferredGasStack(Iterable<Gas> collection, int amount) {
+		return new GasStack(MiscHelper.INSTANCE.getPreferredEntry(MekanismAPI.GAS_REGISTRY::getKey, collection).orElse(MekanismAPI.EMPTY_GAS), amount);
+	}
+
+	public SlurryStack getSlurryStack(Object obj, int amount) {
+		SlurryStack ret = getPreferredSlurryStack(getSlurryIngredientResolved(obj).getRight(), amount);
+		return ret.isEmpty() ? SlurryStack.EMPTY : ret;
+	}
+
+	public ISlurryIngredient getSlurryIngredient(Object obj) {
+		return getSlurryIngredientResolved(obj).getLeft();
+	}
+
+	public SlurryStackIngredient getSlurryStackIngredient(Object obj, int amount) {
+		ISlurryIngredient ing = getSlurryIngredient(obj);
+		return ing == null ? null : SlurryStackIngredient.of(ing, amount);
+	}
+
+	public Pair<ISlurryIngredient, Set<Slurry>> getSlurryIngredientResolved(Object obj) {
+		ISlurryIngredient ing = null;
 		Set<Slurry> slurries = new HashSet<>();
-		IChemicalStackIngredientCreator<Slurry, SlurryStack, SlurryStackIngredient> creator = IngredientCreatorAccess.slurry();
+		IChemicalIngredientCreator<Slurry, ISlurryIngredient> creator = IngredientCreatorAccess.slurry();
 		if(obj instanceof Supplier<?>) {
-			Pair<SlurryStackIngredient, Set<Slurry>> pair = getSlurryStackIngredientResolved(((Supplier<?>)obj).get(), amount);
+			Pair<ISlurryIngredient, Set<Slurry>> pair = getSlurryIngredientResolved(((Supplier<?>)obj).get());
 			ing = pair.getLeft();
 			slurries.addAll(pair.getRight());
 		}
-		else if(obj instanceof SlurryStackIngredient) {
-			ing = (SlurryStackIngredient)obj;
+		else if(obj instanceof CompoundIngredientObject cObj) {
+			List<Pair<ISlurryIngredient, Set<Slurry>>> ings = Arrays.stream(cObj.ingredients()).map(this::getSlurryIngredientResolved).toList();
+			if(ings.size() == 1) {
+				Pair<ISlurryIngredient, Set<Slurry>> pair = ings.get(0);
+				ing = pair.getLeft();
+				slurries.addAll(pair.getRight());
+			}
+			else if(ings.size() > 1) {
+				switch(cObj.type()) {
+				case UNION -> {
+					if(ings.stream().allMatch(p->p.getRight().isEmpty())) {
+						break;
+					}
+					ing = creator.ofIngredients(ings.stream().filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(ISlurryIngredient[]::new));
+					slurries.addAll(ings.stream().map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+						s1.addAll(s2);
+						return s1;
+					}));
+				}
+				case INTERSECTION -> {
+					if(ings.stream().anyMatch(p->p.getRight().isEmpty())) {
+						break;
+					}
+					ing = creator.intersection(ings.stream().map(Pair::getLeft).toArray(ISlurryIngredient[]::new));
+					slurries.addAll(ings.stream().map(Pair::getRight).reduce(Sets.newHashSet(MekanismAPI.SLURRY_REGISTRY), (s1, s2)->{
+						s1.retainAll(s2);
+						return s1;
+					}));
+				}
+				case DIFFERENCE -> {
+					Pair<ISlurryIngredient, Set<Slurry>> firstPair = ings.get(0);
+					if(firstPair.getRight().isEmpty()) {
+						break;
+					}
+					ing = creator.difference(firstPair.getLeft(), creator.ofIngredients(ings.stream().skip(1).filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(ISlurryIngredient[]::new)));
+					slurries.addAll(firstPair.getRight());
+					slurries.removeAll(ings.stream().skip(1).map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+						s1.addAll(s2);
+						return s1;
+					}));
+				}
+				}
+			}
+		}
+		else if(obj instanceof ISlurryIngredient) {
+			ing = (ISlurryIngredient)obj;
 			// We can't know what slurries the ingredient can have so assume all
 			MekanismAPI.SLURRY_REGISTRY.forEach(slurries::add);
 		}
 		else if(obj instanceof String) {
-			ResourceLocation location = new ResourceLocation((String)obj);
-			ing = creator.from(getSlurryTagKey(location), amount);
+			ResourceLocation location = ResourceLocation.parse((String)obj);
+			ing = creator.tag(getSlurryTagKey(location));
 			slurries.addAll(getSlurryTagValues(location));
 		}
 		else if(obj instanceof ResourceLocation location) {
-			ing = creator.from(getSlurryTagKey(location), amount);
+			ing = creator.tag(getSlurryTagKey(location));
 			slurries.addAll(getSlurryTagValues(location));
 		}
 		else if(obj instanceof TagKey key) {
-			ing = creator.from(key, amount);
+			ing = creator.tag(key);
 			slurries.addAll(getSlurryTagValues(key.location()));
 		}
 		else if(obj instanceof SlurryStack stack) {
-			if(!stack.isEmpty()) {
-				ing = creator.from(stack);
-				slurries.add(stack.getType());
+			if(stack.isEmpty()) {
+				ing = creator.of(stack);
+				slurries.add(stack.getChemical());
 			}
 		}
 		else if(obj instanceof SlurryStack[] stacks) {
 			List<SlurryStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
 			if(!nonEmpty.isEmpty()) {
-				ing = creator.from(nonEmpty.stream().map(creator::from));
-				nonEmpty.stream().map(SlurryStack::getType).forEach(slurries::add);
+				ing = creator.of(nonEmpty.toArray(SlurryStack[]::new));
+				nonEmpty.stream().map(SlurryStack::getChemical).forEach(slurries::add);
 			}
 		}
 		else if(obj instanceof ISlurryProvider slurry) {
 			if(!slurry.getChemical().isEmptyType()) {
-				ing = creator.from(slurry, amount);
+				ing = creator.of(slurry);
 				slurries.add(slurry.getChemical());
 			}
 		}
 		else if(obj instanceof ISlurryProvider[] slurriez) {
 			List<Slurry> nonEmpty = Arrays.stream(slurriez).map(ISlurryProvider::getChemical).filter(s->!s.isEmptyType()).toList();
 			if(!nonEmpty.isEmpty()) {
-				ing = creator.from(nonEmpty.stream().map(s->creator.from(s, amount)));
+				ing = creator.of(nonEmpty.stream());
 				slurries.addAll(nonEmpty);
 			}
 		}
 		else if(obj instanceof JsonElement) {
-			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).result().get();
-			// We can't know what slurries the ingredient can have so assume all
+			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).resultOrPartial(LOGGER::warn).orElse(null);
+			// We can't know what gases the ingredient can have so assume all
 			MekanismAPI.SLURRY_REGISTRY.forEach(slurries::add);
 		}
 		slurries.remove(MekanismAPI.EMPTY_SLURRY);
 		return Pair.of(slurries.isEmpty() ? null : ing, slurries);
 	}
 
-	public GasStack getGasStack(Object obj, int amount) {
-		GasStack ret = getPreferredGasStack(getGasStackIngredientResolved(obj, amount).getRight(), amount);
-		return ret.isEmpty() ? GasStack.EMPTY : ret;
+	public TagKey<Slurry> getSlurryTagKey(ResourceLocation location) {
+		return TagKey.create(MekanismAPI.SLURRY_REGISTRY_NAME, location);
 	}
 
-	public SlurryStack getSlurryStack(Object obj, int amount) {
-		SlurryStack ret = getPreferredSlurryStack(getSlurryStackIngredientResolved(obj, amount).getRight(), amount);
-		return ret.isEmpty() ? SlurryStack.EMPTY : ret;
+	public Collection<Slurry> getSlurryTagValues(ResourceLocation location) {
+		return MiscHelper.INSTANCE.getTagValues(MekanismAPI.SLURRY_REGISTRY_NAME, location);
+	}
+
+	public SlurryStack getPreferredSlurryStack(Iterable<Slurry> collection, int amount) {
+		return new SlurryStack(MiscHelper.INSTANCE.getPreferredEntry(MekanismAPI.SLURRY_REGISTRY::getKey, collection).orElse(MekanismAPI.EMPTY_SLURRY), amount);
 	}
 
 	public boolean registerCrushingRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
@@ -313,29 +361,5 @@ public class MekanismHelper {
 
 	public boolean registerInjectingRecipe(ResourceLocation key, Object itemInput, int itemInputCount, Object gasInput, int gasInputCount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new InjectingRecipeSerializer(key, itemInput, itemInputCount, gasInput, gasInputCount, output, outputCount));
-	}
-
-	public TagKey<Gas> getGasTagKey(ResourceLocation location) {
-		return TagKey.create(MekanismAPI.GAS_REGISTRY_NAME, location);
-	}
-
-	public Collection<Gas> getGasTagValues(ResourceLocation location) {
-		return MiscHelper.INSTANCE.getTagValues(MekanismAPI.GAS_REGISTRY_NAME, location);
-	}
-
-	public GasStack getPreferredGasStack(Iterable<Gas> collection, int amount) {
-		return new GasStack(MiscHelper.INSTANCE.getPreferredEntry(MekanismAPI.GAS_REGISTRY::getKey, collection).orElse(MekanismAPI.EMPTY_GAS), amount);
-	}
-
-	public TagKey<Slurry> getSlurryTagKey(ResourceLocation location) {
-		return TagKey.create(MekanismAPI.SLURRY_REGISTRY_NAME, location);
-	}
-
-	public Collection<Slurry> getSlurryTagValues(ResourceLocation location) {
-		return MiscHelper.INSTANCE.getTagValues(MekanismAPI.SLURRY_REGISTRY_NAME, location);
-	}
-
-	public SlurryStack getPreferredSlurryStack(Iterable<Slurry> collection, int amount) {
-		return new SlurryStack(MiscHelper.INSTANCE.getPreferredEntry(MekanismAPI.SLURRY_REGISTRY::getKey, collection).orElse(MekanismAPI.EMPTY_SLURRY), amount);
 	}
 }

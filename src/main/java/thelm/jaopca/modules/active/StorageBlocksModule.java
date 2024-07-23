@@ -43,7 +43,7 @@ public class StorageBlocksModule implements IModule {
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			if(material.isSmallStorageBlock()) {
 				api.registerShapedRecipe(
-						new ResourceLocation("jaopca", "storage_blocks.to_storage_block."+material.getName()),
+						miscHelper.getRecipeKey("storage_blocks.to_storage_block", material.getName()),
 						CraftingBookCategory.BUILDING,
 						storageBlockInfo, 1, new Object[] {
 								"MM",
@@ -53,7 +53,7 @@ public class StorageBlocksModule implements IModule {
 			}
 			else {
 				api.registerShapedRecipe(
-						new ResourceLocation("jaopca", "storage_blocks.to_storage_block."+material.getName()),
+						miscHelper.getRecipeKey("storage_blocks.to_storage_block", material.getName()),
 						CraftingBookCategory.BUILDING,
 						storageBlockInfo, 1, new Object[] {
 								"MMM",
@@ -63,7 +63,7 @@ public class StorageBlocksModule implements IModule {
 						});
 			}
 			api.registerShapelessRecipe(
-					new ResourceLocation("jaopca", "storage_blocks.to_material."+material.getName()),
+					miscHelper.getRecipeKey("storage_blocks.to_material", material.getName()),
 					materialLocation, material.isSmallStorageBlock() ? 4 : 9, new Object[] {
 							storageBlockLocation,
 					});

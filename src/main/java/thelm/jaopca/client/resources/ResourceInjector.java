@@ -1,11 +1,14 @@
 package thelm.jaopca.client.resources;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.BuiltInPackSource;
 import net.minecraft.server.packs.repository.Pack;
@@ -24,11 +27,13 @@ public class ResourceInjector {
 
 		@Override
 		public void loadPacks(Consumer<Pack> packConsumer) {
-			Pack packInfo = Pack.readMetaAndCreate("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), true, BuiltInPackSource.fromName(packId->{
+			PackLocationInfo packLocation = new PackLocationInfo("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), PackSource.BUILT_IN, Optional.empty());
+			PackSelectionConfig packSelection = new PackSelectionConfig(true, Pack.Position.BOTTOM, false);
+			Pack packInfo = Pack.readMetaAndCreate(packLocation, BuiltInPackSource.fromName(packId->{
 				InMemoryResourcePack pack = new InMemoryResourcePack(packId, true);
 				ModuleHandler.onCreateResourcePack(pack);
 				return pack;
-			}), PackType.CLIENT_RESOURCES, Pack.Position.BOTTOM, PackSource.BUILT_IN);
+			}), PackType.SERVER_DATA, packSelection);
 			packConsumer.accept(packInfo);
 		}
 	}

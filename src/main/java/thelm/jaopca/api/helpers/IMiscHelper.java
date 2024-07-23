@@ -21,13 +21,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 public interface IMiscHelper {
 
 	ResourceLocation createResourceLocation(String location, String defaultNamespace);
 
 	ResourceLocation createResourceLocation(String location);
+
+	ResourceLocation getRecipeKey(String category, String material);
 
 	ResourceLocation getTagLocation(String form, String material);
 
@@ -37,6 +42,8 @@ public interface IMiscHelper {
 
 	Ingredient getIngredient(Object obj);
 
+	SizedIngredient getSizedIngredient(Object obj, int count);
+
 	TagKey<Item> getItemTagKey(ResourceLocation location);
 
 	Collection<Item> getItemTagValues(ResourceLocation location);
@@ -44,6 +51,10 @@ public interface IMiscHelper {
 	ItemStack getPreferredItemStack(Iterable<Item> iterable, int count);
 
 	FluidStack getFluidStack(Object obj, int amount);
+
+	FluidIngredient getFluidIngredient(Object obj);
+
+	SizedFluidIngredient getSizedFluidIngredient(Object obj, int amount);
 
 	TagKey<Fluid> getFluidTagKey(ResourceLocation location);
 

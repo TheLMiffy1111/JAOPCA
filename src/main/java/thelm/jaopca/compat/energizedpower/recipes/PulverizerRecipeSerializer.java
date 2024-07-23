@@ -7,9 +7,11 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
 
+import it.unimi.dsi.fastutil.doubles.DoubleArrays;
 import me.jddev0.ep.recipe.PulverizerRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
@@ -53,9 +55,17 @@ public class PulverizerRecipeSerializer implements IRecipeSerializer {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, 1);
+		// Energized Power pulverizer recipe codec is broken for serialization
+		double[] secondChancesFix = secondChances;
+		double[] secondChancesAdvancedFix = secondChancesAdvanced;
+		if(secondStack.isEmpty()) {
+			secondStack = new ItemStack(Items.BARRIER);
+			secondChancesFix = DoubleArrays.EMPTY_ARRAY;
+			secondChancesAdvancedFix = DoubleArrays.EMPTY_ARRAY;
+		}
 		PulverizerRecipe recipe = new PulverizerRecipe(
 				new PulverizerRecipe.OutputItemStackWithPercentages(stack, chances, chancesAdvanced),
-				new PulverizerRecipe.OutputItemStackWithPercentages(secondStack, secondChances, secondChancesAdvanced),
+				new PulverizerRecipe.OutputItemStackWithPercentages(secondStack, secondChancesFix, secondChancesAdvancedFix),
 				ing);
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}

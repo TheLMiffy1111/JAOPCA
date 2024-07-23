@@ -30,16 +30,13 @@ repositories {
 		}
 		filter {
 			includeGroup "mezz.jei"
-			includeGroup "blusunrize.immersiveengineering"
 			includeGroup "com.blamejared.crafttweaker"
-			includeGroup "net.darkhax.openloader"
-			includeGroup "vazkii.patchouli"
 		}
 	}
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.theillusivec4.top/"
+				url = "https://maven.octo-studios.com/releases/"
 			}
 		}
 		filter {
@@ -64,6 +61,7 @@ repositories {
 			}
 		}
 		filter {
+			includeGroup "dev.ftb.mods"
 			includeGroup "dev.latvian.mods"
 		}
 	}
@@ -85,6 +83,7 @@ repositories {
 		}
 		filter {
 			includeGroup "dev.gigaherz.jsonthings"
+			includeGroup "dev.gigaherz.graph"
 		}
 	}
 	exclusiveContent {
@@ -145,19 +144,19 @@ sourceSets {
 	main
 }
 
-def mcVersion = "1.20.4"
+def mcVersion = "1.21"
 def modName = "JAOPCA"
 def modId = "jaopca"
 def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.a.4"
+version = "5.0.b.0"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
 java {
-	toolchain.languageVersion = JavaLanguageVersion.of(17)
+	toolchain.languageVersion = JavaLanguageVersion.of(21)
 	withSourcesJar()
 }
 
@@ -186,74 +185,60 @@ dependencies {
 	implementation "org.apache.logging.log4j:log4j-core:2.22.1"
 
 	// Minecraft
-	minecraft "com.mojang:minecraft:1.20.4"
+	minecraft "com.mojang:minecraft:1.21"
 	mappings loom.layered {
 		officialMojangMappings()
-		parchment "org.parchmentmc.data:parchment-1.20.4:2024.02.25@zip"
+		parchment "org.parchmentmc.data:parchment-1.21:2024.07.07@zip"
 	}
-	neoForge "net.neoforged:neoforge:20.4.237"
+	neoForge "net.neoforged:neoforge:21.0.116-beta"
 
 	// Common
-	implementation("mezz.jei:jei-1.20.4-neoforge:17.3.1.3") {transitive = false}
-	implementation "top.theillusivec4.curios:curios-neoforge:7.4.3+1.20.4"
-	implementation("software.bernie.geckolib:geckolib-neoforge-1.20.4:4.4.4") {transitive = false}
-	implementation "vazkii.patchouli:Patchouli:1.20.4-85-NEOFORGE"
-	implementation("com.klikli_dev:modonomicon-1.20.4-neoforge:1.73.2") {transitive = false}
-	implementation "dev.architectury:architectury-neoforge:11.1.17"
-	implementation "dev.latvian.mods:rhino-neoforge:2004.2.3-build.4"
+	implementation("mezz.jei:jei-1.21-neoforge:19.5.0.48") {transitive = false}
+	implementation "top.theillusivec4.curios:curios-neoforge:9.0.5+1.21"
+	implementation("software.bernie.geckolib:geckolib-neoforge-1.21:4.5.7") {transitive = false}
+	implementation("com.klikli_dev:modonomicon-1.21-neoforge:1.96.1") {transitive = false}
+	implementation "dev.architectury:architectury-neoforge:13.0.4"
+	implementation "dev.latvian.mods:rhino:2100.2.5-build.41"
 
 	// CraftTweaker
-	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.20.4:17.0.19") {transitive = false}
+	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.21:20.0.18") {transitive = false}
 
 	// KubeJS
-	implementation("dev.latvian.mods:kubejs-neoforge:2004.7.0-build.26") {transitive = false}
+	implementation("dev.latvian.mods:kubejs-neoforge:2100.7.0-build.94") {transitive = false}
 
 	// Json Things
-	modImplementation("dev.gigaherz.jsonthings:JsonThings-1.20.4:0.10.0") {transitive = false}
-
-	// Open Loader
-	implementation "net.darkhax.openloader:OpenLoader-NeoForge-1.20.4:22.1.7"
-
-	// Actually Additions
-	implementation "curse.maven:actually-additions-228404:5416363"
+	modImplementation("dev.gigaherz.jsonthings:JsonThings-1.21:0.12.1") {transitive = false}
 
 	// Energized Power
-	implementation "curse.maven:energized-power-782147:5401190"
-
-	// Immersive Engineering
-	implementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.4-11.5.0-179"
+	implementation "curse.maven:energized-power-782147:5510706"
 
 	// Integrated Dynamics
-	implementation "curse.maven:cyclops-core-232758:5540296"
-	implementation "curse.maven:common-capabilities-247007:5457951"
-	implementation "curse.maven:integrated-dynamics-236307:5540334"
+	implementation "curse.maven:cyclops-core-232758:5550881"
+	implementation "curse.maven:common-capabilities-247007:5536700"
+	implementation "curse.maven:integrated-dynamics-236307:5550893"
 
 	// Mekanism
-	implementation "mekanism:Mekanism:1.20.4-10.5.20.41"
+	implementation "mekanism:Mekanism:1.21-10.6.6.53"
 
 	// Modern Industrialization
-	implementation "me.shedaniel.cloth:cloth-config-neoforge:13.0.121"
-	implementation "dev.technici4n:GrandPower:1.0.0"
-	implementation("aztech:Modern-Industrialization:2.0.24") {transitive = false}
+	implementation "me.shedaniel.cloth:cloth-config-neoforge:15.0.127"
+	implementation "dev.technici4n:GrandPower:3.0.0"
+	implementation("aztech:Modern-Industrialization:2.2.12-beta") {transitive = false}
 
 	// Occultism
-	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.20.4:1.14.1"
-	implementation("com.klikli_dev:occultism-1.20.4-neoforge:1.132.2") {transitive = false}
+	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.21:1.14.5"
+	implementation("com.klikli_dev:occultism-1.21-neoforge:1.139.1") {transitive = false}
 
 	// Theurgy
-	implementation("com.klikli_dev:theurgy-1.20.4-neoforge:1.19.4") {transitive = false}
-
-	// Useful Machinery
-	implementation "net.themcbrothers:themcbroslib:1.20.4-6.1.0"
-	implementation("net.themcbrothers:useful-foundation:1.20.4-1.3.0") {transitive = false}
-	implementation("net.themcbrothers:useful-machinery:1.20.4-1.2.0") {transitive = false}
+	implementation("com.klikli_dev:theurgy-1.21-neoforge:1.30.1") {transitive = false}
 
 	// Testing
+	modImplementation "curse.maven:ato-405593:5553138"
 
 	// Performance
-	implementation "curse.maven:yeetusexperimentus-635427:5084420"
-	implementation "curse.maven:modernfix-790626:5288162"
-	implementation "curse.maven:ferritecore-429235:4954175"
+	implementation "curse.maven:yeetusexperimentus-635427:5444189"
+	implementation "curse.maven:modernfix-790626:5527238"
+	implementation "curse.maven:ferritecore-429235:5434178"
 }
 
 def replacements = [
@@ -292,17 +277,14 @@ sourcesJar {
 }
 
 def curseforgeDependencies = [
-	"actually-additions",
 	"crafttweaker",
 	"energized-power",
-	"immersive-engineering",
 	"integrated-dynamics",
 	"json-things",
 	"kubejs",
 	"mekanism",
 	"modern-industrialization",
 	"occultism",
-	"open-loader",
 	"theurgy",
 	"useful-machinery"
 ]
@@ -310,13 +292,11 @@ def curseforgeDependencies = [
 def modrinthDependencies = [
 	"crafttweaker",
 	"energized-power",
-	"immersiveengineering",
 	"integrated-dynamics",
 	"kubejs",
 	"mekanism",
 	"modern-industrialization",
 	"occultism",
-	"open-loader",
 	"theurgy",
 	"useful-machinery"
 ]

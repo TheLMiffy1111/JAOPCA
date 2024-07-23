@@ -1,8 +1,6 @@
 package thelm.jaopca.fluids;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -21,8 +19,6 @@ import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -35,7 +31,6 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.SoundActions;
-import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
@@ -51,20 +46,22 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem, D
 	private final IMaterialFormFluid fluid;
 	private final IFluidFormSettings settings;
 
-	protected IntSupplier maxStackSize;
 	protected BooleanSupplier hasEffect;
-	protected Supplier<Rarity> rarity;
-	protected IntSupplier burnTime;
 
 	public JAOPCABucketItem(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(new Item.Properties().craftRemainder(Items.BUCKET));
+		super(getProperties(fluid, settings));
 		this.fluid = fluid;
 		this.settings = settings;
 
-		maxStackSize = MemoizingSuppliers.of(settings.getMaxStackSizeFunction(), fluid::getMaterial);
 		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), fluid::getMaterial);
-		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), fluid::getMaterial);
-		burnTime = MemoizingSuppliers.of(settings.getBurnTimeFunction(), fluid::getMaterial);
+	}
+
+	public static Item.Properties getProperties(IMaterialFormFluid fluid, IFluidFormSettings settings) {
+		Item.Properties prop = new Item.Properties();
+		prop.stacksTo(settings.getMaxStackSizeFunction().applyAsInt(fluid.getMaterial()));
+		prop.rarity(settings.getDisplayRarityFunction().apply(fluid.getMaterial()));
+		prop.craftRemainder(Items.BUCKET);
+		return prop;
 	}
 
 	@Override
@@ -78,33 +75,14 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem, D
 	}
 
 	@Override
-	public int getMaxStackSize(ItemStack stack) {
-		return maxStackSize.getAsInt();
-	}
-
-	@Override
 	public boolean isFoil(ItemStack stack) {
 		return hasEffect.getAsBoolean() || super.isFoil(stack);
-	}
-
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return rarity.get();
-	}
-
-	@Override
-	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
-		return burnTime.getAsInt();
 	}
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		BlockHitResult blockHitResult = getPlayerPOVHitResult(world, player, ClipContext.Fluid.NONE);
-		InteractionResultHolder<ItemStack> ret = EventHooks.onBucketUse(player, world, stack, blockHitResult);
-		if(ret != null) {
-			return ret;
-		}
 		if(blockHitResult.getType() == HitResult.Type.MISS) {
 			return InteractionResultHolder.pass(stack);
 		}

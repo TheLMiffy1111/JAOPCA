@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.MetadataSectionSerializer;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
@@ -28,13 +29,13 @@ import thelm.jaopca.api.resources.IInMemoryResourcePack;
 public class InMemoryResourcePack implements IInMemoryResourcePack {
 
 	private static final Gson GSON = new GsonBuilder().create();
-	private final String packId;
+	private final PackLocationInfo packLocation;
 	private final boolean isHidden;
 	private final JsonObject metadata = (JsonObject)JsonParser.parseString("{\"pack_format\":15,\"description\":\"JAOPCA In Memory Resources\"}");
 	private final TreeMap<String, Supplier<? extends InputStream>> files = new TreeMap<>();
 
-	public InMemoryResourcePack(String packId, boolean isHidden) {
-		this.packId = packId;
+	public InMemoryResourcePack(PackLocationInfo packLocation, boolean isHidden) {
+		this.packLocation = packLocation;
 		this.isHidden = isHidden;
 	}
 
@@ -102,7 +103,7 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 		String prefix1 = prefix+path+'/';
 		files.forEach((filePath, streamSupplier)->{
 			if(filePath.startsWith(prefix1)) {
-				resourceOutput.accept(new ResourceLocation(namespace, filePath.substring(prefix.length())), streamSupplier::get);
+				resourceOutput.accept(ResourceLocation.fromNamespaceAndPath(namespace, filePath.substring(prefix.length())), streamSupplier::get);
 			}
 		});
 	}
@@ -124,13 +125,8 @@ public class InMemoryResourcePack implements IInMemoryResourcePack {
 	}
 
 	@Override
-	public String packId() {
-		return packId;
-	}
-
-	@Override
-	public boolean isBuiltin() {
-		return true;
+	public PackLocationInfo location() {
+		return packLocation;
 	}
 
 	@Override

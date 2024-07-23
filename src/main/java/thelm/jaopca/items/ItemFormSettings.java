@@ -16,7 +16,6 @@ class ItemFormSettings implements IItemFormSettings {
 	private ToIntFunction<IMaterial> maxStackSizeFunction = material->64;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private Function<IMaterial, Rarity> displayRarityFunction = material->material.getDisplayRarity();
-	private ToIntFunction<IMaterial> burnTimeFunction = material->-1;
 
 	@Override
 	public IFormType getType() {
@@ -65,16 +64,5 @@ class ItemFormSettings implements IItemFormSettings {
 	@Override
 	public Function<IMaterial, Rarity> getDisplayRarityFunction() {
 		return displayRarityFunction;
-	}
-
-	@Override
-	public IItemFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction) {
-		this.burnTimeFunction = burnTimeFunction;
-		return this;
-	}
-
-	@Override
-	public ToIntFunction<IMaterial> getBurnTimeFunction() {
-		return burnTimeFunction;
 	}
 }

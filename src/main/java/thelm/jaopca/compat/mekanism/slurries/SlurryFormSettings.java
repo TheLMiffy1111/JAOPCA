@@ -10,7 +10,6 @@ import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormSettings;
 class SlurryFormSettings implements ISlurryFormSettings {
 
 	private ISlurryCreator slurryCreator = JAOPCASlurry::new;
-	private boolean isHidden = false;
 	private Function<IMaterial, String> oreTagFunction = material->"";
 
 	@Override
@@ -27,17 +26,6 @@ class SlurryFormSettings implements ISlurryFormSettings {
 	@Override
 	public ISlurryCreator getSlurryCreator() {
 		return slurryCreator;
-	}
-
-	@Override
-	public ISlurryFormSettings setIsHidden(boolean isHidden) {
-		this.isHidden = isHidden;
-		return this;
-	}
-
-	@Override
-	public boolean getIsHidden() {
-		return isHidden;
 	}
 
 	@Override

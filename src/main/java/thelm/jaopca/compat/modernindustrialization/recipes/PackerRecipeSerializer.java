@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 
 import aztech.modern_industrialization.machines.init.MIMachineRecipeTypes;
 import aztech.modern_industrialization.machines.recipe.MachineRecipe;
+import aztech.modern_industrialization.thirdparty.fabrictransfer.api.item.ItemVariant;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -72,7 +73,7 @@ public class PackerRecipeSerializer implements IRecipeSerializer {
 		}
 		MachineRecipe recipe = new MIRecipeConstructor(MIMachineRecipeTypes.PACKER, eu, duration).recipe();
 		recipe.itemInputs.addAll(inputs);
-		recipe.itemOutputs.add(new MachineRecipe.ItemOutput(stack.getItem(), outputCount, outputChance));
+		recipe.itemOutputs.add(new MachineRecipe.ItemOutput(ItemVariant.of(stack), outputCount, outputChance));
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

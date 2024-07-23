@@ -24,19 +24,17 @@ public class JAOPCASlurry extends Slurry implements IMaterialFormSlurry {
 	private final IMaterial material;
 	protected final ISlurryFormSettings settings;
 
-	protected boolean isHidden;
 	protected Supplier<TagKey<Item>> oreTag;
 
 	public JAOPCASlurry(IForm form, IMaterial material, ISlurryFormSettings settings) {
-		super(SlurryBuilder.builder(new ResourceLocation("jaopca", "slurry/"+material.getModelType()+'/'+form.getName())));
+		super(SlurryBuilder.builder(ResourceLocation.fromNamespaceAndPath("jaopca", "slurry/"+material.getModelType()+'/'+form.getName())));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
 
-		isHidden = settings.getIsHidden();
 		oreTag = MemoizingSuppliers.of(()->{
 			String tag = settings.getOreTagFunction().apply(material);
-			return Strings.isNullOrEmpty(tag) ? null : MiscHelper.INSTANCE.getItemTagKey(new ResourceLocation(tag));
+			return Strings.isNullOrEmpty(tag) ? null : MiscHelper.INSTANCE.getItemTagKey(ResourceLocation.parse(tag));
 		});
 	}
 
@@ -48,11 +46,6 @@ public class JAOPCASlurry extends Slurry implements IMaterialFormSlurry {
 	@Override
 	public IMaterial getMaterial() {
 		return material;
-	}
-
-	@Override
-	public boolean isHidden() {
-		return isHidden;
 	}
 
 	@Override

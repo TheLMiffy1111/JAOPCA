@@ -86,12 +86,12 @@ public class MekanismCompatModule implements IModule {
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Set<ResourceLocation> itemTags = api.getItemTags();
-		ResourceLocation deepslateOreLocation = new ResourceLocation("forge:ores_in_ground/deepslate");
-		ResourceLocation netherrackOreLocation = new ResourceLocation("forge:ores_in_ground/netherrack");
-		ResourceLocation endstoneOreLocation = new ResourceLocation("forge:ores_in_ground/end_stone");
-		ResourceLocation cobbledDeepslateLocation = new ResourceLocation("forge:cobblestone/deepslate");
-		ResourceLocation netherrackLocation = new ResourceLocation("forge:netherrack");
-		ResourceLocation endstoneLocation = new ResourceLocation("forge:end_stones");
+		ResourceLocation deepslateOreLocation = ResourceLocation.parse("c:ores_in_ground/deepslate");
+		ResourceLocation netherrackOreLocation = ResourceLocation.parse("c:ores_in_ground/netherrack");
+		ResourceLocation endstoneOreLocation = ResourceLocation.parse("c:ores_in_ground/end_stone");
+		ResourceLocation cobbledDeepslateLocation = ResourceLocation.parse("c:cobblestone/deepslate");
+		ResourceLocation netherrackLocation = ResourceLocation.parse("c:netherrack");
+		ResourceLocation endstoneLocation = ResourceLocation.parse("c:end_stones");
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
@@ -100,7 +100,7 @@ public class MekanismCompatModule implements IModule {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(dustLocation)) {
 					helper.registerCrushingRecipe(
-							new ResourceLocation("jaopca", "mekanism.material_to_dust."+name),
+							miscHelper.getRecipeKey("mekanism.material_to_dust", name),
 							materialLocation, 1, dustLocation, 1);
 				}
 			}
@@ -109,7 +109,7 @@ public class MekanismCompatModule implements IModule {
 				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 				if(itemTags.contains(dustLocation)) {
 					helper.registerEnrichingRecipe(
-							new ResourceLocation("jaopca", "mekanism.dust_to_material."+name),
+							miscHelper.getRecipeKey("mekanism.dust_to_material", name),
 							dustLocation, 1, materialLocation, 1);
 				}
 			}
@@ -118,7 +118,7 @@ public class MekanismCompatModule implements IModule {
 				ResourceLocation oreLocation = miscHelper.getTagLocation("ores", name);
 				if(itemTags.contains(ingLocation)) {
 					IDynamicSpecConfig config = api.getMaterialConfig(material);
-					String configOreBase = config.getDefinedString("mekanism.oreBase", "#forge:cobblestone/normal",
+					String configOreBase = config.getDefinedString("mekanism.oreBase", "#c:cobblestone/normal",
 							this::isTagOrItemValid, "The default base to use in Mekanism's Combiner to recreate ores.");
 					Object oreBase = getTagOrItem(configOreBase);
 
@@ -129,27 +129,27 @@ public class MekanismCompatModule implements IModule {
 					};
 
 					helper.registerCombiningRecipe(
-							new ResourceLocation("jaopca", "mekanism.material_to_default_ore."+name),
+							miscHelper.getRecipeKey("mekanism.material_to_default_ore", name),
 							ingLocation, inputCount, oreBase, 1,
 							CompoundIngredientObject.difference(new Object[] {
 									oreLocation,
 									deepslateOreLocation, netherrackOreLocation, endstoneOreLocation,
 							}), 1);
 					helper.registerCombiningRecipe(
-							new ResourceLocation("jaopca", "mekanism.material_to_deepslate_ore."+name),
+							miscHelper.getRecipeKey("mekanism.material_to_deepslate_ore", name),
 							ingLocation, inputCount, cobbledDeepslateLocation, 1,
 							CompoundIngredientObject.intersection(new Object[] {
 									oreLocation, deepslateOreLocation,
 							}), 1);
 					helper.registerCombiningRecipe(
-							new ResourceLocation("jaopca", "mekanism.material_to_netherrack_ore."+name),
+							miscHelper.getRecipeKey("mekanism.material_to_netherrack_ore", name),
 							ingLocation, inputCount, netherrackLocation, 1,
 							CompoundIngredientObject.intersection(new Object[] {
 									oreLocation, netherrackOreLocation,
 							}), 1);
 					if(itemTags.contains(endstoneOreLocation)) {
 						helper.registerCombiningRecipe(
-								new ResourceLocation("jaopca", "mekanism.material_to_end_stone_ore."+name),
+								miscHelper.getRecipeKey("mekanism.material_to_end_stone_ore", name),
 								ingLocation, inputCount, endstoneLocation, 1,
 								CompoundIngredientObject.intersection(new Object[] {
 										oreLocation, endstoneOreLocation,
@@ -162,19 +162,19 @@ public class MekanismCompatModule implements IModule {
 
 	public boolean isTagOrItemValid(String s) {
 		if(StringUtils.startsWith(s, "#")) {
-			return ApiImpl.INSTANCE.getItemTags().contains(new ResourceLocation(s.substring(1)));
+			return ApiImpl.INSTANCE.getItemTags().contains(ResourceLocation.parse(s.substring(1)));
 		}
 		else {
-			return BuiltInRegistries.ITEM.containsKey(new ResourceLocation(s));
+			return BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(s));
 		}
 	}
 
 	public Object getTagOrItem(String s) {
 		if(StringUtils.startsWith(s, "#")) {
-			return new ResourceLocation(s.substring(1));
+			return ResourceLocation.parse(s.substring(1));
 		}
 		else {
-			return BuiltInRegistries.ITEM.get(new ResourceLocation(s));
+			return BuiltInRegistries.ITEM.get(ResourceLocation.parse(s));
 		}
 	}
 }

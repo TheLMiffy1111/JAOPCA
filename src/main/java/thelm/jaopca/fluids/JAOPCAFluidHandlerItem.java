@@ -61,7 +61,7 @@ public class JAOPCAFluidHandlerItem implements IFluidHandlerItem {
 			return FluidStack.EMPTY;
 		}
 		FluidStack fluidStack = getFluid();
-		if(!fluidStack.isEmpty() && fluidStack.isFluidEqual(resource)) {
+		if(!fluidStack.isEmpty() && FluidStack.isSameFluidSameComponents(fluidStack, resource)) {
 			if(action.execute()) {
 				clearFluid();
 			}

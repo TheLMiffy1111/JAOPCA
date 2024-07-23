@@ -199,19 +199,23 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 			public ResourceLocation getStillTexture() {
 				ResourceLocation location = BuiltInRegistries.FLUID.getKey(fluid.toFluid());
 				if(MiscHelper.INSTANCE.hasResource(
-						location.withPath("textures/fluid/"+location.getPath()+"_still.png"))) {
-					return location.withPath("fluid/"+location.getPath()+"_still");
+						ResourceLocation.fromNamespaceAndPath(location.getNamespace(),
+								"textures/fluid/"+location.getPath()+"_still.png"))) {
+					return ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "fluid/"+location.getPath()+"_still");
 				}
-				return location.withPath("fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still");
+				return ResourceLocation.fromNamespaceAndPath(location.getNamespace(),
+						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still");
 			}
 			@Override
 			public ResourceLocation getFlowingTexture() {
 				ResourceLocation location = BuiltInRegistries.FLUID.getKey(fluid.toFluid());
 				if(MiscHelper.INSTANCE.hasResource(
-						location.withPath("textures/fluid/"+location.getPath()+"_flow.png"))) {
-					return location.withPath("fluid/"+location.getPath()+"_flow");
+						ResourceLocation.fromNamespaceAndPath(location.getNamespace(),
+								"textures/fluid/"+location.getPath()+"_flow.png"))) {
+					return ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "fluid/"+location.getPath()+"_flow");
 				}
-				return location.withPath("fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow");
+				return ResourceLocation.fromNamespaceAndPath(location.getNamespace(),
+						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow");
 			}
 		});
 	}

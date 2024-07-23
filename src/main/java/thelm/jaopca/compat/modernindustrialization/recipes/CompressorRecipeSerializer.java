@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 
 import aztech.modern_industrialization.machines.init.MIMachineRecipeTypes;
 import aztech.modern_industrialization.machines.recipe.MachineRecipe;
+import aztech.modern_industrialization.thirdparty.fabrictransfer.api.item.ItemVariant;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -53,7 +54,7 @@ public class CompressorRecipeSerializer implements IRecipeSerializer {
 		}
 		MachineRecipe recipe = new MIRecipeConstructor(MIMachineRecipeTypes.COMPRESSOR, eu, duration).recipe();
 		recipe.itemInputs.add(new MachineRecipe.ItemInput(ing, inputCount, inputChance));
-		recipe.itemOutputs.add(new MachineRecipe.ItemOutput(stack.getItem(), outputCount, outputChance));
+		recipe.itemOutputs.add(new MachineRecipe.ItemOutput(ItemVariant.of(stack), outputCount, outputChance));
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

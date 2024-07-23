@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 
 import mekanism.api.chemical.slurry.SlurryStack;
 import mekanism.api.recipes.basic.BasicChemicalDissolutionRecipe;
-import mekanism.api.recipes.ingredients.ChemicalStackIngredient.GasStackIngredient;
+import mekanism.api.recipes.ingredients.GasStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeSerializer;

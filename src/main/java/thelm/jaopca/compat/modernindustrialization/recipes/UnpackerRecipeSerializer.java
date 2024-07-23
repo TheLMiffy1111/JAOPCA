@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 
 import aztech.modern_industrialization.machines.init.MIMachineRecipeTypes;
 import aztech.modern_industrialization.machines.recipe.MachineRecipe;
+import aztech.modern_industrialization.thirdparty.fabrictransfer.api.item.ItemVariant;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -66,7 +67,7 @@ public class UnpackerRecipeSerializer implements IRecipeSerializer {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 				continue;
 			}
-			outputs.add(new MachineRecipe.ItemOutput(is.getItem(), count, chance));
+			outputs.add(new MachineRecipe.ItemOutput(ItemVariant.of(is), count, chance));
 		}
 		if(outputs.isEmpty()) {
 			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));

@@ -54,12 +54,12 @@ public class OccultismModule implements IModule {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerCrushingRecipe(
-					new ResourceLocation("jaopca", "occultism.ore_to_dust."+material.getName()),
+					miscHelper.getRecipeKey("occultism.ore_to_dust", material.getName()),
 					oreLocation, dustLocation, 2, 200, false);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "occultism.raw_material_to_dust."+material.getName()),
+						miscHelper.getRecipeKey("occultism.raw_material_to_dust", material.getName()),
 						rawMaterialLocation, dustLocation, 2, 200, false);
 			}
 		}

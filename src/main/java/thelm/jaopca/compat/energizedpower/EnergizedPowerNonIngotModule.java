@@ -50,7 +50,7 @@ public class EnergizedPowerNonIngotModule implements IModule {
 			double[] outputChances = material.getType() != MaterialType.DUST ? CRYSTAL_CHANCES : DUST_CHANCES;
 			double[] outputChancesAdvanced = material.getType() != MaterialType.DUST ? CRYSTAL_CHANCES_ADVANCED : DUST_CHANCES_ADVANCED;
 			helper.registerPulverizerRecipe(
-					new ResourceLocation("jaopca", "energizedpower.ore_to_material."+material.getName()),
+					miscHelper.getRecipeKey("energizedpower.ore_to_material", material.getName()),
 					oreLocation, materialLocation, outputChances, outputChancesAdvanced);
 		}
 	}

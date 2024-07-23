@@ -67,7 +67,7 @@ public class EnergizedPowerCompatModule implements IModule {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(dustLocation)) {
 					helper.registerPulverizerRecipe(
-							new ResourceLocation("jaopca", "energizedpower.material_to_dust."+name),
+							miscHelper.getRecipeKey("energizedpower.material_to_dust", name),
 							materialLocation, dustLocation, TO_DUST_CHANCES, TO_DUST_CHANCES);
 				}
 			}
@@ -76,8 +76,8 @@ public class EnergizedPowerCompatModule implements IModule {
 				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
 				if(itemTags.contains(plateLocation)) {
 					helper.registerCompressorRecipe(
-							new ResourceLocation("jaopca", "energizedpower.material_to_plate."+name),
-							materialLocation, plateLocation, 1);
+							miscHelper.getRecipeKey("energizedpower.material_to_plate", name),
+							materialLocation, 1, plateLocation, 1);
 				}
 			}
 		}

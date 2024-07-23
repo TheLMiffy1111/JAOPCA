@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import com.google.common.base.Strings;
@@ -100,8 +101,8 @@ public class BlockFormType implements IBlockFormType {
 			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
 				String name = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = new ResourceLocation("jaopca", name);
-				ResourceLocation lootLocation = new ResourceLocation("jaopca", "blocks/"+name);
+				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath("jaopca", name);
+				ResourceLocation lootLocation = ResourceLocation.fromNamespaceAndPath("jaopca", "blocks/"+name);
 				String toolTag = settings.getHarvestToolTagFunction().apply(material);
 				String tierTag = settings.getHarvestTierTagFunction().apply(material);
 
@@ -121,9 +122,9 @@ public class BlockFormType implements IBlockFormType {
 					api.registerBlockTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 
-				api.registerBlockTag(new ResourceLocation(toolTag), registryName);
+				api.registerBlockTag(ResourceLocation.parse(toolTag), registryName);
 				if(!Strings.isNullOrEmpty(tierTag)) {
-					api.registerBlockTag(new ResourceLocation(tierTag), registryName);
+					api.registerBlockTag(ResourceLocation.parse(tierTag), registryName);
 				}
 
 				api.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
@@ -144,6 +145,16 @@ public class BlockFormType implements IBlockFormType {
 	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
 		getBlockItems().forEach(mf->mf.addToCreativeModeTab(parameters, output));
+	}
+
+	@Override
+	public void addBlockModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+		getBlocks().forEach(mf->mf.addBlockModelRemaps(allLocations, output));
+	}
+
+	@Override
+	public void addItemModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+		getBlockItems().forEach(mf->mf.addItemModelRemaps(allLocations, output));
 	}
 
 	public static Collection<IMaterialFormBlock> getBlocks() {

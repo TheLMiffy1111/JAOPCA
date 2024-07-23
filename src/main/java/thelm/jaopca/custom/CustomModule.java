@@ -59,7 +59,7 @@ public class CustomModule implements IModule {
 					type.formSettingsCodec().optionalFieldOf("settings"),
 					IForm::getSettings,
 					IForm::setSettings).
-			build());
+			mapCodec());
 	private final Codec<IFormRequest> formRequestCodec = Codec.either(formCodec, formCodec.listOf()).
 			xmap(either->either.map(IForm::toRequest, forms->new FormRequest(this, forms.stream().toArray(IForm[]::new))),
 					request->Either.right(request.getForms()));

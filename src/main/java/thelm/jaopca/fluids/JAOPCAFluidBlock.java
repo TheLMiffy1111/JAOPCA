@@ -110,7 +110,7 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	public void entityInside(BlockState blockState, Level world, BlockPos pos, Entity entity) {
 		int time = fireTime.getAsInt();
 		if(time > 0) {
-			entity.setSecondsOnFire(time);
+			entity.igniteForSeconds(time);
 		}
 	}
 }

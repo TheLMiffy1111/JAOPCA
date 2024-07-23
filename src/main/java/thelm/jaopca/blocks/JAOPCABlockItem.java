@@ -1,15 +1,11 @@
 package thelm.jaopca.blocks;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.crafting.RecipeType;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
@@ -23,19 +19,20 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 
 	protected final IBlockFormSettings settings;
 
-	protected IntSupplier maxStackSize;
 	protected BooleanSupplier hasEffect;
-	protected Supplier<Rarity> rarity;
-	protected IntSupplier burnTime;
 
 	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
-		super(block.toBlock(), new Item.Properties());
+		super(block.toBlock(), getProperties(block, settings));
 		this.settings = settings;
 
-		maxStackSize = MemoizingSuppliers.of(settings.getMaxStackSizeFunction(), block::getMaterial);
 		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), block::getMaterial);
-		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), block::getMaterial);
-		burnTime = MemoizingSuppliers.of(settings.getBurnTimeFunction(), block::getMaterial);
+	}
+
+	public static Item.Properties getProperties(IMaterialFormBlock block, IBlockFormSettings settings) {
+		Item.Properties prop = new Item.Properties();
+		prop.stacksTo(settings.getMaxStackSizeFunction().applyAsInt(block.getMaterial()));
+		prop.rarity(settings.getDisplayRarityFunction().apply(block.getMaterial()));
+		return prop;
 	}
 
 	@Override
@@ -49,23 +46,8 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 	}
 
 	@Override
-	public int getMaxStackSize(ItemStack stack) {
-		return maxStackSize.getAsInt();
-	}
-
-	@Override
 	public boolean isFoil(ItemStack stack) {
 		return hasEffect.getAsBoolean() || super.isFoil(stack);
-	}
-
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return rarity.get();
-	}
-
-	@Override
-	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
-		return burnTime.getAsInt();
 	}
 
 	@Override

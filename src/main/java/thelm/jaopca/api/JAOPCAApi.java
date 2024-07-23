@@ -184,7 +184,7 @@ public abstract class JAOPCAApi {
 	/**
 	 * Returns the set of known tag locations of the supplied type, which is the registered tag locations.
 	 * Note that tags added by custom data packs may not be included.
-	 * @param type The type of the tag
+	 * @param type The type of the tags
 	 * @return The set of tag locations known by JAOPCA
 	 */
 	public abstract Set<ResourceLocation> getTags(String type);

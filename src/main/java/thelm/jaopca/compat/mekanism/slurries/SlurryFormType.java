@@ -96,7 +96,7 @@ public class SlurryFormType implements ISlurryFormType {
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
 				String name = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = new ResourceLocation("jaopca", name);
+				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath("jaopca", name);
 
 				Supplier<IMaterialFormSlurry> materialFormSlurry = MemoizingSuppliers.of(()->settings.getSlurryCreator().create(form, material, settings));
 				SLURRIES.put(form, material, materialFormSlurry);

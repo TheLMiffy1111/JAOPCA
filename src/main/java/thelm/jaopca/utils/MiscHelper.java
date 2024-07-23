@@ -66,7 +66,13 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
 import net.neoforged.neoforge.common.crafting.DifferenceIngredient;
 import net.neoforged.neoforge.common.crafting.IntersectionIngredient;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.CompoundFluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.DifferenceFluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.IntersectionFluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.ingredients.CompoundIngredientObject;
@@ -96,16 +102,21 @@ public class MiscHelper implements IMiscHelper {
 	@Override
 	public ResourceLocation createResourceLocation(String location, String defaultNamespace) {
 		if(StringUtils.contains(location, ':')) {
-			return new ResourceLocation(location);
+			return ResourceLocation.parse(location);
 		}
 		else {
-			return new ResourceLocation(defaultNamespace, location);
+			return ResourceLocation.fromNamespaceAndPath(defaultNamespace, location);
 		}
 	}
 
 	@Override
 	public ResourceLocation createResourceLocation(String location) {
-		return createResourceLocation(location, "forge");
+		return createResourceLocation(location, "c");
+	}
+
+	@Override
+	public ResourceLocation getRecipeKey(String category, String material) {
+		return createResourceLocation(category+'.'+(material), "jaopca");
 	}
 
 	@Override
@@ -129,6 +140,12 @@ public class MiscHelper implements IMiscHelper {
 	@Override
 	public Ingredient getIngredient(Object obj) {
 		return getIngredientResolved(obj).getLeft();
+	}
+
+	@Override
+	public SizedIngredient getSizedIngredient(Object obj, int count) {
+		Ingredient ing = getIngredient(obj);
+		return ing == null ? null : new SizedIngredient(ing, count);
 	}
 
 	public Pair<Ingredient, Set<Item>> getIngredientResolved(Object obj) {
@@ -189,7 +206,7 @@ public class MiscHelper implements IMiscHelper {
 			BuiltInRegistries.ITEM.forEach(items::add);
 		}
 		else if(obj instanceof String) {
-			ResourceLocation location = new ResourceLocation((String)obj);
+			ResourceLocation location = ResourceLocation.parse((String)obj);
 			ing = Ingredient.of(getItemTagKey(location));
 			items.addAll(getItemTagValues(location));
 		}
@@ -238,7 +255,7 @@ public class MiscHelper implements IMiscHelper {
 			BuiltInRegistries.ITEM.forEach(items::add);
 		}
 		else if(obj instanceof JsonElement) {
-			ing = Ingredient.fromJson((JsonElement)obj, true);
+			ing = Ingredient.CODEC.parse(JsonOps.INSTANCE, (JsonElement)obj).resultOrPartial(LOGGER::warn).orElse(null);
 			// We can't know what items the ingredient can have so assume all
 			BuiltInRegistries.ITEM.forEach(items::add);
 		}
@@ -263,34 +280,137 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public FluidStack getFluidStack(Object obj, int amount) {
+		FluidStack ret = getPreferredFluidStack(getFluidIngredientResolved(obj).getRight(), amount);
+		return ret.isEmpty() ? FluidStack.EMPTY : ret;
+	}
+
+	@Override
+	public FluidIngredient getFluidIngredient(Object obj) {
+		return getFluidIngredientResolved(obj).getLeft();
+	}
+
+	@Override
+	public SizedFluidIngredient getSizedFluidIngredient(Object obj, int amount) {
+		FluidIngredient ing = getFluidIngredient(obj);
+		return ing == null ? null : new SizedFluidIngredient(ing, amount);
+	}
+
+	public Pair<FluidIngredient, Set<Fluid>> getFluidIngredientResolved(Object obj) {
+		FluidIngredient ing = null;
+		Set<Fluid> fluids = new HashSet<>();
 		if(obj instanceof Supplier<?>) {
-			return getFluidStack(((Supplier<?>)obj).get(), amount);
+			Pair<FluidIngredient, Set<Fluid>> pair = getFluidIngredientResolved(((Supplier<?>)obj).get());
+			ing = pair.getLeft();
+			fluids.addAll(pair.getRight());
+		}
+		else if(obj instanceof CompoundIngredientObject cObj) {
+			List<Pair<FluidIngredient, Set<Fluid>>> ings = Arrays.stream(cObj.ingredients()).map(this::getFluidIngredientResolved).toList();
+			if(ings.size() == 1) {
+				Pair<FluidIngredient, Set<Fluid>> pair = ings.get(0);
+				ing = pair.getLeft();
+				fluids.addAll(pair.getRight());
+			}
+			else if(ings.size() > 1) {
+				switch(cObj.type()) {
+				case UNION -> {
+					if(ings.stream().allMatch(p->p.getRight().isEmpty())) {
+						break;
+					}
+					ing = CompoundFluidIngredient.of(ings.stream().filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(FluidIngredient[]::new));
+					fluids.addAll(ings.stream().map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+						s1.addAll(s2);
+						return s1;
+					}));
+				}
+				case INTERSECTION -> {
+					if(ings.stream().anyMatch(p->p.getRight().isEmpty())) {
+						break;
+					}
+					ing = IntersectionFluidIngredient.of(ings.stream().map(Pair::getLeft).toArray(FluidIngredient[]::new));
+					fluids.addAll(ings.stream().map(Pair::getRight).reduce(Sets.newHashSet(BuiltInRegistries.FLUID), (s1, s2)->{
+						s1.retainAll(s2);
+						return s1;
+					}));
+				}
+				case DIFFERENCE -> {
+					Pair<FluidIngredient, Set<Fluid>> firstPair = ings.get(0);
+					if(firstPair.getRight().isEmpty()) {
+						break;
+					}
+					ing = DifferenceFluidIngredient.of(firstPair.getLeft(), CompoundFluidIngredient.of(ings.stream().skip(1).filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(FluidIngredient[]::new)));
+					fluids.addAll(firstPair.getRight());
+					fluids.removeAll(ings.stream().skip(1).map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+						s1.addAll(s2);
+						return s1;
+					}));
+				}
+				}
+			}
+		}
+		else if(obj instanceof FluidIngredient) {
+			ing = (FluidIngredient)obj;
+			// We can't know what fluids the ingredient can have so assume all
+			BuiltInRegistries.FLUID.forEach(fluids::add);
+		}
+		else if(obj instanceof String) {
+			ResourceLocation location = ResourceLocation.parse((String)obj);
+			ing = FluidIngredient.tag(getFluidTagKey(location));
+			fluids.addAll(getFluidTagValues(location));
+		}
+		else if(obj instanceof ResourceLocation location) {
+			ing = FluidIngredient.tag(getFluidTagKey(location));
+			fluids.addAll(getFluidTagValues(location));
+		}
+		else if(obj instanceof TagKey key) {
+			ing = FluidIngredient.tag(key);
+			fluids.addAll(getFluidTagValues(key.location()));
 		}
 		else if(obj instanceof FluidStack stack) {
 			if(!stack.isEmpty()) {
-				return stack;
+				ing = FluidIngredient.of(stack);
+				fluids.add(stack.getFluid());
+			}
+		}
+		else if(obj instanceof FluidStack[] stacks) {
+			List<FluidStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.of(nonEmpty.toArray(FluidStack[]::new));
+				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
 			}
 		}
 		else if(obj instanceof Fluid fluid) {
 			if(fluid != Fluids.EMPTY) {
-				return new FluidStack(fluid, amount);
+				ing = FluidIngredient.of(fluid);
+				fluids.add(fluid);
+			}
+		}
+		else if(obj instanceof Fluid[] fluidz) {
+			List<Fluid> nonEmpty = Arrays.stream(fluidz).filter(f->f != Fluids.EMPTY).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.of(nonEmpty.toArray(Fluid[]::new));
+				fluids.addAll(nonEmpty);
 			}
 		}
 		else if(obj instanceof IFluidLike fluid) {
 			if(fluid.asFluid() != Fluids.EMPTY) {
-				return new FluidStack(fluid.asFluid(), amount);
+				ing = FluidIngredient.of(fluid.asFluid());
+				fluids.add(fluid.asFluid());
 			}
 		}
-		else if(obj instanceof String) {
-			return getPreferredFluidStack(getFluidTagValues(new ResourceLocation((String)obj)), amount);
+		else if(obj instanceof IFluidLike[] fluidz) {
+			List<Fluid> nonEmpty = Arrays.stream(fluidz).map(IFluidLike::asFluid).filter(f->f != Fluids.EMPTY).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.of(nonEmpty.toArray(Fluid[]::new));
+				fluids.addAll(nonEmpty);
+			}
 		}
-		else if(obj instanceof ResourceLocation) {
-			return getPreferredFluidStack(getFluidTagValues((ResourceLocation)obj), amount);
+		else if(obj instanceof JsonElement) {
+			ing = FluidIngredient.CODEC.parse(JsonOps.INSTANCE, (JsonElement)obj).resultOrPartial(LOGGER::warn).orElse(null);
+			// We can't know what fluids the ingredient can have so assume all
+			BuiltInRegistries.FLUID.forEach(fluids::add);
 		}
-		else if(obj instanceof TagKey<?>) {
-			return getPreferredFluidStack(getFluidTagValues(((TagKey<Fluid>)obj).location()), amount);
-		}
-		return FluidStack.EMPTY;
+		fluids.remove(Fluids.EMPTY);
+		return Pair.of(fluids.isEmpty() ? null : ing, fluids);
 	}
 
 	@Override
@@ -411,7 +531,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public JsonObject serializeItemStack(ItemStack stack) {
-		return serialize(ItemStack.ITEM_WITH_COUNT_CODEC, stack).getAsJsonObject();
+		return serialize(ItemStack.CODEC, stack).getAsJsonObject();
 	}
 
 	@Override

@@ -70,7 +70,7 @@ public abstract class PlaceableFluidBlock extends Block implements BucketPickup 
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState blockState, BlockGetter world, BlockPos pos, PathComputationType type) {
+	public boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
 		return !fluid.is(FluidTags.LAVA);
 	}
 

@@ -72,12 +72,12 @@ public class ModernIndustrializationCrushedModule implements IModule {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerMaceratorRecipe(
-					new ResourceLocation("jaopca", "modern_industrialization.ore_to_crushed_dust."+material.getName()),
+					miscHelper.getRecipeKey("modern_industrialization.ore_to_crushed_dust", material.getName()),
 					oreLocation, 1, 1F, new Object[] {
 							crushedDustInfo, 3, 1F,
 					}, 2, 200);
 			helper.registerMaceratorRecipe(
-					new ResourceLocation("jaopca", "modern_industrialization.crushed_dust_to_dust."+material.getName()),
+					miscHelper.getRecipeKey("modern_industrialization.crushed_dust_to_dust", material.getName()),
 					crushedDustLocation, 1, 1F, new Object[] {
 							dustLocation, 1, 1F,
 							dustLocation, 1, 0.5F,

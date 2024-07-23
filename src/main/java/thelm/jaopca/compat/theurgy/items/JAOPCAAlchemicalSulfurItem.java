@@ -2,21 +2,19 @@ package thelm.jaopca.compat.theurgy.items;
 
 import java.util.List;
 
-import com.klikli_dev.theurgy.TheurgyConstants;
 import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurItem;
 import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurType;
+import com.klikli_dev.theurgy.registry.DataComponentRegistry;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IMaterialFormItem;
@@ -31,7 +29,7 @@ public class JAOPCAAlchemicalSulfurItem extends AlchemicalSulfurItem implements 
 	private final IMaterial material;
 
 	public JAOPCAAlchemicalSulfurItem(IForm form, IMaterial material, IItemFormSettings settings) {
-		super(new Item.Properties());
+		super(getProperties(form, material, settings));
 		this.form = form;
 		this.material = material;
 		tier = TheurgyModule.TIER_FUNCTION.apply(material);
@@ -40,6 +38,13 @@ public class JAOPCAAlchemicalSulfurItem extends AlchemicalSulfurItem implements 
 		case GEM, CRYSTAL -> AlchemicalSulfurType.GEMS;
 		default -> AlchemicalSulfurType.OTHER_MINERALS;
 		};
+	}
+
+	public static Item.Properties getProperties(IForm form, IMaterial material, IItemFormSettings settings) {
+		Item.Properties prop = new Item.Properties();
+		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(material.getType().getFormName(), material.getName());
+		prop.component(DataComponentRegistry.SULFUR_SOURCE_TAG.get(), MiscHelper.INSTANCE.getItemTagKey(tagLocation));
+		return prop;
 	}
 
 	@Override
@@ -53,22 +58,13 @@ public class JAOPCAAlchemicalSulfurItem extends AlchemicalSulfurItem implements 
 	}
 
 	@Override
-	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
-		CompoundTag nbt = new CompoundTag();
-		nbt.putString(TheurgyConstants.Nbt.SULFUR_SOURCE_ID, "#"+MiscHelper.INSTANCE.getTagLocation(material.getType().getFormName(), material.getName()));
-		ItemStack stack = new ItemStack(this);
-		stack.setTag(nbt);
-		output.accept(stack);
-	}
-
-	@Override
 	public MutableComponent getSourceName(ItemStack stack) {
 		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("%s", material, "%s").
 				withStyle(Style.EMPTY.withColor(tier.color()).withItalic(true));
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
 		tooltipComponents.add(Component.translatable("item.jaopca.theurgy_alchemical_sulfurs.tooltip",
 				getSourceName(stack),
 				ComponentUtils.wrapInSquareBrackets(

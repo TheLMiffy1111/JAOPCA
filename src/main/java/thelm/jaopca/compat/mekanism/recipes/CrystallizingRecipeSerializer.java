@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 
 import mekanism.api.recipes.basic.BasicChemicalCrystallizerRecipe;
-import mekanism.api.recipes.ingredients.ChemicalStackIngredient.SlurryStackIngredient;
+import mekanism.api.recipes.ingredients.SlurryStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import thelm.jaopca.api.recipes.IRecipeSerializer;

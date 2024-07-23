@@ -45,4 +45,8 @@ public class BuilderCodecBuilder<O> implements Function<Instance<O>, App<Mu<O>, 
 	public Codec<O> build() {
 		return RecordCodecBuilder.create(this);
 	}
+
+	public MapCodec<O> mapCodec() {
+		return RecordCodecBuilder.mapCodec(this);
+	}
 }

@@ -45,12 +45,12 @@ public class MekanismNonIngotModule implements IModule {
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			if(material.getType() != MaterialType.DUST) {
 				helper.registerEnrichingRecipe(
-						new ResourceLocation("jaopca", "mekanism.ore_to_material."+material.getName()),
+						miscHelper.getRecipeKey("mekanism.ore_to_material", material.getName()),
 						oreLocation, 1, materialLocation, 2);
 			}
 			else {
 				helper.registerEnrichingRecipe(
-						new ResourceLocation("jaopca", "mekanism.ore_to_material."+material.getName()),
+						miscHelper.getRecipeKey("mekanism.ore_to_material", material.getName()),
 						oreLocation, 1, materialLocation, 5);
 			}
 		}

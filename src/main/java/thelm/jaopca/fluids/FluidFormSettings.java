@@ -10,7 +10,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import thelm.jaopca.api.custom.MapColorType;
 import thelm.jaopca.api.fluids.IBucketItemCreator;
 import thelm.jaopca.api.fluids.IFluidBlockCreator;
@@ -48,8 +48,8 @@ class FluidFormSettings implements IFluidFormSettings {
 	private Predicate<IMaterial> supportsBoatingFunction = MaterialPredicate.of(false);
 	private Predicate<IMaterial> canHydrateFunction = MaterialPredicate.of(false);
 	private Predicate<IMaterial> canConvertToSourceFunction = MaterialPredicate.of(false);
-	private Function<IMaterial, BlockPathTypes> pathTypeFunction = MaterialMappedFunction.of(BlockPathTypes.class, BlockPathTypes.WATER);
-	private Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction = MaterialMappedFunction.of(BlockPathTypes.class, BlockPathTypes.WATER_BORDER);
+	private Function<IMaterial, PathType> pathTypeFunction = MaterialMappedFunction.of(PathType.class, PathType.WATER);
+	private Function<IMaterial, PathType> adjacentPathTypeFunction = MaterialMappedFunction.of(PathType.class, PathType.WATER_BORDER);
 	private IFluidBlockCreator fluidBlockCreator = JAOPCAFluidBlock::new;
 	private ToIntFunction<IMaterial> levelDecreasePerBlockFunction = MaterialIntFunction.of(1);
 	private Function<IMaterial, MapColor> mapColorFunction = MapColorType.functionOf(MapColor.WATER);
@@ -61,7 +61,6 @@ class FluidFormSettings implements IFluidFormSettings {
 	private IBucketItemCreator bucketItemCreator = JAOPCABucketItem::new;
 	private ToIntFunction<IMaterial> maxStackSizeFunction = MaterialIntFunction.of(1);
 	private Predicate<IMaterial> hasEffectFunction = MaterialPredicate.of(false);
-	private ToIntFunction<IMaterial> burnTimeFunction = MaterialIntFunction.of(-1);
 
 	@Override
 	public IFormType getType() {
@@ -300,24 +299,24 @@ class FluidFormSettings implements IFluidFormSettings {
 	}
 
 	@Override
-	public IFluidFormSettings setPathTypeFunction(Function<IMaterial, BlockPathTypes> pathTypeFunction) {
+	public IFluidFormSettings setPathTypeFunction(Function<IMaterial, PathType> pathTypeFunction) {
 		this.pathTypeFunction = pathTypeFunction;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, BlockPathTypes> getPathTypeFunction() {
+	public Function<IMaterial, PathType> getPathTypeFunction() {
 		return pathTypeFunction;
 	}
 
 	@Override
-	public IFluidFormSettings setAdjacentPathTypeFunction(Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction) {
+	public IFluidFormSettings setAdjacentPathTypeFunction(Function<IMaterial, PathType> adjacentPathTypeFunction) {
 		this.adjacentPathTypeFunction = adjacentPathTypeFunction;
 		return this;
 	}
 
 	@Override
-	public Function<IMaterial, BlockPathTypes> getAdjacentPathTypeFunction() {
+	public Function<IMaterial, PathType> getAdjacentPathTypeFunction() {
 		return adjacentPathTypeFunction;
 	}
 
@@ -451,16 +450,5 @@ class FluidFormSettings implements IFluidFormSettings {
 	@Override
 	public Predicate<IMaterial> getHasEffectFunction() {
 		return hasEffectFunction;
-	}
-
-	@Override
-	public IFluidFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction) {
-		this.burnTimeFunction = burnTimeFunction;
-		return this;
-	}
-
-	@Override
-	public ToIntFunction<IMaterial> getBurnTimeFunction() {
-		return burnTimeFunction;
 	}
 }

@@ -7,6 +7,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
@@ -40,15 +41,16 @@ public class DustsModule implements IModule {
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : dustForm.getMaterials()) {
 			if(material.getType().isIngot()) {
 				ResourceLocation dustLocation = MiscHelper.INSTANCE.getTagLocation("dusts", material.getName());
 				ResourceLocation materialLocation = MiscHelper.INSTANCE.getTagLocation(material.getType().getFormName(), material.getName());
 				api.registerSmeltingRecipe(
-						new ResourceLocation("jaopca", "dusts.to_material."+material.getName()),
+						miscHelper.getRecipeKey("dusts.to_material", material.getName()),
 						dustLocation, materialLocation, 1, 0.7F, 200);
 				api.registerBlastingRecipe(
-						new ResourceLocation("jaopca", "dusts.to_material_blasting."+material.getName()),
+						miscHelper.getRecipeKey("dusts.to_material_blasting", material.getName()),
 						dustLocation, materialLocation, 1, 0.7F, 100);
 			}
 		}

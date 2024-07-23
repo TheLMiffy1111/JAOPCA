@@ -25,8 +25,4 @@ public interface IItemFormSettings extends IFormSettings {
 	IItemFormSettings setDisplayRarityFunction(Function<IMaterial, Rarity> displayRarityFunction);
 
 	Function<IMaterial, Rarity> getDisplayRarityFunction();
-
-	IItemFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction);
-
-	ToIntFunction<IMaterial> getBurnTimeFunction();
 }

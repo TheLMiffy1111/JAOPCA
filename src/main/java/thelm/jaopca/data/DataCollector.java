@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
@@ -16,14 +17,17 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.TreeMultimap;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.ServerPacksSource;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
-import net.minecraft.tags.TagManager;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.resource.ResourcePackLoader;
 import net.neoforged.neoforgespi.language.ModFileScanData.AnnotationData;
@@ -52,10 +56,11 @@ public class DataCollector {
 		DEFINED_RECIPES.clear();
 		DEFINED_ADVANCEMENTS.clear();
 
+		PackLocationInfo emptyLocation = new PackLocationInfo("", Component.empty(), PackSource.DEFAULT, Optional.empty());
 		List<PackResources> resourcePacks = new ArrayList<>();
 		resourcePacks.add(ServerPacksSource.createVanillaPackSource());
 		ModList.get().getModFiles().stream().
-		map(mf->ResourcePackLoader.createPackForMod(mf).openPrimary(mf.getFile().getFileName())).
+		map(mf->ResourcePackLoader.createPackForMod(mf).openPrimary(emptyLocation)).
 		forEach(resourcePacks::add);
 		List<AnnotationData> annotationData = ModList.get().getAllScanData().stream().
 				flatMap(data->data.getAnnotations().stream()).
@@ -118,7 +123,7 @@ public class DataCollector {
 				}
 			}
 			LOGGER.info("Found {} unique defined tags", DEFINED_TAGS.size());
-			for(ResourceLocation location : resourceManager.listResources("recipes", name->name.getPath().endsWith(".json")).keySet()) {
+			for(ResourceLocation location : RECIPE_FORMAT.listMatchingResources(resourceManager).keySet()) {
 				location = RECIPE_FORMAT.fileToId(location);
 				if(!location.getPath().equals("_constants") && !location.getPath().equals("_factories")) {
 					DEFINED_RECIPES.add(location);
@@ -137,7 +142,7 @@ public class DataCollector {
 	}
 
 	public static Set<ResourceLocation> getDefinedTags(ResourceKey<? extends Registry<?>> registry) {
-		return getDefinedTags(TagManager.getTagDir(registry).substring(TAGS_PATH_LENGTH));
+		return getDefinedTags(Registries.tagsDirPath(registry).substring(TAGS_PATH_LENGTH));
 	}
 
 	public static Set<ResourceLocation> getDefinedTags(String type) {

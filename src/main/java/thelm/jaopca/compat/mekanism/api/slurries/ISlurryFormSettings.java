@@ -10,11 +10,7 @@ public interface ISlurryFormSettings extends IFormSettings {
 	ISlurryFormSettings setSlurryCreator(ISlurryCreator slurryCreator);
 
 	ISlurryCreator getSlurryCreator();
-
-	ISlurryFormSettings setIsHidden(boolean isVisible);
-
-	boolean getIsHidden();
-
+	
 	ISlurryFormSettings setOreTagFunction(Function<IMaterial, String> oreTagFunction);
 
 	Function<IMaterial, String> getOreTagFunction();

@@ -59,7 +59,7 @@ public class OccultismCompatModule implements IModule {
 				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(dustLocation)) {
 					helper.registerCrushingRecipe(
-							new ResourceLocation("jaopca", "occultism.material_to_dust."+name),
+							miscHelper.getRecipeKey("occultism.material_to_dust", name),
 							materialLocation, dustLocation, 1, 200, true);
 				}
 			}

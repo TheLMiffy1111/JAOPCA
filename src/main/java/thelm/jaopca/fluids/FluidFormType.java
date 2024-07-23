@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Tables;
@@ -17,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import thelm.jaopca.api.JAOPCAApi;
@@ -102,8 +103,8 @@ public class FluidFormType implements IFluidFormType {
 				setTemperatureFunction(MaterialIntFunction.of(1000)).setViscosityFunction(MaterialIntFunction.of(6000)).
 				setFillSoundSupplier(()->SoundEvents.BUCKET_FILL_LAVA).setEmptySoundSupplier(()->SoundEvents.BUCKET_EMPTY_LAVA).
 				setMotionScaleFunction(MaterialDoubleFunction.of(0.007/3)).setCanDrownFunction(MaterialPredicate.of(false)).
-				setPathTypeFunction(MaterialMappedFunction.of(BlockPathTypes.class, BlockPathTypes.LAVA)).
-				setAdjacentPathTypeFunction(MaterialMappedFunction.of(BlockPathTypes.class, null)).
+				setPathTypeFunction(MaterialMappedFunction.of(PathType.class, PathType.LAVA)).
+				setAdjacentPathTypeFunction(MaterialMappedFunction.of(PathType.class, null)).
 				setFireTimeFunction(MaterialIntFunction.of(15));
 	}
 
@@ -126,7 +127,7 @@ public class FluidFormType implements IFluidFormType {
 			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
 				String name = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = new ResourceLocation("jaopca", name);
+				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath("jaopca", name);
 
 				Supplier<IMaterialFormFluid> materialFormFluid = MemoizingSuppliers.of(()->settings.getFluidCreator().create(form, material, settings));
 				FLUIDS.put(form, material, materialFormFluid);
@@ -162,6 +163,16 @@ public class FluidFormType implements IFluidFormType {
 	@Override
 	public void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
 		getBucketItems().forEach(mf->mf.addToCreativeModeTab(parameters, output));
+	}
+
+	@Override
+	public void addBlockModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+		getFluidBlocks().forEach(mf->mf.addBlockModelRemaps(allLocations, output));
+	}
+
+	@Override
+	public void addItemModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+		getBucketItems().forEach(mf->mf.addItemModelRemaps(allLocations, output));
 	}
 
 	public static Collection<IMaterialFormFluid> getFluids() {

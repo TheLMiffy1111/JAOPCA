@@ -66,12 +66,12 @@ public class ModernIndustrializationModule implements IModule {
 			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerMaceratorRecipe(
-					new ResourceLocation("jaopca", "modern_industrialization.ore_to_raw_material."+material.getName()),
+					miscHelper.getRecipeKey("modern_industrialization.ore_to_raw_material", material.getName()),
 					oreLocation, 1, 1F, new Object[] {
 							rawMaterialLocation, 3, 1F,
 					}, 2, 200);
 			helper.registerMaceratorRecipe(
-					new ResourceLocation("jaopca", "modern_industrialization.raw_material_to_dust."+material.getName()),
+					miscHelper.getRecipeKey("modern_industrialization.raw_material_to_dust", material.getName()),
 					rawMaterialLocation, 1, 1F, new Object[] {
 							dustLocation, 1, 1F,
 							dustLocation, 1, 0.5F,
@@ -80,7 +80,7 @@ public class ModernIndustrializationModule implements IModule {
 		// Special case silver
 		if(api.getMaterial("silver") != null) {
 			helper.registerMaceratorRecipe(
-					new ResourceLocation("jaopca", "modern_industrialization.ore_to_raw_material.silver"),
+					miscHelper.getRecipeKey("modern_industrialization.ore_to_raw_material", "silver"),
 					miscHelper.getTagLocation("ores", "silver"), 1, 1F, new Object[] {
 							miscHelper.getTagLocation("raw_materials", "silver"), 3, 1F,
 					}, 2, 100);

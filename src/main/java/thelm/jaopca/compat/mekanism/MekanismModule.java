@@ -110,7 +110,7 @@ public class MekanismModule implements IModule {
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		ISlurryFormType slurryFormType = SlurryFormType.INSTANCE;
 		Set<ResourceLocation> itemTags = api.getItemTags();
-		ResourceLocation waterLocation = new ResourceLocation("minecraft:water");
+		ResourceLocation waterLocation = ResourceLocation.parse("minecraft:water");
 		for(IMaterial material : formRequest.getMaterials()) {
 			ISlurryInfo dirtySlurryInfo = slurryFormType.getMaterialFormInfo(dirtySlurryForm, material);
 			ResourceLocation dirtySlurryLocation = miscHelper.getTagLocation("mekanism:dirty", material.getName());
@@ -130,84 +130,84 @@ public class MekanismModule implements IModule {
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 
 			helper.registerDissolutionRecipe(
-					new ResourceLocation("jaopca", "mekanism.ore_to_dirty_slurry."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.ore_to_dirty_slurry", material.getName()),
 					oreLocation, 1, MekanismGases.SULFURIC_ACID, 1, dirtySlurryInfo, 1000);
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerDissolutionRecipe(
-						new ResourceLocation("jaopca", "mekanism.raw_material_to_dirty_slurry."+material.getName()),
+						miscHelper.getRecipeKey("mekanism.raw_material_to_dirty_slurry", material.getName()),
 						rawMaterialLocation, 3, MekanismGases.SULFURIC_ACID, 1, dirtySlurryInfo, 2000);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerDissolutionRecipe(
-							new ResourceLocation("jaopca", "mekanism.raw_storage_block_to_dirty_slurry."+material.getName()),
+							miscHelper.getRecipeKey("mekanism.raw_storage_block_to_dirty_slurry", material.getName()),
 							rawStorageBlockLocation, 1, MekanismGases.SULFURIC_ACID, 2, dirtySlurryInfo, 6000);
 				}
 			}
 
 			helper.registerWashingRecipe(
-					new ResourceLocation("jaopca", "mekanism.dirty_to_clean_slurry."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.dirty_to_clean_slurry", material.getName()),
 					waterLocation, 5, dirtySlurryLocation, 1, cleanSlurryInfo, 1);
 
 			helper.registerCrystallizingRecipe(
-					new ResourceLocation("jaopca", "mekanism.clean_slurry_to_crystal."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.clean_slurry_to_crystal", material.getName()),
 					cleanSlurryLocation, 200, crystalInfo, 1);
 
 			helper.registerInjectingRecipe(
-					new ResourceLocation("jaopca", "mekanism.ore_to_shard."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.ore_to_shard", material.getName()),
 					oreLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 4);
 			helper.registerInjectingRecipe(
-					new ResourceLocation("jaopca", "mekanism.crystal_to_shard."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.crystal_to_shard", material.getName()),
 					crystalLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 1);
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerInjectingRecipe(
-						new ResourceLocation("jaopca", "mekanism.raw_material_to_shard."+material.getName()),
+						miscHelper.getRecipeKey("mekanism.raw_material_to_shard", material.getName()),
 						rawMaterialLocation, 3, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 8);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerInjectingRecipe(
-							new ResourceLocation("jaopca", "mekanism.raw_storage_block_to_shard."+material.getName()),
+							miscHelper.getRecipeKey("mekanism.raw_storage_block_to_shard", material.getName()),
 							rawStorageBlockLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 2, shardInfo, 24);
 				}
 			}
 
 			helper.registerPurifyingRecipe(
-					new ResourceLocation("jaopca", "mekanism.ore_to_clump."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.ore_to_clump", material.getName()),
 					oreLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 3);
 			helper.registerPurifyingRecipe(
-					new ResourceLocation("jaopca", "mekanism.shard_to_clump."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.shard_to_clump", material.getName()),
 					shardLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 1);
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerPurifyingRecipe(
-						new ResourceLocation("jaopca", "mekanism.raw_material_to_clump."+material.getName()),
+						miscHelper.getRecipeKey("mekanism.raw_material_to_clump", material.getName()),
 						rawMaterialLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 2);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerPurifyingRecipe(
-							new ResourceLocation("jaopca", "mekanism.raw_storage_block_to_clump."+material.getName()),
+							miscHelper.getRecipeKey("mekanism.raw_storage_block_to_clump", material.getName()),
 							rawStorageBlockLocation, 1, MekanismGases.OXYGEN, 2, clumpInfo, 18);
 				}
 			}
 
 			helper.registerCrushingRecipe(
-					new ResourceLocation("jaopca", "mekanism.clump_to_dirty_dust."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.clump_to_dirty_dust", material.getName()),
 					clumpLocation, 1, dirtyDustInfo, 1);
 
 			helper.registerEnrichingRecipe(
-					new ResourceLocation("jaopca", "mekanism.dirty_dust_to_dust."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.dirty_dust_to_dust", material.getName()),
 					dirtyDustLocation, 1, dustLocation, 1);
 		}
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerEnrichingRecipe(
-					new ResourceLocation("jaopca", "mekanism.ore_to_dust."+material.getName()),
+					miscHelper.getRecipeKey("mekanism.ore_to_dust", material.getName()),
 					oreLocation, 1, dustLocation, 2);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerEnrichingRecipe(
-						new ResourceLocation("jaopca", "mekanism.raw_material_to_dust."+material.getName()),
+						miscHelper.getRecipeKey("mekanism.raw_material_to_dust", material.getName()),
 						rawMaterialLocation, 3, dustLocation, 4);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerEnrichingRecipe(
-							new ResourceLocation("jaopca", "mekanism.raw_storage_block_to_dust."+material.getName()),
+							miscHelper.getRecipeKey("mekanism.raw_storage_block_to_dust", material.getName()),
 							rawStorageBlockLocation, 1, dustLocation, 12);
 				}
 			}

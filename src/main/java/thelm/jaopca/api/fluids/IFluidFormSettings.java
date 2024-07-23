@@ -9,7 +9,7 @@ import java.util.function.ToIntFunction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import thelm.jaopca.api.forms.IFormSettings;
 import thelm.jaopca.api.materials.IMaterial;
 
@@ -103,13 +103,13 @@ public interface IFluidFormSettings extends IFormSettings {
 
 	Predicate<IMaterial> getCanConvertToSourceFunction();
 
-	IFluidFormSettings setPathTypeFunction(Function<IMaterial, BlockPathTypes> pathTypeFunction);
+	IFluidFormSettings setPathTypeFunction(Function<IMaterial, PathType> pathTypeFunction);
 
-	Function<IMaterial, BlockPathTypes> getPathTypeFunction();
+	Function<IMaterial, PathType> getPathTypeFunction();
 
-	IFluidFormSettings setAdjacentPathTypeFunction(Function<IMaterial, BlockPathTypes> adjacentPathTypeFunction);
+	IFluidFormSettings setAdjacentPathTypeFunction(Function<IMaterial, PathType> adjacentPathTypeFunction);
 
-	Function<IMaterial, BlockPathTypes> getAdjacentPathTypeFunction();
+	Function<IMaterial, PathType> getAdjacentPathTypeFunction();
 
 	IFluidFormSettings setFluidBlockCreator(IFluidBlockCreator fluidBlockCreator);
 
@@ -154,8 +154,4 @@ public interface IFluidFormSettings extends IFormSettings {
 	IFluidFormSettings setHasEffectFunction(Predicate<IMaterial> hasEffectFunction);
 
 	Predicate<IMaterial> getHasEffectFunction();
-
-	IFluidFormSettings setBurnTimeFunction(ToIntFunction<IMaterial> burnTimeFunction);
-
-	ToIntFunction<IMaterial> getBurnTimeFunction();
 }

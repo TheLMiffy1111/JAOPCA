@@ -64,17 +64,17 @@ public class EnergizedPowerModule implements IModule {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerPulverizerRecipe(
-					new ResourceLocation("jaopca", "energizedpower.ore_to_dust."+material.getName()),
+					miscHelper.getRecipeKey("energizedpower.ore_to_dust", material.getName()),
 					oreLocation, dustLocation, ORE_CHANCES, ORE_CHANCES_ADVANCED);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerPulverizerRecipe(
-						new ResourceLocation("jaopca", "energizedpower.raw_material_to_dust."+material.getName()),
+						miscHelper.getRecipeKey("energizedpower.raw_material_to_dust", material.getName()),
 						rawMaterialLocation, dustLocation, RAW_CHANCES, RAW_CHANCES_ADVANCED);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerPulverizerRecipe(
-							new ResourceLocation("jaopca", "energizedpower.raw_storage_block_to_dust."+material.getName()),
+							miscHelper.getRecipeKey("energizedpower.raw_storage_block_to_dust", material.getName()),
 							rawStorageBlockLocation, dustLocation, RAW_BLOCK_CHANCES, RAW_BLOCK_CHANCES_ADVANCED);
 				}
 			}

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Consumer;
@@ -28,9 +29,12 @@ import com.mojang.serialization.JsonOps;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.BuiltInPackSource;
 import net.minecraft.server.packs.repository.Pack;
@@ -38,7 +42,6 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagFile;
-import net.minecraft.tags.TagManager;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.fml.ModList;
@@ -207,10 +210,12 @@ public class DataInjector {
 
 		@Override
 		public void loadPacks(Consumer<Pack> packConsumer) {
-			Pack packInfo = Pack.readMetaAndCreate("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), true, BuiltInPackSource.fromName(packId->{
+			PackLocationInfo packLocation = new PackLocationInfo("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), PackSource.BUILT_IN, Optional.empty());
+			PackSelectionConfig packSelection = new PackSelectionConfig(true, Pack.Position.BOTTOM, false);
+			Pack packInfo = Pack.readMetaAndCreate(packLocation, BuiltInPackSource.fromName(packId->{
 				InMemoryResourcePack pack = new InMemoryResourcePack(packId, true);
 				TAGS_INJECT.asMap().forEach((registry, map)->{
-					String path = TagManager.getTagDir(registry)+'/';
+					String path = Registries.tagsDirPath(registry)+'/';
 					map.asMap().forEach((tagLocation, objLocations)->{
 						TagBuilder builder = TagBuilder.create();
 						objLocations.forEach(l->builder.addOptionalElement(l));
@@ -218,14 +223,14 @@ public class DataInjector {
 					});
 				});
 				LOOT_TABLES_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, location.withPath("loot_tables/"+location.getPath()+".json"), serializeLootTable(supplier.get()));
+					pack.putJson(PackType.SERVER_DATA, location.withPath("loot_table/"+location.getPath()+".json"), serializeLootTable(supplier.get()));
 				});
 				ADVANCEMENTS_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, location.withPath("advancements/"+location.getPath()+".json"), serializeAdvancement(supplier.get()));
+					pack.putJson(PackType.SERVER_DATA, location.withPath("advancement/"+location.getPath()+".json"), serializeAdvancement(supplier.get()));
 				});
 				ModuleHandler.onCreateDataPack(pack);
 				return pack;
-			}), PackType.SERVER_DATA, Pack.Position.BOTTOM, PackSource.BUILT_IN);
+			}), PackType.SERVER_DATA, packSelection);
 			if(packInfo != null) {
 				packConsumer.accept(packInfo);
 			}
@@ -233,14 +238,14 @@ public class DataInjector {
 	}
 
 	public static JsonElement serializeTag(TagBuilder tagBuilder) {
-		return TagFile.CODEC.encodeStart(JsonOps.INSTANCE, new TagFile(tagBuilder.build(), false, List.of())).getOrThrow(false, LOGGER::error);
+		return TagFile.CODEC.encodeStart(JsonOps.INSTANCE, new TagFile(tagBuilder.build(), false, List.of())).getOrThrow();
 	}
 
 	public static JsonElement serializeLootTable(LootTable lootTable) {
-		return LootTable.CODEC.encodeStart(JsonOps.INSTANCE, lootTable).getOrThrow(false, LOGGER::error);
+		return LootTable.DIRECT_CODEC.encodeStart(JsonOps.INSTANCE, lootTable).getOrThrow();
 	}
 
 	public static JsonElement serializeAdvancement(Advancement.Builder advancementBuilder) {
-		return Advancement.CODEC.encodeStart(JsonOps.INSTANCE, advancementBuilder.build(null).value()).getOrThrow(false, LOGGER::error);
+		return Advancement.CODEC.encodeStart(JsonOps.INSTANCE, advancementBuilder.build(null).value()).getOrThrow();
 	}
 }

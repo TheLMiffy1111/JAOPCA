@@ -29,10 +29,6 @@ public class ItemCustomCodecs {
 					CustomCodecs.materialEnumFunction(Rarity.class, Rarity.COMMON).optionalFieldOf("rarity"),
 					s->s.getDisplayRarityFunction(),
 					(s, f)->s.setDisplayRarityFunction(f)).
-			withField(
-					CustomCodecs.materialIntFunction(-1).optionalFieldOf("burnTime"),
-					s->s.getBurnTimeFunction(),
-					(s, f)->s.setBurnTimeFunction(f)).
 			build().
 			flatComapMap(Functions.identity(),
 					s->s instanceof IItemFormSettings is ? DataResult.success(is) : DataResult.error(()->"Not item form settings"));

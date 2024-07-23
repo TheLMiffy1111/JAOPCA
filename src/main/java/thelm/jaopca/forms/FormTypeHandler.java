@@ -1,8 +1,11 @@
 package thelm.jaopca.forms;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.BiConsumer;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import thelm.jaopca.api.forms.IFormType;
@@ -46,6 +49,18 @@ public class FormTypeHandler {
 	public static void addToCreativeModeTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
 		for(IFormType formType : FORM_TYPES.values()) {
 			formType.addToCreativeModeTab(parameters, output);
+		}
+	}
+
+	public static void addBlockModelRemaps(Set<ResourceLocation> availableLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+		for(IFormType formType : FORM_TYPES.values()) {
+			formType.addBlockModelRemaps(availableLocations, output);
+		}
+	}
+
+	public static void addItemModelRemaps(Set<ResourceLocation> availableLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+		for(IFormType formType : FORM_TYPES.values()) {
+			formType.addItemModelRemaps(availableLocations, output);
 		}
 	}
 }

@@ -17,10 +17,6 @@ public class SlurryCustomCodecs {
 			CustomCodecs.<ISlurryFormSettings>builder(
 					instance->RecordCodecBuilder.point(SlurryFormType.INSTANCE.getNewSettings())).
 			withField(
-					Codec.BOOL.optionalFieldOf("isHidden"),
-					s->s.getIsHidden(),
-					(s, f)->s.setIsHidden(f)).
-			withField(
 					CustomCodecs.materialStringFunction("").optionalFieldOf("oreTag"),
 					s->s.getOreTagFunction(),
 					(s, f)->s.setOreTagFunction(f)).

@@ -44,7 +44,7 @@ public class RawStorageBlocksModule implements IModule {
 			ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			api.registerShapedRecipe(
-					new ResourceLocation("jaopca", "raw_storage_blocks.to_raw_storage_block."+material.getName()),
+					ResourceLocation.fromNamespaceAndPath("jaopca", "raw_storage_blocks.to_raw_storage_block."+material.getName()),
 					CraftingBookCategory.BUILDING,
 					rawStorageBlockInfo, 1, new Object[] {
 							"MMM",
@@ -53,7 +53,7 @@ public class RawStorageBlocksModule implements IModule {
 							'M', rawMaterialLocation,
 					});
 			api.registerShapelessRecipe(
-					new ResourceLocation("jaopca", "raw_storage_blocks.to_raw_material."+material.getName()),
+					ResourceLocation.fromNamespaceAndPath("jaopca", "raw_storage_blocks.to_raw_material."+material.getName()),
 					rawMaterialLocation, 9, new Object[] {
 							rawStorageBlockLocation,
 					});

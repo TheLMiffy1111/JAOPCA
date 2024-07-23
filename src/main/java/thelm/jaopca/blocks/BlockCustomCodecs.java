@@ -34,10 +34,6 @@ public class BlockCustomCodecs {
 					s->s.getSoundTypeFunction(),
 					(s, f)->s.setSoundTypeFunction(f)).
 			withField(
-					CustomCodecs.materialIntFunction(15).optionalFieldOf("lightOpacity"),
-					s->s.getLightOpacityFunction(),
-					(s, f)->s.setLightOpacityFunction(f)).
-			withField(
 					CustomCodecs.materialIntFunction(0).optionalFieldOf("lightValue"),
 					s->s.getLightValueFunction(),
 					(s, f)->s.setLightValueFunction(f)).
@@ -105,10 +101,6 @@ public class BlockCustomCodecs {
 					CustomCodecs.materialEnumFunction(Rarity.class, Rarity.COMMON).optionalFieldOf("rarity"),
 					s->s.getDisplayRarityFunction(),
 					(s, f)->s.setDisplayRarityFunction(f)).
-			withField(
-					CustomCodecs.materialIntFunction(-1).optionalFieldOf("burnTime"),
-					s->s.getBurnTimeFunction(),
-					(s, f)->s.setBurnTimeFunction(f)).
 			build().
 			flatComapMap(Functions.identity(),
 					s->s instanceof IBlockFormSettings bs ? DataResult.success(bs) : DataResult.error(()->"Not block form settings"));

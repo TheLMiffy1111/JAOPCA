@@ -48,14 +48,14 @@ public class NuggetsModule implements IModule {
 			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			api.registerShapelessRecipe(
-					new ResourceLocation("jaopca", "nuggets.to_material."+material.getName()),
+					miscHelper.getRecipeKey("nuggets.to_material", material.getName()),
 					materialLocation, 1, new Object[] {
 							nuggetLocation, nuggetLocation, nuggetLocation,
 							nuggetLocation, nuggetLocation, nuggetLocation,
 							nuggetLocation, nuggetLocation, nuggetLocation,
 					});
 			api.registerShapelessRecipe(
-					new ResourceLocation("jaopca", "nuggets.to_nugget."+material.getName()),
+					miscHelper.getRecipeKey("nuggets.to_nugget", material.getName()),
 					nuggetInfo, 9, new Object[] {
 							materialLocation,
 					});

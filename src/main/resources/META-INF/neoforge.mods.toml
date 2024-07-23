@@ -15,5 +15,5 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/JAOPCA/issues"
 
 [[dependencies.jaopca]]
 	modId = "neoforge"
-	versionRange = "[20.4,)"
+	versionRange = "[21.0,)"
 	type = "required"

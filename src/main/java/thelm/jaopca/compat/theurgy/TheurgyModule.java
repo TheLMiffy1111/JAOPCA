@@ -82,9 +82,9 @@ public class TheurgyModule implements IModule {
 		TheurgyHelper helper = TheurgyHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
-		Fluid salAmmoniac = BuiltInRegistries.FLUID.get(new ResourceLocation("theurgy:sal_ammoniac"));
-		Item mercuryShard = BuiltInRegistries.ITEM.get(new ResourceLocation("theurgy:mercury_shard"));
-		Item alchemicalSaltMineral = BuiltInRegistries.ITEM.get(new ResourceLocation("theurgy:alchemical_salt_mineral"));
+		Fluid salAmmoniac = BuiltInRegistries.FLUID.get(ResourceLocation.parse("theurgy:sal_ammoniac"));
+		Item mercuryShard = BuiltInRegistries.ITEM.get(ResourceLocation.parse("theurgy:mercury_shard"));
+		Item alchemicalSaltMineral = BuiltInRegistries.ITEM.get(ResourceLocation.parse("theurgy:alchemical_salt_mineral"));
 		for(IMaterial material : alchemicalSulfurForm.getMaterials()) {
 			IItemInfo alchemicalSulfurInfo = itemFormType.getMaterialFormInfo(alchemicalSulfurForm, material);
 			ResourceLocation alchemicalSulfurLocation = miscHelper.getTagLocation("theurgy:alchemical_sulfurs", material.getName());
@@ -98,24 +98,24 @@ public class TheurgyModule implements IModule {
 			};
 
 			helper.registerLiquefactionRecipe(
-					new ResourceLocation("jaopca", "theurgy.ore_to_alchemical_sulfur."+material.getName()),
+					miscHelper.getRecipeKey("theurgy.ore_to_alchemical_sulfur", material.getName()),
 					oreLocation, salAmmoniac, 10,
 					alchemicalSulfurInfo, oreCount, 100);
 			helper.registerLiquefactionRecipe(
-					new ResourceLocation("jaopca", "theurgy.material_to_alchemical_sulfur."+material.getName()),
+					miscHelper.getRecipeKey("theurgy.material_to_alchemical_sulfur", material.getName()),
 					materialLocation, salAmmoniac, 10,
 					alchemicalSulfurInfo, 1, 100);
 
 			if(material.getType().isIngot()) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerLiquefactionRecipe(
-						new ResourceLocation("jaopca", "theurgy.raw_material_to_alchemical_sulfur."+material.getName()),
+						miscHelper.getRecipeKey("theurgy.raw_material_to_alchemical_sulfur", material.getName()),
 						rawMaterialLocation, salAmmoniac, 10,
 						alchemicalSulfurInfo, 2, 100);
 			}
 
 			helper.registerIncubationRecipe(
-					new ResourceLocation("jaopca", "theurgy.alchemical_sulfur_to_material."+material.getName()),
+					miscHelper.getRecipeKey("theurgy.alchemical_sulfur_to_material", material.getName()),
 					mercuryShard, alchemicalSaltMineral, alchemicalSulfurLocation,
 					materialLocation, 1, 100);
 
@@ -127,9 +127,9 @@ public class TheurgyModule implements IModule {
 				default -> AlchemicalSulfurType.OTHER_MINERALS;
 				}).name().toLowerCase(Locale.US);
 				String base = "theurgy:alchemical_sulfurs";
-				api.registerItemTag(new ResourceLocation(String.join("/", base, tier)), alchemicalSulfurInfo.asItem());
-				api.registerItemTag(new ResourceLocation(String.join("/", base, type)), alchemicalSulfurInfo.asItem());
-				api.registerItemTag(new ResourceLocation(String.join("/", base, type, tier)), alchemicalSulfurInfo.asItem());
+				api.registerItemTag(ResourceLocation.parse(String.join("/", base, tier)), alchemicalSulfurInfo.asItem());
+				api.registerItemTag(ResourceLocation.parse(String.join("/", base, type)), alchemicalSulfurInfo.asItem());
+				api.registerItemTag(ResourceLocation.parse(String.join("/", base, type, tier)), alchemicalSulfurInfo.asItem());
 			}
 		}
 	}

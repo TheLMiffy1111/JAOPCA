@@ -198,7 +198,7 @@ public abstract class PlaceableFluid extends Fluid {
 			BlockState offsetBlockState = world.getBlockState(offsetPos);
 			FluidState offsetFluidState = offsetBlockState.getFluidState();
 			if(offsetFluidState.getType().isSame(this) && canPassThroughWall(direction, world, pos, blockState, offsetPos, offsetBlockState)) {
-				if(offsetFluidState.isSource() && EventHooks.canCreateFluidSource(world, pos, blockState, offsetFluidState.canConvertToSource(world, offsetPos))) {
+				if(offsetFluidState.isSource() && EventHooks.canCreateFluidSource(world, pos, blockState)) {
 					++j;
 				}
 				i = Math.max(i, offsetFluidState.getAmount());

@@ -9,6 +9,7 @@ import com.google.gson.JsonElement;
 
 import aztech.modern_industrialization.machines.init.MIMachineRecipeTypes;
 import aztech.modern_industrialization.machines.recipe.MachineRecipe;
+import aztech.modern_industrialization.thirdparty.fabrictransfer.api.item.ItemVariant;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -62,7 +63,7 @@ public class CuttingMachineRecipeSerializer implements IRecipeSerializer {
 		MachineRecipe recipe = new MIRecipeConstructor(MIMachineRecipeTypes.CUTTING_MACHINE, eu, duration).recipe();
 		recipe.itemInputs.add(new MachineRecipe.ItemInput(ing, itemInputCount, itemInputChance));
 		recipe.fluidInputs.add(new MachineRecipe.FluidInput(fluidIng.getFluid(), fluidInputAmount, fluidInputChance));
-		recipe.itemOutputs.add(new MachineRecipe.ItemOutput(stack.getItem(), outputCount, outputChance));
+		recipe.itemOutputs.add(new MachineRecipe.ItemOutput(ItemVariant.of(stack), outputCount, outputChance));
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }
