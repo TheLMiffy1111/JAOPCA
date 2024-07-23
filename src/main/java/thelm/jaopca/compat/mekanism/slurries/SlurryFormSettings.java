@@ -1,6 +1,9 @@
 package thelm.jaopca.compat.mekanism.slurries;
 
+import java.util.function.Function;
+
 import thelm.jaopca.api.forms.IFormType;
+import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryCreator;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormSettings;
 
@@ -8,6 +11,7 @@ class SlurryFormSettings implements ISlurryFormSettings {
 
 	private ISlurryCreator slurryCreator = JAOPCASlurry::new;
 	private boolean isHidden = false;
+	private Function<IMaterial, String> oreTagFunction = material->"";
 
 	@Override
 	public IFormType getType() {
@@ -34,5 +38,16 @@ class SlurryFormSettings implements ISlurryFormSettings {
 	@Override
 	public boolean getIsHidden() {
 		return isHidden;
+	}
+
+	@Override
+	public ISlurryFormSettings setOreTagFunction(Function<IMaterial, String> oreTagFunction) {
+		this.oreTagFunction = oreTagFunction;
+		return this;
+	}
+
+	@Override
+	public Function<IMaterial, String> getOreTagFunction() {
+		return oreTagFunction;
 	}
 }

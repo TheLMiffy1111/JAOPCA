@@ -1,7 +1,8 @@
 package thelm.jaopca.fluids;
 
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -41,6 +42,7 @@ import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluid;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
@@ -50,15 +52,20 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 	private final IMaterialFormFluid fluid;
 	private final IFluidFormSettings settings;
 
-	private OptionalInt maxStackSize = OptionalInt.empty();
-	private Optional<Boolean> hasEffect = Optional.empty();
-	private Optional<Rarity> rarity = Optional.empty();
-	private OptionalInt burnTime = OptionalInt.empty();
+	protected IntSupplier maxStackSize;
+	protected BooleanSupplier hasEffect;
+	protected Supplier<Rarity> rarity;
+	protected IntSupplier burnTime;
 
 	public JAOPCABucketItem(IMaterialFormFluid fluid, IFluidFormSettings settings) {
 		super(new Item.Properties().craftRemainder(Items.BUCKET).tab(ItemFormType.getCreativeTab()));
 		this.fluid = fluid;
 		this.settings = settings;
+
+		maxStackSize = MemoizingSuppliers.of(settings.getMaxStackSizeFunction(), fluid::getMaterial);
+		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), fluid::getMaterial);
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), fluid::getMaterial);
+		burnTime = MemoizingSuppliers.of(settings.getBurnTimeFunction(), fluid::getMaterial);
 	}
 
 	@Override
@@ -73,33 +80,21 @@ public class JAOPCABucketItem extends Item implements IMaterialFormBucketItem {
 
 	@Override
 	public int getMaxStackSize(ItemStack stack) {
-		if(!maxStackSize.isPresent()) {
-			maxStackSize = OptionalInt.of(settings.getMaxStackSizeFunction().applyAsInt(getMaterial()));
-		}
 		return maxStackSize.getAsInt();
 	}
 
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		if(!hasEffect.isPresent()) {
-			hasEffect = Optional.of(settings.getHasEffectFunction().test(getMaterial()));
-		}
-		return hasEffect.get() || super.isFoil(stack);
+		return hasEffect.getAsBoolean() || super.isFoil(stack);
 	}
 
 	@Override
 	public Rarity getRarity(ItemStack stack) {
-		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.getDisplayRarityFunction().apply(getMaterial()));
-		}
 		return rarity.get();
 	}
 
 	@Override
 	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
-		if(!burnTime.isPresent()) {
-			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(getMaterial()));
-		}
 		return burnTime.getAsInt();
 	}
 

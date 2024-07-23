@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.registries.RegistryObject;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
@@ -180,23 +181,28 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public Set<ResourceLocation> getTags(ResourceKey<? extends Registry<?>> registry) {
+		return Sets.union(DataCollector.getDefinedTags(registry), DataInjector.getInjectTags(registry));
+	}
+
+	@Override
 	public Set<ResourceLocation> getBlockTags() {
-		return Sets.union(DataCollector.getDefinedTags("blocks"), DataInjector.getInjectBlockTags());
+		return getTags(Registry.BLOCK_REGISTRY);
 	}
 
 	@Override
 	public Set<ResourceLocation> getItemTags() {
-		return Sets.union(DataCollector.getDefinedTags("items"), DataInjector.getInjectItemTags());
+		return getTags(Registry.ITEM_REGISTRY);
 	}
 
 	@Override
 	public Set<ResourceLocation> getFluidTags() {
-		return Sets.union(DataCollector.getDefinedTags("fluids"), DataInjector.getInjectFluidTags());
+		return getTags(Registry.FLUID_REGISTRY);
 	}
 
 	@Override
 	public Set<ResourceLocation> getEntityTypeTags() {
-		return Sets.union(DataCollector.getDefinedTags("entity_types"), DataInjector.getInjectEntityTypeTags());
+		return getTags(Registry.ENTITY_TYPE_REGISTRY);
 	}
 
 	@Override
@@ -250,23 +256,28 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerDefinedTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key) {
+		return DataCollector.getDefinedTags(registry).add(key);
+	}
+
+	@Override
 	public boolean registerDefinedBlockTag(ResourceLocation key) {
-		return DataCollector.getDefinedTags("blocks").add(key);
+		return registerDefinedTag(Registry.BLOCK_REGISTRY, key);
 	}
 
 	@Override
 	public boolean registerDefinedItemTag(ResourceLocation key) {
-		return DataCollector.getDefinedTags("items").add(key);
+		return registerDefinedTag(Registry.ITEM_REGISTRY, key);
 	}
 
 	@Override
 	public boolean registerDefinedFluidTag(ResourceLocation key) {
-		return DataCollector.getDefinedTags("fluids").add(key);
+		return registerDefinedTag(Registry.FLUID_REGISTRY, key);
 	}
 
 	@Override
 	public boolean registerDefinedEntityTypeTag(ResourceLocation key) {
-		return DataCollector.getDefinedTags("entity_types").add(key);
+		return registerDefinedTag(Registry.ENTITY_TYPE_REGISTRY, key);
 	}
 
 	@Override
@@ -275,11 +286,21 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key, ResourceLocation objKey) {
+		return DataInjector.registerTag(registry, key, objKey);
+	}
+
+	@Override
+	public <T> boolean registerTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation key, T obj) {
+		return registerTag(registry, key, RegistryManager.ACTIVE.getRegistry(registry).getKey(obj));
+	}
+
+	@Override
 	public boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey) {
 		if(ConfigHandler.BLOCK_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerBlockTag(key, blockKey);
+		return registerTag(Registry.BLOCK_REGISTRY, key, blockKey);
 	}
 
 	@Override
@@ -292,7 +313,7 @@ public class ApiImpl extends JAOPCAApi {
 		if(ConfigHandler.ITEM_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerItemTag(key, itemKey);
+		return registerTag(Registry.ITEM_REGISTRY, key, itemKey);
 	}
 
 	@Override
@@ -305,7 +326,7 @@ public class ApiImpl extends JAOPCAApi {
 		if(ConfigHandler.FLUID_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerFluidTag(key, fluidKey);
+		return registerTag(Registry.FLUID_REGISTRY, key, fluidKey);
 	}
 
 	@Override
@@ -318,7 +339,7 @@ public class ApiImpl extends JAOPCAApi {
 		if(ConfigHandler.ENTITY_TYPE_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
-		return DataInjector.registerEntityTypeTag(key, entityTypeKey);
+		return registerTag(Registry.ENTITY_TYPE_REGISTRY, key, entityTypeKey);
 	}
 
 	@Override

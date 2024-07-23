@@ -50,14 +50,6 @@ class FluidFormSettings implements IFluidFormSettings {
 	private ToIntFunction<IMaterial> levelDecreasePerBlockFunction = material->1;
 	private Function<IMaterial, Material> materialFunction = material->Material.WATER;
 	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
-	//material->{
-	//	int color = material.getColor();
-	//	return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
-	//			min((matColor1, matColor2)->Integer.compare(
-	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
-	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
-	//			orElse(MaterialColor.IRON);
-	//};
 	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->100;
 	private ToIntFunction<IMaterial> flammabilityFunction = material->0;
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = material->0;
