@@ -16,7 +16,6 @@ import com.google.common.collect.Multimap;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.ndrei.teslapoweredthingies.items.TeslifiedObsidian;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;

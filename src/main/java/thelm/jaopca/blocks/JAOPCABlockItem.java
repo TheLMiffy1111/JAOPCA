@@ -1,7 +1,8 @@
 package thelm.jaopca.blocks;
 
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
@@ -10,6 +11,7 @@ import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
@@ -18,14 +20,19 @@ public class JAOPCABlockItem extends ItemBlock implements IMaterialFormBlockItem
 
 	protected final IBlockFormSettings settings;
 
-	protected OptionalInt itemStackLimit = OptionalInt.empty();
-	protected Optional<Boolean> hasEffect = Optional.empty();
-	protected Optional<EnumRarity> rarity = Optional.empty();
-	protected OptionalInt burnTime = OptionalInt.empty();
+	protected IntSupplier itemStackLimit;
+	protected BooleanSupplier hasEffect;
+	protected Supplier<EnumRarity> rarity;
+	protected IntSupplier burnTime;
 
 	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
 		super(block.toBlock());
 		this.settings = settings;
+
+		itemStackLimit = MemoizingSuppliers.of(settings.getItemStackLimitFunction(), block::getMaterial);
+		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), block::getMaterial);
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), block::getMaterial);
+		burnTime = MemoizingSuppliers.of(settings.getBurnTimeFunction(), block::getMaterial);
 	}
 
 	@Override
@@ -40,33 +47,21 @@ public class JAOPCABlockItem extends ItemBlock implements IMaterialFormBlockItem
 
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
-		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(getMaterial()));
-		}
 		return itemStackLimit.getAsInt();
 	}
 
 	@Override
 	public boolean hasEffect(ItemStack stack) {
-		if(!hasEffect.isPresent()) {
-			hasEffect = Optional.of(settings.getHasEffectFunction().test(getMaterial()));
-		}
-		return hasEffect.get() || super.hasEffect(stack);
+		return hasEffect.getAsBoolean() || super.hasEffect(stack);
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.getDisplayRarityFunction().apply(getMaterial()));
-		}
 		return rarity.get();
 	}
 
 	@Override
 	public int getItemBurnTime(ItemStack itemStack) {
-		if(!burnTime.isPresent()) {
-			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(getMaterial()));
-		}
 		return burnTime.getAsInt();
 	}
 

@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenGetter;
 import stanhebben.zenscript.annotations.ZenMethod;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -66,7 +67,7 @@ public class Material {
 
 	@ZenMethod
 	public IItemStack getItemStack(String prefix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		ItemStack stack = helper.getItemStack(helper.getOredictName(prefix, material.getName()), count);
 		return CraftTweakerMC.getIItemStack(stack);
 	}
@@ -78,7 +79,7 @@ public class Material {
 
 	@ZenMethod
 	public ILiquidStack getLiquidStack(String prefix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		FluidStack stack = helper.getFluidStack(helper.getOredictName(prefix, material.getName()), count);
 		return CraftTweakerMC.getILiquidStack(stack);
 	}

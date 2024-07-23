@@ -13,7 +13,6 @@ import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.ndrei.bcoreprocessing.lib.fluids.FluidsRegistry;
-import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.fluids.IFluidInfo;
 import thelm.jaopca.api.forms.IForm;

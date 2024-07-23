@@ -4,6 +4,8 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -34,16 +36,26 @@ public class TConstructHelper {
 			}
 		}
 		else if(obj instanceof ItemStack) {
-			return RecipeMatch.of((ItemStack)obj, count, matched);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				return RecipeMatch.of((ItemStack)obj, count, matched);
+			}
 		}
 		else if(obj instanceof Item) {
-			return RecipeMatch.of((Item)obj, count, matched);
+			if(obj != Items.AIR) {
+				return RecipeMatch.of((Item)obj, count, matched);
+			}
 		}
 		else if(obj instanceof Block) {
-			return RecipeMatch.of(Item.getItemFromBlock((Block)obj), count, matched);
+			if(obj != Blocks.AIR) {
+				return RecipeMatch.of(Item.getItemFromBlock((Block)obj), count, matched);
+			}
 		}
 		else if(obj instanceof IItemProvider) {
-			return RecipeMatch.of(((IItemProvider)obj).asItem(), count, matched);
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return RecipeMatch.of(item, count, matched);
+			}
 		}
 		return null;
 	}

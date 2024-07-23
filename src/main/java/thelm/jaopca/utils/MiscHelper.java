@@ -25,6 +25,8 @@ import com.google.common.primitives.Ints;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -81,16 +83,22 @@ public class MiscHelper implements IMiscHelper {
 			return getItemStack(((Supplier<?>)obj).get(), count);
 		}
 		else if(obj instanceof ItemStack) {
-			return resizeItemStack((ItemStack)obj, count);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				return resizeItemStack(stack, count);
+			}
 		}
-		else if(obj instanceof Item) {
+		else if(obj instanceof Item && obj != Items.AIR) {
 			return new ItemStack((Item)obj, count);
 		}
-		else if(obj instanceof Block) {
+		else if(obj instanceof Block && obj != Blocks.AIR) {
 			return new ItemStack((Block)obj, count);
 		}
 		else if(obj instanceof IItemProvider) {
-			return new ItemStack(((IItemProvider)obj).asItem(), count);
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return new ItemStack(item, count);
+			}
 		}
 		else if(obj instanceof String) {
 			if(OredictHandler.getOredict().contains(obj)) {

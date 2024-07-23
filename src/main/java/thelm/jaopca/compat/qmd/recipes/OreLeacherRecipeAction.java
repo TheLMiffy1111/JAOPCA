@@ -12,7 +12,6 @@ import lach_01298.qmd.recipes.QMDRecipes;
 import nc.recipe.ingredient.ChanceItemIngredient;
 import nc.recipe.ingredient.EmptyFluidIngredient;
 import nc.recipe.ingredient.EmptyItemIngredient;
-import nc.recipe.ingredient.IChanceItemIngredient;
 import nc.recipe.ingredient.IFluidIngredient;
 import nc.recipe.ingredient.IItemIngredient;
 import net.minecraft.util.ResourceLocation;

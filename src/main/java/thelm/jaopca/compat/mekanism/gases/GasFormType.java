@@ -20,7 +20,6 @@ import thelm.jaopca.compat.mekanism.api.gases.IGasInfo;
 import thelm.jaopca.compat.mekanism.api.gases.IMaterialFormGas;
 import thelm.jaopca.compat.mekanism.custom.json.GasFormSettingsDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 public class GasFormType implements IGasFormType {

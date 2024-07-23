@@ -4,11 +4,10 @@ import com.cleanroommc.groovyscript.api.IIngredient;
 import com.cleanroommc.groovyscript.helper.ingredient.OreDictIngredient;
 import com.cleanroommc.groovyscript.helper.ingredient.OreDictWildcardIngredient;
 
-import crafttweaker.api.liquid.ILiquidStack;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.MiscHelper;
@@ -21,7 +20,7 @@ public class MaterialExpansion {
 	}
 
 	public static ItemStack item(IMaterial material, String prefix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		return helper.getItemStack(helper.getOredictName(prefix, material.getName()), count);
 	}
 
@@ -30,7 +29,7 @@ public class MaterialExpansion {
 	}
 
 	public static FluidStack fluid(IMaterial material, String prefix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		return helper.getFluidStack(helper.getOredictName(prefix, material.getName()), count);
 	}
 

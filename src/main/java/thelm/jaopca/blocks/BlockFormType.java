@@ -20,19 +20,20 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormSettings;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.blocks.IBlockInfo;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
 import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.AABBDeserializer;
 import thelm.jaopca.custom.json.BlockFormSettingsDeserializer;
 import thelm.jaopca.custom.json.MaterialMappedFunctionDeserializer;
 import thelm.jaopca.custom.utils.BlockDeserializationHelper;
 import thelm.jaopca.forms.FormTypeHandler;
-import thelm.jaopca.oredict.OredictHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -72,7 +73,7 @@ public class BlockFormType implements IBlockFormType {
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
 		String oredictName = MiscHelper.INSTANCE.getOredictName(form.getSecondaryName(), material.getName());
-		return !OredictHandler.getOredict().contains(oredictName);
+		return !ApiImpl.INSTANCE.getOredict().contains(oredictName);
 	}
 
 	@Override
@@ -113,8 +114,8 @@ public class BlockFormType implements IBlockFormType {
 			return;
 		}
 		registered = true;
-		ApiImpl api = ApiImpl.INSTANCE;
-		MiscHelper helper = MiscHelper.INSTANCE;
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();

@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 import com.hbm.inventory.RecipesCommon;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -32,16 +34,26 @@ public class HBMHelper {
 			}
 		}
 		if(obj instanceof ItemStack) {
-			return new RecipesCommon.ComparableStack(MiscHelper.INSTANCE.resizeItemStack((ItemStack)obj, count)	);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				return new RecipesCommon.ComparableStack(MiscHelper.INSTANCE.resizeItemStack(stack, count));
+			}
 		}
 		if(obj instanceof Item) {
-			return new RecipesCommon.ComparableStack(new ItemStack((Item)obj, count));
+			if(obj != Items.AIR) {
+				return new RecipesCommon.ComparableStack(new ItemStack((Item)obj, count));
+			}
 		}
 		if(obj instanceof Block) {
-			return new RecipesCommon.ComparableStack(new ItemStack((Block)obj, count));
+			if(obj != Blocks.AIR) {
+				return new RecipesCommon.ComparableStack(new ItemStack((Block)obj, count));
+			}
 		}
 		if(obj instanceof IItemProvider) {
-			return new RecipesCommon.ComparableStack(new ItemStack(((IItemProvider)obj).asItem(), count));
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return new RecipesCommon.ComparableStack(new ItemStack(((IItemProvider)obj).asItem(), count));
+			}
 		}
 		return null;
 	}

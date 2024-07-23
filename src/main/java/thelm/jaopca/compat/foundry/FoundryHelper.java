@@ -7,6 +7,8 @@ import exter.foundry.api.recipe.matcher.IItemMatcher;
 import exter.foundry.api.recipe.matcher.ItemStackMatcher;
 import exter.foundry.api.recipe.matcher.OreMatcher;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +18,6 @@ import thelm.jaopca.compat.foundry.recipes.AtomizerRecipeAction;
 import thelm.jaopca.compat.foundry.recipes.CastingRecipeAction;
 import thelm.jaopca.compat.foundry.recipes.CastingTableRecipeAction;
 import thelm.jaopca.compat.foundry.recipes.MeltingRecipeAction;
-import thelm.jaopca.oredict.OredictHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -34,7 +35,7 @@ public class FoundryHelper {
 			return (IItemMatcher)obj;
 		}
 		else if(obj instanceof String) {
-			if(OredictHandler.getOredict().contains(obj)) {
+			if(ApiImpl.INSTANCE.getOredict().contains(obj)) {
 				return new OreMatcher((String)obj, count);
 			}
 		}
@@ -45,13 +46,20 @@ public class FoundryHelper {
 			}
 		}
 		else if(obj instanceof Item) {
-			return new ItemStackMatcher(new ItemStack((Item)obj, count, 32767));
+			if(obj != Items.AIR) {
+				return new ItemStackMatcher(new ItemStack((Item)obj, count, 32767));
+			}
 		}
 		else if(obj instanceof Block) {
-			return new ItemStackMatcher(new ItemStack(Item.getItemFromBlock((Block)obj), count, 32767));
+			if(obj != Blocks.AIR) {
+				return new ItemStackMatcher(new ItemStack(Item.getItemFromBlock((Block)obj), count, 32767));
+			}
 		}
 		else if(obj instanceof IItemProvider) {
-			return new ItemStackMatcher(new ItemStack(((IItemProvider)obj).asItem(), count, 32767));
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return new ItemStackMatcher(new ItemStack(item, count, 32767));
+			}
 		}
 		return null;
 	}

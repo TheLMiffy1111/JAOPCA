@@ -6,6 +6,8 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.IRecipeInputFactory;
 import ic2.api.recipe.Recipes;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -38,16 +40,26 @@ public class IC2Helper {
 			}
 		}
 		if(obj instanceof ItemStack) {
-			return inputFactory.forStack((ItemStack)obj, amount);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				return inputFactory.forStack(stack, amount);
+			}
 		}
 		if(obj instanceof Item) {
-			return inputFactory.forStack(new ItemStack((Item)obj, amount));
+			if(obj != Items.AIR) {
+				return inputFactory.forStack(new ItemStack((Item)obj, amount));
+			}
 		}
 		if(obj instanceof Block) {
-			return inputFactory.forStack(new ItemStack((Block)obj, amount));
+			if(obj != Blocks.AIR) {
+				return inputFactory.forStack(new ItemStack((Block)obj, amount));
+			}
 		}
 		if(obj instanceof IItemProvider) {
-			return inputFactory.forStack(new ItemStack(((IItemProvider)obj).asItem(), amount));
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return inputFactory.forStack(new ItemStack(item, amount));
+			}
 		}
 		if(obj instanceof FluidStack) {
 			return inputFactory.forFluidContainer(((FluidStack)obj).getFluid(), amount);

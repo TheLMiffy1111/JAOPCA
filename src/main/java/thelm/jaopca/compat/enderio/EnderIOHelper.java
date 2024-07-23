@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 import com.enderio.core.common.util.stackable.Things;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -32,16 +34,26 @@ public class EnderIOHelper {
 			}
 		}
 		else if(obj instanceof ItemStack) {
-			things.add((ItemStack)obj);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				things.add((ItemStack)obj);
+			}
 		}
 		else if(obj instanceof Item) {
-			things.add((Item)obj);
+			if(obj != Items.AIR) {
+				things.add((Item)obj);
+			}
 		}
 		else if(obj instanceof Block) {
-			things.add((Block)obj);
+			if(obj != Blocks.AIR) {
+				things.add((Block)obj);
+			}
 		}
 		else if(obj instanceof IItemProvider) {
-			things.add(((IItemProvider)obj).asItem());
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				things.add(item);
+			}
 		}
 		return things;
 	}

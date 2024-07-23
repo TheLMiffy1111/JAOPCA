@@ -3,6 +3,7 @@ package thelm.jaopca.compat.astralsorcery;
 import java.util.function.Supplier;
 
 import hellfirepvp.astralsorcery.common.crafting.ItemHandle;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -28,10 +29,15 @@ public class AstralSorceryHelper {
 			}
 		}
 		if(obj instanceof ItemStack) {
-			return new ItemHandle((ItemStack)obj);
+			ItemStack stack = (ItemStack)obj;
+			if(!stack.isEmpty()) {
+				return new ItemHandle(stack);
+			}
 		}
 		if(obj instanceof Item) {
-			return new ItemHandle(new ItemStack((Item)obj));
+			if(obj != Items.AIR) {
+				return new ItemHandle(new ItemStack((Item)obj));
+			}
 		}
 		if(obj instanceof FluidStack) {
 			return new ItemHandle((FluidStack)obj);
