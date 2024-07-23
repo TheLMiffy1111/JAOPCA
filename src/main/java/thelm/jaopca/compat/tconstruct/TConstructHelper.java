@@ -1,8 +1,8 @@
 package thelm.jaopca.compat.tconstruct;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -15,12 +15,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import slimeknights.mantle.recipe.helper.ItemOutput;
 import slimeknights.mantle.recipe.ingredient.FluidIngredient;
+import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.compat.tconstruct.recipes.CastingBasinRecipeSerializer;
 import thelm.jaopca.compat.tconstruct.recipes.CastingTableRecipeSerializer;
@@ -67,26 +70,50 @@ public class TConstructHelper {
 			fluids.addAll(helper.getFluidTagValues(key.location()));
 		}
 		else if(obj instanceof FluidStack stack) {
-			ing = FluidIngredient.of(stack);
-			fluids.add(stack.getFluid());
+			if(!stack.isEmpty()) {
+				ing = FluidIngredient.of(stack);
+				fluids.add(stack.getFluid());
+			}
 		}
 		else if(obj instanceof FluidStack[] stacks) {
-			ing = FluidIngredient.of(Arrays.stream(stacks).map(FluidIngredient::of).toArray(FluidIngredient[]::new));
-			Arrays.stream(stacks).map(FluidStack::getFluid).forEach(fluids::add);
+			List<FluidStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.of(nonEmpty.stream().map(FluidIngredient::of).toArray(FluidIngredient[]::new));
+				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
+			}
 		}
 		else if(obj instanceof Fluid fluid) {
-			ing = FluidIngredient.of(fluid, amount);
-			fluids.add(fluid);
+			if(fluid != Fluids.EMPTY) {
+				ing = FluidIngredient.of(fluid, amount);
+				fluids.add(fluid);
+			}
 		}
 		else if(obj instanceof Fluid[] fluidz) {
-			ing = FluidIngredient.of(Arrays.stream(fluidz).map(g->FluidIngredient.of(g, amount)).toArray(FluidIngredient[]::new));
-			Collections.addAll(fluids, fluidz);
+			List<Fluid> nonEmpty = Arrays.stream(fluidz).filter(f->f != Fluids.EMPTY).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.of(nonEmpty.stream().map(g->FluidIngredient.of(g, amount)).toArray(FluidIngredient[]::new));
+				fluids.addAll(nonEmpty);
+			}
+		}
+		else if(obj instanceof IFluidLike fluid) {
+			if(fluid.asFluid() != Fluids.EMPTY) {
+				ing = FluidIngredient.of(fluid.asFluid(), amount);
+				fluids.add(fluid.asFluid());
+			}
+		}
+		else if(obj instanceof IFluidLike[] fluidz) {
+			List<Fluid> nonEmpty = Arrays.stream(fluidz).map(IFluidLike::asFluid).filter(f->f != Fluids.EMPTY).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.of(nonEmpty.stream().map(g->FluidIngredient.of(g, amount)).toArray(FluidIngredient[]::new));
+				fluids.addAll(nonEmpty);
+			}
 		}
 		else if(obj instanceof JsonElement) {
 			ing = FluidIngredient.deserialize((JsonElement)obj, "ingredient");
 			// We can't know what fluids the ingredient can have so assume all
 			fluids.addAll(ForgeRegistries.FLUIDS.getValues());
 		}
+		fluids.remove(Fluids.EMPTY);
 		return Pair.of(fluids.isEmpty() ? null : ing, fluids);
 	}
 
@@ -107,7 +134,7 @@ public class TConstructHelper {
 			// We can't know what items the ingredient can have so assume all
 			items.addAll(ForgeRegistries.ITEMS.getValues());
 		}
-		else if(obj instanceof ItemStack stack) {
+		else if(obj instanceof ItemStack stack && !stack.isEmpty()) {
 			out = ItemOutput.fromStack(stack);
 			items.add(stack.getItem());
 		}
@@ -128,6 +155,7 @@ public class TConstructHelper {
 			out = ItemOutput.fromTag(key, count);
 			items.addAll(MiscHelper.INSTANCE.getItemTagValues(key.location()));
 		}
+		items.remove(Items.AIR);
 		return Pair.of(items.isEmpty() ? null : out, items);
 	}
 

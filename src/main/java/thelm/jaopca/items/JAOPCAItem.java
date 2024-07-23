@@ -1,7 +1,8 @@
 package thelm.jaopca.items;
 
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.function.BooleanSupplier;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -9,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.RecipeType;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materials.IMaterial;
@@ -20,16 +22,21 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 	private final IMaterial material;
 	protected final IItemFormSettings settings;
 
-	protected OptionalInt itemStackLimit = OptionalInt.empty();
-	protected Optional<Boolean> hasEffect = Optional.empty();
-	protected Optional<Rarity> rarity = Optional.empty();
-	protected OptionalInt burnTime = OptionalInt.empty();
+	protected IntSupplier itemStackLimit;
+	protected BooleanSupplier hasEffect;
+	protected Supplier<Rarity> rarity;
+	protected IntSupplier burnTime;
 
 	public JAOPCAItem(IForm form, IMaterial material, IItemFormSettings settings) {
 		super(new Item.Properties().tab(ItemFormType.getCreativeTab()));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
+
+		itemStackLimit = MemoizingSuppliers.of(settings.getItemStackLimitFunction(), material);
+		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), material);
+		rarity = MemoizingSuppliers.of(settings.getDisplayRarityFunction(), material);
+		burnTime = MemoizingSuppliers.of(settings.getBurnTimeFunction(), material);
 	}
 
 	@Override
@@ -44,33 +51,21 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
-		if(!itemStackLimit.isPresent()) {
-			itemStackLimit = OptionalInt.of(settings.getItemStackLimitFunction().applyAsInt(material));
-		}
 		return itemStackLimit.getAsInt();
 	}
 
 	@Override
 	public boolean isFoil(ItemStack stack) {
-		if(!hasEffect.isPresent()) {
-			hasEffect = Optional.of(settings.getHasEffectFunction().test(material));
-		}
-		return hasEffect.get() || super.isFoil(stack);
+		return hasEffect.getAsBoolean() || super.isFoil(stack);
 	}
 
 	@Override
 	public Rarity getRarity(ItemStack stack) {
-		if(!rarity.isPresent()) {
-			rarity = Optional.of(settings.getDisplayRarityFunction().apply(material));
-		}
 		return rarity.get();
 	}
 
 	@Override
 	public int getBurnTime(ItemStack itemStack, RecipeType<?> recipeType) {
-		if(!burnTime.isPresent()) {
-			burnTime = OptionalInt.of(settings.getBurnTimeFunction().applyAsInt(material));
-		}
 		return burnTime.getAsInt();
 	}
 

@@ -15,12 +15,15 @@ import org.objectweb.asm.Type;
 import com.google.common.base.Predicates;
 import com.google.common.collect.TreeMultimap;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.repository.ServerPacksSource;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
+import net.minecraft.tags.TagManager;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
 import net.minecraftforge.resource.ResourcePackLoader;
@@ -101,7 +104,7 @@ public class DataCollector {
 				if(ModList.get().isLoaded(type)) {
 					String[] split0 = split[1].split("/", 2);
 					if(split0.length == 2) {
-						type += ':'+split0[0];
+						type += '/'+split0[0];
 						path = split0[1];
 						DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
 						continue;
@@ -141,8 +144,12 @@ public class DataCollector {
 		resourceManager.close();
 	}
 
+	public static Set<ResourceLocation> getDefinedTags(ResourceKey<? extends Registry<?>> registry) {
+		return getDefinedTags(TagManager.getTagDir(registry).substring(TAGS_PATH_LENGTH));
+	}
+
 	public static Set<ResourceLocation> getDefinedTags(String type) {
-		return DEFINED_TAGS.get(type);
+		return DEFINED_TAGS.get(type.replace(':', '/'));
 	}
 
 	public static Set<ResourceLocation> getDefinedRecipes() {

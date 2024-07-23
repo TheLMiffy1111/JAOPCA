@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -107,7 +108,7 @@ public class Form {
 
 	@ZenCodeType.Method
 	public IItemStack getItemStack(String suffix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		ItemStack stack = helper.getItemStack(helper.getTagLocation(form.getSecondaryName(), suffix), count);
 		return new MCItemStack(stack);
 	}
@@ -119,7 +120,7 @@ public class Form {
 
 	@ZenCodeType.Method
 	public IFluidStack getFluidStack(String suffix, int amount) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		FluidStack stack = helper.getFluidStack(helper.getTagLocation(form.getSecondaryName(), suffix), amount);
 		return new MCFluidStack(stack);
 	}

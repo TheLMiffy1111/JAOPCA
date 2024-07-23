@@ -45,6 +45,13 @@ public class BlockFormSettingsDeserializer implements JsonDeserializer<IBlockFor
 			}
 			settings.setSoundTypeFunction(helper.deserializeType(json, "soundType", context, BlockFormType.SOUND_TYPE_FUNCTION_TYPE));
 		}
+		if(json.has("lightOpacity")) {
+			JsonObject functionJson = helper.getJsonObject(json, "lightOpacity");
+			if(!functionJson.has("default")) {
+				functionJson.addProperty("default", 15);
+			}
+			settings.setLightOpacityFunction(helper.deserializeType(json, "lightOpacity", context, FormTypeHandler.INT_FUNCTION_TYPE));
+		}
 		if(json.has("lightValue")) {
 			JsonObject functionJson = helper.getJsonObject(json, "lightValue");
 			if(!functionJson.has("default")) {

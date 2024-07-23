@@ -16,18 +16,24 @@ import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
 
 import com.google.common.base.Predicates;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagManager;
 import net.minecraft.world.level.storage.loot.Deserializers;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.fml.ModList;
@@ -44,37 +50,17 @@ public class DataInjector {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Type JAOPCA_DATA_MODULE = Type.getType(JAOPCADataModule.class);
-	private static final ListMultimap<ResourceLocation, ResourceLocation> BLOCK_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
-	private static final ListMultimap<ResourceLocation, ResourceLocation> ITEM_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
-	private static final ListMultimap<ResourceLocation, ResourceLocation> FLUID_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
-	private static final ListMultimap<ResourceLocation, ResourceLocation> ENTITY_TYPE_TAGS_INJECT = MultimapBuilder.treeKeys().arrayListValues().build();
+	private static final LoadingCache<ResourceKey<? extends Registry<?>>, ListMultimap<ResourceLocation, ResourceLocation>> TAGS_INJECT = CacheBuilder.newBuilder().build(CacheLoader.from(()->MultimapBuilder.treeKeys().arrayListValues().build()));
 	private static final TreeMap<ResourceLocation, IRecipeSerializer> RECIPES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
 	private static final Gson GSON = Deserializers.createLootTableSerializer().create();
 
-	public static boolean registerBlockTag(ResourceLocation location, ResourceLocation blockLocation) {
-		Objects.requireNonNull(location);
-		Objects.requireNonNull(blockLocation);
-		return BLOCK_TAGS_INJECT.put(location, blockLocation);
-	}
-
-	public static boolean registerItemTag(ResourceLocation location, ResourceLocation itemLocation) {
-		Objects.requireNonNull(location);
-		Objects.requireNonNull(itemLocation);
-		return ITEM_TAGS_INJECT.put(location, itemLocation);
-	}
-
-	public static boolean registerFluidTag(ResourceLocation location, ResourceLocation fluidLocation) {
-		Objects.requireNonNull(location);
-		Objects.requireNonNull(fluidLocation);
-		return FLUID_TAGS_INJECT.put(location, fluidLocation);
-	}
-
-	public static boolean registerEntityTypeTag(ResourceLocation location, ResourceLocation entityTypeLocation) {
-		Objects.requireNonNull(location);
-		Objects.requireNonNull(entityTypeLocation);
-		return ENTITY_TYPE_TAGS_INJECT.put(location, entityTypeLocation);
+	public static boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation tagLocation, ResourceLocation objLocation) {
+		Objects.requireNonNull(registry);
+		Objects.requireNonNull(tagLocation);
+		Objects.requireNonNull(objLocation);
+		return TAGS_INJECT.getUnchecked(registry).put(tagLocation, objLocation);
 	}
 
 	public static boolean registerRecipe(ResourceLocation location, IRecipeSerializer recipeSupplier) {
@@ -95,20 +81,9 @@ public class DataInjector {
 		return ADVANCEMENTS_INJECT.putIfAbsent(location, advancementBuilder) == null;
 	}
 
-	public static Set<ResourceLocation> getInjectBlockTags() {
-		return BLOCK_TAGS_INJECT.keySet();
-	}
-
-	public static Set<ResourceLocation> getInjectItemTags() {
-		return ITEM_TAGS_INJECT.keySet();
-	}
-
-	public static Set<ResourceLocation> getInjectFluidTags() {
-		return FLUID_TAGS_INJECT.keySet();
-	}
-
-	public static Set<ResourceLocation> getInjectEntityTypeTags() {
-		return ENTITY_TYPE_TAGS_INJECT.keySet();
+	public static Set<ResourceLocation> getInjectTags(ResourceKey<? extends Registry<?>> registry) {
+		Objects.requireNonNull(registry);
+		return TAGS_INJECT.getUnchecked(registry).keySet();
 	}
 
 	public static Set<ResourceLocation> getInjectRecipes() {
@@ -209,25 +184,13 @@ public class DataInjector {
 		public void loadPacks(Consumer<Pack> packConsumer, Pack.PackConstructor packConstructor) {
 			Pack packInfo = Pack.create("inmemory:jaopca", true, ()->{
 				InMemoryResourcePack pack = new InMemoryResourcePack("inmemory:jaopca", true);
-				BLOCK_TAGS_INJECT.asMap().forEach((location, locations)->{
-					Tag.Builder builder = Tag.Builder.tag();
-					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/blocks/"+location.getPath()+".json"), builder.serializeToJson());
-				});
-				ITEM_TAGS_INJECT.asMap().forEach((location, locations)->{
-					Tag.Builder builder = Tag.Builder.tag();
-					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/items/"+location.getPath()+".json"), builder.serializeToJson());
-				});
-				FLUID_TAGS_INJECT.asMap().forEach((location, locations)->{
-					Tag.Builder builder = Tag.Builder.tag();
-					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/fluids/"+location.getPath()+".json"), builder.serializeToJson());
-				});
-				ENTITY_TYPE_TAGS_INJECT.asMap().forEach((location, locations)->{
-					Tag.Builder builder = Tag.Builder.tag();
-					locations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
-					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "tags/entity_types/"+location.getPath()+".json"), builder.serializeToJson());
+				TAGS_INJECT.asMap().forEach((registry, map)->{
+					String path = TagManager.getTagDir(registry)+'/';
+					map.asMap().forEach((tagLocation, objLocations)->{
+						Tag.Builder builder = Tag.Builder.tag();
+						objLocations.forEach(l->builder.addOptionalElement(l, "inmemory:jaopca"));
+						pack.putJson(PackType.SERVER_DATA, new ResourceLocation(tagLocation.getNamespace(), path+tagLocation.getPath()+".json"), builder.serializeToJson());
+					});
 				});
 				LOOT_TABLES_INJECT.forEach((location, supplier)->{
 					pack.putJson(PackType.SERVER_DATA, new ResourceLocation(location.getNamespace(), "loot_tables/"+location.getPath()+".json"), GSON.toJsonTree(supplier.get()));

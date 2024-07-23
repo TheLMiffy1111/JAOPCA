@@ -18,19 +18,24 @@ public class JAOPCAFluidAttributes extends FluidAttributes {
 	private final IFluidFormSettings settings;
 
 	public JAOPCAFluidAttributes(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(FluidAttributes.builder(
+		super(getBuilder(fluid, settings), fluid.toFluid());
+		this.fluid = fluid;
+		this.settings = settings;
+	}
+
+	public static FluidAttributes.Builder getBuilder(IMaterialFormFluid fluid, IFluidFormSettings settings) {
+		FluidAttributes.Builder builder = FluidAttributes.builder(
 				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
 						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still"),
 				new ResourceLocation(fluid.toFluid().getRegistryName().getNamespace(),
-						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow")).
-				sound(settings.getFillSoundSupplier().get(), settings.getEmptySoundSupplier().get()).
-				luminosity(settings.getLightValueFunction().applyAsInt(fluid.getMaterial())).
-				density(settings.getDensityFunction().applyAsInt(fluid.getMaterial())).
-				viscosity(settings.getViscosityFunction().applyAsInt(fluid.getMaterial())).
-				temperature(settings.getTemperatureFunction().applyAsInt(fluid.getMaterial())).
-				rarity(settings.getDisplayRarityFunction().apply(fluid.getMaterial())), fluid.toFluid());
-		this.fluid = fluid;
-		this.settings = settings;
+						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow"));
+		builder.sound(settings.getFillSoundSupplier().get(), settings.getEmptySoundSupplier().get());
+		builder.luminosity(settings.getLightValueFunction().applyAsInt(fluid.getMaterial()));
+		builder.density(settings.getDensityFunction().applyAsInt(fluid.getMaterial()));
+		builder.viscosity(settings.getViscosityFunction().applyAsInt(fluid.getMaterial()));
+		builder.temperature(settings.getTemperatureFunction().applyAsInt(fluid.getMaterial()));
+		builder.rarity(settings.getDisplayRarityFunction().apply(fluid.getMaterial()));
+		return builder;
 	}
 
 	@Override

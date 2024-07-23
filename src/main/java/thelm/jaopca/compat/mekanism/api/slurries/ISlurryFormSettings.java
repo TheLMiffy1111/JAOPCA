@@ -1,6 +1,9 @@
 package thelm.jaopca.compat.mekanism.api.slurries;
 
+import java.util.function.Function;
+
 import thelm.jaopca.api.forms.IFormSettings;
+import thelm.jaopca.api.materials.IMaterial;
 
 public interface ISlurryFormSettings extends IFormSettings {
 
@@ -11,4 +14,8 @@ public interface ISlurryFormSettings extends IFormSettings {
 	ISlurryFormSettings setIsHidden(boolean isVisible);
 
 	boolean getIsHidden();
+
+	ISlurryFormSettings setOreTagFunction(Function<IMaterial, String> oreTagFunction);
+
+	Function<IMaterial, String> getOreTagFunction();
 }

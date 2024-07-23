@@ -31,16 +31,9 @@ public class BlockFormSettings implements IBlockFormSettings {
 	private IBlockCreator blockCreator = JAOPCABlock::new;
 	private Function<IMaterial, Material> materialFunction = material->Material.METAL;
 	private Function<IMaterial, MaterialColor> materialColorFunction = materialFunction.andThen(Material::getColor);
-	//material->{
-	//	int color = material.getColor();
-	//	return Arrays.stream(MaterialColor.COLORS).filter(Objects::nonNull).
-	//			min((matColor1, matColor2)->Integer.compare(
-	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor1.colorValue),
-	//					MiscHelper.INSTANCE.squareColorDifference(color, matColor2.colorValue))).
-	//			orElse(MaterialColor.IRON);
-	//};
 	private boolean blocksMovement = true;
 	private Function<IMaterial, SoundType> soundTypeFunction = material->SoundType.METAL;
+	private ToIntFunction<IMaterial> lightOpacityFunction = material->15;
 	private ToIntFunction<IMaterial> lightValueFunction = material->0;
 	private ToDoubleFunction<IMaterial> blockHardnessFunction = material->5;
 	private ToDoubleFunction<IMaterial> explosionResistanceFunction = material->6;
@@ -124,6 +117,17 @@ public class BlockFormSettings implements IBlockFormSettings {
 	@Override
 	public Function<IMaterial, SoundType> getSoundTypeFunction() {
 		return soundTypeFunction;
+	}
+
+	@Override
+	public IBlockFormSettings setLightOpacityFunction(ToIntFunction<IMaterial> lightOpacityFunction) {
+		this.lightOpacityFunction = lightOpacityFunction;
+		return this;
+	}
+
+	@Override
+	public ToIntFunction<IMaterial> getLightOpacityFunction() {
+		return lightOpacityFunction;
 	}
 
 	@Override
