@@ -66,7 +66,7 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 		canPushEntity = MemoizingSuppliers.of(settings.getCanPushEntityFunction(), fluid::getMaterial);
 		canSwim = MemoizingSuppliers.of(settings.getCanSwimFunction(), fluid::getMaterial);
 		fallDistanceModifier = MemoizingSuppliers.of(settings.getFallDistanceModifierFunction(), fluid::getMaterial);
-		canSwim = MemoizingSuppliers.of(settings.getCanExtinguishFunction(), fluid::getMaterial);
+		canExtinguish = MemoizingSuppliers.of(settings.getCanExtinguishFunction(), fluid::getMaterial);
 		canDrown = MemoizingSuppliers.of(settings.getCanDrownFunction(), fluid::getMaterial);
 		supportsBoating = MemoizingSuppliers.of(settings.getSupportsBoatingFunction(), fluid::getMaterial);
 		canHydrate = MemoizingSuppliers.of(settings.getCanHydrateFunction(), fluid::getMaterial);
