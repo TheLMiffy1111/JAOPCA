@@ -18,10 +18,6 @@ public class MemoizingLongSupplier implements LongSupplier {
 		return new MemoizingLongSupplier(delegate);
 	}
 
-	public static <T> MemoizingLongSupplier of(ToLongFunction<T> function, T value) {
-		return new MemoizingLongSupplier(()->function.applyAsLong(value));
-	}
-
 	public static <T> MemoizingLongSupplier of(ToLongFunction<T> function, Supplier<T> value) {
 		return new MemoizingLongSupplier(()->function.applyAsLong(value.get()));
 	}

@@ -58,21 +58,21 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		this.settings = settings;
 
 		blocksMovement = settings.getBlocksMovement();
-		blockMaterial = MemoizingSuppliers.of(settings.getMaterialFunction(), material);
-		mapColor = MemoizingSuppliers.of(settings.getMapColorFunction(), material);
-		soundType = MemoizingSuppliers.of(settings.getSoundTypeFunction(), material);
-		lightOpacity = MemoizingSuppliers.of(settings.getLightOpacityFunction(), material);
-		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), material);
-		blockHardness = MemoizingSuppliers.of(settings.getBlockHardnessFunction(), material);
-		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), material);
-		slipperiness = MemoizingSuppliers.of(settings.getSlipperinessFunction(), material);
+		blockMaterial = MemoizingSuppliers.of(settings.getMaterialFunction(), ()->material);
+		mapColor = MemoizingSuppliers.of(settings.getMapColorFunction(), ()->material);
+		soundType = MemoizingSuppliers.of(settings.getSoundTypeFunction(), ()->material);
+		lightOpacity = MemoizingSuppliers.of(settings.getLightOpacityFunction(), ()->material);
+		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), ()->material);
+		blockHardness = MemoizingSuppliers.of(settings.getBlockHardnessFunction(), ()->material);
+		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), ()->material);
+		slipperiness = MemoizingSuppliers.of(settings.getSlipperinessFunction(), ()->material);
 		boundingBox = settings.getBoundingBox();
-		harvestTool = MemoizingSuppliers.of(settings.getHarvestToolFunction(), material);
-		harvestLevel = MemoizingSuppliers.of(settings.getHarvestLevelFunction(), material);
-		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), material);
-		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), material);
-		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), material);
-		isBeaconBase = MemoizingSuppliers.of(settings.getIsBeaconBaseFunction(), material);
+		harvestTool = MemoizingSuppliers.of(settings.getHarvestToolFunction(), ()->material);
+		harvestLevel = MemoizingSuppliers.of(settings.getHarvestLevelFunction(), ()->material);
+		flammability = MemoizingSuppliers.of(settings.getFlammabilityFunction(), ()->material);
+		fireSpreadSpeed = MemoizingSuppliers.of(settings.getFireSpreadSpeedFunction(), ()->material);
+		isFireSource = MemoizingSuppliers.of(settings.getIsFireSourceFunction(), ()->material);
+		isBeaconBase = MemoizingSuppliers.of(settings.getIsBeaconBaseFunction(), ()->material);
 		translationKey = MemoizingSuppliers.of(()->{
 			ResourceLocation id = getRegistryName();
 			return "block."+id.getNamespace()+"."+id.getPath().replace('/', '.');

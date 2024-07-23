@@ -17,20 +17,12 @@ public class MemoizingSuppliers {
 		return MemoizingBooleanSupplier.of(delegate);
 	}
 
-	public static <T> MemoizingBooleanSupplier of(Predicate<T> function, T value) {
-		return MemoizingBooleanSupplier.of(function, value);
-	}
-
 	public static <T> MemoizingBooleanSupplier of(Predicate<T> function, Supplier<T> value) {
 		return MemoizingBooleanSupplier.of(function, value);
 	}
 
 	public static MemoizingIntSupplier of(IntSupplier delegate) {
 		return MemoizingIntSupplier.of(delegate);
-	}
-
-	public static <T> MemoizingIntSupplier of(ToIntFunction<T> function, T value) {
-		return MemoizingIntSupplier.of(function, value);
 	}
 
 	public static <T> MemoizingIntSupplier of(ToIntFunction<T> function, Supplier<T> value) {
@@ -41,10 +33,6 @@ public class MemoizingSuppliers {
 		return MemoizingDoubleSupplier.of(delegate);
 	}
 
-	public static <T> MemoizingDoubleSupplier of(ToDoubleFunction<T> function, T value) {
-		return MemoizingDoubleSupplier.of(function, value);
-	}
-
 	public static <T> MemoizingDoubleSupplier of(ToDoubleFunction<T> function, Supplier<T> value) {
 		return MemoizingDoubleSupplier.of(function, value);
 	}
@@ -53,20 +41,12 @@ public class MemoizingSuppliers {
 		return MemoizingLongSupplier.of(delegate);
 	}
 
-	public static <T> MemoizingLongSupplier of(ToLongFunction<T> function, T value) {
-		return MemoizingLongSupplier.of(function, value);
-	}
-
 	public static <T> MemoizingLongSupplier of(ToLongFunction<T> function, Supplier<T> value) {
 		return MemoizingLongSupplier.of(function, value);
 	}
 
 	public static <T> MemoizingSupplier<T> of(Supplier<T> delegate) {
 		return MemoizingSupplier.of(delegate);
-	}
-
-	public static <V, T> MemoizingSupplier<T> of(Function<V, T> function, V value) {
-		return MemoizingSupplier.of(function, value);
 	}
 
 	public static <V, T> MemoizingSupplier<T> of(Function<V, T> function, Supplier<V> value) {
