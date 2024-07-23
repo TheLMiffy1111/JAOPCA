@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -28,13 +29,14 @@ import thelm.jaopca.utils.MiscHelper;
 
 public class ModelHandler {
 
+	private static final FileToIdConverter BLOCK_MODEL_FORMAT = FileToIdConverter.json("blockstates");
+	private static final FileToIdConverter ITEM_MODEL_FORMAT = FileToIdConverter.json("models/item");
 	private static final Multimap<ResourceLocation, ResourceLocation> REMAPS = LinkedHashMultimap.create();
 
 	public static void registerModels(ModelEvent.RegisterAdditional event) {
 		for(IMaterialFormBlock materialFormBlock : BlockFormType.getBlocks()) {
 			Block block = materialFormBlock.toBlock();
-			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(block);
-			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
+			ResourceLocation location = BLOCK_MODEL_FORMAT.idToFile(ForgeRegistries.BLOCKS.getKey(block));
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
@@ -51,9 +53,7 @@ public class ModelHandler {
 		}
 		for(IMaterialFormBlockItem materialFormBlockItem : BlockFormType.getBlockItems()) {
 			BlockItem blockItem = materialFormBlockItem.toBlockItem();
-			//TODO Change if Forge supports using blockstates in item models
-			ResourceLocation location = ForgeRegistries.ITEMS.getKey(blockItem);
-			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
+			ResourceLocation location = ITEM_MODEL_FORMAT.idToFile(ForgeRegistries.ITEMS.getKey(blockItem));
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
@@ -67,8 +67,7 @@ public class ModelHandler {
 		}
 		for(IMaterialFormItem materialFormItem : ItemFormType.getItems()) {
 			Item item = materialFormItem.toItem();
-			ResourceLocation location = ForgeRegistries.ITEMS.getKey(item);
-			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
+			ResourceLocation location = ITEM_MODEL_FORMAT.idToFile(ForgeRegistries.ITEMS.getKey(item));
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
@@ -82,8 +81,7 @@ public class ModelHandler {
 		}
 		for(IMaterialFormFluidBlock materialFormFluidBlock : FluidFormType.getFluidBlocks()) {
 			Block fluidBlock = materialFormFluidBlock.toBlock();
-			ResourceLocation location = ForgeRegistries.BLOCKS.getKey(fluidBlock);
-			location = new ResourceLocation(location.getNamespace(), "blockstates/"+location.getPath()+".json");
+			ResourceLocation location = BLOCK_MODEL_FORMAT.idToFile(ForgeRegistries.BLOCKS.getKey(fluidBlock));
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}
@@ -100,8 +98,7 @@ public class ModelHandler {
 		}
 		for(IMaterialFormBucketItem materialFormBucketItem : FluidFormType.getBucketItems()) {
 			Item bucketItem = materialFormBucketItem.toItem();
-			ResourceLocation location = ForgeRegistries.ITEMS.getKey(bucketItem);
-			location = new ResourceLocation(location.getNamespace(), "item/models/"+location.getPath()+".json");
+			ResourceLocation location = ITEM_MODEL_FORMAT.idToFile(ForgeRegistries.ITEMS.getKey(bucketItem));
 			if(false || MiscHelper.INSTANCE.hasResource(location)) {
 				continue;
 			}

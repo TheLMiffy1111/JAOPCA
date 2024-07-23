@@ -198,20 +198,30 @@ public class MiscHelper implements IMiscHelper {
 			items.addAll(getItemTagValues(key.location()));
 		}
 		else if(obj instanceof ItemStack stack) {
-			ing = Ingredient.of(stack);
-			items.add(stack.getItem());
+			if(!stack.isEmpty()) {
+				ing = Ingredient.of(stack);
+				items.add(stack.getItem());
+			}
 		}
 		else if(obj instanceof ItemStack[] stacks) {
-			ing = Ingredient.of(stacks);
-			Arrays.stream(stacks).map(ItemStack::getItem).forEach(items::add);
+			List<ItemStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = Ingredient.of(nonEmpty.stream());
+				nonEmpty.stream().map(ItemStack::getItem).forEach(items::add);
+			}
 		}
 		else if(obj instanceof ItemLike item) {
-			ing = Ingredient.of(item);
-			items.add(item.asItem());
+			if(item.asItem() != Items.AIR) {
+				ing = Ingredient.of(item);
+				items.add(item.asItem());
+			}
 		}
 		else if(obj instanceof ItemLike[] itemz) {
-			ing = Ingredient.of(itemz);
-			Arrays.stream(itemz).map(ItemLike::asItem).forEach(items::add);
+			List<Item> nonEmpty = Arrays.stream(itemz).map(ItemLike::asItem).filter(i->i != Items.AIR).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = Ingredient.of(nonEmpty.toArray(Item[]::new));
+				items.addAll(nonEmpty);
+			}
 		}
 		else if(obj instanceof Ingredient.Value) {
 			ing = Ingredient.fromValues(Stream.of((Ingredient.Value)obj));
@@ -228,6 +238,7 @@ public class MiscHelper implements IMiscHelper {
 			// We can't know what items the ingredient can have so assume all
 			items.addAll(ForgeRegistries.ITEMS.getValues());
 		}
+		items.remove(Items.AIR);
 		return Pair.of(items.isEmpty() ? EmptyIngredient.INSTANCE : ing, items);
 	}
 
@@ -248,29 +259,34 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public FluidStack getFluidStack(Object obj, int amount) {
-		FluidStack ret = FluidStack.EMPTY;
 		if(obj instanceof Supplier<?>) {
-			ret = getFluidStack(((Supplier<?>)obj).get(), amount);
+			return getFluidStack(((Supplier<?>)obj).get(), amount);
 		}
-		else if(obj instanceof FluidStack) {
-			ret = ((FluidStack)obj);
+		else if(obj instanceof FluidStack stack) {
+			if(!stack.isEmpty()) {
+				return stack;
+			}
 		}
-		else if(obj instanceof Fluid) {
-			ret = new FluidStack((Fluid)obj, amount);
+		else if(obj instanceof Fluid fluid) {
+			if(fluid != Fluids.EMPTY) {
+				return new FluidStack(fluid, amount);
+			}
 		}
-		else if(obj instanceof IFluidLike) {
-			ret = new FluidStack(((IFluidLike)obj).asFluid(), amount);
+		else if(obj instanceof IFluidLike fluid) {
+			if(fluid.asFluid() != Fluids.EMPTY) {
+				return new FluidStack(fluid.asFluid(), amount);
+			}
 		}
 		else if(obj instanceof String) {
-			ret = getPreferredFluidStack(getFluidTagValues(new ResourceLocation((String)obj)), amount);
+			return getPreferredFluidStack(getFluidTagValues(new ResourceLocation((String)obj)), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			ret = getPreferredFluidStack(getFluidTagValues((ResourceLocation)obj), amount);
+			return getPreferredFluidStack(getFluidTagValues((ResourceLocation)obj), amount);
 		}
 		else if(obj instanceof TagKey<?>) {
-			ret = getPreferredFluidStack(getFluidTagValues(((TagKey<Fluid>)obj).location()), amount);
+			return getPreferredFluidStack(getFluidTagValues(((TagKey<Fluid>)obj).location()), amount);
 		}
-		return ret.isEmpty() ? FluidStack.EMPTY : ret;
+		return FluidStack.EMPTY;
 	}
 
 	@Override

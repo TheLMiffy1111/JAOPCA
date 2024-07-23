@@ -6,7 +6,9 @@
 	"target": "@env(DEFAULT)",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"SimplePreparableReloadListenerMixin",
+		"SimplePreparableReloadListenerMixin"
+	],
+	"client": [
 		"SpriteContentsAccessor"
 	],
 	"injectors": {

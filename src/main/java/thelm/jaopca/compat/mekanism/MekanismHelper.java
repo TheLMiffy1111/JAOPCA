@@ -2,15 +2,13 @@ package thelm.jaopca.compat.mekanism;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.common.collect.ImmutableSortedSet;
-import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 
 import mekanism.api.MekanismAPI;
@@ -31,8 +29,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.compat.mekanism.recipes.CombiningRecipeSerializer;
 import thelm.jaopca.compat.mekanism.recipes.CrushingRecipeSerializer;
@@ -53,7 +53,7 @@ public class MekanismHelper {
 	private MekanismHelper() {}
 
 	public Set<ResourceLocation> getSlurryTags() {
-		return ImmutableSortedSet.copyOf(Sets.union(ApiImpl.INSTANCE.getTags("mekanism:slurry"), MekanismDataInjector.getInjectSlurryTags()));
+		return ApiImpl.INSTANCE.getTags(MekanismAPI.SLURRY_REGISTRY_NAME);
 	}
 
 	public ItemStackIngredient getItemStackIngredient(Object obj, int count) {
@@ -94,26 +94,50 @@ public class MekanismHelper {
 			fluids.addAll(helper.getFluidTagValues(key.location()));
 		}
 		else if(obj instanceof FluidStack stack) {
-			ing = creator.from(stack);
-			fluids.add(stack.getFluid());
+			if(!stack.isEmpty()) {
+				ing = creator.from(stack);
+				fluids.add(stack.getFluid());
+			}
 		}
 		else if(obj instanceof FluidStack[] stacks) {
-			ing = creator.createMulti(Arrays.stream(stacks).map(creator::from).toArray(FluidStackIngredient[]::new));
-			Arrays.stream(stacks).map(FluidStack::getFluid).forEach(fluids::add);
+			List<FluidStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = creator.from(nonEmpty.stream().map(creator::from));
+				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
+			}
 		}
 		else if(obj instanceof Fluid fluid) {
-			ing = creator.from(fluid, amount);
-			fluids.add(fluid);
+			if(fluid != Fluids.EMPTY) {
+				ing = creator.from(fluid, amount);
+				fluids.add(fluid);
+			}
 		}
 		else if(obj instanceof Fluid[] fluidz) {
-			ing = creator.createMulti(Arrays.stream(fluidz).map(f->creator.from(f, amount)).toArray(FluidStackIngredient[]::new));
-			Collections.addAll(fluids, fluidz);
+			List<Fluid> nonEmpty = Arrays.stream(fluidz).filter(f->f != Fluids.EMPTY).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = creator.from(nonEmpty.stream().map(f->creator.from(f, amount)));
+				fluids.addAll(nonEmpty);
+			}
+		}
+		else if(obj instanceof IFluidLike fluid) {
+			if(fluid.asFluid() != Fluids.EMPTY) {
+				ing = creator.from(fluid.asFluid(), amount);
+				fluids.add(fluid.asFluid());
+			}
+		}
+		else if(obj instanceof IFluidLike[] fluidz) {
+			List<Fluid> nonEmpty = Arrays.stream(fluidz).map(IFluidLike::asFluid).filter(f->f != Fluids.EMPTY).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = creator.from(nonEmpty.stream().map(f->creator.from(f, amount)));
+				fluids.addAll(nonEmpty);
+			}
 		}
 		else if(obj instanceof JsonElement) {
 			ing = creator.deserialize((JsonElement)obj);
 			// We can't know what fluids the ingredient can have so assume all
 			fluids.addAll(ForgeRegistries.FLUIDS.getValues());
 		}
+		fluids.remove(Fluids.EMPTY);
 		return Pair.of(fluids.isEmpty() ? null : ing, fluids);
 	}
 
@@ -149,26 +173,37 @@ public class MekanismHelper {
 			gases.addAll(getGasTagValues(key.location()));
 		}
 		else if(obj instanceof GasStack stack) {
-			ing = creator.from(stack);
-			gases.add(stack.getType());
+			if(!stack.isEmpty()) {
+				ing = creator.from(stack);
+				gases.add(stack.getType());
+			}
 		}
 		else if(obj instanceof GasStack[] stacks) {
-			ing = creator.createMulti(Arrays.stream(stacks).map(creator::from).toArray(GasStackIngredient[]::new));
-			Arrays.stream(stacks).map(GasStack::getType).forEach(gases::add);
+			List<GasStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = creator.from(nonEmpty.stream().map(creator::from));
+				nonEmpty.stream().map(GasStack::getType).forEach(gases::add);
+			}
 		}
 		else if(obj instanceof IGasProvider gas) {
-			ing = creator.from(gas, amount);
-			gases.add(gas.getChemical());
+			if(!gas.getChemical().isEmptyType()) {
+				ing = creator.from(gas, amount);
+				gases.add(gas.getChemical());
+			}
 		}
 		else if(obj instanceof IGasProvider[] gasez) {
-			ing = creator.createMulti(Arrays.stream(gasez).map(g->creator.from(g, amount)).toArray(GasStackIngredient[]::new));
-			Arrays.stream(gasez).map(IGasProvider::getChemical).forEach(gases::add);
+			List<Gas> nonEmpty = Arrays.stream(gasez).map(IGasProvider::getChemical).filter(g->!g.isEmptyType()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = creator.from(nonEmpty.stream().map(g->creator.from(g, amount)));
+				gases.addAll(nonEmpty);
+			}
 		}
 		else if(obj instanceof JsonElement) {
 			ing = creator.deserialize((JsonElement)obj);
 			// We can't know what gases the ingredient can have so assume all
 			gases.addAll(MekanismAPI.gasRegistry().getValues());
 		}
+		gases.remove(MekanismAPI.EMPTY_GAS);
 		return Pair.of(gases.isEmpty() ? null : ing, gases);
 	}
 
@@ -204,26 +239,37 @@ public class MekanismHelper {
 			slurries.addAll(getSlurryTagValues(key.location()));
 		}
 		else if(obj instanceof SlurryStack stack) {
-			ing = creator.from(stack);
-			slurries.add(stack.getType());
+			if(!stack.isEmpty()) {
+				ing = creator.from(stack);
+				slurries.add(stack.getType());
+			}
 		}
 		else if(obj instanceof SlurryStack[] stacks) {
-			ing = creator.createMulti(Arrays.stream(stacks).map(creator::from).toArray(SlurryStackIngredient[]::new));
-			Arrays.stream(stacks).map(SlurryStack::getType).forEach(slurries::add);
+			List<SlurryStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = creator.from(nonEmpty.stream().map(creator::from));
+				nonEmpty.stream().map(SlurryStack::getType).forEach(slurries::add);
+			}
 		}
 		else if(obj instanceof ISlurryProvider slurry) {
-			ing = creator.from(slurry, amount);
-			slurries.add(slurry.getChemical());
+			if(!slurry.getChemical().isEmptyType()) {
+				ing = creator.from(slurry, amount);
+				slurries.add(slurry.getChemical());
+			}
 		}
 		else if(obj instanceof ISlurryProvider[] slurriez) {
-			ing = creator.createMulti(Arrays.stream(slurriez).map(s->creator.from(s, amount)).toArray(SlurryStackIngredient[]::new));
-			Arrays.stream(slurriez).map(ISlurryProvider::getChemical).forEach(slurries::add);
+			List<Slurry> nonEmpty = Arrays.stream(slurriez).map(ISlurryProvider::getChemical).filter(s->!s.isEmptyType()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = creator.from(nonEmpty.stream().map(s->creator.from(s, amount)));
+				slurries.addAll(nonEmpty);
+			}
 		}
 		else if(obj instanceof JsonElement) {
 			ing = creator.deserialize((JsonElement)obj);
 			// We can't know what slurries the ingredient can have so assume all
 			slurries.addAll(MekanismAPI.slurryRegistry().getValues());
 		}
+		slurries.remove(MekanismAPI.EMPTY_SLURRY);
 		return Pair.of(slurries.isEmpty() ? null : ing, slurries);
 	}
 

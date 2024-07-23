@@ -8,6 +8,7 @@ import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.forms.IForm;
+import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -65,7 +66,7 @@ public class Form {
 	}
 
 	public ItemStack getItemStack(String suffix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		return helper.getItemStack(helper.getTagLocation(form.getSecondaryName(), suffix), count);
 	}
 
@@ -74,7 +75,7 @@ public class Form {
 	}
 
 	public FluidStackJS getFluidStack(String suffix, int count) {
-		MiscHelper helper = MiscHelper.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
 		FluidStack stack = helper.getFluidStack(helper.getTagLocation(form.getSecondaryName(), suffix), count);
 		return FluidStackJS.of(FluidStackHooksForge.fromForge(stack));
 	}

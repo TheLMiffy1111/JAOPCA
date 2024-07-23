@@ -11,6 +11,7 @@ import com.google.gson.JsonParseException;
 import thelm.jaopca.api.helpers.IJsonHelper;
 import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormSettings;
 import thelm.jaopca.compat.mekanism.slurries.SlurryFormType;
+import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.utils.JsonHelper;
 
 public class SlurryFormSettingsDeserializer implements JsonDeserializer<ISlurryFormSettings> {
@@ -30,6 +31,13 @@ public class SlurryFormSettingsDeserializer implements JsonDeserializer<ISlurryF
 		ISlurryFormSettings settings = SlurryFormType.INSTANCE.getNewSettings();
 		if(json.has("isHidden")) {
 			settings.setIsHidden(helper.getBoolean(json, "isHidden"));
+		}
+		if(json.has("oreTag")) {
+			JsonObject functionJson = helper.getJsonObject(json, "oreTag");
+			if(!functionJson.has("default")) {
+				functionJson.addProperty("default", "");
+			}
+			settings.setOreTagFunction(helper.deserializeType(json, "oreTag", context, FormTypeHandler.STRING_FUNCTION_TYPE));
 		}
 		return settings;
 	}

@@ -10,19 +10,20 @@ import java.util.function.Predicate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.maven.artifact.versioning.ArtifactVersion;
-import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
-import org.apache.maven.artifact.versioning.VersionRange;
 import org.objectweb.asm.Type;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.TreeMultimap;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.VanillaPackResourcesBuilder;
+import net.minecraft.server.packs.repository.ServerPacksSource;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
+import net.minecraft.tags.TagManager;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData;
 import net.minecraftforge.resource.ResourcePackLoader;
@@ -36,10 +37,10 @@ public class DataCollector {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final int TAGS_PATH_LENGTH = "tags/".length();
-	private static final int RECIPES_PATH_LENGTH = "recipes/".length();
-	private static final int LOOT_TABLES_PATH_LENGTH = "loot_tables/".length();
-	private static final int ADVANCEMENTS_PATH_LENGTH = "advancements/".length();
-	private static final int JSON_EXTENSION_LENGTH = ".json".length();
+	private static final FileToIdConverter TAG_FORMAT = FileToIdConverter.json("tags");
+	private static final FileToIdConverter RECIPE_FORMAT = FileToIdConverter.json("recipe");
+	private static final FileToIdConverter LOOT_TABLE_FORMAT = FileToIdConverter.json("loot_table");
+	private static final FileToIdConverter ADVANCEMENT_FORMAT = FileToIdConverter.json("advancement");
 	private static final Type JAOPCA_PACK_SUPPLIER = Type.getType(JAOPCAPackSupplier.class);
 	private static final TreeMultimap<String, ResourceLocation> DEFINED_TAGS = TreeMultimap.create();
 	private static final TreeSet<ResourceLocation> DEFINED_RECIPES = new TreeSet<>();
@@ -52,7 +53,7 @@ public class DataCollector {
 		DEFINED_ADVANCEMENTS.clear();
 
 		List<PackResources> resourcePacks = new ArrayList<>();
-		resourcePacks.add(new VanillaPackResourcesBuilder().build());
+		resourcePacks.add(ServerPacksSource.createVanillaPackSource());
 		ModList.get().getModFiles().stream().
 		map(ResourcePackLoader::createPackForMod).
 		forEach(resourcePacks::add);
@@ -93,24 +94,24 @@ public class DataCollector {
 		}
 
 		try(MultiPackResourceManager resourceManager = new MultiPackResourceManager(PackType.SERVER_DATA, resourcePacks)) {
-			for(ResourceLocation location : resourceManager.listResources("tags", name->name.getPath().endsWith(".json")).keySet()) {
+			for(ResourceLocation location : TAG_FORMAT.listMatchingResources(resourceManager).keySet()) {
+				location = TAG_FORMAT.fileToId(location);
 				String namespace = location.getNamespace();
 				String path = location.getPath();
-				path = path.substring(TAGS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
 				String[] split = path.split("/", 2);
 				if(split.length == 2) {
 					String type = split[0];
 					if(ModList.get().isLoaded(type)) {
 						String[] split0 = split[1].split("/", 2);
 						if(split0.length == 2) {
-							type += ':'+split0[0];
+							type += '/'+split0[0];
 							path = split0[1];
-							DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
+							DEFINED_TAGS.put(type, location.withPath(path));
 							continue;
 						}
 					}
 					path = split[1];
-					DEFINED_TAGS.put(type, new ResourceLocation(namespace, path));
+					DEFINED_TAGS.put(type, location.withPath(path));
 				}
 				else {
 					LOGGER.error("Tag {} in namespace {} has no type", path, namespace);
@@ -118,33 +119,29 @@ public class DataCollector {
 			}
 			LOGGER.info("Found {} unique defined tags", DEFINED_TAGS.size());
 			for(ResourceLocation location : resourceManager.listResources("recipes", name->name.getPath().endsWith(".json")).keySet()) {
-				String namespace = location.getNamespace();
-				String path = location.getPath();
-				if(!path.equals("recipes/_constants.json") && !path.equals("recipes/_factories.json")) {
-					path = path.substring(RECIPES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
-					DEFINED_RECIPES.add(new ResourceLocation(namespace, path));
+				location = RECIPE_FORMAT.fileToId(location);
+				if(!location.getPath().equals("_constants") && !location.getPath().equals("_factories")) {
+					DEFINED_RECIPES.add(location);
 				}
 			}
 			LOGGER.info("Found {} unique defined recipes", DEFINED_RECIPES.size());
-			for(ResourceLocation location : resourceManager.listResources("loot_tables", name->name.getPath().endsWith(".json")).keySet()) {
-				String namespace = location.getNamespace();
-				String path = location.getPath();
-				path = path.substring(LOOT_TABLES_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
-				DEFINED_LOOT_TABLES.add(new ResourceLocation(namespace, path));
+			for(ResourceLocation location : LOOT_TABLE_FORMAT.listMatchingResources(resourceManager).keySet()) {
+				DEFINED_LOOT_TABLES.add(LOOT_TABLE_FORMAT.fileToId(location));
 			}
 			LOGGER.info("Found {} unique defined loot tables", DEFINED_LOOT_TABLES.size());
-			for(ResourceLocation location : resourceManager.listResources("advancements", name->name.getPath().endsWith(".json")).keySet()) {
-				String namespace = location.getNamespace();
-				String path = location.getPath();
-				path = path.substring(ADVANCEMENTS_PATH_LENGTH, path.length()-JSON_EXTENSION_LENGTH);
-				DEFINED_ADVANCEMENTS.add(new ResourceLocation(namespace, path));
+			for(ResourceLocation location : ADVANCEMENT_FORMAT.listMatchingResources(resourceManager).keySet()) {
+				DEFINED_ADVANCEMENTS.add(ADVANCEMENT_FORMAT.fileToId(location));
 			}
+			LOGGER.info("Found {} unique defined advancements", DEFINED_ADVANCEMENTS.size());
 		}
-		LOGGER.info("Found {} unique defined advancements", DEFINED_ADVANCEMENTS.size());
+	}
+
+	public static Set<ResourceLocation> getDefinedTags(ResourceKey<? extends Registry<?>> registry) {
+		return getDefinedTags(TagManager.getTagDir(registry).substring(TAGS_PATH_LENGTH));
 	}
 
 	public static Set<ResourceLocation> getDefinedTags(String type) {
-		return DEFINED_TAGS.get(type);
+		return DEFINED_TAGS.get(type.replace(':', '/'));
 	}
 
 	public static Set<ResourceLocation> getDefinedRecipes() {
@@ -157,31 +154,5 @@ public class DataCollector {
 
 	public static Set<ResourceLocation> getDefinedAdvancements() {
 		return DEFINED_ADVANCEMENTS;
-	}
-
-	static boolean isModVersionNotLoaded(String dep) {
-		ModList modList = ModList.get();
-		int separatorIndex = dep.lastIndexOf('@');
-		String modId = dep.substring(0, separatorIndex == -1 ? dep.length() : separatorIndex);
-		String spec = separatorIndex == -1 ? "0" : dep.substring(separatorIndex+1);
-		VersionRange versionRange;
-		try {
-			versionRange = VersionRange.createFromVersionSpec(spec);
-		}
-		catch(InvalidVersionSpecificationException e) {
-			LOGGER.warn("Unable to parse version spec {} for mod id {}", spec, modId, e);
-			return true;
-		}
-		if(modList.isLoaded(modId)) {
-			ArtifactVersion version = modList.getModContainerById(modId).get().getModInfo().getVersion();
-			if(versionRange.containsVersion(version)) {
-				return false;
-			}
-			else {
-				LOGGER.warn("Mod {} in version range {} was requested, was {}", modId, versionRange, version);
-				return true;
-			}
-		}
-		return true;
 	}
 }
