@@ -30,6 +30,7 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -55,6 +56,8 @@ import thelm.jaopca.utils.MiscHelper;
 public class DataInjector {
 
 	private static final Logger LOGGER = LogManager.getLogger();
+	private static final FileToIdConverter LOOT_TABLE_FORMAT = FileToIdConverter.json("loot_tables");
+	private static final FileToIdConverter ADVANCEMENT_FORMAT = FileToIdConverter.json("advancements");
 	private static final Type JAOPCA_DATA_MODULE = Type.getType(JAOPCADataModule.class);
 	private static final Map<Class<?>, Consumer<Object>> RELOAD_INJECTORS = new HashMap<>();
 	private static final LoadingCache<ResourceKey<? extends Registry<?>>, ListMultimap<ResourceLocation, ResourceLocation>> TAGS_INJECT = CacheBuilder.newBuilder().build(CacheLoader.from(()->MultimapBuilder.treeKeys().arrayListValues().build()));
@@ -220,10 +223,10 @@ public class DataInjector {
 					});
 				});
 				LOOT_TABLES_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, location.withPath("loot_tables/"+location.getPath()+".json"), GSON.toJsonTree(supplier.get()));
+					pack.putJson(PackType.SERVER_DATA, LOOT_TABLE_FORMAT.idToFile(location), GSON.toJsonTree(supplier.get()));
 				});
 				ADVANCEMENTS_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, location.withPath("advancements/"+location.getPath()+".json"), supplier.get().serializeToJson());
+					pack.putJson(PackType.SERVER_DATA, ADVANCEMENT_FORMAT.idToFile(location), supplier.get().serializeToJson());
 				});
 				ModuleHandler.onCreateDataPack(pack);
 				return pack;
