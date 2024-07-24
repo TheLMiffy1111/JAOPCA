@@ -19,6 +19,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.CookingBookCategory;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -493,6 +495,16 @@ public class ApiImpl extends JAOPCAApi {
 	@Override
 	public boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder) {
 		return registerAdvancement(key, ()->advancementBuilder);
+	}
+
+	@Override
+	public <T> boolean registerDataMapEntry(DataMapType<?, T> type, ExtraCodecs.TagOrElementLocation location, Supplier<T> valueSupplier) {
+		return DataInjector.registerDataMapEntry(type, location, valueSupplier);
+	}
+
+	@Override
+	public <T> boolean registerDataMapEntry(DataMapType<?, T> type, ResourceLocation tagLocation, Supplier<T> valueSupplier) {
+		return registerDataMapEntry(type, new ExtraCodecs.TagOrElementLocation(tagLocation, true), valueSupplier);
 	}
 
 	@Override

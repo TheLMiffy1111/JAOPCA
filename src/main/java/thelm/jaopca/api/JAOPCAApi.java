@@ -9,6 +9,7 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.CookingBookCategory;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import thelm.jaopca.api.blocks.IBlockFormType;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
@@ -602,6 +604,10 @@ public abstract class JAOPCAApi {
 	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
 	 */
 	public abstract boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder);
+
+	public abstract <T> boolean registerDataMapEntry(DataMapType<?, T> type, ExtraCodecs.TagOrElementLocation location, Supplier<T> valueSupplier);
+
+	public abstract <T> boolean registerDataMapEntry(DataMapType<?, T> type, ResourceLocation tagLocation, Supplier<T> valueSupplier);
 
 	/**
 	 * Registers an {@link ILocalizer} to languages for use by JAOPCA.
