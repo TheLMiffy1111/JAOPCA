@@ -446,7 +446,7 @@ public class MiscHelper implements IMiscHelper {
 				});
 			});
 		}
-		return Collections2.transform(tagMap.getOrDefault(registry, ImmutableSetMultimap.of()).asMap().getOrDefault(location, Collections.emptySet()), o->(T)o);
+		return Collections2.transform(tagMap.getOrDefault(registry, ImmutableSetMultimap.of()).asMap().getOrDefault(location, Set.of()), o->(T)o);
 	}
 
 	@Override
