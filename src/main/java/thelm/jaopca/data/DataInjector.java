@@ -29,6 +29,7 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -54,6 +55,8 @@ import thelm.jaopca.utils.MiscHelper;
 public class DataInjector {
 
 	private static final Logger LOGGER = LogManager.getLogger();
+	private static final FileToIdConverter LOOT_TABLE_FORMAT = FileToIdConverter.json("loot_tables");
+	private static final FileToIdConverter ADVANCEMENT_FORMAT = FileToIdConverter.json("advancements");
 	private static final Type JAOPCA_DATA_MODULE = Type.getType(JAOPCADataModule.class);
 	private static final Map<Class<?>, Consumer<Object>> RELOAD_INJECTORS = new HashMap<>();
 	private static final LoadingCache<ResourceKey<? extends Registry<?>>, ListMultimap<ResourceLocation, ResourceLocation>> TAGS_INJECT = CacheBuilder.newBuilder().build(CacheLoader.from(()->MultimapBuilder.treeKeys().arrayListValues().build()));
@@ -210,18 +213,18 @@ public class DataInjector {
 			Pack packInfo = Pack.readMetaAndCreate("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), true, BuiltInPackSource.fromName(packId->{
 				InMemoryResourcePack pack = new InMemoryResourcePack(packId, true);
 				TAGS_INJECT.asMap().forEach((registry, map)->{
-					String path = TagManager.getTagDir(registry)+'/';
+					FileToIdConverter format = FileToIdConverter.json(TagManager.getTagDir(registry));
 					map.asMap().forEach((tagLocation, objLocations)->{
 						TagBuilder builder = TagBuilder.create();
 						objLocations.forEach(l->builder.addOptionalElement(l));
-						pack.putJson(PackType.SERVER_DATA, tagLocation.withPath(path+tagLocation.getPath()+".json"), serializeTag(builder));
+						pack.putJson(PackType.SERVER_DATA, format.idToFile(tagLocation), serializeTag(builder));
 					});
 				});
 				LOOT_TABLES_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, location.withPath("loot_tables/"+location.getPath()+".json"), serializeLootTable(supplier.get()));
+					pack.putJson(PackType.SERVER_DATA, LOOT_TABLE_FORMAT.idToFile(location), serializeLootTable(supplier.get()));
 				});
 				ADVANCEMENTS_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, location.withPath("advancements/"+location.getPath()+".json"), serializeAdvancement(supplier.get()));
+					pack.putJson(PackType.SERVER_DATA, ADVANCEMENT_FORMAT.idToFile(location), serializeAdvancement(supplier.get()));
 				});
 				ModuleHandler.onCreateDataPack(pack);
 				return pack;
