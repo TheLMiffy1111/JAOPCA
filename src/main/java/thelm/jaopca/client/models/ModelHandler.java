@@ -43,16 +43,10 @@ public class ModelHandler {
 	}
 
 	public static ResourceLocation remapBlockModel(ResourceLocation location) {
-		if(BLOCK_MODEL_REMAPS.containsKey(location)) {
-			System.out.println(location + "->" + BLOCK_MODEL_REMAPS.get(location));
-		}
 		return BLOCK_MODEL_REMAPS.getOrDefault(location, location);
 	}
 
 	public static ResourceLocation remapItemModel(ResourceLocation location) {
-		if(ITEM_MODEL_REMAPS.containsKey(location)) {
-			System.out.println(location + "->" + ITEM_MODEL_REMAPS.get(location));
-		}
 		return ITEM_MODEL_REMAPS.getOrDefault(location, location);
 	}
 
