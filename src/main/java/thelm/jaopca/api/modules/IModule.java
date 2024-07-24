@@ -42,7 +42,7 @@ public interface IModule extends Comparable<IModule> {
 	}
 
 	default Set<String> getDefaultMaterialBlacklist() {
-		return Collections.emptyNavigableSet();
+		return Set.of();
 	}
 
 	default void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {}
