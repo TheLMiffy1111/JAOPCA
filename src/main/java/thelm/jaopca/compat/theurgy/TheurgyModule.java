@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurTier;
+import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalDerivativeTier;
 import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurType;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -34,7 +34,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "theurgy@[1.18,)")
+@JAOPCAModule(modDependencies = "theurgy@[1.32,)")
 public class TheurgyModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
@@ -42,8 +42,8 @@ public class TheurgyModule implements IModule {
 			"diamond", "emerald", "fluorite", "gold", "iridium", "iron", "lapis", "lead", "netherite", "netherite_scrap",
 			"nickel", "osmium", "peridot", "platinum", "prismarine", "quartz", "redstone", "ruby", "sal_ammoniac",
 			"sapphire", "silver", "sulfur", "tin", "unobtainium", "uranium", "vibranium", "zinc"));
-	public static final Function<IMaterial, AlchemicalSulfurTier> TIER_FUNCTION =
-			MaterialMappedFunction.of(AlchemicalSulfurTier.class, AlchemicalSulfurTier.COMMON, "theurgy.tier", "The alchemical sulfur tier of this material.");
+	public static final Function<IMaterial, AlchemicalDerivativeTier> TIER_FUNCTION =
+			MaterialMappedFunction.of(AlchemicalDerivativeTier.class, AlchemicalDerivativeTier.COMMON, "theurgy.tier", "The alchemical sulfur tier of this material.");
 
 	private static boolean addTierTags = false;
 

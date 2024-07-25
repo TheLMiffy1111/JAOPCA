@@ -13,6 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import thelm.jaopca.api.forms.IForm;
@@ -43,7 +44,7 @@ public class JAOPCAAlchemicalSulfurItem extends AlchemicalSulfurItem implements 
 	public static Item.Properties getProperties(IForm form, IMaterial material, IItemFormSettings settings) {
 		Item.Properties prop = new Item.Properties();
 		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(material.getType().getFormName(), material.getName());
-		prop.component(DataComponentRegistry.SULFUR_SOURCE_TAG.get(), MiscHelper.INSTANCE.getItemTagKey(tagLocation));
+		prop.component(DataComponentRegistry.SOURCE_TAG.get(), MiscHelper.INSTANCE.getItemTagKey(tagLocation));
 		return prop;
 	}
 
