@@ -53,6 +53,7 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 
 		blocksMovement = settings.getBlocksMovement();
 		soundType = MemoizingSuppliers.of(settings.getSoundTypeFunction(), ()->material);
+		lightOpacity = MemoizingSuppliers.of(settings.getLightOpacityFunction(), ()->material);
 		lightValue = MemoizingSuppliers.of(settings.getLightValueFunction(), ()->material);
 		explosionResistance = MemoizingSuppliers.of(settings.getExplosionResistanceFunction(), ()->material);
 		slipperiness = MemoizingSuppliers.of(settings.getSlipperinessFunction(), ()->material);
