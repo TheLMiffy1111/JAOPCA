@@ -151,7 +151,7 @@ def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.b.2"
+version = "5.0.0.0"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -190,21 +190,21 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.21:2024.07.07@zip"
 	}
-	neoForge "net.neoforged:neoforge:21.0.133-beta"
+	neoForge "net.neoforged:neoforge:21.0.146"
 
 	// Common
-	implementation("mezz.jei:jei-1.21-neoforge:19.5.0.59") {transitive = false}
+	implementation("mezz.jei:jei-1.21-neoforge:19.5.2.66") {transitive = false}
 	implementation "top.theillusivec4.curios:curios-neoforge:9.0.5+1.21"
 	implementation("software.bernie.geckolib:geckolib-neoforge-1.21:4.5.7") {transitive = false}
 	implementation("com.klikli_dev:modonomicon-1.21-neoforge:1.96.1") {transitive = false}
-	implementation "dev.architectury:architectury-neoforge:13.0.4"
-	implementation "dev.latvian.mods:rhino:2100.2.5-build.41"
+	implementation "dev.architectury:architectury-neoforge:13.0.6"
+	implementation "dev.latvian.mods:rhino:2100.2.5-build.44"
 
 	// CraftTweaker
-	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.21:20.0.18") {transitive = false}
+	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.21:20.0.19") {transitive = false}
 
 	// KubeJS
-	implementation("dev.latvian.mods:kubejs-neoforge:2100.7.0-build.94") {transitive = false}
+	implementation("dev.latvian.mods:kubejs-neoforge:2100.7.0-build.117") {transitive = false}
 
 	// Json Things
 	modImplementation("dev.gigaherz.jsonthings:JsonThings-1.21:0.12.1") {transitive = false}
@@ -213,31 +213,31 @@ dependencies {
 	implementation "curse.maven:energized-power-782147:5510706"
 
 	// Integrated Dynamics
-	implementation "curse.maven:cyclops-core-232758:5563688"
-	implementation "curse.maven:common-capabilities-247007:5536700"
-	implementation "curse.maven:integrated-dynamics-236307:5564619"
+	implementation "curse.maven:cyclops-core-232758:5579812"
+	implementation "curse.maven:common-capabilities-247007:5579966"
+	implementation "curse.maven:integrated-dynamics-236307:5579871"
 
 	// Mekanism
-	implementation "mekanism:Mekanism:1.21-10.6.6.53"
+	implementation "mekanism:Mekanism:1.21-10.6.7.54"
 
 	// Modern Industrialization
-	implementation "me.shedaniel.cloth:cloth-config-neoforge:15.0.127"
+	implementation "me.shedaniel.cloth:cloth-config-neoforge:15.0.128"
 	implementation "dev.technici4n:GrandPower:3.0.0"
-	implementation("aztech:Modern-Industrialization:2.2.14-beta") {transitive = false}
+	implementation("aztech:Modern-Industrialization:2.2.15-beta") {transitive = false}
 
 	// Occultism
 	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.21:1.14.5"
-	implementation("com.klikli_dev:occultism-1.21-neoforge:1.139.1") {transitive = false}
+	implementation("com.klikli_dev:occultism-1.21-neoforge:1.141.0") {transitive = false}
 
 	// Theurgy
-	implementation("com.klikli_dev:theurgy-1.21-neoforge:1.32.0") {transitive = false}
+	implementation("com.klikli_dev:theurgy-1.21-neoforge:1.35.1") {transitive = false}
 
 	// Testing
 	implementation "curse.maven:ato-405593:5553138"
 
 	// Performance
 	implementation "curse.maven:yeetusexperimentus-635427:5444189"
-	implementation "curse.maven:modernfix-790626:5527238"
+	implementation "curse.maven:modernfix-790626:5569656"
 	implementation "curse.maven:ferritecore-429235:5434178"
 }
 
@@ -305,7 +305,7 @@ publishMods {
 	file = remapJar.archiveFile
 	version = displayName = "${mcVersion}-${project.version}"
 	changelog = file("changelog.md").text
-	type = ALPHA
+	type = BETA
 	modLoaders.add("neoforge")
 	additionalFiles.from(remapSourcesJar.archiveFile)
 

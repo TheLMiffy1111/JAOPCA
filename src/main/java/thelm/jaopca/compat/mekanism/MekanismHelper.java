@@ -85,20 +85,21 @@ public class MekanismHelper {
 		IGasIngredient ing = null;
 		Set<Gas> gases = new HashSet<>();
 		IChemicalIngredientCreator<Gas, IGasIngredient> creator = IngredientCreatorAccess.gas();
-		if(obj instanceof Supplier<?>) {
-			Pair<IGasIngredient, Set<Gas>> pair = getGasIngredientResolved(((Supplier<?>)obj).get());
+		switch(obj) {
+		case Supplier<?> supplier -> {
+			Pair<IGasIngredient, Set<Gas>> pair = getGasIngredientResolved(supplier.get());
 			ing = pair.getLeft();
 			gases.addAll(pair.getRight());
 		}
-		else if(obj instanceof CompoundIngredientObject cObj) {
-			List<Pair<IGasIngredient, Set<Gas>>> ings = Arrays.stream(cObj.ingredients()).map(this::getGasIngredientResolved).toList();
+		case CompoundIngredientObject(CompoundIngredientObject.Type type, Object[] ingredients) -> {
+			List<Pair<IGasIngredient, Set<Gas>>> ings = Arrays.stream(ingredients).map(this::getGasIngredientResolved).toList();
 			if(ings.size() == 1) {
 				Pair<IGasIngredient, Set<Gas>> pair = ings.get(0);
 				ing = pair.getLeft();
 				gases.addAll(pair.getRight());
 			}
 			else if(ings.size() > 1) {
-				switch(cObj.type()) {
+				switch(type) {
 				case UNION -> {
 					if(ings.stream().allMatch(p->p.getRight().isEmpty())) {
 						break;
@@ -134,54 +135,56 @@ public class MekanismHelper {
 				}
 			}
 		}
-		else if(obj instanceof IGasIngredient) {
-			ing = (IGasIngredient)obj;
+		case IGasIngredient gasIng -> {
+			ing = gasIng;
 			// We can't know what gases the ingredient can have so assume all
 			MekanismAPI.GAS_REGISTRY.forEach(gases::add);
 		}
-		else if(obj instanceof String) {
-			ResourceLocation location = ResourceLocation.parse((String)obj);
+		case String str -> {
+			ResourceLocation location = ResourceLocation.parse(str);
 			ing = creator.tag(getGasTagKey(location));
 			gases.addAll(getGasTagValues(location));
 		}
-		else if(obj instanceof ResourceLocation location) {
+		case ResourceLocation location -> {
 			ing = creator.tag(getGasTagKey(location));
 			gases.addAll(getGasTagValues(location));
 		}
-		else if(obj instanceof TagKey key) {
-			ing = creator.tag(key);
+		case TagKey<?> key -> {
+			ing = creator.tag(getGasTagKey(key.location()));
 			gases.addAll(getGasTagValues(key.location()));
 		}
-		else if(obj instanceof GasStack stack) {
+		case GasStack stack -> {
 			if(!stack.isEmpty()) {
 				ing = creator.of(stack);
 				gases.add(stack.getChemical());
 			}
 		}
-		else if(obj instanceof GasStack[] stacks) {
+		case GasStack[] stacks -> {
 			List<GasStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = creator.of(nonEmpty.toArray(GasStack[]::new));
 				nonEmpty.stream().map(GasStack::getChemical).forEach(gases::add);
 			}
 		}
-		else if(obj instanceof IGasProvider gas) {
+		case IGasProvider gas -> {
 			if(!gas.getChemical().isEmptyType()) {
 				ing = creator.of(gas);
 				gases.add(gas.getChemical());
 			}
 		}
-		else if(obj instanceof IGasProvider[] gasez) {
+		case IGasProvider[] gasez -> {
 			List<Gas> nonEmpty = Arrays.stream(gasez).map(IGasProvider::getChemical).filter(g->!g.isEmptyType()).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = creator.of(nonEmpty.stream());
 				gases.addAll(nonEmpty);
 			}
 		}
-		else if(obj instanceof JsonElement) {
-			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).resultOrPartial(LOGGER::warn).orElse(null);
+		case JsonElement json -> {
+			ing = creator.codec().parse(JsonOps.INSTANCE, json).resultOrPartial(LOGGER::warn).orElse(null);
 			// We can't know what gases the ingredient can have so assume all
 			MekanismAPI.GAS_REGISTRY.forEach(gases::add);
+		}
+		default -> {}
 		}
 		gases.remove(MekanismAPI.EMPTY_GAS);
 		return Pair.of(gases.isEmpty() ? null : ing, gases);
@@ -217,20 +220,21 @@ public class MekanismHelper {
 		ISlurryIngredient ing = null;
 		Set<Slurry> slurries = new HashSet<>();
 		IChemicalIngredientCreator<Slurry, ISlurryIngredient> creator = IngredientCreatorAccess.slurry();
-		if(obj instanceof Supplier<?>) {
-			Pair<ISlurryIngredient, Set<Slurry>> pair = getSlurryIngredientResolved(((Supplier<?>)obj).get());
+		switch(obj) {
+		case Supplier<?> supplier -> {
+			Pair<ISlurryIngredient, Set<Slurry>> pair = getSlurryIngredientResolved(supplier.get());
 			ing = pair.getLeft();
 			slurries.addAll(pair.getRight());
 		}
-		else if(obj instanceof CompoundIngredientObject cObj) {
-			List<Pair<ISlurryIngredient, Set<Slurry>>> ings = Arrays.stream(cObj.ingredients()).map(this::getSlurryIngredientResolved).toList();
+		case CompoundIngredientObject(CompoundIngredientObject.Type type, Object[] ingredients) -> {
+			List<Pair<ISlurryIngredient, Set<Slurry>>> ings = Arrays.stream(ingredients).map(this::getSlurryIngredientResolved).toList();
 			if(ings.size() == 1) {
 				Pair<ISlurryIngredient, Set<Slurry>> pair = ings.get(0);
 				ing = pair.getLeft();
 				slurries.addAll(pair.getRight());
 			}
 			else if(ings.size() > 1) {
-				switch(cObj.type()) {
+				switch(type) {
 				case UNION -> {
 					if(ings.stream().allMatch(p->p.getRight().isEmpty())) {
 						break;
@@ -266,54 +270,56 @@ public class MekanismHelper {
 				}
 			}
 		}
-		else if(obj instanceof ISlurryIngredient) {
-			ing = (ISlurryIngredient)obj;
+		case ISlurryIngredient slurryIng -> {
+			ing = slurryIng;
 			// We can't know what slurries the ingredient can have so assume all
 			MekanismAPI.SLURRY_REGISTRY.forEach(slurries::add);
 		}
-		else if(obj instanceof String) {
-			ResourceLocation location = ResourceLocation.parse((String)obj);
+		case String str -> {
+			ResourceLocation location = ResourceLocation.parse(str);
 			ing = creator.tag(getSlurryTagKey(location));
 			slurries.addAll(getSlurryTagValues(location));
 		}
-		else if(obj instanceof ResourceLocation location) {
+		case ResourceLocation location -> {
 			ing = creator.tag(getSlurryTagKey(location));
 			slurries.addAll(getSlurryTagValues(location));
 		}
-		else if(obj instanceof TagKey key) {
-			ing = creator.tag(key);
+		case TagKey<?> key -> {
+			ing = creator.tag(getSlurryTagKey(key.location()));
 			slurries.addAll(getSlurryTagValues(key.location()));
 		}
-		else if(obj instanceof SlurryStack stack) {
+		case SlurryStack stack -> {
 			if(stack.isEmpty()) {
 				ing = creator.of(stack);
 				slurries.add(stack.getChemical());
 			}
 		}
-		else if(obj instanceof SlurryStack[] stacks) {
+		case SlurryStack[] stacks -> {
 			List<SlurryStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = creator.of(nonEmpty.toArray(SlurryStack[]::new));
 				nonEmpty.stream().map(SlurryStack::getChemical).forEach(slurries::add);
 			}
 		}
-		else if(obj instanceof ISlurryProvider slurry) {
+		case ISlurryProvider slurry -> {
 			if(!slurry.getChemical().isEmptyType()) {
 				ing = creator.of(slurry);
 				slurries.add(slurry.getChemical());
 			}
 		}
-		else if(obj instanceof ISlurryProvider[] slurriez) {
+		case ISlurryProvider[] slurriez -> {
 			List<Slurry> nonEmpty = Arrays.stream(slurriez).map(ISlurryProvider::getChemical).filter(s->!s.isEmptyType()).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = creator.of(nonEmpty.stream());
 				slurries.addAll(nonEmpty);
 			}
 		}
-		else if(obj instanceof JsonElement) {
-			ing = creator.codec().parse(JsonOps.INSTANCE, (JsonElement)obj).resultOrPartial(LOGGER::warn).orElse(null);
+		case JsonElement json -> {
+			ing = creator.codec().parse(JsonOps.INSTANCE, json).resultOrPartial(LOGGER::warn).orElse(null);
 			// We can't know what gases the ingredient can have so assume all
 			MekanismAPI.SLURRY_REGISTRY.forEach(slurries::add);
+		}
+		default -> {}
 		}
 		slurries.remove(MekanismAPI.EMPTY_SLURRY);
 		return Pair.of(slurries.isEmpty() ? null : ing, slurries);

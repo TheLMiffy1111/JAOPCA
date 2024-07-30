@@ -1,10 +1,7 @@
-package thelm.jaopca.compat.crafttweaker;
+package thelm.jaopca.compat.kubejs.utils;
 
+import java.util.List;
 import java.util.TreeMap;
-
-import org.openzen.zencode.java.ZenCodeType;
-
-import com.blamejared.crafttweaker.api.annotation.ZenRegister;
 
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
@@ -12,8 +9,6 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.forms.FormHandler;
 import thelm.jaopca.modules.ModuleHandler;
 
-@ZenRegister
-@ZenCodeType.Name("mods.jaopca.Module")
 public class Module {
 
 	private static final TreeMap<IModule, Module> MODULE_WRAPPERS = new TreeMap<>();
@@ -33,29 +28,24 @@ public class Module {
 		return module;
 	}
 
-	@ZenCodeType.Getter("name")
 	public String getName() {
 		return module.getName();
 	}
 
-	@ZenCodeType.Getter("materialTypes")
-	public String[] getMaterialTypes() {
-		return module.getMaterialTypes().stream().map(MaterialType::getName).toArray(String[]::new);
+	public List<String> getMaterialTypes() {
+		return module.getMaterialTypes().stream().map(MaterialType::getName).toList();
 	}
 
-	@ZenCodeType.Getter("materials")
-	public Material[] getMaterials() {
-		return moduleData.getMaterials().stream().map(Material::getMaterialWrapper).toArray(Material[]::new);
+	public List<Material> getMaterials() {
+		return moduleData.getMaterials().stream().map(Material::getMaterialWrapper).toList();
 	}
 
-	@ZenCodeType.Method
 	public boolean containsMaterial(Material material) {
 		return moduleData.getMaterials().contains(material.getInternal());
 	}
 
-	@ZenCodeType.Getter("forms")
-	public Form[] getForms() {
-		return FormHandler.getForms().stream().filter(f->f.getModule() == module).map(Form::getFormWrapper).toArray(Form[]::new);
+	public List<Form> getForms() {
+		return FormHandler.getForms().stream().filter(f->f.getModule() == module).map(Form::getFormWrapper).toList();
 	}
 
 	@Override

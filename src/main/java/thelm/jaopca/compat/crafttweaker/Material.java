@@ -6,9 +6,7 @@ import org.openzen.zencode.java.ZenCodeType;
 
 import com.blamejared.crafttweaker.api.annotation.ZenRegister;
 import com.blamejared.crafttweaker.api.fluid.IFluidStack;
-import com.blamejared.crafttweaker.api.fluid.MCFluidStack;
 import com.blamejared.crafttweaker.api.item.IItemStack;
-import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.tag.CraftTweakerTagRegistry;
 import com.blamejared.crafttweaker.api.tag.MCTag;
 import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
@@ -124,7 +122,7 @@ public class Material {
 	public IItemStack getItemStack(String prefix, int count) {
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		ItemStack stack = helper.getItemStack(helper.getTagLocation(prefix, material.getName()), count);
-		return new MCItemStack(stack);
+		return IItemStack.of(stack);
 	}
 
 	@ZenCodeType.Method
@@ -136,7 +134,7 @@ public class Material {
 	public IFluidStack getFluidStack(String prefix, int count) {
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		FluidStack stack = helper.getFluidStack(helper.getTagLocation(prefix, material.getName()), count);
-		return new MCFluidStack(stack);
+		return IFluidStack.of(stack);
 	}
 
 	@ZenCodeType.Method
@@ -149,10 +147,10 @@ public class Material {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Material other)) {
-			return false;
+		if(obj instanceof Material other) {
+			return material == other.material;
 		}
-		return material == other.material;
+		return false;
 	}
 
 	@Override

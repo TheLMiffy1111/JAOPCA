@@ -150,20 +150,21 @@ public class MiscHelper implements IMiscHelper {
 	public Pair<Ingredient, Set<Item>> getIngredientResolved(Object obj) {
 		Ingredient ing = null;
 		Set<Item> items = new LinkedHashSet<>();
-		if(obj instanceof Supplier<?>) {
-			Pair<Ingredient, Set<Item>> pair = getIngredientResolved(((Supplier<?>)obj).get());
+		switch(obj) {
+		case Supplier<?> supplier -> {
+			Pair<Ingredient, Set<Item>> pair = getIngredientResolved(supplier.get());
 			ing = pair.getLeft();
 			items.addAll(pair.getRight());
 		}
-		else if(obj instanceof CompoundIngredientObject cObj) {
-			List<Pair<Ingredient, Set<Item>>> ings = Arrays.stream(cObj.ingredients()).map(this::getIngredientResolved).toList();
+		case CompoundIngredientObject(CompoundIngredientObject.Type type, Object[] ingredients) -> {
+			List<Pair<Ingredient, Set<Item>>> ings = Arrays.stream(ingredients).map(this::getIngredientResolved).toList();
 			if(ings.size() == 1) {
 				Pair<Ingredient, Set<Item>> pair = ings.get(0);
 				ing = pair.getLeft();
 				items.addAll(pair.getRight());
 			}
 			else if(ings.size() > 1) {
-				switch(cObj.type()) {
+				switch(type) {
 				case UNION -> {
 					if(ings.stream().allMatch(p->p.getRight().isEmpty())) {
 						break;
@@ -199,64 +200,66 @@ public class MiscHelper implements IMiscHelper {
 				}
 			}
 		}
-		else if(obj instanceof Ingredient) {
-			ing = (Ingredient)obj;
+		case Ingredient itemIng -> {
+			ing = itemIng;
 			// We can't know what items the ingredient can have so assume all
 			BuiltInRegistries.ITEM.forEach(items::add);
 		}
-		else if(obj instanceof String) {
-			ResourceLocation location = ResourceLocation.parse((String)obj);
+		case String str -> {
+			ResourceLocation location = ResourceLocation.parse(str);
 			ing = Ingredient.of(getItemTagKey(location));
 			items.addAll(getItemTagValues(location));
 		}
-		else if(obj instanceof ResourceLocation location) {
+		case ResourceLocation location -> {
 			ing = Ingredient.of(getItemTagKey(location));
 			items.addAll(getItemTagValues(location));
 		}
-		else if(obj instanceof TagKey key) {
-			ing = Ingredient.of(key);
+		case TagKey<?> key -> {
+			ing = Ingredient.of(getItemTagKey(key.location()));
 			items.addAll(getItemTagValues(key.location()));
 		}
-		else if(obj instanceof ItemStack stack) {
+		case ItemStack stack -> {
 			if(!stack.isEmpty()) {
 				ing = Ingredient.of(stack);
 				items.add(stack.getItem());
 			}
 		}
-		else if(obj instanceof ItemStack[] stacks) {
+		case ItemStack[] stacks -> {
 			List<ItemStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = Ingredient.of(nonEmpty.stream());
 				nonEmpty.stream().map(ItemStack::getItem).forEach(items::add);
 			}
 		}
-		else if(obj instanceof ItemLike item) {
+		case ItemLike item -> {
 			if(item.asItem() != Items.AIR) {
 				ing = Ingredient.of(item);
 				items.add(item.asItem());
 			}
 		}
-		else if(obj instanceof ItemLike[] itemz) {
+		case ItemLike[] itemz -> {
 			List<Item> nonEmpty = Arrays.stream(itemz).map(ItemLike::asItem).filter(i->i != Items.AIR).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = Ingredient.of(nonEmpty.toArray(Item[]::new));
 				items.addAll(nonEmpty);
 			}
 		}
-		else if(obj instanceof Ingredient.Value) {
-			ing = Ingredient.fromValues(Stream.of((Ingredient.Value)obj));
+		case Ingredient.Value value -> {
+			ing = Ingredient.fromValues(Stream.of(value));
 			// We can't know what items the ingredient can have so assume all
 			BuiltInRegistries.ITEM.forEach(items::add);
 		}
-		else if(obj instanceof Ingredient.Value[]) {
-			ing = Ingredient.fromValues(Stream.of((Ingredient.Value[])obj));
+		case Ingredient.Value[] values -> {
+			ing = Ingredient.fromValues(Stream.of(values));
 			// We can't know what items the ingredient can have so assume all
 			BuiltInRegistries.ITEM.forEach(items::add);
 		}
-		else if(obj instanceof JsonElement) {
-			ing = Ingredient.CODEC.parse(JsonOps.INSTANCE, (JsonElement)obj).resultOrPartial(LOGGER::warn).orElse(null);
+		case JsonElement json -> {
+			ing = Ingredient.CODEC.parse(JsonOps.INSTANCE, json).resultOrPartial(LOGGER::warn).orElse(null);
 			// We can't know what items the ingredient can have so assume all
 			BuiltInRegistries.ITEM.forEach(items::add);
+		}
+		default -> {}
 		}
 		items.remove(Items.AIR);
 		return Pair.of(items.isEmpty() ? null : ing, items);
@@ -297,20 +300,21 @@ public class MiscHelper implements IMiscHelper {
 	public Pair<FluidIngredient, Set<Fluid>> getFluidIngredientResolved(Object obj) {
 		FluidIngredient ing = null;
 		Set<Fluid> fluids = new HashSet<>();
-		if(obj instanceof Supplier<?>) {
+		switch(obj) {
+		case Supplier<?> supplier -> {
 			Pair<FluidIngredient, Set<Fluid>> pair = getFluidIngredientResolved(((Supplier<?>)obj).get());
 			ing = pair.getLeft();
 			fluids.addAll(pair.getRight());
 		}
-		else if(obj instanceof CompoundIngredientObject cObj) {
-			List<Pair<FluidIngredient, Set<Fluid>>> ings = Arrays.stream(cObj.ingredients()).map(this::getFluidIngredientResolved).toList();
+		case CompoundIngredientObject(CompoundIngredientObject.Type type, Object[] ingredients) -> {
+			List<Pair<FluidIngredient, Set<Fluid>>> ings = Arrays.stream(ingredients).map(this::getFluidIngredientResolved).toList();
 			if(ings.size() == 1) {
 				Pair<FluidIngredient, Set<Fluid>> pair = ings.get(0);
 				ing = pair.getLeft();
 				fluids.addAll(pair.getRight());
 			}
 			else if(ings.size() > 1) {
-				switch(cObj.type()) {
+				switch(type) {
 				case UNION -> {
 					if(ings.stream().allMatch(p->p.getRight().isEmpty())) {
 						break;
@@ -346,67 +350,69 @@ public class MiscHelper implements IMiscHelper {
 				}
 			}
 		}
-		else if(obj instanceof FluidIngredient) {
-			ing = (FluidIngredient)obj;
+		case FluidIngredient fluidIng -> {
+			ing = fluidIng;
 			// We can't know what fluids the ingredient can have so assume all
 			BuiltInRegistries.FLUID.forEach(fluids::add);
 		}
-		else if(obj instanceof String) {
-			ResourceLocation location = ResourceLocation.parse((String)obj);
+		case String str -> {
+			ResourceLocation location = ResourceLocation.parse(str);
 			ing = FluidIngredient.tag(getFluidTagKey(location));
 			fluids.addAll(getFluidTagValues(location));
 		}
-		else if(obj instanceof ResourceLocation location) {
+		case ResourceLocation location -> {
 			ing = FluidIngredient.tag(getFluidTagKey(location));
 			fluids.addAll(getFluidTagValues(location));
 		}
-		else if(obj instanceof TagKey key) {
-			ing = FluidIngredient.tag(key);
+		case TagKey<?> key -> {
+			ing = FluidIngredient.tag(getFluidTagKey(key.location()));
 			fluids.addAll(getFluidTagValues(key.location()));
 		}
-		else if(obj instanceof FluidStack stack) {
+		case FluidStack stack -> {
 			if(!stack.isEmpty()) {
 				ing = FluidIngredient.of(stack);
 				fluids.add(stack.getFluid());
 			}
 		}
-		else if(obj instanceof FluidStack[] stacks) {
+		case FluidStack[] stacks -> {
 			List<FluidStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = FluidIngredient.of(nonEmpty.toArray(FluidStack[]::new));
 				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
 			}
 		}
-		else if(obj instanceof Fluid fluid) {
+		case Fluid fluid -> {
 			if(fluid != Fluids.EMPTY) {
 				ing = FluidIngredient.of(fluid);
 				fluids.add(fluid);
 			}
 		}
-		else if(obj instanceof Fluid[] fluidz) {
+		case Fluid[] fluidz -> {
 			List<Fluid> nonEmpty = Arrays.stream(fluidz).filter(f->f != Fluids.EMPTY).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = FluidIngredient.of(nonEmpty.toArray(Fluid[]::new));
 				fluids.addAll(nonEmpty);
 			}
 		}
-		else if(obj instanceof IFluidLike fluid) {
+		case IFluidLike fluid -> {
 			if(fluid.asFluid() != Fluids.EMPTY) {
 				ing = FluidIngredient.of(fluid.asFluid());
 				fluids.add(fluid.asFluid());
 			}
 		}
-		else if(obj instanceof IFluidLike[] fluidz) {
+		case IFluidLike[] fluidz -> {
 			List<Fluid> nonEmpty = Arrays.stream(fluidz).map(IFluidLike::asFluid).filter(f->f != Fluids.EMPTY).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = FluidIngredient.of(nonEmpty.toArray(Fluid[]::new));
 				fluids.addAll(nonEmpty);
 			}
 		}
-		else if(obj instanceof JsonElement) {
-			ing = FluidIngredient.CODEC.parse(JsonOps.INSTANCE, (JsonElement)obj).resultOrPartial(LOGGER::warn).orElse(null);
+		case JsonElement json -> {
+			ing = FluidIngredient.CODEC.parse(JsonOps.INSTANCE, json).resultOrPartial(LOGGER::warn).orElse(null);
 			// We can't know what fluids the ingredient can have so assume all
 			BuiltInRegistries.FLUID.forEach(fluids::add);
+		}
+		default -> {}
 		}
 		fluids.remove(Fluids.EMPTY);
 		return Pair.of(fluids.isEmpty() ? null : ing, fluids);
