@@ -1,1 +1,1 @@
-Fix uninitialized block field  
+Return nonnull stacks in CraftTweaker support  

@@ -60,23 +60,23 @@ public class MaterialForm {
 	}
 
 	public FluidStackJS asFluidStack(int amount) {
-		if(!(info instanceof IFluidProvider)) {
-			return EmptyFluidStackJS.INSTANCE;
+		if(info instanceof IFluidProvider) {
+			return FluidStackJS.of(((IFluidProvider)info).asFluid(), amount, null);
 		}
-		return FluidStackJS.of(((IFluidProvider)info).asFluid(), amount, null);
+		return EmptyFluidStackJS.INSTANCE;
 	}
 
 	public Block asBlock() {
-		if(!(info instanceof IBlockProvider)) {
-			return null;
+		if(info instanceof IBlockProvider) {
+			return ((IBlockProvider)info).asBlock();
 		}
-		return ((IBlockProvider)info).asBlock();
+		return null;
 	}
 
 	public BlockState asBlockState() {
-		if(!(info instanceof IBlockProvider)) {
-			return null;
+		if(info instanceof IBlockProvider) {
+			return (((IBlockProvider)info).asBlock().defaultBlockState());
 		}
-		return (((IBlockProvider)info).asBlock().defaultBlockState());
+		return null;
 	}
 }

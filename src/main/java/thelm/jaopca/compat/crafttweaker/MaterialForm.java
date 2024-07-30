@@ -86,10 +86,10 @@ public class MaterialForm {
 
 	@ZenCodeType.Method
 	public IItemStack asItemStack(int count) {
-		if(!(info instanceof IItemProvider)) {
-			return null;
+		if(info instanceof IItemProvider) {
+			return new MCItemStack(new ItemStack((IItemProvider)info, count));
 		}
-		return new MCItemStack(new ItemStack((IItemProvider)info, count));
+		return MCItemStack.EMPTY.get();
 	}
 
 	@ZenCodeType.Method
@@ -99,25 +99,25 @@ public class MaterialForm {
 
 	@ZenCodeType.Method
 	public IFluidStack asFluidStack(int amount) {
-		if(!(info instanceof IFluidProvider)) {
-			return null;
+		if(info instanceof IFluidProvider) {
+			return new MCFluidStack(new FluidStack(((IFluidProvider)info).asFluid(), amount));
 		}
-		return new MCFluidStack(new FluidStack(((IFluidProvider)info).asFluid(), amount));
+		return MCFluidStack.EMPTY.get();
 	}
 
 	@ZenCodeType.Method
 	public Block asBlock() {
-		if(!(info instanceof IBlockProvider)) {
-			return null;
+		if(info instanceof IBlockProvider) {
+			return ((IBlockProvider)info).asBlock();
 		}
-		return ((IBlockProvider)info).asBlock();
+		return null;
 	}
 
 	@ZenCodeType.Method
 	public BlockState asBlockState() {
-		if(!(info instanceof IBlockProvider)) {
-			return null;
+		if(info instanceof IBlockProvider) {
+			return (((IBlockProvider)info).asBlock().defaultBlockState());
 		}
-		return (((IBlockProvider)info).asBlock().defaultBlockState());
+		return null;
 	}
 }

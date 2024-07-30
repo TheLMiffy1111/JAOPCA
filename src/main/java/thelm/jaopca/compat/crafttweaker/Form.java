@@ -114,10 +114,10 @@ public class Form {
 
 	@ZenCodeType.Method
 	public MaterialForm getMaterialForm(Material material) {
-		if(!containsMaterial(material)) {
-			return null;
+		if(containsMaterial(material)) {
+			return MaterialForm.getMaterialFormWrapper(form, material.getInternal());
 		}
-		return MaterialForm.getMaterialFormWrapper(form, material.getInternal());
+		return null;
 	}
 
 	@ZenCodeType.Getter("materialForms")
@@ -127,11 +127,10 @@ public class Form {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Form)) {
-			return false;
+		if(obj instanceof Form) {
+			return form == ((Form)obj).form;
 		}
-		Form other = (Form)obj;
-		return form == other.form;
+		return false;
 	}
 
 	@Override

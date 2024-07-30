@@ -96,11 +96,10 @@ public class Form {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Form)) {
-			return false;
+		if(obj instanceof Form) {
+			return form == ((Form)obj).form;
 		}
-		Form other = (Form)obj;
-		return form == other.form;
+		return false;
 	}
 
 	@Override

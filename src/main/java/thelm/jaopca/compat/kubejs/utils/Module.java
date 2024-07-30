@@ -51,11 +51,10 @@ public class Module {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Module)) {
-			return false;
+		if(obj instanceof Module) {
+			return module == ((Module)obj).module;
 		}
-		Module other = (Module)obj;
-		return module == other.module;
+		return false;
 	}
 
 	@Override
