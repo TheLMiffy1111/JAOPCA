@@ -97,10 +97,10 @@ public class Form {
 
 	@ZenMethod
 	public MaterialForm getMaterialForm(Material material) {
-		if(!containsMaterial(material)) {
-			return null;
+		if(containsMaterial(material)) {
+			return MaterialForm.getMaterialFormWrapper(form, material.getInternal());
 		}
-		return MaterialForm.getMaterialFormWrapper(form, material.getInternal());
+		return null;
 	}
 
 	@ZenGetter("materialForms")
@@ -110,10 +110,10 @@ public class Form {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Form)) {
-			return false;
+		if(obj instanceof Form) {
+			return form == ((Form)obj).form;
 		}
-		return form == ((Form)obj).form;
+		return false;
 	}
 
 	@Override

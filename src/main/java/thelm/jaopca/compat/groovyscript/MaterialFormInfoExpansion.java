@@ -29,10 +29,10 @@ public class MaterialFormInfoExpansion {
 	}
 
 	public static ItemStack asItem(IMaterialFormInfo info, int count) {
-		if(!(info instanceof IItemProvider)) {
-			return null;
+		if(info instanceof IItemProvider) {
+			return new ItemStack(((IItemProvider)info).asItem(), count);
 		}
-		return new ItemStack(((IItemProvider)info).asItem(), count);
+		return ItemStack.EMPTY;
 	}
 
 	public static ItemStack asItem(IMaterialFormInfo info) {
@@ -40,10 +40,10 @@ public class MaterialFormInfoExpansion {
 	}
 
 	public static FluidStack asFluid(IMaterialFormInfo info, int amount) {
-		if(!(info instanceof IFluidProvider)) {
-			return null;
+		if(info instanceof IFluidProvider) {
+			return new FluidStack(((IFluidProvider)info).asFluid(), amount);
 		}
-		return new FluidStack(((IFluidProvider)info).asFluid(), amount);
+		return null;
 	}
 
 	public static FluidStack asLiquid(IMaterialFormInfo info, int amount) {
@@ -51,16 +51,16 @@ public class MaterialFormInfoExpansion {
 	}
 
 	public static Block asBlock(IMaterialFormInfo info) {
-		if(!(info instanceof IBlockProvider)) {
-			return null;
+		if(info instanceof IBlockProvider) {
+			return ((IBlockProvider)info).asBlock();
 		}
-		return ((IBlockProvider)info).asBlock();
+		return null;
 	}
 
 	public static IBlockState asBlockState(IMaterialFormInfo info) {
-		if(!(info instanceof IBlockProvider)) {
-			return null;
+		if(info instanceof IBlockProvider) {
+			return ((IBlockProvider)info).asBlock().getDefaultState();
 		}
-		return ((IBlockProvider)info).asBlock().getDefaultState();
+		return null;
 	}
 }

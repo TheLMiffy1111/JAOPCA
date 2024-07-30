@@ -38,9 +38,9 @@ public class MaterialExpansion {
 	}
 
 	public static IMaterialFormInfo getMaterialForm(IMaterial material, IForm form) {
-		if(!FormExpansion.containsMaterial(form, material)) {
-			return null;
+		if(FormExpansion.containsMaterial(form, material)) {
+			return form.getType().getMaterialFormInfo(form, material);
 		}
-		return form.getType().getMaterialFormInfo(form, material);
+		return null;
 	}
 }

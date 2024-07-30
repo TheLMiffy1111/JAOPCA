@@ -63,10 +63,10 @@ public class MaterialForm {
 
 	@ZenMethod
 	public IItemStack asItemStack(int count) {
-		if(!(info instanceof IItemProvider)) {
-			return null;
+		if(info instanceof IItemProvider) {
+			return CraftTweakerMC.getIItemStack(new ItemStack(((IItemProvider)info).asItem(), count));
 		}
-		return CraftTweakerMC.getIItemStack(new ItemStack(((IItemProvider)info).asItem(), count));
+		return null;
 	}
 
 	@ZenMethod
@@ -76,25 +76,25 @@ public class MaterialForm {
 
 	@ZenMethod
 	public ILiquidStack asLiquidStack(int amount) {
-		if(!(info instanceof IFluidProvider)) {
-			return null;
+		if(info instanceof IFluidProvider) {
+			return CraftTweakerMC.getILiquidStack(new FluidStack(((IFluidProvider)info).asFluid(), amount));
 		}
-		return CraftTweakerMC.getILiquidStack(new FluidStack(((IFluidProvider)info).asFluid(), amount));
+		return null;
 	}
 
 	@ZenMethod
 	public IBlockDefinition asBlockDefinition() {
-		if(!(info instanceof IBlockProvider)) {
-			return null;
+		if(info instanceof IBlockProvider) {
+			return CraftTweakerMC.getBlockDefinition(((IBlockProvider)info).asBlock());
 		}
-		return CraftTweakerMC.getBlockDefinition(((IBlockProvider)info).asBlock());
+		return null;
 	}
 
 	@ZenMethod
 	public IBlockState asBlockState() {
-		if(!(info instanceof IBlockProvider)) {
-			return null;
+		if(info instanceof IBlockProvider) {
+			return CraftTweakerMC.getBlockState((((IBlockProvider)info).asBlock().getDefaultState()));
 		}
-		return CraftTweakerMC.getBlockState((((IBlockProvider)info).asBlock().getDefaultState()));
+		return null;
 	}
 }

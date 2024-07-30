@@ -158,7 +158,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.11.25"
+version = "2.3.11.26"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -223,7 +223,7 @@ dependencies {
 	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.700") {transitive = false}
 
 	// GroovyScript
-	modImplementation("com.cleanroommc:groovyscript:1.1.1") {transitive = false}
+	modImplementation("com.cleanroommc:groovyscript:1.1.2") {transitive = false}
 
 	// AbyssalCraft
 	modImplementation "curse.maven:abyssalcraft-53686:5330323"
