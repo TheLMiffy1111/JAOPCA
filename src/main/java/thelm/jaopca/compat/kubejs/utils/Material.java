@@ -78,18 +78,18 @@ public class Material {
 	}
 
 	public MaterialForm getMaterialForm(Form form) {
-		if(!form.containsMaterial(this)) {
-			return null;
+		if(form.containsMaterial(this)) {
+			return MaterialForm.getMaterialFormWrapper(form.getInternal(), material);
 		}
-		return MaterialForm.getMaterialFormWrapper(form.getInternal(), material);
+		return null;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Material other)) {
-			return false;
+		if(obj instanceof Material other) {
+			return material == other.material;
 		}
-		return material == other.material;
+		return false;
 	}
 
 	@Override

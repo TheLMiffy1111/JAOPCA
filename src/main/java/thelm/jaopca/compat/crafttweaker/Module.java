@@ -60,10 +60,10 @@ public class Module {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Module other)) {
-			return false;
+		if(obj instanceof Module other) {
+			return module == other.module;
 		}
-		return module == other.module;
+		return false;
 	}
 
 	@Override

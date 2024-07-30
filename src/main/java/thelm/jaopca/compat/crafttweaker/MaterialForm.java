@@ -89,10 +89,10 @@ public class MaterialForm {
 
 	@ZenCodeType.Method
 	public IItemStack asItemStack(int count) {
-		if(!(info instanceof ItemLike)) {
-			return null;
+		if(info instanceof ItemLike item) {
+			return new MCItemStack(new ItemStack(item, count));
 		}
-		return new MCItemStack(new ItemStack((ItemLike)info, count));
+		return MCItemStack.EMPTY.get();
 	}
 
 	@ZenCodeType.Method
@@ -102,25 +102,25 @@ public class MaterialForm {
 
 	@ZenCodeType.Method
 	public IFluidStack asFluidStack(int amount) {
-		if(!(info instanceof IFluidLike)) {
-			return null;
+		if(info instanceof IFluidLike fluid) {
+			return new MCFluidStack(new FluidStack(fluid.asFluid(), amount));
 		}
-		return new MCFluidStack(new FluidStack(((IFluidLike)info).asFluid(), amount));
+		return MCFluidStack.EMPTY.get();
 	}
 
 	@ZenCodeType.Method
 	public Block asBlock() {
-		if(!(info instanceof IBlockLike)) {
-			return null;
+		if(info instanceof IBlockLike block) {
+			return block.asBlock();
 		}
-		return ((IBlockLike)info).asBlock();
+		return null;
 	}
 
 	@ZenCodeType.Method
 	public BlockState asBlockState() {
-		if(!(info instanceof IBlockLike)) {
-			return null;
+		if(info instanceof IBlockLike block) {
+			return block.asBlock().defaultBlockState();
 		}
-		return (((IBlockLike)info).asBlock().defaultBlockState());
+		return null;
 	}
 }
