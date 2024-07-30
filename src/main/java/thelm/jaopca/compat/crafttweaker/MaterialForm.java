@@ -4,9 +4,7 @@ import org.openzen.zencode.java.ZenCodeType;
 
 import com.blamejared.crafttweaker.api.annotation.ZenRegister;
 import com.blamejared.crafttweaker.api.fluid.IFluidStack;
-import com.blamejared.crafttweaker.api.fluid.MCFluidStack;
 import com.blamejared.crafttweaker.api.item.IItemStack;
-import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.tag.CraftTweakerTagRegistry;
 import com.blamejared.crafttweaker.api.tag.MCTag;
 import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
@@ -90,10 +88,10 @@ public class MaterialForm {
 
 	@ZenCodeType.Method
 	public IItemStack asItemStack(int count) {
-		if(!(info instanceof ItemLike)) {
-			return null;
+		if(info instanceof ItemLike item) {
+			return IItemStack.of(new ItemStack(item, count));
 		}
-		return new MCItemStack(new ItemStack((ItemLike)info, count));
+		return IItemStack.empty();
 	}
 
 	@ZenCodeType.Method
@@ -103,25 +101,25 @@ public class MaterialForm {
 
 	@ZenCodeType.Method
 	public IFluidStack asFluidStack(int amount) {
-		if(!(info instanceof IFluidLike)) {
-			return null;
+		if(info instanceof IFluidLike fluid) {
+			return IFluidStack.of(new FluidStack(fluid.asFluid(), amount));
 		}
-		return new MCFluidStack(new FluidStack(((IFluidLike)info).asFluid(), amount));
+		return IFluidStack.empty();
 	}
 
 	@ZenCodeType.Method
 	public Block asBlock() {
-		if(!(info instanceof IBlockLike)) {
-			return null;
+		if(info instanceof IBlockLike block) {
+			return block.asBlock();
 		}
-		return ((IBlockLike)info).asBlock();
+		return null;
 	}
 
 	@ZenCodeType.Method
 	public BlockState asBlockState() {
-		if(!(info instanceof IBlockLike)) {
-			return null;
+		if(info instanceof IBlockLike block) {
+			return block.asBlock().defaultBlockState();
 		}
-		return (((IBlockLike)info).asBlock().defaultBlockState());
+		return null;
 	}
 }

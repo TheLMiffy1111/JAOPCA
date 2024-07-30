@@ -152,7 +152,7 @@ def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.a.4"
+version = "5.0.a.5"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -221,12 +221,12 @@ dependencies {
 	implementation "curse.maven:energized-power-782147:5401190"
 
 	// Immersive Engineering
-	implementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.4-11.5.0-179"
+	implementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.4-11.6.0-180"
 
 	// Integrated Dynamics
-	implementation "curse.maven:cyclops-core-232758:5540296"
+	implementation "curse.maven:cyclops-core-232758:5553979"
 	implementation "curse.maven:common-capabilities-247007:5457951"
-	implementation "curse.maven:integrated-dynamics-236307:5540334"
+	implementation "curse.maven:integrated-dynamics-236307:5579873"
 
 	// Mekanism
 	implementation "mekanism:Mekanism:1.20.4-10.5.20.41"
@@ -234,7 +234,7 @@ dependencies {
 	// Modern Industrialization
 	implementation "me.shedaniel.cloth:cloth-config-neoforge:13.0.121"
 	implementation "dev.technici4n:GrandPower:1.0.0"
-	implementation("aztech:Modern-Industrialization:2.0.24") {transitive = false}
+	implementation("aztech:Modern-Industrialization:2.0.25") {transitive = false}
 
 	// Occultism
 	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.20.4:1.14.1"
