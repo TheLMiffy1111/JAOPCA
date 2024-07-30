@@ -85,18 +85,18 @@ public class Material {
 
 	@ZenMethod
 	public MaterialForm getMaterialForm(Form form) {
-		if(!form.containsMaterial(this)) {
-			return null;
+		if(form.containsMaterial(this)) {
+			return MaterialForm.getMaterialFormWrapper(form.getInternal(), material);
 		}
-		return MaterialForm.getMaterialFormWrapper(form.getInternal(), material);
+		return null;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Material)) {
-			return false;
+		if(obj instanceof Material) {
+			return material == ((Material)obj).material;
 		}
-		return material == ((Material)obj).material;
+		return false;
 	}
 
 	@Override

@@ -61,10 +61,10 @@ public class MaterialForm {
 
 	@ZenMethod
 	public IItemStack asItemStack(int count) {
-		if(!(info instanceof IItemProvider)) {
-			return null;
+		if(info instanceof IItemProvider) {
+			return MineTweakerMC.getIItemStack(new ItemStack(((IItemProvider)info).asItem(), count));
 		}
-		return MineTweakerMC.getIItemStack(new ItemStack(((IItemProvider)info).asItem(), count));
+		return null;
 	}
 
 	@ZenMethod
@@ -74,17 +74,17 @@ public class MaterialForm {
 
 	@ZenMethod
 	public ILiquidStack asLiquidStack(int amount) {
-		if(!(info instanceof IFluidProvider)) {
-			return null;
+		if(info instanceof IFluidProvider) {
+			return new MCLiquidStack(new FluidStack(((IFluidProvider)info).asFluid(), amount));
 		}
-		return new MCLiquidStack(new FluidStack(((IFluidProvider)info).asFluid(), amount));
+		return null;
 	}
 
 	@ZenMethod
 	public IBlockDefinition asBlockDefinition() {
-		if(!(info instanceof IBlockProvider)) {
-			return null;
+		if(info instanceof IBlockProvider) {
+			return MineTweakerMC.getBlockDefinition(((IBlockProvider)info).asBlock());
 		}
-		return MineTweakerMC.getBlockDefinition(((IBlockProvider)info).asBlock());
+		return null;
 	}
 }
