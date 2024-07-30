@@ -204,7 +204,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.2.13.31"
+version = "4.2.13.32"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -248,7 +248,7 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.19.2:2022.11.27@zip"
 	}
-	forge "net.minecraftforge:forge:1.19.2-43.4.0"
+	forge "net.minecraftforge:forge:1.19.2-43.4.2"
 
 	// Common
 	modImplementation("mezz.jei:jei-1.19.2-forge:11.6.0.1024") {transitive = false}
@@ -310,8 +310,8 @@ dependencies {
 	modImplementation "curse.maven:industrial-reborn-358877:4651636"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:5550859"
-	modImplementation "curse.maven:common-capabilities-247007:4987191"
+	modImplementation "curse.maven:cyclops-core-232758:5557159"
+	modImplementation "curse.maven:common-capabilities-247007:5579951"
 	modImplementation "curse.maven:integrated-dynamics-236307:5550867"
 
 	// Mekanism

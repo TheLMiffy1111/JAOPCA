@@ -6,9 +6,7 @@ import org.openzen.zencode.java.ZenCodeType;
 
 import com.blamejared.crafttweaker.api.annotation.ZenRegister;
 import com.blamejared.crafttweaker.api.fluid.IFluidStack;
-import com.blamejared.crafttweaker.api.fluid.MCFluidStack;
 import com.blamejared.crafttweaker.api.item.IItemStack;
-import com.blamejared.crafttweaker.api.item.MCItemStack;
 import com.blamejared.crafttweaker.api.tag.CraftTweakerTagRegistry;
 import com.blamejared.crafttweaker.api.tag.MCTag;
 import com.blamejared.crafttweaker.api.tag.manager.ITagManager;
@@ -110,7 +108,7 @@ public class Form {
 	public IItemStack getItemStack(String suffix, int count) {
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		ItemStack stack = helper.getItemStack(helper.getTagLocation(form.getSecondaryName(), suffix), count);
-		return new MCItemStack(stack);
+		return IItemStack.of(stack);
 	}
 
 	@ZenCodeType.Method
@@ -122,15 +120,15 @@ public class Form {
 	public IFluidStack getFluidStack(String suffix, int amount) {
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		FluidStack stack = helper.getFluidStack(helper.getTagLocation(form.getSecondaryName(), suffix), amount);
-		return new MCFluidStack(stack);
+		return IFluidStack.of(stack);
 	}
 
 	@ZenCodeType.Method
 	public MaterialForm getMaterialForm(Material material) {
-		if(!containsMaterial(material)) {
-			return null;
+		if(containsMaterial(material)) {
+			return MaterialForm.getMaterialFormWrapper(form, material.getInternal());
 		}
-		return MaterialForm.getMaterialFormWrapper(form, material.getInternal());
+		return null;
 	}
 
 	@ZenCodeType.Getter("materialForms")
@@ -140,10 +138,10 @@ public class Form {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Form other)) {
-			return false;
+		if(obj instanceof Form other) {
+			return form == other.form;
 		}
-		return form == other.form;
+		return false;
 	}
 
 	@Override
