@@ -285,8 +285,7 @@ def curseforgeDependencies = [
 	"mekanism",
 	"modern-industrialization",
 	"occultism",
-	"theurgy",
-	"useful-machinery"
+	"theurgy"
 ]
 
 def modrinthDependencies = [
@@ -297,8 +296,7 @@ def modrinthDependencies = [
 	"mekanism",
 	"modern-industrialization",
 	"occultism",
-	"theurgy",
-	"useful-machinery"
+	"theurgy"
 ]
 
 publishMods {
