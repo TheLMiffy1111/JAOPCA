@@ -1,19 +1,46 @@
 {
-	"block.jaopca.storage_blocks": "%s磚",
-	"block.jaopca.raw_storage_blocks": "%s原礦塊",
-	"item.jaopca.dusts": "%s粉",
-	"item.jaopca.nuggets": "%s粒",
-	"item.jaopca.tiny_dusts": "小撮%s粉",
-	"item.jaopca.small_dusts": "小%s粉",
-	"fluid_type.jaopca.molten": "熔融%s",
-	"item.jaopca.molten": "熔融%s桶",
+    "itemGroup.jaopca": "JAOPCA",
 
-	"item.jaopca.create_crushed": "碎狀%s原礦",
+    "block.jaopca.storage_blocks": "%s磚",
+    "block.jaopca.raw_storage_blocks": "%s原礦塊",
+    "item.jaopca.dusts": "%s粉",
+    "item.jaopca.nuggets": "%s粒",
+    "item.jaopca.tiny_dusts": "小撮%s粉",
+    "item.jaopca.small_dusts": "小%s粉",
+    "fluid_type.jaopca.molten": "熔融%s",
+    "item.jaopca.molten": "熔融%s桶",
 
-	"item.jaopca.mekanism_dirty_dusts": "污濁%s粉",
-	"item.jaopca.mekanism_clumps": "%s碎塊",
-	"item.jaopca.mekanism_shards": "%s碎片",
-	"item.jaopca.mekanism_crystals": "%s晶體",
-	"slurry.jaopca.mekanism_dirty": "污濁%s漿液",
-	"slurry.jaopca.mekanism_clean": "純淨%s漿液"
+    "item.jaopca.create_crushed": "碎狀%s原礦",
+
+    "item.jaopca.crossroads_grits": "粗%s沙",
+    "item.jaopca.crossroads_clumps": "%s團",
+
+    "item.jaopca.electrodynamics_impuredusts": "不純%s粉",
+    "item.jaopca.electrodynamics_crystals": "%s硫酸鹽晶體",
+    "fluid_type.jaopca.electrodynamics_sulfates": "%s硫酸鹽",
+    "item.jaopca.electrodynamics_sulfates": "%s硫酸鹽桶",
+
+    "item.jaopca.bloodmagic_gravels": "%s礫",
+    "item.jaopca.bloodmagic_fragments": "%s碎片",
+
+    "item.jaopca.factorium_chunks": "%s塊",
+    "item.jaopca.factorium_powders": "%s粉末",
+
+    "item.jaopca.indreb_purified": "純淨%s",
+    "item.jaopca.indreb_chunks": "%s塊",
+
+    "item.jaopca.mekanism_dirty_dusts": "污濁%s粉",
+    "item.jaopca.mekanism_clumps": "%s碎塊",
+    "item.jaopca.mekanism_shards": "%s碎片",
+    "item.jaopca.mekanism_crystals": "%s晶體",
+    "slurry.jaopca.mekanism_dirty": "污濁%s漿",
+    "slurry.jaopca.mekanism_clean": "純淨%s漿",
+
+    "fluid_type.jaopca.nuclearcraft_slurries": "%s漿",
+    "item.jaopca.nuclearcraft_slurries": "%s漿桶",
+    "fluid_type.jaopca.nuclearcraft_clean_slurries": "%s淨漿",
+
+    "item.jaopca.nuclearcraft_clean_slurries": "%s淨漿桶",
+    "item.jaopca.theurgy_alchemical_sulfurs": "煉金硫磺%s",
+    "item.jaopca.theurgy_alchemical_sulfurs.tooltip": "以%s%s%s合成的煉金硫磺。"
 }
