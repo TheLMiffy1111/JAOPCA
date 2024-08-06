@@ -1,0 +1,46 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "%sblock",
+	"block.jaopca.raw_storage_blocks": "Roh%sblock",
+	"item.jaopca.dusts": "%sstaub",
+	"item.jaopca.nuggets": "%snugget",
+	"item.jaopca.tiny_dusts": "Winziger Haufen %sstaub",
+	"item.jaopca.small_dusts": "Kleiner Haufen %sstaub",
+	"fluid_type.jaopca.molten": "Geschmolzenes %s",
+	"item.jaopca.molten": "Eimer mit Geschmolzenes %s",
+
+	"item.jaopca.bloodmagic_gravels": "%s Gravel",
+	"item.jaopca.bloodmagic_fragments": "%s Fragment",
+
+	"item.jaopca.create_crushed": "Crushed Raw %s",
+
+	"item.jaopca.crossroads_grits": "Raw %s Grit",
+	"item.jaopca.crossroads_clumps": "%s Clumps",
+
+	"item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
+	"item.jaopca.electrodynamics_crystals": "%s Sulfate Crystal",
+	"fluid_type.jaopca.electrodynamics_sulfates": "%s Sulfate",
+	"item.jaopca.electrodynamics_sulfates": "%s Sulfate Bucket",
+
+	"item.jaopca.factorium_chunks": "%s Chunks",
+	"item.jaopca.factorium_powders": "%s Powder",
+
+	"item.jaopca.indreb_purified": "Purified %s",
+	"item.jaopca.indreb_chunks": "%s Chunk",
+
+	"item.jaopca.mekanism_dirty_dusts": "Dreckiger %sstaub",
+	"item.jaopca.mekanism_clumps": "%sklumpen",
+	"item.jaopca.mekanism_shards": "%ssplitter",
+	"item.jaopca.mekanism_crystals": "%skristall",
+	"slurry.jaopca.mekanism_dirty": "Dreckiger %sschlamm",
+	"slurry.jaopca.mekanism_clean": "Sauberer %sschlamm",
+
+	"fluid_type.jaopca.nuclearcraft_slurries": "%sschlamm",
+	"item.jaopca.nuclearcraft_slurries": "Eimer mit %sschlamm",
+	"fluid_type.jaopca.nuclearcraft_clean_slurries": "Sauberer %sschlamm",
+	"item.jaopca.nuclearcraft_clean_slurries": "Eimer mit Sauberer %sschlamm",
+
+	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
+	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
+}

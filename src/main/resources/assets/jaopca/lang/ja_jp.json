@@ -1,0 +1,46 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "%sブロック",
+	"block.jaopca.raw_storage_blocks": "%sの原石ブロック",
+	"item.jaopca.dusts": "%sの粉",
+	"item.jaopca.nuggets": "%s塊",
+	"item.jaopca.tiny_dusts": "極小の%sの粉",
+	"item.jaopca.small_dusts": "小さな%sの粉",
+	"fluid_type.jaopca.molten": "熔融%s",
+	"item.jaopca.molten": "熔融%s入りバケツ",
+
+	"item.jaopca.bloodmagic_gravels": "%s Gravel",
+	"item.jaopca.bloodmagic_fragments": "%s Fragment",
+
+	"item.jaopca.create_crushed": "砕いた%s鉱石",
+
+	"item.jaopca.crossroads_grits": "Raw %s Grit",
+	"item.jaopca.crossroads_clumps": "%s Clumps",
+
+	"item.jaopca.electrodynamics_impuredusts": "低純度%s粉",
+	"item.jaopca.electrodynamics_crystals": "硫酸%s結晶",
+	"fluid_type.jaopca.electrodynamics_sulfates": "硫酸%s",
+	"item.jaopca.electrodynamics_sulfates": "硫酸%s入りバケツ",
+
+	"item.jaopca.factorium_chunks": "%s Chunks",
+	"item.jaopca.factorium_powders": "%s Powder",
+
+	"item.jaopca.indreb_purified": "Purified %s",
+	"item.jaopca.indreb_chunks": "%s Chunk",
+
+	"item.jaopca.mekanism_dirty_dusts": "汚れた%sの粉",
+	"item.jaopca.mekanism_clumps": "%sの凝塊",
+	"item.jaopca.mekanism_shards": "%sの欠片",
+	"item.jaopca.mekanism_crystals": "%sの結晶",
+	"slurry.jaopca.mekanism_dirty": "汚れた%sの懸濁液",
+	"slurry.jaopca.mekanism_clean": "純粋な%sの懸濁液",
+
+	"fluid_type.jaopca.nuclearcraft_slurries": "%sの懸濁液",
+	"item.jaopca.nuclearcraft_slurries": "%sの懸濁液入りバケツ",
+	"fluid_type.jaopca.nuclearcraft_clean_slurries": "純粋な%sの懸濁液",
+	"item.jaopca.nuclearcraft_clean_slurries": "純粋な%sの懸濁液入りバケツ",
+
+	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
+	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
+}
