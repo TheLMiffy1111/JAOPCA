@@ -10,20 +10,35 @@ item.jaopca.coin=%smünze
 item.jaopca.gear=%szahnrad
 item.jaopca.plate=%splatte
 item.jaopca.stick=%sstab
+item.jaopca.dense_plate=Dense %s Plate
 
 item.jaopca.abyssalcraft_crystal_fragment=Kristallisiertes %sfragment
 item.jaopca.abyssalcraft_crystal_shard=Kristallisierte %sscherbe
 item.jaopca.abyssalcraft_crystal=Kristallisiertes %s
 block.jaopca.abyssalcraft_crystal_cluster=Kristallisierte %ssanhäufung
 
+fluid.jaopca.bcoreprocessing_searing=Molten %s (§cSearing§r)
+fluid.jaopca.bcoreprocessing_hot=Molten %s (§6Hot§r)
+fluid.jaopca.bcoreprocessing_cool=Molten %s (§bCool§r)
+
+fluid.jaopca.foundry_liquid=Liquid %s
+
 item.jaopca.hbm_crystal=%skristalle
 
 item.jaopca.ic2_crushed=Zerstoßenes %serz
 item.jaopca.ic2_purified_crushed=Gereinigtes Zerstoßenes %serz
 
-item.jaopca.mekanism_dirty_dust=Schmutziger %sstaub
+item.jaopca.magneticraft_rocky_chunk=%s Rocky Chunk
+item.jaopca.magneticraft_chunk=%s Chunk
+
+item.jaopca.mekanism_dirty_dust=Dreckiger %sstaub
 item.jaopca.mekanism_clump=%sklumpen
-item.jaopca.mekanism_shard=%sscherbe
+item.jaopca.mekanism_shard=%ssplitter
 item.jaopca.mekanism_crystal=%skristall
-gas.jaopca.mekanism_clean_slurry=Saubere %sschlacke
-gas.jaopca.mekanism_slurry=%sschlacke
+gas.jaopca.mekanism_slurry=%sschlamm
+gas.jaopca.mekanism_clean_slurry=Sauberer %sschlamm
+
+item.jaopca.teslathingies_tesla_lump=Teslified %s Lump
+item.jaopca.teslathingies_augmented_lump=Augmented %s Lump
+
+item.jaopca.thaumcraft_cluster=Native %s Cluster

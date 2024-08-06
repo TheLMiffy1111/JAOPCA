@@ -31,12 +31,12 @@ item.jaopca.ic2_purified_crushed=Очищенная измельчённая р�
 item.jaopca.magneticraft_rocky_chunk=Каменистый кусок %s
 item.jaopca.magneticraft_chunk=Кусок %s
 
-item.jaopca.mekanism_dirty_dust=Загрязненная пыль %s
+item.jaopca.mekanism_dirty_dust=Загрязнённая пыль %s
 item.jaopca.mekanism_clump=Глыба %s
 item.jaopca.mekanism_shard=Осколок %s
 item.jaopca.mekanism_crystal=Кристалл %s
-gas.jaopca.mekanism_clean_slurry=Очищенная взвесь %s
 gas.jaopca.mekanism_slurry=Взвесь %s
+gas.jaopca.mekanism_clean_slurry=Очищенная взвесь %s
 
 item.jaopca.teslathingies_tesla_lump=Теслифицированный кусок %s
 item.jaopca.teslathingies_augmented_lump=Обогащённый кусок %s

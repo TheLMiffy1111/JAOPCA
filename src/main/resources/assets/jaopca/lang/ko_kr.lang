@@ -1,11 +1,11 @@
 itemGroup.jaopca=JAOPCA
 
-block.jaopca.block=Block of %s
-item.jaopca.dust=%s Dust
-item.jaopca.nugget=%s Nugget
-item.jaopca.tiny_dust=Tiny Pile of %s Dust
-item.jaopca.small_dust=Small Pile of %s Dust
-fluid.jaopca.molten=Molten %s
+block.jaopca.block=%s 블록
+item.jaopca.dust=%s 가루
+item.jaopca.nugget=%s 조각
+item.jaopca.tiny_dust=아주 작은 %s 가루 더미
+item.jaopca.small_dust=작은 %s 가루 더미
+fluid.jaopca.molten=녹인 %s
 item.jaopca.coin=%s Coin
 item.jaopca.gear=%s Gear
 item.jaopca.plate=%s Plate
@@ -31,12 +31,12 @@ item.jaopca.ic2_purified_crushed=Purified Crushed %s Ore
 item.jaopca.magneticraft_rocky_chunk=%s Rocky Chunk
 item.jaopca.magneticraft_chunk=%s Chunk
 
-item.jaopca.mekanism_dirty_dust=Dirty %s Dust
-item.jaopca.mekanism_clump=%s Clump
-item.jaopca.mekanism_shard=%s Shard
-item.jaopca.mekanism_crystal=%s Crystal
-gas.jaopca.mekanism_slurry=%s Slurry
-gas.jaopca.mekanism_clean_slurry=Clean %s Slurry
+item.jaopca.mekanism_dirty_dust=불순물이 섞인 %s 가루
+item.jaopca.mekanism_clump=%s 덩어리
+item.jaopca.mekanism_shard=%s 파편
+item.jaopca.mekanism_crystal=%s 결정
+gas.jaopca.mekanism_slurry=%s 슬러리
+gas.jaopca.mekanism_clean_slurry=순수한 %s 슬러리
 
 item.jaopca.teslathingies_tesla_lump=Teslified %s Lump
 item.jaopca.teslathingies_augmented_lump=Augmented %s Lump

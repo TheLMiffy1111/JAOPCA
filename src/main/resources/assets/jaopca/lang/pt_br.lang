@@ -17,6 +17,14 @@ item.jaopca.abyssalcraft_crystal_shard=Estilhaço Cristalizado de %s
 item.jaopca.abyssalcraft_crystal=%s Cristalizado
 block.jaopca.abyssalcraft_crystal_cluster=Aglomerado Cristalizado de %s
 
+fluid.jaopca.bcoreprocessing_searing=Molten %s (§cSearing§r)
+fluid.jaopca.bcoreprocessing_hot=Molten %s (§6Hot§r)
+fluid.jaopca.bcoreprocessing_cool=Molten %s (§bCool§r)
+
+fluid.jaopca.foundry_liquid=Liquid %s
+
+item.jaopca.hbm_crystal=%s Crystals
+
 item.jaopca.ic2_crushed=Minério de %s Triturado
 item.jaopca.ic2_purified_crushed=Minério Purificado de %s Triturado
 
@@ -27,8 +35,8 @@ item.jaopca.mekanism_dirty_dust=Pó de %s Sujo
 item.jaopca.mekanism_clump=Aglomerado de %s
 item.jaopca.mekanism_shard=Estilhaço de %s
 item.jaopca.mekanism_crystal=Cristal de %s
-gas.jaopca.mekanism_clean_slurry=Polpa de %s Pura
 gas.jaopca.mekanism_slurry=Polpa de %s
+gas.jaopca.mekanism_clean_slurry=Polpa de %s Pura
 
 item.jaopca.teslathingies_tesla_lump=Pedaço de %s Teslified
 item.jaopca.teslathingies_augmented_lump=Pedaço Grande de %s

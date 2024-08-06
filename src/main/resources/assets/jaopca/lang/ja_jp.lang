@@ -5,21 +5,40 @@ item.jaopca.dust=%sの粉
 item.jaopca.nugget=%s塊
 item.jaopca.tiny_dust=極小の%sの粉
 item.jaopca.small_dust=小さな%sの粉
-fluid.jaopca.molten=溶融%s
+fluid.jaopca.molten=熔融%s
 item.jaopca.coin=%sのコイン
 item.jaopca.gear=%sの歯車
 item.jaopca.plate=%s板
 item.jaopca.stick=%sの棒
 item.jaopca.dense_plate=高密化%s板
 
-item.jaopca.ic2_crushed=破砕%s鉱石
-item.jaopca.ic2_purified_crushed=洗浄済破砕%s鉱石
+item.jaopca.abyssalcraft_crystal_fragment=%sクリスタルフラグメント
+item.jaopca.abyssalcraft_crystal_shard=%sクリスタルシャード
+item.jaopca.abyssalcraft_crystal=%sクリスタル
+block.jaopca.abyssalcraft_crystal_cluster=%sクリスタルクラスター
+
+fluid.jaopca.bcoreprocessing_searing=熔融%s (§c灼熱§r)
+fluid.jaopca.bcoreprocessing_hot=熔融%s (§6熱§r)
+fluid.jaopca.bcoreprocessing_cool=熔融%s (§b冷§r)
+
+fluid.jaopca.foundry_liquid=液体%s
+
+item.jaopca.hbm_crystal=%s結晶
+
+item.jaopca.ic2_crushed=砕いた%s鉱石
+item.jaopca.ic2_purified_crushed=洗浄した砕いた%s鉱石
+
+item.jaopca.magneticraft_rocky_chunk=%s Rocky Chunk
+item.jaopca.magneticraft_chunk=%s Chunk
 
 item.jaopca.mekanism_dirty_dust=汚れた%sの粉
-item.jaopca.mekanism_clump=%sの塊
+item.jaopca.mekanism_clump=%sの凝塊
 item.jaopca.mekanism_shard=%sの欠片
 item.jaopca.mekanism_crystal=%sの結晶
-gas.jaopca.mekanism_clean_slurry=純粋な%sの懸濁液
 gas.jaopca.mekanism_slurry=%sの懸濁液
+gas.jaopca.mekanism_clean_slurry=純粋な%sの懸濁液
+
+item.jaopca.teslathingies_tesla_lump=Teslified %s Lump
+item.jaopca.teslathingies_augmented_lump=Augmented %s Lump
 
 item.jaopca.thaumcraft_cluster=自然%sクラスター

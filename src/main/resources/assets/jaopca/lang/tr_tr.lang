@@ -23,6 +23,8 @@ fluid.jaopca.bcoreprocessing_cool=Erimiş %s (§bSoğuk§r)
 
 fluid.jaopca.foundry_liquid=Sıvı %s
 
+item.jaopca.hbm_crystal=%s Crystals
+
 item.jaopca.ic2_crushed=Ezilmiş %s Cevheri
 item.jaopca.ic2_purified_crushed=Ezilmiş Saflaştırılmış %s Cevheri
 
@@ -30,11 +32,11 @@ item.jaopca.magneticraft_rocky_chunk=Taşlı %s Yığını
 item.jaopca.magneticraft_chunk=%s Yığını
 
 item.jaopca.mekanism_dirty_dust=Kirli %s Tozu
-item.jaopca.mekanism_clump=%s Kümesi
-item.jaopca.mekanism_shard=%s Parçası
-item.jaopca.mekanism_crystal=%s Kristal
-gas.jaopca.mekanism_clean_slurry=Temiz %s Harcı
-gas.jaopca.mekanism_slurry=%s Harç
+item.jaopca.mekanism_clump=%s Tortu
+item.jaopca.mekanism_shard=%s Kesiti
+item.jaopca.mekanism_crystal=%s Kristali
+gas.jaopca.mekanism_slurry=%s Bulamacı
+gas.jaopca.mekanism_clean_slurry=Temiz %s Bulamacı
 
 item.jaopca.teslathingies_tesla_lump=Teslified %s Yumrusu
 item.jaopca.teslathingies_augmented_lump=Artırılmış %s Yumru

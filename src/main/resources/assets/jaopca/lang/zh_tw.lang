@@ -17,12 +17,16 @@ item.jaopca.abyssalcraft_crystal_shard=結晶%s碎片
 item.jaopca.abyssalcraft_crystal=結晶%s
 block.jaopca.abyssalcraft_crystal_cluster=結晶%s簇
 
+fluid.jaopca.bcoreprocessing_searing=熔融%s (§c灼熱§r)
+fluid.jaopca.bcoreprocessing_hot=熔融%s (§6熱§r)
+fluid.jaopca.bcoreprocessing_cool=熔融%s (§b冷§r)
+
 fluid.jaopca.foundry_liquid=液態%s
 
 item.jaopca.hbm_crystal=%s晶體
 
 item.jaopca.ic2_crushed=粉碎%s礦
-item.jaopca.ic2_purified_crushed=乾淨的粉碎%s礦
+item.jaopca.ic2_purified_crushed=純淨粉碎%s礦
 
 item.jaopca.magneticraft_rocky_chunk=%s礫岩
 item.jaopca.magneticraft_chunk=細塊%s礦
@@ -31,8 +35,8 @@ item.jaopca.mekanism_dirty_dust=污濁的%s粉
 item.jaopca.mekanism_clump=%s碎塊
 item.jaopca.mekanism_shard=%s碎片
 item.jaopca.mekanism_crystal=%s晶體
-gas.jaopca.mekanism_clean_slurry=純凈%s漿液
 gas.jaopca.mekanism_slurry=%s漿液
+gas.jaopca.mekanism_clean_slurry=純凈%s漿液
 
 item.jaopca.teslathingies_tesla_lump=特斯拉%s碎塊
 item.jaopca.teslathingies_augmented_lump=增強%s碎塊
