@@ -1,0 +1,40 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "%s Bloğu",
+	"block.jaopca.raw_storage_blocks": "Ham %s Bloğu",
+	"item.jaopca.dusts": "%s Tozu",
+	"item.jaopca.nuggets": "%s Parçası",
+	"item.jaopca.tiny_dusts": "Minik %s Tozu",
+	"item.jaopca.small_dusts": "Küçük %s Tozu",
+	"fluid.jaopca.molten": "Erimiş %s",
+	"item.jaopca.molten": "Erimiş %s Kovası",
+
+	"item.jaopca.bloodmagic_gravels": "%s Gravel",
+	"item.jaopca.bloodmagic_fragments": "%s Fragment",
+
+	"item.jaopca.create_crushed_ores": "Crushed %s Ore",
+
+	"item.jaopca.crossroads_grits": "Raw %s Grit",
+	"item.jaopca.crossroads_clumps": "%s Clumps",
+
+	"item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
+	"item.jaopca.electrodynamics_crystals": "%s Sulfate Crystal",
+	"fluid.jaopca.electrodynamics_sulfates": "%s Sulfate",
+	"item.jaopca.electrodynamics_sulfates": "%s Sulfate Bucket",
+
+	"item.jaopca.factorium_chunks": "%s Chunks",
+	"item.jaopca.factorium_powders": "%s Powder",
+
+	"item.jaopca.mekanism_dirty_dusts": "Kirli %s Tozu",
+	"item.jaopca.mekanism_clumps": "%s Tortu",
+	"item.jaopca.mekanism_shards": "%s Kesiti",
+	"item.jaopca.mekanism_crystals": "%s Kristali",
+	"slurry.jaopca.mekanism_dirty": "Kirli %s Bulamacı",
+	"slurry.jaopca.mekanism_clean": "Temiz %s Bulamacı",
+
+	"fluid.jaopca.nuclearcraft_slurries": "%s Bulamacı",
+	"item.jaopca.nuclearcraft_slurries": "%s Bulamacı Kovası",
+	"fluid.jaopca.nuclearcraft_clean_slurries": "Temiz %s Bulamacı",
+	"item.jaopca.nuclearcraft_clean_slurries": "Temiz %s Bulamacı Kovası"
+}

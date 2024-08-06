@@ -10,6 +10,9 @@
 	"fluid.jaopca.molten": "녹인 %s",
 	"item.jaopca.molten": "녹인 %s 양동이",
 
+	"item.jaopca.bloodmagic_gravels": "%s Gravel",
+	"item.jaopca.bloodmagic_fragments": "%s Fragment",
+
 	"item.jaopca.create_crushed_ores": "분쇄된 %s 광석",
 
 	"item.jaopca.crossroads_grits": "%s 원석 가루",
@@ -20,10 +23,18 @@
 	"fluid.jaopca.electrodynamics_sulfates": "황산 %s",
 	"item.jaopca.electrodynamics_sulfates": "황산 %s 양동이",
 
+	"item.jaopca.factorium_chunks": "%s Chunks",
+	"item.jaopca.factorium_powders": "%s Powder",
+
 	"item.jaopca.mekanism_dirty_dusts": "불순물이 섞인 %s 가루",
 	"item.jaopca.mekanism_clumps": "%s 덩어리",
 	"item.jaopca.mekanism_shards": "%s 파편",
 	"item.jaopca.mekanism_crystals": "%s 결정",
 	"slurry.jaopca.mekanism_dirty": "불순물이 섞인 %s 슬러리",
-	"slurry.jaopca.mekanism_clean": "순수한 %s 슬러리"
+	"slurry.jaopca.mekanism_clean": "순수한 %s 슬러리",
+
+	"fluid.jaopca.nuclearcraft_slurries": "%s 슬러리",
+	"item.jaopca.nuclearcraft_slurries": "%s 슬러리 양동이",
+	"fluid.jaopca.nuclearcraft_clean_slurries": "순수한 %s 슬러리",
+	"item.jaopca.nuclearcraft_clean_slurries": "순수한 %s 슬러리 양동이"
 }

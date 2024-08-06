@@ -1,0 +1,40 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "%sブロック",
+	"block.jaopca.raw_storage_blocks": "%sの原石ブロック",
+	"item.jaopca.dusts": "%sの粉",
+	"item.jaopca.nuggets": "%s塊",
+	"item.jaopca.tiny_dusts": "極小の%sの粉",
+	"item.jaopca.small_dusts": "小さな%sの粉",
+	"fluid.jaopca.molten": "熔融%s",
+	"item.jaopca.molten": "熔融%s入りバケツ",
+
+	"item.jaopca.bloodmagic_gravels": "%s Gravel",
+	"item.jaopca.bloodmagic_fragments": "%s Fragment",
+
+	"item.jaopca.create_crushed_ores": "砕いた%s鉱石",
+
+	"item.jaopca.crossroads_grits": "Raw %s Grit",
+	"item.jaopca.crossroads_clumps": "%s Clumps",
+
+	"item.jaopca.electrodynamics_impuredusts": "低純度%s粉",
+	"item.jaopca.electrodynamics_crystals": "硫酸%s結晶",
+	"fluid.jaopca.electrodynamics_sulfates": "硫酸%s",
+	"item.jaopca.electrodynamics_sulfates": "硫酸%s入りバケツ",
+
+	"item.jaopca.factorium_chunks": "%s Chunks",
+	"item.jaopca.factorium_powders": "%s Powder",
+
+	"item.jaopca.mekanism_dirty_dusts": "汚れた%sの粉",
+	"item.jaopca.mekanism_clumps": "%sの凝塊",
+	"item.jaopca.mekanism_shards": "%sの欠片",
+	"item.jaopca.mekanism_crystals": "%sの結晶",
+	"slurry.jaopca.mekanism_dirty": "汚れた%sの懸濁液",
+	"slurry.jaopca.mekanism_clean": "純粋な%sの懸濁液",
+
+	"fluid.jaopca.nuclearcraft_slurries": "%sの懸濁液",
+	"item.jaopca.nuclearcraft_slurries": "%sの懸濁液入りバケツ",
+	"fluid.jaopca.nuclearcraft_clean_slurries": "純粋な%sの懸濁液",
+	"item.jaopca.nuclearcraft_clean_slurries": "純粋な%sの懸濁液入りバケツ"
+}
