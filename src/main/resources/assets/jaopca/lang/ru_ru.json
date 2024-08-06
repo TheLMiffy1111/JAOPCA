@@ -1,0 +1,35 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "Блок %s",
+	"item.jaopca.dusts": "Пыль %s",
+	"item.jaopca.nuggets": "Самородок %s",
+	"item.jaopca.tiny_dusts": "Кучка пыли %s",
+	"item.jaopca.small_dusts": "Горсть пыли %s",
+	"fluid.jaopca.molten": "Расплав %s",
+	"item.jaopca.molten": "Ведро расплав %s",
+
+	"item.jaopca.bloodmagic_gravels": "%s Gravel",
+	"item.jaopca.bloodmagic_fragments": "%s Ore Fragment",
+
+	"item.jaopca.create_crushed_ores": "Crushed %s Ore",
+
+	"item.jaopca.crossroads_grits": "Raw %s Grit",
+	"item.jaopca.crossroads_clumps": "%s Clumps",
+
+	"item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
+	"item.jaopca.electrodynamics_crystals": "%s Sulfate Crystal",
+	"fluid.jaopca.electrodynamics_mineral_fluids": "%s Sulfate",
+	"item.jaopca.electrodynamics_mineral_fluids": "%s Sulfate Bucket",
+
+	"item.jaopca.flux_grits": "%s Grit",
+
+	"item.jaopca.mekanism_dirty_dusts": "Загрязнённая пыль %s",
+	"item.jaopca.mekanism_clumps": "Глыба %s",
+	"item.jaopca.mekanism_shards": "Осколок %s",
+	"item.jaopca.mekanism_crystals": "Кристалл %s",
+	"slurry.jaopca.mekanism_dirty": "Загрязнённая взвесь %s",
+	"slurry.jaopca.mekanism_clean": "Очищенная взвесь %s",
+
+	"item.jaopca.silents_mechanisms_chunks": "%s Ore Chunks"
+}

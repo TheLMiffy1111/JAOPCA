@@ -9,21 +9,27 @@
 	"fluid.jaopca.molten": "%s Derretido",
 	"item.jaopca.molten": "Balde de %s Derretido",
 
-	"item.jaopca.mekanism_dirty_dusts": "Pó de %s Sujo",
-	"item.jaopca.mekanism_clumps": "Aglomerado de %s",
-	"item.jaopca.mekanism_shards": "Fragmento de %s",
-	"item.jaopca.mekanism_crystals": "Cristal de %s",
-	"slurry.jaopca.mekanism_dirty": "Polpa de %s Suja",
-	"slurry.jaopca.mekanism_clean": "Polpa de %s Pura",
-
-	"item.jaopca.flux_grits": "Areia de %s",
-
-	"item.jaopca.omegacraft_dirty_dusts": "Pó de %s Sujo",
-
-	"item.jaopca.silents_mechanisms_chunks": "Pedaços de Minério de %s",
+	"item.jaopca.bloodmagic_gravels": "%s Gravel",
+	"item.jaopca.bloodmagic_fragments": "%s Ore Fragment",
 
 	"item.jaopca.create_crushed_ores": "Minério de %s Triturado",
 
 	"item.jaopca.crossroads_grits": "Areia de %s Bruta",
-	"item.jaopca.crossroads_clumps": "Aglomerado de %s"
+	"item.jaopca.crossroads_clumps": "Aglomerado de %s",
+
+	"item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
+	"item.jaopca.electrodynamics_crystals": "%s Sulfate Crystal",
+	"fluid.jaopca.electrodynamics_mineral_fluids": "%s Sulfate",
+	"item.jaopca.electrodynamics_mineral_fluids": "%s Sulfate Bucket",
+
+	"item.jaopca.flux_grits": "Areia de %s",
+
+	"item.jaopca.mekanism_dirty_dusts": "Pó de %s Sujo",
+	"item.jaopca.mekanism_clumps": "Aglomerado de %s",
+	"item.jaopca.mekanism_shards": "Estilhaço de %s",
+	"item.jaopca.mekanism_crystals": "Cristal de %s",
+	"slurry.jaopca.mekanism_dirty": "Polpa de %s Suja",
+	"slurry.jaopca.mekanism_clean": "Polpa de %s Pura",
+
+	"item.jaopca.silents_mechanisms_chunks": "Pedaços de Minério de %s"
 }
