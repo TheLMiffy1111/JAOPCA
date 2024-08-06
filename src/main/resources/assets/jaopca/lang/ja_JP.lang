@@ -5,22 +5,55 @@ item.jaopca.dust=%sの粉
 item.jaopca.nugget=%s塊
 item.jaopca.tiny_dust=極小の%sの粉
 item.jaopca.small_dust=小さな%sの粉
-fluid.jaopca.molten=溶融%s
-item.jaopca.molten=溶融%s入りバケツ
+fluid.jaopca.molten=熔融%s
+item.jaopca.molten=熔融%s入りバケツ
 item.jaopca.coin=%sのコイン
 item.jaopca.gear=%sの歯車
 item.jaopca.plate=%s板
 item.jaopca.stick=%sの棒
 item.jaopca.dense_plate=高密化%s板
 
-item.jaopca.ic2_crushed=破砕%s鉱石
-item.jaopca.ic2_purified_crushed=洗浄済破砕%s鉱石
+item.jaopca.abyssalcraft_crystal_shard=%sクリスタルシャード
+item.jaopca.abyssalcraft_crystal=%sクリスタル
+
+item.jaopca.eng_toolbox_ground=Ground %s Ore
+item.jaopca.eng_toolbox_impure_dust=Impure %s Dust
+
+item.jaopca.factorization_dirty_gravel=Dirty %s Gravel
+item.jaopca.factorization_clean_gravel=Clean %s Gravel
+item.jaopca.factorization_reduced=Reduced %s Chunks
+item.jaopca.factorization_crystalline=Crystalline %s
+
+fluid.jaopca.foundry_liquid=液体%s
+item.jaopca.foundry_liquid=液体%s入りバケツ
+
+item.jaopca.hbm_crystal=%s結晶
+
+item.jaopca.hydcraft_chunk=%s Chunk
+
+item.jaopca.ic2_crushed=砕いた%s鉱石
+item.jaopca.ic2_purified_crushed=洗浄した砕いた%s鉱石
+
+item.jaopca.magneticraft_chunk=%s Chunk
+item.jaopca.magneticraft_rubble=%s Rubble
+item.jaopca.magneticraft_pebbles=%s Pebbles
 
 item.jaopca.mekanism_dirty_dust=汚れた%sの粉
 item.jaopca.mekanism_clump=%sの塊
 item.jaopca.mekanism_shard=%sの欠片
 item.jaopca.mekanism_crystal=%sの結晶
-gas.jaopca.mekanism_clean_slurry=純粋な%sの懸濁液
 gas.jaopca.mekanism_slurry=%sの懸濁液
+gas.jaopca.mekanism_clean_slurry=純粋な%sの懸濁液
+
+item.jaopca.rotarycraft_dust=Powdered %s
+item.jaopca.rotarycraft_slurry=%s Slurry
+item.jaopca.rotarycraft_solution=%s Solution
+item.jaopca.rotarycraft_flakes=%s Flakes
 
 item.jaopca.thaumcraft_cluster=自然%sクラスター
+
+tc.research_category.JAOPCA=JAOPCA
+tc.research_name.JAOPCA_PUREMETAL=Metal Purification 2
+tc.research_text.JAOPCA_PUREMETAL=Purification of most metal ores into native clusters
+tc.research_page.JAOPCA_PUREMETAL.1=Native clusters are rare concentrations of metals in its purest form. You have discovered a way to purify and concentrate most metal ores into native clusters.<BR>When smelted these clusters produce twice the normal amount of ingots.
+

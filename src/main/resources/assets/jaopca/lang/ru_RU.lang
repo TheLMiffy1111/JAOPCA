@@ -16,21 +16,43 @@ item.jaopca.dense_plate=Плотная пластина из %s
 item.jaopca.abyssalcraft_crystal_shard=Кристаллизованный осколок %s
 item.jaopca.abyssalcraft_crystal=Кристалл %s
 
+item.jaopca.eng_toolbox_ground=Ground %s Ore
+item.jaopca.eng_toolbox_impure_dust=Impure %s Dust
+
+item.jaopca.factorization_dirty_gravel=Dirty %s Gravel
+item.jaopca.factorization_clean_gravel=Clean %s Gravel
+item.jaopca.factorization_reduced=Reduced %s Chunks
+item.jaopca.factorization_crystalline=Crystalline %s
+
 fluid.jaopca.foundry_liquid=Расплав %s
 item.jaopca.foundry_liquid=Ведро расплав %s
 
 item.jaopca.hbm_crystal=Кристаллизованное %s
 
+item.jaopca.hydcraft_chunk=%s Chunk
+
 item.jaopca.ic2_crushed=Измельчённая руда %s
 item.jaopca.ic2_purified_crushed=Очищенная измельчённая руда %s
 
 item.jaopca.magneticraft_chunk=Кусок %s
+item.jaopca.magneticraft_rubble=%s Rubble
+item.jaopca.magneticraft_pebbles=%s Pebbles
 
 item.jaopca.mekanism_dirty_dust=Загрязненная пыль %s
 item.jaopca.mekanism_clump=Глыба %s
 item.jaopca.mekanism_shard=Осколок %s
 item.jaopca.mekanism_crystal=Кристалл %s
-gas.jaopca.mekanism_clean_slurry=Очищенная взвесь %s
 gas.jaopca.mekanism_slurry=Взвесь %s
+gas.jaopca.mekanism_clean_slurry=Очищенная взвесь %s
+
+item.jaopca.rotarycraft_dust=Powdered %s
+item.jaopca.rotarycraft_slurry=%s Slurry
+item.jaopca.rotarycraft_solution=%s Solution
+item.jaopca.rotarycraft_flakes=%s Flakes
 
 item.jaopca.thaumcraft_cluster=Скопление %s
+
+tc.research_category.JAOPCA=JAOPCA
+tc.research_name.JAOPCA_PUREMETAL=Metal Purification 2
+tc.research_text.JAOPCA_PUREMETAL=Purification of most metal ores into native clusters
+tc.research_page.JAOPCA_PUREMETAL.1=Native clusters are rare concentrations of metals in its purest form. You have discovered a way to purify and concentrate most metal ores into native clusters.<BR>When smelted these clusters produce twice the normal amount of ingots.

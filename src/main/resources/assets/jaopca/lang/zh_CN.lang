@@ -29,8 +29,10 @@ item.jaopca.foundry_liquid=液态%s桶
 
 item.jaopca.hbm_crystal=%s晶体
 
+item.jaopca.hydcraft_chunk=%s Chunk
+
 item.jaopca.ic2_crushed=粉碎%s矿石
-item.jaopca.ic2_purified_crushed=纯净的粉碎%s矿石
+item.jaopca.ic2_purified_crushed=纯净粉碎%s矿石
 
 item.jaopca.magneticraft_chunk=大块%s矿
 item.jaopca.magneticraft_rubble=碎%s矿
@@ -40,8 +42,8 @@ item.jaopca.mekanism_dirty_dust=污浊的%s粉
 item.jaopca.mekanism_clump=%s碎块
 item.jaopca.mekanism_shard=%s碎片
 item.jaopca.mekanism_crystal=%s晶体
-gas.jaopca.mekanism_clean_slurry=纯净%s浆液
 gas.jaopca.mekanism_slurry=%s浆液
+gas.jaopca.mekanism_clean_slurry=纯净%s浆液
 
 item.jaopca.rotarycraft_dust=%s矿粉
 item.jaopca.rotarycraft_slurry=%s矿浆

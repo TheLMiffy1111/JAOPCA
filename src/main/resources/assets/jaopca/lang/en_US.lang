@@ -42,8 +42,8 @@ item.jaopca.mekanism_dirty_dust=Dirty %s Dust
 item.jaopca.mekanism_clump=%s Clump
 item.jaopca.mekanism_shard=%s Shard
 item.jaopca.mekanism_crystal=%s Crystal
-gas.jaopca.mekanism_clean_slurry=Clean %s Slurry
 gas.jaopca.mekanism_slurry=%s Slurry
+gas.jaopca.mekanism_clean_slurry=Clean %s Slurry
 
 item.jaopca.rotarycraft_dust=Powdered %s
 item.jaopca.rotarycraft_slurry=%s Slurry

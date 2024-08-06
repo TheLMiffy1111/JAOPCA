@@ -1,20 +1,20 @@
 itemGroup.jaopca=JAOPCA
 
-block.jaopca.block=%sblock
-item.jaopca.dust=%sstaub
-item.jaopca.nugget=%snugget
-item.jaopca.tiny_dust=Winziger Haufen %sstaub
-item.jaopca.small_dust=Kleiner Haufen %sstaub
-fluid.jaopca.molten=Geschmolzenes %s
-item.jaopca.molten=Eimer mit Geschmolzenes %s
-item.jaopca.coin=%smünze
-item.jaopca.gear=%szahnrad
-item.jaopca.plate=%splatte
-item.jaopca.stick=%sstab
+block.jaopca.block=%s 블록
+item.jaopca.dust=%s 가루
+item.jaopca.nugget=%s 조각
+item.jaopca.tiny_dust=아주 작은 %s 가루 더미
+item.jaopca.small_dust=작은 %s 가루 더미
+fluid.jaopca.molten=녹인 %s
+item.jaopca.molten=녹인 %s 양동이
+item.jaopca.coin=%s Coin
+item.jaopca.gear=%s Gear
+item.jaopca.plate=%s Plate
+item.jaopca.stick=%s Rod
 item.jaopca.dense_plate=Dense %s Plate
 
-item.jaopca.abyssalcraft_crystal_shard=Kristallisierte %sscherbe
-item.jaopca.abyssalcraft_crystal=Kristallisiertes %s
+item.jaopca.abyssalcraft_crystal_shard=Crystallized %s Shard
+item.jaopca.abyssalcraft_crystal=Crystallized %s
 
 item.jaopca.eng_toolbox_ground=Ground %s Ore
 item.jaopca.eng_toolbox_impure_dust=Impure %s Dust
@@ -27,23 +27,23 @@ item.jaopca.factorization_crystalline=Crystalline %s
 fluid.jaopca.foundry_liquid=Liquid %s
 item.jaopca.foundry_liquid=Liquid %s Bucket
 
-item.jaopca.hbm_crystal=%skristalle
+item.jaopca.hbm_crystal=%s Crystals
 
 item.jaopca.hydcraft_chunk=%s Chunk
 
-item.jaopca.ic2_crushed=Zerstoßenes %serz
-item.jaopca.ic2_purified_crushed=Gereinigtes Zerstoßenes %serz
+item.jaopca.ic2_crushed=Crushed %s Ore
+item.jaopca.ic2_purified_crushed=Purified Crushed %s Ore
 
 item.jaopca.magneticraft_chunk=%s Chunk
 item.jaopca.magneticraft_rubble=%s Rubble
 item.jaopca.magneticraft_pebbles=%s Pebbles
 
-item.jaopca.mekanism_dirty_dust=Dreckiger %sstaub
-item.jaopca.mekanism_clump=%sklumpen
-item.jaopca.mekanism_shard=%ssplitter
-item.jaopca.mekanism_crystal=%skristall
-gas.jaopca.mekanism_slurry=%sschlamm
-gas.jaopca.mekanism_clean_slurry=Sauberer %sschlamm
+item.jaopca.mekanism_dirty_dust=불순물이 섞인 %s 가루
+item.jaopca.mekanism_clump=%s 덩어리
+item.jaopca.mekanism_shard=%s 파편
+item.jaopca.mekanism_crystal=%s 결정
+gas.jaopca.mekanism_slurry=%s 슬러리
+gas.jaopca.mekanism_clean_slurry=순수한 %s 슬러리
 
 item.jaopca.rotarycraft_dust=Powdered %s
 item.jaopca.rotarycraft_slurry=%s Slurry
@@ -56,4 +56,3 @@ tc.research_category.JAOPCA=JAOPCA
 tc.research_name.JAOPCA_PUREMETAL=Metal Purification 2
 tc.research_text.JAOPCA_PUREMETAL=Purification of most metal ores into native clusters
 tc.research_page.JAOPCA_PUREMETAL.1=Native clusters are rare concentrations of metals in its purest form. You have discovered a way to purify and concentrate most metal ores into native clusters.<BR>When smelted these clusters produce twice the normal amount of ingots.
-
