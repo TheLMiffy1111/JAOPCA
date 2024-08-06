@@ -1,0 +1,24 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "%sblock",
+	"block.jaopca.raw_storage_blocks": "Roh%sblock",
+	"item.jaopca.dusts": "%sstaub",
+	"item.jaopca.nuggets": "%snugget",
+	"item.jaopca.tiny_dusts": "Winziger Haufen %sstaub",
+	"item.jaopca.small_dusts": "Kleiner Haufen %sstaub",
+	"fluid_type.jaopca.molten": "Geschmolzenes %s",
+	"item.jaopca.molten": "Eimer mit Geschmolzenes %s",
+
+	"item.jaopca.mekanism_dirty_dusts": "Dreckiger %sstaub",
+	"item.jaopca.mekanism_clumps": "%sklumpen",
+	"item.jaopca.mekanism_shards": "%ssplitter",
+	"item.jaopca.mekanism_crystals": "%skristall",
+	"slurry.jaopca.mekanism_dirty": "Dreckiger %sschlamm",
+	"slurry.jaopca.mekanism_clean": "Sauberer %sschlamm",
+
+	"item.jaopca.modern_industrialization_crushed_dusts": "%s Crushed Dust",
+
+	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
+	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
+}

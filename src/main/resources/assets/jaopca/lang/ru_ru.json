@@ -1,0 +1,24 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "Блок %s",
+	"block.jaopca.raw_storage_blocks": "Блок рудного %s",
+	"item.jaopca.dusts": "Пыль %s",
+	"item.jaopca.nuggets": "Самородок %s",
+	"item.jaopca.tiny_dusts": "Кучка пыли %s",
+	"item.jaopca.small_dusts": "Горсть пыли %s",
+	"fluid_type.jaopca.molten": "Расплав %s",
+	"item.jaopca.molten": "Ведро расплав %s",
+
+	"item.jaopca.mekanism_dirty_dusts": "Загрязнённая пыль %s",
+	"item.jaopca.mekanism_clumps": "Глыба %s",
+	"item.jaopca.mekanism_shards": "Осколок %s",
+	"item.jaopca.mekanism_crystals": "Кристалл %s",
+	"slurry.jaopca.mekanism_dirty": "Загрязнённая взвесь %s",
+	"slurry.jaopca.mekanism_clean": "Очищенная взвесь %s",
+
+	"item.jaopca.modern_industrialization_crushed_dusts": "%s Crushed Dust",
+
+	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
+	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
+}

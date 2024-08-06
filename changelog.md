@@ -1,1 +1,2 @@
-Readd Railcraft Reborn support  
+Updated some language files  
+Fix Theurgy sulfur render  

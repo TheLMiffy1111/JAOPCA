@@ -1,0 +1,24 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "%sブロック",
+	"block.jaopca.raw_storage_blocks": "%sの原石ブロック",
+	"item.jaopca.dusts": "%sの粉",
+	"item.jaopca.nuggets": "%s塊",
+	"item.jaopca.tiny_dusts": "極小の%sの粉",
+	"item.jaopca.small_dusts": "小さな%sの粉",
+	"fluid_type.jaopca.molten": "熔融%s",
+	"item.jaopca.molten": "熔融%s入りバケツ",
+
+	"item.jaopca.mekanism_dirty_dusts": "汚れた%sの粉",
+	"item.jaopca.mekanism_clumps": "%sの凝塊",
+	"item.jaopca.mekanism_shards": "%sの欠片",
+	"item.jaopca.mekanism_crystals": "%sの結晶",
+	"slurry.jaopca.mekanism_dirty": "汚れた%sの懸濁液",
+	"slurry.jaopca.mekanism_clean": "純粋な%sの懸濁液",
+
+	"item.jaopca.modern_industrialization_crushed_dusts": "%s鉱石の粉砕物",
+
+	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
+	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
+}

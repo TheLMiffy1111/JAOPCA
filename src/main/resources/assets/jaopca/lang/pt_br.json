@@ -7,7 +7,7 @@
 	"item.jaopca.nuggets": "Pepita de %s",
 	"item.jaopca.tiny_dusts": "Pilha Minúscula de Pó de %s",
 	"item.jaopca.small_dusts": "Pilha Pequena de Pó de %s",
-	"fluid.jaopca.molten": "%s Derretido",
+	"fluid_type.jaopca.molten": "%s Derretido",
 	"item.jaopca.molten": "Balde de %s Derretido",
 
 	"item.jaopca.mekanism_dirty_dusts": "Pó de %s Sujo",
@@ -15,5 +15,10 @@
 	"item.jaopca.mekanism_shards": "Fragmento de %s",
 	"item.jaopca.mekanism_crystals": "Cristal de %s",
 	"slurry.jaopca.mekanism_dirty": "Polpa de %s Suja",
-	"slurry.jaopca.mekanism_clean": "Polpa de %s Pura"
+	"slurry.jaopca.mekanism_clean": "Polpa de %s Pura",
+
+	"item.jaopca.modern_industrialization_crushed_dusts": "%s Crushed Dust",
+
+	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
+	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

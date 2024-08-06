@@ -1,12 +1,15 @@
 package thelm.jaopca.compat.theurgy.items;
 
 import java.util.List;
+import java.util.function.Consumer;
 
+import com.klikli_dev.theurgy.content.item.derivative.render.AlchemicalDerivativeBEWLR;
 import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurItem;
 import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurType;
 import com.klikli_dev.theurgy.registry.DataComponentRegistry;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.items.IItemFormSettings;
 import thelm.jaopca.api.items.IMaterialFormItem;
@@ -80,5 +84,15 @@ public class JAOPCAAlchemicalSulfurItem extends AlchemicalSulfurItem implements 
 	public Component getName(ItemStack stack) {
 		return Component.translatable("item.jaopca.theurgy_alchemical_sulfurs",
 				ComponentUtils.wrapInSquareBrackets(getSourceName(stack)));
+	}
+
+	@Override
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return AlchemicalDerivativeBEWLR.get();
+			}
+		});
 	}
 }

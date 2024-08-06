@@ -2,7 +2,7 @@
 	"itemGroup.jaopca": "JAOPCA",
 
 	"block.jaopca.storage_blocks": "%s磚",
-	"block.jaopca.raw_storage_blocks": "%s原礦塊",
+	"block.jaopca.raw_storage_blocks": "粗%s磚",
 	"item.jaopca.dusts": "%s粉",
 	"item.jaopca.nuggets": "%s粒",
 	"item.jaopca.tiny_dusts": "小撮%s粉",
@@ -18,7 +18,7 @@
 	"slurry.jaopca.mekanism_clean": "純淨%s漿液",
 
 	"item.jaopca.modern_industrialization_crushed_dusts": "%s碎粉",
-
+	
 	"item.jaopca.theurgy_alchemical_sulfurs": "%s奇蹟硫",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "由 %s %s %s 製作的奇蹟硫。"
 }

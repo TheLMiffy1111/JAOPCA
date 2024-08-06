@@ -1,0 +1,24 @@
+{
+	"itemGroup.jaopca": "JAOPCA",
+
+	"block.jaopca.storage_blocks": "%s Bloğu",
+	"block.jaopca.raw_storage_blocks": "Ham %s Bloğu",
+	"item.jaopca.dusts": "%s Tozu",
+	"item.jaopca.nuggets": "%s Parçası",
+	"item.jaopca.tiny_dusts": "Minik %s Tozu",
+	"item.jaopca.small_dusts": "Küçük %s Tozu",
+	"fluid_type.jaopca.molten": "Erimiş %s",
+	"item.jaopca.molten": "Erimiş %s Kovası",
+
+	"item.jaopca.mekanism_dirty_dusts": "Kirli %s Tozu",
+	"item.jaopca.mekanism_clumps": "%s Tortu",
+	"item.jaopca.mekanism_shards": "%s Kesiti",
+	"item.jaopca.mekanism_crystals": "%s Kristali",
+	"slurry.jaopca.mekanism_dirty": "Kirli %s Bulamacı",
+	"slurry.jaopca.mekanism_clean": "Temiz %s Bulamacı",
+
+	"item.jaopca.modern_industrialization_crushed_dusts": "%s Crushed Dust",
+
+	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
+	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
+}
