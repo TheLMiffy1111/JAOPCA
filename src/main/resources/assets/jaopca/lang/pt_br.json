@@ -7,7 +7,7 @@
 	"item.jaopca.nuggets": "Pepita de %s",
 	"item.jaopca.tiny_dusts": "Pilha Minúscula de Pó de %s",
 	"item.jaopca.small_dusts": "Pilha Pequena de Pó de %s",
-	"fluid.jaopca.molten": "%s Derretido",
+	"fluid_type.jaopca.molten": "%s Derretido",
 	"item.jaopca.molten": "Balde de %s Derretido",
 
 	"item.jaopca.create_crushed_ores": "Minério de %s Triturado",
@@ -17,16 +17,24 @@
 
 	"item.jaopca.electrodynamics_impuredusts": "Poeira %s impura",
 	"item.jaopca.electrodynamics_crystals": "%s Cristal de Sulfato",
-	"fluid.jaopca.electrodynamics_sulfates": "%s Sulfato",
+	"fluid_type.jaopca.electrodynamics_sulfates": "%s Sulfato",
 	"item.jaopca.electrodynamics_sulfates": "%s Balde de Sulfato",
 
 	"item.jaopca.factorium_chunks": "%s Chunks",
 	"item.jaopca.factorium_powders": "%s Em pó",
+
+	"item.jaopca.indreb_purified": "Purified %s",
+	"item.jaopca.indreb_chunks": "%s Chunk",
 
 	"item.jaopca.mekanism_dirty_dusts": "Pó de %s Sujo",
 	"item.jaopca.mekanism_clumps": "Aglomerado de %s",
 	"item.jaopca.mekanism_shards": "Fragmento de %s",
 	"item.jaopca.mekanism_crystals": "Cristal de %s",
 	"slurry.jaopca.mekanism_dirty": "Polpa de %s Suja",
-	"slurry.jaopca.mekanism_clean": "Polpa de %s Pura"
+	"slurry.jaopca.mekanism_clean": "Polpa de %s Pura",
+
+	"fluid_type.jaopca.nuclearcraft_slurries": "Polpa de %s",
+	"item.jaopca.nuclearcraft_slurries": "Balde de Polpa de %s",
+	"fluid_type.jaopca.nuclearcraft_clean_slurries": "Polpa de %s Pura",
+	"item.jaopca.nuclearcraft_clean_slurries": "Balde de Polpa de %s Pura"
 }

@@ -1,4 +1,6 @@
 {
+	"itemGroup.jaopca": "JAOPCA",
+
 	"block.jaopca.storage_blocks": "%s块",
 	"block.jaopca.raw_storage_blocks": "粗%s块",
 	"item.jaopca.dusts": "%s粉",
@@ -8,12 +10,31 @@
 	"fluid_type.jaopca.molten": "熔融%s",
 	"item.jaopca.molten": "熔融%s桶",
 
-	"item.jaopca.create_crushed_ores": "碎%s礦",
+	"item.jaopca.create_crushed_ores": "粉碎%s矿石",
+
+	"item.jaopca.crossroads_grits": "粗%s砂",
+	"item.jaopca.crossroads_clumps": "%s碎块",
+
+	"item.jaopca.electrodynamics_impuredusts": "含杂%s粉",
+	"item.jaopca.electrodynamics_crystals": "硫酸%s晶体",
+	"fluid_type.jaopca.electrodynamics_sulfates": "硫酸%s",
+	"item.jaopca.electrodynamics_sulfates": "硫酸%s桶",
+
+	"item.jaopca.factorium_chunks": "%s Chunks",
+	"item.jaopca.factorium_powders": "%s Powder",
+
+	"item.jaopca.indreb_purified": "Purified %s",
+	"item.jaopca.indreb_chunks": "%s Chunk",
 
 	"item.jaopca.mekanism_dirty_dusts": "污浊%s粉",
 	"item.jaopca.mekanism_clumps": "%s碎块",
 	"item.jaopca.mekanism_shards": "%s碎片",
 	"item.jaopca.mekanism_crystals": "%s晶体",
 	"slurry.jaopca.mekanism_dirty": "污浊%s浆液",
-	"slurry.jaopca.mekanism_clean": "纯净%s浆液"
+	"slurry.jaopca.mekanism_clean": "纯净%s浆液",
+
+	"fluid_type.jaopca.nuclearcraft_slurries": "%s浆液",
+	"item.jaopca.nuclearcraft_slurries": "%s浆液桶",
+	"fluid_type.jaopca.nuclearcraft_clean_slurries": "纯净%s浆液",
+	"item.jaopca.nuclearcraft_clean_slurries": "纯净%s浆液桶"
 }
