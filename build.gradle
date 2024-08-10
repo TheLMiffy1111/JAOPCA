@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-af214fdb"
+	id "com.crystaelix.loom" version "jitpack-a771545d"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -194,7 +194,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.1.20.45"
+version = "4.1.20.46"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -371,8 +371,7 @@ def manifestAttributes = [
 	"Specification-Version": specVersion,
 	"Implementation-Title": archivesBaseName,
 	"Implementation-Version": version,
-	"Implementation-Vendor": vendor,
-	"MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
+	"Implementation-Vendor": vendor
 ]
 
 jar {
