@@ -11,10 +11,8 @@ import thelm.jaopca.events.CommonEventHandler;
 public class JAOPCA {
 
 	public static final String MOD_ID = "jaopca";
-	public static boolean mixinLoaded = false;
 
 	public JAOPCA() {
-		assert mixinLoaded;
 		FMLJavaModLoadingContext.get().getModEventBus().register(CommonEventHandler.getInstance());
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
 			FMLJavaModLoadingContext.get().getModEventBus().register(ClientEventHandler.getInstance());
