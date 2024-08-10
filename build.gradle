@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-af214fdb"
+	id "com.crystaelix.loom" version "jitpack-a771545d"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -215,7 +215,7 @@ dependencies {
 	implementation "net.shadowfacts:Forgelin:1.8.4"
 	modImplementation "curse.maven:baubles-227083:2518667"
 	modImplementation "curse.maven:redstone-flux-270789:2920436"
-	implementation("zone.rong:mixinbooter:9.1") {transitive = false}
+	implementation("zone.rong:mixinbooter:9.2") {transitive = false}
 
 	// CraftTweaker
 	modImplementation("CraftTweaker2:ZenScript:4.1.20.700") {transitive = false}
@@ -223,7 +223,7 @@ dependencies {
 	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.700") {transitive = false}
 
 	// GroovyScript
-	modImplementation("com.cleanroommc:groovyscript:1.1.2") {transitive = false}
+	modImplementation("com.cleanroommc:groovyscript:1.1.3") {transitive = false}
 
 	// AbyssalCraft
 	modImplementation "curse.maven:abyssalcraft-53686:5330323"

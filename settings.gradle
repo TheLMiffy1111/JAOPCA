@@ -18,7 +18,7 @@ pluginManagement {
 	resolutionStrategy {
 		eachPlugin {
 			if(requested.id.id == "com.crystaelix.loom" && requested.version.startsWith("jitpack-")) {
-				useModule("com.github.TheLMiffy1111:crystaelix-loom:${requested.version.substring(8)}")
+				useModule("com.github.Crystaelix:crystaelix-loom:${requested.version.substring(8)}")
 			}
 		}
 	}
