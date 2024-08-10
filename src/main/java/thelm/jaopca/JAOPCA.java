@@ -8,10 +8,8 @@ import thelm.jaopca.events.CommonEventHandler;
 public class JAOPCA {
 
 	public static final String MOD_ID = "jaopca";
-	public static boolean mixinLoaded = false;
 
 	public JAOPCA(IEventBus modEventBus) {
-		assert mixinLoaded;
 		modEventBus.register(CommonEventHandler.getInstance());
 	}
 }

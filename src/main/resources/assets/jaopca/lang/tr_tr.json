@@ -14,8 +14,8 @@
 	"item.jaopca.mekanism_clumps": "%s Tortu",
 	"item.jaopca.mekanism_shards": "%s Kesiti",
 	"item.jaopca.mekanism_crystals": "%s Kristali",
-	"slurry.jaopca.mekanism_dirty": "Kirli %s Bulamacı",
-	"slurry.jaopca.mekanism_clean": "Temiz %s Bulamacı",
+	"chemical.jaopca.mekanism_dirty": "Kirli %s Bulamacı",
+	"chemical.jaopca.mekanism_clean": "Temiz %s Bulamacı",
 
 	"item.jaopca.modern_industrialization_crushed_dusts": "%s Crushed Dust",
 

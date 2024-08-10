@@ -14,8 +14,8 @@
 	"item.jaopca.mekanism_clumps": "Aglomerado de %s",
 	"item.jaopca.mekanism_shards": "Fragmento de %s",
 	"item.jaopca.mekanism_crystals": "Cristal de %s",
-	"slurry.jaopca.mekanism_dirty": "Polpa de %s Suja",
-	"slurry.jaopca.mekanism_clean": "Polpa de %s Pura",
+	"chemical.jaopca.mekanism_dirty": "Polpa de %s Suja",
+	"chemical.jaopca.mekanism_clean": "Polpa de %s Pura",
 
 	"item.jaopca.modern_industrialization_crushed_dusts": "%s Crushed Dust",
 

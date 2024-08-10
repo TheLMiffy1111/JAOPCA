@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-af214fdb"
+	id "com.crystaelix.loom" version "jitpack-a771545d"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -144,14 +144,14 @@ sourceSets {
 	main
 }
 
-def mcVersion = "1.21"
+def mcVersion = "1.21.1"
 def modName = "JAOPCA"
 def modId = "jaopca"
 def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.1.2"
+version = "5.0.2.3"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -185,67 +185,69 @@ dependencies {
 	implementation "org.apache.logging.log4j:log4j-core:2.22.1"
 
 	// Minecraft
-	minecraft "com.mojang:minecraft:1.21"
+	minecraft "com.mojang:minecraft:1.21.1"
 	mappings loom.layered {
 		officialMojangMappings()
-		parchment "org.parchmentmc.data:parchment-1.21:2024.07.07@zip"
+		parchment "org.parchmentmc.data:parchment-1.21:2024.07.28@zip"
 	}
-	neoForge "net.neoforged:neoforge:21.0.159"
+	neoForge "net.neoforged:neoforge:21.1.22"
 
 	// Common
-	implementation("mezz.jei:jei-1.21-neoforge:19.7.0.79") {transitive = false}
-	implementation "top.theillusivec4.curios:curios-neoforge:9.0.5+1.21"
-	implementation("software.bernie.geckolib:geckolib-neoforge-1.21:4.5.7") {transitive = false}
-	implementation("com.klikli_dev:modonomicon-1.21-neoforge:1.98.0") {transitive = false}
+	implementation("mezz.jei:jei-1.21.1-neoforge:19.8.5.118") {transitive = false}
+	implementation "top.theillusivec4.curios:curios-neoforge:9.0.6+1.21"
+	implementation("software.bernie.geckolib:geckolib-neoforge-1.21:4.5.8") {transitive = false}
+	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.100.2") {transitive = false}
 	implementation "dev.architectury:architectury-neoforge:13.0.6"
 	implementation "dev.latvian.mods:rhino:2100.2.5-build.46"
 
 	// CraftTweaker
-	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.21:20.0.19") {transitive = false}
+	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.21.1:21.0.2") {transitive = false}
 
 	// KubeJS
-	implementation("dev.latvian.mods:kubejs-neoforge:2100.7.0-build.119") {transitive = false}
+	implementation("dev.latvian.mods:kubejs-neoforge:2101.7.0-build.131") {transitive = false}
 
 	// Json Things
 	modImplementation("dev.gigaherz.jsonthings:JsonThings-1.21:0.12.1") {transitive = false}
 
 	// Energized Power
-	implementation "curse.maven:energized-power-782147:5510706"
+	implementation "curse.maven:energized-power-782147:5611144"
 
 	// Integrated Dynamics
-	implementation "curse.maven:cyclops-core-232758:5583764"
-	implementation "curse.maven:common-capabilities-247007:5579966"
-	implementation "curse.maven:integrated-dynamics-236307:5586148"
+	implementation "curse.maven:cyclops-core-232758:5647405"
+	implementation "curse.maven:common-capabilities-247007:5612222"
+	implementation "curse.maven:integrated-dynamics-236307:5612228"
 
 	// Mekanism
-	implementation "mekanism:Mekanism:1.21-10.6.7.54"
+	implementation "mekanism:Mekanism:1.21.1-10.7.0.55"
 
 	// Modern Industrialization
-	implementation "me.shedaniel.cloth:cloth-config-neoforge:15.0.128"
+	implementation "me.shedaniel.cloth:cloth-config-neoforge:15.0.130"
 	implementation "dev.technici4n:GrandPower:3.0.0"
-	implementation("aztech:Modern-Industrialization:2.2.16-beta") {transitive = false}
+	implementation("aztech:Modern-Industrialization:2.2.17-beta") {transitive = false}
 
 	// Occultism
 	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.21:1.14.5"
-	implementation("com.klikli_dev:occultism-1.21-neoforge:1.143.4") {transitive = false}
+	implementation("com.klikli_dev:occultism-1.21.1-neoforge:1.153.0") {transitive = false}
 
 	// Railcraft Reborn
 	implementation "curse.maven:railcraft-reborn-901491:5591993"
 
 	// Theurgy
-	implementation("com.klikli_dev:theurgy-1.21-neoforge:1.39.0") {transitive = false}
+	implementation("com.klikli_dev:theurgy-1.21.1-neoforge:1.53.0") {transitive = false}
 
 	// Testing
-	implementation "curse.maven:ato-405593:5553138"
+	// implementation "curse.maven:ato-405593:5553138"
+	// implementation "curse.maven:allthemodium-364466:5609842"
 
 	// Performance
 	implementation "curse.maven:yeetusexperimentus-635427:5444189"
-	implementation "curse.maven:modernfix-790626:5569656"
+	implementation "curse.maven:modernfix-790626:5616608"
 	implementation "curse.maven:ferritecore-429235:5434178"
 }
 
 def replacements = [
-	"0@VERSION@": version
+	"0@VERSION@": version,
+	"9@VERSION@": version,
 ]
 
 blossom {
@@ -267,8 +269,7 @@ def manifestAttributes = [
 	"Specification-Version": specVersion,
 	"Implementation-Title": archivesBaseName,
 	"Implementation-Version": version,
-	"Implementation-Vendor": vendor,
-	"MixinConnector": "thelm.jaopca.mixins.JAOPCAMixinConnector"
+	"Implementation-Vendor": vendor
 ]
 
 jar {

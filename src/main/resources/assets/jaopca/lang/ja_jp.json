@@ -14,8 +14,8 @@
 	"item.jaopca.mekanism_clumps": "%sの凝塊",
 	"item.jaopca.mekanism_shards": "%sの欠片",
 	"item.jaopca.mekanism_crystals": "%sの結晶",
-	"slurry.jaopca.mekanism_dirty": "汚れた%sの懸濁液",
-	"slurry.jaopca.mekanism_clean": "純粋な%sの懸濁液",
+	"chemical.jaopca.mekanism_dirty": "汚れた%sの懸濁液",
+	"chemical.jaopca.mekanism_clean": "純粋な%sの懸濁液",
 
 	"item.jaopca.modern_industrialization_crushed_dusts": "%s鉱石の粉砕物",
 

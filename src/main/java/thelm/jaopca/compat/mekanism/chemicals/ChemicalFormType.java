@@ -1,4 +1,4 @@
-package thelm.jaopca.compat.mekanism.slurries;
+package thelm.jaopca.compat.mekanism.chemicals;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -20,22 +20,22 @@ import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.compat.mekanism.MekanismDataInjector;
 import thelm.jaopca.compat.mekanism.MekanismHelper;
-import thelm.jaopca.compat.mekanism.api.slurries.IMaterialFormSlurry;
-import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormSettings;
-import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormType;
-import thelm.jaopca.compat.mekanism.api.slurries.ISlurryInfo;
+import thelm.jaopca.compat.mekanism.api.chemicals.IChemicalFormSettings;
+import thelm.jaopca.compat.mekanism.api.chemicals.IChemicalInfo;
+import thelm.jaopca.compat.mekanism.api.chemicals.IMaterialFormChemical;
+import thelm.jaopca.compat.mekanism.api.chemicals.IChemicalFormType;
 import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-public class SlurryFormType implements ISlurryFormType {
+public class ChemicalFormType implements IChemicalFormType {
 
-	private SlurryFormType() {};
+	private ChemicalFormType() {};
 
-	public static final SlurryFormType INSTANCE = new SlurryFormType();
+	public static final ChemicalFormType INSTANCE = new ChemicalFormType();
 	private static final TreeSet<IForm> FORMS = new TreeSet<>();
-	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormSlurry>	> SLURRIES = TreeBasedTable.create();
-	private static final TreeBasedTable<IForm, IMaterial, ISlurryInfo> SLURRY_INFOS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, Supplier<IMaterialFormChemical>> CHEMICALS = TreeBasedTable.create();
+	private static final TreeBasedTable<IForm, IMaterial, IChemicalInfo> CHEMICAL_INFOS = TreeBasedTable.create();
 	private static boolean registered = false;
 
 	public static void init() {
@@ -44,7 +44,7 @@ public class SlurryFormType implements ISlurryFormType {
 
 	@Override
 	public String getName() {
-		return "slurry";
+		return "chemical";
 	}
 
 	@Override
@@ -60,27 +60,27 @@ public class SlurryFormType implements ISlurryFormType {
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
 		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName());
-		return !MekanismHelper.INSTANCE.getSlurryTags().contains(tagLocation);
+		return !MekanismHelper.INSTANCE.getChemicalTags().contains(tagLocation);
 	}
 
 	@Override
-	public ISlurryInfo getMaterialFormInfo(IForm form, IMaterial material) {
-		ISlurryInfo info = SLURRY_INFOS.get(form, material);
+	public IChemicalInfo getMaterialFormInfo(IForm form, IMaterial material) {
+		IChemicalInfo info = CHEMICAL_INFOS.get(form, material);
 		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
-			info = new SlurryInfo(SLURRIES.get(form, material).get());
-			SLURRY_INFOS.put(form, material, info);
+			info = new ChemicalInfo(CHEMICALS.get(form, material).get());
+			CHEMICAL_INFOS.put(form, material, info);
 		}
 		return info;
 	}
 
 	@Override
-	public ISlurryFormSettings getNewSettings() {
-		return new SlurryFormSettings();
+	public IChemicalFormSettings getNewSettings() {
+		return new ChemicalFormSettings();
 	}
 
 	@Override
 	public Codec<IFormSettings> formSettingsCodec() {
-		return SlurryCustomCodecs.SLURRY_FORM_SETTINGS;
+		return ChemicalCustomCodecs.CHEMICAL_FORM_SETTINGS;
 	}
 
 	@Override
@@ -92,26 +92,26 @@ public class SlurryFormType implements ISlurryFormType {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		for(IForm form : FORMS) {
-			ISlurryFormSettings settings = (ISlurryFormSettings)form.getSettings();
+			IChemicalFormSettings settings = (IChemicalFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
 			for(IMaterial material : form.getMaterials()) {
 				String name = form.getName()+'.'+material.getName();
 				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath("jaopca", name);
 
-				Supplier<IMaterialFormSlurry> materialFormSlurry = MemoizingSuppliers.of(()->settings.getSlurryCreator().create(form, material, settings));
-				SLURRIES.put(form, material, materialFormSlurry);
-				api.registerRegistryEntry(MekanismAPI.SLURRY_REGISTRY_NAME, name, ()->materialFormSlurry.get().toSlurry());
+				Supplier<IMaterialFormChemical> materialFormChemical = MemoizingSuppliers.of(()->settings.getChemicalCreator().create(form, material, settings));
+				CHEMICALS.put(form, material, materialFormChemical);
+				api.registerRegistryEntry(MekanismAPI.CHEMICAL_REGISTRY_NAME, name, ()->materialFormChemical.get().toChemical());
 
-				MekanismDataInjector.registerSlurryTag(helper.createResourceLocation(secondaryName), registryName);
-				MekanismDataInjector.registerSlurryTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
+				MekanismDataInjector.registerChemicalTag(helper.createResourceLocation(secondaryName), registryName);
+				MekanismDataInjector.registerChemicalTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
-					MekanismDataInjector.registerSlurryTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
+					MekanismDataInjector.registerChemicalTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
 				}
 			}
 		}
 	}
 
-	public static Collection<IMaterialFormSlurry> getSlurries() {
-		return Tables.transformValues(SLURRIES, Supplier::get).values();
+	public static Collection<IMaterialFormChemical> getSlurries() {
+		return Tables.transformValues(CHEMICALS, Supplier::get).values();
 	}
 }

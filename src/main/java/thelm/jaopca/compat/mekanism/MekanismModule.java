@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import mekanism.common.registries.MekanismGases;
+import mekanism.common.registries.MekanismChemicals;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -25,9 +25,9 @@ import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
-import thelm.jaopca.compat.mekanism.api.slurries.ISlurryFormType;
-import thelm.jaopca.compat.mekanism.api.slurries.ISlurryInfo;
-import thelm.jaopca.compat.mekanism.slurries.SlurryFormType;
+import thelm.jaopca.compat.mekanism.api.chemicals.IChemicalInfo;
+import thelm.jaopca.compat.mekanism.api.chemicals.IChemicalFormType;
+import thelm.jaopca.compat.mekanism.chemicals.ChemicalFormType;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
@@ -48,7 +48,7 @@ public class MekanismModule implements IModule {
 	}
 
 	public MekanismModule() {
-		SlurryFormType.init();
+		ChemicalFormType.init();
 	}
 
 	private final IForm dirtyDustForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty_dusts", ItemFormType.INSTANCE).
@@ -59,13 +59,13 @@ public class MekanismModule implements IModule {
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:shards").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm crystalForm = ApiImpl.INSTANCE.newForm(this, "mekanism_crystals", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:crystals").setDefaultMaterialBlacklist(BLACKLIST);
-	private final IForm cleanSlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_clean", SlurryFormType.INSTANCE).
+	private final IForm cleanSlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_clean", ChemicalFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:clean").setDefaultMaterialBlacklist(BLACKLIST).
-			setSkipGroupedCheck(true).setSettings(SlurryFormType.INSTANCE.getNewSettings().
+			setSkipGroupedCheck(true).setSettings(ChemicalFormType.INSTANCE.getNewSettings().
 					setOreTagFunction(material->MiscHelper.INSTANCE.getTagLocation("ores", material.getName()).toString()));
-	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty", SlurryFormType.INSTANCE).
+	private final IForm dirtySlurryForm = ApiImpl.INSTANCE.newForm(this, "mekanism_dirty", ChemicalFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("mekanism:dirty").setDefaultMaterialBlacklist(BLACKLIST).
-			setSkipGroupedCheck(true).setSettings(SlurryFormType.INSTANCE.getNewSettings().
+			setSkipGroupedCheck(true).setSettings(ChemicalFormType.INSTANCE.getNewSettings().
 					setOreTagFunction(material->MiscHelper.INSTANCE.getTagLocation("ores", material.getName()).toString()));
 	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this,
 			dirtyDustForm, clumpForm, shardForm, crystalForm, dirtySlurryForm, cleanSlurryForm).setGrouped(true);
@@ -108,13 +108,13 @@ public class MekanismModule implements IModule {
 		MekanismHelper helper = MekanismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
-		ISlurryFormType slurryFormType = SlurryFormType.INSTANCE;
+		IChemicalFormType slurryFormType = ChemicalFormType.INSTANCE;
 		Set<ResourceLocation> itemTags = api.getItemTags();
 		ResourceLocation waterLocation = ResourceLocation.parse("minecraft:water");
 		for(IMaterial material : formRequest.getMaterials()) {
-			ISlurryInfo dirtySlurryInfo = slurryFormType.getMaterialFormInfo(dirtySlurryForm, material);
+			IChemicalInfo dirtySlurryInfo = slurryFormType.getMaterialFormInfo(dirtySlurryForm, material);
 			ResourceLocation dirtySlurryLocation = miscHelper.getTagLocation("mekanism:dirty", material.getName());
-			ISlurryInfo cleanSlurryInfo = slurryFormType.getMaterialFormInfo(cleanSlurryForm, material);
+			IChemicalInfo cleanSlurryInfo = slurryFormType.getMaterialFormInfo(cleanSlurryForm, material);
 			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());
 			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
 			ResourceLocation crystalLocation = miscHelper.getTagLocation("mekanism:crystals", material.getName());
@@ -131,15 +131,15 @@ public class MekanismModule implements IModule {
 
 			helper.registerDissolutionRecipe(
 					miscHelper.getRecipeKey("mekanism.ore_to_dirty_slurry", material.getName()),
-					oreLocation, 1, MekanismGases.SULFURIC_ACID, 1, dirtySlurryInfo, 1000);
+					oreLocation, 1, MekanismChemicals.SULFURIC_ACID, 1, true, dirtySlurryInfo, 1000);
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerDissolutionRecipe(
 						miscHelper.getRecipeKey("mekanism.raw_material_to_dirty_slurry", material.getName()),
-						rawMaterialLocation, 3, MekanismGases.SULFURIC_ACID, 1, dirtySlurryInfo, 2000);
+						rawMaterialLocation, 3, MekanismChemicals.SULFURIC_ACID, 1, true, dirtySlurryInfo, 2000);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerDissolutionRecipe(
 							miscHelper.getRecipeKey("mekanism.raw_storage_block_to_dirty_slurry", material.getName()),
-							rawStorageBlockLocation, 1, MekanismGases.SULFURIC_ACID, 2, dirtySlurryInfo, 6000);
+							rawStorageBlockLocation, 1, MekanismChemicals.SULFURIC_ACID, 2, true, dirtySlurryInfo, 6000);
 				}
 			}
 
@@ -153,35 +153,35 @@ public class MekanismModule implements IModule {
 
 			helper.registerInjectingRecipe(
 					miscHelper.getRecipeKey("mekanism.ore_to_shard", material.getName()),
-					oreLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 4);
+					oreLocation, 1, MekanismChemicals.HYDROGEN_CHLORIDE, 1, true, shardInfo, 4);
 			helper.registerInjectingRecipe(
 					miscHelper.getRecipeKey("mekanism.crystal_to_shard", material.getName()),
-					crystalLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 1);
+					crystalLocation, 1, MekanismChemicals.HYDROGEN_CHLORIDE, 1, true, shardInfo, 1);
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerInjectingRecipe(
 						miscHelper.getRecipeKey("mekanism.raw_material_to_shard", material.getName()),
-						rawMaterialLocation, 3, MekanismGases.HYDROGEN_CHLORIDE, 1, shardInfo, 8);
+						rawMaterialLocation, 3, MekanismChemicals.HYDROGEN_CHLORIDE, 1, true, shardInfo, 8);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerInjectingRecipe(
 							miscHelper.getRecipeKey("mekanism.raw_storage_block_to_shard", material.getName()),
-							rawStorageBlockLocation, 1, MekanismGases.HYDROGEN_CHLORIDE, 2, shardInfo, 24);
+							rawStorageBlockLocation, 1, MekanismChemicals.HYDROGEN_CHLORIDE, 2, true, shardInfo, 24);
 				}
 			}
 
 			helper.registerPurifyingRecipe(
 					miscHelper.getRecipeKey("mekanism.ore_to_clump", material.getName()),
-					oreLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 3);
+					oreLocation, 1, MekanismChemicals.OXYGEN, 1, true, clumpInfo, 3);
 			helper.registerPurifyingRecipe(
 					miscHelper.getRecipeKey("mekanism.shard_to_clump", material.getName()),
-					shardLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 1);
+					shardLocation, 1, MekanismChemicals.OXYGEN, 1, true, clumpInfo, 1);
 			if(material.getType() == MaterialType.INGOT) {
 				helper.registerPurifyingRecipe(
 						miscHelper.getRecipeKey("mekanism.raw_material_to_clump", material.getName()),
-						rawMaterialLocation, 1, MekanismGases.OXYGEN, 1, clumpInfo, 2);
+						rawMaterialLocation, 1, MekanismChemicals.OXYGEN, 1, true, clumpInfo, 2);
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerPurifyingRecipe(
 							miscHelper.getRecipeKey("mekanism.raw_storage_block_to_clump", material.getName()),
-							rawStorageBlockLocation, 1, MekanismGases.OXYGEN, 2, clumpInfo, 18);
+							rawStorageBlockLocation, 1, MekanismChemicals.OXYGEN, 2, true, clumpInfo, 18);
 				}
 			}
 
@@ -189,7 +189,7 @@ public class MekanismModule implements IModule {
 					miscHelper.getRecipeKey("mekanism.clump_to_dirty_dust", material.getName()),
 					clumpLocation, 1, dirtyDustInfo, 1);
 
-			helper.registerEnrichingRecipe(
+			helper.registerEnrichingRecipe(	
 					miscHelper.getRecipeKey("mekanism.dirty_dust_to_dust", material.getName()),
 					dirtyDustLocation, 1, dustLocation, 1);
 		}

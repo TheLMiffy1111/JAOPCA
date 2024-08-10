@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 
 import mekanism.api.recipes.basic.BasicChemicalCrystallizerRecipe;
-import mekanism.api.recipes.ingredients.SlurryStackIngredient;
+import mekanism.api.recipes.ingredients.ChemicalStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
@@ -35,7 +35,7 @@ public class CrystallizingRecipeSerializer implements IRecipeSerializer {
 
 	@Override
 	public JsonElement get() {
-		SlurryStackIngredient ing = MekanismHelper.INSTANCE.getSlurryStackIngredient(input, inputCount);
+		ChemicalStackIngredient ing = MekanismHelper.INSTANCE.getChemicalStackIngredient(input, inputCount);
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}

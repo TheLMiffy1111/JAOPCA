@@ -5,13 +5,16 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/JAOPCA/issues"
 
 [[mods]]
 	modId = "jaopca"
-	version = "0@VERSION@"
+	version = "9@VERSION@"
 	displayName = "JAOPCA"
 	description = "A mod that aims to make mods with ore processing support more ores."
 	logoFile = "jaopca.logo.png"
 	credits = "Inspired by AOBD, a mod by ganymedes01"
 	authors = "TheLMiffy1111"
 	displayURL = "https://www.curseforge.com/minecraft/mc-mods/jaopca"
+
+[[mixins]]
+	config = "jaopca.mixins.json"
 
 [[dependencies.jaopca]]
 	modId = "neoforge"

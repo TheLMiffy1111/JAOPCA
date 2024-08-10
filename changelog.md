@@ -1,2 +1,3 @@
-Updated some language files  
-Fix Theurgy sulfur render  
+Updated Mekanism
+Add pack ids to data collector packs in case it is needed  
+Remove mixin connector  

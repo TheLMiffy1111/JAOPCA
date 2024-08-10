@@ -19,11 +19,12 @@ public class KubeJSPackSupplier implements IPackSupplier {
 
 	@Override
 	public void addPacks(Consumer<PackResources> resourcePacks) {
-		PackLocationInfo emptyLocation = new PackLocationInfo("", Component.empty(), PackSource.DEFAULT, Optional.empty());
-		resourcePacks.accept(new PathPackResources(emptyLocation, KubeJSPaths.DIRECTORY));
+		PackLocationInfo location = new PackLocationInfo("kubejs", Component.empty(), PackSource.DEFAULT, Optional.empty());
+		resourcePacks.accept(new PathPackResources(location, KubeJSPaths.DIRECTORY));
 		for(File file : KubeJSPaths.DATA.toFile().listFiles()) {
 			if(file.isFile() && file.getName().endsWith(".zip")) {
-				resourcePacks.accept(new FilePackResources(emptyLocation, new FilePackResources.SharedZipFileAccess(file), ""));
+				location = new PackLocationInfo("kubejs/"+file.getName(), Component.empty(), PackSource.DEFAULT, Optional.empty());
+				resourcePacks.accept(new FilePackResources(location, new FilePackResources.SharedZipFileAccess(file), ""));
 			}
 		}
 	}

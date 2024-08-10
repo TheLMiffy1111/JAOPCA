@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 
 import mekanism.api.recipes.basic.BasicPurifyingRecipe;
-import mekanism.api.recipes.ingredients.GasStackIngredient;
+import mekanism.api.recipes.ingredients.ChemicalStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -23,17 +23,19 @@ public class PurifyingRecipeSerializer implements IRecipeSerializer {
 	public final ResourceLocation key;
 	public final Object itemInput;
 	public final int itemInputCount;
-	public final Object gasInput;
-	public final int gasInputAmount;
+	public final Object chemicalInput;
+	public final int chemicalInputAmount;
+	public final boolean perTickUsage;
 	public final Object output;
 	public final int outputCount;
 
-	public PurifyingRecipeSerializer(ResourceLocation key, Object itemInput, int itemInputCount, Object gasInput, int gasInputAmount, Object output, int outputCount) {
+	public PurifyingRecipeSerializer(ResourceLocation key, Object itemInput, int itemInputCount, Object chemicalInput, int chemicalInputAmount, boolean perTickUsage, Object output, int outputCount) {
 		this.key = Objects.requireNonNull(key);
 		this.itemInput = itemInput;
 		this.itemInputCount = itemInputCount;
-		this.gasInput = gasInput;
-		this.gasInputAmount = gasInputAmount;
+		this.chemicalInput = chemicalInput;
+		this.chemicalInputAmount = chemicalInputAmount;
+		this.perTickUsage = perTickUsage;
 		this.output = output;
 		this.outputCount = outputCount;
 	}
@@ -44,15 +46,15 @@ public class PurifyingRecipeSerializer implements IRecipeSerializer {
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+itemInput);
 		}
-		GasStackIngredient gasIng = MekanismHelper.INSTANCE.getGasStackIngredient(gasInput, gasInputAmount);
-		if(gasIng == null) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+gasInput);
+		ChemicalStackIngredient chemicalIng = MekanismHelper.INSTANCE.getChemicalStackIngredient(chemicalInput, chemicalInputAmount);
+		if(chemicalIng == null) {
+			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+chemicalInput);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		BasicPurifyingRecipe recipe = new BasicPurifyingRecipe(ing, gasIng, stack);
+		BasicPurifyingRecipe recipe = new BasicPurifyingRecipe(ing, chemicalIng, stack, perTickUsage);
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

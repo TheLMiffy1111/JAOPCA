@@ -14,8 +14,8 @@
 	"item.jaopca.mekanism_clumps": "%s碎塊",
 	"item.jaopca.mekanism_shards": "%s碎片",
 	"item.jaopca.mekanism_crystals": "%s晶體",
-	"slurry.jaopca.mekanism_dirty": "污濁%s漿液",
-	"slurry.jaopca.mekanism_clean": "純淨%s漿液",
+	"chemical.jaopca.mekanism_dirty": "污濁%s漿液",
+	"chemical.jaopca.mekanism_clean": "純淨%s漿液",
 
 	"item.jaopca.modern_industrialization_crushed_dusts": "%s碎粉",
 

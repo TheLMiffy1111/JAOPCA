@@ -1,6 +1,5 @@
 package thelm.jaopca.compat.jsonthings;
 
-import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,13 +29,16 @@ public class JsonThingsPackSupplier implements IPackSupplier {
 	public void addPacks(Consumer<PackResources> resourcePacks) {
 		Path thingpacks = ThingResourceManager.instance().getThingPacksLocation();
 		try(DirectoryStream<Path> directorystream = Files.newDirectoryStream(thingpacks)) {
-			PackLocationInfo emptyLocation = new PackLocationInfo("", Component.empty(), PackSource.DEFAULT, Optional.empty());
 			FolderRepositorySource.discoverPacks(
 					thingpacks,
 					LevelStorageSource.parseValidator(FMLPaths.GAMEDIR.get().resolve("allowed_symlinks.txt")),
-					(path, supplier)->resourcePacks.accept(supplier.openPrimary(emptyLocation)));
+					(path, supplier)->{
+						String name = "jsonthings/"+path.getFileName().toString();
+						PackLocationInfo location = new PackLocationInfo(name, Component.empty(), PackSource.DEFAULT, Optional.empty());
+						resourcePacks.accept(supplier.openPrimary(location));
+					});
 		}
-		catch(IOException e) {
+		catch(Exception e) {
 			LOGGER.error("Could not read from {}.", thingpacks, e);
 		}
 	}

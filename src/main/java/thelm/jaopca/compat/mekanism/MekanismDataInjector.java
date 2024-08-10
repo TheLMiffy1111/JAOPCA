@@ -16,62 +16,20 @@ public class MekanismDataInjector {
 
 	private MekanismDataInjector() {}
 
-	public static final Set<ResourceLocation> GAS_TAG_BLACKLIST = new TreeSet<>();
-	public static final Set<ResourceLocation> INFUSE_TYPE_TAG_BLACKLIST = new TreeSet<>();
-	public static final Set<ResourceLocation> PIGMENT_TAG_BLACKLIST = new TreeSet<>();
-	public static final Set<ResourceLocation> SLURRY_TAG_BLACKLIST = new TreeSet<>();
+	public static final Set<ResourceLocation> CHEMICAL_TAG_BLACKLIST = new TreeSet<>();
 
-	public static boolean registerGasTag(ResourceLocation location, ResourceLocation gasLocation) {
-		if(GAS_TAG_BLACKLIST.contains(location)) {
+	public static boolean registerChemicalTag(ResourceLocation location, ResourceLocation chemicalLocation) {
+		if(CHEMICAL_TAG_BLACKLIST.contains(location)) {
 			return false;
 		}
-		return ApiImpl.INSTANCE.registerTag(MekanismAPI.GAS_REGISTRY_NAME, location, gasLocation);
-	}
-
-	public static boolean registerInfuseTypeTag(ResourceLocation location, ResourceLocation infuseTypeLocation) {
-		if(INFUSE_TYPE_TAG_BLACKLIST.contains(location)) {
-			return false;
-		}
-		return ApiImpl.INSTANCE.registerTag(MekanismAPI.INFUSE_TYPE_REGISTRY_NAME, location, infuseTypeLocation);
-	}
-
-	public static boolean registerPigmentTag(ResourceLocation location, ResourceLocation pigmentLocation) {
-		if(PIGMENT_TAG_BLACKLIST.contains(location)) {
-			return false;
-		}
-		return ApiImpl.INSTANCE.registerTag(MekanismAPI.PIGMENT_REGISTRY_NAME, location, pigmentLocation);
-	}
-
-	public static boolean registerSlurryTag(ResourceLocation location, ResourceLocation slurryLocation) {
-		if(SLURRY_TAG_BLACKLIST.contains(location)) {
-			return false;
-		}
-		return ApiImpl.INSTANCE.registerTag(MekanismAPI.SLURRY_REGISTRY_NAME, location, slurryLocation);
+		return ApiImpl.INSTANCE.registerTag(MekanismAPI.CHEMICAL_REGISTRY_NAME, location, chemicalLocation);
 	}
 
 	static void setupConfig(IDynamicSpecConfig config) {
-		config.setComment("gasTags", "Configurations related to gas tags.");
-		GAS_TAG_BLACKLIST.addAll(Lists.transform(config.getDefinedStringList("gasTags.blacklist", new ArrayList<>(),
-				"List of gas tags that should not be added."), ResourceLocation::parse));
-		DataCollector.getDefinedTags("gases").addAll(Lists.transform(config.getDefinedStringList("gasTags.customDefined", new ArrayList<>(),
-				"List of gas tags that should be considered as defined."), ResourceLocation::parse));
-
-		config.setComment("infuseTypeTags", "Configurations related to infuse type tags.");
-		INFUSE_TYPE_TAG_BLACKLIST.addAll(Lists.transform(config.getDefinedStringList("infuseTypeTags.blacklist", new ArrayList<>(),
+		config.setComment("chemicalTags", "Configurations related to chemical tags.");
+		CHEMICAL_TAG_BLACKLIST.addAll(Lists.transform(config.getDefinedStringList("chemicalTags.blacklist", new ArrayList<>(),
 				"List of infuse type tags that should not be added."), ResourceLocation::parse));
-		DataCollector.getDefinedTags("infuseTypes").addAll(Lists.transform(config.getDefinedStringList("infuseTypeTags.customDefined", new ArrayList<>(),
-				"List of infuse type tags that should be considered as defined."), ResourceLocation::parse));
-
-		config.setComment("pigmentTags", "Configurations related to pigment tags.");
-		PIGMENT_TAG_BLACKLIST.addAll(Lists.transform(config.getDefinedStringList("pigmentTags.blacklist", new ArrayList<>(),
-				"List of infuse type tags that should not be added."), ResourceLocation::parse));
-		DataCollector.getDefinedTags("pigments").addAll(Lists.transform(config.getDefinedStringList("pigmentTags.customDefined", new ArrayList<>(),
-				"List of infuse type tags that should be considered as defined."), ResourceLocation::parse));
-
-		config.setComment("slurryTags", "Configurations related to slurry tags.");
-		SLURRY_TAG_BLACKLIST.addAll(Lists.transform(config.getDefinedStringList("slurryTags.blacklist", new ArrayList<>(),
-				"List of infuse type tags that should not be added."), ResourceLocation::parse));
-		DataCollector.getDefinedTags("slurries").addAll(Lists.transform(config.getDefinedStringList("slurryTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags(MekanismAPI.CHEMICAL_REGISTRY_NAME).addAll(Lists.transform(config.getDefinedStringList("chemicalTags.customDefined", new ArrayList<>(),
 				"List of infuse type tags that should be considered as defined."), ResourceLocation::parse));
 	}
 }

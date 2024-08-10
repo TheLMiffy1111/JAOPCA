@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,11 +26,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.repository.ServerPacksSource;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.resource.ResourcePackLoader;
+import net.neoforged.neoforgespi.language.IModInfo;
 import net.neoforged.neoforgespi.language.ModFileScanData.AnnotationData;
 import thelm.jaopca.api.resources.IPackSupplier;
 import thelm.jaopca.api.resources.JAOPCAPackSupplier;
@@ -56,11 +59,15 @@ public class DataCollector {
 		DEFINED_RECIPES.clear();
 		DEFINED_ADVANCEMENTS.clear();
 
-		PackLocationInfo emptyLocation = new PackLocationInfo("", Component.empty(), PackSource.DEFAULT, Optional.empty());
 		List<PackResources> resourcePacks = new ArrayList<>();
 		resourcePacks.add(ServerPacksSource.createVanillaPackSource());
 		ModList.get().getModFiles().stream().
-		map(mf->ResourcePackLoader.createPackForMod(mf).openPrimary(emptyLocation)).
+		map(mf->{
+			Pack.ResourcesSupplier pack = ResourcePackLoader.createPackForMod(mf);
+			String name = "mod/"+mf.getMods().stream().map(IModInfo::getModId).collect(Collectors.joining(","));
+			PackLocationInfo location = new PackLocationInfo(name, Component.empty(), PackSource.DEFAULT, Optional.empty());
+			return pack.openPrimary(location);
+		}).
 		forEach(resourcePacks::add);
 		List<AnnotationData> annotationData = ModList.get().getAllScanData().stream().
 				flatMap(data->data.getAnnotations().stream()).

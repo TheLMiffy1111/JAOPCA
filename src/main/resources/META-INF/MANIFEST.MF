@@ -1,1 +1,0 @@
-MixinConnector: thelm.jaopca.mixins.JAOPCAMixinConnector

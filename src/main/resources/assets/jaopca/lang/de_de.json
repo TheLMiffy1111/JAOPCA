@@ -14,8 +14,8 @@
 	"item.jaopca.mekanism_clumps": "%sklumpen",
 	"item.jaopca.mekanism_shards": "%ssplitter",
 	"item.jaopca.mekanism_crystals": "%skristall",
-	"slurry.jaopca.mekanism_dirty": "Dreckiger %sschlamm",
-	"slurry.jaopca.mekanism_clean": "Sauberer %sschlamm",
+	"chemical.jaopca.mekanism_dirty": "Dreckiger %sschlamm",
+	"chemical.jaopca.mekanism_clean": "Sauberer %sschlamm",
 
 	"item.jaopca.modern_industrialization_crushed_dusts": "%s Crushed Dust",
 

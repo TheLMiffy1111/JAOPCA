@@ -7,8 +7,8 @@
 		},
 		{
 			"type": "directory",
-			"source": "slurry",
-			"prefix": "slurry/"
+			"source": "chemical",
+			"prefix": "chemical/"
 		}
 	]
 }
