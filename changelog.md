@@ -1,1 +1,1 @@
-Updated some language files  
+Change late mixin variant used from GTNH to MixinBooterLegacy  

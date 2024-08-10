@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-af214fdb"
+	id "com.crystaelix.loom" version "jitpack-a771545d"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -124,7 +124,7 @@ def specVersion = "W"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "W.0.6.24"
+version = "W.0.6.25"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -139,9 +139,6 @@ tasks.withType(JavaCompile).configureEach {
 
 loom {
 	silentMojangMappingsLicense()
-	forge {
-		mixinConfig "${modId}.mixins.rotarycraft.json"
-	}
 	mixin.defaultRefmapName = "${modId}.refmap.json"
 	interfaceInjection.enableDependencyInterfaceInjection = false
 	runs {
