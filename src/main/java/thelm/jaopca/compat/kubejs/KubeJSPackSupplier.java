@@ -15,10 +15,11 @@ public class KubeJSPackSupplier implements IPackSupplier {
 
 	@Override
 	public void addPacks(Consumer<PackResources> resourcePacks) {
-		resourcePacks.accept(new PathPackResources("KubeJS", KubeJSPaths.DIRECTORY, false));
+		resourcePacks.accept(new PathPackResources("kubejs", KubeJSPaths.DIRECTORY, false));
 		for(File file : KubeJSPaths.DATA.toFile().listFiles()) {
 			if(file.isFile() && file.getName().endsWith(".zip")) {
-				resourcePacks.accept(new FilePackResources(file.getName(), file, false));
+				String name = "kubejs/"+file.getName();
+				resourcePacks.accept(new FilePackResources(name, file, false));
 			}
 		}
 	}

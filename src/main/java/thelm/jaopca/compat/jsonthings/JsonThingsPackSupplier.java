@@ -28,11 +28,12 @@ public class JsonThingsPackSupplier implements IPackSupplier {
 			for(Path path : directorystream) {
 				Pack.ResourcesSupplier supplier = FolderRepositorySource.detectPackResources(path, false);
 				if(supplier != null) {
-					resourcePacks.accept(supplier.open(path.getFileName().toString()));
+					String name = "jsonthings/"+path.getFileName().toString();
+					resourcePacks.accept(supplier.open(name));
 				}
 			}
 		}
-		catch(IOException e) {
+		catch(Exception e) {
 			LOGGER.error("Could not read from {}.", thingpacks, e);
 		}
 	}

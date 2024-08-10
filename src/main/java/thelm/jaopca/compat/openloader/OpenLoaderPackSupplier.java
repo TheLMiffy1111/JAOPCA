@@ -47,7 +47,8 @@ public class OpenLoaderPackSupplier implements IPackSupplier {
 							for(File file : files) {
 								boolean isPack = isArchivePack(file, false) || isFolderPack(file, false);
 								if(isPack) {
-									resourcePacks.accept(file.isDirectory() ? new PathPackResources(file.getName(), file.toPath(), false) : new FilePackResources(file.getName(), file, false));
+									String name = "openloader"+file.getName();
+									resourcePacks.accept(file.isDirectory() ? new PathPackResources(name, file.toPath(), false) : new FilePackResources(name, file, false));
 								}
 								else {
 									isArchivePack(file, true);
