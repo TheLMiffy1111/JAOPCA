@@ -32,7 +32,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism")
+@JAOPCAModule(modDependencies = "mekanism@[10.7,)")
 public class MekanismModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(

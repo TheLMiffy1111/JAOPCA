@@ -15,7 +15,7 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism")
+@JAOPCAModule(modDependencies = "mekanism@[10.7,)")
 public class MekanismNonIngotModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
