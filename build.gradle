@@ -1,11 +1,11 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-a771545d"
+	id "com.crystaelix.loom" version "jitpack-6cccf24f"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
 	id "net.kyori.blossom" version "[1,2)"
 	id "com.github.johnrengelman.shadow" version "[8,9)"
-	id "me.modmuss50.mod-publish-plugin" version "0.5.0"
+	id "me.modmuss50.mod-publish-plugin" version "0.7.2"
 }
 
 repositories {
@@ -276,7 +276,7 @@ dependencies {
 	// Performance
 	modImplementation "com.github.GTNewHorizons:GTNHLib:0.3.2"
 	modImplementation("com.github.GTNewHorizons:NotEnoughIds:2.1.0") {transitive = false}
-	modImplementation "curse.maven:archaicfix-677782:5474850"
+	modImplementation "curse.maven:archaicfix-677782:5549709"
 }
 
 def replacements = [
