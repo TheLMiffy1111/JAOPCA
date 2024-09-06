@@ -1,11 +1,11 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-a771545d"
+	id "com.crystaelix.loom" version "jitpack-6cccf24f"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
 	id "net.kyori.blossom" version "[1,2)"
 	id "com.github.johnrengelman.shadow" version "[8,9)"
-	id "me.modmuss50.mod-publish-plugin" version "0.5.0"
+	id "me.modmuss50.mod-publish-plugin" version "0.7.2"
 }
 
 repositories {
@@ -215,7 +215,7 @@ dependencies {
 	implementation "net.shadowfacts:Forgelin:1.8.4"
 	modImplementation "curse.maven:baubles-227083:2518667"
 	modImplementation "curse.maven:redstone-flux-270789:2920436"
-	implementation("zone.rong:mixinbooter:9.2") {transitive = false}
+	implementation("zone.rong:mixinbooter:9.3") {transitive = false}
 
 	// CraftTweaker
 	modImplementation("CraftTweaker2:ZenScript:4.1.20.700") {transitive = false}
@@ -297,7 +297,7 @@ dependencies {
 	// QMD
 	modImplementation "curse.maven:nuclearcraft-overhauled-336895:5446445"
 	modImplementation "curse.maven:nco-java-legacy-lib-1032769:5414463"
-	modImplementation "curse.maven:qmd-362056:5467081"
+	modImplementation "curse.maven:qmd-362056:5681949"
 
 	// Thaumcraft
 	modImplementation "curse.maven:thaumcraft-223628:2629023"
