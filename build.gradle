@@ -1,10 +1,10 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-a771545d"
+	id "com.crystaelix.loom" version "jitpack-6cccf24f"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
 	id "net.kyori.blossom" version "[1,2)"
-	id "me.modmuss50.mod-publish-plugin" version "0.5.0"
+	id "me.modmuss50.mod-publish-plugin" version "0.7.2"
 }
 
 repositories {
@@ -275,8 +275,8 @@ dependencies {
 	modImplementation "curse.maven:assemblylinemachines-388282:3964948"
 
 	// Create
-	modImplementation "com.jozufozu.flywheel:flywheel-forge-1.19.2:0.6.10-20"
-	modImplementation("com.simibubi.create:create-1.19.2:0.5.1.f-46:slim") {transitive = false}
+	modImplementation "com.jozufozu.flywheel:flywheel-forge-1.19.2:0.6.11-22"
+	modImplementation("com.simibubi.create:create-1.19.2:0.5.1.h-58:slim") {transitive = false}
 
 	// Crossroads
 	modImplementation "curse.maven:essentials-293752:4633275"
@@ -311,8 +311,8 @@ dependencies {
 
 	// Integrated Dynamics
 	modImplementation "curse.maven:cyclops-core-232758:5583714"
-	modImplementation "curse.maven:common-capabilities-247007:5579951"
-	modImplementation "curse.maven:integrated-dynamics-236307:5583974"
+	modImplementation "curse.maven:common-capabilities-247007:5650214"
+	modImplementation "curse.maven:integrated-dynamics-236307:5686770"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
