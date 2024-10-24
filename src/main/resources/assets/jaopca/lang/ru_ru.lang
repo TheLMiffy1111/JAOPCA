@@ -21,6 +21,8 @@ fluid.jaopca.bcoreprocessing_searing=Расплав %s (§cЖгучий§r)
 fluid.jaopca.bcoreprocessing_hot=Расплав %s (§6Горячий§r)
 fluid.jaopca.bcoreprocessing_cool=Расплав %s (§bПрохладный§r)
 
+item.jaopca.create_crushed=Crushed %s
+
 fluid.jaopca.foundry_liquid=Расплав %s
 
 item.jaopca.hbm_crystal=Кристаллизованное %s

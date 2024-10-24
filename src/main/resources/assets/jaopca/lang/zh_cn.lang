@@ -21,6 +21,8 @@ fluid.jaopca.bcoreprocessing_searing=熔融%s (§c灼热§r)
 fluid.jaopca.bcoreprocessing_hot=熔融%s (§6热§r)
 fluid.jaopca.bcoreprocessing_cool=熔融%s (§b冷§r)
 
+item.jaopca.create_crushed=粉碎%s矿石
+
 fluid.jaopca.foundry_liquid=液态%s
 
 item.jaopca.hbm_crystal=%s晶体

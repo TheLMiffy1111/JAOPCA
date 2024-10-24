@@ -21,6 +21,8 @@ fluid.jaopca.bcoreprocessing_searing=Erimiş %s (§cAşırı Sıcak§r)
 fluid.jaopca.bcoreprocessing_hot=Erimiş %s (§6Sıcak§r)
 fluid.jaopca.bcoreprocessing_cool=Erimiş %s (§bSoğuk§r)
 
+item.jaopca.create_crushed=Crushed %s
+
 fluid.jaopca.foundry_liquid=Sıvı %s
 
 item.jaopca.hbm_crystal=%s Crystals

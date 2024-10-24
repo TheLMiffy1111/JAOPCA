@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.DoublePredicate;
 import java.util.function.IntPredicate;
 import java.util.function.LongPredicate;
@@ -441,8 +442,8 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public <T extends Enum<T>> T getDefinedEnum(List<String> path, Class<T> enumType, T defaultValue, Predicate<T> validator, String comment) {
-		if(!config.contains(path) || !(config.get(path) instanceof CharSequence) ||  !(config.get(path) instanceof Number) ||!validator.test(config.getEnum(path, enumType, EnumGetMethod.ORDINAL_OR_NAME_IGNORECASE))) {
-			config.set(path, defaultValue.name());
+		if(!config.contains(path) || !(config.get(path) instanceof CharSequence) && !(config.get(path) instanceof Number) || !validator.test(config.getEnum(path, enumType, EnumGetMethod.ORDINAL_OR_NAME_IGNORECASE))) {
+			config.set(path, defaultValue.name().toLowerCase(Locale.US));
 		}
 		if(comment != null) {
 			config.setComment(path, comment);

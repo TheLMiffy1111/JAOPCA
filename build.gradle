@@ -1,11 +1,11 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6cccf24f"
+	id "com.crystaelix.loom" version "jitpack-0a007f07"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
 	id "net.kyori.blossom" version "[1,2)"
 	id "com.github.johnrengelman.shadow" version "[8,9)"
-	id "me.modmuss50.mod-publish-plugin" version "0.7.2"
+	id "me.modmuss50.mod-publish-plugin" version "0.7.4"
 }
 
 repositories {
@@ -158,7 +158,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.11.27"
+version = "2.3.12.28"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -197,7 +197,7 @@ configurations {
 
 dependencies {
 	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.22.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.24.1"
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.12.2"
@@ -215,7 +215,7 @@ dependencies {
 	implementation "net.shadowfacts:Forgelin:1.8.4"
 	modImplementation "curse.maven:baubles-227083:2518667"
 	modImplementation "curse.maven:redstone-flux-270789:2920436"
-	implementation("zone.rong:mixinbooter:9.3") {transitive = false}
+	implementation("zone.rong:mixinbooter:9.4") {transitive = false}
 
 	// CraftTweaker
 	modImplementation("CraftTweaker2:ZenScript:4.1.20.700") {transitive = false}
@@ -243,6 +243,9 @@ dependencies {
 	modImplementation "com.mod-buildcraft:buildcraft-main:7.99.24.8"
 	modImplementation "curse.maven:buildcraft-compat-233140:3204471"
 	modImplementation "curse.maven:bc-ore-processing-277910:2882663"
+
+	// Create
+	modImplementation "curse.maven:create-legacy-1060988:5722144"
 
 	// Embers Rekindled
 	modImplementation "curse.maven:embers-rekindled-300777:3695248"
@@ -377,6 +380,7 @@ def curseforgeDependencies = [
 	"astral-sorcery",
 	"bc-ore-processing",
 	"crafttweaker",
+	"create-legacy",
 	"embers-rekindled",
 	"ender-io",
 	"essentialcraft-4-unofficial",
@@ -400,6 +404,7 @@ def curseforgeDependencies = [
 def modrinthDependencies = [
 	"ae2",
 	"crafttweaker",
+	"create-legacy",
 	"embers",
 	"enderio",
 	"futurepack",

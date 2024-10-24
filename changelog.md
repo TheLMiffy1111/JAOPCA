@@ -1,1 +1,2 @@
-Updated some language files  
+Added Create Legacy support  
+Fixed enum configs not working  
