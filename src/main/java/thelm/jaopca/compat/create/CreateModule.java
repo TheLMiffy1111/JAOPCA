@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.create;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.JAOPCAApi;
@@ -35,19 +37,39 @@ import thelm.jaopca.utils.MiscHelper;
 public class CreateModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"aluminium", "aluminum", "copper", "gold", "iron", "lead", "nickel", "osmium", "platinum", "quicksilver",
-			"silver", "tin", "uranium", "zinc"));
+			"copper", "gold", "iron", "zinc"));
 
 	static {
 		//if(ModList.get().isLoaded("allthemodium")) {
 		//	Collections.addAll(BLACKLIST, "allthemodium", "unobtainium", "vibranium");
 		//}
+		if(ModList.get().isLoaded("galosphere")) {
+			Collections.addAll(BLACKLIST, "silver");
+		}
+		if(ModList.get().isLoaded("ic2")) {
+			Collections.addAll(BLACKLIST, "aluminium", "aluminum", "silver", "tin", "uranium");
+		}
+		if(ModList.get().isLoaded("iceandfire")) {
+			Collections.addAll(BLACKLIST, "silver");
+		}
+		if(ModList.get().isLoaded("immersiveengineering")) {
+			Collections.addAll(BLACKLIST, "aluminium", "aluminum", "lead", "nickel", "silver", "uranium");
+		}
+		if(ModList.get().isLoaded("mekanism")) {
+			Collections.addAll(BLACKLIST, "lead", "osmium", "tin", "uranium");
+		}
+		if(ModList.get().isLoaded("oreganized")) {
+			Collections.addAll(BLACKLIST, "lead");
+		}
+		if(ModList.get().isLoaded("thermal")) {
+			Collections.addAll(BLACKLIST, "lead", "nickel", "silver", "tin");
+		}
 	}
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
 	private final IForm crushedForm = ApiImpl.INSTANCE.newForm(this, "create_crushed", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("create:crushed").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("create:crushed_raw_materials").setDefaultMaterialBlacklist(BLACKLIST);
 
 	@Override
 	public String getName() {
@@ -98,7 +120,7 @@ public class CreateModule implements IModule {
 		for(IMaterial material : crushedForm.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			IItemInfo crushedInfo = itemFormType.getMaterialFormInfo(crushedForm, material);
-			ResourceLocation crushedLocation = miscHelper.getTagLocation("create:crushed", material.getName());
+			ResourceLocation crushedLocation = miscHelper.getTagLocation("create:crushed_raw_materials", material.getName());
 			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
@@ -180,6 +202,15 @@ public class CreateModule implements IModule {
 					crushedLocation, new Object[] {
 							nuggetLocation, 9,
 					});
+		}
+
+		String[] toRegister = {
+				"aluminum", "copper", "gold", "iron", "lead", "nickel", "osmium", "platinum", "quicksilver",
+				"silver", "tin", "uranium", "zinc"};
+		for(String material : toRegister) {
+			api.registerItemTag(
+					miscHelper.getTagLocation("create:crushed_raw_materials", material),
+					new ResourceLocation("create", "crushed_raw_"+material));
 		}
 	}
 }

@@ -13,7 +13,9 @@
 	"item.jaopca.bloodmagic_gravels": "%s Cascalho",
 	"item.jaopca.bloodmagic_fragments": "%s Fragmento",
 
-	"item.jaopca.create_crushed": "%s bruto esmagado",
+	"item.jaopca.create_crushed": "%s Bruto Esmagado",
+
+	"item.jaopca.createmetallurgy_dirty_dusts": "Pó de %s Sujo",
 
 	"item.jaopca.crossroads_grits": "Areia de %s Bruta",
 	"item.jaopca.crossroads_clumps": "Aglomerado de %s",
@@ -24,7 +26,7 @@
 	"item.jaopca.electrodynamics_sulfates": "%s Balde de Sulfato",
 
 	"item.jaopca.factorium_chunks": "%s Chunks",
-	"item.jaopca.factorium_powders": "%s Em pó",
+	"item.jaopca.factorium_powders": "%s Em Pó",
 
 	"item.jaopca.indreb_purified": "Purified %s",
 	"item.jaopca.indreb_chunks": "%s Chunk",

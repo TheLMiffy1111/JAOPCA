@@ -1,10 +1,10 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6cccf24f"
+	id "com.crystaelix.loom" version "jitpack-0a007f07"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
 	id "net.kyori.blossom" version "[1,2)"
-	id "me.modmuss50.mod-publish-plugin" version "0.7.2"
+	id "me.modmuss50.mod-publish-plugin" version "0.7.4"
 }
 
 repositories {
@@ -175,11 +175,31 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
+				url = "https://maven.rover656.dev/releases/"
+			}
+		}
+		filter {
+			includeGroup "com.enderio"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
 				url = "https://cursemaven.com/"
 			}
 		}
 		filter {
 			includeGroup "curse.maven"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				url = "https://api.modrinth.com/maven/"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
 		}
 	}
 	exclusiveContent {
@@ -205,7 +225,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.4.11.21"
+version = "4.4.12.22"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -240,7 +260,7 @@ loom {
 
 dependencies {
 	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.22.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.24.1"
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.20.1"
@@ -251,7 +271,7 @@ dependencies {
 	forge "net.minecraftforge:forge:1.20.1-47.3.7"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.20.1-forge:15.17.0.76") {transitive = false}
+	modImplementation("mezz.jei:jei-1.20.1-forge:15.19.5.99") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.20-1.3.11"
 	modImplementation "top.theillusivec4.curios:curios-forge:5.10.0+1.20.1"
 	forgeRuntimeLibrary "com.eliotlash.mclib:mclib:20"
@@ -260,7 +280,7 @@ dependencies {
 	forgeRuntimeLibrary "org.commonmark:commonmark:0.22.0"
 	forgeRuntimeLibrary "org.commonmark:commonmark-ext-gfm-strikethrough:0.22.0"
 	forgeRuntimeLibrary "org.commonmark:commonmark-ext-ins:0.22.0"
-	modImplementation("com.klikli_dev:modonomicon-1.20.1-forge:1.75.0") {transitive = false}
+	modImplementation("com.klikli_dev:modonomicon-1.20.1-forge:1.77.0") {transitive = false}
 	modImplementation "dev.architectury:architectury-forge:9.2.14"
 
 	// CraftTweaker
@@ -281,7 +301,13 @@ dependencies {
 
 	// Create
 	modImplementation "com.jozufozu.flywheel:flywheel-forge-1.20.1:0.6.11-13"
-	modImplementation("com.simibubi.create:create-1.20.1:0.5.1.h-48:slim") {transitive = false}
+	modImplementation("com.simibubi.create:create-1.20.1:0.5.1.i-51:slim") {transitive = false}
+
+	// Create: Dreams & Desires
+	modImplementation "maven.modrinth:create-dreams-and-desires:GZxkqfDv"
+
+	// Create: Metallurgy
+	modImplementation "curse.maven:create-metallurgy-1007404:5794774"
 
 	// Crossroads
 	modImplementation "curse.maven:essentials-293752:4640300"
@@ -289,7 +315,7 @@ dependencies {
 
 	// Cyclic
 	modImplementation "curse.maven:flib-661261:5495793"
-	modImplementation "curse.maven:cyclic-239286:5620124"
+	modImplementation "curse.maven:cyclic-239286:5749718"
 
 	// Electrodynamics
 	modImplementation "curse.maven:electrodynamics-316867:5502166"
@@ -299,10 +325,10 @@ dependencies {
 
 	// Ender IO
 	implementation "dev.gigaherz.graph:GraphLib3:3.0.5"
-	modImplementation "curse.maven:ender-io-64578:5549669"
+	modImplementation "com.enderio:EnderIO:1.20.1-6.2.1-beta"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:5510680"
+	modImplementation "curse.maven:energized-power-782147:5746760"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:3.3.0-build-2:with-library") {transitive = false}
@@ -325,7 +351,7 @@ dependencies {
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.20.1:1.15"
-	modImplementation("com.klikli_dev:occultism-1.20.1:1.137.1") {transitive = false}
+	modImplementation("com.klikli_dev:occultism-1.20.1:1.139.0") {transitive = false}
 
 	// Railcraft Reborn
 	modImplementation "curse.maven:railcraft-reborn-901491:5650737"
@@ -397,6 +423,8 @@ def curseforgeDependencies = [
 	"blood-magic",
 	"crafttweaker",
 	"create",
+	"create-dreams-desires",
+	"create-metallurgy",
 	"crossroads-mc",
 	"cyclic",
 	"electrodynamics",
@@ -423,6 +451,8 @@ def modrinthDependencies = [
 	"blood-magic",
 	"crafttweaker",
 	"create",
+	"create-dreams-and-desires",
+	"create-metallurgy",
 	"crossroads",
 	"electrodynamics",
 	"embers",

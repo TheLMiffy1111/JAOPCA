@@ -1,2 +1,5 @@
-Add better data collector pack ids in case it is needed  
-Remove mixin connector  
+Added Create Dreams and Desires support  
+Added Create Metallurgy support  
+Moved Create crushed item tags  
+Reworked Create blacklist  
+Fixed enum configs not working  

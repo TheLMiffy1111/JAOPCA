@@ -375,24 +375,24 @@ public class ThermalExpansionCompatModule implements IModule {
 				}
 			}
 			if(type.isIngot() && !CREATE_BLACKLIST.contains(name) && !configCreateToNuggetBlacklist.contains(name)) {
-				ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", name);
+				ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_raw_materials", name);
 				ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", name);
 				if(itemTags.contains(crushedOreLocation) && itemTags.contains(nuggetLocation)) {
 					helper.registerCentrifugeRecipe(
-							new ResourceLocation("jaopca", "thermal_expansion.create_crushed_ore_to_nugget."+name),
+							new ResourceLocation("jaopca", "thermal_expansion.create_crushed_to_nugget."+name),
 							crushedOreLocation, 1, new Object[] {
 									nuggetLocation, 9,
 							}, 1600, 0F);
 				}
 			}
 			if(type.isIngot() && !CREATE_BLACKLIST.contains(name) && !configCreateToIngotBlacklist.contains(name)) {
-				ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", name);
+				ResourceLocation crushedLocation = miscHelper.getTagLocation("create:crushed_raw_materials", name);
 				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
-				if(itemTags.contains(crushedOreLocation)) {
+				if(itemTags.contains(crushedLocation)) {
 					helper.registerSmelterRecipe(
-							new ResourceLocation("jaopca", "thermal_expansion.create_crushed_ore_to_material."+name),
+							new ResourceLocation("jaopca", "thermal_expansion.create_crushed_to_material."+name),
 							new Object[] {
-									crushedOreLocation, 1,
+									crushedLocation, 1,
 							}, new Object[] {
 									materialLocation, 1,
 							}, 1600, 0.1F);
