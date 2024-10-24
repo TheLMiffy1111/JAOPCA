@@ -1,10 +1,10 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6cccf24f"
+	id "com.crystaelix.loom" version "jitpack-0a007f07"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
 	id "net.kyori.blossom" version "[1,2)"
-	id "me.modmuss50.mod-publish-plugin" version "0.7.2"
+	id "me.modmuss50.mod-publish-plugin" version "0.7.4"
 }
 
 repositories {
@@ -194,7 +194,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.1.20.46"
+version = "4.1.20.47"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -229,7 +229,7 @@ loom {
 
 dependencies {
 	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.22.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.24.1"
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.18.2"
@@ -268,7 +268,7 @@ dependencies {
 
 	// Create
 	modImplementation "com.jozufozu.flywheel:flywheel-forge-1.18.2:0.6.11-107"
-	modImplementation("com.simibubi.create:create-1.18.2:0.5.1.h-427:slim") {transitive = false}
+	modImplementation("com.simibubi.create:create-1.18.2:0.5.1.i-435:slim") {transitive = false}
 
 	// Crossroads
 	modImplementation "curse.maven:essentials-293752:3796423"

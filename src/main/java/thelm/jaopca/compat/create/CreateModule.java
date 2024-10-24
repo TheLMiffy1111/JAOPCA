@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.create;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.JAOPCAApi;
@@ -35,19 +37,39 @@ import thelm.jaopca.utils.MiscHelper;
 public class CreateModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"aluminium", "aluminum", "copper", "gold", "iron", "lead", "nickel", "osmium", "platinum", "quicksilver",
-			"silver", "tin", "uranium", "zinc"));
+			"copper", "gold", "iron", "zinc"));
 
 	static {
 		//if(ModList.get().isLoaded("allthemodium")) {
 		//	Collections.addAll(BLACKLIST, "allthemodium", "unobtainium", "vibranium");
 		//}
+		if(ModList.get().isLoaded("galosphere")) {
+			Collections.addAll(BLACKLIST, "silver");
+		}
+		if(ModList.get().isLoaded("ic2")) {
+			Collections.addAll(BLACKLIST, "aluminium", "aluminum", "silver", "tin", "uranium");
+		}
+		if(ModList.get().isLoaded("iceandfire")) {
+			Collections.addAll(BLACKLIST, "silver");
+		}
+		if(ModList.get().isLoaded("immersiveengineering")) {
+			Collections.addAll(BLACKLIST, "aluminium", "aluminum", "lead", "nickel", "silver", "uranium");
+		}
+		if(ModList.get().isLoaded("mekanism")) {
+			Collections.addAll(BLACKLIST, "lead", "osmium", "tin", "uranium");
+		}
+		if(ModList.get().isLoaded("oreganized")) {
+			Collections.addAll(BLACKLIST, "lead");
+		}
+		if(ModList.get().isLoaded("thermal")) {
+			Collections.addAll(BLACKLIST, "lead", "nickel", "silver", "tin");
+		}
 	}
 
 	private Map<IMaterial, IDynamicSpecConfig> configs;
 
-	private final IForm crushedOreForm = ApiImpl.INSTANCE.newForm(this, "create_crushed_ores", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("create:crushed_ores").setDefaultMaterialBlacklist(BLACKLIST);
+	private final IForm crushedForm = ApiImpl.INSTANCE.newForm(this, "create_crushed_ores", ItemFormType.INSTANCE).
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("create:crushed_raw_materials").setDefaultMaterialBlacklist(BLACKLIST);
 
 	@Override
 	public String getName() {
@@ -63,7 +85,7 @@ public class CreateModule implements IModule {
 
 	@Override
 	public List<IFormRequest> getFormRequests() {
-		return List.of(crushedOreForm.toRequest());
+		return List.of(crushedForm.toRequest());
 	}
 
 	@Override
@@ -95,9 +117,9 @@ public class CreateModule implements IModule {
 		Item cobbledDeepslate = Items.COBBLED_DEEPSLATE;
 		Item netherrack = Items.NETHERRACK;
 		Item endstone = Items.END_STONE;
-		for(IMaterial material : crushedOreForm.getMaterials()) {
-			IItemInfo crushedOreInfo = itemFormType.getMaterialFormInfo(crushedOreForm, material);
-			ResourceLocation crushedOreLocation = miscHelper.getTagLocation("create:crushed_ores", material.getName());
+		for(IMaterial material : crushedForm.getMaterials()) {
+			IItemInfo crushedInfo = itemFormType.getMaterialFormInfo(crushedForm, material);
+			ResourceLocation crushedLocation = miscHelper.getTagLocation("create:crushed_raw_materials", material.getName());
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
@@ -113,8 +135,8 @@ public class CreateModule implements IModule {
 							oreLocation,
 							deepslateOreLocation, netherrackOreLocation, endstoneOreLocation,
 					}), 250, new Object[] {
-							crushedOreInfo, 1,
-							crushedOreInfo, 1, 0.75F,
+							crushedInfo, 1,
+							crushedInfo, 1, 0.75F,
 							xpNugget, 1, 0.75F,
 							byproduct, 1, 0.125F,
 					});
@@ -123,8 +145,8 @@ public class CreateModule implements IModule {
 					CompoundIngredientObject.intersection(new Object[] {
 							oreLocation, deepslateOreLocation
 					}), 350, new Object[] {
-							crushedOreInfo, 2,
-							crushedOreInfo, 1, 0.25F,
+							crushedInfo, 2,
+							crushedInfo, 1, 0.25F,
 							xpNugget, 1, 0.75F,
 							cobbledDeepslate, 1, 0.125F,
 					});
@@ -133,8 +155,8 @@ public class CreateModule implements IModule {
 					CompoundIngredientObject.intersection(new Object[] {
 							oreLocation, netherrackOreLocation
 					}), 350, new Object[] {
-							crushedOreInfo, 1,
-							crushedOreInfo, 1, 0.75F,
+							crushedInfo, 1,
+							crushedInfo, 1, 0.75F,
 							xpNugget, 1, 0.75F,
 							netherrack, 1, 0.125F,
 					});
@@ -144,8 +166,8 @@ public class CreateModule implements IModule {
 						CompoundIngredientObject.intersection(new Object[] {
 								oreLocation, endstoneOreLocation
 						}), 350, new Object[] {
-								crushedOreInfo, 1,
-								crushedOreInfo, 1, 0.75F,
+								crushedInfo, 1,
+								crushedInfo, 1, 0.75F,
 								xpNugget, 1, 0.75F,
 								endstone, 1, 0.125F,
 						});
@@ -156,14 +178,14 @@ public class CreateModule implements IModule {
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "create.raw_material_to_crushed."+material.getName()),
 						rawMaterialLocation, 400, new Object[] {
-								crushedOreInfo, 1,
+								crushedInfo, 1,
 								xpNugget, 1, 0.75F,
 						});
 				if(itemTags.contains(rawStorageBlockLocation)) {
 					helper.registerCrushingRecipe(
 							new ResourceLocation("jaopca", "create.raw_storage_block_to_crushed."+material.getName()),
 							rawStorageBlockLocation, 400, new Object[] {
-									crushedOreInfo, 9,
+									crushedInfo, 9,
 									xpNugget, 9, 0.75F,
 							});
 				}
@@ -171,15 +193,24 @@ public class CreateModule implements IModule {
 
 			api.registerSmeltingRecipe(
 					new ResourceLocation("jaopca", "create.crushed_to_material_smelting."+material.getName()),
-					crushedOreLocation, materialLocation, 1, 0.1F, 200);
+					crushedLocation, materialLocation, 1, 0.1F, 200);
 			api.registerBlastingRecipe(
 					new ResourceLocation("jaopca", "create.crushed_to_material_blasting."+material.getName()),
-					crushedOreLocation, materialLocation, 1, 0.1F, 100);
+					crushedLocation, materialLocation, 1, 0.1F, 100);
 			helper.registerSplashingRecipe(
 					new ResourceLocation("jaopca", "create.crushed_to_nugget."+material.getName()),
-					crushedOreLocation, new Object[] {
+					crushedLocation, new Object[] {
 							nuggetLocation, 9,
 					});
+		}
+
+		String[] toRegister = {
+				"aluminum", "copper", "gold", "iron", "lead", "nickel", "osmium", "platinum", "quicksilver",
+				"silver", "tin", "uranium", "zinc"};
+		for(String material : toRegister) {
+			api.registerItemTag(
+					miscHelper.getTagLocation("create:crushed_raw_materials", material),
+					new ResourceLocation("create", "crushed_raw_"+material));
 		}
 	}
 }
