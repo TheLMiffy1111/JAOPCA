@@ -24,7 +24,7 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "enderio_machines")
+@JAOPCAModule(modDependencies = "enderio_machines@[7.0.7,)")
 public class EnderIOModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(

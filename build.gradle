@@ -1,10 +1,10 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6cccf24f"
+	id "com.crystaelix.loom" version "jitpack-0a007f07"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
 	id "net.kyori.blossom" version "[1,2)"
-	id "me.modmuss50.mod-publish-plugin" version "0.7.2"
+	id "me.modmuss50.mod-publish-plugin" version "0.7.4"
 }
 
 repositories {
@@ -31,6 +31,7 @@ repositories {
 		filter {
 			includeGroup "mezz.jei"
 			includeGroup "com.blamejared.crafttweaker"
+			includeGroup "blusunrize.immersiveengineering"
 		}
 	}
 	exclusiveContent {
@@ -161,7 +162,7 @@ def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.3.4"
+version = "5.0.4.5"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -192,7 +193,7 @@ loom {
 
 dependencies {
 	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.22.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.24.1"
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.21.1"
@@ -218,12 +219,18 @@ dependencies {
 
 	// Json Things
 	modImplementation("dev.gigaherz.jsonthings:JsonThings-1.21:0.12.1") {transitive = false}
-	
+
+	// Actually Additions
+	implementation "curse.maven:actually-additions-228404:5835183"
+
 	// Ender IO
-	implementation "com.enderio:enderio-machines:7.0.4-alpha"
+	implementation "com.enderio:enderio-machines:7.0.8-alpha"
 
 	// Energized Power
 	implementation "curse.maven:energized-power-782147:5746805"
+
+	// Immersive Engineering
+	implementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.21.1-12.0.0-182.77"
 
 	// Integrated Dynamics
 	implementation "curse.maven:cyclops-core-232758:5728678"
@@ -294,9 +301,11 @@ sourcesJar {
 }
 
 def curseforgeDependencies = [
+	"actually-additions",
 	"crafttweaker",
 	"ender-io",
 	"energized-power",
+	"immersive-engineering",
 	"integrated-dynamics",
 	"json-things",
 	"kubejs",
@@ -311,6 +320,7 @@ def modrinthDependencies = [
 	"crafttweaker",
 	"enderio",
 	"energized-power",
+	"immersiveengineering",
 	"integrated-dynamics",
 	"kubejs",
 	"mekanism",
@@ -324,7 +334,7 @@ publishMods {
 	file = remapJar.archiveFile
 	version = displayName = "${mcVersion}-${project.version}"
 	changelog = file("changelog.md").text
-	type = BETA
+	type = STABLE
 	modLoaders.add("neoforge")
 	additionalFiles.from(remapSourcesJar.archiveFile)
 
