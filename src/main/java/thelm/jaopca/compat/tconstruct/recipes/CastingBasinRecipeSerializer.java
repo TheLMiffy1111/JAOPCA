@@ -17,6 +17,7 @@ import slimeknights.mantle.recipe.helper.ItemOutput;
 import slimeknights.mantle.recipe.ingredient.FluidIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.compat.tconstruct.TConstructHelper;
+import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
 
 public class CastingBasinRecipeSerializer implements IRecipeSerializer {
@@ -70,7 +71,7 @@ public class CastingBasinRecipeSerializer implements IRecipeSerializer {
 			json.addProperty("group", group);
 		}
 		json.add("fluid", fluidIng.serialize());
-		if(!ing.isEmpty()) {
+		if(ing != EmptyIngredient.INSTANCE) {
 			json.add("cast", ing.toJson());
 			json.addProperty("cast_consumed", consumeCast);
 		}

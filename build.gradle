@@ -1,10 +1,10 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-6cccf24f"
+	id "com.crystaelix.loom" version "jitpack-0a007f07"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
 	id "net.kyori.blossom" version "[1,2)"
-	id "me.modmuss50.mod-publish-plugin" version "0.7.2"
+	id "me.modmuss50.mod-publish-plugin" version "0.7.4"
 }
 
 repositories {
@@ -184,6 +184,16 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
+				url = "https://api.modrinth.com/maven/"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
 				url = "https://modmaven.dev/"
 			}
 		}
@@ -204,7 +214,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.2.13.34"
+version = "4.2.14.35"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -240,7 +250,7 @@ loom {
 
 dependencies {
 	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.22.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.24.1"
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.19.2"
@@ -251,7 +261,7 @@ dependencies {
 	forge "net.minecraftforge:forge:1.19.2-43.4.2"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.19.2-forge:11.6.0.1024") {transitive = false}
+	modImplementation("mezz.jei:jei-1.19.2-forge:11.8.0.1030") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.19-1.1.5"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.19.2-5.1.6.3"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.19:3.1.40"
@@ -276,7 +286,13 @@ dependencies {
 
 	// Create
 	modImplementation "com.jozufozu.flywheel:flywheel-forge-1.19.2:0.6.11-22"
-	modImplementation("com.simibubi.create:create-1.19.2:0.5.1.h-58:slim") {transitive = false}
+	modImplementation("com.simibubi.create:create-1.19.2:0.5.1.i-59:slim") {transitive = false}
+
+	// Create: Dreams & Desires
+	modImplementation "maven.modrinth:create-dreams-and-desires:PiqvawlN"
+
+	// Create: Metallurgy
+	modImplementation "curse.maven:create-metallurgy-1007404:5794766"
 
 	// Crossroads
 	modImplementation "curse.maven:essentials-293752:4633275"
@@ -289,7 +305,7 @@ dependencies {
 	modImplementation "curse.maven:electrodynamics-316867:5040593"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:5510672"
+	modImplementation "curse.maven:energized-power-782147:5746748"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:2.13.8-build-8:with-library") {transitive = false}
@@ -301,7 +317,7 @@ dependencies {
 	modImplementation("dev.ftb.mods:ftb-industrial-contraptions:1900.1.7-build.221") {transitive = false}
 
 	// IC2 Classic
-	modImplementation "curse.maven:ic2-classic-242942:5230420"
+	modImplementation "curse.maven:ic2-classic-242942:5612597"
 
 	// Immersive Engineering
 	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.19.2-9.2.4-170"
@@ -400,6 +416,8 @@ def curseforgeDependencies = [
 	"assemblylinemachines",
 	"crafttweaker",
 	"create",
+	"create-dreams-desires",
+	"create-metallurgy",
 	"crossroads-mc",
 	"cyclic",
 	"electrodynamics",
@@ -425,6 +443,8 @@ def curseforgeDependencies = [
 def modrinthDependencies = [
 	"crafttweaker",
 	"create",
+	"create-dreams-and-desires",
+	"create-metallurgy",
 	"crossroads",
 	"electrodynamics",
 	"energized-power",

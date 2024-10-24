@@ -10,7 +10,9 @@
 	"fluid_type.jaopca.molten": "Расплав %s",
 	"item.jaopca.molten": "Ведро расплав %s",
 
-	"item.jaopca.create_crushed_ores": "Crushed %s Ore",
+	"item.jaopca.create_crushed_ores": "Crushed Raw %s",
+
+	"item.jaopca.createmetallurgy_dirty_dusts": "Загрязнённая пыль %s",
 
 	"item.jaopca.crossroads_grits": "Raw %s Grit",
 	"item.jaopca.crossroads_clumps": "%s Clumps",
