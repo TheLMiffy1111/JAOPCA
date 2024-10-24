@@ -1,1 +1,1 @@
-Change late mixin variant used from GTNH to MixinBooterLegacy  
+Fixed enum configs not working  
