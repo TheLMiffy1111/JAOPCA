@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.siepert.createlegacy.util.handlers.recipes.PressingRecipes;
+import com.melonstudios.createlegacy.recipe.PressingRecipes;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -40,7 +40,7 @@ public class PressingRecipeAction implements IRecipeAction {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		for(ItemStack in : ing.getMatchingStacks()) {
-			PressingRecipes.instance().addPressing(in, stack);
+			PressingRecipes.addRecipe(in, stack);
 		}
 		return true;
 	}

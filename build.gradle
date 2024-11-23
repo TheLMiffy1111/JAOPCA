@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-0a007f07"
+	id "com.crystaelix.loom" version "jitpack-3a42c174"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -22,6 +22,7 @@ repositories {
 		filter {
 			includeGroup "mezz.jei"
 			includeGroup "CraftTweaker2"
+			includeGroup "epicsquid.mysticallib"
 		}
 	}
 	exclusiveContent {
@@ -56,6 +57,7 @@ repositories {
 			includeGroup "com.enderio"
 			includeGroup "info.loenwind.autoconfig"
 			includeGroup "info.loenwind.autosave"
+			includeGroup "team.chisel.ctm"
 		}
 	}
 	exclusiveContent {
@@ -158,7 +160,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.12.28"
+version = "2.3.12.29"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -244,8 +246,10 @@ dependencies {
 	modImplementation "curse.maven:buildcraft-compat-233140:3204471"
 	modImplementation "curse.maven:bc-ore-processing-277910:2882663"
 
-	// Create
-	modImplementation "curse.maven:create-legacy-1060988:5722144"
+	// Create Legacy
+    modImplementation "team.chisel.ctm:CTM:MC1.12.2-1.0.2.31"
+	modImplementation "epicsquid.mysticallib:mysticallib:1.12.2-1.13.0-89"
+	modImplementation "curse.maven:create-legacy-1060988:5853201"
 
 	// Embers Rekindled
 	modImplementation "curse.maven:embers-rekindled-300777:3695248"

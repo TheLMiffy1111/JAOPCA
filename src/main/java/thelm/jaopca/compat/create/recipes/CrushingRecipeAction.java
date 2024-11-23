@@ -8,7 +8,7 @@ import java.util.Objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.melonstudios.createlegacy.recipe.MillingRecipes;
+import com.melonstudios.createlegacy.recipe.CrushingRecipes;
 import com.melonstudios.createlegacy.util.RecipeEntry;
 
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.api.recipes.IRecipeAction;
 import thelm.jaopca.utils.MiscHelper;
 
-public class MillingRecipeAction implements IRecipeAction {
+public class CrushingRecipeAction implements IRecipeAction {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -26,7 +26,7 @@ public class MillingRecipeAction implements IRecipeAction {
 	public final Object[] output;
 	public final int time;
 
-	public MillingRecipeAction(ResourceLocation key, Object input, int time, Object... output) {
+	public CrushingRecipeAction(ResourceLocation key, Object input, int time, Object... output) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
@@ -66,7 +66,7 @@ public class MillingRecipeAction implements IRecipeAction {
 		}
 		RecipeEntry[] out = outputs.toArray(new RecipeEntry[outputs.size()]);
 		for(ItemStack in : ing.getMatchingStacks()) {
-			MillingRecipes.addRecipe(in, time, out);
+			CrushingRecipes.addRecipe(in, time, out);
 		}
 		return true;
 	}

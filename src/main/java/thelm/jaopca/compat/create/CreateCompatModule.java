@@ -21,21 +21,10 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "create")
 public class CreateCompatModule implements IModule {
 
-	private static final Set<String> MATERIAL_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"AdvancedAlloy", "Alubrass", "Aluminion", "Aluminum", "Amirite", "Ardite", "Astolfite", "Beryllium", "Brass",
-			"Chinesium989", "Cobalt", "Constantan", "Copper", "Creativesteel", "Doxxium", "Electrum", "Gold", "Iron",
-			"Knightslime", "Lead", "Manyullyn", "Mingrade", "Nickel", "Nikonium", "Osmium", "Pigiron", "Platinum",
-			"Quicksilver", "Saturnite", "Schrabidium", "Silver", "Stalinium", "Steel", "Tin", "Titanium", "Tungsten",
-			"Uranium", "Zinc"));
-	private static final Set<String> BLOCK_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"AdvancedAlloy", "Alubrass", "Aluminion", "Aluminum", "Amirite", "Ardite", "Astolfite", "Beryllium", "Bone",
-			"Brass", "Brick", "BrickNether", "Chinesium989", "Clay", "Coal", "Cobalt", "Constantan", "Copper", "Creativesteel",
-			"Doxxium", "Electrum", "Emerald", "Glowstone", "Gold", "Iron", "Knightslime", "Lapis", "Lead", "Manyullyn",
-			"Mingrade", "Nickel", "Nikonium", "Osmium", "Pigiron", "Platinum", "Prismarine", "Quicksilver", "Redstone",
-			"Saturnite", "Schrabidium", "Silver", "Stalinium", "Steel", "Tin", "Titanium", "Tungsten", "Uranium", "Zinc"));
+	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
+			"Bismuth", "Brass", "Californium", "Chrome", "Constantan", "Copper", "Electrum", "Gold", "Iron", "Lead",
+			"Mingrade", "Nickel", "Steel", "Thorium", "Tin", "Titanium", "Tungsten", "Uranium", "Zinc", "Zirconium"));
 	private static Set<String> configToPlateBlacklist = new TreeSet<>();
-	private static Set<String> configToMaterialBlacklist = new TreeSet<>();
-	private static Set<String> configToBlockBlacklist = new TreeSet<>();
 
 	@Override
 	public String getName() {
@@ -54,14 +43,6 @@ public class CreateCompatModule implements IModule {
 				config.getDefinedStringList("recipes.toPlateMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have press to plate recipes added."),
 				configToPlateBlacklist);
-		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.toMaterialMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have compacting to material recipes added."),
-				configToMaterialBlacklist);
-		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.toBlockMaterialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The materials that should not have compacting to block recipes added."),
-				configToBlockBlacklist);
 	}
 
 	@Override
@@ -73,31 +54,13 @@ public class CreateCompatModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
-			if(type.isIngot() && !MATERIAL_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
+			if(type.isIngot() && !BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
 				String materialOredict = miscHelper.getOredictName(type.getFormName(), name);
 				String plateOredict = miscHelper.getOredictName("plate", name);
 				if(oredict.contains(plateOredict)) {
 					helper.registerPressingRecipe(
 							miscHelper.getRecipeKey("create.material_to_plate", name),
 							materialOredict, plateOredict, 1);
-				}
-			}
-			if(!type.isDust() && !MATERIAL_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
-				String nuggetOredict = miscHelper.getOredictName("nugget", name);
-				String materialOredict = miscHelper.getOredictName(type.getFormName(), name);
-				if(oredict.contains(nuggetOredict)) {
-					helper.registerCompactingRecipe(
-							miscHelper.getRecipeKey("create.nugget_to_material", name),
-							nuggetOredict, 9, materialOredict, 1, 0);
-				}
-			}
-			if(!BLOCK_BLACKLIST.contains(name) && !configToBlockBlacklist.contains(name)) {
-				String materialOredict = miscHelper.getOredictName(type.getFormName(), name);
-				String blockOredict = miscHelper.getOredictName("block", name);
-				if(oredict.contains(blockOredict)) {
-					helper.registerCompactingRecipe(
-							miscHelper.getRecipeKey("create.nugget_to_material", name),
-							materialOredict, material.isSmallStorageBlock() ? 4 : 9, blockOredict, 1, 0);
 				}
 			}
 		}
