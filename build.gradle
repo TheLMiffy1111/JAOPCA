@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-0a007f07"
+	id "com.crystaelix.loom" version "jitpack-3a42c174"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -201,10 +201,10 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.21:2024.07.28@zip"
 	}
-	neoForge "net.neoforged:neoforge:21.1.62"
+	neoForge "net.neoforged:neoforge:21.1.72"
 
 	// Common
-	implementation("mezz.jei:jei-1.21.1-neoforge:19.19.0.220") {transitive = false}
+	implementation("mezz.jei:jei-1.21.1-neoforge:19.21.0.246") {transitive = false}
 	implementation "top.theillusivec4.curios:curios-neoforge:9.0.11+1.21"
 	implementation("software.bernie.geckolib:geckolib-neoforge-1.21.1:4.6.6") {transitive = false}
 	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.106.1") {transitive = false}
