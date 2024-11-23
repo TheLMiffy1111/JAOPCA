@@ -2,10 +2,12 @@ package thelm.jaopca.compat.ic2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -39,6 +41,12 @@ public class IC2CompatModule implements IModule {
 	private static Set<String> configDensePlateToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToBlockBlacklist = new TreeSet<>();
 	private static Set<String> configTinyDustToDustBlacklist = new TreeSet<>();
+	
+	static {
+		if(Loader.isModLoaded("EMT")) {
+			Collections.addAll(PLATE_BLACKLIST, "Thaumium");
+		}
+	}
 
 	@Override
 	public String getName() {

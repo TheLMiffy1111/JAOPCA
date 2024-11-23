@@ -40,7 +40,7 @@ public class TableCastingRecipeAction implements IRecipeAction {
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		List<ItemStack> castIng = MiscHelper.INSTANCE.getItemStacks(cast, 1, true);
+		List<ItemStack> castIng = MiscHelper.INSTANCE.getItemStacks(cast, 1, false);
 		if(castIng.isEmpty()) {
 			castIng.add(null);
 		}
