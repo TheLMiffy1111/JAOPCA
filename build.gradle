@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-0a007f07"
+	id "com.crystaelix.loom" version "jitpack-3a42c174"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -261,7 +261,7 @@ dependencies {
 	forge "net.minecraftforge:forge:1.19.2-43.4.2"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.19.2-forge:11.8.0.1030") {transitive = false}
+	modImplementation("mezz.jei:jei-1.19.2-forge:11.8.1.1033") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.19-1.1.5"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.19.2-5.1.6.3"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.19:3.1.40"
@@ -373,7 +373,7 @@ dependencies {
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:3909789"
 	implementation "io.github.llamalad7:mixinextras-forge:0.3.6"
-	modImplementation "curse.maven:modernfix-790626:5399366"
+	modImplementation "curse.maven:modernfix-790626:5803581"
 	modImplementation "curse.maven:ferritecore-429235:4117906"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:4327266"
 }
