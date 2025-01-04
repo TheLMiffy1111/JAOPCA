@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-3a42c174"
+	id "com.crystaelix.loom" version "jitpack-ca3766c3"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -240,7 +240,7 @@ dependencies {
 	forge "net.minecraftforge:forge:1.18.2-40.2.21"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.18.2-forge:10.2.1.1008") {transitive = false}
+	modImplementation("mezz.jei:jei-1.18.2-forge:10.2.1.1009") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.18.2-1.1.3"
 	modImplementation "top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.2"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.18:3.0.57"
@@ -255,7 +255,7 @@ dependencies {
 	modImplementation("dev.latvian.mods:kubejs-forge:1802.5.5-build.569") {transitive = false}
 
 	// Json Things
-	modImplementation "dev.gigaherz.jsonthings:JsonThings-1.18.2:0.4.15"
+	modImplementation "curse.maven:json-things-541617:4645826"
 
 	// Open Loader
 	modImplementation "net.darkhax.openloader:OpenLoader-Forge-1.18.2:12.0.1"
@@ -290,7 +290,7 @@ dependencies {
 	modImplementation("dev.ftb.mods:ftb-industrial-contraptions:1802.1.6-build.220") {transitive = false}
 
 	// Futurepack
-	modImplementation "redsnakegames.mcenderdragon:futurepack:1.18.2-33.0.7544"
+	modImplementation "redsnakegames.mcenderdragon:futurepack:1.18.2-33.0.7547"
 
 	// Immersive Engineering
 	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.18.2-8.4.0-161"
@@ -325,8 +325,8 @@ dependencies {
 	modImplementation "com.teamcofh:thermal_integration:1.18.2-9.2.1.18"
 
 	// Tinkers' Construct
-	modImplementation "slimeknights.mantle:Mantle:1.18.2-1.9.50"
-	modImplementation "slimeknights.tconstruct:TConstruct:1.18.2-3.7.1.155"
+	modImplementation "slimeknights.mantle:Mantle:1.18.2-1.9.54"
+	modImplementation "slimeknights.tconstruct:TConstruct:1.18.2-3.7.2.167"
 
 	// Useful Machinery
 	modImplementation "net.themcbrothers:TheMCBrosLib:1.18.2-2.0.5"
