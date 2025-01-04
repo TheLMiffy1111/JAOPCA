@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-3a42c174"
+	id "com.crystaelix.loom" version "jitpack-ca3766c3"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -261,9 +261,9 @@ dependencies {
 	forge "net.minecraftforge:forge:1.19.2-43.4.2"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.19.2-forge:11.8.1.1033") {transitive = false}
+	modImplementation("mezz.jei:jei-1.19.2-forge:11.8.1.1034") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.19-1.1.5"
-	modImplementation "top.theillusivec4.curios:curios-forge:1.19.2-5.1.6.3"
+	modImplementation "top.theillusivec4.curios:curios-forge:1.19.2-5.1.6.4"
 	modImplementation "software.bernie.geckolib:geckolib-forge-1.19:3.1.40"
 	modImplementation "vazkii.patchouli:Patchouli:1.19.2-77"
 	modImplementation "dev.architectury:architectury-forge:6.6.92"
@@ -276,7 +276,7 @@ dependencies {
 	modImplementation("dev.latvian.mods:kubejs-forge:1902.6.2-build.73") {transitive = false}
 
 	// Json Things
-	modImplementation "dev.gigaherz.jsonthings:JsonThings-1.19.2:0.7.15"
+	modImplementation "curse.maven:json-things-541617:4645830"
 
 	// Open Loader
 	modImplementation "net.darkhax.openloader:OpenLoader-Forge-1.19.2:15.0.2"
@@ -305,7 +305,7 @@ dependencies {
 	modImplementation "curse.maven:electrodynamics-316867:5040593"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:5746748"
+	modImplementation "curse.maven:energized-power-782147:5797543"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:2.13.8-build-8:with-library") {transitive = false}
@@ -327,8 +327,8 @@ dependencies {
 
 	// Integrated Dynamics
 	modImplementation "curse.maven:cyclops-core-232758:5583714"
-	modImplementation "curse.maven:common-capabilities-247007:5650214"
-	modImplementation "curse.maven:integrated-dynamics-236307:5686770"
+	modImplementation "curse.maven:common-capabilities-247007:5980073"
+	modImplementation "curse.maven:integrated-dynamics-236307:6018968"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
@@ -355,8 +355,8 @@ dependencies {
 	modImplementation "com.teamcofh:thermal_integration:1.19.2-10.3.0.19"
 
 	// Tinkers' Construct
-	modImplementation "slimeknights.mantle:Mantle:1.19.2-1.10.36"
-	modImplementation "slimeknights.tconstruct:TConstruct:1.19.2-3.8.3.39"
+	modImplementation "slimeknights.mantle:Mantle:1.19.2-1.10.48"
+	modImplementation "slimeknights.tconstruct:TConstruct:1.19.2-3.8.5.58"
 
 	// Useful Machinery
 	modImplementation "net.themcbrothers:TheMCBrosLib:1.19.2-2.0.5"
