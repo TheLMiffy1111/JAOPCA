@@ -1,4 +1,2 @@
-Readded Actually Additions support  
-Readded Immersive Engineering support  
+Readded Open Loader support  
 Updated Ender IO  
-Fixed enum configs not working  
