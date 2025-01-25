@@ -57,7 +57,7 @@ class FluidFormSettings implements IFluidFormSettings {
 	private ToIntFunction<IMaterial> flammabilityFunction = MaterialIntFunction.of(0);
 	private ToIntFunction<IMaterial> fireSpreadSpeedFunction = MaterialIntFunction.of(0);
 	private Predicate<IMaterial> isFireSourceFunction = MaterialPredicate.of(false);
-	private ToIntFunction<IMaterial> fireTimeFunction = MaterialIntFunction.of(1);
+	private ToIntFunction<IMaterial> fireTimeFunction = MaterialIntFunction.of(-1);
 	private IBucketItemCreator bucketItemCreator = JAOPCABucketItem::new;
 	private ToIntFunction<IMaterial> maxStackSizeFunction = MaterialIntFunction.of(1);
 	private Predicate<IMaterial> hasEffectFunction = MaterialPredicate.of(false);

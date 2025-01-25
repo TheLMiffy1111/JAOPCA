@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -52,7 +53,7 @@ public class CuttingMachineRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(itemInput);
-		FluidStack fluidIng = MiscHelper.INSTANCE.getFluidStack(fluidInput, fluidInputAmount);
+		FluidIngredient fluidIng = MiscHelper.INSTANCE.getFluidIngredient(fluidInput);
 		if(ing == null && fluidIng.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredients in recipe "+key+": "+itemInput+", "+fluidInput);
 		}
@@ -62,7 +63,7 @@ public class CuttingMachineRecipeSerializer implements IRecipeSerializer {
 		}
 		MachineRecipe recipe = new MIRecipeConstructor(MIMachineRecipeTypes.CUTTING_MACHINE, eu, duration).recipe();
 		recipe.itemInputs.add(new MachineRecipe.ItemInput(ing, itemInputCount, itemInputChance));
-		recipe.fluidInputs.add(new MachineRecipe.FluidInput(fluidIng.getFluid(), fluidInputAmount, fluidInputChance));
+		recipe.fluidInputs.add(new MachineRecipe.FluidInput(fluidIng, fluidInputAmount, fluidInputChance));
 		recipe.itemOutputs.add(new MachineRecipe.ItemOutput(ItemVariant.of(stack), outputCount, outputChance));
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
