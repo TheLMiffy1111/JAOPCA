@@ -114,7 +114,7 @@ public class ElectrodynamicsModule implements IModule {
 					oreLocation, 1, impureDustInfo, 3, 0.3, 200, 450);
 			helper.registerMineralCrusherRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.crystal_to_impure_dust."+material.getName()),
-					crystalLocation, 1, impureDustInfo, 1, sulfurTrioxide, 1, 0, 0.1, 200, 450);
+					crystalLocation, 1, impureDustInfo, 1, sulfurTrioxide, 1, 0.05, 0, 200, 450);
 
 			helper.registerMineralGrinderRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.impure_dust_to_dust."+material.getName()),

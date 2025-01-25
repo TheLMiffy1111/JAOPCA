@@ -43,8 +43,8 @@ public class SmelterRecipeSupplier implements Supplier<SmelterRecipe> {
 			Object in = input[i];
 			++i;
 			Integer count = 1;
-			if(i < output.length && output[i] instanceof Integer) {
-				count = (Integer)output[i];
+			if(i < input.length && input[i] instanceof Integer) {
+				count = (Integer)input[i];
 				++i;
 			}
 			Ingredient ing = ThermalExpansionHelper.INSTANCE.getCountedIngredient(in, count);
