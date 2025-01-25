@@ -427,6 +427,7 @@ sourcesJar {
 }
 
 def curseforgeDependencies = [
+	"actually-subtractions",
 	"blood-magic",
 	"crafttweaker",
 	"create",
@@ -456,6 +457,7 @@ def curseforgeDependencies = [
 ]
 
 def modrinthDependencies = [
+	"actually-subtractions",
 	"blood-magic",
 	"crafttweaker",
 	"create",
