@@ -46,8 +46,8 @@ public class SmelterRecipeSerializer implements IRecipeSerializer {
 			Object in = input[i];
 			++i;
 			Integer count = 1;
-			if(i < output.length && output[i] instanceof Integer) {
-				count = (Integer)output[i];
+			if(i < input.length && input[i] instanceof Integer) {
+				count = (Integer)input[i];
 				++i;
 			}
 			Ingredient ing = MiscHelper.INSTANCE.getIngredient(in);
