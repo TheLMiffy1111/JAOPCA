@@ -20,7 +20,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "abyssalcraft@[1.9.19,)")
+@JAOPCAModule(modDependencies = "abyssalcraft@[1.9.19,2.0.0-alpha-1)")
 public class AbyssalCraftCompatModule implements IModule {
 
 	private static final Set<String> BLOCK_TO_CRYSTAL_BLACKLIST = new TreeSet<>(Arrays.asList(
