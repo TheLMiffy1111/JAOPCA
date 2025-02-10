@@ -36,7 +36,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "abyssalcraft@[1.9.19,2.0.0-alpha-1)")
+@JAOPCAModule(modDependencies = "abyssalcraft@[1.9.19,2.0.0-ALPHA-8)")
 public class AbyssalCraftModule implements IModule {
 
 	private static final Set<String> FORM_BLACKLIST = new TreeSet<>(Arrays.asList(
