@@ -160,7 +160,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.12.30"
+version = "2.3.12.31"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -217,12 +217,12 @@ dependencies {
 	implementation "net.shadowfacts:Forgelin:1.8.4"
 	modImplementation "curse.maven:baubles-227083:2518667"
 	modImplementation "curse.maven:redstone-flux-270789:2920436"
-	implementation("zone.rong:mixinbooter:10.4") {transitive = false}
+	implementation("zone.rong:mixinbooter:10.5") {transitive = false}
 
 	// CraftTweaker
-	modImplementation("CraftTweaker2:ZenScript:4.1.20.702") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.702") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.702") {transitive = false}
+	modImplementation("CraftTweaker2:ZenScript:4.1.20.703") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.703") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.703") {transitive = false}
 
 	// GroovyScript
 	modImplementation("com.cleanroommc:groovyscript:1.2.0-hotfix1") {transitive = false}
@@ -247,9 +247,9 @@ dependencies {
 	modImplementation "curse.maven:bc-ore-processing-277910:2882663"
 
 	// Create Legacy
-    modImplementation "team.chisel.ctm:CTM:MC1.12.2-1.0.2.31"
+	modImplementation "team.chisel.ctm:CTM:MC1.12.2-1.0.2.31"
 	modImplementation "epicsquid.mysticallib:mysticallib:1.12.2-1.13.0-89"
-	modImplementation "curse.maven:create-legacy-1060988:6080647"
+	modImplementation "curse.maven:create-legacy-1060988:6140713"
 
 	// Embers Rekindled
 	modImplementation "curse.maven:embers-rekindled-300777:3695248"
@@ -302,7 +302,7 @@ dependencies {
 	modImplementation "curse.maven:powered-thingies-264283:2556740"
 
 	// QMD
-	modImplementation "curse.maven:nuclearcraft-overhauled-336895:5446445"
+	modImplementation "curse.maven:nuclearcraft-overhauled-336895:6221719"
 	modImplementation "curse.maven:nco-java-legacy-lib-1032769:5414463"
 	modImplementation "curse.maven:qmd-362056:6098453"
 
@@ -324,8 +324,8 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:reid-629017:5502915"
-	modImplementation "curse.maven:vintagefix-871198:5536276"
-	modImplementation "curse.maven:lolasm-460609:6115349"
+	modImplementation "curse.maven:vintagefix-871198:6217171"
+	modImplementation "curse.maven:lolasm-460609:6217170"
 }
 
 def replacements = [
