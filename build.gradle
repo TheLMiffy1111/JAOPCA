@@ -40,7 +40,7 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.octo-studios.com/releases/"
+				url = "https://maven.theillusivec4.top/"
 			}
 		}
 		filter {
@@ -67,6 +67,16 @@ repositories {
 		filter {
 			includeGroup "dev.ftb.mods"
 			includeGroup "dev.latvian.mods"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				url = "https://maven.createmod.net/"
+			}
+		}
+		filter {
+			includeGroup "com.simibubi.create"
 		}
 	}
 	exclusiveContent {
@@ -143,6 +153,16 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
+				url = "https://api.modrinth.com/maven/"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
 				url = "https://modmaven.dev/"
 			}
 		}
@@ -165,7 +185,7 @@ def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.6.8"
+version = "5.0.7.9"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -204,18 +224,18 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.21:2024.07.28@zip"
 	}
-	neoForge "net.neoforged:neoforge:21.1.113"
+	neoForge "net.neoforged:neoforge:21.1.132"
 
 	// Common
 	implementation("mezz.jei:jei-1.21.1-neoforge:19.21.0.247") {transitive = false}
-	implementation "top.theillusivec4.curios:curios-neoforge:9.0.15+1.21.1"
+	implementation "top.theillusivec4.curios:curios-neoforge:9.2.2+1.21.1"
 	implementation("software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7.3") {transitive = false}
-	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.111.2") {transitive = false}
+	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.112.2") {transitive = false}
 	implementation "dev.architectury:architectury-neoforge:13.0.8"
-	implementation "dev.latvian.mods:rhino:2101.2.6-build.66"
+	implementation "dev.latvian.mods:rhino:2101.2.7-build.74"
 
 	// CraftTweaker
-	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.21.1:21.0.17") {transitive = false}
+	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.21.1:21.0.22") {transitive = false}
 
 	// KubeJS
 	implementation("dev.latvian.mods:kubejs-neoforge:2101.7.1-build.181") {transitive = false}
@@ -224,60 +244,63 @@ dependencies {
 	modImplementation("dev.gigaherz.jsonthings:JsonThings-1.21.1:0.13.2") {transitive = false}
 
 	// Open Loader
-	implementation "net.darkhax.bookshelf:bookshelf-neoforge-1.21.1:21.1.41"
+	implementation "net.darkhax.bookshelf:bookshelf-neoforge-1.21.1:21.1.48"
 	implementation "net.darkhax.pricklemc:prickle-neoforge-1.21.1:21.1.6"
 	implementation "net.darkhax.openloader:openloader-neoforge-1.21.1:21.1.1"
 
 	// Actually Additions
-	implementation "curse.maven:actually-additions-228404:6085031"
+	implementation "curse.maven:actually-additions-228404:6193603"
+
+	// Create
+	implementation("com.simibubi.create:create-1.21.1:6.0.2-36") {transitive = false}
 
 	// Electrodynamics
-	implementation "curse.maven:electrodynamics-316867:6097553"
+	implementation "curse.maven:electrodynamics-316867:6199591"
 
 	// Ender IO
-	implementation "com.enderio:enderio-machines:7.1.5-alpha"
+	implementation "com.enderio:enderio-machines:7.1.6-alpha"
 
 	// Energized Power
 	implementation "curse.maven:energized-power-782147:5797585"
 
 	// Immersive Engineering
-	implementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.21.1-12.0.0-182.77"
+	implementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.21.1-12.1.0-185"
 
 	// Integrated Dynamics
-	implementation "curse.maven:cyclops-core-232758:6059640"
-	implementation "curse.maven:common-capabilities-247007:6059616"
-	implementation "curse.maven:integrated-dynamics-236307:6083649"
+	implementation "curse.maven:cyclops-core-232758:6230091"
+	implementation "curse.maven:common-capabilities-247007:6173956"
+	implementation "curse.maven:integrated-dynamics-236307:6221696"
 
 	// Mekanism
-	implementation "mekanism:Mekanism:1.21.1-10.7.8.70"
+	implementation "mekanism:Mekanism:1.21.1-10.7.9.72"
 
 	// Modern Industrialization
 	implementation "me.shedaniel.cloth:cloth-config-neoforge:15.0.140"
 	implementation "dev.technici4n:GrandPower:3.0.2"
-	implementation("aztech:Modern-Industrialization:2.2.32") {transitive = false}
+	implementation("aztech:Modern-Industrialization:2.2.34") {transitive = false}
 
 	// Occultism
 	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.21.1:1.16.7"
-	implementation("com.klikli_dev:occultism-1.21.1-neoforge:1.173.1") {transitive = false}
+	implementation("com.klikli_dev:occultism-1.21.1-neoforge:1.176.0") {transitive = false}
 
 	// Railcraft Reborn
-	implementation "curse.maven:railcraft-reborn-901491:5898120"
+	implementation "curse.maven:railcraft-reborn-901491:6149952"
 
 	// Theurgy
-	implementation("com.klikli_dev:theurgy-1.21.1-neoforge:1.58.2") {transitive = false}
+	implementation("com.klikli_dev:theurgy-1.21.1-neoforge:1.60.0") {transitive = false}
 
 	// Useful Machinery
 	implementation "net.themcbrothers:themcbroslib:1.21.1-8.1.0"
 	implementation "net.themcbrothers:useful-foundation:1.21-1.0.0"
-	implementation "net.themcbrothers:useful-machinery:1.21-1.0.0"
+	implementation("net.themcbrothers:useful-machinery:1.21-1.0.0") {transitive = false}
 
 	// Testing
 	implementation "curse.maven:ato-405593:6118610"
-	implementation "curse.maven:allthemodium-364466:6117922"
+	implementation "curse.maven:allthemodium-364466:6135138"
 
 	// Performance
 	implementation "curse.maven:yeetusexperimentus-635427:5444189"
-	implementation "curse.maven:modernfix-790626:6025615"
+	implementation "curse.maven:modernfix-790626:6125147"
 	implementation "curse.maven:ferritecore-429235:5850121"
 }
 

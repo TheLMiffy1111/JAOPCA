@@ -10,6 +10,8 @@
 	"fluid_type.jaopca.molten": "熔融%s",
 	"item.jaopca.molten": "熔融%s桶",
 
+	"item.jaopca.create_crushed": "粉碎%s矿石",
+
 	"item.jaopca.electrodynamics_impuredusts": "含杂%s粉",
 	"item.jaopca.electrodynamics_crystals": "硫酸%s晶体",
 	"fluid_type.jaopca.electrodynamics_pureminerals": "纯净%s溶液",

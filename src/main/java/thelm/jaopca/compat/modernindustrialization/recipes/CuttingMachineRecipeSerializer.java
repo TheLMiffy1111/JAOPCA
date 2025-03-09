@@ -13,7 +13,6 @@ import aztech.modern_industrialization.thirdparty.fabrictransfer.api.item.ItemVa
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;

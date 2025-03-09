@@ -10,6 +10,8 @@
 	"fluid_type.jaopca.molten": "%s Derretido",
 	"item.jaopca.molten": "Balde de %s Derretido",
 
+	"item.jaopca.create_crushed": "%s Bruto Esmagado",
+
 	"item.jaopca.electrodynamics_impuredusts": "Poeira %s impura",
 	"item.jaopca.electrodynamics_crystals": "%s Cristal",
 	"fluid_type.jaopca.electrodynamics_pureminerals": "Pure %s Solution",
