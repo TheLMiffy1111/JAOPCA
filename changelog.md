@@ -1,1 +1,1 @@
-Add item tags to coal and netherite scrap  
+Optimized images with oxipng  

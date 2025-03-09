@@ -214,7 +214,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.2.14.37"
+version = "4.2.14.38"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -302,7 +302,7 @@ dependencies {
 	modImplementation "curse.maven:cyclic-239286:5259008"
 
 	// Electrodynamics
-	modImplementation "curse.maven:electrodynamics-316867:5040593"
+	modImplementation "curse.maven:electrodynamics-316867:6211488"
 
 	// Energized Power
 	modImplementation "curse.maven:energized-power-782147:5797543"
@@ -326,9 +326,9 @@ dependencies {
 	modImplementation "curse.maven:industrial-reborn-358877:4651636"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:5583714"
+	modImplementation "curse.maven:cyclops-core-232758:6199442"
 	modImplementation "curse.maven:common-capabilities-247007:5980073"
-	modImplementation "curse.maven:integrated-dynamics-236307:6018968"
+	modImplementation "curse.maven:integrated-dynamics-236307:6221674"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
