@@ -249,6 +249,7 @@ dependencies {
 	// Create Legacy
 	modImplementation "team.chisel.ctm:CTM:MC1.12.2-1.0.2.31"
 	modImplementation "epicsquid.mysticallib:mysticallib:1.12.2-1.13.0-89"
+	modImplementation "curse.maven:melonlib-1027035:6110523"
 	modImplementation "curse.maven:create-legacy-1060988:6140713"
 
 	// Embers Rekindled
