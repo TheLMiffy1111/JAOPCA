@@ -342,6 +342,7 @@ sourcesJar {
 def curseforgeDependencies = [
 	"actually-additions",
 	"crafttweaker",
+	"create",
 	"electrodynamics",
 	"ender-io",
 	"energized-power",
@@ -361,6 +362,7 @@ def curseforgeDependencies = [
 def modrinthDependencies = [
 	"actually-additions",
 	"crafttweaker",
+	"create",
 	"electrodynamics",
 	"enderio",
 	"energized-power",
