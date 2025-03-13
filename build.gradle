@@ -16,6 +16,16 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
+				url = "https://maven.crystaelix.com/releases/"
+			}
+		}
+		filter {
+			includeGroup "thelm.wrapup"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
 				url = "https://maven.blamejared.com/"
 			}
 		}
@@ -211,7 +221,7 @@ dependencies {
 	shadowImplementation "com.electronwill.night-config:toml:3.6.4"
 
 	// Common
-	implementation "curse.maven:wrapup-275153:2486198"
+	implementation "thelm.wrapup:WrapUp-1.12.2:1.1.3"
 	modImplementation "mezz.jei:jei_1.12.2:4.16.1.1013"
 	modImplementation "codechicken:CodeChickenLib:1.12.2-3.2.3.358:universal"
 	implementation "net.shadowfacts:Forgelin:1.8.4"
