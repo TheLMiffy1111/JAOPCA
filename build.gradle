@@ -1,10 +1,10 @@
 plugins {
-	id "com.crystaelix.loom" version "jitpack-ca3766c3"
+	id "com.crystaelix.loom" version "1.9-SNAPSHOT"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
 	id "net.kyori.blossom" version "[1,2)"
-	id "me.modmuss50.mod-publish-plugin" version "0.7.4"
+	id "me.modmuss50.mod-publish-plugin" version "0.8.4"
 }
 
 repositories {
@@ -345,6 +345,24 @@ sourcesJar {
 	manifest.attributes(manifestAttributes)
 }
 
+publishing {
+	publications {
+		register("mavenJava", MavenPublication) {
+			artifact remapJar
+			artifact sourcesJar
+		}
+	}
+	repositories {
+		if(project.hasProperty("CrystaelixMavenUsername") && project.hasProperty("CrystaelixMavenPassword")) {
+			maven {
+				name = "CrystaelixMaven"
+				url = "https://maven.crystaelix.com/releases/"
+				credentials(PasswordCredentials)
+			}
+		}
+	}
+}
+
 def curseforgeDependencies = [
 	"applied-energistics-2",
 	"assemblylinemachines",
@@ -398,7 +416,7 @@ publishMods {
 	changelog = file("changelog.md").text
 	type = BETA
 	modLoaders.add("forge")
-	additionalFiles.from(remapSourcesJar.archiveFile)
+	additionalFiles.from(sourcesJar.archiveFile)
 
 	curseforge {
 		accessToken = providers.gradleProperty("curseforge.token")
