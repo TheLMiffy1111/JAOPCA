@@ -6,6 +6,9 @@ pluginManagement {
 			url = "https://jitpack.io/"
 		}
 		maven {
+			url = "https://maven.crystaelix.com/releases/"
+		}
+		maven {
 			url = "https://maven.architectury.dev/"
 		}
 		maven {
