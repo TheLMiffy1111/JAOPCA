@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "1.9-SNAPSHOT"
+	id "com.crystaelix.loom" version "1.9.0"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
