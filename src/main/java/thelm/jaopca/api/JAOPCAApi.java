@@ -547,7 +547,7 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerSmokingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
 
 	public abstract boolean registerSmokingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
-	
+
 	/**
 	 * Creates a smoking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
@@ -576,7 +576,7 @@ public abstract class JAOPCAApi {
 	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, int time);
 
 	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, int time);
-	
+
 	/**
 	 * Creates a campfire cooking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
