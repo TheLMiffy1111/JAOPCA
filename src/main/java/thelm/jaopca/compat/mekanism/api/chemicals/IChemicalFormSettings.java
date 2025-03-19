@@ -10,7 +10,7 @@ public interface IChemicalFormSettings extends IFormSettings {
 	IChemicalFormSettings setChemicalCreator(IChemicalCreator chemicalCreator);
 
 	IChemicalCreator getChemicalCreator();
-	
+
 	IChemicalFormSettings setOreTagFunction(Function<IMaterial, String> oreTagFunction);
 
 	Function<IMaterial, String> getOreTagFunction();

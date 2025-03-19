@@ -33,7 +33,7 @@ public class ModernIndustrializationModule implements IModule {
 			BLACKLIST.add("osmium");
 		}
 	}
-	
+
 	@Override
 	public String getName() {
 		return "modern_industrialization";

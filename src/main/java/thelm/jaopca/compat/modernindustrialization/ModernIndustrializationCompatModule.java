@@ -194,7 +194,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 					helper.registerUnpackerRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.storage_block_to_material", name),
 							storageBlockLocation, 1, 1F, new Object[] {
-									materialLocation, (material.isSmallStorageBlock() ? 4 : 9), 1F,	
+									materialLocation, (material.isSmallStorageBlock() ? 4 : 9), 1F,
 							}, 2, 200);
 				}
 			}
@@ -205,12 +205,12 @@ public class ModernIndustrializationCompatModule implements IModule {
 					helper.registerPackerRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.nugget_to_material", name),
 							new Object[] {
-									nuggetLocation, 9, 1F,	
+									nuggetLocation, 9, 1F,
 							}, materialLocation, 1, 1F, 2, 200);
 					helper.registerUnpackerRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.material_to_nugget", name),
 							materialLocation, 1, 1F, new Object[] {
-									nuggetLocation, 9, 1F,	
+									nuggetLocation, 9, 1F,
 							}, 2, 200);
 				}
 			}
@@ -221,12 +221,12 @@ public class ModernIndustrializationCompatModule implements IModule {
 					helper.registerPackerRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.raw_material_to_raw_storage_block", name),
 							new Object[] {
-									rawMaterialLocation, 9, 1F,	
+									rawMaterialLocation, 9, 1F,
 							}, rawStorageBlockLocation, 1, 1F, 2, 200);
 					helper.registerUnpackerRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.raw_storage_block_to_raw_material", name),
 							rawStorageBlockLocation, 1, 1F, new Object[] {
-									rawMaterialLocation, 9, 1F,	
+									rawMaterialLocation, 9, 1F,
 							}, 2, 200);
 				}
 			}
@@ -237,12 +237,12 @@ public class ModernIndustrializationCompatModule implements IModule {
 					helper.registerPackerRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.tiny_dust_to_dust", name),
 							new Object[] {
-									tinyDustLocation, 9, 1F,	
+									tinyDustLocation, 9, 1F,
 							}, dustLocation, 1, 1F, 2, 200);
 					helper.registerUnpackerRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.dust_to_tiny_dust", name),
 							dustLocation, 1, 1F, new Object[] {
-									tinyDustLocation, 9, 1F,	
+									tinyDustLocation, 9, 1F,
 							}, 2, 200);
 				}
 			}
@@ -253,7 +253,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 					helper.registerMaceratorRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.material_to_dust", name),
 							materialLocation, 1, 1F, new Object[] {
-									dustLocation, 1, 1F,	
+									dustLocation, 1, 1F,
 							}, 2, 200);
 				}
 			}
@@ -264,7 +264,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 					helper.registerMaceratorRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.nugget_to_tiny_dust", name),
 							nuggetLocation, 1, 1F, new Object[] {
-									tinyDustLocation, 1, 1F,	
+									tinyDustLocation, 1, 1F,
 							}, 2, 200);
 				}
 			}
@@ -275,7 +275,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 					helper.registerMaceratorRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.plate_to_dust", name),
 							plateLocation, 1, 1F, new Object[] {
-									dustLocation, 1, 1F,	
+									dustLocation, 1, 1F,
 							}, 2, 200);
 				}
 			}
@@ -286,7 +286,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 					helper.registerMaceratorRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.gear_to_dust", name),
 							gearLocation, 1, 1F, new Object[] {
-									dustLocation, 2, 1F,	
+									dustLocation, 2, 1F,
 							}, 2, 200);
 				}
 			}
@@ -297,7 +297,7 @@ public class ModernIndustrializationCompatModule implements IModule {
 					helper.registerMaceratorRecipe(
 							miscHelper.getRecipeKey("modern_industrialization.rod_to_tiny_dust", name),
 							rodLocation, 1, 1F, new Object[] {
-									tinyDustLocation, 4, 1F,	
+									tinyDustLocation, 4, 1F,
 							}, 2, 200);
 				}
 			}

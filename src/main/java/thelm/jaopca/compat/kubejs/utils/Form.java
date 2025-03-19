@@ -78,7 +78,7 @@ public class Form {
 	}
 
 	public MaterialForm getMaterialForm(Material material) {
-		if(!containsMaterial(material)) {	
+		if(!containsMaterial(material)) {
 			return null;
 		}
 		return MaterialForm.getMaterialFormWrapper(form, material.getInternal());

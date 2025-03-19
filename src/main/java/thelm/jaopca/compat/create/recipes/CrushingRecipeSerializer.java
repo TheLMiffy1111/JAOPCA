@@ -40,7 +40,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		NonNullList<ProcessingOutput> outputs = NonNullList.create();	
+		NonNullList<ProcessingOutput> outputs = NonNullList.create();
 		int i = 0;
 		while(i < output.length) {
 			Object out = output[i];

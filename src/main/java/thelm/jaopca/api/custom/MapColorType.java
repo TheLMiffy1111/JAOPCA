@@ -101,7 +101,7 @@ public enum MapColorType implements StringRepresentable {
 	public static String mapColorToName(MapColor mapColor) {
 		return fromMapColor(mapColor).getName();
 	}
-	
+
 	public static MaterialMappedFunction<MapColor> functionOf(MapColor defaultValue) {
 		return MaterialMappedFunction.of(defaultValue, MapColorType::nameToMapColor, MapColorType::mapColorToName);
 	}

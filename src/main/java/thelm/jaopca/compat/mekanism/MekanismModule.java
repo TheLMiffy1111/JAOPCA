@@ -189,7 +189,7 @@ public class MekanismModule implements IModule {
 					miscHelper.getRecipeKey("mekanism.clump_to_dirty_dust", material.getName()),
 					clumpLocation, 1, dirtyDustInfo, 1);
 
-			helper.registerEnrichingRecipe(	
+			helper.registerEnrichingRecipe(
 					miscHelper.getRecipeKey("mekanism.dirty_dust_to_dust", material.getName()),
 					dirtyDustLocation, 1, dustLocation, 1);
 		}
