@@ -41,7 +41,7 @@ public class IC2CompatModule implements IModule {
 	private static Set<String> configDensePlateToDustBlacklist = new TreeSet<>();
 	private static Set<String> configToBlockBlacklist = new TreeSet<>();
 	private static Set<String> configTinyDustToDustBlacklist = new TreeSet<>();
-	
+
 	static {
 		if(Loader.isModLoaded("EMT")) {
 			Collections.addAll(PLATE_BLACKLIST, "Thaumium");
