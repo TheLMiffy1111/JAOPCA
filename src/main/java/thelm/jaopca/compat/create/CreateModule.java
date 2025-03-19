@@ -85,7 +85,7 @@ public class CreateModule implements IModule {
 			String configByproduct = config.getDefinedString("create.byproduct", "minecraft:cobblestone",
 					miscHelper.metaItemPredicate(), "The default byproduct material to output in Create Legacy's crusher.");
 			ItemStack byproduct = miscHelper.parseMetaItem(configByproduct);
-			
+
 			helper.registerCrushingRecipe(
 					miscHelper.getRecipeKey("create.ore_to_crushed", material.getName()),
 					oreOredict, 1280, new Object[] {
