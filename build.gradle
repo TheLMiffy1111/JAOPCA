@@ -174,10 +174,6 @@ repositories {
 	}
 }
 
-sourceSets {
-	main
-}
-
 def mcVersion = "1.21.1"
 def modName = "JAOPCA"
 def modId = "jaopca"
@@ -189,8 +185,15 @@ version = "5.0.7.9"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
+sourceSets {
+	main
+}
+
 java {
-	toolchain.languageVersion = JavaLanguageVersion.of(21)
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+		vendor = JvmVendorSpec.AZUL
+	}
 	withSourcesJar()
 }
 
