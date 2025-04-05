@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "1.9.0"
+	id "com.crystaelix.loom" version "1.10.0"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -253,7 +253,7 @@ loom {
 
 dependencies {
 	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.24.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.24.3"
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.19.2"
@@ -272,10 +272,10 @@ dependencies {
 	modImplementation "dev.architectury:architectury-forge:6.6.92"
 
 	// CraftTweaker
-	modImplementation "com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.55"
+	modImplementation "com.blamejared.crafttweaker:CraftTweaker-forge-1.19.2:10.1.56"
 
 	// KubeJS
-	modImplementation "dev.latvian.mods:rhino-forge:1902.2.3-build.284"
+	implementation "dev.latvian.mods:rhino-forge:1902.2.3-build.284"
 	modImplementation("dev.latvian.mods:kubejs-forge:1902.6.2-build.73") {transitive = false}
 
 	// Json Things
@@ -308,10 +308,10 @@ dependencies {
 	modImplementation "curse.maven:electrodynamics-316867:6211488"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:5797543"
+	modImplementation "curse.maven:energized-power-782147:6364049"
 
 	// Factorium
-	implementation("com.kotori316:scalablecatsforce:2.13.8-build-8:with-library") {transitive = false}
+	implementation("com.kotori316:scalablecatsforce:2.13.10-build-10:with-library") {transitive = false}
 	modImplementation "net.bdew:bdlib:1.25.0.5-mc1.19.2"
 	modImplementation "net.bdew:factorium:1.4.0.4-mc1.19.2"
 
@@ -320,7 +320,7 @@ dependencies {
 	modImplementation("dev.ftb.mods:ftb-industrial-contraptions:1900.1.7-build.221") {transitive = false}
 
 	// IC2 Classic
-	modImplementation "curse.maven:ic2-classic-242942:5612597"
+	modImplementation "curse.maven:ic2-classic-242942:6275736"
 
 	// Immersive Engineering
 	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.19.2-9.2.4-170"
@@ -329,9 +329,9 @@ dependencies {
 	modImplementation "curse.maven:industrial-reborn-358877:4651636"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:6199442"
+	modImplementation "curse.maven:cyclops-core-232758:6340181"
 	modImplementation "curse.maven:common-capabilities-247007:5980073"
-	modImplementation "curse.maven:integrated-dynamics-236307:6221674"
+	modImplementation "curse.maven:integrated-dynamics-236307:6331496"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
@@ -353,7 +353,7 @@ dependencies {
 	// Thermal Expansion
 	modImplementation "com.teamcofh:cofh_core:1.19.2-10.3.1.48"
 	modImplementation "com.teamcofh:thermal_core:1.19.2-10.3.2.11"
-	modImplementation("com.teamcofh:thermal_foundation:1.19.2-10.3.1.57:all") {transitive = false}
+	modImplementation("com.teamcofh:thermal_foundation:1.19.2-10.3.1.57") {transitive = false}
 	modImplementation "com.teamcofh:thermal_expansion:1.19.2-10.3.1.25"
 	modImplementation "com.teamcofh:thermal_integration:1.19.2-10.3.0.19"
 
@@ -375,7 +375,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:3909789"
-	implementation "io.github.llamalad7:mixinextras-forge:0.3.6"
+	implementation "io.github.llamalad7:mixinextras-forge:0.4.1"
 	modImplementation "curse.maven:modernfix-790626:5803581"
 	modImplementation "curse.maven:ferritecore-429235:4117906"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:4327266"

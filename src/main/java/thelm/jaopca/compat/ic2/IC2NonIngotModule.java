@@ -43,20 +43,12 @@ public class IC2NonIngotModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-			if(material.getType() != MaterialType.DUST) {
-				helper.registerExtractorRecipe(
-						new ResourceLocation("jaopca", "ic2.ore_to_material."+material.getName()),
-						oreLocation, 1,
-						materialLocation, 3,
-						1, 1, 1F);
-			}
-			else {
-				helper.registerMaceratorRecipe(
-						new ResourceLocation("jaopca", "ic2.ore_to_material."+material.getName()),
-						oreLocation, 1,
-						materialLocation, 5,
-						1, 1, 0F);
-			}
+			boolean isCrystal = material.getType() != MaterialType.DUST;
+			helper.registerExtractorRecipe(
+					new ResourceLocation("jaopca", "ic2.ore_to_material."+material.getName()),
+					oreLocation, 1,
+					materialLocation, (isCrystal ? 3 : 5),
+					1, 1, (isCrystal ? 1F : 0F));
 		}
 	}
 }

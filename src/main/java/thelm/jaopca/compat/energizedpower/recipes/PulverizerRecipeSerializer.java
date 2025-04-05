@@ -9,6 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import it.unimi.dsi.fastutil.doubles.DoubleArrays;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -30,7 +31,7 @@ public class PulverizerRecipeSerializer implements IRecipeSerializer {
 	public final double[] secondChancesAdvanced;
 
 	public PulverizerRecipeSerializer(ResourceLocation key, Object input, Object output, double[] chances, double[] chancesAdvanced) {
-		this(key, input, output, chances, chancesAdvanced, ItemStack.EMPTY, new double[0], new double[0]);
+		this(key, input, output, chances, chancesAdvanced, ItemStack.EMPTY, DoubleArrays.EMPTY_ARRAY, DoubleArrays.EMPTY_ARRAY);
 	}
 
 	public PulverizerRecipeSerializer(ResourceLocation key, Object input, Object output, double[] chances, double[] chancesAdvanced, Object secondOutput, double[] secondChances, double[] secondChancesAdvanced) {
