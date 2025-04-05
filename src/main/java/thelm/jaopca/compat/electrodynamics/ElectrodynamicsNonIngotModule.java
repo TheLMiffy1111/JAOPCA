@@ -43,7 +43,7 @@ public class ElectrodynamicsNonIngotModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-			boolean isCrystal = material.getType() != MaterialType.DUST;
+			boolean isCrystal = material.getType().isCrystalline();
 
 			helper.registerMineralGrinderRecipe(
 					new ResourceLocation("jaopca", "electrodynamics.ore_to_material_grinder."+material.getName()),

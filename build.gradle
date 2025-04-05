@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "1.9.0"
+	id "com.crystaelix.loom" version "1.10.0"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -232,7 +232,7 @@ loom {
 
 dependencies {
 	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.24.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.24.3"
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.18.2"
@@ -251,10 +251,10 @@ dependencies {
 	modImplementation "dev.architectury:architectury-forge:4.12.94"
 
 	// CraftTweaker
-	modImplementation "com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.211"
+	modImplementation "com.blamejared.crafttweaker:CraftTweaker-forge-1.18.2:9.1.213"
 
 	// KubeJS
-	modImplementation "dev.latvian.mods:rhino-forge:1802.2.1-build.255"
+	implementation "dev.latvian.mods:rhino-forge:1802.2.1-build.255"
 	modImplementation("dev.latvian.mods:kubejs-forge:1802.5.5-build.569") {transitive = false}
 
 	// Json Things
@@ -284,7 +284,7 @@ dependencies {
 	modImplementation "curse.maven:electrodynamics-316867:6228108"
 
 	// Factorium
-	implementation("com.kotori316:scalablecatsforce:2.13.8-build-4:with-library") {transitive = false}
+	implementation("com.kotori316:scalablecatsforce:2.13.10-build-12:with-library") {transitive = false}
 	modImplementation "net.bdew:bdlib:1.19.3.7-mc1.18.2"
 	modImplementation "net.bdew:factorium:1.1.0.10-mc1.18.2"
 
@@ -345,7 +345,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:4377180"
-	implementation "io.github.llamalad7:mixinextras-forge:0.3.6"
+	implementation "io.github.llamalad7:mixinextras-forge:0.4.1"
 	modImplementation "curse.maven:modernfix-790626:5399365"
 	modImplementation "curse.maven:ferritecore-429235:4074294"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:3544496"
