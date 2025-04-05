@@ -103,7 +103,7 @@ public class ElectrodynamicsHelper {
 				fluids.add(fluid);
 			}
 		}
-		case Holder<?>[] holders -> {
+		case @SuppressWarnings("rawtypes") Holder[] holders -> {
 			List<FluidStack> nonEmpty = Arrays.stream(holders).
 					filter(Holder::isBound).map(Holder::value).
 					filter(Fluid.class::isInstance).map(Fluid.class::cast).
@@ -205,7 +205,7 @@ public class ElectrodynamicsHelper {
 				gases.add(gas);
 			}
 		}
-		case Holder<?>[] holders -> {
+		case @SuppressWarnings("rawtypes") Holder[] holders -> {
 			List<GasStack> nonEmpty = Arrays.stream(holders).
 					filter(Holder::isBound).map(Holder::value).
 					filter(Gas.class::isInstance).map(Gas.class::cast).

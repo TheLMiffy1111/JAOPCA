@@ -169,7 +169,7 @@ public class MekanismHelper {
 				chemicals.add(chemical);
 			}
 		}
-		case Holder<?>[] holders -> {
+		case @SuppressWarnings("rawtypes") Holder[] holders -> {
 			List<Chemical> nonEmpty = Arrays.stream(holders).
 					filter(Holder::isBound).map(Holder::value).
 					filter(Chemical.class::isInstance).map(Chemical.class::cast).

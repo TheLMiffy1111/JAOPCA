@@ -238,7 +238,7 @@ public class MiscHelper implements IMiscHelper {
 				items.add(item);
 			}
 		}
-		case Holder<?>[] holders -> {
+		case @SuppressWarnings("rawtypes") Holder[] holders -> {
 			List<Item> nonEmpty = Arrays.stream(holders).
 					filter(Holder::isBound).map(Holder::value).
 					filter(Item.class::isInstance).map(Item.class::cast).
@@ -404,7 +404,7 @@ public class MiscHelper implements IMiscHelper {
 				fluids.add(fluid);
 			}
 		}
-		case Holder<?>[] holders -> {
+		case @SuppressWarnings("rawtypes") Holder[] holders -> {
 			List<Fluid> nonEmpty = Arrays.stream(holders).
 					filter(Holder::isBound).map(Holder::value).
 					filter(Fluid.class::isInstance).map(Fluid.class::cast).
