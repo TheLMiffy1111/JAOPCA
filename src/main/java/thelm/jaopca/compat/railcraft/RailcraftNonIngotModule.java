@@ -50,24 +50,14 @@ public class RailcraftNonIngotModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			String oreOredict = miscHelper.getOredictName("ore", material.getName());
 			String materialOredict = miscHelper.getOredictName(material.getType().getFormName(), material.getName());
-			if(material.getType().isCrystalline()) {
-				helper.registerRockCrusherRecipe(
-						miscHelper.getRecipeKey("railcraft.ore_to_material", material.getName()),
-						oreOredict, 100, new Object[] {
-								materialOredict, 1, 1F,
-								materialOredict, 1, 0.85F,
-								materialOredict, 1, 0.25F,
-						});
-			}
-			else {
-				helper.registerRockCrusherRecipe(
-						miscHelper.getRecipeKey("railcraft.ore_to_material", material.getName()),
-						oreOredict, 100, new Object[] {
-								materialOredict, 5, 1F,
-								materialOredict, 1, 0.85F,
-								materialOredict, 1, 0.35F,
-						});
-			}
+			boolean isCrystal = material.getType() != MaterialType.DUST;
+			helper.registerRockCrusherRecipe(
+					miscHelper.getRecipeKey("railcraft.ore_to_material", material.getName()),
+					oreOredict, 100, new Object[] {
+							materialOredict, (isCrystal ? 1 : 5), 1F,
+							materialOredict, 1, 0.85F,
+							materialOredict, 1, (isCrystal ? 0.25F : 0.35F),
+					});
 		}
 	}
 }

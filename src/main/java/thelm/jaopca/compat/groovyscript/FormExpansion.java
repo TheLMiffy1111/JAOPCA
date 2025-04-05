@@ -23,7 +23,7 @@ public class FormExpansion {
 
 	public static IIngredient ore(IForm form, String suffix) {
 		String oreDict = MiscHelper.INSTANCE.getOredictName(form.getSecondaryName(), suffix);
-		return oreDict.contains("*") ? OreDictWildcardIngredient.of(oreDict) : new OreDictIngredient(oreDict);
+		return oreDict.contains("*") ? new OreDictWildcardIngredient(oreDict) : new OreDictIngredient(oreDict);
 	}
 
 	public static ItemStack item(IForm form, String suffix, int count) {

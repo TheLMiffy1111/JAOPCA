@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrays;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
@@ -34,7 +35,7 @@ public class CompoundMakerRecipeAction implements IRecipeAction {
 	public final int outputCount;
 
 	public CompoundMakerRecipeAction(ResourceLocation key, Object[] top, Object left, int leftAmount, Object output, int outputCount) {
-		this(key, top, left, leftAmount, new Object[0], null, 0, output, outputCount);
+		this(key, top, left, leftAmount, ObjectArrays.EMPTY_ARRAY, null, 0, output, outputCount);
 	}
 
 	public CompoundMakerRecipeAction(ResourceLocation key, Object[] top, Object[] bottom, Object output, int outputCount) {

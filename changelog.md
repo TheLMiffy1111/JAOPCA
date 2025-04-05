@@ -1,1 +1,2 @@
-Optimized images with oxipng  
+Make legacy remap handling use a multimap  
+Update GroovyScript  

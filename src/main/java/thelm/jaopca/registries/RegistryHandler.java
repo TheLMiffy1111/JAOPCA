@@ -2,11 +2,14 @@ package thelm.jaopca.registries;
 
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.TreeMultimap;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -24,13 +27,13 @@ public class RegistryHandler {
 	private RegistryHandler() {}
 
 	private static final Logger LOGGER = LogManager.getLogger();
-	private static final TreeMap<String, String> LEGACY_REMAPS = new TreeMap<>();
+	private static final Multimap<String, String> LEGACY_REMAPS = TreeMultimap.create();
 	private static boolean initializedRemaps = false;
 
 	public static void initializeRemaps() {
 		initializedRemaps = true;
 		for(IModule module : ModuleHandler.getModules()) {
-			LEGACY_REMAPS.putAll(module.getLegacyRemaps());
+			LEGACY_REMAPS.putAll(Multimaps.forMap(module.getLegacyRemaps()));
 		}
 	}
 
@@ -42,7 +45,7 @@ public class RegistryHandler {
 			LOGGER.debug("Remapping registry entry {}", mapping.key);
 			String[] names = mapping.key.getPath().split("_", 2);
 			if(names.length == 2) {
-				for(Map.Entry<String, String> remap : LEGACY_REMAPS.entrySet()) {
+				for(Map.Entry<String, String> remap : LEGACY_REMAPS.entries()) {
 					if(names[1].startsWith(remap.getKey())) {
 						String materialName = names[1].substring(remap.getKey().length());
 						LOGGER.debug("Checking material {}", materialName);
