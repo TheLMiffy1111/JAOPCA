@@ -438,6 +438,7 @@ def curseforgeDependencies = [
 	"modern-industrialization",
 	"occultism",
 	"open-loader",
+	"oritech",
 	"railcraft-reborn",
 	"theurgy",
 	"useful-machinery"
@@ -457,6 +458,7 @@ def modrinthDependencies = [
 	"modern-industrialization",
 	"occultism",
 	"open-loader",
+	"oritech",
 	"railcraft-reborn",
 	"theurgy",
 	"useful-machinery"
