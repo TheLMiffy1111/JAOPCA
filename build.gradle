@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "1.9.0"
+	id "com.crystaelix.loom" version "1.10.0"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -263,7 +263,7 @@ loom {
 
 dependencies {
 	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.24.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.24.3"
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.20.1"
@@ -278,16 +278,16 @@ dependencies {
 	modImplementation "com.tterrag.registrate:Registrate:MC1.20-1.3.11"
 	modImplementation "top.theillusivec4.curios:curios-forge:5.12.1+1.20.1"
 	forgeRuntimeLibrary "com.eliotlash.mclib:mclib:20"
-	modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:4.7") {transitive = false}
+	modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:4.7.1.2") {transitive = false}
 	modImplementation "vazkii.patchouli:Patchouli:1.20.1-84.1-FORGE"
-	forgeRuntimeLibrary "org.commonmark:commonmark:0.22.0"
-	forgeRuntimeLibrary "org.commonmark:commonmark-ext-gfm-strikethrough:0.22.0"
-	forgeRuntimeLibrary "org.commonmark:commonmark-ext-ins:0.22.0"
+	forgeRuntimeLibrary "org.commonmark:commonmark:0.24.0"
+	forgeRuntimeLibrary "org.commonmark:commonmark-ext-gfm-strikethrough:0.24.0"
+	forgeRuntimeLibrary "org.commonmark:commonmark-ext-ins:0.24.0"
 	modImplementation("com.klikli_dev:modonomicon-1.20.1-forge:1.77.6") {transitive = false}
 	modImplementation "dev.architectury:architectury-forge:9.2.14"
 
 	// CraftTweaker
-	modImplementation("com.blamejared.crafttweaker:CraftTweaker-forge-1.20.1:14.0.56") {transitive = false}
+	modImplementation("com.blamejared.crafttweaker:CraftTweaker-forge-1.20.1:14.0.57") {transitive = false}
 
 	// KubeJS
 	implementation "dev.latvian.mods:rhino-forge:2001.2.3-build.6"
@@ -321,7 +321,7 @@ dependencies {
 
 	// Cyclic
 	modImplementation "curse.maven:flib-661261:5495793"
-	modImplementation "curse.maven:cyclic-239286:6118162"
+	modImplementation "curse.maven:cyclic-239286:6373460"
 
 	// Electrodynamics
 	modImplementation "curse.maven:electrodynamics-316867:6208216"
@@ -334,10 +334,10 @@ dependencies {
 	modImplementation "com.enderio:EnderIO:1.20.1-6.2.10-beta"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:5797551"
+	modImplementation "curse.maven:energized-power-782147:6341161"
 
 	// Factorium
-	implementation("com.kotori316:scalablecatsforce:3.3.0-build-2:with-library") {transitive = false}
+	implementation("com.kotori316:scalablecatsforce:3.3.1-build-0:with-library") {transitive = false}
 	modImplementation "curse.maven:bdlib-70496:4670650"
 	modImplementation "curse.maven:factorium-583423:4670915"
 
@@ -345,26 +345,26 @@ dependencies {
 	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.1-10.2.0-182"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:6199446"
+	modImplementation "curse.maven:cyclops-core-232758:6340190"
 	modImplementation "curse.maven:common-capabilities-247007:5980078"
-	modImplementation "curse.maven:integrated-dynamics-236307:6221687"
+	modImplementation "curse.maven:integrated-dynamics-236307:6331503"
 
 	// Mekanism
-	modImplementation "mekanism:Mekanism:1.20.1-10.4.14.71"
+	modImplementation "mekanism:Mekanism:1.20.1-10.4.15.75"
 
 	// NuclearCraft: Neoteric
-	modImplementation "curse.maven:nuclearcraft-neoteric-840010:6155730"
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:6314790"
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.20.1:1.15"
-	modImplementation("com.klikli_dev:occultism-1.20.1:1.141.3") {transitive = false}
+	modImplementation("com.klikli_dev:occultism-1.20.1:1.141.4") {transitive = false}
 
 	// Railcraft Reborn
 	modImplementation "curse.maven:railcraft-reborn-901491:6149940"
 
 	// Thermal Expansion
 	modImplementation "com.teamcofh:cofh_core:1.20.1-11.0.2.56"
-	modImplementation "com.teamcofh:thermal_core:1.20.1-11.0.4.22"
+	modImplementation "com.teamcofh:thermal_core:1.20.1-11.0.7.25"
 	modImplementation("com.teamcofh:thermal_foundation:1.20.1-11.0.4.68") {transitive = false}
 	modImplementation "com.teamcofh:thermal_expansion:1.20.1-11.0.1.29"
 	modImplementation "com.teamcofh:thermal_integration:1.20.1-11.0.1.27"
@@ -373,8 +373,8 @@ dependencies {
 	modImplementation("com.klikli_dev:theurgy-1.20.1:1.23.4") {transitive = false}
 
 	// Tinkers' Construct
-	modImplementation "slimeknights.mantle:Mantle:1.20.1-1.11.36"
-	modImplementation "slimeknights.tconstruct:TConstruct:1.20.1-3.9.1.19"
+	modImplementation "slimeknights.mantle:Mantle:1.20.1-1.11.44"
+	modImplementation "slimeknights.tconstruct:TConstruct:1.20.1-3.9.2.37"
 
 	// Useful Machinery
 	modImplementation "net.themcbrothers:TheMCBrosLib:1.20.1-4.2.0"
@@ -390,7 +390,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:4680832"
-	implementation "io.github.llamalad7:mixinextras-forge:0.3.6"
+	implementation "io.github.llamalad7:mixinextras-forge:0.4.1"
 	modImplementation "curse.maven:modernfix-790626:6125143"
 	modImplementation "curse.maven:ferritecore-429235:4810975"
 }

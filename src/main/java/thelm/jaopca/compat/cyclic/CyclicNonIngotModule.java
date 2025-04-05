@@ -43,7 +43,7 @@ public class CyclicNonIngotModule implements IModule {
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
-			boolean isCrystal = material.getType().isCrystalline();
+			boolean isCrystal = material.getType() != MaterialType.DUST;
 			helper.registerCrusherRecipe(
 					new ResourceLocation("jaopca", "cyclic.ore_to_material."+material.getName()),
 					oreLocation, materialLocation, 3,
