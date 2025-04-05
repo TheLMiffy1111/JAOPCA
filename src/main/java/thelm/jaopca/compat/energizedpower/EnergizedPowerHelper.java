@@ -1,6 +1,7 @@
 package thelm.jaopca.compat.energizedpower;
 
 import net.minecraft.resources.ResourceLocation;
+import thelm.jaopca.compat.energizedpower.recipes.AlloyFurnaceRecipeSerializer;
 import thelm.jaopca.compat.energizedpower.recipes.CompressorRecipeSerializer;
 import thelm.jaopca.compat.energizedpower.recipes.PulverizerRecipeSerializer;
 import thelm.jaopca.utils.ApiImpl;
@@ -21,5 +22,13 @@ public class EnergizedPowerHelper {
 
 	public boolean registerCompressorRecipe(ResourceLocation key, Object input, int inputCount, Object output, int outputCount) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new CompressorRecipeSerializer(key, input, inputCount, output, outputCount));
+	}
+
+	public boolean registerAlloyFurnaceRecipe(ResourceLocation key, Object[] input, Object output, int outputCount, Object secondOutput, double[] secondChances, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new AlloyFurnaceRecipeSerializer(key, input, output, outputCount, secondOutput, secondChances, time));
+	}
+
+	public boolean registerAlloyFurnaceRecipe(ResourceLocation key, Object[] input, Object output, int outputCount, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new AlloyFurnaceRecipeSerializer(key, input, output, outputCount, time));
 	}
 }

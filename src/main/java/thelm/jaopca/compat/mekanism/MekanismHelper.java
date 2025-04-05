@@ -25,6 +25,7 @@ import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.api.recipes.ingredients.chemical.ChemicalIngredient;
 import mekanism.api.recipes.ingredients.creator.IChemicalIngredientCreator;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
@@ -41,6 +42,7 @@ import thelm.jaopca.compat.mekanism.recipes.WashingRecipeSerializer;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
+@SuppressWarnings("removal")
 public class MekanismHelper {
 
 	public static final MekanismHelper INSTANCE = new MekanismHelper();
@@ -78,20 +80,20 @@ public class MekanismHelper {
 
 	public Pair<ChemicalIngredient, Set<Chemical>> getChemicalIngredientResolved(Object obj) {
 		ChemicalIngredient ing = null;
-		Set<Chemical> slurries = new HashSet<>();
+		Set<Chemical> chemicals = new HashSet<>();
 		IChemicalIngredientCreator creator = IngredientCreatorAccess.chemical();
 		switch(obj) {
 		case Supplier<?> supplier -> {
 			Pair<ChemicalIngredient, Set<Chemical>> pair = getChemicalIngredientResolved(supplier.get());
 			ing = pair.getLeft();
-			slurries.addAll(pair.getRight());
+			chemicals.addAll(pair.getRight());
 		}
 		case CompoundIngredientObject(CompoundIngredientObject.Type type, Object[] ingredients) -> {
 			List<Pair<ChemicalIngredient, Set<Chemical>>> ings = Arrays.stream(ingredients).map(this::getChemicalIngredientResolved).toList();
 			if(ings.size() == 1) {
 				Pair<ChemicalIngredient, Set<Chemical>> pair = ings.get(0);
 				ing = pair.getLeft();
-				slurries.addAll(pair.getRight());
+				chemicals.addAll(pair.getRight());
 			}
 			else if(ings.size() > 1) {
 				switch(type) {
@@ -100,7 +102,7 @@ public class MekanismHelper {
 						break;
 					}
 					ing = creator.ofIngredients(ings.stream().filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(ChemicalIngredient[]::new));
-					slurries.addAll(ings.stream().map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+					chemicals.addAll(ings.stream().map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
 						s1.addAll(s2);
 						return s1;
 					}));
@@ -110,7 +112,7 @@ public class MekanismHelper {
 						break;
 					}
 					ing = creator.intersection(ings.stream().map(Pair::getLeft).toArray(ChemicalIngredient[]::new));
-					slurries.addAll(ings.stream().map(Pair::getRight).reduce(Sets.newHashSet(MekanismAPI.CHEMICAL_REGISTRY), (s1, s2)->{
+					chemicals.addAll(ings.stream().map(Pair::getRight).reduce(Sets.newHashSet(MekanismAPI.CHEMICAL_REGISTRY), (s1, s2)->{
 						s1.retainAll(s2);
 						return s1;
 					}));
@@ -121,8 +123,8 @@ public class MekanismHelper {
 						break;
 					}
 					ing = creator.difference(firstPair.getLeft(), creator.ofIngredients(ings.stream().skip(1).filter(p->!p.getRight().isEmpty()).map(Pair::getLeft).toArray(ChemicalIngredient[]::new)));
-					slurries.addAll(firstPair.getRight());
-					slurries.removeAll(ings.stream().skip(1).map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
+					chemicals.addAll(firstPair.getRight());
+					chemicals.removeAll(ings.stream().skip(1).map(Pair::getRight).reduce(new HashSet<>(), (s1, s2)->{
 						s1.addAll(s2);
 						return s1;
 					}));
@@ -133,56 +135,72 @@ public class MekanismHelper {
 		case ChemicalIngredient chemicalIng -> {
 			ing = chemicalIng;
 			// We can't know what slurries the ingredient can have so assume all
-			MekanismAPI.CHEMICAL_REGISTRY.forEach(slurries::add);
+			MekanismAPI.CHEMICAL_REGISTRY.forEach(chemicals::add);
 		}
 		case String str -> {
 			ResourceLocation location = ResourceLocation.parse(str);
 			ing = creator.tag(getChemicalTagKey(location));
-			slurries.addAll(getChemicalTagValues(location));
+			chemicals.addAll(getChemicalTagValues(location));
 		}
 		case ResourceLocation location -> {
 			ing = creator.tag(getChemicalTagKey(location));
-			slurries.addAll(getChemicalTagValues(location));
+			chemicals.addAll(getChemicalTagValues(location));
 		}
 		case TagKey<?> key -> {
 			ing = creator.tag(getChemicalTagKey(key.location()));
-			slurries.addAll(getChemicalTagValues(key.location()));
+			chemicals.addAll(getChemicalTagValues(key.location()));
 		}
 		case ChemicalStack stack -> {
 			if(stack.isEmpty()) {
 				ing = creator.of(stack);
-				slurries.add(stack.getChemical());
+				chemicals.add(stack.getChemical());
 			}
 		}
 		case ChemicalStack[] stacks -> {
 			List<ChemicalStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = creator.of(nonEmpty.toArray(ChemicalStack[]::new));
-				nonEmpty.stream().map(ChemicalStack::getChemical).forEach(slurries::add);
+				nonEmpty.stream().map(ChemicalStack::getChemical).forEach(chemicals::add);
+			}
+		}
+		case Holder<?> holder -> {
+			if(holder.isBound() && holder.value() instanceof Chemical chemical && !chemical.getChemical().isEmptyType()) {
+				ing = creator.of(chemical);
+				chemicals.add(chemical);
+			}
+		}
+		case Holder<?>[] holders -> {
+			List<Chemical> nonEmpty = Arrays.stream(holders).
+					filter(Holder::isBound).map(Holder::value).
+					filter(Chemical.class::isInstance).map(Chemical.class::cast).
+					filter(c->!c.isEmptyType()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = creator.of(nonEmpty.stream());
+				chemicals.addAll(nonEmpty);
 			}
 		}
 		case IChemicalProvider chemical -> {
 			if(!chemical.getChemical().isEmptyType()) {
 				ing = creator.of(chemical);
-				slurries.add(chemical.getChemical());
+				chemicals.add(chemical.getChemical());
 			}
 		}
 		case IChemicalProvider[] chemicalz -> {
-			List<Chemical> nonEmpty = Arrays.stream(chemicalz).map(IChemicalProvider::getChemical).filter(s->!s.isEmptyType()).toList();
+			List<Chemical> nonEmpty = Arrays.stream(chemicalz).map(IChemicalProvider::getChemical).filter(c->!c.isEmptyType()).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = creator.of(nonEmpty.stream());
-				slurries.addAll(nonEmpty);
+				chemicals.addAll(nonEmpty);
 			}
 		}
 		case JsonElement json -> {
 			ing = creator.codec().parse(JsonOps.INSTANCE, json).resultOrPartial(LOGGER::warn).orElse(null);
 			// We can't know what chemicales the ingredient can have so assume all
-			MekanismAPI.CHEMICAL_REGISTRY.forEach(slurries::add);
+			MekanismAPI.CHEMICAL_REGISTRY.forEach(chemicals::add);
 		}
 		default -> {}
 		}
-		slurries.remove(MekanismAPI.EMPTY_CHEMICAL);
-		return Pair.of(slurries.isEmpty() ? null : ing, slurries);
+		chemicals.remove(MekanismAPI.EMPTY_CHEMICAL);
+		return Pair.of(chemicals.isEmpty() ? null : ing, chemicals);
 	}
 
 	public TagKey<Chemical> getChemicalTagKey(ResourceLocation location) {

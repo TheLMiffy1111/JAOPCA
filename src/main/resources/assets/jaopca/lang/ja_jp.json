@@ -36,6 +36,10 @@
 
 	"item.jaopca.modern_industrialization_crushed_dusts": "%s鉱石の粉砕物",
 
+	"item.jaopca.oritech_clumps": "%sクランプ",
+	"item.jaopca.oritech_small_clumps": "小さい%sクランプ",
+	"item.jaopca.oritech_gems": "%sジェム",
+
 	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

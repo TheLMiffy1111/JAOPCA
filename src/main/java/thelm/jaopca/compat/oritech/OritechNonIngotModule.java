@@ -1,11 +1,13 @@
-package thelm.jaopca.compat.mekanism;
+package thelm.jaopca.compat.oritech;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -15,15 +17,22 @@ import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "mekanism@[10.7,)")
-public class MekanismNonIngotModule implements IModule {
+@JAOPCAModule(modDependencies = "oritech")
+public class OritechNonIngotModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"coal", "diamond", "emerald", "fluorite", "lapis", "quartz", "redstone"));
+			"coal", "diamond", "lapis", "quartz", "redstone"));
+
+	static {
+		if(ModList.get().isLoaded("techreborn")) {
+			Collections.addAll(BLACKLIST, "bauxite", "cinnabar", "galena", "peridot", "pyrite", "ruby",
+					"sapphire", "sheldonite", "sodalite", "sphalerite");
+		}
+	}
 
 	@Override
 	public String getName() {
-		return "mekanism_non_ingot";
+		return "oritech_non_ingot";
 	}
 
 	@Override
@@ -38,15 +47,18 @@ public class MekanismNonIngotModule implements IModule {
 
 	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
-		MekanismHelper helper = MekanismHelper.INSTANCE;
+		OritechHelper helper = OritechHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			boolean isCrystal = material.getType() != MaterialType.DUST;
-			helper.registerEnrichingRecipe(
-					miscHelper.getRecipeKey("mekanism.ore_to_material", material.getName()),
-					oreLocation, 1, materialLocation, isCrystal ? 2 : 5);
+			helper.registerPulverizerRecipe(
+					miscHelper.getRecipeKey("oritech.ore_to_material_pulverizer", material.getName()),
+					oreLocation, materialLocation, isCrystal ? 1 : 3, 200);
+			helper.registerGrinderRecipe(
+					miscHelper.getRecipeKey("oritech.ore_to_material_grinder", material.getName()),
+					oreLocation, materialLocation, isCrystal ? 2 : 6, 140);
 		}
 	}
 }

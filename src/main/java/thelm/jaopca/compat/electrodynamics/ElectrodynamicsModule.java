@@ -9,6 +9,7 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrays;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -142,38 +143,38 @@ public class ElectrodynamicsModule implements IModule {
 
 			helper.registerChemicalReactorRecipe(
 					miscHelper.getRecipeKey("electrodynamics.royal_mineral_to_crude_mineral", material.getName()),
-					new Object[0], new Object[] {
+					ObjectArrays.EMPTY_ARRAY, new Object[] {
 							royalMineralLocation, 200,
 							waterLocation, 1000,
-					}, new Object[0],
-					new Object[0], new Object[] {
+					}, ObjectArrays.EMPTY_ARRAY,
+					ObjectArrays.EMPTY_ARRAY, new Object[] {
 							crudeMineralInfo, 200,
 							aquaRegia, 50, 1F,
-					}, new Object[0],
+					}, ObjectArrays.EMPTY_ARRAY,
 					0, 100, 800);
 
 			helper.registerChemicalReactorRecipe(
 					miscHelper.getRecipeKey("electrodynamics.crude_mineral_to_dirty_mineral", material.getName()),
-					new Object[0], new Object[] {
+					ObjectArrays.EMPTY_ARRAY, new Object[] {
 							crudeMineralLocation, 200,
 							sulfuricAcidLocation, 500,
-					}, new Object[0],
-					new Object[0], new Object[] {
+					}, ObjectArrays.EMPTY_ARRAY,
+					ObjectArrays.EMPTY_ARRAY, new Object[] {
 							dirtyMineralInfo, 200,
 							Fluids.WATER, 200, 0.25F,
-					}, new Object[0],
+					}, ObjectArrays.EMPTY_ARRAY,
 					0, 100, 600);
 
 			helper.registerChemicalReactorRecipe(
 					miscHelper.getRecipeKey("electrodynamics.dirty_mineral_to_impure_mineral", material.getName()),
-					new Object[0], new Object[] {
+					ObjectArrays.EMPTY_ARRAY, new Object[] {
 							dirtyMineralLocation, 200,
 							waterLocation, 1000,
-					}, new Object[0],
-					new Object[0], new Object[] {
+					}, ObjectArrays.EMPTY_ARRAY,
+					ObjectArrays.EMPTY_ARRAY, new Object[] {
 							impureMineralInfo, 200,
 							sulfuricAcid, 500, 1F,
-					}, new Object[0],
+					}, ObjectArrays.EMPTY_ARRAY,
 					0, 100, 700);
 			helper.registerMineralWasherRecipe(
 					miscHelper.getRecipeKey("electrodynamics.ore_to_sulfate", material.getName()),
@@ -181,14 +182,14 @@ public class ElectrodynamicsModule implements IModule {
 
 			helper.registerChemicalReactorRecipe(
 					miscHelper.getRecipeKey("electrodynamics.sulfate_to_pure_mineral", material.getName()),
-					new Object[0], new Object[] {
+					ObjectArrays.EMPTY_ARRAY, new Object[] {
 							sulfateLocation, 200,
 							waterLocation, 1000,
-					}, new Object[0],
-					new Object[0], new Object[] {
+					}, ObjectArrays.EMPTY_ARRAY,
+					ObjectArrays.EMPTY_ARRAY, new Object[] {
 							pureMineralInfo, 200,
 							sulfuricAcid, 150, 1F,
-					}, new Object[0],
+					}, ObjectArrays.EMPTY_ARRAY,
 					0, 200, 800);
 
 			helper.registerElectrolosisChamberRecipe(

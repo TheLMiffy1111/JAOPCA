@@ -11,7 +11,6 @@ import it.unimi.dsi.fastutil.doubles.DoubleArrays;
 import me.jddev0.ep.recipe.PulverizerRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
@@ -30,7 +29,7 @@ public class PulverizerRecipeSerializer implements IRecipeSerializer {
 	public final double[] secondChancesAdvanced;
 
 	public PulverizerRecipeSerializer(ResourceLocation key, Object input, Object output, double[] chances, double[] chancesAdvanced) {
-		this(key, input, output, chances, chancesAdvanced, ItemStack.EMPTY, new double[0], new double[0]);
+		this(key, input, output, chances, chancesAdvanced, ItemStack.EMPTY, DoubleArrays.EMPTY_ARRAY, DoubleArrays.EMPTY_ARRAY);
 	}
 
 	public PulverizerRecipeSerializer(ResourceLocation key, Object input, Object output, double[] chances, double[] chancesAdvanced, Object secondOutput, double[] secondChances, double[] secondChancesAdvanced) {
@@ -55,17 +54,9 @@ public class PulverizerRecipeSerializer implements IRecipeSerializer {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, 1);
-		// Energized Power pulverizer recipe codec is broken for serialization
-		double[] secondChancesFix = secondChances;
-		double[] secondChancesAdvancedFix = secondChancesAdvanced;
-		if(secondStack.isEmpty()) {
-			secondStack = new ItemStack(Items.BARRIER);
-			secondChancesFix = DoubleArrays.EMPTY_ARRAY;
-			secondChancesAdvancedFix = DoubleArrays.EMPTY_ARRAY;
-		}
 		PulverizerRecipe recipe = new PulverizerRecipe(
 				new PulverizerRecipe.OutputItemStackWithPercentages(stack, chances, chancesAdvanced),
-				new PulverizerRecipe.OutputItemStackWithPercentages(secondStack, secondChancesFix, secondChancesAdvancedFix),
+				new PulverizerRecipe.OutputItemStackWithPercentages(secondStack, secondChances, secondChancesAdvanced),
 				ing);
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}

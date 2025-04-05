@@ -44,6 +44,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -231,6 +232,22 @@ public class MiscHelper implements IMiscHelper {
 				nonEmpty.stream().map(ItemStack::getItem).forEach(items::add);
 			}
 		}
+		case Holder<?> holder -> {
+			if(holder.isBound() && holder.value() instanceof Item item && item != Items.AIR) {
+				ing = Ingredient.of(item);
+				items.add(item);
+			}
+		}
+		case Holder<?>[] holders -> {
+			List<Item> nonEmpty = Arrays.stream(holders).
+					filter(Holder::isBound).map(Holder::value).
+					filter(Item.class::isInstance).map(Item.class::cast).
+					filter(i->i != Items.AIR).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = Ingredient.of(nonEmpty.toArray(Item[]::new));
+				items.addAll(nonEmpty);
+			}
+		}
 		case ItemLike item -> {
 			if(item.asItem() != Items.AIR) {
 				ing = Ingredient.of(item);
@@ -379,6 +396,22 @@ public class MiscHelper implements IMiscHelper {
 			if(!nonEmpty.isEmpty()) {
 				ing = FluidIngredient.of(nonEmpty.toArray(FluidStack[]::new));
 				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
+			}
+		}
+		case Holder<?> holder -> {
+			if(holder.isBound() && holder.value() instanceof Fluid fluid && fluid != Fluids.EMPTY) {
+				ing = FluidIngredient.of(fluid);
+				fluids.add(fluid);
+			}
+		}
+		case Holder<?>[] holders -> {
+			List<Fluid> nonEmpty = Arrays.stream(holders).
+					filter(Holder::isBound).map(Holder::value).
+					filter(Fluid.class::isInstance).map(Fluid.class::cast).
+					filter(f->f != Fluids.EMPTY).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = FluidIngredient.of(nonEmpty.toArray(Fluid[]::new));
+				fluids.addAll(nonEmpty);
 			}
 		}
 		case Fluid fluid -> {

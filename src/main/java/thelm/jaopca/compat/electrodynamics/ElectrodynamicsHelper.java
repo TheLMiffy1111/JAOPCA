@@ -20,6 +20,7 @@ import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.GasIngredient;
 import electrodynamics.registers.ElectrodynamicsGases;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -91,6 +92,22 @@ public class ElectrodynamicsHelper {
 		}
 		case FluidStack[] stacks -> {
 			List<FluidStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = new FluidIngredient(nonEmpty);
+				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
+			}
+		}
+		case Holder<?> holder -> {
+			if(holder.isBound() && holder.value() instanceof Fluid fluid && fluid != Fluids.EMPTY) {
+				ing = new FluidIngredient(fluid, amount);
+				fluids.add(fluid);
+			}
+		}
+		case Holder<?>[] holders -> {
+			List<FluidStack> nonEmpty = Arrays.stream(holders).
+					filter(Holder::isBound).map(Holder::value).
+					filter(Fluid.class::isInstance).map(Fluid.class::cast).
+					filter(f->f != Fluids.EMPTY).map(f->new FluidStack(f, amount)).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = new FluidIngredient(nonEmpty);
 				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
@@ -177,6 +194,22 @@ public class ElectrodynamicsHelper {
 		}
 		case GasStack[] stacks -> {
 			List<GasStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
+			if(!nonEmpty.isEmpty()) {
+				ing = new GasIngredient(nonEmpty);
+				nonEmpty.stream().map(GasStack::getGas).forEach(gases::add);
+			}
+		}
+		case Holder<?> holder -> {
+			if(holder.isBound() && holder.value() instanceof Gas gas && !gas.isEmpty()) {
+				ing = new GasIngredient(gas, amount, temperature, pressure);
+				gases.add(gas);
+			}
+		}
+		case Holder<?>[] holders -> {
+			List<GasStack> nonEmpty = Arrays.stream(holders).
+					filter(Holder::isBound).map(Holder::value).
+					filter(Gas.class::isInstance).map(Gas.class::cast).
+					filter(g->!g.isEmpty()).map(g->new GasStack(g, amount, temperature, pressure)).toList();
 			if(!nonEmpty.isEmpty()) {
 				ing = new GasIngredient(nonEmpty);
 				nonEmpty.stream().map(GasStack::getGas).forEach(gases::add);

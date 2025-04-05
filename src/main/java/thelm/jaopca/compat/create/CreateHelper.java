@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -70,6 +71,12 @@ public class CreateHelper {
 			if(!stack.isEmpty()) {
 				ing = FluidIngredient.fromFluidStack(stack);
 				fluids.add(stack.getFluid());
+			}
+		}
+		case Holder<?> holder -> {
+			if(holder.isBound() && holder.value() instanceof Fluid fluid && fluid != Fluids.EMPTY) {
+				ing = FluidIngredient.fromFluid(fluid, amount);
+				fluids.add(fluid);
 			}
 		}
 		case Fluid fluid -> {

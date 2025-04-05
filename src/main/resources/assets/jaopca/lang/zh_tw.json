@@ -36,6 +36,10 @@
 
 	"item.jaopca.modern_industrialization_crushed_dusts": "%s碎粉",
 
+	"item.jaopca.oritech_clumps": "%s碎塊",
+	"item.jaopca.oritech_small_clumps": "%s碎末",
+	"item.jaopca.oritech_gems": "%s晶石",
+
 	"item.jaopca.theurgy_alchemical_sulfurs": "%s奇蹟硫",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "由 %s %s %s 製作的奇蹟硫。"
 }

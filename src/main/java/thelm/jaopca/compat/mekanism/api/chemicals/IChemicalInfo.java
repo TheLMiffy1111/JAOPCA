@@ -5,6 +5,7 @@ import mekanism.api.providers.IChemicalProvider;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.api.materialforms.IMaterialFormInfo;
 
+@SuppressWarnings("removal")
 public interface IChemicalInfo extends IMaterialFormInfo, IChemicalProvider {
 
 	IMaterialFormChemical getMaterialFormChemical();

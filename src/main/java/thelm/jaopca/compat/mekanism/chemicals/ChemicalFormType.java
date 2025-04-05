@@ -6,12 +6,16 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Tables;
 import com.google.common.collect.TreeBasedTable;
 import com.mojang.serialization.Codec;
 
 import mekanism.api.MekanismAPI;
+import mekanism.api.datamaps.IMekanismDataMapTypes;
+import mekanism.api.datamaps.chemical.ChemicalSolidTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ExtraCodecs;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormSettings;
@@ -97,6 +101,7 @@ public class ChemicalFormType implements IChemicalFormType {
 			for(IMaterial material : form.getMaterials()) {
 				String name = form.getName()+'.'+material.getName();
 				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath("jaopca", name);
+				String oreTag = settings.getOreTagFunction().apply(material);
 
 				Supplier<IMaterialFormChemical> materialFormChemical = MemoizingSuppliers.of(()->settings.getChemicalCreator().create(form, material, settings));
 				CHEMICALS.put(form, material, materialFormChemical);
@@ -106,6 +111,12 @@ public class ChemicalFormType implements IChemicalFormType {
 				MekanismDataInjector.registerChemicalTag(helper.getTagLocation(secondaryName, material.getName()), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
 					MekanismDataInjector.registerChemicalTag(helper.getTagLocation(secondaryName, alternativeName), registryName);
+				}
+
+				if(!Strings.isNullOrEmpty(oreTag)) {
+					api.registerDataMapEntry(IMekanismDataMapTypes.INSTANCE.chemicalSolidTag(),
+							new ExtraCodecs.TagOrElementLocation(registryName, false),
+							()->new ChemicalSolidTag(helper.getItemTagKey(ResourceLocation.parse(oreTag))));
 				}
 			}
 		}
