@@ -4,12 +4,13 @@ import java.util.function.Supplier;
 
 import dev.ftb.mods.ftbic.recipe.FTBICRecipes;
 import dev.ftb.mods.ftbic.recipe.MachineRecipeSerializer;
+import it.unimi.dsi.fastutil.objects.ObjectArrays;
 import net.minecraft.util.ResourceLocation;
 
 public class RollingRecipeSupplier extends MachineRecipeSupplier {
 
 	public RollingRecipeSupplier(ResourceLocation key, Object input, int inputCount, Object output, int outputCount, double time) {
-		super(key, new Object[] {input, inputCount}, new Object[0], new Object[] {output, outputCount, 1D}, new Object[0], time);
+		super(key, new Object[] {input, inputCount}, ObjectArrays.EMPTY_ARRAY, new Object[] {output, outputCount, 1D}, ObjectArrays.EMPTY_ARRAY, time);
 	}
 
 	@Override

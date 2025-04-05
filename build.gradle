@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "1.9.0"
+	id "com.crystaelix.loom" version "1.10.0"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -192,7 +192,7 @@ loom {
 
 dependencies {
 	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.24.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.24.3"
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.16.5"
@@ -220,7 +220,7 @@ dependencies {
 	modImplementation "com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.527"
 
 	// KubeJS
-	modImplementation "dev.latvian.mods:rhino-forge:1605.1.5-build.75"
+	implementation "dev.latvian.mods:rhino-forge:1605.1.5-build.75"
 	modImplementation("dev.latvian.mods:kubejs-forge:1605.3.19-build.299") {transitive = false}
 
 	// Json Things

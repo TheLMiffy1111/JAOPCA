@@ -77,24 +77,15 @@ public class CreateNonIngotModule implements IModule {
 					s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s)), "The byproduct material to output in Create's crushing.");
 			Item byproduct = ForgeRegistries.ITEMS.getValue(new ResourceLocation(configByproduct));
 
-			if(material.getType() != MaterialType.DUST) {
-				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "create.ore_to_material_crushing."+material.getName()),
-						oreLocation, 500, new Object[] {
-								materialLocation, 2,
-								materialLocation, 1, 0.25F,
-								byproduct, 1, 0.125F,
-						});
-			}
-			else {
-				helper.registerCrushingRecipe(
-						new ResourceLocation("jaopca", "create.ore_to_material_crushing."+material.getName()),
-						oreLocation, 300, new Object[] {
-								materialLocation, 4,
-								materialLocation, 2, 0.25F,
-								byproduct, 1, 0.125F,
-						});
-			}
+			boolean isCrystal = material.getType() != MaterialType.DUST;
+
+			helper.registerCrushingRecipe(
+					new ResourceLocation("jaopca", "create.ore_to_material_crushing."+material.getName()),
+					oreLocation, isCrystal ? 500 : 300, new Object[] {
+							materialLocation, (isCrystal ? 2 : 4),
+							materialLocation, (isCrystal ? 1 : 2), 0.25F,
+							byproduct, 1, 0.125F,
+					});
 		}
 	}
 }

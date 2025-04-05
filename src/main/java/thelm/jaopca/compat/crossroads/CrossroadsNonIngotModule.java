@@ -60,16 +60,11 @@ public class CrossroadsNonIngotModule implements IModule {
 					s->ForgeRegistries.ITEMS.containsKey(new ResourceLocation(s)), "The byproduct material to output in Crossroads' Millstone.");
 			Item byproduct = ForgeRegistries.ITEMS.getValue(new ResourceLocation(configByproduct));
 
-			if(material.getType() != MaterialType.DUST) {
-				helper.registerMillRecipe(
-						new ResourceLocation("jaopca", "crossroads.ore_to_material."+material.getName()),
-						oreLocation, materialLocation, 2, byproduct, 1);
-			}
-			else {
-				helper.registerMillRecipe(
-						new ResourceLocation("jaopca", "crossroads.ore_to_material."+material.getName()),
-						oreLocation, materialLocation, 5, byproduct, 1);
-			}
+			boolean isCrystal = material.getType() != MaterialType.DUST;
+
+			helper.registerMillRecipe(
+					new ResourceLocation("jaopca", "crossroads.ore_to_material."+material.getName()),
+					oreLocation, materialLocation, isCrystal ? 2 : 5, byproduct, 1);
 		}
 	}
 }
