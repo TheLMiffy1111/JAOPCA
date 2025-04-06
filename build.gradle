@@ -245,7 +245,6 @@ tasks.withType(JavaCompile).configureEach {
 
 loom {
 	silentMojangMappingsLicense()
-	interfaceInjection.enableDependencyInterfaceInjection = false
 	runs {
 		configureEach {
 			property "forge.logging.console.level", "debug"
