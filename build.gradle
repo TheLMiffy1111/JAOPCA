@@ -169,7 +169,7 @@ def specVersion = "2.3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "2.3.12.32"
+version = "2.3.12.33"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -224,8 +224,8 @@ dependencies {
 	legacyForge "net.minecraftforge:forge:1.12.2-14.23.5.2860"
 
 	// Shadow
-	shadowImplementation "com.electronwill.night-config:core:3.8.1"
-	shadowImplementation "com.electronwill.night-config:toml:3.8.1"
+	shadowImplementation "com.electronwill.night-config:core:3.6.7"
+	shadowImplementation "com.electronwill.night-config:toml:3.6.7"
 
 	// Common
 	implementation "thelm.wrapup:WrapUp-1.12.2:1.1.3"
