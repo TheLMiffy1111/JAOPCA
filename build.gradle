@@ -247,7 +247,6 @@ loom {
 		mixinConfig "${modId}.mixins.json"
 	}
 	mixin.defaultRefmapName = "${modId}.refmap.json"
-	interfaceInjection.enableDependencyInterfaceInjection = false
 	runs {
 		configureEach {
 			property "forge.logging.console.level", "debug"
