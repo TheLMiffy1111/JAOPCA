@@ -158,7 +158,6 @@ tasks.withType(JavaCompile).configureEach {
 loom {
 	silentMojangMappingsLicense()
 	mixin.defaultRefmapName = "${modId}.refmap.json"
-	interfaceInjection.enableDependencyInterfaceInjection = false
 	runs {
 		configureEach {
 			property "fabric.log.console.level", "debug"
