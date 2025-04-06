@@ -189,8 +189,8 @@ dependencies {
 	legacyForge "net.minecraftforge:forge:1.7.10-10.13.4.1614-1.7.10:universal"
 
 	// Shadow
-	shadowImplementation "com.electronwill.night-config:core:3.8.1"
-	shadowImplementation "com.electronwill.night-config:toml:3.8.1"
+	shadowImplementation "com.electronwill.night-config:core:3.6.7"
+	shadowImplementation "com.electronwill.night-config:toml:3.6.7"
 
 	// Mixin
 	implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.20") {transitive = false}
