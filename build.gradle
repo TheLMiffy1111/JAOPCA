@@ -319,7 +319,7 @@ dependencies {
 	modImplementation "curse.maven:crossroads-mc-250231:5208926"
 
 	// Cyclic
-	modImplementation "curse.maven:flib-661261:5495793"
+	modImplementation "curse.maven:flib-661261:6369719"
 	modImplementation "curse.maven:cyclic-239286:6373460"
 
 	// Electrodynamics
@@ -431,6 +431,7 @@ sourcesJar {
 publishing {
 	publications {
 		register("mavenJava", MavenPublication) {
+			artifactId = archivesBaseName
 			artifact remapJar
 			artifact sourcesJar
 		}
