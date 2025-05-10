@@ -81,11 +81,20 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.saps.dev/releases/"
+				url = "https://maven.ftb.dev/releases/"
 			}
 		}
 		filter {
 			includeGroup "dev.ftb.mods"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				url = "https://maven.latvian.dev/releases/"
+			}
+		}
+		filter {
 			includeGroup "dev.latvian.mods"
 		}
 	}
