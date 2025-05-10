@@ -15,7 +15,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 import rearth.oritech.init.recipes.OritechRecipe;
 import rearth.oritech.init.recipes.RecipeContent;
+import rearth.oritech.util.FluidIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
+import thelm.jaopca.compat.oritech.OritechHelper;
 import thelm.jaopca.utils.MiscHelper;
 
 public class CentrifugeFluidRecipeSerializer implements IRecipeSerializer {
@@ -55,7 +57,7 @@ public class CentrifugeFluidRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		FluidStack fluidIng = MiscHelper.INSTANCE.getFluidStack(fluidInput, fluidInputAmount);
+		FluidIngredient fluidIng = OritechHelper.INSTANCE.getFluidIngredient(fluidInput, fluidInputAmount);
 		if(ing == null && fluidIng.isEmpty()) {
 			throw new IllegalArgumentException("Empty ingredients in recipe "+key+": "+input+", "+fluidInput);
 		}
@@ -66,7 +68,7 @@ public class CentrifugeFluidRecipeSerializer implements IRecipeSerializer {
 			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+output+", "+secondOutput+", "+fluidOutput);
 		}
 		List<ItemStack> results = secondStack.isEmpty() ? stack.isEmpty() ? List.of() : List.of(stack) : List.of(stack, secondStack);
-		OritechRecipe recipe = new OritechRecipe(time, List.of(ing), results, RecipeContent.CENTRIFUGE_FLUID, FluidStackHooksForge.fromForge(fluidIng), FluidStackHooksForge.fromForge(fluidStack));
+		OritechRecipe recipe = new OritechRecipe(time, List.of(ing), results, RecipeContent.CENTRIFUGE_FLUID, fluidIng, FluidStackHooksForge.fromForge(fluidStack));
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

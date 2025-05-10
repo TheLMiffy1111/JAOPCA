@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import rearth.oritech.init.recipes.OritechRecipe;
 import rearth.oritech.init.recipes.RecipeContent;
+import rearth.oritech.util.FluidIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -49,7 +50,7 @@ public class FoundryRecipeSerializer implements IRecipeSerializer {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		List<Ingredient> inputs = secondIng == null ? List.of(ing) : List.of(ing, secondIng);
-		OritechRecipe recipe = new OritechRecipe(time, inputs, List.of(stack), RecipeContent.FOUNDRY, FluidStack.empty(), FluidStack.empty());
+		OritechRecipe recipe = new OritechRecipe(time, inputs, List.of(stack), RecipeContent.FOUNDRY, FluidIngredient.EMPTY, FluidStack.empty());
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

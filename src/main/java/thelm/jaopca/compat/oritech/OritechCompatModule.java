@@ -21,7 +21,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "oritech")
+@JAOPCAModule(modDependencies = "oritech@[0.15.3,)")
 public class OritechCompatModule implements IModule {
 
 	private static final Set<String> PULVERIZER_DUST_BLACKLIST = new TreeSet<>(List.of(

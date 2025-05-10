@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import rearth.oritech.init.recipes.OritechRecipe;
 import rearth.oritech.init.recipes.RecipeContent;
+import rearth.oritech.util.FluidIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -64,7 +65,7 @@ public class GrinderRecipeSerializer implements IRecipeSerializer {
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
 		ItemStack thirdStack = MiscHelper.INSTANCE.getItemStack(thirdOutput, thirdOutputCount);
 		List<ItemStack> results = thirdStack.isEmpty() ? secondStack.isEmpty() ? List.of(stack) : List.of(stack, secondStack) : List.of(stack, secondStack, thirdStack);
-		OritechRecipe recipe = new OritechRecipe(time, List.of(ing), results, RecipeContent.GRINDER, FluidStack.empty(), FluidStack.empty());
+		OritechRecipe recipe = new OritechRecipe(time, List.of(ing), results, RecipeContent.GRINDER, FluidIngredient.EMPTY, FluidStack.empty());
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

@@ -19,6 +19,7 @@ import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.helpers.IMiscHelper;
+import thelm.jaopca.api.ingredients.CompoundIngredientObject;
 import thelm.jaopca.api.items.IItemFormType;
 import thelm.jaopca.api.items.IItemInfo;
 import thelm.jaopca.api.materials.IMaterial;
@@ -30,7 +31,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "oritech")
+@JAOPCAModule(modDependencies = "oritech@[0.15.3,)")
 public class OritechModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
@@ -39,16 +40,17 @@ public class OritechModule implements IModule {
 			"copper", "gold", "iron", "netherite_scrap", "nickel", "platinum", "uranium"));
 
 	static {
+		if(ModList.get().isLoaded("create")) {
+			Collections.addAll(RAW_BLACKLIST, "zinc");
+		}
 		if(ModList.get().isLoaded("energizedpower")) {
 			Collections.addAll(RAW_BLACKLIST, "tin");
 		}
-		if(ModList.get().isLoaded("mythicmetals")) {
-			Collections.addAll(RAW_BLACKLIST, "adamantite", "aquarium", "banglum", "carmot", "kyber",
-					"manganese", "midas_gold", "mythril", "orichalcum", "osmium", "palladium", "promethium",
-					"quadrillum", "runite", "silver", "stormyx", "tin");
+		if(ModList.get().isLoaded("immersiveengineering")) {
+			Collections.addAll(RAW_BLACKLIST, "aluminium", "aluminum", "lead", "silver");
 		}
-		if(ModList.get().isLoaded("techreborn")) {
-			Collections.addAll(RAW_BLACKLIST, "iridium", "lead", "silver", "tin", "tungsten");
+		if(ModList.get().isLoaded("mekanism")) {
+			Collections.addAll(RAW_BLACKLIST, "lead", "osmium", "tin");
 		}
 	}
 
@@ -125,6 +127,9 @@ public class OritechModule implements IModule {
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
+			ResourceLocation createCrushedLocation = miscHelper.getTagLocation("create:crushed_raw_materials", material.getName());
+			CompoundIngredientObject clumpIngredient = CompoundIngredientObject.union(clumpLocation, createCrushedLocation);
+
 			if(material.hasExtra(1)) {
 				IMaterial extraMaterial = material.getExtra(1);
 				String extraForm = switch(extraMaterial.getType()) {
@@ -176,10 +181,10 @@ public class OritechModule implements IModule {
 
 			helper.registerCentrifugeRecipe(
 					miscHelper.getRecipeKey("oritech.clump_to_gem_dry", material.getName()),
-					clumpLocation, gemInfo, 1, extraTinyDustLocation, 3, 300);
+					clumpIngredient, gemInfo, 1, extraTinyDustLocation, 3, 300);
 			helper.registerCentrifugeFluidRecipe(
 					miscHelper.getRecipeKey("oritech.clump_to_gem_wet", material.getName()),
-					clumpLocation, Fluids.WATER, 1000, gemInfo, 1, extraTinyDustLocation, 3, Fluids.EMPTY, 0, 300);
+					clumpIngredient, Fluids.WATER, 1000, gemInfo, 2, Fluids.EMPTY, 0, 300);
 
 			api.registerSmeltingRecipe(
 					miscHelper.getRecipeKey("oritech.gem_to_material_smelting", material.getName()),
