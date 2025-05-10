@@ -308,7 +308,7 @@ dependencies {
 	modImplementation "curse.maven:magneticraft-224808:3791484"
 
 	// Mekanism
-	modImplementation "MCMultiPart2:MCMultiPart:2.5.3"
+	modImplementation "curse.maven:mcmultipart-239431:2615930"
 	modImplementation "curse.maven:mekanism-268560:2835175"
 
 	// Minestrappolation
@@ -341,7 +341,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:reid-629017:6292779"
-	modImplementation "curse.maven:vintagefix-871198:6300725"
+	modImplementation "curse.maven:vintagefix-871198:6412986"
 	modImplementation "curse.maven:lolasm-460609:6333774"
 }
 
