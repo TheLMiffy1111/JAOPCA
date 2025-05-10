@@ -59,11 +59,20 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.saps.dev/releases/"
+				url = "https://maven.ftb.dev/releases/"
 			}
 		}
 		filter {
 			includeGroup "dev.ftb.mods"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				url = "https://maven.latvian.dev/releases/"
+			}
+		}
+		filter {
 			includeGroup "dev.latvian.mods"
 		}
 	}
@@ -328,9 +337,9 @@ dependencies {
 	modImplementation "curse.maven:industrial-reborn-358877:4651636"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:6340181"
-	modImplementation "curse.maven:common-capabilities-247007:5980073"
-	modImplementation "curse.maven:integrated-dynamics-236307:6331496"
+	modImplementation "curse.maven:cyclops-core-232758:6491004"
+	modImplementation "curse.maven:common-capabilities-247007:6505615"
+	modImplementation "curse.maven:integrated-dynamics-236307:6491114"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
