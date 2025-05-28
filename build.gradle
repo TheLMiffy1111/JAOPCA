@@ -228,8 +228,8 @@ dependencies {
 	modImplementation "com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.527"
 
 	// KubeJS
-	implementation "dev.latvian.mods:rhino-forge:1605.1.5-build.75"
-	modImplementation("dev.latvian.mods:kubejs-forge:1605.3.19-build.299") {transitive = false}
+	implementation "curse.maven:rhino-416294:3525704"
+	modImplementation "curse.maven:kubejs-238086:3647098"
 
 	// Json Things
 	modImplementation "curse.maven:json-things-541617:3655282"
