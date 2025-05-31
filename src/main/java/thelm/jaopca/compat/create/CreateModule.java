@@ -43,6 +43,12 @@ public class CreateModule implements IModule {
 		//if(ModList.get().isLoaded("allthemodium")) {
 		//	Collections.addAll(BLACKLIST, "allthemodium", "unobtainium", "vibranium");
 		//}
+		if(ModList.get().isLoaded("create_ironworks")) {
+			Collections.addAll(BLACKLIST, "tin");
+		}
+		if(ModList.get().isLoaded("createnuclear")) {
+			Collections.addAll(BLACKLIST, "uranium");
+		}
 		if(ModList.get().isLoaded("galosphere")) {
 			Collections.addAll(BLACKLIST, "silver");
 		}
