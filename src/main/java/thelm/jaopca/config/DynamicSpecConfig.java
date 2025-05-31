@@ -164,6 +164,32 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 	}
 
 	@Override
+	public Number getDefinedNumber(String path, Number defaultValue, String comment) {
+		return getDefinedNumber(split(path), defaultValue, comment);
+	}
+
+	@Override
+	public Number getDefinedNumber(List<String> path, Number defaultValue, String comment) {
+		return getDefinedNumber(path, defaultValue, Predicates.alwaysTrue(), comment);
+	}
+
+	@Override
+	public Number getDefinedNumber(String path, Number defaultValue, Predicate<Number> validator, String comment) {
+		return getDefinedNumber(split(path), defaultValue, validator, comment);
+	}
+
+	@Override
+	public Number getDefinedNumber(List<String> path, Number defaultValue, Predicate<Number> validator, String comment) {
+		if(!config.contains(path) || !(config.get(path) instanceof Number) || !validator.test(config.getInt(path))) {
+			config.set(path, defaultValue);
+		}
+		if(comment != null) {
+			config.setComment(path, comment);
+		}
+		return config.get(path);
+	}
+
+	@Override
 	public int getDefinedInt(String path, int defaultValue, String comment) {
 		return getDefinedInt(split(path), defaultValue, comment);
 	}
@@ -190,13 +216,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public int getDefinedInt(List<String> path, int defaultValue, IntPredicate validator, String comment) {
-		if(!config.contains(path) || !(config.get(path) instanceof Number) || !validator.test(config.getInt(path))) {
-			config.set(path, defaultValue);
-		}
-		if(comment != null) {
-			config.setComment(path, comment);
-		}
-		return config.getInt(path);
+		return getDefinedNumber(path, defaultValue, n->validator.test(n.intValue()), comment).intValue();
 	}
 
 	@Override
@@ -226,13 +246,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public long getDefinedLong(List<String> path, long defaultValue, LongPredicate validator, String comment) {
-		if(!config.contains(path) || !(config.get(path) instanceof Number) || !validator.test(config.getLong(path))) {
-			config.set(path, defaultValue);
-		}
-		if(comment != null) {
-			config.setComment(path, comment);
-		}
-		return config.getLong(path);
+		return getDefinedNumber(path, defaultValue, n->validator.test(n.longValue()), comment).longValue();
 	}
 
 	@Override
@@ -262,13 +276,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public float getDefinedFloat(List<String> path, float defaultValue, Predicate<Float> validator, String comment) {
-		if(!config.contains(path) || !(config.get(path) instanceof Number) || !validator.test(config.<Number>getRaw(path).floatValue())) {
-			config.set(path, (double)defaultValue);
-		}
-		if(comment != null) {
-			config.setComment(path, comment);
-		}
-		return config.<Number>getRaw(path).floatValue();
+		return getDefinedNumber(path, defaultValue, n->validator.test(n.floatValue()), comment).floatValue();
 	}
 
 	@Override
@@ -298,13 +306,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public double getDefinedDouble(List<String> path, double defaultValue, DoublePredicate validator, String comment) {
-		if(!config.contains(path) || !(config.get(path) instanceof Number) || !validator.test(config.<Number>getRaw(path).doubleValue())) {
-			config.set(path, defaultValue);
-		}
-		if(comment != null) {
-			config.setComment(path, comment);
-		}
-		return config.<Number>getRaw(path).doubleValue();
+		return getDefinedNumber(path, defaultValue, n->validator.test(n.doubleValue()), comment).doubleValue();
 	}
 
 	@Override
@@ -334,13 +336,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public byte getDefinedByte(List<String> path, byte defaultValue, Predicate<Byte> validator, String comment) {
-		if(!config.contains(path) || !(config.get(path) instanceof Number) || !validator.test(config.getByte(path))) {
-			config.set(path, (int)defaultValue);
-		}
-		if(comment != null) {
-			config.setComment(path, comment);
-		}
-		return config.getByte(path);
+		return getDefinedNumber(path, defaultValue, n->validator.test(n.byteValue()), comment).byteValue();
 	}
 
 	@Override
@@ -370,13 +366,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public short getDefinedShort(List<String> path, short defaultValue, Predicate<Short> validator, String comment) {
-		if(!config.contains(path) || !(config.get(path) instanceof Number) || !validator.test(config.getShort(path))) {
-			config.set(path, (int)defaultValue);
-		}
-		if(comment != null) {
-			config.setComment(path, comment);
-		}
-		return config.getShort(path);
+		return getDefinedNumber(path, defaultValue, n->validator.test(n.shortValue()), comment).shortValue();
 	}
 
 	@Override
