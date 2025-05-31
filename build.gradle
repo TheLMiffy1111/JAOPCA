@@ -464,6 +464,7 @@ def curseforgeDependencies = [
 	"open-loader",
 	"oritech",
 	"railcraft-reborn",
+	"techreborn",
 	"theurgy",
 	"useful-machinery"
 ]
