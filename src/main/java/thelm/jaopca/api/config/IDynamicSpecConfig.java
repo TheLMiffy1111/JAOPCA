@@ -39,6 +39,14 @@ public interface IDynamicSpecConfig extends CommentedConfig {
 
 	boolean getDefinedBoolean(List<String> path, boolean defaultValue, String comment);
 
+	Number getDefinedNumber(String path, Number defaultValue, String comment);
+
+	Number getDefinedNumber(List<String> path, Number defaultValue, String comment);
+
+	Number getDefinedNumber(String path, Number defaultValue, Predicate<Number> validator, String comment);
+
+	Number getDefinedNumber(List<String> path, Number defaultValue, Predicate<Number> validator, String comment);
+
 	int getDefinedInt(String path, int defaultValue, String comment);
 
 	int getDefinedInt(List<String> path, int defaultValue, String comment);
