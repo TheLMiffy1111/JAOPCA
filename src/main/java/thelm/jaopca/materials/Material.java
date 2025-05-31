@@ -22,6 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.tags.ITag;
+import thelm.jaopca.api.config.FormattedNumber;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -115,8 +116,10 @@ public class Material implements IMaterial {
 					color = OptionalInt.of(0xFFFFFF);
 					MiscHelper.INSTANCE.submitAsyncTask(()->{
 						try {
-							color = OptionalInt.of(config.getDefinedInt("general.color", ColorHandler.getAverageColor(tag), "The color of this material."));
-							MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, color.getAsInt()));
+							int averageColor = ColorHandler.getAverageColor(tag);
+							int configColor = config.getDefinedNumber("general.color", new FormattedNumber("0x%06X", averageColor), "The color of this material.").intValue();
+							color = OptionalInt.of(configColor);
+							MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, configColor));
 						}
 						catch(Exception e) {
 							LOGGER.warn("Unable to get color for material {}", name, e);
@@ -161,7 +164,7 @@ public class Material implements IMaterial {
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateModuleSet(
 				config.getDefinedStringList("general.moduleBlacklist", new ArrayList<>(configModuleBlacklist),
-						helper.configModulePredicate(), "The module blacklist of this material."),
+						helper.configModulePredicate(), "The module blacklist of this material. \"*\" is an alias for all modules. If a module name occurs an odd number of times (including wildcards), then the module is blacklisted."),
 				configModuleBlacklist);
 
 		hasEffect = config.getDefinedBoolean("general.hasEffect", hasEffect, "Should items of this material have the enchanted glow.");
