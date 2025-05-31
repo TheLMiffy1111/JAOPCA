@@ -32,7 +32,7 @@ public class MekanismCompatModule implements IModule {
 			"Gold", "Iron", "Lapis", "Lead", "NaturalAluminum", "NetherQuartz", "Nickel", "Osmium", "Quartz",
 			"RefinedGlowstone", "RefinedObsidian", "Silver", "Steel", "Tin", "Yellorite", "Yellorium"));
 	private static final Set<String> TO_CRYSTAL_BLACKLIST = new TreeSet<>(Arrays.asList(
-			"CertusQuartz", "Diamond", "Fluix", "NetherQuartz", "Quartz"));
+			"CertusQuartz", "Diamond", "Fluix", "NetherQuartz", "Quartz", "Sulfur"));
 	private static final Set<String> TO_ORE_BLACKLIST = new TreeSet<>(Arrays.asList(
 			"Aluminium", "Aluminum", "Copper", "Gold", "Iron", "Lapis", "Lead", "NaturalAluminum", "Nickel",
 			"Osmium", "Redstone", "Silver", "Tin"));

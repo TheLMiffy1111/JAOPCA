@@ -66,12 +66,12 @@ public class ModuleData implements IModuleData {
 		IMiscHelper helper = MiscHelper.INSTANCE;
 		helper.caclulateMaterialSet(
 				config.getDefinedStringList("general.materialBlacklist", new ArrayList<>(),
-						helper.configMaterialPredicate(), "The material blacklist of this module."),
+						helper.configMaterialPredicate(), "The material blacklist of this module. \"*\" is an alias for all materials, and \"*\" followed with a material type name is an alias for all materials of that material type. If a material name occurs an odd number of times (including wildcards), then the material is blacklisted. These rules applies to all config material blacklists."),
 				configMaterialBlacklist);
 		if(module.isPassive()) {
 			helper.caclulateMaterialSet(
 					config.getDefinedStringList("general.passiveMaterialWhitelist", new ArrayList<>(),
-							helper.configMaterialPredicate(), "The materials to force generate passive forms for this module."),
+							helper.configMaterialPredicate(), "The materials to force generate passive forms for this module. \"*\" is an alias for all materials, and \"*\" followed with a material type name is an alias for all materials of that material type. If a material name occurs an odd number of times (including wildcards), then the material is whitelisted. These rules apply to all config material whitelists."),
 					configPassiveMaterialWhitelist);
 		}
 	}
