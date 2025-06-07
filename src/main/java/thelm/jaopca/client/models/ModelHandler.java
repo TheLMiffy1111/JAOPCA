@@ -29,7 +29,7 @@ public class ModelHandler {
 		BLOCK_MODEL_REMAPS_REVERSE.clear();
 		FormTypeHandler.addBlockModelRemaps(
 				availableLocations.stream().
-				filter(l->l.getPath().startsWith("blockstates")).
+				filter(l->l.getPath().startsWith("blockstates/")).
 				map(BLOCK_MODEL_FORMAT::fileToId).
 				collect(Collectors.toSet()),
 				BLOCK_MODEL_REMAPS::putIfAbsent);
@@ -41,7 +41,7 @@ public class ModelHandler {
 		ITEM_MODEL_REMAPS_REVERSE.clear();
 		FormTypeHandler.addItemModelRemaps(
 				availableLocations.stream().
-				filter(l->l.getPath().startsWith("models/item")).
+				filter(l->l.getPath().startsWith("models/item/")).
 				map(ITEM_MODEL_FORMAT::fileToId).
 				collect(Collectors.toSet()),
 				ITEM_MODEL_REMAPS::putIfAbsent);
