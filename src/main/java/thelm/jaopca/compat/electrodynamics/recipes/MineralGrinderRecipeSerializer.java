@@ -9,8 +9,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.ingredients.EmptyIngredient;
 import thelm.jaopca.utils.MiscHelper;
@@ -51,10 +54,6 @@ public class MineralGrinderRecipeSerializer implements IRecipeSerializer {
 
 	@Override
 	public JsonElement get() {
-		Ingredient ing = MiscHelper.INSTANCE.getIngredient(input);
-		if(ing == EmptyIngredient.INSTANCE) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
-		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
@@ -65,8 +64,19 @@ public class MineralGrinderRecipeSerializer implements IRecipeSerializer {
 		json.addProperty("type", "electrodynamics:mineral_grinder_recipe");
 		JsonObject itemInputJson = new JsonObject();
 		itemInputJson.addProperty("count", 1);
-		JsonObject ingJson = MiscHelper.INSTANCE.wrapIngredient(ing).toJson().getAsJsonObject();
-		ingJson.addProperty("count", inputCount);
+		JsonObject ingJson;
+		if(input instanceof String || input instanceof ResourceLocation) {
+			ingJson = new JsonObject();
+			ingJson.addProperty("tag", input.toString());
+			ingJson.addProperty("count", inputCount);
+		}
+		else {
+			ItemStack ing = MiscHelper.INSTANCE.getItemStack(input, inputCount);
+			if(ing.isEmpty()) {
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
+			}
+			ingJson = MiscHelper.INSTANCE.serializeItemStack(ing);
+		}
 		itemInputJson.add("0", ingJson);
 		json.add("iteminputs", itemInputJson);
 		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));

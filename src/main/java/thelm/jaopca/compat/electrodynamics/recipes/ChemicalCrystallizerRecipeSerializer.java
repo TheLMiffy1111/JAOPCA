@@ -10,9 +10,7 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -42,9 +40,6 @@ public class ChemicalCrystallizerRecipeSerializer implements IRecipeSerializer {
 
 	@Override
 	public JsonElement get() {
-		if(input == Fluids.EMPTY || inputAmount <= 0) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
-		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
@@ -54,14 +49,19 @@ public class ChemicalCrystallizerRecipeSerializer implements IRecipeSerializer {
 		json.addProperty("type", "electrodynamics:chemical_crystallizer_recipe");
 		JsonObject fluidInputJson = new JsonObject();
 		fluidInputJson.addProperty("count", 1);
-		JsonObject ingJson = new JsonObject();
+		JsonObject ingJson;
 		if(input instanceof String || input instanceof ResourceLocation) {
+			ingJson = new JsonObject();
 			ingJson.addProperty("tag", input.toString());
+			ingJson.addProperty("amount", inputAmount);
 		}
-		else if(input instanceof Fluid fluid) {
-			ingJson.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(fluid).toString());
+		else {
+			FluidStack ing = MiscHelper.INSTANCE.getFluidStack(input, inputAmount);
+			if(ing.isEmpty()) {
+				throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
+			}
+			ingJson = MiscHelper.INSTANCE.serializeFluidStack(ing);
 		}
-		ingJson.addProperty("amount", inputAmount);
 		fluidInputJson.add("0", ingJson);
 		json.add("fluidinputs", fluidInputJson);
 		json.add("output", MiscHelper.INSTANCE.serializeItemStack(stack));

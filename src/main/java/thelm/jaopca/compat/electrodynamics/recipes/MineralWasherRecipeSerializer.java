@@ -9,7 +9,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -46,7 +46,6 @@ public class MineralWasherRecipeSerializer implements IRecipeSerializer {
 
 	@Override
 	public JsonElement get() {
-		Ingredient ing = MiscHelper.INSTANCE.getIngredient(itemInput);
 		FluidStack stack = MiscHelper.INSTANCE.getFluidStack(output, outputAmount);
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
@@ -56,20 +55,30 @@ public class MineralWasherRecipeSerializer implements IRecipeSerializer {
 		json.addProperty("type", "electrodynamics:mineral_washer_recipe");
 		JsonObject itemInputJson = new JsonObject();
 		itemInputJson.addProperty("count", 1);
-		JsonObject itemIngJson = MiscHelper.INSTANCE.wrapIngredient(ing).toJson().getAsJsonObject();
-		itemIngJson.addProperty("count", itemInputCount);
+		JsonObject itemIngJson;
+		if(itemInput instanceof String || itemInput instanceof ResourceLocation) {
+			itemIngJson = new JsonObject();
+			itemIngJson.addProperty("tag", itemInput.toString());
+			itemIngJson.addProperty("count", itemInputCount);
+		}
+		else {
+			ItemStack ing = MiscHelper.INSTANCE.getItemStack(itemInput, itemInputCount);
+			itemIngJson = MiscHelper.INSTANCE.serializeItemStack(ing);
+		}
 		itemInputJson.add("0", itemIngJson);
 		json.add("iteminputs", itemInputJson);
 		JsonObject fluidInputJson = new JsonObject();
 		fluidInputJson.addProperty("count", 1);
-		JsonObject fluidIngJson = new JsonObject();
+		JsonObject fluidIngJson;
 		if(fluidInput instanceof String || fluidInput instanceof ResourceLocation) {
+			fluidIngJson = new JsonObject();
 			fluidIngJson.addProperty("tag", fluidInput.toString());
+			fluidIngJson.addProperty("amount", fluidInputAmount);
 		}
-		else if(fluidInput instanceof Fluid fluid) {
-			fluidIngJson.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(fluid).toString());
+		else {
+			FluidStack ing = MiscHelper.INSTANCE.getFluidStack(fluidInput, fluidInputAmount);
+			fluidIngJson = MiscHelper.INSTANCE.serializeFluidStack(ing);
 		}
-		fluidIngJson.addProperty("amount", fluidInputAmount);
 		fluidInputJson.add("0", fluidIngJson);
 		json.add("fluidinputs", fluidInputJson);
 		json.add("output", MiscHelper.INSTANCE.serializeFluidStack(stack));
