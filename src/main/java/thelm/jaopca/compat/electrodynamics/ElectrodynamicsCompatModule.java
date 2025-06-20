@@ -19,7 +19,7 @@ import thelm.jaopca.api.modules.JAOPCAModule;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "electrodynamics")
+@JAOPCAModule(modDependencies = "electrodynamics@[1.18.2-0.6.6,)")
 public class ElectrodynamicsCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(

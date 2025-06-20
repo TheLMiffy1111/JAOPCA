@@ -199,7 +199,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.1.21.51"
+version = "4.1.21.52"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -289,7 +289,8 @@ dependencies {
 	modImplementation "curse.maven:cyclic-239286:5258947"
 
 	// Electrodynamics
-	modImplementation "curse.maven:electrodynamics-316867:6228108"
+	modImplementation "curse.maven:voltaic-api-1237904:6654698"
+	modImplementation "curse.maven:electrodynamics-316867:6619632"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:2.13.10-build-12:with-library") {transitive = false}
