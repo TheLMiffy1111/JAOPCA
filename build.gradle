@@ -159,7 +159,7 @@ def specVersion = "3"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "3.4.7.45"
+version = "3.4.7.46"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
@@ -259,7 +259,8 @@ dependencies {
 	modImplementation "curse.maven:crossroads-mc-250231:3347113"
 
 	// Electrodynamics
-	modImplementation "curse.maven:electrodynamics-316867:5002149"
+	modImplementation "curse.maven:voltaic-api-1237904:6654695"
+	modImplementation "curse.maven:electrodynamics-316867:6619631"
 
 	// Flux Machinery
 	modImplementation "curse.maven:fl-262385:3906730"

@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.electrodynamics.recipes;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -7,13 +8,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.compat.electrodynamics.ElectrodynamicsHelper;
 import thelm.jaopca.utils.MiscHelper;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
 
 public class ChemicalCrystallizerRecipeSupplier implements Supplier<ChemicalCrystalizerRecipe> {
 
@@ -49,6 +48,6 @@ public class ChemicalCrystallizerRecipeSupplier implements Supplier<ChemicalCrys
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		return new ChemicalCrystalizerRecipe(key, new FluidIngredient[] {ing}, stack, experience, time, energy, new ProbableItem[0], new ProbableFluid[0]);
+		return new ChemicalCrystalizerRecipe(key, Collections.singletonList(ing), stack, experience, time, energy, Collections.emptyList(), Collections.emptyList());
 	}
 }

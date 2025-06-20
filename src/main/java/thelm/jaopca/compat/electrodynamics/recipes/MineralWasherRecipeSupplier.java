@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.electrodynamics.recipes;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -7,14 +8,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.compat.electrodynamics.ElectrodynamicsHelper;
 import thelm.jaopca.utils.MiscHelper;
+import voltaic.common.recipe.recipeutils.CountableIngredient;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
 
 public class MineralWasherRecipeSupplier implements Supplier<MineralWasherRecipe> {
 
@@ -47,7 +46,7 @@ public class MineralWasherRecipeSupplier implements Supplier<MineralWasherRecipe
 	@Override
 	public MineralWasherRecipe get() {
 		CountableIngredient ing = ElectrodynamicsHelper.INSTANCE.getCountableIngredient(itemInput, itemInputCount);
-		if(ing.fetchCountedStacks().isEmpty()) {
+		if(ing.getItems().length == 0) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+itemInput);
 		}
 		FluidIngredient fluidIng = ElectrodynamicsHelper.INSTANCE.getFluidIngredient(fluidInput, fluidInputAmount);
@@ -58,6 +57,6 @@ public class MineralWasherRecipeSupplier implements Supplier<MineralWasherRecipe
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		return new MineralWasherRecipe(key, new CountableIngredient[] {ing}, new FluidIngredient[] {fluidIng}, stack, experience, time, energy, new ProbableItem[0], new ProbableFluid[0]);
+		return new MineralWasherRecipe(key, Collections.singletonList(ing), Collections.singletonList(fluidIng), stack, experience, time, energy, Collections.emptyList(), Collections.emptyList());
 	}
 }

@@ -1,5 +1,7 @@
 package thelm.jaopca.compat.electrodynamics.recipes;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -7,13 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import electrodynamics.common.recipe.categories.item2item.specificmachines.LatheRecipe;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.compat.electrodynamics.ElectrodynamicsHelper;
 import thelm.jaopca.utils.MiscHelper;
+import voltaic.common.recipe.recipeutils.CountableIngredient;
+import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class LatheRecipeSupplier implements Supplier<LatheRecipe> {
 
@@ -52,7 +53,7 @@ public class LatheRecipeSupplier implements Supplier<LatheRecipe> {
 	@Override
 	public LatheRecipe get() {
 		CountableIngredient ing = ElectrodynamicsHelper.INSTANCE.getCountableIngredient(input, inputCount);
-		if(ing.fetchCountedStacks().isEmpty()) {
+		if(ing.getItems().length == 0) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
 		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
@@ -60,7 +61,7 @@ public class LatheRecipeSupplier implements Supplier<LatheRecipe> {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, secondOutputCount);
-		ProbableItem[] itembi = secondStack.isEmpty() ? new ProbableItem[0] : new ProbableItem[] {new ProbableItem(secondStack, secondChance)};
-		return new LatheRecipe(key, new CountableIngredient[] {ing}, stack, experience, time, energy, itembi, new ProbableFluid[0]);
+		List<ProbableItem> itembi = secondStack.isEmpty() ? Collections.emptyList() : Collections.singletonList(new ProbableItem(secondStack, secondChance));
+		return new LatheRecipe(key, Collections.singletonList(ing), stack, experience, time, energy, itembi, Collections.emptyList());
 	}
 }

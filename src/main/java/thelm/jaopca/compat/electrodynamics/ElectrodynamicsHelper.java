@@ -6,11 +6,16 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import thelm.jaopca.api.fluids.IFluidProvider;
@@ -20,7 +25,8 @@ import thelm.jaopca.compat.electrodynamics.recipes.MineralCrusherRecipeSupplier;
 import thelm.jaopca.compat.electrodynamics.recipes.MineralGrinderRecipeSupplier;
 import thelm.jaopca.compat.electrodynamics.recipes.MineralWasherRecipeSupplier;
 import thelm.jaopca.utils.ApiImpl;
-import thelm.jaopca.utils.MiscHelper;
+import voltaic.common.recipe.recipeutils.CountableIngredient;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
 
 public class ElectrodynamicsHelper {
 
@@ -29,7 +35,33 @@ public class ElectrodynamicsHelper {
 	private ElectrodynamicsHelper() {}
 
 	public CountableIngredient getCountableIngredient(Object obj, int count) {
-		return new CountableIngredient(MiscHelper.INSTANCE.getIngredient(obj), count) {};
+		if(obj instanceof Supplier<?>) {
+			return getCountableIngredient(((Supplier<?>)obj).get(), count);
+		}
+		else if(obj instanceof CountableIngredient) {
+			return (CountableIngredient)obj;
+		}
+		else if(obj instanceof String) {
+			return new CountableIngredient(ItemTags.createOptional(new ResourceLocation((String)obj)), count);
+		}
+		else if(obj instanceof ResourceLocation) {
+			return new CountableIngredient(ItemTags.createOptional((ResourceLocation)obj), count);
+		}
+		else if(obj instanceof Item) {
+			if(obj != Items.AIR) {
+				return new CountableIngredient(new ItemStack((Item)obj, count));
+			}
+		}
+		else if(obj instanceof IItemProvider) {
+			Item item = ((IItemProvider)obj).asItem();
+			if(item != Items.AIR) {
+				return new CountableIngredient(new ItemStack(item, count));
+			}
+		}
+		else if(obj instanceof JsonObject) {
+			return CountableIngredient.CODEC.parse(JsonOps.INSTANCE, (JsonObject)obj).get().left().orElse(new CountableIngredient(ItemStack.EMPTY));
+		}
+		return new CountableIngredient(ItemStack.EMPTY);
 	}
 
 	public FluidIngredient getFluidIngredient(Object obj, int amount) {
@@ -40,10 +72,10 @@ public class ElectrodynamicsHelper {
 			return (FluidIngredient)obj;
 		}
 		else if(obj instanceof String) {
-			return new FluidIngredient(MiscHelper.INSTANCE.getFluidTag(new ResourceLocation((String)obj)).getValues().stream().map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
+			return new FluidIngredient(FluidTags.createOptional(new ResourceLocation((String)obj)), amount);
 		}
 		else if(obj instanceof ResourceLocation) {
-			return new FluidIngredient(MiscHelper.INSTANCE.getFluidTag((ResourceLocation)obj).getValues().stream().map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
+			return new FluidIngredient(FluidTags.createOptional((ResourceLocation)obj), amount);
 		}
 		else if(obj instanceof FluidStack) {
 			FluidStack stack = (FluidStack)obj;
@@ -72,7 +104,7 @@ public class ElectrodynamicsHelper {
 			return new FluidIngredient(Arrays.stream((IFluidProvider[])obj).map(IFluidProvider::asFluid).filter(f->f != Fluids.EMPTY).map(f->new FluidStack(f, amount)).collect(Collectors.toList()));
 		}
 		else if(obj instanceof JsonObject) {
-			return FluidIngredient.deserialize((JsonObject)obj);
+			return FluidIngredient.CODEC.parse(JsonOps.INSTANCE, (JsonObject)obj).get().left().orElse(new FluidIngredient(Collections.emptyList()));
 		}
 		return new FluidIngredient(Collections.emptyList());
 	}
