@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 import com.simibubi.create.content.kinetics.fan.processing.SplashingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -63,7 +63,7 @@ public class SplashingRecipeSerializer implements IRecipeSerializer {
 		if(outputs.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+Arrays.deepToString(output));
 		}
-		ProcessingRecipeBuilder<SplashingRecipe> builder = new ProcessingRecipeBuilder<>(SplashingRecipe::new, key);
+		StandardProcessingRecipe.Builder<SplashingRecipe> builder = new StandardProcessingRecipe.Builder<>(SplashingRecipe::new, key);
 		builder.require(ing);
 		builder.withItemOutputs(outputs);
 		SplashingRecipe recipe = builder.build();

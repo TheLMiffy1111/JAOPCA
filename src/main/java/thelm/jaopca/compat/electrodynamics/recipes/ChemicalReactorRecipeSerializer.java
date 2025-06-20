@@ -11,20 +11,20 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
 
-import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.categories.chemicalreactor.ChemicalReactorRecipe;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.GasIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.compat.electrodynamics.ElectrodynamicsHelper;
 import thelm.jaopca.utils.MiscHelper;
+import voltaic.api.gas.GasStack;
+import voltaic.common.recipe.recipeutils.CountableIngredient;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
+import voltaic.common.recipe.recipeutils.GasIngredient;
+import voltaic.common.recipe.recipeutils.ProbableFluid;
+import voltaic.common.recipe.recipeutils.ProbableGas;
+import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class ChemicalReactorRecipeSerializer implements IRecipeSerializer {
 

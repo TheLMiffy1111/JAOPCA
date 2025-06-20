@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
 import com.simibubi.create.content.kinetics.press.PressingRecipe;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -41,7 +41,7 @@ public class PressingRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		ProcessingRecipeBuilder<PressingRecipe> builder = new ProcessingRecipeBuilder<>(PressingRecipe::new, key);
+		StandardProcessingRecipe.Builder<PressingRecipe> builder = new StandardProcessingRecipe.Builder<>(PressingRecipe::new, key);
 		builder.require(ing);
 		builder.output(stack);
 		PressingRecipe recipe = builder.build();

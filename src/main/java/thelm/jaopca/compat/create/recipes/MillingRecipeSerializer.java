@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 import com.simibubi.create.content.kinetics.millstone.MillingRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -65,7 +65,7 @@ public class MillingRecipeSerializer implements IRecipeSerializer {
 		if(outputs.isEmpty()) {
 			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(output));
 		}
-		ProcessingRecipeBuilder<MillingRecipe> builder = new ProcessingRecipeBuilder<>(MillingRecipe::new, key);
+		StandardProcessingRecipe.Builder<MillingRecipe> builder = new StandardProcessingRecipe.Builder<>(MillingRecipe::new, key);
 		builder.require(ing);
 		builder.withItemOutputs(outputs);
 		builder.duration(time);

@@ -10,13 +10,13 @@ import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
 
 import electrodynamics.common.recipe.categories.item2item.specificmachines.LatheRecipe;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.compat.electrodynamics.ElectrodynamicsHelper;
 import thelm.jaopca.utils.MiscHelper;
+import voltaic.common.recipe.recipeutils.CountableIngredient;
+import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class LatheRecipeSerializer implements IRecipeSerializer {
 

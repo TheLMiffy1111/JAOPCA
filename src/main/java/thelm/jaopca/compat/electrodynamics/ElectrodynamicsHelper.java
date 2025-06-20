@@ -14,12 +14,6 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.GasIngredient;
-import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -39,6 +33,12 @@ import thelm.jaopca.compat.electrodynamics.recipes.MineralGrinderRecipeSerialize
 import thelm.jaopca.compat.electrodynamics.recipes.MineralWasherRecipeSerializer;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasStack;
+import voltaic.common.recipe.recipeutils.CountableIngredient;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
+import voltaic.common.recipe.recipeutils.GasIngredient;
+import voltaic.registers.VoltaicGases;
 
 public class ElectrodynamicsHelper {
 
@@ -171,7 +171,7 @@ public class ElectrodynamicsHelper {
 		case GasIngredient gasIng -> {
 			ing = gasIng;
 			// We can't know what fluids the ingredient can have so assume all
-			ElectrodynamicsGases.GAS_REGISTRY.forEach(gases::add);
+			VoltaicGases.GAS_REGISTRY.forEach(gases::add);
 		}
 		case String str -> {
 			ResourceLocation location = ResourceLocation.parse(str);
@@ -231,24 +231,24 @@ public class ElectrodynamicsHelper {
 		case JsonElement json -> {
 			ing = GasIngredient.CODEC.codec().parse(JsonOps.INSTANCE, json).resultOrPartial(LOGGER::warn).orElse(null);
 			// We can't know what fluids the ingredient can have so assume all
-			ElectrodynamicsGases.GAS_REGISTRY.forEach(gases::add);
+			VoltaicGases.GAS_REGISTRY.forEach(gases::add);
 		}
 		default -> {}
 		}
-		gases.remove(ElectrodynamicsGases.EMPTY.get());
+		gases.remove(VoltaicGases.EMPTY.get());
 		return Pair.of(gases.isEmpty() ? null : ing, gases);
 	}
 
 	public TagKey<Gas> getGasTagKey(ResourceLocation location) {
-		return TagKey.create(ElectrodynamicsGases.GAS_REGISTRY_KEY, location);
+		return TagKey.create(VoltaicGases.GAS_REGISTRY_KEY, location);
 	}
 
 	public Collection<Gas> getGasTagValues(ResourceLocation location) {
-		return MiscHelper.INSTANCE.getTagValues(ElectrodynamicsGases.GAS_REGISTRY_KEY, location);
+		return MiscHelper.INSTANCE.getTagValues(VoltaicGases.GAS_REGISTRY_KEY, location);
 	}
 
 	public GasStack getPreferredGasStack(Iterable<Gas> collection, int amount, int temperature, int pressure) {
-		return new GasStack(MiscHelper.INSTANCE.getPreferredEntry(ElectrodynamicsGases.GAS_REGISTRY::getKey, collection).orElse(ElectrodynamicsGases.EMPTY.get()), amount, temperature, pressure);
+		return new GasStack(MiscHelper.INSTANCE.getPreferredEntry(VoltaicGases.GAS_REGISTRY::getKey, collection).orElse(VoltaicGases.EMPTY.get()), amount, temperature, pressure);
 	}
 
 	public boolean registerMineralCrusherRecipe(ResourceLocation key, String group, Object input, int inputCount, Object output, int outputCount, Object secondOutput, int secondOutputCount, double secondChance, double experience, int time, double energy) {

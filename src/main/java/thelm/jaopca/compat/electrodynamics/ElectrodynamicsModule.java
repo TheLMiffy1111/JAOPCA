@@ -35,7 +35,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "electrodynamics")
+@JAOPCAModule(modDependencies = "electrodynamics@[0.10.1,)")
 public class ElectrodynamicsModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
