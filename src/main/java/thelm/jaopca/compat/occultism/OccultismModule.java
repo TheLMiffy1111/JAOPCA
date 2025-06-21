@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.occultism;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +23,13 @@ import thelm.jaopca.utils.MiscHelper;
 public class OccultismModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "iesnium", "iron", "silver"));
+			"allthemodium", "aluminium", "aluminum", "amber", "apatite", "azure_silver", "brass", "bronze",
+			"certus_quartz", "charged_certus_quartz", "cinnabar", "coal", "cobalt", "constantan", "copper",
+			"crimson_iron", "diamond", "electrum", "emerald", "enderium", "fluorite", "gold", "graphite",
+			"iesnium", "invar", "iridium", "iron", "lapis", "lead", "lumium", "mithril", "netherite", "nickel",
+			"osmium", "peridot", "pewter", "platinum", "quartz", "quicksilver", "redstone", "ruby", "sapphire",
+			"signalum", "silver", "steel", "sulfur", "tin", "topaz", "tungsten", "unobtainium", "uranium",
+			"vibranium", "zinc"));
 
 	@Override
 	public String getName() {
@@ -38,7 +45,7 @@ public class OccultismModule implements IModule {
 
 	@Override
 	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY);
+		return EnumSet.copyOf(Arrays.asList(MaterialType.ORE));
 	}
 
 	@Override

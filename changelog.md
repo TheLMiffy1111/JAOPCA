@@ -1,1 +1,3 @@
-Update Electrodynamics to 0.8.3  
+Changed tag injection to use suppliers  
+Moved Create tag addition to a data module  
+Updated Occultism blacklists  

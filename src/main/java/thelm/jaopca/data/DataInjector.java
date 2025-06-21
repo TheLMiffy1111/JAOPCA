@@ -56,7 +56,7 @@ public class DataInjector {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Type JAOPCA_DATA_MODULE = Type.getType(JAOPCADataModule.class);
 	private static final Map<Class<?>, Consumer<Object>> RELOAD_INJECTORS = new HashMap<>();
-	private static final LoadingCache<ResourceKey<? extends Registry<?>>, ListMultimap<ResourceLocation, ResourceLocation>> TAGS_INJECT = CacheBuilder.newBuilder().build(CacheLoader.from(()->MultimapBuilder.treeKeys().arrayListValues().build()));
+	private static final LoadingCache<ResourceKey<? extends Registry<?>>, ListMultimap<ResourceLocation, Supplier<ResourceLocation>>> TAGS_INJECT = CacheBuilder.newBuilder().build(CacheLoader.from(()->MultimapBuilder.treeKeys().arrayListValues().build()));
 	private static final TreeMap<ResourceLocation, IRecipeSerializer> RECIPES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
@@ -72,7 +72,7 @@ public class DataInjector {
 		return RELOAD_INJECTORS.putIfAbsent(clazz, injector) == null;
 	}
 
-	public static boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation tagLocation, ResourceLocation objLocation) {
+	public static boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation tagLocation, Supplier<ResourceLocation> objLocation) {
 		Objects.requireNonNull(registry);
 		Objects.requireNonNull(tagLocation);
 		Objects.requireNonNull(objLocation);
@@ -214,7 +214,7 @@ public class DataInjector {
 					String path = TagManager.getTagDir(registry)+'/';
 					map.asMap().forEach((tagLocation, objLocations)->{
 						TagBuilder builder = TagBuilder.create();
-						objLocations.forEach(l->builder.addOptionalElement(l));
+						objLocations.stream().map(Supplier::get).filter(Objects::nonNull).distinct().forEach(l->builder.addOptionalElement(l));
 						pack.putJson(PackType.SERVER_DATA, new ResourceLocation(tagLocation.getNamespace(), path+tagLocation.getPath()+".json"), serializeTag(builder));
 					});
 				});
