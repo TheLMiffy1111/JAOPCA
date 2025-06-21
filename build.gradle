@@ -237,12 +237,12 @@ dependencies {
 	implementation("zone.rong:mixinbooter:10.6") {transitive = false}
 
 	// CraftTweaker
-	modImplementation("CraftTweaker2:ZenScript:4.1.20.703") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.703") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.703") {transitive = false}
+	modImplementation("CraftTweaker2:ZenScript:4.1.20.704") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.704") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.704") {transitive = false}
 
 	// GroovyScript
-	modImplementation("com.cleanroommc:groovyscript:1.2.3") {transitive = false}
+	modImplementation("com.cleanroommc:groovyscript:1.2.4") {transitive = false}
 
 	// AbyssalCraft
 	modImplementation "curse.maven:abyssalcraft-53686:5330323"
@@ -265,7 +265,7 @@ dependencies {
 	// Create Legacy
 	modImplementation "team.chisel.ctm:CTM:MC1.12.2-1.0.2.31"
 	modImplementation "epicsquid.mysticallib:mysticallib:1.12.2-1.13.0-89"
-	modImplementation "curse.maven:melonlib-1027035:6110523"
+	modImplementation "curse.maven:melonlib-1027035:6542659"
 	modImplementation "curse.maven:create-legacy-1060988:6140713"
 
 	// Embers Rekindled
@@ -319,7 +319,7 @@ dependencies {
 	modImplementation "curse.maven:powered-thingies-264283:2556740"
 
 	// QMD
-	modImplementation "curse.maven:nuclearcraft-overhauled-336895:6221719"
+	modImplementation "curse.maven:nuclearcraft-overhauled-336895:6605808"
 	modImplementation "curse.maven:nco-java-legacy-lib-1032769:5414463"
 	modImplementation "curse.maven:qmd-362056:6098453"
 
@@ -341,7 +341,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:reid-629017:6292779"
-	modImplementation "curse.maven:vintagefix-871198:6412986"
+	modImplementation "curse.maven:vintagefix-871198:6609247"
 	modImplementation "curse.maven:lolasm-460609:6333774"
 }
 
