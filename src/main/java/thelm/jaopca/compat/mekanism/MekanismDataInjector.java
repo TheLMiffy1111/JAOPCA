@@ -3,6 +3,7 @@ package thelm.jaopca.compat.mekanism;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Supplier;
 
 import com.google.common.collect.Lists;
 
@@ -21,32 +22,48 @@ public class MekanismDataInjector {
 	public static final Set<ResourceLocation> PIGMENT_TAG_BLACKLIST = new TreeSet<>();
 	public static final Set<ResourceLocation> SLURRY_TAG_BLACKLIST = new TreeSet<>();
 
-	public static boolean registerGasTag(ResourceLocation location, ResourceLocation gasLocation) {
+	public static boolean registerGasTag(ResourceLocation location, Supplier<ResourceLocation> gasLocation) {
 		if(GAS_TAG_BLACKLIST.contains(location)) {
 			return false;
 		}
 		return ApiImpl.INSTANCE.registerTag(MekanismAPI.GAS_REGISTRY_NAME, location, gasLocation);
 	}
 
-	public static boolean registerInfuseTypeTag(ResourceLocation location, ResourceLocation infuseTypeLocation) {
+	public static boolean registerGasTag(ResourceLocation location, ResourceLocation gasLocation) {
+		return registerGasTag(location, ()->gasLocation);
+	}
+
+	public static boolean registerInfuseTypeTag(ResourceLocation location, Supplier<ResourceLocation> infuseTypeLocation) {
 		if(INFUSE_TYPE_TAG_BLACKLIST.contains(location)) {
 			return false;
 		}
 		return ApiImpl.INSTANCE.registerTag(MekanismAPI.INFUSE_TYPE_REGISTRY_NAME, location, infuseTypeLocation);
 	}
 
-	public static boolean registerPigmentTag(ResourceLocation location, ResourceLocation pigmentLocation) {
+	public static boolean registerInfuseTypeTag(ResourceLocation location, ResourceLocation infuseTypeLocation) {
+		return registerInfuseTypeTag(location, ()->infuseTypeLocation);
+	}
+
+	public static boolean registerPigmentTag(ResourceLocation location, Supplier<ResourceLocation> pigmentLocation) {
 		if(PIGMENT_TAG_BLACKLIST.contains(location)) {
 			return false;
 		}
 		return ApiImpl.INSTANCE.registerTag(MekanismAPI.PIGMENT_REGISTRY_NAME, location, pigmentLocation);
 	}
 
-	public static boolean registerSlurryTag(ResourceLocation location, ResourceLocation slurryLocation) {
+	public static boolean registerPigmentTag(ResourceLocation location, ResourceLocation pigmentLocation) {
+		return registerPigmentTag(location, ()->pigmentLocation);
+	}
+
+	public static boolean registerSlurryTag(ResourceLocation location, Supplier<ResourceLocation> slurryLocation) {
 		if(SLURRY_TAG_BLACKLIST.contains(location)) {
 			return false;
 		}
 		return ApiImpl.INSTANCE.registerTag(MekanismAPI.SLURRY_REGISTRY_NAME, location, slurryLocation);
+	}
+
+	public static boolean registerSlurryTag(ResourceLocation location, ResourceLocation slurryLocation) {
+		return registerSlurryTag(location, ()->slurryLocation);
 	}
 
 	static void setupConfig(IDynamicSpecConfig config) {

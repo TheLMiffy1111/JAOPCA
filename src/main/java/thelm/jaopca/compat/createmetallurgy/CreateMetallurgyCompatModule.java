@@ -14,6 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.helpers.IMiscHelper;
+import thelm.jaopca.api.ingredients.CompoundIngredientObject;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
@@ -164,10 +165,12 @@ public class CreateMetallurgyCompatModule implements IModule {
 					}
 					if(!DUST_BLACKLIST.contains(name) && !configDirtyDustToMoltenBlacklist.contains(name)) {
 						ResourceLocation dirtyDustLocation = miscHelper.getTagLocation("dirty_dusts", name);
-						if(itemTags.contains(dirtyDustLocation)) {
+						ResourceLocation altDirtyDustLocation = miscHelper.getTagLocation("createmetallurgy:dirty_dusts", name);
+						if(itemTags.contains(dirtyDustLocation) || itemTags.contains(altDirtyDustLocation)) {
+							CompoundIngredientObject dirtyDustIngredient = CompoundIngredientObject.union(dirtyDustLocation, altDirtyDustLocation);
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "createmetallurgy.dirty_dust_to_molten."+name),
-									dirtyDustLocation, moltenLocation, baseAmount, 35, 1);
+									dirtyDustIngredient, moltenLocation, baseAmount, 35, 1);
 						}
 					}
 					if(!MATERIAL_BLACKLIST.contains(name) && !configPlateToMoltenBlacklist.contains(name)) {

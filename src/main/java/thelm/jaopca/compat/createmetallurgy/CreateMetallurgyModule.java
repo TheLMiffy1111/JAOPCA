@@ -11,6 +11,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -31,6 +32,8 @@ public class CreateMetallurgyModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "wolframite", "zinc"));
+
+	private static boolean commonDirtyDust = true;
 
 	private final IForm dirtyDustForm = ApiImpl.INSTANCE.newForm(this, "createmetallurgy_dirty_dusts", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("createmetallurgy:dirty_dusts").setDefaultMaterialBlacklist(BLACKLIST);
@@ -64,8 +67,25 @@ public class CreateMetallurgyModule implements IModule {
 	}
 
 	@Override
-	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
+	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
+		commonDirtyDust = config.getDefinedBoolean("tags.commonDirtyDust", commonDirtyDust, "Should the module add dirty dusts to forge:dirty_dusts.");
+	}
+
+	@Override
+	public void onMaterialComputeComplete(IModuleData moduleData) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
+		IItemFormType itemFormType = ItemFormType.INSTANCE;
+		for(IMaterial material : dirtyDustForm.getMaterials()) {
+			if(commonDirtyDust) {
+				IItemInfo dirtyDustInfo = itemFormType.getMaterialFormInfo(dirtyDustForm, material);
+				api.registerItemTag(helper.getTagLocation("dirty_dusts", material.getName()), dirtyDustInfo.asItem());
+			}
+		}
+	}
+
+	@Override
+	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		CreateHelper helper = CreateHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
@@ -87,8 +107,6 @@ public class CreateMetallurgyModule implements IModule {
 					dirtyDustLocation, new Object[] {
 							dustLocation, 1,
 					});
-
-			api.registerItemTag(miscHelper.getTagLocation("dirty_dusts", material.getName()), dirtyDustInfo.asItem());
 		}
 	}
 }

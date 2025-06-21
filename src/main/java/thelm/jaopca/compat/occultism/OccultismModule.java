@@ -1,5 +1,6 @@
 package thelm.jaopca.compat.occultism;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -16,13 +17,20 @@ import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.api.modules.IModule;
 import thelm.jaopca.api.modules.IModuleData;
 import thelm.jaopca.api.modules.JAOPCAModule;
+import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "occultism")
 public class OccultismModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "iesnium", "iron", "silver"));
+			"allthemodium", "aluminium", "aluminum", "amber", "apatite", "arcane_crystal", "azure_silver",
+			"brass", "bronze", "certus_quartz", "charged_certus_quartz", "cinnabar", "coal", "cobalt",
+			"constantan", "copper", "crimson_iron", "diamond", "electrum", "emerald", "enderium", "fluorite",
+			"gold", "graphite", "iesnium", "invar", "iridium", "iron", "lapis", "lead", "lumium", "mithril",
+			"netherite", "nickel", "osmium", "peridot", "pewter", "platinum", "quartz", "quicksilver", "redstone",
+			"ruby", "sapphire", "signalum", "silver", "steel", "sulfur", "tin", "topaz", "tungsten", "unobtainium",
+			"uranium", "vibranium", "zinc"));
 
 	@Override
 	public String getName() {
@@ -38,7 +46,7 @@ public class OccultismModule implements IModule {
 
 	@Override
 	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY);
+		return EnumSet.copyOf(Arrays.asList(MaterialType.ORE));
 	}
 
 	@Override
@@ -50,17 +58,24 @@ public class OccultismModule implements IModule {
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		OccultismHelper helper = OccultismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
+		Set<ResourceLocation> itemTags = ApiImpl.INSTANCE.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerCrushingRecipe(
 					new ResourceLocation("jaopca", "occultism.ore_to_dust."+material.getName()),
-					oreLocation, dustLocation, 2, 200, false);
+					oreLocation, dustLocation, material.getType().isIngot() ? 2 : 4, 200, false);
 			if(material.getType() == MaterialType.INGOT) {
 				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerCrushingRecipe(
 						new ResourceLocation("jaopca", "occultism.raw_material_to_dust."+material.getName()),
 						rawMaterialLocation, dustLocation, 2, 200, false);
+				if(itemTags.contains(rawStorageBlockLocation)) {
+					helper.registerCrushingRecipe(
+							new ResourceLocation("jaopca", "occultism.raw_storage_block_to_dust."+material.getName()),
+							rawStorageBlockLocation, dustLocation, 18, 200, false);
+				}
 			}
 		}
 	}
