@@ -23,7 +23,11 @@ import thelm.jaopca.utils.MiscHelper;
 public class OccultismCompatModule implements IModule {
 
 	private static final Set<String> TO_DUST_BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "iesnium", "iron", "silver"));
+			"allthemodium", "aluminium", "aluminum", "azure_silver", "brass", "bronze", "cobalt", "constantan",
+			"copper", "crimson_iron", "electrum", "enderium", "gold", "graphite", "iesnium", "invar", "iridium",
+			"iron", "lead", "lumium", "mithril", "netherite", "nickel", "osmium", "pewter", "platinum",
+			"quicksilver", "signalum", "silver", "steel", "tin", "tungsten", "unobtainium", "uranium", "vibranium",
+			"zinc"));
 	private static Set<String> configToDustBlacklist = new TreeSet<>();
 
 	@Override
