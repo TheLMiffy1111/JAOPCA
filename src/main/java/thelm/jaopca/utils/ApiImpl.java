@@ -293,7 +293,7 @@ public class ApiImpl extends JAOPCAApi {
 
 	@Override
 	public <T extends IForgeRegistryEntry<T>> boolean registerTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation key, T obj) {
-		return registerTag(registry, key, obj::getRegistryName);
+		return registerTag(registry, key, (Supplier<ResourceLocation>)obj::getRegistryName);
 	}
 
 	@Override
