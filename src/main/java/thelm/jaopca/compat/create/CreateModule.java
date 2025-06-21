@@ -146,14 +146,5 @@ public class CreateModule implements IModule {
 							nuggetLocation, 5, 0.5F,
 					});
 		}
-
-		String[] toRegister = {
-				"aluminum", "copper", "gold", "iron", "lead", "nickel", "osmium", "platinum", "quicksilver",
-				"silver", "tin", "uranium", "zinc"};
-		for(String material : toRegister) {
-			api.registerItemTag(
-					miscHelper.getTagLocation("create:crushed_ores", material),
-					new ResourceLocation("create", "crushed_"+material+"_ore"));
-		}
 	}
 }

@@ -54,13 +54,13 @@ public class DataInjector extends ReloadListener<Object> {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 	private static final Type JAOPCA_DATA_MODULE = Type.getType(JAOPCADataModule.class);
-	private static final LoadingCache<String, ListMultimap<ResourceLocation, ResourceLocation>> TAGS_INJECT = CacheBuilder.newBuilder().build(CacheLoader.from(()->MultimapBuilder.treeKeys().arrayListValues().build()));
+	private static final LoadingCache<String, ListMultimap<ResourceLocation, Supplier<ResourceLocation>>> TAGS_INJECT = CacheBuilder.newBuilder().build(CacheLoader.from(()->MultimapBuilder.treeKeys().arrayListValues().build()));
 	private static final TreeMap<ResourceLocation, Supplier<? extends IRecipe<?>>> RECIPES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
 	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
 	private static final Gson GSON = LootSerializers.createLootTableSerializer().create();
 
-	public static boolean registerTag(String type, ResourceLocation tagLocation, ResourceLocation objLocation) {
+	public static boolean registerTag(String type, ResourceLocation tagLocation, Supplier<ResourceLocation> objLocation) {
 		Objects.requireNonNull(type);
 		Objects.requireNonNull(tagLocation);
 		Objects.requireNonNull(objLocation);
@@ -223,7 +223,7 @@ public class DataInjector extends ReloadListener<Object> {
 					String path = "tags/"+type+'/';
 					map.asMap().forEach((tagLocation, objLocations)->{
 						ITag.Builder builder = ITag.Builder.tag();
-						objLocations.forEach(l->builder.addElement(l, "inmemory:jaopca"));
+						objLocations.stream().map(Supplier::get).filter(Objects::nonNull).distinct().forEach(l->builder.addElement(l, "inmemory:jaopca"));
 						pack.putJson(ResourcePackType.SERVER_DATA, new ResourceLocation(tagLocation.getNamespace(), path+tagLocation.getPath()+".json"), builder.serializeToJson());
 					});
 				});
