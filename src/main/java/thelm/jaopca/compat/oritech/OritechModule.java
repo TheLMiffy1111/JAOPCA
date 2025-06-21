@@ -12,10 +12,12 @@ import com.google.common.collect.Multimap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
+import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -38,6 +40,8 @@ public class OritechModule implements IModule {
 			"copper", "gold", "iron", "netherite_scrap", "nickel", "platinum", "uranium"));
 	private static final Set<String> RAW_BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "netherite_scrap", "nickel", "platinum", "uranium"));
+
+	private static boolean commonClump = true;
 
 	static {
 		if(ModList.get().isLoaded("create")) {
@@ -92,31 +96,37 @@ public class OritechModule implements IModule {
 	}
 
 	@Override
+	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
+		commonClump = config.getDefinedBoolean("tags.commonClump", commonClump, "Should the module mainly use c:clumps instead of oritech:clumps.");
+	}
+
+	@Override
+	public void onMaterialComputeComplete(IModuleData moduleData) {
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
+		IItemFormType itemFormType = ItemFormType.INSTANCE;
+		for(IMaterial material : formRequest.getMaterials()) {
+			if(commonClump) {
+				IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
+				api.registerItemTag(helper.getTagLocation("clumps", material.getName()), clumpInfo.asItem());
+			}
+		}
+	}
+
+	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		OritechHelper helper = OritechHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
 		Set<ResourceLocation> itemTags = api.getItemTags();
+		Fluid sheolFire = BuiltInRegistries.FLUID.get(ResourceLocation.parse("oritech:still_sheol_fire"));
+		Fluid sulfuricAcid = BuiltInRegistries.FLUID.get(ResourceLocation.parse("oritech:still_sulfuric_acid"));
+		Fluid mineralSlurry = BuiltInRegistries.FLUID.get(ResourceLocation.parse("oritech:still_mineral_slurry"));
 		Item fluxite = BuiltInRegistries.ITEM.get(ResourceLocation.parse("oritech:fluxite"));
-
-		String[] toRegister = {
-				"copper", "gold", "iron", "nickel", "platinum"};
-		for(String material : toRegister) {
-			api.registerItemTag(
-					miscHelper.getTagLocation("oritech:clumps", material),
-					ResourceLocation.parse("oritech:"+material+"_clump"));
-			api.registerItemTag(
-					miscHelper.getTagLocation("oritech:small_clumps", material),
-					ResourceLocation.parse("oritech:small_"+material+"_clump"));
-			api.registerItemTag(
-					miscHelper.getTagLocation("oritech:gems", material),
-					ResourceLocation.parse("oritech:"+material+"_gem"));
-		}
-
 		for(IMaterial material : formRequest.getMaterials()) {
 			IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
-			ResourceLocation clumpLocation = miscHelper.getTagLocation("oritech:clumps", material.getName());
+			ResourceLocation clumpLocation = miscHelper.getTagLocation(commonClump ? "clumps" : "oritech:clumps", material.getName());
 			IItemInfo smallClumpInfo = itemFormType.getMaterialFormInfo(smallClumpForm, material);
 			ResourceLocation smallClumpLocation = miscHelper.getTagLocation("oritech:small_clumps", material.getName());
 			IItemInfo gemInfo = itemFormType.getMaterialFormInfo(gemForm, material);
@@ -171,6 +181,17 @@ public class OritechModule implements IModule {
 				}
 			}
 
+			if(material.getType() == MaterialType.INGOT) {
+				helper.registerRefineryRecipe(
+						miscHelper.getRecipeKey("oritech.raw_material_to_clump_refinery", material.getName()),
+						rawMaterialLocation, sheolFire, 250, clumpInfo, 3, Fluids.LAVA, 200, 200);
+			}
+			else {
+				helper.registerRefineryRecipe(
+						miscHelper.getRecipeKey("oritech.ore_to_clump_refinery", material.getName()),
+						oreLocation, sheolFire, 250, clumpInfo, 3, Fluids.LAVA, 200, 200);
+			}
+
 			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("oritech.small_clump_to_clump", material.getName()),
 					clumpInfo, 1, new Object[] {
@@ -185,6 +206,9 @@ public class OritechModule implements IModule {
 			helper.registerCentrifugeFluidRecipe(
 					miscHelper.getRecipeKey("oritech.clump_to_gem_wet", material.getName()),
 					clumpIngredient, Fluids.WATER, 1000, gemInfo, 2, Fluids.EMPTY, 0, 300);
+			helper.registerCentrifugeFluidRecipe(
+					miscHelper.getRecipeKey("oritech.clump_to_gem_acid", material.getName()),
+					clumpIngredient, sulfuricAcid, 1000, gemInfo, 3, mineralSlurry, 250, 300);
 
 			api.registerSmeltingRecipe(
 					miscHelper.getRecipeKey("oritech.gem_to_material_smelting", material.getName()),

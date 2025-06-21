@@ -1,2 +1,5 @@
-Update Electrodynamics to 0.10.1  
-Update Create to 6.0.6  
+Changed tag injection to use suppliers  
+Updated Oritech support  
+Added configuration options to Mekanism and Oritech modules to mainly use `#c` tags  
+Moved Create and Oritech tag addition to data modules  
+Updated Occultism blacklists  

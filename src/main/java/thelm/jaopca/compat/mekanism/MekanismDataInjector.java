@@ -3,6 +3,7 @@ package thelm.jaopca.compat.mekanism;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Supplier;
 
 import com.google.common.collect.Lists;
 
@@ -18,11 +19,15 @@ public class MekanismDataInjector {
 
 	public static final Set<ResourceLocation> CHEMICAL_TAG_BLACKLIST = new TreeSet<>();
 
-	public static boolean registerChemicalTag(ResourceLocation location, ResourceLocation chemicalLocation) {
+	public static boolean registerChemicalTag(ResourceLocation location, Supplier<ResourceLocation> chemicalLocation) {
 		if(CHEMICAL_TAG_BLACKLIST.contains(location)) {
 			return false;
 		}
 		return ApiImpl.INSTANCE.registerTag(MekanismAPI.CHEMICAL_REGISTRY_NAME, location, chemicalLocation);
+	}
+
+	public static boolean registerChemicalTag(ResourceLocation location, ResourceLocation chemicalLocation) {
+		return registerChemicalTag(location, ()->chemicalLocation);
 	}
 
 	static void setupConfig(IDynamicSpecConfig config) {

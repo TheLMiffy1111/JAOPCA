@@ -17,6 +17,7 @@ import thelm.jaopca.compat.oritech.recipes.CentrifugeRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.FoundryRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.GrinderRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.PulverizerRecipeSerializer;
+import thelm.jaopca.compat.oritech.recipes.RefineryRecipeSerializer;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -112,5 +113,21 @@ public class OritechHelper {
 
 	public boolean registerAtomicForgeRecipe(ResourceLocation key, Object input, Object secondInput, Object thirdInput, Object output, int outputCount, int time) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new AtomicForgeRecipeSerializer(key, input, secondInput, thirdInput, output, outputCount, time));
+	}
+
+	public boolean registerRefineryRecipe(ResourceLocation key, Object input, Object fluidInput, int fluidInputAmount, Object output, int outputCount, Object fluidOutput, int fluidOutputAmount, Object secondFluidOutput, int secondFluidOutputAmount, Object thirdFluidOutput, int thirdFluidOutputAmount, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new RefineryRecipeSerializer(key, input, fluidInput, fluidInputAmount, output, outputCount, fluidOutput, fluidOutputAmount, secondFluidOutput, secondFluidOutputAmount, thirdFluidOutput, thirdFluidOutputAmount, time));
+	}
+
+	public boolean registerRefineryRecipe(ResourceLocation key, Object input, Object fluidInput, int fluidInputAmount, Object output, int outputCount, Object fluidOutput, int fluidOutputAmount, Object secondFluidOutput, int secondFluidOutputAmount, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new RefineryRecipeSerializer(key, input, fluidInput, fluidInputAmount, output, outputCount, fluidOutput, fluidOutputAmount, secondFluidOutput, secondFluidOutputAmount, time));
+	}
+
+	public boolean registerRefineryRecipe(ResourceLocation key, Object input, Object fluidInput, int fluidInputAmount, Object output, int outputCount, Object fluidOutput, int fluidOutputAmount, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new RefineryRecipeSerializer(key, input, fluidInput, fluidInputAmount, output, outputCount, fluidOutput, fluidOutputAmount, time));
+	}
+
+	public boolean registerRefineryRecipe(ResourceLocation key, Object input, Object fluidInput, int fluidInputAmount, Object output, int outputCount, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new RefineryRecipeSerializer(key, input, fluidInput, fluidInputAmount, output, outputCount, time));
 	}
 }

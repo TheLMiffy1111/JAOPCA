@@ -38,6 +38,11 @@ public class MekanismModule implements IModule {
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "lead", "netherite", "netherite_scrap", "osmium", "tin", "uranium"));
 
+	private static boolean commonDirtyDust = true;
+	private static boolean commonClump = true;
+	private static boolean commonShard = false;
+	private static boolean commonCrystal = false;
+
 	static {
 		if(ModList.get().isLoaded("allthemodium")) {
 			Collections.addAll(BLACKLIST, "allthemodium", "unobtainium", "vibranium");
@@ -103,6 +108,39 @@ public class MekanismModule implements IModule {
 	}
 
 	@Override
+	public void defineModuleConfig(IModuleData moduleData, IDynamicSpecConfig config) {
+		commonDirtyDust = config.getDefinedBoolean("tags.commonDirtyDust", commonDirtyDust, "Should the module mainly use c:dirty_dusts instead of mekanism:dirty_dusts.");
+		commonClump = config.getDefinedBoolean("tags.commonClump", commonClump, "Should the module mainly use c:clumps instead of mekanism:clumps.");
+		commonShard = config.getDefinedBoolean("tags.commonShard", commonShard, "Should the module mainly use c:shards instead of mekanism:shards.");
+		commonCrystal = config.getDefinedBoolean("tags.commonCrystal", commonCrystal, "Should the module mainly use c:crystals instead of mekanism:crystals.");
+	}
+
+	@Override
+	public void onMaterialComputeComplete(IModuleData moduleData) {
+		JAOPCAApi api = ApiImpl.INSTANCE;
+		IMiscHelper helper = MiscHelper.INSTANCE;
+		IItemFormType itemFormType = ItemFormType.INSTANCE;
+		for(IMaterial material : formRequest.getMaterials()) {
+			if(commonDirtyDust) {
+				IItemInfo dirtyDustInfo = itemFormType.getMaterialFormInfo(dirtyDustForm, material);
+				api.registerItemTag(helper.getTagLocation("dirty_dusts", material.getName()), dirtyDustInfo.asItem());
+			}
+			if(commonClump) {
+				IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
+				api.registerItemTag(helper.getTagLocation("clumps", material.getName()), clumpInfo.asItem());
+			}
+			if(commonShard) {
+				IItemInfo shardInfo = itemFormType.getMaterialFormInfo(shardForm, material);
+				api.registerItemTag(helper.getTagLocation("shards", material.getName()), shardInfo.asItem());
+			}
+			if(commonCrystal) {
+				IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
+				api.registerItemTag(helper.getTagLocation("crystals", material.getName()), crystalInfo.asItem());
+			}
+		}
+	}
+
+	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		MekanismHelper helper = MekanismHelper.INSTANCE;
@@ -117,13 +155,13 @@ public class MekanismModule implements IModule {
 			IChemicalInfo cleanSlurryInfo = slurryFormType.getMaterialFormInfo(cleanSlurryForm, material);
 			ResourceLocation cleanSlurryLocation = miscHelper.getTagLocation("mekanism:clean", material.getName());
 			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
-			ResourceLocation crystalLocation = miscHelper.getTagLocation("mekanism:crystals", material.getName());
+			ResourceLocation crystalLocation = miscHelper.getTagLocation(commonCrystal ? "crystals" : "mekanism:crystals", material.getName());
 			IItemInfo shardInfo = itemFormType.getMaterialFormInfo(shardForm, material);
-			ResourceLocation shardLocation = miscHelper.getTagLocation("mekanism:shards", material.getName());
+			ResourceLocation shardLocation = miscHelper.getTagLocation(commonShard ? "shards" : "mekanism:shards", material.getName());
 			IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
-			ResourceLocation clumpLocation = miscHelper.getTagLocation("mekanism:clumps", material.getName());
+			ResourceLocation clumpLocation = miscHelper.getTagLocation(commonClump ? "clumps" : "mekanism:clumps", material.getName());
 			IItemInfo dirtyDustInfo = itemFormType.getMaterialFormInfo(dirtyDustForm, material);
-			ResourceLocation dirtyDustLocation = miscHelper.getTagLocation("mekanism:dirty_dusts", material.getName());
+			ResourceLocation dirtyDustLocation = miscHelper.getTagLocation(commonDirtyDust ? "dirty_dusts" : "mekanism:dirty_dusts", material.getName());
 			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
 			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");

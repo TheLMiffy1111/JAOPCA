@@ -25,6 +25,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -32,9 +33,11 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.blocks.IBlockFormType;
+import thelm.jaopca.api.blocks.IBlockLike;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.entities.IEntityTypeFormType;
 import thelm.jaopca.api.fluids.IFluidFormType;
+import thelm.jaopca.api.fluids.IFluidLike;
 import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.forms.IFormRequest;
 import thelm.jaopca.api.forms.IFormType;
@@ -251,17 +254,22 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key, ResourceLocation objKey) {
+	public boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key, Supplier<ResourceLocation> objKey) {
 		return DataInjector.registerTag(registry, key, objKey);
 	}
 
 	@Override
-	public <T> boolean registerTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation key, T obj) {
-		return registerTag(registry, key, ((Registry<T>)BuiltInRegistries.REGISTRY.get(registry.location())).getKey(obj));
+	public boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key, ResourceLocation objKey) {
+		return registerTag(registry, key, ()->objKey);
 	}
 
 	@Override
-	public boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey) {
+	public <T> boolean registerTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation key, T obj) {
+		return registerTag(registry, key, (Supplier<ResourceLocation>)()->((Registry<T>)BuiltInRegistries.REGISTRY.get(registry.location())).getKey(obj));
+	}
+
+	@Override
+	public boolean registerBlockTag(ResourceLocation key, Supplier<ResourceLocation> blockKey) {
 		if(ConfigHandler.BLOCK_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -269,12 +277,22 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerBlockTag(ResourceLocation key, Block block) {
-		return registerBlockTag(key, BuiltInRegistries.BLOCK.getKey(block));
+	public boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey) {
+		return registerBlockTag(key, ()->blockKey);
 	}
 
 	@Override
-	public boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey) {
+	public boolean registerBlockTag(ResourceLocation key, Block block) {
+		return registerBlockTag(key, ()->BuiltInRegistries.BLOCK.getKey(block));
+	}
+
+	@Override
+	public boolean registerBlockTag(ResourceLocation key, IBlockLike block) {
+		return registerBlockTag(key, ()->BuiltInRegistries.BLOCK.getKey(block.asBlock()));
+	}
+
+	@Override
+	public boolean registerItemTag(ResourceLocation key, Supplier<ResourceLocation> itemKey) {
 		if(ConfigHandler.ITEM_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -282,12 +300,22 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerItemTag(ResourceLocation key, Item item) {
-		return registerItemTag(key, BuiltInRegistries.ITEM.getKey(item));
+	public boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey) {
+		return registerItemTag(key, ()->itemKey);
 	}
 
 	@Override
-	public boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey) {
+	public boolean registerItemTag(ResourceLocation key, Item item) {
+		return registerItemTag(key, ()->BuiltInRegistries.ITEM.getKey(item));
+	}
+
+	@Override
+	public boolean registerItemTag(ResourceLocation key, ItemLike item) {
+		return registerItemTag(key, ()->BuiltInRegistries.ITEM.getKey(item.asItem()));
+	}
+
+	@Override
+	public boolean registerFluidTag(ResourceLocation key, Supplier<ResourceLocation> fluidKey) {
 		if(ConfigHandler.FLUID_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -295,12 +323,22 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerFluidTag(ResourceLocation key, Fluid fluid) {
-		return registerFluidTag(key, BuiltInRegistries.FLUID.getKey(fluid));
+	public boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey) {
+		return registerFluidTag(key, ()->fluidKey);
 	}
 
 	@Override
-	public boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey) {
+	public boolean registerFluidTag(ResourceLocation key, Fluid fluid) {
+		return registerFluidTag(key, ()->BuiltInRegistries.FLUID.getKey(fluid));
+	}
+
+	@Override
+	public boolean registerFluidTag(ResourceLocation key, IFluidLike fluid) {
+		return registerFluidTag(key, ()->BuiltInRegistries.FLUID.getKey(fluid.asFluid()));
+	}
+
+	@Override
+	public boolean registerEntityTypeTag(ResourceLocation key, Supplier<ResourceLocation> entityTypeKey) {
 		if(ConfigHandler.ENTITY_TYPE_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -308,8 +346,13 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
+	public boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey) {
+		return registerEntityTypeTag(key, ()->entityTypeKey);
+	}
+
+	@Override
 	public boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType) {
-		return registerEntityTypeTag(key, BuiltInRegistries.ENTITY_TYPE.getKey(entityType));
+		return registerEntityTypeTag(key, ()->BuiltInRegistries.ENTITY_TYPE.getKey(entityType));
 	}
 
 	@Override
