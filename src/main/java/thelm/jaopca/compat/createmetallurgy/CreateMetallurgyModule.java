@@ -79,7 +79,7 @@ public class CreateMetallurgyModule implements IModule {
 		for(IMaterial material : dirtyDustForm.getMaterials()) {
 			if(commonDirtyDust) {
 				IItemInfo dirtyDustInfo = itemFormType.getMaterialFormInfo(dirtyDustForm, material);
-				api.registerItemTag(helper.getTagLocation("dirty_dusts", material.getName()), dirtyDustInfo.asItem());
+				api.registerItemTag(helper.getTagLocation("dirty_dusts", material.getName()), dirtyDustInfo);
 			}
 		}
 	}

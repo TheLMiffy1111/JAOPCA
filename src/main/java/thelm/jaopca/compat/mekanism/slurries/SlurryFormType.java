@@ -69,7 +69,7 @@ public class SlurryFormType implements ISlurryFormType {
 	public ISlurryInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		ISlurryInfo info = SLURRY_INFOS.get(form, material);
 		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
-			info = new SlurryInfo(SLURRIES.get(form, material).get());
+			info = new SlurryInfo(SLURRIES.get(form, material));
 			SLURRY_INFOS.put(form, material, info);
 		}
 		return info;

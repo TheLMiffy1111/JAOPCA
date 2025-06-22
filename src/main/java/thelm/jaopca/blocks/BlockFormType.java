@@ -86,7 +86,7 @@ public class BlockFormType implements IBlockFormType {
 	public IBlockInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		IBlockInfo info = BLOCK_INFOS.get(form, material);
 		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
-			info = new BlockInfo(BLOCKS.get(form, material).get(), BLOCK_ITEMS.get(form, material).get());
+			info = new BlockInfo(BLOCKS.get(form, material), BLOCK_ITEMS.get(form, material));
 			BLOCK_INFOS.put(form, material, info);
 		}
 		return info;
