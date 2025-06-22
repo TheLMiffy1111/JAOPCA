@@ -1,12 +1,14 @@
 package thelm.jaopca.compat.mekanism.chemicals;
 
+import java.util.function.Supplier;
+
 import thelm.jaopca.compat.mekanism.api.chemicals.IChemicalInfo;
 import thelm.jaopca.compat.mekanism.api.chemicals.IMaterialFormChemical;
 
-record ChemicalInfo(IMaterialFormChemical chemical) implements IChemicalInfo {
+record ChemicalInfo(Supplier<IMaterialFormChemical> chemical) implements IChemicalInfo {
 
 	@Override
 	public IMaterialFormChemical getMaterialFormChemical() {
-		return chemical;
+		return chemical.get();
 	}
 }

@@ -108,7 +108,7 @@ public class OritechModule implements IModule {
 		for(IMaterial material : formRequest.getMaterials()) {
 			if(commonClump) {
 				IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
-				api.registerItemTag(helper.getTagLocation("clumps", material.getName()), clumpInfo.asItem());
+				api.registerItemTag(helper.getTagLocation("clumps", material.getName()), clumpInfo);
 			}
 		}
 	}

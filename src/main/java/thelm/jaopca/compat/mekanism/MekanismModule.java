@@ -123,19 +123,19 @@ public class MekanismModule implements IModule {
 		for(IMaterial material : formRequest.getMaterials()) {
 			if(commonDirtyDust) {
 				IItemInfo dirtyDustInfo = itemFormType.getMaterialFormInfo(dirtyDustForm, material);
-				api.registerItemTag(helper.getTagLocation("dirty_dusts", material.getName()), dirtyDustInfo.asItem());
+				api.registerItemTag(helper.getTagLocation("dirty_dusts", material.getName()), dirtyDustInfo);
 			}
 			if(commonClump) {
 				IItemInfo clumpInfo = itemFormType.getMaterialFormInfo(clumpForm, material);
-				api.registerItemTag(helper.getTagLocation("clumps", material.getName()), clumpInfo.asItem());
+				api.registerItemTag(helper.getTagLocation("clumps", material.getName()), clumpInfo);
 			}
 			if(commonShard) {
 				IItemInfo shardInfo = itemFormType.getMaterialFormInfo(shardForm, material);
-				api.registerItemTag(helper.getTagLocation("shards", material.getName()), shardInfo.asItem());
+				api.registerItemTag(helper.getTagLocation("shards", material.getName()), shardInfo);
 			}
 			if(commonCrystal) {
 				IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
-				api.registerItemTag(helper.getTagLocation("crystals", material.getName()), crystalInfo.asItem());
+				api.registerItemTag(helper.getTagLocation("crystals", material.getName()), crystalInfo);
 			}
 		}
 	}

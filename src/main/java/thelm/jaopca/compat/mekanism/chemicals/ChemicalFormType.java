@@ -71,7 +71,7 @@ public class ChemicalFormType implements IChemicalFormType {
 	public IChemicalInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		IChemicalInfo info = CHEMICAL_INFOS.get(form, material);
 		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
-			info = new ChemicalInfo(CHEMICALS.get(form, material).get());
+			info = new ChemicalInfo(CHEMICALS.get(form, material));
 			CHEMICAL_INFOS.put(form, material, info);
 		}
 		return info;
