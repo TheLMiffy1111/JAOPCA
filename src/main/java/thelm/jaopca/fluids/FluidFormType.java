@@ -79,7 +79,7 @@ public class FluidFormType implements IFluidFormType {
 	public IFluidInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		IFluidInfo info = FLUID_INFOS.get(form, material);
 		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
-			info = new FluidInfo(FLUIDS.get(form, material).get(), FLUID_BLOCKS.get(form, material).get(), BUCKET_ITEMS.get(form, material).get());
+			info = new FluidInfo(FLUIDS.get(form, material), FLUID_BLOCKS.get(form, material), BUCKET_ITEMS.get(form, material));
 			FLUID_INFOS.put(form, material, info);
 		}
 		return info;

@@ -73,7 +73,7 @@ public class ItemFormType implements IItemFormType {
 	public IItemInfo getMaterialFormInfo(IForm form, IMaterial material) {
 		IItemInfo info = ITEM_INFOS.get(form, material);
 		if(info == null && FORMS.contains(form) && form.getMaterials().contains(material)) {
-			info = new ItemInfo(ITEMS.get(form, material).get());
+			info = new ItemInfo(ITEMS.get(form, material));
 			ITEM_INFOS.put(form, material, info);
 		}
 		return info;
