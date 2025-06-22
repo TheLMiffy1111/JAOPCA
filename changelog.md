@@ -1,3 +1,2 @@
-Changed tag injection to use suppliers  
-Moved Create tag addition to a data module  
-Updated Occultism blacklists  
+Change material form info implementation to use suppliers  
+Made Create Metallurgy dirty dust tag addition configurable  
