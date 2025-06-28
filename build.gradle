@@ -199,7 +199,7 @@ def specVersion = "4"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "4.1.22.54"
+version = "4.1.22.55"
 
 archivesBaseName = "${modName}-${mcVersion}"
 

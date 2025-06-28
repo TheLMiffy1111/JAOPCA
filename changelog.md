@@ -1,1 +1,1 @@
-Change material form info implementation to use suppliers  
+Fix custom defined tags configs  
