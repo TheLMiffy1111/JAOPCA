@@ -75,7 +75,7 @@ public class MekanismDataInjector {
 		config.setComment("infuseTypeTags", "Configurations related to infuse type tags.");
 		INFUSE_TYPE_TAG_BLACKLIST.addAll(Lists.transform(config.getDefinedStringList("infuseTypeTags.blacklist", new ArrayList<>(),
 				"List of infuse type tags that should not be added."), ResourceLocation::new));
-		DataCollector.getDefinedTags("infuseTypes").addAll(Lists.transform(config.getDefinedStringList("infuseTypeTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags("infuse_types").addAll(Lists.transform(config.getDefinedStringList("infuseTypeTags.customDefined", new ArrayList<>(),
 				"List of infuse type tags that should be considered as defined."), ResourceLocation::new));
 
 		config.setComment("pigmentTags", "Configurations related to pigment tags.");
