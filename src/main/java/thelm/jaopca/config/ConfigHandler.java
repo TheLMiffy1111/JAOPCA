@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.google.common.collect.Lists;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.loading.FMLPaths;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -121,25 +122,25 @@ public class ConfigHandler {
 		mainConfig.setComment("blockTags", "Configurations related to block tags.");
 		BLOCK_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.blacklist", new ArrayList<>(),
 				"List of block tags that should not be added."), ResourceLocation::new));
-		DataCollector.getDefinedTags("blocks").addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags(Registry.BLOCK_REGISTRY).addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.customDefined", new ArrayList<>(),
 				"List of block tags that should be considered as defined."), ResourceLocation::new));
 
 		mainConfig.setComment("itemTags", "Configurations related to item tags.");
 		ITEM_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.blacklist", new ArrayList<>(),
 				"List of item tags that should not be added."), ResourceLocation::new));
-		DataCollector.getDefinedTags("items").addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags(Registry.ITEM_REGISTRY).addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.customDefined", new ArrayList<>(),
 				"List of item tags that should be considered as defined."), ResourceLocation::new));
 
 		mainConfig.setComment("fluidTags", "Configurations related to fluid tags.");
 		FLUID_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.blacklist", new ArrayList<>(),
 				"List of fluid tags that should not be added."), ResourceLocation::new));
-		DataCollector.getDefinedTags("fluids").addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags(Registry.FLUID_REGISTRY).addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.customDefined", new ArrayList<>(),
 				"List of fluid tags that should be considered as defined."), ResourceLocation::new));
 
 		mainConfig.setComment("entityTypeTags", "Configurations related to entity type tags.");
 		ENTITY_TYPE_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("entityTypeTags.blacklist", new ArrayList<>(),
 				"List of entity type tags that should not be added."), ResourceLocation::new));
-		DataCollector.getDefinedTags("entity_types").addAll(Lists.transform(mainConfig.getDefinedStringList("entityTypeTags.customDefined", new ArrayList<>(),
+		DataCollector.getDefinedTags(Registry.ENTITY_TYPE_REGISTRY).addAll(Lists.transform(mainConfig.getDefinedStringList("entityTypeTags.customDefined", new ArrayList<>(),
 				"List of entity type tags that should be considered as defined."), ResourceLocation::new));
 
 		mainConfig.setComment("recipes", "Configurations related to recipes.");
