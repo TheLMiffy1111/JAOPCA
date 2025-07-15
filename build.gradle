@@ -305,7 +305,7 @@ dependencies {
 	implementation("software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7.6") {transitive = false}
 	implementation "vazkii.patchouli:Patchouli:1.21-88-NEOFORGE"
 	implementation "org.appliedenergistics:guideme:21.1.10"
-	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.114.2") {transitive = false}
+	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.114.4") {transitive = false}
 	implementation "dev.technici4n:GrandPower:3.0.2"
 	implementation "dev.architectury:architectury-neoforge:13.0.8"
 	forgeRuntimeLibrary "org.sinytra:connector:2.0.0-beta.7+1.21.1"
