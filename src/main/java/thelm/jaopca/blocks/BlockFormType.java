@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -116,6 +117,7 @@ public class BlockFormType implements IBlockFormType {
 		registered = true;
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper helper = MiscHelper.INSTANCE;
+		CreativeTabs creativeTab = api.creativeTab();
 		for(IForm form : FORMS) {
 			IBlockFormSettings settings = (IBlockFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();
@@ -125,7 +127,7 @@ public class BlockFormType implements IBlockFormType {
 				IMaterialFormBlock materialFormBlock = settings.getBlockCreator().create(form, material, settings);
 				Block block = materialFormBlock.toBlock();
 				block.setRegistryName(registryName);
-				block.setCreativeTab(api.creativeTab());
+				block.setCreativeTab(creativeTab);
 				BLOCKS.put(form, material, materialFormBlock);
 				ForgeRegistries.BLOCKS.register(block);
 

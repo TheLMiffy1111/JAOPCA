@@ -217,6 +217,9 @@ public class ApiImpl extends JAOPCAApi {
 		}
 		NonNullList<ItemStack> stacks = NonNullList.create();
 		item.getSubItems(CreativeTabs.SEARCH, stacks);
+		if(stacks.isEmpty()) {
+			stacks.add(new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
+		}
 		for(ItemStack stack : stacks) {
 			OreDictionary.registerOre(oredict, stack);
 		}
