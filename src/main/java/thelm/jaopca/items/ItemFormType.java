@@ -101,6 +101,7 @@ public class ItemFormType implements IItemFormType {
 		registered = true;
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper helper = MiscHelper.INSTANCE;
+		CreativeTabs creativeTab = api.creativeTab();
 		for(IForm form : FORMS) {
 			IItemFormSettings settings = (IItemFormSettings)form.getSettings();
 			String secondaryName = form.getSecondaryName();

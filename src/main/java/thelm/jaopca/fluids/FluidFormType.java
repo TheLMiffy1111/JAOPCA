@@ -12,12 +12,14 @@ import com.google.gson.JsonElement;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.fluids.IFluidFormSettings;
 import thelm.jaopca.api.fluids.IFluidFormType;
 import thelm.jaopca.api.fluids.IFluidInfo;
@@ -29,6 +31,7 @@ import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.custom.json.FluidFormSettingsDeserializer;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
 public class FluidFormType implements IFluidFormType {
@@ -99,7 +102,9 @@ public class FluidFormType implements IFluidFormType {
 			return;
 		}
 		registered = true;
+		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper helper = MiscHelper.INSTANCE;
+		CreativeTabs creativeTab = api.creativeTab();
 		for(IForm form : FORMS) {
 			IFluidFormSettings settings = (IFluidFormSettings)form.getSettings();
 			for(IMaterial material : form.getMaterials()) {
@@ -117,6 +122,7 @@ public class FluidFormType implements IFluidFormType {
 
 				IMaterialFormBucketItem materialFormBucketItem = settings.getBucketItemCreator().create(materialFormFluid, settings);
 				Item bucketItem = materialFormBucketItem.toItem();
+				bucketItem.setCreativeTab(creativeTab);
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
 				GameRegistry.registerItem(bucketItem, registryName);
 				FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(bucketItem), new ItemStack(Items.bucket));

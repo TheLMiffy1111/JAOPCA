@@ -30,7 +30,8 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.tterrag.com/"
+				//url = "https://maven.tterrag.com/"
+				url = "https://modmaven.dev/"
 			}
 		}
 		filter {
@@ -133,7 +134,7 @@ def specVersion = "W"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "W.0.7.29"
+version = "W.0.7.30"
 
 archivesBaseName = "${modName}-${mcVersion}"
 
