@@ -307,7 +307,7 @@ blossom {
 
 processResources {
 	inputs.properties(replacements)
-	filesMatching(["mcmod.info", "META-INF/mods.toml", "META-INF/neoforge.mods.toml"]) {
+	filesMatching(["mcmod.info", "META-INF/mods.toml", "META-INF/neoforge.mods.toml", "fabric.mod.json"]) {
 		filter {
 			it.replace(replacements)
 		}
