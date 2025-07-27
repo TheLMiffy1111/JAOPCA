@@ -12,8 +12,3 @@ issueTrackerURL = "https://github.com/TheLMiffy1111/JAOPCA/issues"
 	credits = "Inspired by AOBD, a mod by ganymedes01"
 	authors = "TheLMiffy1111"
 	displayURL = "https://www.curseforge.com/minecraft/mc-mods/jaopca"
-
-[[dependencies.jaopca]]
-	modId = "forge"
-	versionRange = "[34,)"
-	mandatory = true
