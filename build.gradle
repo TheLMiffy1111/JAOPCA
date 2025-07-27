@@ -90,7 +90,8 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.tterrag.com/"
+				//url = "https://maven.tterrag.com/"
+				url = "https://modmaven.dev/"
 			}
 		}
 		filter {
@@ -414,7 +415,7 @@ blossom {
 
 processResources {
 	inputs.properties(replacements)
-	filesMatching(["mcmod.info", "META-INF/mods.toml", "META-INF/neoforge.mods.toml"]) {
+	filesMatching(["mcmod.info", "META-INF/mods.toml", "META-INF/neoforge.mods.toml", "fabric.mod.json"]) {
 		filter {
 			it.replace(replacements)
 		}
