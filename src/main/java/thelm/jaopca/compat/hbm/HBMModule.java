@@ -34,7 +34,7 @@ import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.utils.ApiImpl;
 import thelm.jaopca.utils.MiscHelper;
 
-@JAOPCAModule(modDependencies = "hbm", classDependencies = "com.hbm.main.MainRegistry")
+@JAOPCAModule(modDependencies = "hbm", classDependencies = {"com.hbm.main.MainRegistry", "api.hbm.block.IConveyorBelt"})
 public class HBMModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(Arrays.asList(
