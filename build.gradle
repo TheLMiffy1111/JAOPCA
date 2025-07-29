@@ -314,8 +314,8 @@ dependencies {
 	modImplementation "curse.maven:cyclic-239286:5259008"
 
 	// Electrodynamics
-	modImplementation "curse.maven:voltaic-api-1237904:6654702"
-	modImplementation "curse.maven:electrodynamics-316867:6619633"
+	modImplementation "curse.maven:voltaic-api-1237904:6791633"
+	modImplementation "curse.maven:electrodynamics-316867:6792235"
 
 	// Energized Power
 	modImplementation "curse.maven:energized-power-782147:6364049"
@@ -341,7 +341,7 @@ dependencies {
 	// Integrated Dynamics
 	modImplementation "curse.maven:cyclops-core-232758:6602277"
 	modImplementation "curse.maven:common-capabilities-247007:6602281"
-	modImplementation "curse.maven:integrated-dynamics-236307:6643813"
+	modImplementation "curse.maven:integrated-dynamics-236307:6784654"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
