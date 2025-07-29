@@ -238,12 +238,12 @@ dependencies {
 	implementation("zone.rong:mixinbooter:10.6") {transitive = false}
 
 	// CraftTweaker
-	modImplementation("CraftTweaker2:ZenScript:4.1.20.704") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.704") {transitive = false}
-	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.704") {transitive = false}
+	modImplementation("CraftTweaker2:ZenScript:4.1.20.705") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-API:4.1.20.705") {transitive = false}
+	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.705") {transitive = false}
 
 	// GroovyScript
-	modImplementation("com.cleanroommc:groovyscript:1.2.4") {transitive = false}
+	modImplementation("com.cleanroommc:groovyscript:1.2.5") {transitive = false}
 
 	// AbyssalCraft
 	modImplementation "curse.maven:abyssalcraft-53686:5330323"
