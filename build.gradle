@@ -260,8 +260,8 @@ dependencies {
 	modImplementation "curse.maven:crossroads-mc-250231:3347113"
 
 	// Electrodynamics
-	modImplementation "curse.maven:voltaic-api-1237904:6654695"
-	modImplementation "curse.maven:electrodynamics-316867:6619631"
+	modImplementation "curse.maven:voltaic-api-1237904:6791629"
+	modImplementation "curse.maven:electrodynamics-316867:6792220"
 
 	// Flux Machinery
 	modImplementation "curse.maven:fl-262385:3906730"
