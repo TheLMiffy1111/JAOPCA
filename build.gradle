@@ -194,13 +194,13 @@ dependencies {
 	shadowImplementation "com.electronwill.night-config:toml:3.6.7"
 
 	// Mixin
-	implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.20") {transitive = false}
-	annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.20") {transitive = false}
+	implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.22") {transitive = false}
+	annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.22") {transitive = false}
 
 	// Common
 	modImplementation("com.github.GTNewHorizons:CodeChickenLib:1.3.0") {transitive = false}
 	modImplementation("com.github.GTNewHorizons:CodeChickenCore:1.4.3") {transitive = false}
-	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.7.56-GTNH") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.7.69-GTNH") {transitive = false}
 	modImplementation "curse.maven:nei-integration-225251:2282522"
 	modImplementation "curse.maven:baubles-227083:2224857"
 
@@ -293,8 +293,8 @@ dependencies {
 
 	// Performance
 	modImplementation("com.github.GTNewHorizons:GTNHLib:0.6.31") {transitive = false}
-	modImplementation("com.github.GTNewHorizons:NotEnoughIds:2.1.9") {transitive = false}
-	modImplementation "curse.maven:archaicfix-677782:6474994"
+	modImplementation("com.github.GTNewHorizons:NotEnoughIds:2.1.10") {transitive = false}
+	modImplementation "curse.maven:archaicfix-677782:6785841"
 }
 
 def replacements = [
