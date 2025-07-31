@@ -12,6 +12,7 @@ public class JAOPCA {
 
 	public static final String MOD_ID = "jaopca";
 
+	@SuppressWarnings("removal")
 	public JAOPCA() {
 		FMLJavaModLoadingContext.get().getModEventBus().register(CommonEventHandler.getInstance());
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, ()->()->{
