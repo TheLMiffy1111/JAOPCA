@@ -308,7 +308,7 @@ dependencies {
 	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.114.5") {transitive = false}
 	implementation "dev.technici4n:GrandPower:3.0.2"
 	implementation "dev.architectury:architectury-neoforge:13.0.8"
-	forgeRuntimeLibrary "org.sinytra:connector:2.0.0-beta.8+1.21.1"
+	forgeRuntimeLibrary "org.sinytra:connector:2.0.0-beta.7+1.21.1"
 	implementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:0.115.6+2.1.1+1.21.1") {transitive = false}
 	implementation "curse.maven:connector-extras-913445:5618470"
 	implementation "dev.latvian.mods:rhino:2101.2.7-build.74"
@@ -364,7 +364,7 @@ dependencies {
 
 	// Oritech
 	implementation "earth.terrarium.athena:athena-neoforge-1.21:4.0.2"
-	implementation("io.wispforest:owo-lib-neoforge:0.12.15.5-beta.1+1.21") {transitive = false}
+	implementation("io.wispforest:owo-lib-neoforge:0.12.15.1-beta.6+1.21") {transitive = false}
 	implementation "curse.maven:oritech-1030830:6807350"
 
 	// Railcraft Reborn
