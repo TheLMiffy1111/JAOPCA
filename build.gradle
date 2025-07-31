@@ -249,7 +249,7 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.18.2:2022.11.06@zip"
 	}
-	forge "net.minecraftforge:forge:1.18.2-40.2.21"
+	forge "net.minecraftforge:forge:1.18.2-40.3.11"
 
 	// Common
 	modImplementation("mezz.jei:jei-1.18.2-forge:10.2.1.1009") {transitive = false}
