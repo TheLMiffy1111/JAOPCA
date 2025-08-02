@@ -299,7 +299,7 @@ dependencies {
 	neoForge "net.neoforged:neoforge:21.1.194"
 
 	// Common
-	implementation("mezz.jei:jei-1.21.1-neoforge:19.22.0.315") {transitive = false}
+	implementation("mezz.jei:jei-1.21.1-neoforge:19.22.1.316") {transitive = false}
 	implementation "thelm.jeimodelbridge:JEIModelBridge:21.1.0"
 	implementation "top.theillusivec4.curios:curios-neoforge:9.5.1+1.21.1"
 	implementation("software.bernie.geckolib:geckolib-neoforge-1.21.1:4.7.6") {transitive = false}
