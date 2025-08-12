@@ -55,6 +55,7 @@ public class CommonEventHandler {
 		ModuleHandler.findModules();
 		ConfigHandler.setupMainConfig();
 		DataInjector.findDataModules();
+		DataInjector.registerCustomTags();
 		MaterialHandler.findMaterials();
 		ConfigHandler.setupMaterialConfigs();
 		ConfigHandler.setupCustomFormConfig();
