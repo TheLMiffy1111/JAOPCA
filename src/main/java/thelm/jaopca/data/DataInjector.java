@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Type;
 
 import com.google.common.base.Predicates;
+import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -148,6 +149,41 @@ public class DataInjector extends ReloadListener<Object> {
 		}
 		for(IDataModule module : dataModules.values()) {
 			module.register();
+		}
+	}
+
+	public static void registerCustomTags() {
+		Splitter lineSplitter = Splitter.on(',').omitEmptyStrings().trimResults();
+		Splitter typeSplitter = Splitter.on('#').limit(2).trimResults();
+		Splitter tagSplitter = Splitter.on('=').limit(2).trimResults();
+		for(String line : ConfigHandler.CUSTOM_TAGS) {
+			for(String entry : lineSplitter.split(line)) {
+				List<String> typeSplit = typeSplitter.splitToList(entry);
+				String type = "items";
+				String tag;
+				if(typeSplit.size() == 2) {
+					type = typeSplit.get(0);
+					tag = typeSplit.get(1);
+				}
+				else {
+					tag = typeSplit.get(0);
+				}
+				List<String> tagSplit = tagSplitter.splitToList(tag);
+				if(tagSplit.size() != 2) {
+					LOGGER.warn("Custom tag entry [{}] has no specified tag", entry);
+					continue;
+				}
+				if(!ResourceLocation.isValidResourceLocation(tagSplit.get(0))) {
+					LOGGER.warn("Custom tag entry [{}] has invalid object", entry);
+					continue;
+				}
+				if(!ResourceLocation.isValidResourceLocation(tagSplit.get(1))) {
+					LOGGER.warn("Custom tag entry [{}] has invalid tag", entry);
+					continue;
+				}
+				registerTag(type, new ResourceLocation(tagSplit.get(1)), ()->new ResourceLocation(tagSplit.get(0)));
+				LOGGER.info("Registered custom tag entry [{}]", entry);
+			}
 		}
 	}
 

@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import thelm.jaopca.compat.electrodynamics.ElectrodynamicsHelper;
 import thelm.jaopca.utils.MiscHelper;
 import voltaic.common.recipe.recipeutils.CountableIngredient;
-import voltaic.common.recipe.recipeutils.ProbableFluid;
 import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class MineralGrinderRecipeSupplier implements Supplier<MineralGrinderRecipe> {
