@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import com.cleanroommc.groovyscript.api.IIngredient;
 import com.cleanroommc.groovyscript.helper.ingredient.OreDictIngredient;
-import com.cleanroommc.groovyscript.helper.ingredient.OreDictWildcardIngredient;
+import com.cleanroommc.groovyscript.helper.ingredient.OreDictMatcherIngredient;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,7 +23,7 @@ public class FormExpansion {
 
 	public static IIngredient ore(IForm form, String suffix) {
 		String oreDict = MiscHelper.INSTANCE.getOredictName(form.getSecondaryName(), suffix);
-		return oreDict.contains("*") ? new OreDictWildcardIngredient(oreDict) : new OreDictIngredient(oreDict);
+		return oreDict.contains("*") ? new OreDictMatcherIngredient(oreDict) : new OreDictIngredient(oreDict);
 	}
 
 	public static ItemStack item(IForm form, String suffix, int count) {

@@ -1,11 +1,11 @@
 package thelm.jaopca.config;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.DoublePredicate;
@@ -14,12 +14,14 @@ import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.EnumGetMethod;
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.file.FileConfig;
 import com.electronwill.nightconfig.core.io.ParsingException;
 import com.electronwill.nightconfig.core.utils.CommentedConfigWrapper;
@@ -39,38 +41,19 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 		this.config = config;
 		if(config instanceof FileConfig) {
 			FileConfig fileConfig = (FileConfig)config;
-			Path path = fileConfig.getNioPath();
-			String fileName = path.getFileName().toString();
-			String oldFileName = Arrays.stream(StringUtils.split(fileName, '_')).map(StringUtils::capitalize).collect(Collectors.joining());
-			Path oldPath = path.resolveSibling(oldFileName);
-			if(Files.exists(oldPath)) {
-				try {
-					Path realPath = oldPath.toRealPath();
-					String realFileName = realPath.getFileName().toString();
-					if(!realFileName.equals(fileName)) {
-						LOGGER.debug("Moving config with path {} to path {}", oldPath, path);
-						Path tempPath = Files.createTempFile(path.getParent(), null, null);
-						Files.move(oldPath, tempPath, StandardCopyOption.REPLACE_EXISTING);
-						Files.move(tempPath, path, StandardCopyOption.REPLACE_EXISTING);
-					}
-				}
-				catch(Exception e) {
-					LOGGER.error("Unable to move config with path {}", oldPath, e);
-				}
-			}
 			try {
 				fileConfig.load();
 			}
 			catch(ParsingException e) {
-				LOGGER.warn("Config with path {} is malformed, moving", path);
-				try {
-					Files.move(path, path.resolveSibling(fileName+".bak"), StandardCopyOption.REPLACE_EXISTING);
-				}
-				catch(Exception e1) {
-					LOGGER.error("Unable to move config with path {}", path, e1);
-				}
+				Path path = fileConfig.getNioPath();
+				LOGGER.warn("Config with path {} is malformed, making backup", path);
+				backupConfig(path, 5);
 			}
 		}
+	}
+
+	public DynamicSpecConfig(Path path) {
+		this(CommentedFileConfig.builder(path, JAOPCATomlFormat.INSTANCE).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
 	}
 
 	@Override
@@ -443,5 +426,29 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	static List<String> split(String str) {
 		return Lists.newArrayList(StringUtils.split(str, '.'));
+	}
+
+	static void backupConfig(Path configPath, int maxBackups) {
+		Path bakFileLocation = configPath.getParent();
+		String bakFileName = FilenameUtils.removeExtension(configPath.getFileName().toString());
+		String bakFileExtension = FilenameUtils.getExtension(configPath.getFileName().toString()) + ".bak";
+		Path bakFile = bakFileLocation.resolve(bakFileName + "-1" + "." + bakFileExtension);
+		try {
+			for(int i = maxBackups; i > 0; i--) {
+				Path oldBak = bakFileLocation.resolve(bakFileName + "-" + i + "." + bakFileExtension);
+				if(Files.exists(oldBak)) {
+					if(i >= maxBackups) {
+						Files.delete(oldBak);
+					}
+					else {
+						Files.move(oldBak, bakFileLocation.resolve(bakFileName + "-" + (i + 1) + "." + bakFileExtension));
+					}
+				}
+			}
+			Files.copy(configPath, bakFile);
+		}
+		catch(IOException e) {
+			LOGGER.error("Failed to back up config file {}", configPath, e);
+		}
 	}
 }

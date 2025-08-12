@@ -2,7 +2,7 @@ package thelm.jaopca.compat.groovyscript;
 
 import com.cleanroommc.groovyscript.api.IIngredient;
 import com.cleanroommc.groovyscript.helper.ingredient.OreDictIngredient;
-import com.cleanroommc.groovyscript.helper.ingredient.OreDictWildcardIngredient;
+import com.cleanroommc.groovyscript.helper.ingredient.OreDictMatcherIngredient;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,7 +16,7 @@ public class MaterialExpansion {
 
 	public static IIngredient ore(IMaterial material, String prefix) {
 		String oreDict = MiscHelper.INSTANCE.getOredictName(prefix, material.getName());
-		return oreDict.contains("*") ? new OreDictWildcardIngredient(oreDict) : new OreDictIngredient(oreDict);
+		return oreDict.contains("*") ? new OreDictMatcherIngredient(oreDict) : new OreDictIngredient(oreDict);
 	}
 
 	public static ItemStack item(IMaterial material, String prefix, int count) {
