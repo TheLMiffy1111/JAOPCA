@@ -4,7 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
@@ -14,7 +13,6 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.google.common.collect.Lists;
 
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -89,7 +87,7 @@ public class ConfigHandler {
 			}
 		}
 
-		mainConfig = new DynamicSpecConfig(CommentedFileConfig.builder(configDir.resolve("main.toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
+		mainConfig = new DynamicSpecConfig(configDir.resolve("main.toml"));
 
 		mainConfig.setComment("materials", "Configurations related to materials.");
 		ingot = mainConfig.getDefinedBoolean("materials.ingot", ingot, "Should the mod find ingot materials with ores.");
@@ -160,7 +158,7 @@ public class ConfigHandler {
 		}
 		MATERIAL_CONFIGS.clear();
 		for(Material material : MaterialHandler.getMaterials()) {
-			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(materialConfigDir.resolve(MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName())+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
+			IDynamicSpecConfig config = new DynamicSpecConfig(materialConfigDir.resolve(MiscHelper.INSTANCE.toLowercaseUnderscore(material.getName())+".toml"));
 			MATERIAL_CONFIGS.put(material, config);
 			material.setConfig(config);
 		}
@@ -181,7 +179,7 @@ public class ConfigHandler {
 			}
 		}
 		for(IModule module : ModuleHandler.getModules()) {
-			IDynamicSpecConfig config = new DynamicSpecConfig(CommentedFileConfig.builder(moduleConfigDir.resolve(module.getName()+".toml")).sync().backingMapCreator(LinkedHashMap::new).autosave().build());
+			IDynamicSpecConfig config = new DynamicSpecConfig(moduleConfigDir.resolve(module.getName()+".toml"));
 			MODULE_CONFIGS.put(module, config);
 			ModuleData data = ModuleHandler.getModuleData(module);
 			data.setConfig(config);
