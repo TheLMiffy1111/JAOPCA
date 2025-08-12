@@ -1,6 +1,5 @@
 package thelm.jaopca.api.config;
 
-import java.util.Formatter;
 import java.util.function.Function;
 
 public class FormattedNumber extends Number {
