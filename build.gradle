@@ -243,7 +243,7 @@ def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.12.18"
+version = "5.0.12.19"
 
 def archivesName = "${modName}-${mcVersion}"
 base.archivesName = archivesName

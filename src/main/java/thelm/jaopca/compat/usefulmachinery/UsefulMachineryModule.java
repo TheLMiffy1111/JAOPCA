@@ -21,7 +21,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "usefulmachinery")
 public class UsefulMachineryModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
+	static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"aluminium", "aluminum", "copper", "gold", "iron", "lead", "nickel", "platinum", "silver", "tin", "uranium"));
 
 	@Override
