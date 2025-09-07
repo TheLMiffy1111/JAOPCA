@@ -37,6 +37,11 @@ public class IntegratedDynamicsLegacyModule implements IModule {
 	}
 
 	@Override
+	public Set<String> getDefaultMaterialBlacklist() {
+		return IntegratedDynamicsModule.BLACKLIST;
+	}
+
+	@Override
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		IntegratedDynamicsHelper helper = IntegratedDynamicsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;

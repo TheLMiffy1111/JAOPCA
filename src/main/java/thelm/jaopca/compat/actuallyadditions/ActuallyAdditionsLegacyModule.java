@@ -1,9 +1,7 @@
 package thelm.jaopca.compat.actuallyadditions;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
@@ -22,9 +20,6 @@ import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "actuallyadditions")
 public class ActuallyAdditionsLegacyModule implements IModule {
-
-	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "iron", "netherite", "netherite_scrap"));
 
 	@Override
 	public String getName() {
@@ -45,7 +40,7 @@ public class ActuallyAdditionsLegacyModule implements IModule {
 
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
+		return ActuallyAdditionsModule.BLACKLIST;
 	}
 
 	@Override

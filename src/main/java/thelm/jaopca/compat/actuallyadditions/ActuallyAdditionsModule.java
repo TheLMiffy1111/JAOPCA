@@ -20,7 +20,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "actuallyadditions")
 public class ActuallyAdditionsModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
+	static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "netherite", "netherite_scrap"));
 
 	@Override
