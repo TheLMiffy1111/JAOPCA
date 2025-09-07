@@ -1,9 +1,9 @@
 plugins {
-	id "com.crystaelix.loom" version "1.10.0"
+	id "com.crystaelix.loom" version "1.11.0"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "net.kyori.blossom" version "[1,2)"
+	id "com.crystaelix.blossom" version "1.3.2"
 	id "me.modmuss50.mod-publish-plugin" version "0.8.4"
 }
 
@@ -162,7 +162,8 @@ def vendor = "thelm"
 group = "thelm.jaopca"
 version = "3.4.9.49"
 
-archivesBaseName = "${modName}-${mcVersion}"
+def archivesName = "${modName}-${mcVersion}"
+base.archivesName = archivesName
 
 sourceSets {
 	main
@@ -345,7 +346,7 @@ def manifestAttributes = [
 	"Specification-Title": modName,
 	"Specification-Vendor": vendor,
 	"Specification-Version": specVersion,
-	"Implementation-Title": archivesBaseName,
+	"Implementation-Title": archivesName,
 	"Implementation-Version": version,
 	"Implementation-Vendor": vendor
 ]
@@ -361,7 +362,7 @@ sourcesJar {
 publishing {
 	publications {
 		register("mavenJava", MavenPublication) {
-			artifactId = archivesBaseName
+			artifactId = archivesName
 			artifact remapJar
 			artifact sourcesJar
 		}
