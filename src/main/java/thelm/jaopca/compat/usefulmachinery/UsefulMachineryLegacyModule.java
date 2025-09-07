@@ -1,9 +1,7 @@
 package thelm.jaopca.compat.usefulmachinery;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
@@ -20,9 +18,6 @@ import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "usefulmachinery")
 public class UsefulMachineryLegacyModule implements IModule {
-
-	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"aluminium", "aluminum", "copper", "gold", "iron", "lead", "nickel", "platinum", "silver", "tin", "uranium"));
 
 	@Override
 	public String getName() {
@@ -44,7 +39,7 @@ public class UsefulMachineryLegacyModule implements IModule {
 
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
+		return UsefulMachineryModule.BLACKLIST;
 	}
 
 	@Override

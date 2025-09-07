@@ -18,7 +18,7 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "integrateddynamics")
 public class IntegratedDynamicsModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
+	static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"aluminum", "aluminium", "ardite", "cobalt", "copper", "gold", "iron", "lead", "mithril", "netherite",
 			"netherite_scrap", "nickel", "osmium", "platinum", "silver", "tin", "uranium", "zinc"));
 

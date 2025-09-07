@@ -1,10 +1,7 @@
 package thelm.jaopca.compat.thermalexpansion;
 
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
@@ -12,7 +9,6 @@ import com.google.common.collect.Multimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -25,32 +21,6 @@ import thelm.jaopca.utils.MiscHelper;
 
 @JAOPCAModule(modDependencies = "thermal_expansion")
 public class ThermalExpansionLegacyModule implements IModule {
-
-	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "iron", "lead", "nickel", "silver", "tin"));
-	private static final Set<String> PULVERIZER_BLACKLIST = new TreeSet<>();
-	private static final Set<String> SMELTER_BLACKLIST = new TreeSet<>(List.of(
-			"netherite", "netherite_scrap"));
-
-	static {
-		if(ModList.get().isLoaded("alltheores")) {
-			Collections.addAll(PULVERIZER_BLACKLIST, "platinum", "zinc");
-		}
-		if(ModList.get().isLoaded("thermal_integration")) {
-			if(ModList.get().isLoaded("create")) {
-				Collections.addAll(BLACKLIST, "zinc");
-			}
-			if(ModList.get().isLoaded("immersiveengineering")) {
-				Collections.addAll(BLACKLIST, "aluminium", "aluminum", "uranium");
-			}
-			if(ModList.get().isLoaded("mekanism")) {
-				Collections.addAll(BLACKLIST, "osmium");
-			}
-			if(ModList.get().isLoaded("tconstruct")) {
-				Collections.addAll(BLACKLIST, "cobalt");
-			}
-		}
-	}
 
 	@Override
 	public String getName() {
@@ -72,7 +42,7 @@ public class ThermalExpansionLegacyModule implements IModule {
 
 	@Override
 	public Set<String> getDefaultMaterialBlacklist() {
-		return BLACKLIST;
+		return ThermalExpansionModule.BLACKLIST;
 	}
 
 	@Override
@@ -87,7 +57,7 @@ public class ThermalExpansionLegacyModule implements IModule {
 			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			ResourceLocation extraMaterialLocation = miscHelper.getTagLocation(material.getExtra(1).getType().getFormName(), material.getExtra(1).getName());
 			if(material.hasExtra(1)) {
-				if(!PULVERIZER_BLACKLIST.contains(material.getName())) {
+				if(!ThermalExpansionModule.PULVERIZER_BLACKLIST.contains(material.getName())) {
 					helper.registerPulverizerRecipe(
 							new ResourceLocation("jaopca", "thermal_expansion.ore_to_dust."+material.getName()),
 							oreLocation, 1, new Object[] {
@@ -96,7 +66,7 @@ public class ThermalExpansionLegacyModule implements IModule {
 									Blocks.GRAVEL, 0.2F,
 							}, 4000, 0.2F);
 				}
-				if(!SMELTER_BLACKLIST.contains(material.getName())) {
+				if(!ThermalExpansionModule.SMELTER_BLACKLIST.contains(material.getName())) {
 					helper.registerSmelterRecipe(
 							new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()), new Object[] {
 									oreLocation,
@@ -108,7 +78,7 @@ public class ThermalExpansionLegacyModule implements IModule {
 				}
 			}
 			else {
-				if(!PULVERIZER_BLACKLIST.contains(material.getName())) {
+				if(!ThermalExpansionModule.PULVERIZER_BLACKLIST.contains(material.getName())) {
 					helper.registerPulverizerRecipe(
 							new ResourceLocation("jaopca", "thermal_expansion.ore_to_dust."+material.getName()),
 							oreLocation, 1, new Object[] {
@@ -116,7 +86,7 @@ public class ThermalExpansionLegacyModule implements IModule {
 									Blocks.GRAVEL, 0.2F,
 							}, 4000, 0.2F);
 				}
-				if(!SMELTER_BLACKLIST.contains(material.getName())) {
+				if(!ThermalExpansionModule.SMELTER_BLACKLIST.contains(material.getName())) {
 					helper.registerSmelterRecipe(
 							new ResourceLocation("jaopca", "thermal_expansion.ore_to_material_smelter."+material.getName()), new Object[] {
 									oreLocation,

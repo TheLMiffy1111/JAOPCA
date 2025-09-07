@@ -26,10 +26,10 @@ import thelm.jaopca.utils.MiscHelper;
 @JAOPCAModule(modDependencies = "thermal_expansion")
 public class ThermalExpansionModule implements IModule {
 
-	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
+	static final Set<String> BLACKLIST = new TreeSet<>(List.of(
 			"copper", "gold", "iron", "lead", "nickel", "silver", "tin"));
-	private static final Set<String> PULVERIZER_BLACKLIST = new TreeSet<>();
-	private static final Set<String> SMELTER_BLACKLIST = new TreeSet<>(List.of(
+	static final Set<String> PULVERIZER_BLACKLIST = new TreeSet<>();
+	static final Set<String> SMELTER_BLACKLIST = new TreeSet<>(List.of(
 			"netherite", "netherite_scrap"));
 
 	static {
