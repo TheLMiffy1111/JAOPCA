@@ -6,9 +6,8 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.hbm.forgefluid.ModForgeFluids;
-
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -61,7 +60,7 @@ public class HBMCompatModule implements IModule {
 		HBMHelper helper = HBMHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		Set<String> oredict = api.getOredict();
-		Fluid acid = ModForgeFluids.acid;
+		Fluid acid = FluidRegistry.getFluid("acid");
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();

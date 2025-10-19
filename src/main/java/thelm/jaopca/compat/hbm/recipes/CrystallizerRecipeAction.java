@@ -1,10 +1,7 @@
 package thelm.jaopca.compat.hbm.recipes;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
@@ -67,27 +64,9 @@ public class CrystallizerRecipeAction implements IRecipeAction {
 		if(stack.isEmpty()) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		try {
-			Field itemMapField = Arrays.stream(CrystallizerRecipes.class.getDeclaredFields()).
-					filter(f->"recipes".equals(f.getName()) || "itemOutputRecipes".equals(f.getName())).findAny().get();
-			itemMapField.setAccessible(true);
-			Map<Object, ItemStack> itemMap = (Map<Object, ItemStack>)itemMapField.get(null);
-			for(Object in : ins) {
-				itemMap.put(in, stack);
-			}
+		for(Object in : ins) {
+			CrystallizerRecipes.addRecipe(in, fluidIng, stack);
 		}
-		catch(Exception e) {
-			throw new IllegalStateException("Could not access crystallizer recipe map.");
-		}
-		try {
-			Field fluidMapField = CrystallizerRecipes.class.getDeclaredField("fluidInputRecipes");
-			fluidMapField.setAccessible(true);
-			Map<Object, FluidStack> fluidMap = (Map<Object, FluidStack>)fluidMapField.get(null);
-			for(Object in : ins) {
-				fluidMap.put(in, fluidIng);
-			}
-		}
-		catch(Exception e) {}
 		return true;
 	}
 }

@@ -11,12 +11,12 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.items.ModItems;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -98,7 +98,7 @@ public class HBMModule implements IModule {
 		HBMHelper helper = HBMHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
-		Fluid acid = ModForgeFluids.acid;
+		Fluid acid = FluidRegistry.getFluid("acid");
 		Item tinyLithium = ModItems.powder_lithium_tiny;
 		for(IMaterial material : crystalForm.getMaterials()) {
 			IItemInfo crystalInfo = itemFormType.getMaterialFormInfo(crystalForm, material);
