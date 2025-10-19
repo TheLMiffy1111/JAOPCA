@@ -4,7 +4,7 @@ plugins {
 	id "idea"
 	id "maven-publish"
 	id "com.crystaelix.blossom" version "1.3.2"
-	id "me.modmuss50.mod-publish-plugin" version "0.8.4"
+	id "me.modmuss50.mod-publish-plugin" version "1.0.0"
 }
 
 repositories {
@@ -341,8 +341,8 @@ dependencies {
 
 	// Integrated Dynamics
 	modImplementation "curse.maven:cyclops-core-232758:6602277"
-	modImplementation "curse.maven:common-capabilities-247007:6602281"
-	modImplementation "curse.maven:integrated-dynamics-236307:6784654"
+	modImplementation "curse.maven:common-capabilities-247007:6888569"
+	modImplementation "curse.maven:integrated-dynamics-236307:7093993"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
@@ -386,7 +386,7 @@ dependencies {
 
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:3909789"
-	implementation "io.github.llamalad7:mixinextras-forge:0.4.1"
+	implementation "io.github.llamalad7:mixinextras-forge:0.5.0"
 	modImplementation "curse.maven:modernfix-790626:5803581"
 	modImplementation "curse.maven:ferritecore-429235:4117906"
 	modImplementation "curse.maven:lazy-dfu-forge-460819:4327266"
