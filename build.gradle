@@ -187,7 +187,10 @@ dependencies {
 
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.7.10"
-	mappings "net.minecraftforge:forge:1.7.10-10.13.4.1614-1.7.10:userdev"
+	mappings loom.layered {
+		mcp "de.oceanlabs.mcp:mcp_stable:12-1.7.10"
+		mcp "net.minecraftforge:forge:1.7.10-10.13.4.1614-1.7.10:userdev"
+	}
 	legacyForge "net.minecraftforge:forge:1.7.10-10.13.4.1614-1.7.10:universal"
 
 	// Shadow
