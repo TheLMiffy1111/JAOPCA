@@ -241,9 +241,6 @@ loom {
 }
 
 dependencies {
-	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.24.3"
-
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.18.2"
 	mappings loom.layered {
