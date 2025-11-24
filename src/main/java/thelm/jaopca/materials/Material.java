@@ -125,7 +125,7 @@ public class Material implements IMaterial {
 							MinecraftForge.EVENT_BUS.post(new MaterialColorEvent(this, configColor));
 						}
 						catch(Exception e) {
-							LOGGER.warn("Unable to get color for material {}", new Object[] {name, e});
+							LOGGER.warn("Unable to get color for material {}", name, e);
 						}
 					});
 				}, ()->()->{}).run();
@@ -136,7 +136,7 @@ public class Material implements IMaterial {
 			}
 		}
 		else {
-			LOGGER.warn("Tried to get color for material {} before post-init", new Object[] {name});
+			LOGGER.warn("Tried to get color for material {} before post-init", name);
 		}
 		return 0xFF000000 | color.orElse(0xFFFFFF);
 	}

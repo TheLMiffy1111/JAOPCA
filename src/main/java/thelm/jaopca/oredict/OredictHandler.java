@@ -68,11 +68,11 @@ public class OredictHandler {
 			List<String> classDeps = (List<String>)aData.getAnnotationInfo().get("classDependencies");
 			String className = aData.getClassName();
 			if(modDeps != null && modDeps.stream().filter(Objects::nonNull).anyMatch(modVersionNotLoaded)) {
-				LOGGER.info("Oredict module {} has missing mod dependencies, skipping", new Object[] {className});
+				LOGGER.info("Oredict module {} has missing mod dependencies, skipping", className);
 				continue;
 			}
 			if(classDeps != null && classDeps.stream().filter(Objects::nonNull).anyMatch(classNotExists)) {
-				LOGGER.info("Oredict module {} has missing class dependencies, skipping", new Object[] {className});
+				LOGGER.info("Oredict module {} has missing class dependencies, skipping", className);
 				continue;
 			}
 			try {
@@ -87,16 +87,16 @@ public class OredictHandler {
 					module = moduleInstanceClass.newInstance();
 				}
 				if(ConfigHandler.OREDICT_MODULE_BLACKLIST.contains(module.getName())) {
-					LOGGER.info("Oredict module {} is disabled in config, skipping", new Object[] {module.getName()});
+					LOGGER.info("Oredict module {} is disabled in config, skipping", module.getName());
 				}
 				if(OREDICT_MODULES.putIfAbsent(module.getName(), module) != null) {
-					LOGGER.fatal("Oredict module name conflict: {} for {} and {}", new Object[] {module.getName(), OREDICT_MODULES.get(module.getName()).getClass(), module.getClass()});
+					LOGGER.fatal("Oredict module name conflict: {} for {} and {}", module.getName(), OREDICT_MODULES.get(module.getName()).getClass(), module.getClass());
 					continue;
 				}
-				LOGGER.debug("Loaded oredict module {}", new Object[] {module.getName()});
+				LOGGER.debug("Loaded oredict module {}", module.getName());
 			}
 			catch(ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				LOGGER.fatal("Unable to load oredict module {}", new Object[] {className, e});
+				LOGGER.fatal("Unable to load oredict module {}", className, e);
 			}
 		}
 	}
@@ -111,17 +111,17 @@ public class OredictHandler {
 			for(String entry : lineSplitter.split(line)) {
 				List<String> split = oredictSplitter.splitToList(entry);
 				if(split.size() != 2) {
-					LOGGER.warn("Custom oredict entry [{}] has no specified name", new Object[] {entry});
+					LOGGER.warn("Custom oredict entry [{}] has no specified name", entry);
 					continue;
 				}
 				ItemStack stack = MiscHelper.INSTANCE.parseMetaItem(split.get(0));
 				if(stack == null || stack.getItem() == null) {
-					LOGGER.warn("Custom oredict entry [{}] has empty item", new Object[] {entry});
+					LOGGER.warn("Custom oredict entry [{}] has empty item", entry);
 					continue;
 				}
 				// Override the config blacklist here
 				OreDictionary.registerOre(split.get(1), stack);
-				LOGGER.info("Registered custom oredict entry [{}]", new Object[] {entry});
+				LOGGER.info("Registered custom oredict entry [{}]", entry);
 			}
 		}
 	}
