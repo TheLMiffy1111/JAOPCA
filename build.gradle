@@ -217,9 +217,6 @@ configurations {
 }
 
 dependencies {
-	// Log4j
-	implementation "org.apache.logging.log4j:log4j-core:2.24.3"
-
 	// Minecraft
 	minecraft "com.mojang:minecraft:1.12.2"
 	mappings "de.oceanlabs.mcp:mcp_stable:39-1.12"
