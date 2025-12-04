@@ -9,6 +9,12 @@ pluginManagement {
 			url = "https://maven.crystaelix.com/releases/"
 		}
 		maven {
+			url = "https://maven.ornithemc.net/releases/"
+		}
+		maven {
+			url = "https://maven.ornithemc.net/snapshots/"
+		}
+		maven {
 			url = "https://maven.architectury.dev/"
 		}
 		maven {

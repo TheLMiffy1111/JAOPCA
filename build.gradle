@@ -1,5 +1,6 @@
 plugins {
 	id "com.crystaelix.loom" version "1.13-SNAPSHOT"
+	id "ploceus" version "1.13-SNAPSHOT"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -176,6 +177,10 @@ loom {
 	generatedIntermediateMappings()
 }
 
+ploceus {
+	disableLibraryUpgrades()
+}
+
 configurations {
 	shadowImplementation
 	implementation.extendsFrom(shadowImplementation)
@@ -188,6 +193,9 @@ dependencies {
 		mcp "de.oceanlabs.mcp:mcp_stable:12-1.7.10"
 		mcp "net.minecraftforge:forge:1.7.10-10.13.4.1614-1.7.10:userdev"
 	}
+	exceptions ploceus.raven("1")
+	signatures ploceus.sparrow("1")
+	nests ploceus.nests("2")
 	legacyForge "net.minecraftforge:forge:1.7.10-10.13.4.1614-1.7.10:universal"
 
 	// Shadow
