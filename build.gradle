@@ -176,8 +176,8 @@ def archivesName = "${modName}-${mcVersion}"
 base.archivesName = archivesName
 
 sourceSets {
-	main {
-		output.resourcesDir = java.destinationDirectory = layout.buildDirectory.dir("outputs/main")
+	configureEach {
+		output.resourcesDir = java.destinationDirectory = layout.buildDirectory.dir("outputs/${name}")
 	}
 }
 
