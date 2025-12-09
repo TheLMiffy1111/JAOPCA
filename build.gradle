@@ -6,7 +6,7 @@ plugins {
 	id "maven-publish"
 	id "com.crystaelix.blossom" version "1.3.2"
 	id "com.gradleup.shadow" version "[8,9)"
-	id "me.modmuss50.mod-publish-plugin" version "1.0.0"
+	id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 repositories {
@@ -207,9 +207,8 @@ dependencies {
 	annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.23") {transitive = false}
 
 	// Common
-	modImplementation("com.github.GTNewHorizons:CodeChickenLib:1.3.0") {transitive = false}
-	modImplementation("com.github.GTNewHorizons:CodeChickenCore:1.4.7") {transitive = false}
-	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.8.35-GTNH") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:CodeChickenCore:1.4.10") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.8.40-GTNH") {transitive = false}
 	modImplementation "curse.maven:nei-integration-225251:2282522"
 	modImplementation "curse.maven:baubles-227083:2224857"
 
@@ -235,7 +234,7 @@ dependencies {
 	modImplementation "curse.maven:ender-io-64578:4671445"
 
 	// IndustrialCraft 2
-	modImplementation "curse.maven:industrial-craft-242638:2353971"
+	modImplementation "curse.maven:industrial-craft-242638:6833054"
 
 	// Railcraft
 	modImplementation "curse.maven:railcraft-51195:2458987"
@@ -244,7 +243,7 @@ dependencies {
 	modImplementation "curse.maven:engineers-toolbox-224613:2248029"
 
 	// EssentialCraft
-	modImplementation("com.github.GTNewHorizons:DummyCore:1.19.0") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:DummyCore:1.20.0") {transitive = false}
 	modImplementation "curse.maven:essentialcraft-4-unofficial-254817:2394702"
 
 	// Factorization
@@ -301,7 +300,7 @@ dependencies {
 	modImplementation("com.github.GTNewHorizons:TCNEIAdditions:1.5.4") {transitive = false}
 
 	// Performance
-	modImplementation("com.github.GTNewHorizons:GTNHLib:0.8.2") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:GTNHLib:0.8.23") {transitive = false}
 	modImplementation("com.github.GTNewHorizons:NotEnoughIds:2.1.10") {transitive = false}
 	modImplementation "curse.maven:archaicfix-677782:6785841"
 }
