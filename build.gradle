@@ -4,7 +4,7 @@ plugins {
 	id "idea"
 	id "maven-publish"
 	id "com.crystaelix.blossom" version "1.3.2"
-	id "me.modmuss50.mod-publish-plugin" version "1.0.0"
+	id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 repositories {
@@ -278,10 +278,10 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip"
 	}
-	forge "net.minecraftforge:forge:1.20.1-47.4.10"
+	forge "net.minecraftforge:forge:1.20.1-47.4.13"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.20.1-forge:15.20.0.116") {transitive = false}
+	modImplementation("mezz.jei:jei-1.20.1-forge:15.20.0.127") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.20-1.3.11"
 	modImplementation "top.theillusivec4.curios:curios-forge:5.14.1+1.20.1"
 	forgeRuntimeLibrary "com.eliotlash.mclib:mclib:20"
@@ -307,10 +307,10 @@ dependencies {
 	modImplementation "net.darkhax.openloader:OpenLoader-Forge-1.20.1:19.0.4"
 
 	// Actually Subtractions
-	modImplementation "curse.maven:actually-subtractions-1083685:7096879"
+	modImplementation "curse.maven:actually-subtractions-1083685:7208984"
 
 	// Blood Magic
-	modImplementation "curse.maven:blood-magic-224791:5290993"
+	modImplementation "curse.maven:blood-magic-224791:7253333"
 
 	// Create
 	modImplementation "com.jozufozu.flywheel:flywheel-forge-1.20.1:0.6.11-13"
@@ -335,11 +335,11 @@ dependencies {
 	modImplementation "curse.maven:electrodynamics-316867:6792248"
 
 	// Embers Rekindled
-	modImplementation "curse.maven:embers-rekindled-300777:7096057"
+	modImplementation "curse.maven:embers-rekindled-300777:7279674"
 
 	// Ender IO
 	implementation "dev.gigaherz.graph:GraphLib3:3.0.5"
-	modImplementation "com.enderio:EnderIO:1.20.1-6.2.15-beta"
+	modImplementation "com.enderio:EnderIO:1.20.1-6.2.16-beta"
 
 	// Energized Power
 	modImplementation "curse.maven:energized-power-782147:7046211"
@@ -353,19 +353,19 @@ dependencies {
 	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.1-10.2.0-182"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:7093839"
-	modImplementation "curse.maven:common-capabilities-247007:7076209"
-	modImplementation "curse.maven:integrated-dynamics-236307:7094010"
+	modImplementation "curse.maven:cyclops-core-232758:7210370"
+	modImplementation "curse.maven:common-capabilities-247007:7229322"
+	modImplementation "curse.maven:integrated-dynamics-236307:7261411"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.20.1-10.4.16.80"
 
 	// NuclearCraft: Neoteric
-	modImplementation "curse.maven:nuclearcraft-neoteric-840010:7043527"
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:7136984"
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.20.1:1.15"
-	modImplementation("com.klikli_dev:occultism-1.20.1:1.152.1") {transitive = false}
+	modImplementation("com.klikli_dev:occultism-1.20.1:1.153.0") {transitive = false}
 
 	// Railcraft Reborn
 	modImplementation "curse.maven:railcraft-reborn-901491:7073676"
@@ -394,12 +394,12 @@ dependencies {
 
 	// Testing
 	modImplementation "curse.maven:ato-405593:5348605"
-	modImplementation "curse.maven:allthemodium-364466:6389531"
+	modImplementation "curse.maven:allthemodium-364466:7142820"
 
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:4680832"
 	implementation "io.github.llamalad7:mixinextras-forge:0.5.0"
-	modImplementation "curse.maven:modernfix-790626:6837713"
+	modImplementation "curse.maven:modernfix-790626:7306749"
 	modImplementation "curse.maven:ferritecore-429235:4810975"
 }
 
