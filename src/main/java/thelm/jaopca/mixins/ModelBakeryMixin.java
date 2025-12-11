@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.ModLoader;
 import thelm.jaopca.client.models.ModelHandler;
 
 @Mixin(ModelBakery.class)
@@ -24,7 +25,9 @@ public class ModelBakeryMixin {
 
 	@Inject(method = "<init>", at = @At(value = "FIELD", shift = At.Shift.AFTER, target = "modelResources", opcode = Opcodes.PUTFIELD))
 	public void onInitModelResources(CallbackInfo ci) {
-		ModelHandler.gatherItemModelRemaps(Collections.unmodifiableSet(modelResources.keySet()));
+		if(!ModLoader.hasErrors()) {
+			ModelHandler.gatherItemModelRemaps(Collections.unmodifiableSet(modelResources.keySet()));
+		}
 	}
 
 	@ModifyVariable(method = "loadItemModelAndDependencies", at = @At("HEAD"), argsOnly = true)

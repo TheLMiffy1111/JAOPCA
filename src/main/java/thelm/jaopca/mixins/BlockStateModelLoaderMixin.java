@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.resources.model.BlockStateModelLoader;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.ModLoader;
 import thelm.jaopca.client.models.ModelHandler;
 
 @Mixin(BlockStateModelLoader.class)
@@ -24,7 +25,9 @@ public class BlockStateModelLoaderMixin {
 
 	@Inject(method = "<init>", at = @At(value = "FIELD", shift = At.Shift.AFTER, target = "blockStateResources", opcode = Opcodes.PUTFIELD))
 	public void onInitBlockStateResources(CallbackInfo ci) {
-		ModelHandler.gatherBlockStateRemaps(Collections.unmodifiableSet(blockStateResources.keySet()));
+		if(!ModLoader.hasErrors()) {
+			ModelHandler.gatherBlockStateRemaps(Collections.unmodifiableSet(blockStateResources.keySet()));
+		}
 	}
 
 	@ModifyVariable(method = "loadBlockStateDefinitions", at = @At("HEAD"), argsOnly = true)
