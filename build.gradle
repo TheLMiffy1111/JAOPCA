@@ -203,12 +203,12 @@ dependencies {
 	shadowImplementation "com.electronwill.night-config:toml:3.6.7"
 
 	// Mixin
-	implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.23") {transitive = false}
-	annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.23") {transitive = false}
+	implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.2.1") {transitive = false}
+	annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.2.1") {transitive = false}
 
 	// Common
 	modImplementation("com.github.GTNewHorizons:CodeChickenCore:1.4.10") {transitive = false}
-	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.8.40-GTNH") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.8.60-GTNH") {transitive = false}
 	modImplementation "curse.maven:nei-integration-225251:2282522"
 	modImplementation "curse.maven:baubles-227083:2224857"
 
