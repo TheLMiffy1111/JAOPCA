@@ -278,19 +278,19 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip"
 	}
-	forge "net.minecraftforge:forge:1.20.1-47.4.13"
+	forge "net.minecraftforge:forge:1.20.1-47.4.16"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.20.1-forge:15.20.0.127") {transitive = false}
+	modImplementation("mezz.jei:jei-1.20.1-forge:15.20.0.129") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.20-1.3.11"
 	modImplementation "top.theillusivec4.curios:curios-forge:5.14.1+1.20.1"
 	forgeRuntimeLibrary "com.eliotlash.mclib:mclib:20"
-	modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:4.8.2") {transitive = false}
+	modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:4.8.3") {transitive = false}
 	modImplementation "vazkii.patchouli:Patchouli:1.20.1-84.1-FORGE"
 	forgeRuntimeLibrary "org.commonmark:commonmark:0.25.0"
 	forgeRuntimeLibrary "org.commonmark:commonmark-ext-gfm-strikethrough:0.25.0"
 	forgeRuntimeLibrary "org.commonmark:commonmark-ext-ins:0.25.0"
-	modImplementation("com.klikli_dev:modonomicon-1.20.1-forge:1.79.2") {transitive = false}
+	modImplementation("com.klikli_dev:modonomicon-1.20.1-forge:1.79.3") {transitive = false}
 	modImplementation "dev.architectury:architectury-forge:9.2.14"
 
 	// CraftTweaker
@@ -331,18 +331,18 @@ dependencies {
 	modImplementation "curse.maven:cyclic-239286:6373460"
 
 	// Electrodynamics
-	modImplementation "curse.maven:voltaic-api-1237904:6791637"
-	modImplementation "curse.maven:electrodynamics-316867:6792248"
+	modImplementation "curse.maven:voltaic-api-1237904:7397504"
+	modImplementation "curse.maven:electrodynamics-316867:7427041"
 
 	// Embers Rekindled
-	modImplementation "curse.maven:embers-rekindled-300777:7279674"
+	modImplementation "curse.maven:embers-rekindled-300777:7446478"
 
 	// Ender IO
 	implementation "dev.gigaherz.graph:GraphLib3:3.0.5"
-	modImplementation "com.enderio:EnderIO:1.20.1-6.2.16-beta"
+	modImplementation "com.enderio:EnderIO:1.20.1-6.2.17-beta"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:7046211"
+	modImplementation "curse.maven:energized-power-782147:7495073"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:3.3.1-build-0:with-library") {transitive = false}
@@ -365,7 +365,7 @@ dependencies {
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.20.1:1.15"
-	modImplementation("com.klikli_dev:occultism-1.20.1:1.153.0") {transitive = false}
+	modImplementation("com.klikli_dev:occultism-1.20.1:1.157.0") {transitive = false}
 
 	// Railcraft Reborn
 	modImplementation "curse.maven:railcraft-reborn-901491:7073676"
@@ -381,8 +381,8 @@ dependencies {
 	modImplementation("com.klikli_dev:theurgy-1.20.1:1.25.0") {transitive = false}
 
 	// Tinkers' Construct
-	modImplementation "slimeknights.mantle:Mantle:1.20.1-1.11.79"
-	modImplementation "slimeknights.tconstruct:TConstruct:1.20.1-3.10.2.92"
+	modImplementation "slimeknights.mantle:Mantle:1.20.1-1.11.104"
+	modImplementation "slimeknights.tconstruct:TConstruct:1.20.1-3.11.2.166"
 
 	// Useful Machinery
 	modImplementation "net.themcbrothers:TheMCBrosLib:1.20.1-4.2.0"
@@ -399,7 +399,7 @@ dependencies {
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:4680832"
 	implementation "io.github.llamalad7:mixinextras-forge:0.5.0"
-	modImplementation "curse.maven:modernfix-790626:7306749"
+	modImplementation "curse.maven:modernfix-790626:7515215"
 	modImplementation "curse.maven:ferritecore-429235:4810975"
 }
 
