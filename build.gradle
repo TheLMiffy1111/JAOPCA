@@ -294,16 +294,16 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.21.1:2024.11.17@zip"
 	}
-	neoForge "net.neoforged:neoforge:21.1.216"
+	neoForge "net.neoforged:neoforge:21.1.219"
 
 	// Common
-	implementation("mezz.jei:jei-1.21.1-neoforge:19.25.1.332") {transitive = false}
+	implementation("mezz.jei:jei-1.21.1-neoforge:19.27.0.340") {transitive = false}
 	implementation "thelm.jeimodelbridge:JEIModelBridge:21.1.0"
 	implementation "top.theillusivec4.curios:curios-neoforge:9.5.1+1.21.1"
-	implementation("software.bernie.geckolib:geckolib-neoforge-1.21.1:4.8.2") {transitive = false}
+	implementation("software.bernie.geckolib:geckolib-neoforge-1.21.1:4.8.3") {transitive = false}
 	implementation "vazkii.patchouli:Patchouli:1.21.1-92-NEOFORGE"
 	implementation "org.appliedenergistics:guideme:21.1.15"
-	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.117.2") {transitive = false}
+	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.117.4") {transitive = false}
 	implementation "dev.technici4n:GrandPower:3.0.2"
 	implementation "dev.architectury:architectury-neoforge:13.0.8"
 	forgeRuntimeLibrary "org.sinytra:connector:2.0.0-beta.12+1.21.1"
@@ -329,25 +329,25 @@ dependencies {
 	implementation "curse.maven:actually-additions-228404:7215751"
 
 	// Create
-	implementation("com.simibubi.create:create-1.21.1:6.0.8-168") {transitive = false}
+	implementation("com.simibubi.create:create-1.21.1:6.0.9-216") {transitive = false}
 
 	// Electrodynamics
-	implementation "curse.maven:voltaic-api-1237904:7301188"
-	implementation "curse.maven:electrodynamics-316867:7301196"
+	implementation "curse.maven:voltaic-api-1237904:7397445"
+	implementation "curse.maven:electrodynamics-316867:7427042"
 
 	// Ender IO
-	implementation "com.enderio:enderio-machines:8.0.4-alpha"
+	implementation "com.enderio:enderio-machines:8.1.1-beta"
 
 	// Energized Power
-	implementation "curse.maven:energized-power-782147:7166085"
+	implementation "curse.maven:energized-power-782147:7495087"
 
 	// Immersive Engineering
 	implementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.21.1-12.4.2-194"
 
 	// Integrated Dynamics
-	implementation "curse.maven:cyclops-core-232758:7233423"
-	implementation "curse.maven:common-capabilities-247007:7234592"
-	implementation "curse.maven:integrated-dynamics-236307:7261419"
+	implementation "curse.maven:cyclops-core-232758:7365285"
+	implementation "curse.maven:common-capabilities-247007:7361876"
+	implementation "curse.maven:integrated-dynamics-236307:7518214"
 
 	// Mekanism
 	implementation "mekanism:Mekanism:1.21.1-10.7.17.83"
@@ -358,15 +358,15 @@ dependencies {
 
 	// Occultism
 	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.21.1:1.16.11"
-	implementation("com.klikli_dev:occultism-1.21.1-neoforge:1.197.0") {transitive = false}
+	implementation("com.klikli_dev:occultism-1.21.1-neoforge:1.205.0") {transitive = false}
 
 	// Oritech
 	implementation "earth.terrarium.athena:athena-neoforge-1.21:4.0.2"
 	implementation("io.wispforest:owo-lib-neoforge:0.12.15.1-beta.6+1.21") {transitive = false}
-	implementation "curse.maven:oritech-1030830:7291456"
+	implementation "curse.maven:oritech-1030830:7555534"
 
 	// Railcraft Reborn
-	implementation "curse.maven:railcraft-reborn-901491:7284974"
+	implementation "curse.maven:railcraft-reborn-901491:7393678"
 
 	// Tech Reborn
 	implementation "org.sinytra.forgified-fabric-api:fabric-transfer-api-v1:5.4.2+a25cb45619"
@@ -388,8 +388,8 @@ dependencies {
 
 	// Performance
 	implementation "curse.maven:yeetusexperimentus-635427:5444189"
-	implementation "curse.maven:modernfix-790626:7200212"
-	implementation "curse.maven:ferritecore-429235:5850121"
+	implementation "curse.maven:modernfix-790626:7509726"
+	implementation "curse.maven:ferritecore-429235:7524151"
 }
 
 def replacements = [
