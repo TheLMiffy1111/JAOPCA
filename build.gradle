@@ -122,16 +122,6 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://jenkins.bdew.net/maven/"
-			}
-		}
-		filter {
-			includeGroup "net.bdew"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
 				url = "https://dogforce-games.com/maven/"
 			}
 		}
@@ -320,8 +310,8 @@ dependencies {
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:2.13.10-build-10:with-library") {transitive = false}
-	modImplementation "net.bdew:bdlib:1.25.0.5-mc1.19.2"
-	modImplementation "net.bdew:factorium:1.4.0.4-mc1.19.2"
+	modImplementation "curse.maven:bdlib-70496:4100704"
+	modImplementation "curse.maven:factorium-583423:4100713"
 
 	// FTB Industrial Contraptions
 	modImplementation("dev.ftb.mods:ftb-library-forge:1902.4.1-build.236") {transitive = false}
