@@ -12,6 +12,9 @@
 
 	"item.jaopca.create_crushed": "Crushed Raw %s",
 
+	"item.jaopca.crossroads_grits": "Raw %s Grit",
+	"item.jaopca.crossroads_clumps": "%s Clumps",
+
 	"item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
 	"item.jaopca.electrodynamics_crystals": "%s Crystal",
 	"fluid_type.jaopca.electrodynamics_pureminerals": "Pure %s Solution",

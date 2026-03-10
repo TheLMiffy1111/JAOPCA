@@ -12,6 +12,9 @@
 
 	"item.jaopca.create_crushed": "砕いた%s鉱石",
 
+	"item.jaopca.crossroads_grits": "Raw %s Grit",
+	"item.jaopca.crossroads_clumps": "%s Clumps",
+
 	"item.jaopca.electrodynamics_impuredusts": "低純度%s粉",
 	"item.jaopca.electrodynamics_crystals": "%s結晶",
 	"fluid_type.jaopca.electrodynamics_pureminerals": "純粋な%s溶液",

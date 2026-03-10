@@ -243,7 +243,7 @@ def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.12.20"
+version = "5.0.13.21"
 
 def archivesName = "${modName}-${mcVersion}"
 base.archivesName = archivesName
@@ -330,13 +330,17 @@ dependencies {
 
 	// Create
 	implementation("com.simibubi.create:create-1.21.1:6.0.9-216") {transitive = false}
+	
+	// Crossroads
+	implementation "curse.maven:essentials-293752:7713042"
+	implementation "curse.maven:crossroads-mc-250231:7731539"
 
 	// Electrodynamics
 	implementation "curse.maven:voltaic-api-1237904:7397445"
 	implementation "curse.maven:electrodynamics-316867:7427042"
 
 	// Ender IO
-	implementation "com.enderio:enderio-machines:8.1.1-beta"
+	implementation "com.enderio:enderio:8.1.3-beta"
 
 	// Energized Power
 	implementation "curse.maven:energized-power-782147:7495087"

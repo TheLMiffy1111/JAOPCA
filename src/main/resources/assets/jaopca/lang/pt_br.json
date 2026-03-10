@@ -12,6 +12,9 @@
 
 	"item.jaopca.create_crushed": "%s Bruto Esmagado",
 
+	"item.jaopca.crossroads_grits": "Areia de %s Bruta",
+	"item.jaopca.crossroads_clumps": "Aglomerado de %s",
+
 	"item.jaopca.electrodynamics_impuredusts": "Poeira %s impura",
 	"item.jaopca.electrodynamics_crystals": "%s Cristal",
 	"fluid_type.jaopca.electrodynamics_pureminerals": "Pure %s Solution",
