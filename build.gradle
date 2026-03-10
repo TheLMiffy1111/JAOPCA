@@ -339,7 +339,7 @@ dependencies {
 
 	// Ender IO
 	implementation "dev.gigaherz.graph:GraphLib3:3.0.5"
-	modImplementation "com.enderio:EnderIO:1.20.1-6.2.17-beta"
+	modImplementation "com.enderio:EnderIO:1.20.1-6.2.18-beta"
 
 	// Energized Power
 	modImplementation "curse.maven:energized-power-782147:7495073"
