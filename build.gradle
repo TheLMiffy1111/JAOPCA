@@ -454,6 +454,7 @@ def curseforgeDependencies = [
 	"actually-additions",
 	"crafttweaker",
 	"create",
+	"crossroads-mc",
 	"electrodynamics",
 	"ender-io",
 	"energized-power",
@@ -476,6 +477,7 @@ def modrinthDependencies = [
 	"actually-additions",
 	"crafttweaker",
 	"create",
+	"crossroads",
 	"electrodynamics",
 	"enderio",
 	"energized-power",
@@ -488,6 +490,7 @@ def modrinthDependencies = [
 	"open-loader",
 	"oritech",
 	"railcraft-reborn",
+	"techreborn",
 	"theurgy",
 	"useful-machinery"
 ]
