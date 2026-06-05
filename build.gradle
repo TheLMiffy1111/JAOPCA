@@ -240,7 +240,7 @@ dependencies {
 	modImplementation("CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.711") {transitive = false}
 
 	// GroovyScript
-	modImplementation("com.cleanroommc:groovyscript:1.3.4") {transitive = false}
+	modImplementation("com.cleanroommc:groovyscript:1.4.3") {transitive = false}
 
 	// AbyssalCraft
 	modImplementation "curse.maven:abyssalcraft-53686:7253998"
@@ -263,7 +263,7 @@ dependencies {
 	// Create Legacy
 	modImplementation "team.chisel.ctm:CTM:MC1.12.2-1.0.2.31"
 	modImplementation "epicsquid.mysticallib:mysticallib:1.12.2-1.13.0-89"
-	modImplementation "curse.maven:melonlib-1027035:7472626"
+	modImplementation "curse.maven:melonlib-1027035:7728031"
 	modImplementation "curse.maven:create-legacy-1060988:6140713"
 
 	// Embers Rekindled
@@ -338,9 +338,9 @@ dependencies {
 	modImplementation "slimeknights:TConstruct:1.12.2-2.13.0.183"
 
 	// Performance
-	modImplementation "curse.maven:reid-629017:7571353"
-	modImplementation "curse.maven:vintagefix-871198:6609247"
-	modImplementation "curse.maven:lolasm-460609:7267368"
+	modImplementation "curse.maven:reid-629017:7801299"
+	modImplementation "curse.maven:vintagefix-871198:7958801"
+	modImplementation "curse.maven:lolasm-460609:7671063"
 }
 
 def replacements = [
