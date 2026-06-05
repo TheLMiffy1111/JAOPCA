@@ -207,8 +207,8 @@ dependencies {
 	annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.2.1") {transitive = false}
 
 	// Common
-	modImplementation("com.github.GTNewHorizons:CodeChickenCore:1.4.10") {transitive = false}
-	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.8.60-GTNH") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:CodeChickenCore:1.4.12") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.8.91-GTNH") {transitive = false}
 	modImplementation "curse.maven:nei-integration-225251:2282522"
 	modImplementation "curse.maven:baubles-227083:2224857"
 
@@ -259,7 +259,7 @@ dependencies {
 	modImplementation "curse.maven:ganys-nether-222302:2274606"
 
 	// HBM's Nuclear Tech Mod
-	modImplementation "curse.maven:hbms-nuclear-tech-mod-235439:6900489"
+	modImplementation "curse.maven:hbms-nuclear-tech-mod-235439:7680246"
 
 	// Hydaulicraft
 	modImplementation "k4unl:k4lib:1.7.10-0.1.75:universal"
@@ -300,9 +300,9 @@ dependencies {
 	modImplementation("com.github.GTNewHorizons:TCNEIAdditions:1.5.4") {transitive = false}
 
 	// Performance
-	modImplementation("com.github.GTNewHorizons:GTNHLib:0.8.23") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:GTNHLib:0.9.52") {transitive = false}
 	modImplementation("com.github.GTNewHorizons:NotEnoughIds:2.1.10") {transitive = false}
-	modImplementation "curse.maven:archaicfix-677782:6785841"
+	modImplementation "curse.maven:archaicfix-677782:7700823"
 }
 
 def replacements = [
