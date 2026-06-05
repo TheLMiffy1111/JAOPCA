@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -58,16 +58,16 @@ public class OccultismModule implements IModule {
 	public void onCommonSetup(IModuleData moduleData, FMLCommonSetupEvent event) {
 		OccultismHelper helper = OccultismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		Set<ResourceLocation> itemTags = ApiImpl.INSTANCE.getItemTags();
+		Set<Identifier> itemTags = ApiImpl.INSTANCE.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+			Identifier oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			Identifier dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerCrushingRecipe(
 					miscHelper.getRecipeKey("occultism.ore_to_dust", material.getName()),
 					oreLocation, dustLocation, material.getType().isIngot() ? 2 : 4, 200, false);
 			if(material.getType() == MaterialType.INGOT) {
-				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
-				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
+				Identifier rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				Identifier rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerCrushingRecipe(
 						miscHelper.getRecipeKey("occultism.raw_material_to_dust", material.getName()),
 						rawMaterialLocation, dustLocation, 2, 200, false);

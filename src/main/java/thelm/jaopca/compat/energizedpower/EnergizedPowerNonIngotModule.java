@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -45,8 +45,8 @@ public class EnergizedPowerNonIngotModule implements IModule {
 		EnergizedPowerHelper helper = EnergizedPowerHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+			Identifier oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			Identifier materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			double[] outputChances = material.getType() != MaterialType.DUST ? CRYSTAL_CHANCES : DUST_CHANCES;
 			double[] outputChancesAdvanced = material.getType() != MaterialType.DUST ? CRYSTAL_CHANCES_ADVANCED : DUST_CHANCES_ADVANCED;
 			helper.registerPulverizerRecipe(

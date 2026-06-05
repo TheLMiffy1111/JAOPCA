@@ -20,7 +20,7 @@ public class BlockCustomCodecs {
 
 	public static final Codec<IFormSettings> BLOCK_FORM_SETTINGS =
 			CustomCodecs.<IBlockFormSettings>builder(
-					instance->RecordCodecBuilder.point(BlockFormType.INSTANCE.getNewSettings())).
+					_->RecordCodecBuilder.point(BlockFormType.INSTANCE.getNewSettings())).
 			withField(
 					CustomCodecs.materialMapColorFunction(MapColor.METAL).optionalFieldOf("mapColor"),
 					s->s.getMapColorFunction(),

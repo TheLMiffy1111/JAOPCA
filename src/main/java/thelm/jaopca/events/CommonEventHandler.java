@@ -1,12 +1,14 @@
 package thelm.jaopca.events;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.tags.TagManager;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -17,7 +19,7 @@ import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.data.DataCollector;
@@ -28,6 +30,7 @@ import thelm.jaopca.forms.FormTypeHandler;
 import thelm.jaopca.ingredients.IngredientTypes;
 import thelm.jaopca.items.ItemFormType;
 import thelm.jaopca.materials.MaterialHandler;
+import thelm.jaopca.mixins.ReloadableServerResourcesAccessor;
 import thelm.jaopca.modules.ModuleHandler;
 import thelm.jaopca.registries.RegistryHandler;
 import thelm.jaopca.utils.ApiImpl;
@@ -96,10 +99,9 @@ public class CommonEventHandler {
 		}
 	}
 
-	public void onAddReloadListener(AddReloadListenerEvent event) {
-		MiscHelper.INSTANCE.setTagManager(event.getServerResources().listeners().stream().
-				filter(l->l instanceof TagManager).findFirst().map(l->(TagManager)l).
-				orElseThrow(()->new IllegalStateException("Tag manager not found.")));
+	public void onAddReloadListener(AddServerReloadListenersEvent event) {
+		List<Registry.PendingTags<?>> postponedTags = ((ReloadableServerResourcesAccessor)event.getServerResources()).postponedTags();
+		MiscHelper.INSTANCE.setTagManager(postponedTags);
 	}
 
 	public void onReloadApply(Class<?> clazz, Object object) {

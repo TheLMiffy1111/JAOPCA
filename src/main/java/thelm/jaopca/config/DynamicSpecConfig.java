@@ -151,7 +151,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public Number getDefinedNumber(List<String> path, Number defaultValue, String comment) {
-		return getDefinedNumber(path, defaultValue, value->true, comment);
+		return getDefinedNumber(path, defaultValue, _->true, comment);
 	}
 
 	@Override
@@ -177,7 +177,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public int getDefinedInt(List<String> path, int defaultValue, String comment) {
-		return getDefinedInt(path, defaultValue, value->true, comment);
+		return getDefinedInt(path, defaultValue, _->true, comment);
 	}
 
 	@Override
@@ -207,7 +207,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public long getDefinedLong(List<String> path, long defaultValue, String comment) {
-		return getDefinedLong(path, defaultValue, value->true, comment);
+		return getDefinedLong(path, defaultValue, _->true, comment);
 	}
 
 	@Override
@@ -267,7 +267,7 @@ public class DynamicSpecConfig extends CommentedConfigWrapper<CommentedConfig> i
 
 	@Override
 	public double getDefinedDouble(List<String> path, double defaultValue, String comment) {
-		return getDefinedDouble(path, defaultValue, value->true, comment);
+		return getDefinedDouble(path, defaultValue, _->true, comment);
 	}
 
 	@Override

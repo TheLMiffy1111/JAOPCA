@@ -14,6 +14,7 @@ import it.unimi.dsi.fastutil.shorts.Short2ObjectMap;
 import it.unimi.dsi.fastutil.shorts.Short2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.BlockGetter;
@@ -41,8 +42,8 @@ import net.neoforged.neoforge.event.EventHooks;
 public abstract class PlaceableFluid extends Fluid {
 
 	public static final float EIGHT_NINTHS = 8/9F;
-	private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> OCCLUSION_CACHE = ThreadLocal.withInitial(()->{
-		Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> object2bytelinkedopenhashmap = new Object2ByteLinkedOpenHashMap<>(200) {
+	private static final ThreadLocal<Object2ByteLinkedOpenHashMap<BlockStatePairKey>> OCCLUSION_CACHE = ThreadLocal.withInitial(()->{
+		Object2ByteLinkedOpenHashMap<BlockStatePairKey> object2bytelinkedopenhashmap = new Object2ByteLinkedOpenHashMap<>(200) {
 			@Override
 			protected void rehash(int newN) {}
 		};
@@ -101,42 +102,42 @@ public abstract class PlaceableFluid extends Fluid {
 	protected abstract PlaceableFluidBlock getFluidBlock();
 
 	@Override
-	protected Vec3 getFlow(BlockGetter world, BlockPos pos, FluidState state) {
+	public Vec3 getFlow(BlockGetter level, BlockPos pos, FluidState fluidState) {
 		double x = 0;
 		double y = 0;
-		BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+		BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
 		for(Direction offset : Direction.Plane.HORIZONTAL) {
-			mutablePos.setWithOffset(pos, offset);
-			FluidState offsetState = world.getFluidState(mutablePos);
-			if(affectsFlow(offsetState)) {
-				float offsetHeight = offsetState.getOwnHeight();
-				float heightDiff = 0;
-				if(offsetHeight == 0) {
-					if(!world.getBlockState(mutablePos).blocksMotion()) {
-						BlockPos posDown = mutablePos.below();
-						FluidState belowState = world.getFluidState(posDown);
-						if(affectsFlow(belowState)) {
-							offsetHeight = belowState.getOwnHeight();
-							if(offsetHeight > 0) {
-								heightDiff = state.getOwnHeight() - offsetHeight + EIGHT_NINTHS;
+			blockPos.setWithOffset(pos, offset);
+			FluidState neighbourFluid = level.getFluidState(blockPos);
+			if(affectsFlow(neighbourFluid)) {
+				float neighborHeight = neighbourFluid.getOwnHeight();
+				float distance = 0;
+				if(neighborHeight == 0) {
+					if(!level.getBlockState(blockPos).blocksMotion()) {
+						BlockPos neighborPos = blockPos.below();
+						FluidState belowNeighborState = level.getFluidState(neighborPos);
+						if(affectsFlow(belowNeighborState)) {
+							neighborHeight = belowNeighborState.getOwnHeight();
+							if(neighborHeight > 0) {
+								distance = fluidState.getOwnHeight() - neighborHeight + EIGHT_NINTHS;
 							}
 						}
 					}
 				}
-				else if(offsetHeight > 0) {
-					heightDiff = state.getOwnHeight() - offsetHeight;
+				else if(neighborHeight > 0) {
+					distance = fluidState.getOwnHeight() - neighborHeight;
 				}
-				if(heightDiff != 0) {
-					x += offset.getStepX()*heightDiff;
-					y += offset.getStepZ()*heightDiff;
+				if(distance != 0) {
+					x += offset.getStepX()*distance;
+					y += offset.getStepZ()*distance;
 				}
 			}
 		}
 		Vec3 flow = new Vec3(x, 0, y);
-		if(state.getValue(levelProperty).intValue() == 0) {
+		if(fluidState.getValue(levelProperty).intValue() == 0) {
 			for(Direction offset : Direction.Plane.HORIZONTAL) {
-				mutablePos.setWithOffset(pos, offset);
-				if(isSolidFace(world, mutablePos, offset) || isSolidFace(world, mutablePos.above(), offset)) {
+				blockPos.setWithOffset(pos, offset);
+				if(isSolidFace(level, blockPos, offset) || isSolidFace(level, blockPos.above(), offset)) {
 					flow = flow.normalize().add(0, -6, 0);
 					break;
 				}
@@ -145,80 +146,80 @@ public abstract class PlaceableFluid extends Fluid {
 		return flow.normalize();
 	}
 
-	private boolean affectsFlow(FluidState otherState) {
-		return otherState.isEmpty() || otherState.getType().isSame(this);
+	private boolean affectsFlow(FluidState neighbourFluid) {
+		return neighbourFluid.isEmpty() || neighbourFluid.getType().isSame(this);
 	}
 
-	protected boolean isSolidFace(BlockGetter world, BlockPos pos, Direction face) {
-		BlockState blockState = world.getBlockState(pos);
-		FluidState fluidState = world.getFluidState(pos);
-		return !fluidState.getType().isSame(this) && (face == Direction.UP ||
-				(!(blockState.getBlock() instanceof IceBlock) && blockState.isFaceSturdy(world, pos, face)));
+	protected boolean isSolidFace(BlockGetter level, BlockPos pos, Direction direction) {
+		BlockState state = level.getBlockState(pos);
+		FluidState fluidState = level.getFluidState(pos);
+		return !fluidState.getType().isSame(this) && (direction == Direction.UP ||
+				(!(state.getBlock() instanceof IceBlock) && state.isFaceSturdy(level, pos, direction)));
 	}
 
-	protected void spread(Level world, BlockPos pos, FluidState fluidState) {
+	protected void spread(ServerLevel level, BlockPos pos, BlockState state, FluidState fluidState) {
 		if(!fluidState.isEmpty()) {
-			BlockState blockState = world.getBlockState(pos);
-			BlockPos downPos = pos.below();
-			BlockState downBlockState = world.getBlockState(downPos);
-			FluidState newFluidState = getNewLiquid(world, downPos, downBlockState);
-			if(canSpreadTo(world, pos, blockState, Direction.DOWN, downPos, downBlockState, world.getFluidState(downPos), newFluidState.getType())) {
-				spreadTo(world, downPos, downBlockState, Direction.DOWN, newFluidState);
-				if(sourceNeighborCount(world, pos) >= 3) {
-					spreadToSides(world, pos, fluidState, blockState);
+			BlockState blockState = level.getBlockState(pos);
+			BlockPos belowPos = pos.below();
+			BlockState belowState = level.getBlockState(belowPos);
+			FluidState newBelowFluid = getNewLiquid(level, belowPos, belowState);
+			if(canSpreadTo(level, pos, blockState, Direction.DOWN, belowPos, belowState, level.getFluidState(belowPos), newBelowFluid.getType())) {
+				spreadTo(level, belowPos, belowState, Direction.DOWN, newBelowFluid);
+				if(sourceNeighborCount(level, pos) >= 3) {
+					spreadToSides(level, pos, fluidState, blockState);
 				}
 			}
-			else if(fluidState.isSource() || !isWaterHole(world, newFluidState.getType(), pos, blockState, downPos, downBlockState)) {
-				spreadToSides(world, pos, fluidState, blockState);
+			else if(fluidState.isSource() || !isWaterHole(level, newBelowFluid.getType(), pos, blockState, belowPos, belowState)) {
+				spreadToSides(level, pos, fluidState, blockState);
 			}
 		}
 	}
 
-	protected void spreadToSides(Level world, BlockPos pos, FluidState fluidState, BlockState blockState) {
-		int i = fluidState.getAmount() - getDropOff(world);
-		if(i > 0) {
-			Map<Direction, FluidState> map = getSpread(world, pos, blockState);
-			for(Map.Entry<Direction, FluidState> entry : map.entrySet()) {
+	protected void spreadToSides(ServerLevel level, BlockPos pos, FluidState fluidState, BlockState state) {
+		int neighbor = fluidState.getAmount() - getDropOff(level);
+		if(neighbor > 0) {
+			Map<Direction, FluidState> spreads = getSpread(level, pos, state);
+			for(Map.Entry<Direction, FluidState> entry : spreads.entrySet()) {
 				Direction direction = entry.getKey();
-				FluidState offsetFluidState = entry.getValue();
-				BlockPos offsetPos = pos.relative(direction);
-				BlockState offsetBlockState = world.getBlockState(offsetPos);
-				if(canSpreadTo(world, pos, blockState, direction, offsetPos, offsetBlockState, world.getFluidState(offsetPos), offsetFluidState.getType())) {
-					spreadTo(world, offsetPos, offsetBlockState, direction, offsetFluidState);
+				FluidState newNeighborFluid = entry.getValue();
+				BlockPos neighborPos = pos.relative(direction);
+				BlockState neighborState = level.getBlockState(neighborPos);
+				if(canSpreadTo(level, pos, state, direction, neighborPos, neighborState, level.getFluidState(neighborPos), newNeighborFluid.getType())) {
+					spreadTo(level, neighborPos, neighborState, direction, newNeighborFluid);
 				}
 			}
 		}
 	}
 
-	protected FluidState getNewLiquid(Level world, BlockPos pos, BlockState blockState) {
-		int i = 0;
-		int j = 0;
+	protected FluidState getNewLiquid(ServerLevel level, BlockPos pos, BlockState state) {
+		int highestNeighbor = 0;
+		int neighbourSources = 0;
 		for(Direction direction : Direction.Plane.HORIZONTAL) {
-			BlockPos offsetPos = pos.relative(direction);
-			BlockState offsetBlockState = world.getBlockState(offsetPos);
-			FluidState offsetFluidState = offsetBlockState.getFluidState();
-			if(offsetFluidState.getType().isSame(this) && canPassThroughWall(direction, world, pos, blockState, offsetPos, offsetBlockState)) {
-				if(offsetFluidState.isSource() && EventHooks.canCreateFluidSource(world, pos, blockState)) {
-					++j;
+			BlockPos relativePos = pos.relative(direction);
+			BlockState blockState = level.getBlockState(relativePos);
+			FluidState fluidState = blockState.getFluidState();
+			if(fluidState.getType().isSame(this) && canPassThroughWall(direction, level, pos, state, relativePos, blockState)) {
+				if(fluidState.isSource() && EventHooks.canCreateFluidSource(level, relativePos, blockState)) {// 172
+					++neighbourSources;
 				}
-				i = Math.max(i, offsetFluidState.getAmount());
+				highestNeighbor = Math.max(highestNeighbor, fluidState.getAmount());
 			}
 		}
-		if(j >= 2) {
-			BlockState blockstate1 = world.getBlockState(pos.below());
-			FluidState FluidState1 = blockstate1.getFluidState();
-			if(blockstate1.isSolid() || isSourceBlockOfThisType(FluidState1)) {
+		if(neighbourSources >= 2) {
+			BlockState belowState = level.getBlockState(pos.below());
+			FluidState belowFluid = belowState.getFluidState();
+			if(belowState.isSolid() || isSourceBlockOfThisType(belowFluid)) {
 				return defaultFluidState().setValue(levelProperty, maxLevel);
 			}
 		}
 		BlockPos upPos = pos.above();
-		BlockState upBlockState = world.getBlockState(upPos);
+		BlockState upBlockState = level.getBlockState(upPos);
 		FluidState upFluidState = upBlockState.getFluidState();
-		if(!upFluidState.isEmpty() && upFluidState.getType().isSame(this) && canPassThroughWall(Direction.UP, world, pos, blockState, upPos, upBlockState)) {
+		if(!upFluidState.isEmpty() && upFluidState.getType().isSame(this) && canPassThroughWall(Direction.UP, level, pos, state, upPos, upBlockState)) {
 			return defaultFluidState().setValue(levelProperty, maxLevel+1);
 		}
 		else {
-			int k = i - getDropOff(world);
+			int k = highestNeighbor - getDropOff(level);
 			if(k <= 0) {
 				return Fluids.EMPTY.defaultFluidState();
 			}
@@ -229,16 +230,16 @@ public abstract class PlaceableFluid extends Fluid {
 	}
 
 	protected boolean canPassThroughWall(Direction direction, BlockGetter world, BlockPos fromPos, BlockState fromBlockState, BlockPos toPos, BlockState toBlockState) {
-		Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> cache;
+		Object2ByteLinkedOpenHashMap<BlockStatePairKey> cache;
 		if(!fromBlockState.getBlock().hasDynamicShape() && !toBlockState.getBlock().hasDynamicShape()) {
 			cache = OCCLUSION_CACHE.get();
 		}
 		else {
 			cache = null;
 		}
-		Block.BlockStatePairKey cacheKey;
+		BlockStatePairKey cacheKey;
 		if(cache != null) {
-			cacheKey = new Block.BlockStatePairKey(fromBlockState, toBlockState, direction);
+			cacheKey = new BlockStatePairKey(fromBlockState, toBlockState, direction);
 			byte b0 = cache.getAndMoveToFirst(cacheKey);
 			if(b0 != 127) {
 				return b0 != 0;
@@ -282,41 +283,41 @@ public abstract class PlaceableFluid extends Fluid {
 		return (short)((dx + 128 & 255) << 8 | dz + 128 & 255);
 	}
 
-	protected Map<Direction, FluidState> getSpread(Level world, BlockPos pos, BlockState blockState) {
+	protected Map<Direction, FluidState> getSpread(ServerLevel level, BlockPos pos, BlockState blockState) {
 		int i = 1000;
-		Map<Direction, FluidState> map = new EnumMap<>(Direction.class);
+		Map<Direction, FluidState> result = new EnumMap<>(Direction.class);
 		Short2ObjectMap<Pair<BlockState, FluidState>> stateMap = new Short2ObjectOpenHashMap<>();
 		Short2BooleanMap isWaterHoleMap = new Short2BooleanOpenHashMap();
 		for(Direction direction : Direction.Plane.HORIZONTAL) {
-			BlockPos offsetPos = pos.relative(direction);
-			short key = getCacheKey(pos, offsetPos);
-			Pair<BlockState, FluidState> offsetState = stateMap.computeIfAbsent(key, k->{
-				BlockState offsetBlockState = world.getBlockState(offsetPos);
+			BlockPos testPos = pos.relative(direction);
+			short key = getCacheKey(pos, testPos);
+			Pair<BlockState, FluidState> offsetState = stateMap.computeIfAbsent(key, _->{
+				BlockState offsetBlockState = level.getBlockState(testPos);
 				return Pair.of(offsetBlockState, offsetBlockState.getFluidState());
 			});
-			BlockState offsetBlockState = offsetState.getLeft();
-			FluidState offsetFluidState = offsetState.getRight();
-			FluidState newOffsetFluidState = getNewLiquid(world, offsetPos, offsetBlockState);
-			if(canFlowSource(world, newOffsetFluidState.getType(), pos, blockState, direction, offsetPos, offsetBlockState, offsetFluidState)) {
-				boolean flag = isWaterHoleMap.computeIfAbsent(key, k->{
-					BlockPos offsetDownPos = offsetPos.below();
-					BlockState offsetDownState = world.getBlockState(offsetDownPos);
-					return isWaterHole(world, this, offsetPos, offsetBlockState, offsetDownPos, offsetDownState);
+			BlockState testState = offsetState.getLeft();
+			FluidState testFluidState = offsetState.getRight();
+			FluidState newFluid = getNewLiquid(level, testPos, testState);
+			if(canFlowSource(level, newFluid.getType(), pos, blockState, direction, testPos, testState, testFluidState)) {
+				boolean flag = isWaterHoleMap.computeIfAbsent(key, _->{
+					BlockPos offsetDownPos = testPos.below();
+					BlockState offsetDownState = level.getBlockState(offsetDownPos);
+					return isWaterHole(level, this, testPos, testState, offsetDownPos, offsetDownState);
 				});
 				int j = 0;
 				if(!flag) {
-					j = getSlopeDistance(world, offsetPos, 1, direction.getOpposite(), offsetBlockState, pos, stateMap, isWaterHoleMap);
+					j = getSlopeDistance(level, testPos, 1, direction.getOpposite(), testState, pos, stateMap, isWaterHoleMap);
 				}
 				if(j < i) {
-					map.clear();
+					result.clear();
 				}
 				if(j <= i) {
-					map.put(direction, newOffsetFluidState);
+					result.put(direction, newFluid);
 					i = j;
 				}
 			}
 		}
-		return map;
+		return result;
 	}
 
 	protected int getSlopeDistance(LevelReader world, BlockPos pos, int distance, Direction fromDirection, BlockState blockState, BlockPos startPos, Short2ObjectMap<Pair<BlockState, FluidState>> stateMap, Short2BooleanMap isWaterHoleMap) {
@@ -325,14 +326,14 @@ public abstract class PlaceableFluid extends Fluid {
 			if(direction != fromDirection) {
 				BlockPos offsetPos = pos.relative(direction);
 				short key = getCacheKey(startPos, offsetPos);
-				Pair<BlockState, FluidState> pair = stateMap.computeIfAbsent(key, k->{
+				Pair<BlockState, FluidState> pair = stateMap.computeIfAbsent(key, _->{
 					BlockState offsetBlockState = world.getBlockState(offsetPos);
 					return Pair.of(offsetBlockState, offsetBlockState.getFluidState());
 				});
 				BlockState offsetBlockState = pair.getLeft();
 				FluidState offsetFluidstate = pair.getRight();
 				if(canFlowSource(world, this, pos, blockState, direction, offsetPos, offsetBlockState, offsetFluidstate)) {
-					boolean flag = isWaterHoleMap.computeIfAbsent(key, k->{
+					boolean flag = isWaterHoleMap.computeIfAbsent(key, _->{
 						BlockPos offsetDownPos = offsetPos.below();
 						BlockState offsetDownState = world.getBlockState(offsetDownPos);
 						return isWaterHole(world, this, offsetPos, offsetBlockState, offsetDownPos, offsetDownState);
@@ -397,28 +398,28 @@ public abstract class PlaceableFluid extends Fluid {
 				&& (downState.getFluidState().getType().isSame(this) || canHoldFluid(world, downPos, downState, fluid));
 	}
 
-	protected int getDelay(Level world, BlockPos pos, FluidState fluidState, FluidState newFluidState) {
+	protected int getSpreadDelay(Level world, BlockPos pos, FluidState fluidState, FluidState newFluidState) {
 		return getTickDelay(world);
 	}
 
 	@Override
-	public void tick(Level world, BlockPos pos, FluidState fluidState) {
+	public void tick(ServerLevel level, BlockPos pos, BlockState blockState, FluidState fluidState) {
 		if(!fluidState.isSource()) {
-			FluidState newFluidState = getNewLiquid(world, pos, world.getBlockState(pos));
-			int delay = getDelay(world, pos, fluidState, newFluidState);
+			FluidState newFluidState = getNewLiquid(level, pos, level.getBlockState(pos));
+			int delay = getSpreadDelay(level, pos, fluidState, newFluidState);
 			if(newFluidState.isEmpty()) {
 				fluidState = newFluidState;
-				world.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+				level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
 			}
 			else if(!newFluidState.equals(fluidState)) {
 				fluidState = newFluidState;
-				BlockState blockState = fluidState.createLegacyBlock();
-				world.setBlock(pos, blockState, 2);
-				world.scheduleTick(pos, fluidState.getType(), delay);
-				world.updateNeighborsAt(pos, blockState.getBlock());
+				blockState = fluidState.createLegacyBlock();
+				level.setBlock(pos, blockState, 2);
+				level.scheduleTick(pos, fluidState.getType(), delay);
+				level.updateNeighborsAt(pos, blockState.getBlock());
 			}
 		}
-		spread(world, pos, fluidState);
+		spread(level, pos, blockState, fluidState);
 	}
 
 	protected int getLegacyLevel(FluidState fluidState) {
@@ -458,10 +459,10 @@ public abstract class PlaceableFluid extends Fluid {
 		return shapeMap.computeIfAbsent(fluidState, s->Shapes.box(0, 0, 0, 1, s.getHeight(world, pos), 1));
 	}
 
-    @Override
-    public Optional<SoundEvent> getPickupSound() {
-        return Optional.ofNullable(getFluidType().getSound(SoundActions.BUCKET_FILL));
-    }
+	@Override
+	public Optional<SoundEvent> getPickupSound() {
+		return Optional.ofNullable(getFluidType().getSound(SoundActions.BUCKET_FILL));
+	}
 
 	public static int ceilDiv(int x, int y) {
 		int r = x/y;
@@ -469,5 +470,8 @@ public abstract class PlaceableFluid extends Fluid {
 			r++;
 		}
 		return r;
+	}
+
+	private record BlockStatePairKey(BlockState first, BlockState second, Direction direction) {
 	}
 }

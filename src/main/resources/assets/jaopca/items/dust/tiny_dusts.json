@@ -1,0 +1,11 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"model": "jaopca:item/dust/tiny_dusts",
+		"tints": [
+			{
+				"type": "jaopca:material_form"
+			}
+		]
+	}
+}

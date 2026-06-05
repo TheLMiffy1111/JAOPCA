@@ -54,7 +54,7 @@ class BlockFormSettings implements IBlockFormSettings {
 	private Predicate<IMaterial> isFireSourceFunction = MaterialPredicate.of(false);
 	private Function<IMaterial, PushReaction> pushReactionFunction = MaterialMappedFunction.of(PushReaction.class, PushReaction.NORMAL);
 	private Function<IMaterial, NoteBlockInstrument> instrumentFunction = MaterialMappedFunction.of(NoteBlockInstrument.class, NoteBlockInstrument.HARP);
-	private IBlockLootTableCreator blockLootTableCreator = (block, settings)->{
+	private IBlockLootTableCreator blockLootTableCreator = (block, _)->{
 		return LootTable.lootTable().setParamSet(LootContextParamSets.BLOCK).
 				withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).
 						add(LootItem.lootTableItem(block.toBlock())).

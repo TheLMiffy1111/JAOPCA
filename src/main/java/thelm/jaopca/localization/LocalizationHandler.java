@@ -20,11 +20,11 @@ public class LocalizationHandler {
 	}
 
 	public static ILocalizer getCurrentLocalizer() {
-		return LOCALIZERS.computeIfAbsent(getLanguage(), key->LocalizerDefault.INSTANCE);
+		return LOCALIZERS.computeIfAbsent(getLanguage(), _->LocalizerDefault.INSTANCE);
 	}
 
 	public static String getLanguage() {
-		return MiscHelper.INSTANCE.conditionalSupplier(FMLEnvironment.dist::isClient, ()->()->{
+		return MiscHelper.INSTANCE.conditionalSupplier(FMLEnvironment.getDist()::isClient, ()->()->{
 			Minecraft mc = Minecraft.getInstance();
 			if(mc != null) {
 				String lang = mc.getLanguageManager().getSelected();

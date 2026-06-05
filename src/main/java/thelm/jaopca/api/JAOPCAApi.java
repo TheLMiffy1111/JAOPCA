@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -155,28 +155,28 @@ public abstract class JAOPCAApi {
 	 * @param registry The registry of the tags
 	 * @return The set of tag locations known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getTags(ResourceKey<? extends Registry<?>> registry);
+	public abstract Set<Identifier> getTags(ResourceKey<? extends Registry<?>> registry);
 
 	/**
 	 * Returns the set of known block tag locations, which is the union of defined block tag locations
 	 * and registered block tag locations. Note that tags added by custom data packs may not be included.
 	 * @return The set of block tag locations known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getBlockTags();
+	public abstract Set<Identifier> getBlockTags();
 
 	/**
 	 * Returns the set of known item tag locations, which is the union of defined item tag locations
 	 * and registered item tag locations. Note that tags added by custom data packs may not be included.
 	 * @return The set of item tag locations known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getItemTags();
+	public abstract Set<Identifier> getItemTags();
 
 	/**
 	 * Returns the set of known fluid tag locations, which is the union of defined fluid tag locations
 	 * and registered fluid tag locations. Note that tags added by custom data packs may not be included.
 	 * @return The set of fluid tag locations known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getFluidTags();
+	public abstract Set<Identifier> getFluidTags();
 
 	/**
 	 * Returns the set of known entity type tag locations, which is the union of defined entity type tag
@@ -184,7 +184,7 @@ public abstract class JAOPCAApi {
 	 * not be included.
 	 * @return The set of entity type tag locations known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getEntityTypeTags();
+	public abstract Set<Identifier> getEntityTypeTags();
 
 	/**
 	 * Returns the set of known tag locations of the supplied type, which is the registered tag locations.
@@ -192,14 +192,14 @@ public abstract class JAOPCAApi {
 	 * @param type The type of the tags
 	 * @return The set of tag locations known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getTags(String type);
+	public abstract Set<Identifier> getTags(String type);
 
 	/**
 	 * Returns the set of known recipe locations, which is the union of defined recipe locations and
 	 * registered recipe locations. Note that recipes added by custom data packs may not be included.
 	 * @return The set of recipe locations known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getRecipes();
+	public abstract Set<Identifier> getRecipes();
 
 	/**
 	 * Returns the set of known loot table locations, which is the union of defined loot table locations
@@ -207,7 +207,7 @@ public abstract class JAOPCAApi {
 	 * included.
 	 * @return The set of loot table locations known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getLootTables();
+	public abstract Set<Identifier> getLootTables();
 
 	/**
 	 * Returns the set of known advancement locations, which is the union of defined advancement locations
@@ -215,7 +215,7 @@ public abstract class JAOPCAApi {
 	 * included.
 	 * @return The set of advancement locations known by JAOPCA
 	 */
-	public abstract Set<ResourceLocation> getAdvancements();
+	public abstract Set<Identifier> getAdvancements();
 
 	/**
 	 * Returns the current {@link ILocalizer} based on Minecraft's current language. Will always return the
@@ -237,7 +237,7 @@ public abstract class JAOPCAApi {
 
 	public abstract <T, I extends T> DeferredHolder<T, I> registerRegistryEntry(ResourceKey<? extends Registry<T>> registry, String name, Supplier<I> entry);
 
-	public abstract <T, I extends T> DeferredHolder<T, I> registerRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry);
+	public abstract <T, I extends T> DeferredHolder<T, I> registerRegistryEntry(Identifier registry, String name, Supplier<I> entry);
 
 	/**
 	 * Registers a tag location that may be added externally and should be known to JAOPCA.
@@ -245,35 +245,35 @@ public abstract class JAOPCAApi {
 	 * @param key The tag location that should be known by JAOPCA
 	 * @return true if the tag location was not already defined
 	 */
-	public abstract boolean registerDefinedTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key);
+	public abstract boolean registerDefinedTag(ResourceKey<? extends Registry<?>> registry, Identifier key);
 
 	/**
 	 * Registers a block tag location that may be added externally and should be known to JAOPCA.
 	 * @param key The tag location that should be known by JAOPCA
 	 * @return true if the tag location was not already defined
 	 */
-	public abstract boolean registerDefinedBlockTag(ResourceLocation key);
+	public abstract boolean registerDefinedBlockTag(Identifier key);
 
 	/**
 	 * Registers an item tag location that may be added externally and should be known to JAOPCA.
 	 * @param key The tag location that should be known by JAOPCA
 	 * @return true if the tag location was not already defined
 	 */
-	public abstract boolean registerDefinedItemTag(ResourceLocation key);
+	public abstract boolean registerDefinedItemTag(Identifier key);
 
 	/**
 	 * Registers a fluid tag location that may be added externally and should be known to JAOPCA.
 	 * @param key The tag location that should be known by JAOPCA
 	 * @return true if the tag location was not already defined
 	 */
-	public abstract boolean registerDefinedFluidTag(ResourceLocation key);
+	public abstract boolean registerDefinedFluidTag(Identifier key);
 
 	/**
 	 * Registers an entity type tag location that may be added externally and should be known to JAOPCA.
 	 * @param key The tag location that should be known by JAOPCA
 	 * @return true if the tag location was not already defined
 	 */
-	public abstract boolean registerDefinedEntityTypeTag(ResourceLocation key);
+	public abstract boolean registerDefinedEntityTypeTag(Identifier key);
 
 	public abstract boolean registerReloadInjector(Class<?> clazz, Consumer<Object> injector);
 
@@ -286,7 +286,7 @@ public abstract class JAOPCAApi {
 	 * @param objKey The registry object location to be added
 	 * @return true if the tag location was added
 	 */
-	public abstract boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key, Supplier<ResourceLocation> objKey);
+	public abstract boolean registerTag(ResourceKey<? extends Registry<?>> registry, Identifier key, Supplier<Identifier> objKey);
 
 	/**
 	 * Registers a registry object location to be added to a tag by JAOPCA's in memory data pack.
@@ -297,7 +297,7 @@ public abstract class JAOPCAApi {
 	 * @param objKey The registry object location to be added
 	 * @return true if the tag location was added
 	 */
-	public abstract boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key, ResourceLocation objKey);
+	public abstract boolean registerTag(ResourceKey<? extends Registry<?>> registry, Identifier key, Identifier objKey);
 
 	/**
 	 * Registers a registry object to be added to a tag by JAOPCA's in memory data pack. Locations that do
@@ -308,7 +308,7 @@ public abstract class JAOPCAApi {
 	 * @param obj The registry object to be added
 	 * @return true if the tag location was added
 	 */
-	public abstract <T> boolean registerTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation key, T obj);
+	public abstract <T> boolean registerTag(ResourceKey<? extends Registry<T>> registry, Identifier key, T obj);
 
 	/**
 	 * Registers a block location to be added to a tag by JAOPCA's in memory data pack. Locations that do
@@ -317,7 +317,7 @@ public abstract class JAOPCAApi {
 	 * @param blockKey The block location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerBlockTag(ResourceLocation key, Supplier<ResourceLocation> blockKey);
+	public abstract boolean registerBlockTag(Identifier key, Supplier<Identifier> blockKey);
 
 	/**
 	 * Registers a block location to be added to a tag by JAOPCA's in memory data pack. Locations that do
@@ -326,7 +326,7 @@ public abstract class JAOPCAApi {
 	 * @param blockKey The block location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey);
+	public abstract boolean registerBlockTag(Identifier key, Identifier blockKey);
 
 	/**
 	 * Registers a block to be added to a tag by JAOPCA's in memory data pack.
@@ -334,7 +334,7 @@ public abstract class JAOPCAApi {
 	 * @param block The block to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerBlockTag(ResourceLocation key, Block block);
+	public abstract boolean registerBlockTag(Identifier key, Block block);
 
 	/**
 	 * Registers a block to be added to a tag by JAOPCA's in memory data pack.
@@ -342,7 +342,7 @@ public abstract class JAOPCAApi {
 	 * @param block The block to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerBlockTag(ResourceLocation key, IBlockLike block);
+	public abstract boolean registerBlockTag(Identifier key, IBlockLike block);
 
 	/**
 	 * Registers an item location to be added to a tag by JAOPCA's in memory data pack. Locations that do
@@ -351,7 +351,7 @@ public abstract class JAOPCAApi {
 	 * @param itemKey The item location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerItemTag(ResourceLocation key, Supplier<ResourceLocation> itemKey);
+	public abstract boolean registerItemTag(Identifier key, Supplier<Identifier> itemKey);
 
 	/**
 	 * Registers an item location to be added to a tag by JAOPCA's in memory data pack. Locations that do
@@ -360,7 +360,7 @@ public abstract class JAOPCAApi {
 	 * @param itemKey The item location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey);
+	public abstract boolean registerItemTag(Identifier key, Identifier itemKey);
 
 	/**
 	 * Registers an item to be added to a tag by JAOPCA's in memory data pack.
@@ -368,7 +368,7 @@ public abstract class JAOPCAApi {
 	 * @param item The item to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerItemTag(ResourceLocation key, Item item);
+	public abstract boolean registerItemTag(Identifier key, Item item);
 
 	/**
 	 * Registers an item to be added to a tag by JAOPCA's in memory data pack.
@@ -376,7 +376,7 @@ public abstract class JAOPCAApi {
 	 * @param item The item to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerItemTag(ResourceLocation key, ItemLike item);
+	public abstract boolean registerItemTag(Identifier key, ItemLike item);
 
 	/**
 	 * Registers a fluid location to be added to a tag by JAOPCA's in memory data pack. Locations that do
@@ -385,7 +385,7 @@ public abstract class JAOPCAApi {
 	 * @param fluidKey The fluid location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerFluidTag(ResourceLocation key, Supplier<ResourceLocation> fluidKey);
+	public abstract boolean registerFluidTag(Identifier key, Supplier<Identifier> fluidKey);
 
 	/**
 	 * Registers a fluid location to be added to a tag by JAOPCA's in memory data pack. Locations that do
@@ -394,7 +394,7 @@ public abstract class JAOPCAApi {
 	 * @param fluidKey The fluid location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey);
+	public abstract boolean registerFluidTag(Identifier key, Identifier fluidKey);
 
 	/**
 	 * Registers a fluid to be added to a tag by JAOPCA's in memory data pack.
@@ -402,7 +402,7 @@ public abstract class JAOPCAApi {
 	 * @param fluid The fluid to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerFluidTag(ResourceLocation key, Fluid fluid);
+	public abstract boolean registerFluidTag(Identifier key, Fluid fluid);
 
 	/**
 	 * Registers a fluid to be added to a tag by JAOPCA's in memory data pack.
@@ -410,7 +410,7 @@ public abstract class JAOPCAApi {
 	 * @param fluid The fluid to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerFluidTag(ResourceLocation key, IFluidLike fluid);
+	public abstract boolean registerFluidTag(Identifier key, IFluidLike fluid);
 
 	/**
 	 * Registers an entity type location to be added to a tag by JAOPCA's in memory data pack. Locations that
@@ -419,7 +419,7 @@ public abstract class JAOPCAApi {
 	 * @param entityTypeKey The entity type location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerEntityTypeTag(ResourceLocation key, Supplier<ResourceLocation> entityTypeKey);
+	public abstract boolean registerEntityTypeTag(Identifier key, Supplier<Identifier> entityTypeKey);
 
 	/**
 	 * Registers an entity type location to be added to a tag by JAOPCA's in memory data pack. Locations that
@@ -428,7 +428,7 @@ public abstract class JAOPCAApi {
 	 * @param entityTypeKey The entity type location to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey);
+	public abstract boolean registerEntityTypeTag(Identifier key, Identifier entityTypeKey);
 
 	/**
 	 * Registers an entity type to be added to a tag by JAOPCA's in memory data pack.
@@ -436,7 +436,7 @@ public abstract class JAOPCAApi {
 	 * @param entityType The entity type to be added
 	 * @return true if the tag location was not blacklisted in the configuration file
 	 */
-	public abstract boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType);
+	public abstract boolean registerEntityTypeTag(Identifier key, EntityType<?> entityType);
 
 	public abstract void registerDefaultGemOverride(String materialName);
 
@@ -450,198 +450,198 @@ public abstract class JAOPCAApi {
 	 * @param recipeSerializer The recipe serializer
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerRecipe(ResourceLocation key, IRecipeSerializer recipeSerializer);
+	public abstract boolean registerRecipe(Identifier key, IRecipeSerializer recipeSerializer);
 
-	public abstract boolean registerShapedRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input);
+	public abstract boolean registerShapedRecipe(Identifier key, String group, CraftingBookCategory category, Object output, int count, Object... input);
 
-	public abstract boolean registerShapedRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input);
+	public abstract boolean registerShapedRecipe(Identifier key, CraftingBookCategory category, Object output, int count, Object... input);
 
 	/**
 	 * Creates a shaped recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param input The input of the recipe in the form of how one would specify inputs in Minecraft versions
 	 * prior to 1.12, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input);
+	public abstract boolean registerShapedRecipe(Identifier key, String group, Object output, int count, Object... input);
 
 	/**
 	 * Creates a shaped recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param input The input of the recipe in the form of how one would specify inputs in Minecraft versions
 	 * prior to 1.12, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input);
+	public abstract boolean registerShapedRecipe(Identifier key, Object output, int count, Object... input);
 
-	public abstract boolean registerShapelessRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input);
+	public abstract boolean registerShapelessRecipe(Identifier key, String group, CraftingBookCategory category, Object output, int count, Object... input);
 
-	public abstract boolean registerShapelessRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input);
+	public abstract boolean registerShapelessRecipe(Identifier key, CraftingBookCategory category, Object output, int count, Object... input);
 
 	/**
 	 * Creates a shapeless recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param input An array of inputs for the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid
 	 * input forms
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerShapelessRecipe(ResourceLocation key, String group, Object output, int count, Object... input);
+	public abstract boolean registerShapelessRecipe(Identifier key, String group, Object output, int count, Object... input);
 
 	/**
 	 * Creates a shapeless recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param input An array of inputs for the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid
 	 * input forms
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input);
+	public abstract boolean registerShapelessRecipe(Identifier key, Object output, int count, Object... input);
 
-	public abstract boolean registerSmeltingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmeltingRecipe(Identifier key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
 
-	public abstract boolean registerSmeltingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmeltingRecipe(Identifier key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a furnace recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerSmeltingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmeltingRecipe(Identifier key, String group, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a furnace recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmeltingRecipe(Identifier key, Object input, Object output, int count, float experience, int time);
 
-	public abstract boolean registerBlastingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerBlastingRecipe(Identifier key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
 
-	public abstract boolean registerBlastingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerBlastingRecipe(Identifier key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a blasting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerBlastingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerBlastingRecipe(Identifier key, String group, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a blasting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerBlastingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerBlastingRecipe(Identifier key, Object input, Object output, int count, float experience, int time);
 
-	public abstract boolean registerSmokingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmokingRecipe(Identifier key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
 
-	public abstract boolean registerSmokingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmokingRecipe(Identifier key, CookingBookCategory category, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a smoking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerSmokingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmokingRecipe(Identifier key, String group, Object input, Object output, int count, float experience, int time);
 
 	/**
 	 * Creates a smoking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param experience The amount of experience the recipe gives
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerSmokingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time);
+	public abstract boolean registerSmokingRecipe(Identifier key, Object input, Object output, int count, float experience, int time);
 
-	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, int time);
+	public abstract boolean registerCampfireCookingRecipe(Identifier key, String group, CookingBookCategory category, Object input, Object output, int count, int time);
 
-	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, int time);
+	public abstract boolean registerCampfireCookingRecipe(Identifier key, CookingBookCategory category, Object input, Object output, int count, int time);
 
 	/**
 	 * Creates a campfire cooking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, String group, Object input, Object output, int count, int time);
+	public abstract boolean registerCampfireCookingRecipe(Identifier key, String group, Object input, Object output, int count, int time);
 
 	/**
 	 * Creates a campfire cooking recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @param time The time required for the recipe in ticks
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerCampfireCookingRecipe(ResourceLocation key, Object input, Object output, int count, int time);
+	public abstract boolean registerCampfireCookingRecipe(Identifier key, Object input, Object output, int count, int time);
 
 	/**
 	 * Creates a stonecutting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param group The identifier used to group recipes in the recipe book
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerStonecuttingRecipe(ResourceLocation key, String group, Object input, Object output, int count);
+	public abstract boolean registerStonecuttingRecipe(Identifier key, String group, Object input, Object output, int count);
 
 	/**
 	 * Creates a stonecutting recipe supplier that is then registered for injection.
 	 * @param key The id of the recipe
 	 * @param input The input of the recipe, see {@link IMiscHelper#getIngredient(Object)} for valid input forms
-	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStack(Object, int)} for valid output forms
+	 * @param output The output of the recipe, see {@link IMiscHelper#getItemStackTemplate(Object, int)} for valid output forms
 	 * @param count The size of the output
 	 * @return true if the id of the recipe was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count);
+	public abstract boolean registerStonecuttingRecipe(Identifier key, Object input, Object output, int count);
 
-	public abstract boolean registerSmithingRecipe(ResourceLocation key, Object template, Object base, Object addition, Object output, int count);
+	public abstract boolean registerSmithingRecipe(Identifier key, Object template, Object base, Object addition, Object output, int count);
 
 	/**
 	 * Registers a loot table supplier to be added by JAOPCA's in memory data pack.
@@ -649,7 +649,7 @@ public abstract class JAOPCAApi {
 	 * @param lootTableSupplier The loot table supplier
 	 * @return true if the id of the loot table was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerLootTable(ResourceLocation key, Supplier<LootTable> lootTableSupplier);
+	public abstract boolean registerLootTable(Identifier key, Supplier<LootTable> lootTableSupplier);
 
 	/**
 	 * Registers a loot table to be added by JAOPCA's in memory data pack.
@@ -657,7 +657,7 @@ public abstract class JAOPCAApi {
 	 * @param lootTable The loot table
 	 * @return true if the id of the loot table was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerLootTable(ResourceLocation key, LootTable lootTable);
+	public abstract boolean registerLootTable(Identifier key, LootTable lootTable);
 
 	/**
 	 * Registers an advancement builder supplier to be added by JAOPCA's in memory data pack.
@@ -665,7 +665,7 @@ public abstract class JAOPCAApi {
 	 * @param advancementBuilderSupplier The advancement builder supplier
 	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerAdvancement(ResourceLocation key, Supplier<Advancement.Builder> advancementBuilderSupplier);
+	public abstract boolean registerAdvancement(Identifier key, Supplier<Advancement.Builder> advancementBuilderSupplier);
 
 	/**
 	 * Registers an advancement builder to be added by JAOPCA's in memory data pack.
@@ -673,11 +673,11 @@ public abstract class JAOPCAApi {
 	 * @param advancementBuilder The advancement builder
 	 * @return true if the id of the advancement was not blacklisted in the configuration file and was not taken
 	 */
-	public abstract boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder);
+	public abstract boolean registerAdvancement(Identifier key, Advancement.Builder advancementBuilder);
 
 	public abstract <T> boolean registerDataMapEntry(DataMapType<?, T> type, ExtraCodecs.TagOrElementLocation location, Supplier<T> valueSupplier);
 
-	public abstract <T> boolean registerDataMapEntry(DataMapType<?, T> type, ResourceLocation tagLocation, Supplier<T> valueSupplier);
+	public abstract <T> boolean registerDataMapEntry(DataMapType<?, T> type, Identifier tagLocation, Supplier<T> valueSupplier);
 
 	/**
 	 * Registers an {@link ILocalizer} to languages for use by JAOPCA.

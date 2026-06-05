@@ -12,7 +12,7 @@ import com.google.common.collect.TreeBasedTable;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -61,7 +61,7 @@ public class ItemFormType implements IItemFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName(), form.getTagSeparator());
+		Identifier tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName(), form.getTagSeparator());
 		return !ApiImpl.INSTANCE.getItemTags().contains(tagLocation);
 	}
 
@@ -99,13 +99,13 @@ public class ItemFormType implements IItemFormType {
 			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
 				String name = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath("jaopca", name);
+				Identifier registryName = Identifier.fromNamespaceAndPath("jaopca", name);
 
-				Supplier<IMaterialFormItem> materialFormItem = MemoizingSuppliers.of(()->settings.getItemCreator().create(form, material, settings));
+				Supplier<IMaterialFormItem> materialFormItem = MemoizingSuppliers.of(()->settings.getItemCreator().create(form, material, settings, registryName));
 				ITEMS.put(form, material, materialFormItem);
 				RegistryHandler.registerRegistryEntry(Registries.ITEM, name, ()->materialFormItem.get().toItem());
 
-				api.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
+				api.registerItemTag(helper.createIdentifier(secondaryName), registryName);
 				api.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
 					api.registerItemTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
@@ -125,7 +125,7 @@ public class ItemFormType implements IItemFormType {
 	}
 
 	@Override
-	public void addItemModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+	public void addItemModelRemaps(Set<Identifier> allLocations, BiConsumer<Identifier, Identifier> output) {
 		getItems().forEach(mf->mf.addItemModelRemaps(allLocations, output));
 	}
 

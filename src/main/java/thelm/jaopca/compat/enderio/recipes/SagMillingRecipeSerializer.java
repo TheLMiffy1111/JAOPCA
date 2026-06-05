@@ -13,9 +13,9 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
@@ -24,13 +24,13 @@ public class SagMillingRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final Identifier key;
 	public final Object input;
 	public final int energy;
 	public final BonusType bonusType;
 	public final Object[] output;
 
-	public SagMillingRecipeSerializer(ResourceLocation key, Object input, int energy, String bonusType, Object... output) {
+	public SagMillingRecipeSerializer(Identifier key, Object input, int energy, String bonusType, Object... output) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.energy = energy;
@@ -59,8 +59,8 @@ public class SagMillingRecipeSerializer implements IRecipeSerializer {
 				chance = (Float)output[i];
 				++i;
 			}
-			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
-			if(stack.isEmpty()) {
+			ItemStackTemplate stack = MiscHelper.INSTANCE.getItemStackTemplate(out, count);
+			if(stack == null) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 				continue;
 			}
@@ -75,16 +75,16 @@ public class SagMillingRecipeSerializer implements IRecipeSerializer {
 	// recreation of SAG mill recipe structs in case Ender IO moves them again
 	public record SagMillingRecipe(Ingredient input, List<OutputItem> outputs, int energy, BonusType bonusType) {
 		public static final Codec<SagMillingRecipe> CODEC = RecordCodecBuilder.create(instance->instance.group(
-				Ingredient.CODEC_NONEMPTY.fieldOf("input").forGetter(SagMillingRecipe::input),
+				Ingredient.CODEC.fieldOf("input").forGetter(SagMillingRecipe::input),
 				OutputItem.CODEC.listOf().fieldOf("outputs").forGetter(SagMillingRecipe::outputs),
 				Codec.INT.fieldOf("energy").forGetter(SagMillingRecipe::energy),
 				BonusType.CODEC.optionalFieldOf("bonus", BonusType.MULTIPLY_OUTPUT).forGetter(SagMillingRecipe::bonusType)).
 				apply(instance, SagMillingRecipe::new));
 	}
 
-	public record OutputItem(ItemStack output, float chance, boolean isOptional) {
+	public record OutputItem(ItemStackTemplate output, float chance, boolean isOptional) {
 		public static final Codec<OutputItem> CODEC = RecordCodecBuilder.create(instance->instance.group(
-				ItemStack.CODEC.fieldOf("item").forGetter(OutputItem::output),
+				ItemStackTemplate.CODEC.fieldOf("item").forGetter(OutputItem::output),
 				Codec.FLOAT.optionalFieldOf("chance", 1F).forGetter(OutputItem::chance),
 				Codec.BOOL.optionalFieldOf("optional", false).forGetter(OutputItem::isOptional)).
 				apply(instance, OutputItem::new));

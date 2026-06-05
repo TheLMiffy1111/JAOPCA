@@ -53,7 +53,7 @@ public final class MaterialLongFunction implements ToLongFunction<IMaterial> {
 			return of(defaultValue, mf.materialTypes, mf.materials, mf.path, mf.comment);
 		}
 		Object2LongMap<IMaterial> materialMap = JAOPCAApi.instance().getMaterials().stream().collect(
-				Collectors.toMap(Function.identity(), function::applyAsLong, (a, b)->a, Object2LongOpenHashMap::new));
+				Collectors.toMap(Function.identity(), function::applyAsLong, (a, _)->a, Object2LongOpenHashMap::new));
 		return of(defaultValue, Object2LongMaps.emptyMap(), materialMap, "", "");
 	}
 
@@ -61,7 +61,7 @@ public final class MaterialLongFunction implements ToLongFunction<IMaterial> {
 	public long applyAsLong(IMaterial material) {
 		if(!path.isEmpty()) {
 			return configMaterials.computeIfAbsent(material,
-					m->JAOPCAApi.instance().getMaterialConfig(material).getDefinedLong(path, applyAsLongUnconfigured(material), comment));
+					_->JAOPCAApi.instance().getMaterialConfig(material).getDefinedLong(path, applyAsLongUnconfigured(material), comment));
 		}
 		return applyAsLongUnconfigured(material);
 	}

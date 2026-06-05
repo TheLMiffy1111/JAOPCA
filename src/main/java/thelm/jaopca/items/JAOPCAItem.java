@@ -2,7 +2,10 @@ package thelm.jaopca.items;
 
 import java.util.function.BooleanSupplier;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import thelm.jaopca.api.forms.IForm;
@@ -20,8 +23,8 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 
 	protected BooleanSupplier hasEffect;
 
-	public JAOPCAItem(IForm form, IMaterial material, IItemFormSettings settings) {
-		super(getProperties(form, material, settings));
+	public JAOPCAItem(IForm form, IMaterial material, IItemFormSettings settings, Identifier registryName) {
+		super(getProperties(form, material, settings, registryName));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -29,8 +32,9 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), ()->material);
 	}
 
-	public static Item.Properties getProperties(IForm form, IMaterial material, IItemFormSettings settings) {
+	public static Item.Properties getProperties(IForm form, IMaterial material, IItemFormSettings settings, Identifier registryName) {
 		Item.Properties prop = new Item.Properties();
+		prop.setId(ResourceKey.create(Registries.ITEM, registryName));
 		prop.rarity(settings.getDisplayRarityFunction().apply(material));
 		return prop;
 	}
@@ -52,6 +56,6 @@ public class JAOPCAItem extends Item implements IMaterialFormItem {
 
 	@Override
 	public Component getName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+form.getName(), material, getDescriptionId(stack));
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("item.jaopca."+form.getName(), material, getDescriptionId());
 	}
 }

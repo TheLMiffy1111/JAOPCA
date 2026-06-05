@@ -28,12 +28,10 @@ public class ResourceInjector {
 		@Override
 		public void loadPacks(Consumer<Pack> packConsumer) {
 			PackLocationInfo packLocation = new PackLocationInfo("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), PackSource.BUILT_IN, Optional.empty());
+			InMemoryResourcePack pack = new InMemoryResourcePack(packLocation, true);
+			ModuleHandler.onCreateResourcePack(pack);
 			PackSelectionConfig packSelection = new PackSelectionConfig(true, Pack.Position.BOTTOM, false);
-			Pack packInfo = Pack.readMetaAndCreate(packLocation, BuiltInPackSource.fromName(packId->{
-				InMemoryResourcePack pack = new InMemoryResourcePack(packId, true);
-				ModuleHandler.onCreateResourcePack(pack);
-				return pack;
-			}), PackType.SERVER_DATA, packSelection);
+			Pack packInfo = Pack.readMetaAndCreate(packLocation, BuiltInPackSource.fixedResources(pack), PackType.SERVER_DATA, packSelection);
 			packConsumer.accept(packInfo);
 		}
 	}

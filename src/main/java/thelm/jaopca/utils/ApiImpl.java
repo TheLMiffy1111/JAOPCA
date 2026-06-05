@@ -17,8 +17,8 @@ import net.minecraft.advancements.Advancement.Builder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -149,47 +149,47 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public Set<ResourceLocation> getTags(ResourceKey<? extends Registry<?>> registry) {
+	public Set<Identifier> getTags(ResourceKey<? extends Registry<?>> registry) {
 		return Sets.union(DataCollector.getDefinedTags(registry), DataInjector.getInjectTags(registry));
 	}
 
 	@Override
-	public Set<ResourceLocation> getBlockTags() {
+	public Set<Identifier> getBlockTags() {
 		return getTags(Registries.BLOCK);
 	}
 
 	@Override
-	public Set<ResourceLocation> getItemTags() {
+	public Set<Identifier> getItemTags() {
 		return getTags(Registries.ITEM);
 	}
 
 	@Override
-	public Set<ResourceLocation> getFluidTags() {
+	public Set<Identifier> getFluidTags() {
 		return getTags(Registries.FLUID);
 	}
 
 	@Override
-	public Set<ResourceLocation> getEntityTypeTags() {
+	public Set<Identifier> getEntityTypeTags() {
 		return getTags(Registries.ENTITY_TYPE);
 	}
 
 	@Override
-	public Set<ResourceLocation> getTags(String type) {
+	public Set<Identifier> getTags(String type) {
 		return Collections.unmodifiableSet(DataCollector.getDefinedTags(type));
 	}
 
 	@Override
-	public Set<ResourceLocation> getRecipes() {
+	public Set<Identifier> getRecipes() {
 		return Sets.union(DataCollector.getDefinedRecipes(), DataInjector.getInjectRecipes());
 	}
 
 	@Override
-	public Set<ResourceLocation> getLootTables() {
+	public Set<Identifier> getLootTables() {
 		return Sets.union(DataCollector.getDefinedLootTables(), DataInjector.getInjectLootTables());
 	}
 
 	@Override
-	public Set<ResourceLocation> getAdvancements() {
+	public Set<Identifier> getAdvancements() {
 		return Sets.union(DataCollector.getDefinedAdvancements(), DataInjector.getInjectAdvancements());
 	}
 
@@ -219,32 +219,32 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public <T, I extends T> DeferredHolder<T, I> registerRegistryEntry(ResourceLocation registry, String name, Supplier<I> entry) {
+	public <T, I extends T> DeferredHolder<T, I> registerRegistryEntry(Identifier registry, String name, Supplier<I> entry) {
 		return RegistryHandler.registerRegistryEntry(registry, name, entry);
 	}
 
 	@Override
-	public boolean registerDefinedTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key) {
+	public boolean registerDefinedTag(ResourceKey<? extends Registry<?>> registry, Identifier key) {
 		return DataCollector.getDefinedTags(registry).add(key);
 	}
 
 	@Override
-	public boolean registerDefinedBlockTag(ResourceLocation key) {
+	public boolean registerDefinedBlockTag(Identifier key) {
 		return registerDefinedTag(Registries.BLOCK, key);
 	}
 
 	@Override
-	public boolean registerDefinedItemTag(ResourceLocation key) {
+	public boolean registerDefinedItemTag(Identifier key) {
 		return registerDefinedTag(Registries.ITEM, key);
 	}
 
 	@Override
-	public boolean registerDefinedFluidTag(ResourceLocation key) {
+	public boolean registerDefinedFluidTag(Identifier key) {
 		return registerDefinedTag(Registries.FLUID, key);
 	}
 
 	@Override
-	public boolean registerDefinedEntityTypeTag(ResourceLocation key) {
+	public boolean registerDefinedEntityTypeTag(Identifier key) {
 		return registerDefinedTag(Registries.ENTITY_TYPE, key);
 	}
 
@@ -254,22 +254,22 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key, Supplier<ResourceLocation> objKey) {
+	public boolean registerTag(ResourceKey<? extends Registry<?>> registry, Identifier key, Supplier<Identifier> objKey) {
 		return DataInjector.registerTag(registry, key, objKey);
 	}
 
 	@Override
-	public boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation key, ResourceLocation objKey) {
+	public boolean registerTag(ResourceKey<? extends Registry<?>> registry, Identifier key, Identifier objKey) {
 		return registerTag(registry, key, ()->objKey);
 	}
 
 	@Override
-	public <T> boolean registerTag(ResourceKey<? extends Registry<T>> registry, ResourceLocation key, T obj) {
-		return registerTag(registry, key, (Supplier<ResourceLocation>)()->((Registry<T>)BuiltInRegistries.REGISTRY.get(registry.location())).getKey(obj));
+	public <T> boolean registerTag(ResourceKey<? extends Registry<T>> registry, Identifier key, T obj) {
+		return registerTag(registry, key, (Supplier<Identifier>)()->((Registry<T>)BuiltInRegistries.REGISTRY.getValue(registry.identifier())).getKey(obj));
 	}
 
 	@Override
-	public boolean registerBlockTag(ResourceLocation key, Supplier<ResourceLocation> blockKey) {
+	public boolean registerBlockTag(Identifier key, Supplier<Identifier> blockKey) {
 		if(ConfigHandler.BLOCK_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -277,22 +277,22 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerBlockTag(ResourceLocation key, ResourceLocation blockKey) {
+	public boolean registerBlockTag(Identifier key, Identifier blockKey) {
 		return registerBlockTag(key, ()->blockKey);
 	}
 
 	@Override
-	public boolean registerBlockTag(ResourceLocation key, Block block) {
+	public boolean registerBlockTag(Identifier key, Block block) {
 		return registerBlockTag(key, ()->BuiltInRegistries.BLOCK.getKey(block));
 	}
 
 	@Override
-	public boolean registerBlockTag(ResourceLocation key, IBlockLike block) {
+	public boolean registerBlockTag(Identifier key, IBlockLike block) {
 		return registerBlockTag(key, ()->BuiltInRegistries.BLOCK.getKey(block.asBlock()));
 	}
 
 	@Override
-	public boolean registerItemTag(ResourceLocation key, Supplier<ResourceLocation> itemKey) {
+	public boolean registerItemTag(Identifier key, Supplier<Identifier> itemKey) {
 		if(ConfigHandler.ITEM_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -300,22 +300,22 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerItemTag(ResourceLocation key, ResourceLocation itemKey) {
+	public boolean registerItemTag(Identifier key, Identifier itemKey) {
 		return registerItemTag(key, ()->itemKey);
 	}
 
 	@Override
-	public boolean registerItemTag(ResourceLocation key, Item item) {
+	public boolean registerItemTag(Identifier key, Item item) {
 		return registerItemTag(key, ()->BuiltInRegistries.ITEM.getKey(item));
 	}
 
 	@Override
-	public boolean registerItemTag(ResourceLocation key, ItemLike item) {
+	public boolean registerItemTag(Identifier key, ItemLike item) {
 		return registerItemTag(key, ()->BuiltInRegistries.ITEM.getKey(item.asItem()));
 	}
 
 	@Override
-	public boolean registerFluidTag(ResourceLocation key, Supplier<ResourceLocation> fluidKey) {
+	public boolean registerFluidTag(Identifier key, Supplier<Identifier> fluidKey) {
 		if(ConfigHandler.FLUID_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -323,22 +323,22 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerFluidTag(ResourceLocation key, ResourceLocation fluidKey) {
+	public boolean registerFluidTag(Identifier key, Identifier fluidKey) {
 		return registerFluidTag(key, ()->fluidKey);
 	}
 
 	@Override
-	public boolean registerFluidTag(ResourceLocation key, Fluid fluid) {
+	public boolean registerFluidTag(Identifier key, Fluid fluid) {
 		return registerFluidTag(key, ()->BuiltInRegistries.FLUID.getKey(fluid));
 	}
 
 	@Override
-	public boolean registerFluidTag(ResourceLocation key, IFluidLike fluid) {
+	public boolean registerFluidTag(Identifier key, IFluidLike fluid) {
 		return registerFluidTag(key, ()->BuiltInRegistries.FLUID.getKey(fluid.asFluid()));
 	}
 
 	@Override
-	public boolean registerEntityTypeTag(ResourceLocation key, Supplier<ResourceLocation> entityTypeKey) {
+	public boolean registerEntityTypeTag(Identifier key, Supplier<Identifier> entityTypeKey) {
 		if(ConfigHandler.ENTITY_TYPE_TAG_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -346,12 +346,12 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerEntityTypeTag(ResourceLocation key, ResourceLocation entityTypeKey) {
+	public boolean registerEntityTypeTag(Identifier key, Identifier entityTypeKey) {
 		return registerEntityTypeTag(key, ()->entityTypeKey);
 	}
 
 	@Override
-	public boolean registerEntityTypeTag(ResourceLocation key, EntityType<?> entityType) {
+	public boolean registerEntityTypeTag(Identifier key, EntityType<?> entityType) {
 		return registerEntityTypeTag(key, ()->BuiltInRegistries.ENTITY_TYPE.getKey(entityType));
 	}
 
@@ -371,7 +371,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerRecipe(ResourceLocation key, IRecipeSerializer recipeSerializer) {
+	public boolean registerRecipe(Identifier key, IRecipeSerializer recipeSerializer) {
 		if(DataCollector.getDefinedRecipes().contains(key) || ConfigHandler.RECIPE_BLACKLIST.contains(key) ||
 				ConfigHandler.RECIPE_REGEX_BLACKLIST.stream().anyMatch(p->p.matcher(key.toString()).matches())) {
 			return false;
@@ -380,142 +380,142 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerShapedRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input) {
+	public boolean registerShapedRecipe(Identifier key, String group, CraftingBookCategory category, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapedRecipeSerializer(key, group, category, output, count, input));
 	}
 
 	@Override
-	public boolean registerShapedRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input) {
+	public boolean registerShapedRecipe(Identifier key, CraftingBookCategory category, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapedRecipeSerializer(key, category, output, count, input));
 	}
 
 	@Override
-	public boolean registerShapedRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
+	public boolean registerShapedRecipe(Identifier key, String group, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapedRecipeSerializer(key, group, output, count, input));
 	}
 
 	@Override
-	public boolean registerShapedRecipe(ResourceLocation key, Object output, int count, Object... input) {
+	public boolean registerShapedRecipe(Identifier key, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapedRecipeSerializer(key, output, count, input));
 	}
 
 	@Override
-	public boolean registerShapelessRecipe(ResourceLocation key, String group, CraftingBookCategory category, Object output, int count, Object... input) {
+	public boolean registerShapelessRecipe(Identifier key, String group, CraftingBookCategory category, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapelessRecipeSerializer(key, group, category, output, count, input));
 	}
 
 	@Override
-	public boolean registerShapelessRecipe(ResourceLocation key, CraftingBookCategory category, Object output, int count, Object... input) {
+	public boolean registerShapelessRecipe(Identifier key, CraftingBookCategory category, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapelessRecipeSerializer(key, category, output, count, input));
 	}
 
 	@Override
-	public boolean registerShapelessRecipe(ResourceLocation key, String group, Object output, int count, Object... input) {
+	public boolean registerShapelessRecipe(Identifier key, String group, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapelessRecipeSerializer(key, group, output, count, input));
 	}
 
 	@Override
-	public boolean registerShapelessRecipe(ResourceLocation key, Object output, int count, Object... input) {
+	public boolean registerShapelessRecipe(Identifier key, Object output, int count, Object... input) {
 		return registerRecipe(key, new ShapelessRecipeSerializer(key, output, count, input));
 	}
 
 	@Override
-	public boolean registerSmeltingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+	public boolean registerSmeltingRecipe(Identifier key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmeltingRecipeSerializer(key, group, category, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerSmeltingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+	public boolean registerSmeltingRecipe(Identifier key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmeltingRecipeSerializer(key, category, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerSmeltingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+	public boolean registerSmeltingRecipe(Identifier key, String group, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmeltingRecipeSerializer(key, group, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerSmeltingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+	public boolean registerSmeltingRecipe(Identifier key, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmeltingRecipeSerializer(key, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerBlastingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+	public boolean registerBlastingRecipe(Identifier key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new BlastingRecipeSerializer(key, group, category, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerBlastingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+	public boolean registerBlastingRecipe(Identifier key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new BlastingRecipeSerializer(key, category, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerBlastingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+	public boolean registerBlastingRecipe(Identifier key, String group, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new BlastingRecipeSerializer(key, group, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerBlastingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+	public boolean registerBlastingRecipe(Identifier key, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new BlastingRecipeSerializer(key, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerSmokingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+	public boolean registerSmokingRecipe(Identifier key, String group, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmokingRecipeSerializer(key, group, category, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerSmokingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
+	public boolean registerSmokingRecipe(Identifier key, CookingBookCategory category, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmokingRecipeSerializer(key, category, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerSmokingRecipe(ResourceLocation key, String group, Object input, Object output, int count, float experience, int time) {
+	public boolean registerSmokingRecipe(Identifier key, String group, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmokingRecipeSerializer(key, group, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerSmokingRecipe(ResourceLocation key, Object input, Object output, int count, float experience, int time) {
+	public boolean registerSmokingRecipe(Identifier key, Object input, Object output, int count, float experience, int time) {
 		return registerRecipe(key, new SmokingRecipeSerializer(key, input, output, count, experience, time));
 	}
 
 	@Override
-	public boolean registerCampfireCookingRecipe(ResourceLocation key, String group, CookingBookCategory category, Object input, Object output, int count, int time) {
+	public boolean registerCampfireCookingRecipe(Identifier key, String group, CookingBookCategory category, Object input, Object output, int count, int time) {
 		return registerRecipe(key, new CampfireCookingRecipeSerializer(key, group, category, input, output, count, time));
 	}
 
 	@Override
-	public boolean registerCampfireCookingRecipe(ResourceLocation key, CookingBookCategory category, Object input, Object output, int count, int time) {
+	public boolean registerCampfireCookingRecipe(Identifier key, CookingBookCategory category, Object input, Object output, int count, int time) {
 		return registerRecipe(key, new CampfireCookingRecipeSerializer(key, category, input, output, count, time));
 	}
 
 	@Override
-	public boolean registerCampfireCookingRecipe(ResourceLocation key, String group, Object input, Object output, int count, int time) {
+	public boolean registerCampfireCookingRecipe(Identifier key, String group, Object input, Object output, int count, int time) {
 		return registerRecipe(key, new CampfireCookingRecipeSerializer(key, group, input, output, count, time));
 	}
 
 	@Override
-	public boolean registerCampfireCookingRecipe(ResourceLocation key, Object input, Object output, int count, int time) {
+	public boolean registerCampfireCookingRecipe(Identifier key, Object input, Object output, int count, int time) {
 		return registerRecipe(key, new CampfireCookingRecipeSerializer(key, input, output, count, time));
 	}
 
 	@Override
-	public boolean registerStonecuttingRecipe(ResourceLocation key, String group, Object input, Object output, int count) {
+	public boolean registerStonecuttingRecipe(Identifier key, String group, Object input, Object output, int count) {
 		return registerRecipe(key, new StonecuttingRecipeSerializer(key, group, input, output, count));
 	}
 
 	@Override
-	public boolean registerStonecuttingRecipe(ResourceLocation key, Object input, Object output, int count) {
+	public boolean registerStonecuttingRecipe(Identifier key, Object input, Object output, int count) {
 		return registerRecipe(key, new StonecuttingRecipeSerializer(key, input, output, count));
 	}
 
 	@Override
-	public boolean registerSmithingRecipe(ResourceLocation key, Object template, Object base, Object addition, Object output, int count) {
+	public boolean registerSmithingRecipe(Identifier key, Object template, Object base, Object addition, Object output, int count) {
 		return registerRecipe(key, new SmithingRecipeSerializer(key, template, base, addition, output, count));
 	}
 
 	@Override
-	public boolean registerLootTable(ResourceLocation key, Supplier<LootTable> lootTableSupplier) {
+	public boolean registerLootTable(Identifier key, Supplier<LootTable> lootTableSupplier) {
 		if(DataCollector.getDefinedLootTables().contains(key) || ConfigHandler.LOOT_TABLE_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -523,12 +523,12 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerLootTable(ResourceLocation key, LootTable lootTable) {
+	public boolean registerLootTable(Identifier key, LootTable lootTable) {
 		return registerLootTable(key, ()->lootTable);
 	}
 
 	@Override
-	public boolean registerAdvancement(ResourceLocation key, Supplier<Builder> advancementBuilderSupplier) {
+	public boolean registerAdvancement(Identifier key, Supplier<Builder> advancementBuilderSupplier) {
 		if(DataCollector.getDefinedAdvancements().contains(key) || ConfigHandler.ADVANCEMENT_BLACKLIST.contains(key)) {
 			return false;
 		}
@@ -536,7 +536,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public boolean registerAdvancement(ResourceLocation key, Advancement.Builder advancementBuilder) {
+	public boolean registerAdvancement(Identifier key, Advancement.Builder advancementBuilder) {
 		return registerAdvancement(key, ()->advancementBuilder);
 	}
 
@@ -546,7 +546,7 @@ public class ApiImpl extends JAOPCAApi {
 	}
 
 	@Override
-	public <T> boolean registerDataMapEntry(DataMapType<?, T> type, ResourceLocation tagLocation, Supplier<T> valueSupplier) {
+	public <T> boolean registerDataMapEntry(DataMapType<?, T> type, Identifier tagLocation, Supplier<T> valueSupplier) {
 		return registerDataMapEntry(type, new ExtraCodecs.TagOrElementLocation(tagLocation, true), valueSupplier);
 	}
 

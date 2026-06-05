@@ -12,7 +12,7 @@ import com.klikli_dev.theurgy.content.item.derivative.AlchemicalDerivativeTier;
 import com.klikli_dev.theurgy.content.item.sulfur.AlchemicalSulfurType;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -82,14 +82,14 @@ public class TheurgyModule implements IModule {
 		TheurgyHelper helper = TheurgyHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		IItemFormType itemFormType = ItemFormType.INSTANCE;
-		Fluid salAmmoniac = BuiltInRegistries.FLUID.get(ResourceLocation.parse("theurgy:sal_ammoniac"));
-		Item mercuryShard = BuiltInRegistries.ITEM.get(ResourceLocation.parse("theurgy:mercury_shard"));
-		Item alchemicalSaltMineral = BuiltInRegistries.ITEM.get(ResourceLocation.parse("theurgy:alchemical_salt_mineral"));
+		Fluid salAmmoniac = BuiltInRegistries.FLUID.getValue(Identifier.parse("theurgy:sal_ammoniac"));
+		Item mercuryShard = BuiltInRegistries.ITEM.getValue(Identifier.parse("theurgy:mercury_shard"));
+		Item alchemicalSaltMineral = BuiltInRegistries.ITEM.getValue(Identifier.parse("theurgy:alchemical_salt_mineral"));
 		for(IMaterial material : alchemicalSulfurForm.getMaterials()) {
 			IItemInfo alchemicalSulfurInfo = itemFormType.getMaterialFormInfo(alchemicalSulfurForm, material);
-			ResourceLocation alchemicalSulfurLocation = miscHelper.getTagLocation("theurgy:alchemical_sulfurs", material.getName());
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+			Identifier alchemicalSulfurLocation = miscHelper.getTagLocation("theurgy:alchemical_sulfurs", material.getName());
+			Identifier oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			Identifier materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 
 			int oreCount = switch(material.getType()) {
 			case INGOT, INGOT_LEGACY -> 3;
@@ -107,7 +107,7 @@ public class TheurgyModule implements IModule {
 					alchemicalSulfurInfo, 1, 100);
 
 			if(material.getType().isIngot()) {
-				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				Identifier rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 				helper.registerLiquefactionRecipe(
 						miscHelper.getRecipeKey("theurgy.raw_material_to_alchemical_sulfur", material.getName()),
 						rawMaterialLocation, salAmmoniac, 10,
@@ -127,9 +127,9 @@ public class TheurgyModule implements IModule {
 				default -> AlchemicalSulfurType.OTHER_MINERALS;
 				}).name().toLowerCase(Locale.US);
 				String base = "theurgy:alchemical_sulfurs";
-				api.registerItemTag(ResourceLocation.parse(String.join("/", base, tier)), alchemicalSulfurInfo.asItem());
-				api.registerItemTag(ResourceLocation.parse(String.join("/", base, type)), alchemicalSulfurInfo.asItem());
-				api.registerItemTag(ResourceLocation.parse(String.join("/", base, type, tier)), alchemicalSulfurInfo.asItem());
+				api.registerItemTag(Identifier.parse(String.join("/", base, tier)), alchemicalSulfurInfo.asItem());
+				api.registerItemTag(Identifier.parse(String.join("/", base, type)), alchemicalSulfurInfo.asItem());
+				api.registerItemTag(Identifier.parse(String.join("/", base, type, tier)), alchemicalSulfurInfo.asItem());
 			}
 		}
 	}

@@ -7,76 +7,86 @@ import org.joml.Vector4f;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
+import com.mojang.serialization.MapCodec;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.color.item.ItemColors;
-import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.color.block.BlockTintSource;
+import net.minecraft.client.color.item.ItemTintSource;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.item.ItemStackRenderState.LayerRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.fluid.FluidTintSource;
 import thelm.jaopca.api.blocks.IMaterialFormBlock;
-import thelm.jaopca.api.blocks.IMaterialFormBlockItem;
-import thelm.jaopca.api.fluids.IMaterialFormBucketItem;
 import thelm.jaopca.api.fluids.IMaterialFormFluidBlock;
-import thelm.jaopca.api.items.IMaterialFormItem;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 import thelm.jaopca.blocks.BlockFormType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.fluids.FluidFormType;
-import thelm.jaopca.items.ItemFormType;
+import thelm.jaopca.mixins.ItemStackRenderStateAccessor;
 import thelm.jaopca.mixins.SpriteContentsAccessor;
 
 public class ColorHandler {
 
-	public static final BlockColor BLOCK_COLOR = (state, world, pos, tintIndex)->{
-		if(tintIndex == 0) {
-			Block block = state.getBlock();
-			if(block instanceof IMaterialForm materialForm) {
-				return materialForm.getMaterial().getColor();
-			}
+	public static final BlockTintSource BLOCK_TINT = state->{
+		Block block = state.getBlock();
+		if(block instanceof IMaterialForm materialForm) {
+			return materialForm.getMaterial().getColor();
 		}
 		return 0xFFFFFFFF;
 	};
 
-	public static final ItemColor ITEM_COLOR = (stack, tintIndex)->{
-		if(tintIndex == 0 || tintIndex == 2) {
+	public static final ItemTintSource ITEM_TINT = new ItemTintSource() {
+		@Override
+		public int calculate(ItemStack stack, ClientLevel level, LivingEntity entity) {
 			Item item = stack.getItem();
 			if(item instanceof IMaterialForm materialForm) {
 				return materialForm.getMaterial().getColor();
 			}
+			return 0xFFFFFFFF;
+		}
+
+		@Override
+		public MapCodec<? extends ItemTintSource> type() {
+			return MapCodec.unit(this);
+		}
+	};
+
+	public static final FluidTintSource FLUID_TINT = state->{
+		Fluid fluid = state.getType();
+		if(fluid instanceof IMaterialForm materialForm) {
+			return materialForm.getMaterial().getColor();
 		}
 		return 0xFFFFFFFF;
 	};
 
-	public static void setup(RegisterColorHandlersEvent.Item event) {
-		BlockColors blockColors = event.getBlockColors();
-		ItemColors itemColors = event.getItemColors();
+	public static void setupBlockTint(RegisterColorHandlersEvent.BlockTintSources event) {
+		List<BlockTintSource> blockTints = List.of(BLOCK_TINT);
 		for(IMaterialFormBlock block : BlockFormType.getBlocks()) {
-			blockColors.register(BLOCK_COLOR, block.toBlock());
-		}
-		for(IMaterialFormBlockItem blockItem : BlockFormType.getBlockItems()) {
-			itemColors.register(ITEM_COLOR, blockItem.toBlockItem());
-		}
-		for(IMaterialFormItem item : ItemFormType.getItems()) {
-			itemColors.register(ITEM_COLOR, item.toItem());
+			event.register(blockTints, block.toBlock());
 		}
 		for(IMaterialFormFluidBlock fluidBlock : FluidFormType.getFluidBlocks()) {
-			blockColors.register(BLOCK_COLOR, fluidBlock.toBlock());
+			event.register(blockTints, fluidBlock.toBlock());
 		}
-		for(IMaterialFormBucketItem bucketItem : FluidFormType.getBucketItems()) {
-			itemColors.register(ITEM_COLOR, bucketItem.toItem());
-		}
+	}
+
+	public static void setupItemTint(RegisterColorHandlersEvent.ItemTintSources event) {
+		event.register(Identifier.parse("jaopca:material_form"), ITEM_TINT.type());
 	}
 
 	public static int getAverageColor(HolderSet<Item> tag) {
@@ -94,9 +104,11 @@ public class ColorHandler {
 		List<BakedQuad> quads = getBakedQuads(stack);
 		List<Vector4f> colors = new ArrayList<>();
 		for(BakedQuad quad : quads) {
-			Vector4f color = weightedAverageColor(quad.getSprite(), gammaValue);
-			color = tintColor(color, getTint(stack, quad));
-			colors.add(color);
+			Vector4f color = weightedAverageColor(quad.materialInfo().sprite(), gammaValue);
+			for(int i = 0; i < 4; ++i) {
+				color = tintColor(color, quad.bakedColors().color(i));
+				colors.add(color);
+			}
 		}
 		return weightedAverageColor(colors, gammaValue);
 	}
@@ -158,9 +170,9 @@ public class ColorHandler {
 
 	public static Vector4f toColorTuple(int color) {
 		return new Vector4f(
-				(color    &0xFF)/255F,
-				(color>> 8&0xFF)/255F,
 				(color>>16&0xFF)/255F,
+				(color>> 8&0xFF)/255F,
+				(color    &0xFF)/255F,
 				(color>>24&0xFF)/255F
 				);
 	}
@@ -184,15 +196,13 @@ public class ColorHandler {
 
 	public static List<BakedQuad> getBakedQuads(ItemStack stack) {
 		List<BakedQuad> quads = new ArrayList<>();
-		BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(stack, null, null, 0);
-		model.getQuads(null, null, RandomSource.create(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
-		for(Direction facing : Direction.values()) {
-			model.getQuads(null, facing, RandomSource.create(0)).stream().filter(quad->quad.getDirection() == Direction.SOUTH).forEach(quads::add);
+		ItemModel model = Minecraft.getInstance().getModelManager().getItemModel(stack.get(DataComponents.ITEM_MODEL));
+		ItemStackRenderState quadExtractor = new ItemStackRenderState();
+		model.update(quadExtractor, stack, Minecraft.getInstance().getItemModelResolver(), ItemDisplayContext.GUI, null, null, 0);
+		LayerRenderState[] layers = ((ItemStackRenderStateAccessor)quadExtractor).layers();
+		for(LayerRenderState layer : layers) {
+			layer.prepareQuadList().stream().filter(q -> q.direction() == Direction.SOUTH).forEach(quads::add);
 		}
 		return quads;
-	}
-
-	public static int getTint(ItemStack stack, BakedQuad quad) {
-		return Minecraft.getInstance().getItemColors().getColor(stack, quad.getTintIndex());
 	}
 }

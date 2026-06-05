@@ -1,84 +1,60 @@
 package thelm.jaopca.client.models;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
-
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.block.FluidModel;
+import net.minecraft.client.renderer.item.ItemModel;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent;
+import thelm.jaopca.api.fluids.IMaterialFormFluid;
+import thelm.jaopca.client.colors.ColorHandler;
+import thelm.jaopca.fluids.FluidFormType;
 import thelm.jaopca.forms.FormTypeHandler;
+import thelm.jaopca.utils.MiscHelper;
 
 public class ModelHandler {
 
-	private static final FileToIdConverter BLOCK_MODEL_FORMAT = FileToIdConverter.json("blockstates");
-	private static final FileToIdConverter ITEM_MODEL_FORMAT = FileToIdConverter.json("models/item");
-	private static final Map<ResourceLocation, ResourceLocation> BLOCK_MODEL_REMAPS = new LinkedHashMap<>();
-	private static final Map<ResourceLocation, ResourceLocation> ITEM_MODEL_REMAPS = new LinkedHashMap<>();
-	private static final Multimap<ResourceLocation, ResourceLocation> BLOCK_MODEL_REMAPS_REVERSE = LinkedHashMultimap.create();
-	private static final Multimap<ResourceLocation, ResourceLocation> ITEM_MODEL_REMAPS_REVERSE = LinkedHashMultimap.create();
+	public static void registerFluidModels(RegisterFluidModelsEvent event) {
+		for(IMaterialFormFluid materialFormFluid : FluidFormType.getFluids()) {
+			Fluid fluid = materialFormFluid.toFluid();
+			String modelType = materialFormFluid.getMaterial().getModelType();
+			String formName = materialFormFluid.getForm().getName();
+			Identifier key = BuiltInRegistries.FLUID.getKey(fluid);
 
-	public static void gatherBlockStateRemaps(Set<ResourceLocation> availableLocations) {
-		BLOCK_MODEL_REMAPS.clear();
-		BLOCK_MODEL_REMAPS_REVERSE.clear();
-		FormTypeHandler.addBlockModelRemaps(
-				availableLocations.stream().
-				filter(l->l.getPath().startsWith("blockstates/")).
-				map(BLOCK_MODEL_FORMAT::fileToId).
-				collect(Collectors.toSet()),
-				BLOCK_MODEL_REMAPS::putIfAbsent);
-		BLOCK_MODEL_REMAPS.forEach((k, v)->BLOCK_MODEL_REMAPS_REVERSE.put(v, k));
+			Material stillMaterial;
+			if(MiscHelper.INSTANCE.hasResource(key.withPath("textures/fluid/%s_still.png"::formatted))) {
+				stillMaterial = new Material(key.withPath("fluid/%s_still"::formatted));
+			}
+			else {
+				stillMaterial = new Material(Identifier.fromNamespaceAndPath("jaopca", "fluid/%s/%s_still".formatted(modelType, formName)));
+			}
+
+			Material flowMaterial;
+			if(MiscHelper.INSTANCE.hasResource(key.withPath("textures/fluid/%s_flow.png"::formatted))) {
+				flowMaterial = new Material(key.withPath("fluid/%s_flow"::formatted));
+			}
+			else {
+				flowMaterial = new Material(Identifier.fromNamespaceAndPath("jaopca", "fluid/%s/%s_flow".formatted(modelType, formName)));
+			}
+
+			event.register(new FluidModel.Unbaked(stillMaterial, flowMaterial, null, ColorHandler.FLUID_TINT), fluid);
+		}
 	}
 
-	public static void gatherItemModelRemaps(Set<ResourceLocation> availableLocations) {
-		ITEM_MODEL_REMAPS.clear();
-		ITEM_MODEL_REMAPS_REVERSE.clear();
-		FormTypeHandler.addItemModelRemaps(
-				availableLocations.stream().
-				filter(l->l.getPath().startsWith("models/item/")).
-				map(ITEM_MODEL_FORMAT::fileToId).
-				collect(Collectors.toSet()),
-				ITEM_MODEL_REMAPS::putIfAbsent);
-		ITEM_MODEL_REMAPS.forEach((k, v)->ITEM_MODEL_REMAPS_REVERSE.put(v, k));
-	}
-
-	public static ResourceLocation remapBlockModel(ResourceLocation location) {
-		return BLOCK_MODEL_REMAPS.getOrDefault(location, location);
-	}
-
-	public static ResourceLocation remapItemModel(ResourceLocation location) {
-		return ITEM_MODEL_REMAPS.getOrDefault(location, location);
-	}
-
-	public static void remapModels(ModelEvent.ModifyBakingResult event) {
-		Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
-		Set<ModelResourceLocation> originalKeys = Set.copyOf(modelRegistry.keySet());
-
-		BLOCK_MODEL_REMAPS_REVERSE.asMap().forEach((to, froms)->{
-			originalKeys.stream().filter(k->k.id().equals(to)).forEach(k->{
-				froms.forEach(from->{
-					modelRegistry.put(new ModelResourceLocation(from, k.getVariant()), modelRegistry.get(k));
-				});
-			});
-		});
-		ITEM_MODEL_REMAPS_REVERSE.asMap().forEach((to, froms)->{
-			ModelResourceLocation mTo = ModelResourceLocation.inventory(to);
-			if(originalKeys.contains(mTo)) {
-				froms.forEach(from->{
-					modelRegistry.put(ModelResourceLocation.inventory(from), modelRegistry.get(mTo));
-				});
+	public static void remapItemModels(ModelEvent.ModifyBakingResult event) {
+		Map<Identifier, ItemModel> itemModels = event.getBakingResult().itemStackModels();
+		Map<Identifier, Identifier> itemModelRemaps = new LinkedHashMap<>();
+		FormTypeHandler.addItemModelRemaps(Collections.unmodifiableSet(itemModels.keySet()), itemModelRemaps::putIfAbsent);
+		itemModelRemaps.forEach((from, to) -> {
+			if(itemModels.containsKey(to)) {
+				itemModels.put(from, itemModels.get(to));
 			}
 		});
-
-		BLOCK_MODEL_REMAPS.clear();
-		ITEM_MODEL_REMAPS.clear();
-		BLOCK_MODEL_REMAPS_REVERSE.clear();
-		ITEM_MODEL_REMAPS_REVERSE.clear();
 	}
 }

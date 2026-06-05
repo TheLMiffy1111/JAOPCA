@@ -53,7 +53,7 @@ public final class MaterialPredicate implements Predicate<IMaterial> {
 			return of(defaultValue, mf.materialTypes, mf.materials, mf.path, mf.comment);
 		}
 		Object2BooleanMap<IMaterial> materialMap = JAOPCAApi.instance().getMaterials().stream().collect(
-				Collectors.toMap(Function.identity(), function::test, (a, b)->a, Object2BooleanOpenHashMap::new));
+				Collectors.toMap(Function.identity(), function::test, (a, _)->a, Object2BooleanOpenHashMap::new));
 		return of(defaultValue, Object2BooleanMaps.emptyMap(), materialMap, "", "");
 	}
 
@@ -61,7 +61,7 @@ public final class MaterialPredicate implements Predicate<IMaterial> {
 	public boolean test(IMaterial material) {
 		if(!path.isEmpty()) {
 			return configMaterials.computeIfAbsent(material,
-					m->JAOPCAApi.instance().getMaterialConfig(material).getDefinedBoolean(path, testUnconfigured(material), comment));
+					_->JAOPCAApi.instance().getMaterialConfig(material).getDefinedBoolean(path, testUnconfigured(material), comment));
 		}
 		return testUnconfigured(material);
 	}

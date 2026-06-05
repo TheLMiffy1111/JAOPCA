@@ -7,7 +7,11 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -37,8 +41,8 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	protected BooleanSupplier isFireSource;
 	protected IntSupplier fireTime;
 
-	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings) {
-		super(getProperties(fluid, settings), (PlaceableFluid)fluid.toFluid(),
+	public JAOPCAFluidBlock(IMaterialFormFluid fluid, IFluidFormSettings settings, Identifier registryName) {
+		super(getProperties(fluid, settings, registryName), (PlaceableFluid)fluid.toFluid(),
 				settings.getMaxLevelFunction().applyAsInt(fluid.getMaterial()));
 		this.fluid = fluid;
 		this.settings = settings;
@@ -52,11 +56,12 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 		fireTime = MemoizingSuppliers.of(settings.getFireTimeFunction(), fluid::getMaterial);
 	}
 
-	public static BlockBehaviour.Properties getProperties(IMaterialFormFluid fluid, IFluidFormSettings settings) {
+	public static BlockBehaviour.Properties getProperties(IMaterialFormFluid fluid, IFluidFormSettings settings, Identifier registryName) {
 		BlockBehaviour.Properties prop = BlockBehaviour.Properties.of();
+		prop.setId(ResourceKey.create(Registries.BLOCK, registryName));
 		prop.strength((float)settings.getBlockHardnessFunction().applyAsDouble(fluid.getMaterial()));
-		prop.lightLevel(state->settings.getLightValueFunction().applyAsInt(fluid.getMaterial()));
-		prop.noCollission();
+		prop.lightLevel(_->settings.getLightValueFunction().applyAsInt(fluid.getMaterial()));
+		prop.noCollision();
 		prop.randomTicks();
 		prop.noLootTable();
 		prop.noOcclusion();
@@ -107,7 +112,7 @@ public class JAOPCAFluidBlock extends PlaceableFluidBlock implements IMaterialFo
 	}
 
 	@Override
-	public void entityInside(BlockState blockState, Level world, BlockPos pos, Entity entity) {
+	protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
 		int time = fireTime.getAsInt();
 		if(time > 0) {
 			entity.igniteForSeconds(time);

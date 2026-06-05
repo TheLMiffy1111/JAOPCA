@@ -12,7 +12,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -65,16 +65,16 @@ public class EnderIOModule implements IModule {
 		EnderIOHelper helper = EnderIOHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+			Identifier oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			Identifier dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 
 			IDynamicSpecConfig config = configs.get(material);
 			String configByproduct = config.getDefinedString("enderio.byproduct", "minecraft:cobblestone",
-					s->BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(s)), "The default byproduct material to output in Ender IO's sagmill.");
-			Item byproduct = BuiltInRegistries.ITEM.get(ResourceLocation.parse(configByproduct));
+					s->BuiltInRegistries.ITEM.containsKey(Identifier.parse(s)), "The default byproduct material to output in Ender IO's sagmill.");
+			Item byproduct = BuiltInRegistries.ITEM.getValue(Identifier.parse(configByproduct));
 
 			if(material.getType() == MaterialType.INGOT) {
-				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				Identifier rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 
 				helper.registerSagMillingRecipe(
 						miscHelper.getRecipeKey("enderio.ore_to_raw_material", material.getName()),
@@ -89,7 +89,7 @@ public class EnderIOModule implements IModule {
 						dustLocation, 1, 0.25F,
 				};
 				if(material.hasExtra(1)) {
-					ResourceLocation extraDustLocation = miscHelper.getTagLocation("dusts", material.getExtra(1).getName());
+					Identifier extraDustLocation = miscHelper.getTagLocation("dusts", material.getExtra(1).getName());
 					output = ArrayUtils.addAll(output, extraDustLocation, 1, 0.1F);
 				}
 				helper.registerSagMillingRecipe(
@@ -102,7 +102,7 @@ public class EnderIOModule implements IModule {
 						byproduct, 1, 0.15F,
 				};
 				if(material.hasExtra(1)) {
-					ResourceLocation extraDustLocation = miscHelper.getTagLocation("dusts", material.getExtra(1).getName());
+					Identifier extraDustLocation = miscHelper.getTagLocation("dusts", material.getExtra(1).getName());
 					output = ArrayUtils.addAll(output, extraDustLocation, 1, 0.1F);
 				}
 				helper.registerSagMillingRecipe(

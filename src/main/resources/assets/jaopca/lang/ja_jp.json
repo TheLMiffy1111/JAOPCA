@@ -10,39 +10,6 @@
 	"fluid_type.jaopca.molten": "熔融%s",
 	"item.jaopca.molten": "熔融%s入りバケツ",
 
-	"item.jaopca.create_crushed": "砕いた%s鉱石",
-
-	"item.jaopca.crossroads_grits": "Raw %s Grit",
-	"item.jaopca.crossroads_clumps": "%s Clumps",
-
-	"item.jaopca.electrodynamics_impuredusts": "低純度%s粉",
-	"item.jaopca.electrodynamics_crystals": "%s結晶",
-	"fluid_type.jaopca.electrodynamics_pureminerals": "純粋な%s溶液",
-	"item.jaopca.electrodynamics_pureminerals": "純粋な%s溶液入りバケツ",
-	"fluid_type.jaopca.electrodynamics_sulfates": "硫酸%s溶液",
-	"item.jaopca.electrodynamics_sulfates": "硫酸%s溶液入りバケツ",
-	"fluid_type.jaopca.electrodynamics_impureminerals": "Impure %s Solution",
-	"item.jaopca.electrodynamics_impureminerals": "Impure %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_dirtyminerals": "Dirty %s Solution",
-	"item.jaopca.electrodynamics_dirtyminerals": "Dirty %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_crudeminerals": "Crude %s Solution",
-	"item.jaopca.electrodynamics_crudeminerals": "Crude %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_royalminerals": "Royal %s Solution",
-	"item.jaopca.electrodynamics_royalminerals": "Royal %s Solution Bucket",
-
-	"item.jaopca.mekanism_dirty_dusts": "汚れた%sの粉",
-	"item.jaopca.mekanism_clumps": "%sの凝塊",
-	"item.jaopca.mekanism_shards": "%sの欠片",
-	"item.jaopca.mekanism_crystals": "%sの結晶",
-	"chemical.jaopca.mekanism_dirty": "汚れた%sの懸濁液",
-	"chemical.jaopca.mekanism_clean": "純粋な%sの懸濁液",
-
-	"item.jaopca.modern_industrialization_crushed_dusts": "%s鉱石の粉砕物",
-
-	"item.jaopca.oritech_clumps": "%sクランプ",
-	"item.jaopca.oritech_small_clumps": "小さい%sクランプ",
-	"item.jaopca.oritech_gems": "%sジェム",
-
 	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

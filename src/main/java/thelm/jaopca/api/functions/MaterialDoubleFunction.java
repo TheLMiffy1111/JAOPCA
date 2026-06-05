@@ -53,7 +53,7 @@ public final class MaterialDoubleFunction implements ToDoubleFunction<IMaterial>
 			return of(defaultValue, mf.materialTypes, mf.materials, mf.path, mf.comment);
 		}
 		Object2DoubleMap<IMaterial> materialMap = JAOPCAApi.instance().getMaterials().stream().collect(
-				Collectors.toMap(Function.identity(), function::applyAsDouble, (a, b)->a, Object2DoubleOpenHashMap::new));
+				Collectors.toMap(Function.identity(), function::applyAsDouble, (a, _)->a, Object2DoubleOpenHashMap::new));
 		return of(defaultValue, Object2DoubleMaps.emptyMap(), materialMap, "", "");
 	}
 
@@ -61,7 +61,7 @@ public final class MaterialDoubleFunction implements ToDoubleFunction<IMaterial>
 	public double applyAsDouble(IMaterial material) {
 		if(!path.isEmpty()) {
 			return configMaterials.computeIfAbsent(material,
-					m->JAOPCAApi.instance().getMaterialConfig(material).getDefinedDouble(path, applyAsDoubleUnconfigured(material), comment));
+					_->JAOPCAApi.instance().getMaterialConfig(material).getDefinedDouble(path, applyAsDoubleUnconfigured(material), comment));
 		}
 		return applyAsDoubleUnconfigured(material);
 	}

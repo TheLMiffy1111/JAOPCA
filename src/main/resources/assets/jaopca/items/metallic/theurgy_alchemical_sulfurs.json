@@ -1,0 +1,9 @@
+{
+	"model": {
+		"type": "minecraft:special",
+		"model": {
+			"type": "theurgy:alchemical_derivative"
+		},
+		"base": "theurgy:item/derivative_base"
+	}
+}

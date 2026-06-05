@@ -2,7 +2,10 @@ package thelm.jaopca.blocks;
 
 import java.util.function.BooleanSupplier;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,15 +24,16 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 
 	protected BooleanSupplier hasEffect;
 
-	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings) {
-		super(block.toBlock(), getProperties(block, settings));
+	public JAOPCABlockItem(IMaterialFormBlock block, IBlockFormSettings settings, Identifier registryName) {
+		super(block.toBlock(), getProperties(block, settings, registryName));
 		this.settings = settings;
 
 		hasEffect = MemoizingSuppliers.of(settings.getHasEffectFunction(), block::getMaterial);
 	}
 
-	public static Item.Properties getProperties(IMaterialFormBlock block, IBlockFormSettings settings) {
+	public static Item.Properties getProperties(IMaterialFormBlock block, IBlockFormSettings settings, Identifier registryName) {
 		Item.Properties prop = new Item.Properties();
+		prop.setId(ResourceKey.create(Registries.ITEM, registryName));
 		prop.stacksTo(settings.getMaxStackSizeFunction().applyAsInt(block.getMaterial()));
 		prop.rarity(settings.getDisplayRarityFunction().apply(block.getMaterial()));
 		return prop;
@@ -52,6 +56,6 @@ public class JAOPCABlockItem extends BlockItem implements IMaterialFormBlockItem
 
 	@Override
 	public Component getName(ItemStack stack) {
-		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getDescriptionId(stack));
+		return ApiImpl.INSTANCE.currentLocalizer().localizeMaterialForm("block.jaopca."+getForm().getName(), getMaterial(), getDescriptionId());
 	}
 }

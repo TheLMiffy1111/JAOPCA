@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTab;
@@ -78,7 +78,7 @@ public class FluidFormType implements IFluidFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName(), form.getTagSeparator());
+		Identifier tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName(), form.getTagSeparator());
 		return !ApiImpl.INSTANCE.getFluidTags().contains(tagLocation);
 	}
 
@@ -127,7 +127,7 @@ public class FluidFormType implements IFluidFormType {
 			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
 				String name = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath("jaopca", name);
+				Identifier registryName = Identifier.fromNamespaceAndPath("jaopca", name);
 
 				Supplier<IMaterialFormFluid> materialFormFluid = MemoizingSuppliers.of(()->settings.getFluidCreator().create(form, material, settings));
 				FLUIDS.put(form, material, materialFormFluid);
@@ -137,15 +137,15 @@ public class FluidFormType implements IFluidFormType {
 				FLUID_TYPES.put(form, material, materialFormFluidType);
 				api.registerRegistryEntry(NeoForgeRegistries.Keys.FLUID_TYPES, name, ()->materialFormFluidType.get().toFluidType());
 
-				Supplier<IMaterialFormFluidBlock> materialFormFluidBlock = MemoizingSuppliers.of(()->settings.getFluidBlockCreator().create(materialFormFluid.get(), settings));
+				Supplier<IMaterialFormFluidBlock> materialFormFluidBlock = MemoizingSuppliers.of(()->settings.getFluidBlockCreator().create(materialFormFluid.get(), settings, registryName));
 				FLUID_BLOCKS.put(form, material, materialFormFluidBlock);
 				api.registerRegistryEntry(Registries.BLOCK, name, ()->materialFormFluidBlock.get().toBlock());
 
-				Supplier<IMaterialFormBucketItem> materialFormBucketItem = MemoizingSuppliers.of(()->settings.getBucketItemCreator().create(materialFormFluid.get(), settings));
+				Supplier<IMaterialFormBucketItem> materialFormBucketItem = MemoizingSuppliers.of(()->settings.getBucketItemCreator().create(materialFormFluid.get(), settings, registryName));
 				BUCKET_ITEMS.put(form, material, materialFormBucketItem);
 				api.registerRegistryEntry(Registries.ITEM, name, ()->materialFormBucketItem.get().toItem());
 
-				api.registerFluidTag(helper.createResourceLocation(secondaryName), registryName);
+				api.registerFluidTag(helper.createIdentifier(secondaryName), registryName);
 				api.registerFluidTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
 					api.registerFluidTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
@@ -166,12 +166,12 @@ public class FluidFormType implements IFluidFormType {
 	}
 
 	@Override
-	public void addBlockModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+	public void addBlockModelRemaps(Set<Identifier> allLocations, BiConsumer<Identifier, Identifier> output) {
 		getFluidBlocks().forEach(mf->mf.addBlockModelRemaps(allLocations, output));
 	}
 
 	@Override
-	public void addItemModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+	public void addItemModelRemaps(Set<Identifier> allLocations, BiConsumer<Identifier, Identifier> output) {
 		getBucketItems().forEach(mf->mf.addItemModelRemaps(allLocations, output));
 	}
 

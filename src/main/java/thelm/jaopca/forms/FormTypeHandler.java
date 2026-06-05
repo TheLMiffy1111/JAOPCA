@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import thelm.jaopca.api.forms.IFormType;
@@ -52,13 +52,13 @@ public class FormTypeHandler {
 		}
 	}
 
-	public static void addBlockModelRemaps(Set<ResourceLocation> availableLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+	public static void addBlockModelRemaps(Set<Identifier> availableLocations, BiConsumer<Identifier, Identifier> output) {
 		for(IFormType formType : FORM_TYPES.values()) {
 			formType.addBlockModelRemaps(availableLocations, output);
 		}
 	}
 
-	public static void addItemModelRemaps(Set<ResourceLocation> availableLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+	public static void addItemModelRemaps(Set<Identifier> availableLocations, BiConsumer<Identifier, Identifier> output) {
 		for(IFormType formType : FORM_TYPES.values()) {
 			formType.addItemModelRemaps(availableLocations, output);
 		}

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -42,8 +42,8 @@ public class IntegratedDynamicsModule implements IModule {
 		IntegratedDynamicsHelper helper = IntegratedDynamicsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+			Identifier oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			Identifier rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			helper.registerSqueezerRecipe(
 					miscHelper.getRecipeKey("integrateddynamics.ore_to_raw_material", material.getName()),
 					oreLocation, new Object[] {

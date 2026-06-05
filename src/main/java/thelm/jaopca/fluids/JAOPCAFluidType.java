@@ -1,25 +1,21 @@
 package thelm.jaopca.fluids;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockAndLightGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -30,7 +26,6 @@ import thelm.jaopca.api.forms.IForm;
 import thelm.jaopca.api.functions.MemoizingSuppliers;
 import thelm.jaopca.api.materials.IMaterial;
 import thelm.jaopca.utils.ApiImpl;
-import thelm.jaopca.utils.MiscHelper;
 
 public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType {
 
@@ -94,7 +89,7 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 	}
 
 	@Override
-	public FluidState getStateForPlacement(BlockAndTintGetter world, BlockPos pos, FluidStack stack) {
+	public FluidState getStateForPlacement(BlockAndLightGetter getter, BlockPos pos, FluidStack stack) {
 		return fluid.getSourceState();
 	}
 
@@ -159,7 +154,7 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 	}
 
 	@Override
-	public boolean supportsBoating(Boat boat) {
+	public boolean supportsBoating(AbstractBoat boat) {
 		return supportsBoating.getAsBoolean();
 	}
 
@@ -186,38 +181,6 @@ public class JAOPCAFluidType extends FluidType implements IMaterialFormFluidType
 	@Override
 	public boolean canConvertToSource(FluidStack stack) {
 		return canConvertToSource.getAsBoolean();
-	}
-
-	@Override
-	public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
-		consumer.accept(new IClientFluidTypeExtensions() {
-			@Override
-			public int getTintColor() {
-				return fluid.getMaterial().getColor();
-			}
-			@Override
-			public ResourceLocation getStillTexture() {
-				ResourceLocation location = BuiltInRegistries.FLUID.getKey(fluid.toFluid());
-				if(MiscHelper.INSTANCE.hasResource(
-						ResourceLocation.fromNamespaceAndPath(location.getNamespace(),
-								"textures/fluid/"+location.getPath()+"_still.png"))) {
-					return ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "fluid/"+location.getPath()+"_still");
-				}
-				return ResourceLocation.fromNamespaceAndPath(location.getNamespace(),
-						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_still");
-			}
-			@Override
-			public ResourceLocation getFlowingTexture() {
-				ResourceLocation location = BuiltInRegistries.FLUID.getKey(fluid.toFluid());
-				if(MiscHelper.INSTANCE.hasResource(
-						ResourceLocation.fromNamespaceAndPath(location.getNamespace(),
-								"textures/fluid/"+location.getPath()+"_flow.png"))) {
-					return ResourceLocation.fromNamespaceAndPath(location.getNamespace(), "fluid/"+location.getPath()+"_flow");
-				}
-				return ResourceLocation.fromNamespaceAndPath(location.getNamespace(),
-						"fluid/"+fluid.getMaterial().getModelType()+'/'+fluid.getForm().getName()+"_flow");
-			}
-		});
 	}
 
 	@Override

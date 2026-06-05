@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -109,7 +109,7 @@ public class Material implements IMaterial {
 	public int getColor() {
 		if(MaterialHandler.clientTagsBound) {
 			if(!color.isPresent() && config != null) {
-				MiscHelper.INSTANCE.conditionalRunnable(FMLEnvironment.dist::isClient, ()->()->{
+				MiscHelper.INSTANCE.conditionalRunnable(FMLEnvironment.getDist()::isClient, ()->()->{
 					shouldFireColorEvent = false;
 					HolderSet<Item> tag = getTag();
 					color = OptionalInt.of(0xFFFFFF);
@@ -177,7 +177,13 @@ public class Material implements IMaterial {
 
 	private HolderSet<Item> getTag() {
 		if(tag == null) {
-			tag = BuiltInRegistries.ITEM.getOrCreateTag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", type.getFormName()+'/'+name)));
+			Optional<HolderSet.Named<Item>> optional = BuiltInRegistries.ITEM.get(TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", type.getFormName()+'/'+name)));
+			if(optional.isPresent()) {
+				tag = optional.get();
+			}
+			else {
+				tag = HolderSet.empty();
+			}
 		}
 		return tag;
 	}

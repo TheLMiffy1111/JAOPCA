@@ -2,14 +2,12 @@ package thelm.jaopca.api.fluids;
 
 import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import thelm.jaopca.api.materialforms.IMaterialForm;
 
 public interface IMaterialFormBucketItem extends IMaterialForm {
@@ -24,12 +22,10 @@ public interface IMaterialFormBucketItem extends IMaterialForm {
 
 	default void onRegisterCapabilities(RegisterCapabilitiesEvent event) {}
 
-	default void initializeClient(Consumer<IClientItemExtensions> consumer) {}
-
-	default void addItemModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
-		ResourceLocation location = BuiltInRegistries.ITEM.getKey(toItem());
+	default void addItemModelRemaps(Set<Identifier> allLocations, BiConsumer<Identifier, Identifier> output) {
+		Identifier location = BuiltInRegistries.ITEM.getKey(toItem());
 		if(!allLocations.contains(location)) {
-			output.accept(location, ResourceLocation.fromNamespaceAndPath("jaopca", getMaterial().getModelType()+'/'+getForm().getName()));
+			output.accept(location, Identifier.fromNamespaceAndPath("jaopca", getMaterial().getModelType()+'/'+getForm().getName()));
 		}
 	}
 }

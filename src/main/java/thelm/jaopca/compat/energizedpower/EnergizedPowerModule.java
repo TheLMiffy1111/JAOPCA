@@ -8,7 +8,7 @@ import java.util.TreeSet;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.helpers.IMiscHelper;
@@ -59,16 +59,16 @@ public class EnergizedPowerModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		EnergizedPowerHelper helper = EnergizedPowerHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		Set<ResourceLocation> itemTags = api.getItemTags();
+		Set<Identifier> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+			Identifier oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			Identifier dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerPulverizerRecipe(
 					miscHelper.getRecipeKey("energizedpower.ore_to_dust", material.getName()),
 					oreLocation, dustLocation, ORE_CHANCES, ORE_CHANCES_ADVANCED);
 			if(material.getType() == MaterialType.INGOT) {
-				ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
-				ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
+				Identifier rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+				Identifier rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
 				helper.registerPulverizerRecipe(
 						miscHelper.getRecipeKey("energizedpower.raw_material_to_dust", material.getName()),
 						rawMaterialLocation, dustLocation, RAW_CHANCES, RAW_CHANCES_ADVANCED);

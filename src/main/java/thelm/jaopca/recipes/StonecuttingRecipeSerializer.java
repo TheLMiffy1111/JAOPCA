@@ -8,9 +8,10 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe.CommonInfo;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
@@ -19,17 +20,17 @@ public class StonecuttingRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final Identifier key;
 	public final String group;
 	public final Object input;
 	public final Object output;
 	public final int count;
 
-	public StonecuttingRecipeSerializer(ResourceLocation key, Object input, Object output, int count) {
+	public StonecuttingRecipeSerializer(Identifier key, Object input, Object output, int count) {
 		this(key, "", input, output, count);
 	}
 
-	public StonecuttingRecipeSerializer(ResourceLocation key, String group, Object input, Object output, int count) {
+	public StonecuttingRecipeSerializer(Identifier key, String group, Object input, Object output, int count) {
 		this.key = Objects.requireNonNull(key);
 		this.group = Strings.nullToEmpty(group);
 		this.input = input;
@@ -43,11 +44,12 @@ public class StonecuttingRecipeSerializer implements IRecipeSerializer {
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
-		if(stack.isEmpty()) {
+		ItemStackTemplate stack = MiscHelper.INSTANCE.getItemStackTemplate(output, count);
+		if(stack == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		StonecutterRecipe recipe = new StonecutterRecipe(group, ing, stack);
+		CommonInfo commonInfo = new CommonInfo(false);
+		StonecutterRecipe recipe = new StonecutterRecipe(commonInfo, ing, stack);
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

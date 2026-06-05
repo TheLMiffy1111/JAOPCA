@@ -123,7 +123,7 @@ public final class MaterialMappedFunction<T> implements Function<IMaterial, T> {
 	public T apply(IMaterial material) {
 		if(!path.isEmpty()) {
 			return configMaterials.computeIfAbsent(material,
-					m->nameToValue.apply(JAOPCAApi.instance().getMaterialConfig(material).getDefinedString(path, valueToName.apply(applyUnconfigured(material)), comment)));
+					_->nameToValue.apply(JAOPCAApi.instance().getMaterialConfig(material).getDefinedString(path, valueToName.apply(applyUnconfigured(material)), comment)));
 		}
 		return applyUnconfigured(material);
 	}

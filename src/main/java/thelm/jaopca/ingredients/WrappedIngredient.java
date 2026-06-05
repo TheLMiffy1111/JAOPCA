@@ -1,10 +1,11 @@
 package thelm.jaopca.ingredients;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.MapCodec;
 
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
@@ -41,8 +42,8 @@ public class WrappedIngredient implements ICustomIngredient {
 	}
 
 	@Override
-	public Stream<ItemStack> getItems() {
-		return Arrays.stream(wrapped.getItems());
+	public Stream<Holder<Item>> items() {
+		return wrapped.items();
 	}
 
 	@Override

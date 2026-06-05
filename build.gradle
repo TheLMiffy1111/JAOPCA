@@ -1,5 +1,5 @@
 plugins {
-	id "com.crystaelix.loom" version "1.13-SNAPSHOT"
+	id "org.relativitymc.neo-loom" version "1.16-SNAPSHOT"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
@@ -20,17 +20,6 @@ repositories {
 		}
 		filter {
 			includeGroup "org.parchmentmc.data"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.crystaelix.com/releases/"
-			}
-		}
-		filter {
-			includeGroup "thelm.jeimodelbridge"
-			includeGroup "thelm.techrebornjei"
 		}
 	}
 	exclusiveContent {
@@ -73,41 +62,11 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://maven.ftb.dev/releases/"
-			}
-		}
-		filter {
-			includeGroup "dev.ftb.mods"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.latvian.dev/releases/"
-			}
-		}
-		filter {
-			includeGroup "dev.latvian.mods"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.createmod.net/"
-			}
-		}
-		filter {
-			includeGroup "com.simibubi.create"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
 				url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
 			}
 		}
 		filter {
-			includeGroup "software.bernie.geckolib"
+			includeGroup "com.geckolib"
 		}
 	}
 	exclusiveContent {
@@ -124,16 +83,6 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
-			}
-		}
-		filter {
-			includeGroup "net.tslat.smartbrainlib"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
 				url = "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
 			}
 		}
@@ -144,62 +93,11 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url = "https://nexus.themcbrothers.net/repository/maven-releases/"
-			}
-		}
-		filter {
-			includeGroup "net.themcbrothers"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
 				url = "https://maven.rover656.dev/releases/"
 			}
 		}
 		filter {
 			includeGroup "com.enderio"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.su5ed.dev/releases/"
-			}
-		}
-		filter {
-			includeGroup "org.sinytra"
-			includeGroup "org.sinytra.forgified-fabric-api"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.modmuss50.me/"
-			}
-		}
-		filter {
-			includeGroup "TechReborn"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.teamresourceful.com/repository/maven-public/"
-			}
-		}
-		filter {
-			includeGroup "earth.terrarium.athena"
-		}
-	}
-	exclusiveContent {
-		forRepository {
-			maven {
-				url = "https://maven.wispforest.io/releases/"
-			}
-		}
-		filter {
-			includeGroup "io.wispforest"
 		}
 	}
 	exclusiveContent {
@@ -236,14 +134,14 @@ repositories {
 	}
 }
 
-def mcVersion = "1.21.1"
+def mcVersion = "26.1.2"
 def modName = "JAOPCA"
 def modId = "jaopca"
-def specVersion = "5"
+def specVersion = "6"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.13.22"
+version = "6.0.0.0"
 
 def archivesName = "${modName}-${mcVersion}"
 base.archivesName = archivesName
@@ -254,7 +152,7 @@ sourceSets {
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(25)
 		vendor = JvmVendorSpec.AZUL
 	}
 	withSourcesJar()
@@ -265,7 +163,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 loom {
-	silentMojangMappingsLicense()
 	runs {
 		configureEach {
 			property "forge.logging.console.level", "debug"
@@ -279,121 +176,48 @@ loom {
 	}
 }
 
-afterEvaluate {
-	loom {
-		runs.configureEach {
-			property "connector.clean.path", minecraftProvider.mergedJar.toString()
-		}
-	}
-}
-
 dependencies {
 	// Minecraft
-	minecraft "com.mojang:minecraft:1.21.1"
-	mappings loom.layered {
-		officialMojangMappings()
-		parchment "org.parchmentmc.data:parchment-1.21.1:2024.11.17@zip"
-	}
-	neoForge "net.neoforged:neoforge:21.1.227"
+	minecraft "com.mojang:minecraft:26.1.2"
+	forgeUserdev "net.neoforged:neoforge:26.1.2.71:userdev"
 
 	// Common
-	implementation("mezz.jei:jei-1.21.1-neoforge:19.27.0.340") {transitive = false}
-	implementation "thelm.jeimodelbridge:JEIModelBridge:21.1.0"
-	implementation "top.theillusivec4.curios:curios-neoforge:9.5.1+1.21.1"
-	implementation("software.bernie.geckolib:geckolib-neoforge-1.21.1:4.8.4") {transitive = false}
-	implementation "vazkii.patchouli:Patchouli:1.21.1-93-NEOFORGE"
-	implementation "org.appliedenergistics:guideme:21.1.15"
-	implementation("com.klikli_dev:modonomicon-1.21.1-neoforge:1.120.1") {transitive = false}
-	implementation "dev.technici4n:GrandPower:3.0.2"
-	implementation "dev.architectury:architectury-neoforge:13.0.8"
-	forgeRuntimeLibrary "org.sinytra:connector:2.0.0-beta.14+1.21.1"
-	implementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:0.116.7+2.2.4+1.21.1") {transitive = false}
-	implementation "curse.maven:connector-extras-913445:5618470"
-	implementation "dev.latvian.mods:rhino:2101.2.7-build.81"
-
-	// CraftTweaker
-	implementation("com.blamejared.crafttweaker:CraftTweaker-neoforge-1.21.1:21.0.38") {transitive = false}
-
-	// KubeJS
-	implementation("dev.latvian.mods:kubejs-neoforge:2101.7.2-build.348") {transitive = false}
+	implementation("mezz.jei:jei-26.1.2-neoforge:29.6.2.31") {transitive = false}
+	implementation "top.theillusivec4.curios:curios-neoforge:15.0.0-beta.2+26.1.2"
+	implementation("com.geckolib:geckolib-neoforge-26.1.2:5.5.1") {transitive = false}
+	implementation "vazkii.patchouli:patchouli-neoforge:26.1-94-SNAPSHOT"
+	implementation "org.appliedenergistics:guideme:26.1.11-beta"
+	implementation("com.klikli_dev:modonomicon-26.1.2-neoforge:1.147.0") {transitive = false}
+	implementation "dev.architectury:architectury-neoforge:20.0.4"
 
 	// Json Things
-	modImplementation("dev.gigaherz.jsonthings:JsonThings-1.21.1:0.13.2") {transitive = false}
-
-	// Open Loader
-	implementation "net.darkhax.bookshelf:bookshelf-neoforge-1.21.1:21.1.81"
-	implementation "net.darkhax.pricklemc:prickle-neoforge-1.21.1:21.1.11"
-	implementation "net.darkhax.openloader:openloader-neoforge-1.21.1:21.1.5"
-
-	// Actually Additions
-	implementation "curse.maven:actually-additions-228404:7676502"
-
-	// Create
-	implementation("com.simibubi.create:create-1.21.1:6.0.10-280") {transitive = false}
-	
-	// Crossroads
-	implementation "curse.maven:essentials-293752:7774198"
-	implementation "curse.maven:crossroads-mc-250231:7774216"
-
-	// Electrodynamics
-	implementation "curse.maven:voltaic-api-1237904:7397445"
-	implementation "curse.maven:electrodynamics-316867:7427042"
+	implementation("dev.gigaherz.jsonthings:JsonThings-26.1.2:0.18.5") {transitive = false}
 
 	// Ender IO
-	implementation "com.enderio:enderio:8.2.6-beta"
+	implementation "com.enderio:enderio:9.0.5-alpha"
 
 	// Energized Power
-	implementation "curse.maven:energized-power-782147:7956690"
-
-	// Immersive Engineering
-	implementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.21.1-12.4.2-194"
+	implementation "curse.maven:energized-power-782147:8188404"
 
 	// Integrated Dynamics
-	implementation "curse.maven:cyclops-core-232758:7786075"
-	implementation "curse.maven:common-capabilities-247007:7756804"
-	implementation "curse.maven:integrated-dynamics-236307:7945218"
-
-	// Mekanism
-	implementation "mekanism:Mekanism:1.21.1-10.7.19.85"
-
-	// Modern Industrialization
-	implementation "me.shedaniel.cloth:cloth-config-neoforge:15.0.140"
-	implementation("aztech:Modern-Industrialization:2.4.2") {transitive = false}
+	implementation "curse.maven:cyclops-core-232758:8126812"
+	implementation "curse.maven:common-capabilities-247007:8102778"
+	implementation "curse.maven:integrated-dynamics-236307:8168412"
 
 	// Occultism
-	implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-1.21.1:1.16.11"
-	implementation("com.klikli_dev:occultism-1.21.1-neoforge:1.214.0") {transitive = false}
-
-	// Oritech
-	implementation "earth.terrarium.athena:athena-neoforge-1.21:4.0.4"
-	implementation("io.wispforest:owo-lib-neoforge:0.12.15.1-beta.6+1.21") {transitive = false}
-	implementation "curse.maven:oritech-1030830:7938773"
-
-	// Railcraft Reborn
-	implementation "curse.maven:railcraft-reborn-901491:7393678"
-
-	// Tech Reborn
-	implementation "org.sinytra.forgified-fabric-api:fabric-transfer-api-v1:5.4.2+a25cb45619"
-	implementation("RebornCore:RebornCore-1.21.1:5.11.17") {transitive = false}
-	implementation("TechReborn:TechReborn-1.21.1:5.11.19") {transitive = false}
-	implementation "thelm.techrebornjei:TechRebornJEI:21.1.3"
+	implementation("com.klikli_dev:occultism-26.1.2-neoforge:1.237.0") {transitive = false}
 
 	// Theurgy
-	implementation("com.klikli_dev:theurgy-1.21.1-neoforge:1.72.0") {transitive = false}
-
-	// Useful Machinery
-	implementation "net.themcbrothers:themcbroslib:1.21.1-8.1.0"
-	implementation "net.themcbrothers:useful-foundation:1.21-1.0.0"
-	implementation("net.themcbrothers:useful-machinery:1.21-1.0.0") {transitive = false}
+	implementation("com.klikli_dev:theurgy-26.1.2-neoforge:1.109.0") {transitive = false}
 
 	// Testing
-	implementation "curse.maven:ato-405593:7825464"
-	implementation "curse.maven:allthemodium-364466:7468993"
+	implementation "curse.maven:ato-405593:8023670"
+	implementation "curse.maven:allthemodium-364466:8157737"
 
 	// Performance
-	implementation "curse.maven:yeetusexperimentus-635427:5444189"
-	implementation "curse.maven:modernfix-790626:7917721"
-	implementation "curse.maven:ferritecore-429235:7524151"
+	implementation "curse.maven:yeetusexperimentus-635427:7830957"
+	implementation "curse.maven:modernfix-790626:8099992"
+	implementation "curse.maven:ferritecore-429235:7806039"
 }
 
 def replacements = [
@@ -435,7 +259,7 @@ publishing {
 	publications {
 		register("mavenJava", MavenPublication) {
 			artifactId = archivesName
-			artifact remapJar
+			artifact jar
 			artifact sourcesJar
 		}
 	}
@@ -451,55 +275,27 @@ publishing {
 }
 
 def curseforgeDependencies = [
-	"actually-additions",
-	"crafttweaker",
-	"create",
-	"crossroads-mc",
-	"electrodynamics",
 	"ender-io",
 	"energized-power",
-	"immersive-engineering",
 	"integrated-dynamics",
 	"json-things",
-	"kubejs",
-	"mekanism",
-	"modern-industrialization",
 	"occultism",
-	"open-loader",
-	"oritech",
-	"railcraft-reborn",
-	"techreborn",
-	"theurgy",
-	"useful-machinery"
+	"theurgy"
 ]
 
 def modrinthDependencies = [
-	"actually-additions",
-	"crafttweaker",
-	"create",
-	"crossroads",
-	"electrodynamics",
 	"enderio",
 	"energized-power",
-	"immersiveengineering",
 	"integrated-dynamics",
-	"kubejs",
-	"mekanism",
-	"modern-industrialization",
 	"occultism",
-	"open-loader",
-	"oritech",
-	"railcraft-reborn",
-	"techreborn",
-	"theurgy",
-	"useful-machinery"
+	"theurgy"
 ]
 
 publishMods {
-	file = remapJar.archiveFile
+	file = jar.archiveFile
 	version = displayName = "${mcVersion}-${project.version}"
 	changelog = file("changelog.md").text
-	type = STABLE
+	type = ALPHA
 	modLoaders.add("neoforge")
 	additionalFiles.from(sourcesJar.archiveFile)
 

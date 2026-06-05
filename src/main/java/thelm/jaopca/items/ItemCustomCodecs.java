@@ -16,7 +16,7 @@ public class ItemCustomCodecs {
 
 	public static final Codec<IFormSettings> ITEM_FORM_SETTINGS =
 			CustomCodecs.<IItemFormSettings>builder(
-					instance->RecordCodecBuilder.point(ItemFormType.INSTANCE.getNewSettings())).
+					_->RecordCodecBuilder.point(ItemFormType.INSTANCE.getNewSettings())).
 			withField(
 					CustomCodecs.materialIntFunction(64).optionalFieldOf("maxStackSize"),
 					s->s.getMaxStackSizeFunction(),

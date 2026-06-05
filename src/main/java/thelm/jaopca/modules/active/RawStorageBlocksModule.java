@@ -2,7 +2,7 @@ package thelm.jaopca.modules.active;
 
 import java.util.List;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -41,10 +41,10 @@ public class RawStorageBlocksModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : rawStorageBlockForm.getMaterials()) {
 			IBlockInfo rawStorageBlockInfo = BlockFormType.INSTANCE.getMaterialFormInfo(rawStorageBlockForm, material);
-			ResourceLocation rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
-			ResourceLocation rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
+			Identifier rawStorageBlockLocation = miscHelper.getTagLocation("storage_blocks/raw", material.getName(), "_");
+			Identifier rawMaterialLocation = miscHelper.getTagLocation("raw_materials", material.getName());
 			api.registerShapedRecipe(
-					ResourceLocation.fromNamespaceAndPath("jaopca", "raw_storage_blocks.to_raw_storage_block."+material.getName()),
+					Identifier.fromNamespaceAndPath("jaopca", "raw_storage_blocks.to_raw_storage_block."+material.getName()),
 					CraftingBookCategory.BUILDING,
 					rawStorageBlockInfo, 1, new Object[] {
 							"MMM",
@@ -53,7 +53,7 @@ public class RawStorageBlocksModule implements IModule {
 							'M', rawMaterialLocation,
 					});
 			api.registerShapelessRecipe(
-					ResourceLocation.fromNamespaceAndPath("jaopca", "raw_storage_blocks.to_raw_material."+material.getName()),
+					Identifier.fromNamespaceAndPath("jaopca", "raw_storage_blocks.to_raw_material."+material.getName()),
 					rawMaterialLocation, 9, new Object[] {
 							rawStorageBlockLocation,
 					});

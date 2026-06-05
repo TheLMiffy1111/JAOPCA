@@ -18,6 +18,7 @@ import com.mojang.datafixers.kinds.App;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.RecordCodecBuilder.Instance;
 import com.mojang.serialization.codecs.RecordCodecBuilder.Mu;
@@ -129,7 +130,7 @@ public class CustomCodecs {
 			if(supplier instanceof DeferredHolder<?, ?>) {
 				return (DeferredHolder<R, R>)supplier;
 			}
-			return DeferredHolder.create(registry, ((Registry<R>)BuiltInRegistries.REGISTRY.get(registry.registry())).getKey(supplier.get()));
+			return DeferredHolder.create(registry, ((Registry<R>)BuiltInRegistries.REGISTRY.getValue(registry.registry())).getKey(supplier.get()));
 		});
 	}
 
@@ -220,8 +221,8 @@ public class CustomCodecs {
 								forGetter(f->f.materials),
 								Codec.STRING.optionalFieldOf("path", "").forGetter(f->f.path),
 								Codec.STRING.optionalFieldOf("comment", "").forGetter(f->f.comment),
-								Codec.unit(nameToValue).fieldOf("nameToValue").forGetter(f->f.nameToValue),
-								Codec.unit(valueToName).fieldOf("valueToName").forGetter(f->f.valueToName)).
+								MapCodec.unit(nameToValue).forGetter(f->f.nameToValue),
+								MapCodec.unit(valueToName).forGetter(f->f.valueToName)).
 						apply(instance, MaterialMappedFunction::of))).
 				xmap(either->either.map(v->MaterialMappedFunction.of(v, nameToValue, valueToName), Functions.identity()), Either::right).
 				xmap(Function.identity(), f->MaterialMappedFunction.of(defaultValue, f, nameToValue, valueToName));

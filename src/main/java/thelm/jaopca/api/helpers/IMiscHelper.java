@@ -13,66 +13,68 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStackTemplate;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 public interface IMiscHelper {
 
-	ResourceLocation createResourceLocation(String location, String defaultNamespace);
+	Identifier createIdentifier(String location, String defaultNamespace);
 
-	ResourceLocation createResourceLocation(String location);
+	Identifier createIdentifier(String location);
 
-	ResourceLocation getRecipeKey(String category, String material);
+	Identifier getRecipeKey(String category, String material);
 
-	ResourceLocation getTagLocation(String form, String material);
+	Identifier getTagLocation(String form, String material);
 
-	ResourceLocation getTagLocation(String form, String material, String separator);
+	Identifier getTagLocation(String form, String material, String separator);
 
-	ItemStack getItemStack(Object obj, int count);
+	ItemStackTemplate getItemStackTemplate(Object obj, int count);
 
 	Ingredient getIngredient(Object obj);
 
 	SizedIngredient getSizedIngredient(Object obj, int count);
 
-	TagKey<Item> getItemTagKey(ResourceLocation location);
+	TagKey<Item> getItemTagKey(Identifier location);
 
-	Collection<Item> getItemTagValues(ResourceLocation location);
+	Collection<Item> getItemTagValues(Identifier location);
 
-	ItemStack getPreferredItemStack(Iterable<Item> iterable, int count);
+	ItemStackTemplate getPreferredItemStackTemplate(Iterable<Item> iterable, int count);
 
-	FluidStack getFluidStack(Object obj, int amount);
+	FluidStackTemplate getFluidStackTemplate(Object obj, int amount);
 
 	FluidIngredient getFluidIngredient(Object obj);
 
 	SizedFluidIngredient getSizedFluidIngredient(Object obj, int amount);
 
-	TagKey<Fluid> getFluidTagKey(ResourceLocation location);
+	TagKey<Fluid> getFluidTagKey(Identifier location);
 
-	Collection<Fluid> getFluidTagValues(ResourceLocation location);
+	Collection<Fluid> getFluidTagValues(Identifier location);
 
-	FluidStack getPreferredFluidStack(Iterable<Fluid> iterable, int amount);
+	FluidStackTemplate getPreferredFluidStackTemplate(Iterable<Fluid> iterable, int amount);
 
-	<T> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, ResourceLocation location);
+	<T> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, Identifier location);
 
-	<T> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location);
+	<T> Collection<T> getTagValues(Identifier registry, Identifier location);
 
-	<T> Optional<T> getPreferredEntry(Function<T, ResourceLocation> keyGetter, Iterable<T> iterable);
+	<T> Optional<T> getPreferredEntry(Function<T, Identifier> keyGetter, Iterable<T> iterable);
 
-	<T> Optional<T> getPreferredEntry(Comparator<T> comparator, Function<T, ResourceLocation> keyGetter, Iterable<T> iterable);
+	<T> Optional<T> getPreferredEntry(Comparator<T> comparator, Function<T, Identifier> keyGetter, Iterable<T> iterable);
 
 	Comparator<Fluid> flowingFluidComparator();
 
-	<T> Comparator<T> entryPreferenceComparator(Function<T, ResourceLocation> keyGetter);
+	<T> Comparator<T> entryPreferenceComparator(Function<T, Identifier> keyGetter);
 
 	void caclulateMaterialSet(Collection<String> configList, Collection<String> actualSet);
 
@@ -98,5 +100,5 @@ public interface IMiscHelper {
 
 	<T> Supplier<T> conditionalSupplier(BooleanSupplier conditionSupplier, Supplier<Supplier<T>> trueSupplier, Supplier<Supplier<T>> falseSupplier);
 
-	boolean hasResource(ResourceLocation location);
+	boolean hasResource(Identifier location);
 }

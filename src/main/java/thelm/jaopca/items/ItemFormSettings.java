@@ -13,7 +13,7 @@ import thelm.jaopca.api.materials.IMaterial;
 class ItemFormSettings implements IItemFormSettings {
 
 	private IItemCreator itemCreator = JAOPCAItem::new;
-	private ToIntFunction<IMaterial> maxStackSizeFunction = material->64;
+	private ToIntFunction<IMaterial> maxStackSizeFunction = _->64;
 	private Predicate<IMaterial> hasEffectFunction = material->material.hasEffect();
 	private Function<IMaterial, Rarity> displayRarityFunction = material->material.getDisplayRarity();
 

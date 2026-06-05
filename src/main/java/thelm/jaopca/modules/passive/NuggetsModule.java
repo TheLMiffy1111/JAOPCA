@@ -2,7 +2,7 @@ package thelm.jaopca.modules.passive;
 
 import java.util.List;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
@@ -45,8 +45,8 @@ public class NuggetsModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : nuggetForm.getMaterials()) {
 			IItemInfo nuggetInfo = ItemFormType.INSTANCE.getMaterialFormInfo(nuggetForm, material);
-			ResourceLocation nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+			Identifier nuggetLocation = miscHelper.getTagLocation("nuggets", material.getName());
+			Identifier materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("nuggets.to_material", material.getName()),
 					materialLocation, 1, new Object[] {

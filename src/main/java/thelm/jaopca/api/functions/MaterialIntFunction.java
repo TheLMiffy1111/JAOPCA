@@ -53,7 +53,7 @@ public final class MaterialIntFunction implements ToIntFunction<IMaterial> {
 			return of(defaultValue, mf.materialTypes, mf.materials, mf.path, mf.comment);
 		}
 		Object2IntMap<IMaterial> materialMap = JAOPCAApi.instance().getMaterials().stream().collect(
-				Collectors.toMap(Function.identity(), function::applyAsInt, (a, b)->a, Object2IntOpenHashMap::new));
+				Collectors.toMap(Function.identity(), function::applyAsInt, (a, _)->a, Object2IntOpenHashMap::new));
 		return of(defaultValue, Object2IntMaps.emptyMap(), materialMap, "", "");
 	}
 
@@ -61,7 +61,7 @@ public final class MaterialIntFunction implements ToIntFunction<IMaterial> {
 	public int applyAsInt(IMaterial material) {
 		if(!path.isEmpty()) {
 			return configMaterials.computeIfAbsent(material,
-					m->JAOPCAApi.instance().getMaterialConfig(material).getDefinedInt(path, applyAsIntUnconfigured(material), comment));
+					_->JAOPCAApi.instance().getMaterialConfig(material).getDefinedInt(path, applyAsIntUnconfigured(material), comment));
 		}
 		return applyAsIntUnconfigured(material);
 	}

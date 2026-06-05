@@ -7,11 +7,12 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"DeferredSoundTypeAccessor",
+		"ReloadableServerResourcesAccessor",
 		"SimplePreparableReloadListenerMixin"
 	],
 	"client": [
 		"BlockStateModelLoaderMixin",
-		"ModelBakeryMixin",
+		"ItemStackRenderStateAccessor",
 		"SpriteContentsAccessor"
 	],
 	"injectors": {

@@ -38,8 +38,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
@@ -50,9 +50,10 @@ import net.minecraft.server.packs.repository.RepositorySource;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagFile;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.ModifyRecipeJsonsEvent;
 import net.neoforged.neoforge.registries.DataMapLoader;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforgespi.language.ModFileScanData.AnnotationData;
@@ -71,14 +72,14 @@ public class DataInjector {
 	private static final FileToIdConverter ADVANCEMENT_FORMAT = FileToIdConverter.json("advancement");
 	private static final Type JAOPCA_DATA_MODULE = Type.getType(JAOPCADataModule.class);
 	private static final Map<Class<?>, Consumer<Object>> RELOAD_INJECTORS = new HashMap<>();
-	private static final LoadingCache<ResourceKey<? extends Registry<?>>, ListMultimap<ResourceLocation, Supplier<ResourceLocation>>> TAGS_INJECT = CacheBuilder.newBuilder().build(CacheLoader.from(()->MultimapBuilder.treeKeys().arrayListValues().build()));
-	private static final TreeMap<ResourceLocation, IRecipeSerializer> RECIPES_INJECT = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
-	private static final TreeMap<ResourceLocation, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
+	private static final LoadingCache<ResourceKey<? extends Registry<?>>, ListMultimap<Identifier, Supplier<Identifier>>> TAGS_INJECT = CacheBuilder.newBuilder().build(CacheLoader.from(()->MultimapBuilder.treeKeys().arrayListValues().build()));
+	private static final TreeMap<Identifier, IRecipeSerializer> RECIPES_INJECT = new TreeMap<>();
+	private static final TreeMap<Identifier, Supplier<LootTable>> LOOT_TABLES_INJECT = new TreeMap<>();
+	private static final TreeMap<Identifier, Supplier<Advancement.Builder>> ADVANCEMENTS_INJECT = new TreeMap<>();
 	private static final Table<DataMapType<?, ?>, ExtraCodecs.TagOrElementLocation, Supplier<?>> DATA_MAPS_INJECT = Tables.newCustomTable(new TreeMap<>(Comparator.comparing(t->t.id())), ()->new TreeMap<>(Comparator.comparing(t->t.toString())));
 
 	public static void init() {
-		RELOAD_INJECTORS.put(RecipeManager.class, DataInjector::injectRecipes);
+		NeoForge.EVENT_BUS.addListener(DataInjector::injectRecipes);
 	}
 
 	public static boolean registerReloadInjector(Class<?> clazz, Consumer<Object> injector) {
@@ -87,26 +88,26 @@ public class DataInjector {
 		return RELOAD_INJECTORS.putIfAbsent(clazz, injector) == null;
 	}
 
-	public static boolean registerTag(ResourceKey<? extends Registry<?>> registry, ResourceLocation tagLocation, Supplier<ResourceLocation> objLocation) {
+	public static boolean registerTag(ResourceKey<? extends Registry<?>> registry, Identifier tagLocation, Supplier<Identifier> objLocation) {
 		Objects.requireNonNull(registry);
 		Objects.requireNonNull(tagLocation);
 		Objects.requireNonNull(objLocation);
 		return TAGS_INJECT.getUnchecked(registry).put(tagLocation, objLocation);
 	}
 
-	public static boolean registerRecipe(ResourceLocation location, IRecipeSerializer recipeSupplier) {
+	public static boolean registerRecipe(Identifier location, IRecipeSerializer recipeSupplier) {
 		Objects.requireNonNull(location);
 		Objects.requireNonNull(recipeSupplier);
 		return RECIPES_INJECT.putIfAbsent(location, recipeSupplier) == null;
 	}
 
-	public static boolean registerLootTable(ResourceLocation location, Supplier<LootTable> lootTableSupplier) {
+	public static boolean registerLootTable(Identifier location, Supplier<LootTable> lootTableSupplier) {
 		Objects.requireNonNull(location);
 		Objects.requireNonNull(lootTableSupplier);
 		return LOOT_TABLES_INJECT.putIfAbsent(location, lootTableSupplier) == null;
 	}
 
-	public static boolean registerAdvancement(ResourceLocation location, Supplier<Advancement.Builder> advancementBuilder) {
+	public static boolean registerAdvancement(Identifier location, Supplier<Advancement.Builder> advancementBuilder) {
 		Objects.requireNonNull(location);
 		Objects.requireNonNull(advancementBuilder);
 		return ADVANCEMENTS_INJECT.putIfAbsent(location, advancementBuilder) == null;
@@ -123,20 +124,20 @@ public class DataInjector {
 		return true;
 	}
 
-	public static Set<ResourceLocation> getInjectTags(ResourceKey<? extends Registry<?>> registry) {
+	public static Set<Identifier> getInjectTags(ResourceKey<? extends Registry<?>> registry) {
 		Objects.requireNonNull(registry);
 		return TAGS_INJECT.getUnchecked(registry).keySet();
 	}
 
-	public static Set<ResourceLocation> getInjectRecipes() {
+	public static Set<Identifier> getInjectRecipes() {
 		return RECIPES_INJECT.navigableKeySet();
 	}
 
-	public static Set<ResourceLocation> getInjectLootTables() {
+	public static Set<Identifier> getInjectLootTables() {
 		return LOOT_TABLES_INJECT.navigableKeySet();
 	}
 
-	public static Set<ResourceLocation> getInjectAdvancements() {
+	public static Set<Identifier> getInjectAdvancements() {
 		return ADVANCEMENTS_INJECT.navigableKeySet();
 	}
 
@@ -209,7 +210,7 @@ public class DataInjector {
 				else {
 					tag = registrySplit.get(0);
 				}
-				if(ResourceLocation.tryParse(registry) == null) {
+				if(Identifier.tryParse(registry) == null) {
 					LOGGER.warn("Custom tag entry [{}] has invalid registry", entry);
 					continue;
 				}
@@ -218,15 +219,15 @@ public class DataInjector {
 					LOGGER.warn("Custom tag entry [{}] has no specified tag", entry);
 					continue;
 				}
-				if(ResourceLocation.tryParse(tagSplit.get(0)) == null) {
+				if(Identifier.tryParse(tagSplit.get(0)) == null) {
 					LOGGER.warn("Custom tag entry [{}] has invalid object", entry);
 					continue;
 				}
-				if(ResourceLocation.tryParse(tagSplit.get(1)) == null) {
+				if(Identifier.tryParse(tagSplit.get(1)) == null) {
 					LOGGER.warn("Custom tag entry [{}] has invalid tag", entry);
 					continue;
 				}
-				registerTag(ResourceKey.createRegistryKey(ResourceLocation.parse(registry)), ResourceLocation.parse(tagSplit.get(1)), ()->ResourceLocation.parse(tagSplit.get(0)));
+				registerTag(ResourceKey.createRegistryKey(Identifier.parse(registry)), Identifier.parse(tagSplit.get(1)), ()->Identifier.parse(tagSplit.get(0)));
 				LOGGER.info("Registered custom tag entry [{}]", entry);
 			}
 		}
@@ -241,9 +242,9 @@ public class DataInjector {
 		}
 	}
 
-	public static void injectRecipes(Object object) {
-		Map<ResourceLocation, JsonElement> recipeMap = (Map<ResourceLocation, JsonElement>)object;
-		Map<ResourceLocation, JsonElement> recipesToInject = new TreeMap<>();
+	public static void injectRecipes(ModifyRecipeJsonsEvent event) {
+		Map<Identifier, JsonElement> recipeMap = event.getRecipeJsons();
+		Map<Identifier, JsonElement> recipesToInject = new TreeMap<>();
 		RECIPES_INJECT.forEach((key, supplier)->{
 			if(recipeMap.containsKey(key)) {
 				LOGGER.debug("Duplicate recipe ignored with ID {}", key);
@@ -279,38 +280,38 @@ public class DataInjector {
 		@Override
 		public void loadPacks(Consumer<Pack> packConsumer) {
 			PackLocationInfo packLocation = new PackLocationInfo("jaopca:inmemory", Component.literal("JAOPCA In Memory Resources"), PackSource.BUILT_IN, Optional.empty());
+
+			InMemoryResourcePack pack = new InMemoryResourcePack(packLocation, true);
+			TAGS_INJECT.asMap().forEach((registry, map)->{
+				FileToIdConverter format = FileToIdConverter.json(Registries.tagsDirPath(registry));
+				map.asMap().forEach((tagLocation, objLocations)->{
+					TagBuilder builder = TagBuilder.create();
+					objLocations.stream().map(Supplier::get).filter(Objects::nonNull).distinct().forEach(l->builder.addOptionalElement(l));
+					pack.putJson(PackType.SERVER_DATA, format.idToFile(tagLocation), serializeTag(builder));
+				});
+			});
+			LOOT_TABLES_INJECT.forEach((location, supplier)->{
+				pack.putJson(PackType.SERVER_DATA, LOOT_TABLE_FORMAT.idToFile(location), serializeLootTable(supplier.get()));
+			});
+			ADVANCEMENTS_INJECT.forEach((location, supplier)->{
+				pack.putJson(PackType.SERVER_DATA, ADVANCEMENT_FORMAT.idToFile(location), serializeAdvancement(supplier.get()));
+			});
+			DATA_MAPS_INJECT.rowMap().forEach((type, map)->{
+				FileToIdConverter format = FileToIdConverter.json(DataMapLoader.PATH+'/'+DataMapLoader.getFolderLocation(type.registryKey().identifier()));
+				JsonObject values = new JsonObject();
+				map.forEach((location, supplier)->{
+					@SuppressWarnings("rawtypes")
+					JsonElement value = serialize((Codec)type.codec(), supplier.get());
+					values.add(location.toString(), value);
+				});
+				JsonObject json = new JsonObject();
+				json.add("values", values);
+				pack.putJson(PackType.SERVER_DATA, format.idToFile(type.id()), json);
+			});
+			ModuleHandler.onCreateDataPack(pack);
+
 			PackSelectionConfig packSelection = new PackSelectionConfig(true, Pack.Position.BOTTOM, false);
-			Pack packInfo = Pack.readMetaAndCreate(packLocation, BuiltInPackSource.fromName(packId->{
-				InMemoryResourcePack pack = new InMemoryResourcePack(packId, true);
-				TAGS_INJECT.asMap().forEach((registry, map)->{
-					FileToIdConverter format = FileToIdConverter.json(Registries.tagsDirPath(registry));
-					map.asMap().forEach((tagLocation, objLocations)->{
-						TagBuilder builder = TagBuilder.create();
-						objLocations.stream().map(Supplier::get).filter(Objects::nonNull).distinct().forEach(l->builder.addOptionalElement(l));
-						pack.putJson(PackType.SERVER_DATA, format.idToFile(tagLocation), serializeTag(builder));
-					});
-				});
-				LOOT_TABLES_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, LOOT_TABLE_FORMAT.idToFile(location), serializeLootTable(supplier.get()));
-				});
-				ADVANCEMENTS_INJECT.forEach((location, supplier)->{
-					pack.putJson(PackType.SERVER_DATA, ADVANCEMENT_FORMAT.idToFile(location), serializeAdvancement(supplier.get()));
-				});
-				DATA_MAPS_INJECT.rowMap().forEach((type, map)->{
-					FileToIdConverter format = FileToIdConverter.json(DataMapLoader.PATH+'/'+DataMapLoader.getFolderLocation(type.registryKey().location()));
-					JsonObject values = new JsonObject();
-					map.forEach((location, supplier)->{
-						@SuppressWarnings("rawtypes")
-						JsonElement value = serialize((Codec)type.codec(), supplier.get());
-						values.add(location.toString(), value);
-					});
-					JsonObject json = new JsonObject();
-					json.add("values", values);
-					pack.putJson(PackType.SERVER_DATA, format.idToFile(type.id()), json);
-				});
-				ModuleHandler.onCreateDataPack(pack);
-				return pack;
-			}), PackType.SERVER_DATA, packSelection);
+			Pack packInfo = Pack.readMetaAndCreate(packLocation, BuiltInPackSource.fixedResources(pack), PackType.SERVER_DATA, packSelection);
 			if(packInfo != null) {
 				packConsumer.accept(packInfo);
 			}

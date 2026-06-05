@@ -1,6 +1,6 @@
 package thelm.jaopca.compat.occultism;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import thelm.jaopca.compat.occultism.recipes.CrushingRecipeSerializer;
 import thelm.jaopca.utils.ApiImpl;
 
@@ -10,11 +10,11 @@ public class OccultismHelper {
 
 	private OccultismHelper() {}
 
-	public boolean registerCrushingRecipe(ResourceLocation key, Object input, Object output, int outputCount, int minTier, int maxTier, int time, boolean ignoreMultiplier) {
+	public boolean registerCrushingRecipe(Identifier key, Object input, Object output, int outputCount, int minTier, int maxTier, int time, boolean ignoreMultiplier) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSerializer(key, input, output, outputCount, minTier, maxTier, time, ignoreMultiplier));
 	}
 
-	public boolean registerCrushingRecipe(ResourceLocation key, Object input, Object output, int outputCount, int time, boolean ignoreMultiplier) {
+	public boolean registerCrushingRecipe(Identifier key, Object input, Object output, int outputCount, int time, boolean ignoreMultiplier) {
 		return ApiImpl.INSTANCE.registerRecipe(key, new CrushingRecipeSerializer(key, input, output, outputCount, time, ignoreMultiplier));
 	}
 }

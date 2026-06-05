@@ -20,7 +20,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -45,15 +44,18 @@ import com.mojang.serialization.JsonOps;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.tags.TagManager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -68,6 +70,7 @@ import net.neoforged.neoforge.common.crafting.DifferenceIngredient;
 import net.neoforged.neoforge.common.crafting.IntersectionIngredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStackTemplate;
 import net.neoforged.neoforge.fluids.crafting.CompoundFluidIngredient;
 import net.neoforged.neoforge.fluids.crafting.DifferenceFluidIngredient;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
@@ -91,50 +94,51 @@ public class MiscHelper implements IMiscHelper {
 
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(r->new Thread(r, "JAOPCA Executor Thread"));
 
-	private TagManager tagManager;
-	private List<TagManager.LoadResult<?>> lastTagResults = List.of();
-	private Map<ResourceKey<? extends Registry<?>>, SetMultimap<ResourceLocation, Object>> tagMap = new TreeMap<>();
+	private List<Registry.PendingTags<?>> postponedTags = List.of();
+	private Map<ResourceKey<? extends Registry<?>>, SetMultimap<Identifier, Object>> tagMap = new TreeMap<>();
+	
+	private RegistryAccess registries = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
 
-	public void setTagManager(TagManager tagManager) {
-		this.tagManager = tagManager;
+	public void setTagManager(List<Registry.PendingTags<?>> postponedTags) {
+		this.postponedTags = postponedTags;
+		tagMap.clear();
 	}
 
 	@Override
-	public ResourceLocation createResourceLocation(String location, String defaultNamespace) {
+	public Identifier createIdentifier(String location, String defaultNamespace) {
 		if(StringUtils.contains(location, ':')) {
-			return ResourceLocation.parse(location);
+			return Identifier.parse(location);
 		}
 		else {
-			return ResourceLocation.fromNamespaceAndPath(defaultNamespace, location);
+			return Identifier.fromNamespaceAndPath(defaultNamespace, location);
 		}
 	}
 
 	@Override
-	public ResourceLocation createResourceLocation(String location) {
-		return createResourceLocation(location, "c");
+	public Identifier createIdentifier(String location) {
+		return createIdentifier(location, "c");
 	}
 
 	@Override
-	public ResourceLocation getRecipeKey(String category, String material) {
-		return createResourceLocation(category+'.'+(material), "jaopca");
+	public Identifier getRecipeKey(String category, String material) {
+		return createIdentifier(category+'.'+(material), "jaopca");
 	}
 
 	@Override
-	public ResourceLocation getTagLocation(String form, String material) {
+	public Identifier getTagLocation(String form, String material) {
 		return getTagLocation(form, material, "/");
 	}
 
 	@Override
-	public ResourceLocation getTagLocation(String form, String material, String separator) {
-		return createResourceLocation(form+
+	public Identifier getTagLocation(String form, String material, String separator) {
+		return createIdentifier(form+
 				(StringUtils.isEmpty(material) ? "" :
 					(StringUtils.isEmpty(separator) ? "/" : separator)+material));
 	}
 
 	@Override
-	public ItemStack getItemStack(Object obj, int count) {
-		ItemStack ret = getPreferredItemStack(getIngredientResolved(obj).getRight(), count);
-		return ret.isEmpty() ? ItemStack.EMPTY : ret;
+	public ItemStackTemplate getItemStackTemplate(Object obj, int count) {
+		return getPreferredItemStackTemplate(getIngredientResolved(obj).getRight(), count);
 	}
 
 	@Override
@@ -207,30 +211,17 @@ public class MiscHelper implements IMiscHelper {
 			BuiltInRegistries.ITEM.forEach(items::add);
 		}
 		case String str -> {
-			ResourceLocation location = ResourceLocation.parse(str);
-			ing = Ingredient.of(getItemTagKey(location));
+			Identifier location = Identifier.parse(str);
+			ing = Ingredient.of(HolderSet.emptyNamed(BuiltInRegistries.ITEM, getItemTagKey(location)));
 			items.addAll(getItemTagValues(location));
 		}
-		case ResourceLocation location -> {
-			ing = Ingredient.of(getItemTagKey(location));
+		case Identifier location -> {
+			ing = Ingredient.of(HolderSet.emptyNamed(BuiltInRegistries.ITEM, getItemTagKey(location)));
 			items.addAll(getItemTagValues(location));
 		}
 		case TagKey<?> key -> {
-			ing = Ingredient.of(getItemTagKey(key.location()));
+			ing = Ingredient.of(HolderSet.emptyNamed(BuiltInRegistries.ITEM, getItemTagKey(key.location())));
 			items.addAll(getItemTagValues(key.location()));
-		}
-		case ItemStack stack -> {
-			if(!stack.isEmpty()) {
-				ing = Ingredient.of(stack);
-				items.add(stack.getItem());
-			}
-		}
-		case ItemStack[] stacks -> {
-			List<ItemStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
-			if(!nonEmpty.isEmpty()) {
-				ing = Ingredient.of(nonEmpty.stream());
-				nonEmpty.stream().map(ItemStack::getItem).forEach(items::add);
-			}
 		}
 		case Holder<?> holder -> {
 			if(holder.isBound() && holder.value() instanceof Item item && item != Items.AIR) {
@@ -261,16 +252,6 @@ public class MiscHelper implements IMiscHelper {
 				items.addAll(nonEmpty);
 			}
 		}
-		case Ingredient.Value value -> {
-			ing = Ingredient.fromValues(Stream.of(value));
-			// We can't know what items the ingredient can have so assume all
-			BuiltInRegistries.ITEM.forEach(items::add);
-		}
-		case Ingredient.Value[] values -> {
-			ing = Ingredient.fromValues(Stream.of(values));
-			// We can't know what items the ingredient can have so assume all
-			BuiltInRegistries.ITEM.forEach(items::add);
-		}
 		case JsonElement json -> {
 			ing = Ingredient.CODEC.parse(JsonOps.INSTANCE, json).resultOrPartial(LOGGER::warn).orElse(null);
 			// We can't know what items the ingredient can have so assume all
@@ -283,24 +264,24 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	@Override
-	public TagKey<Item> getItemTagKey(ResourceLocation location) {
+	public TagKey<Item> getItemTagKey(Identifier location) {
 		return TagKey.create(Registries.ITEM, location);
 	}
 
 	@Override
-	public Collection<Item> getItemTagValues(ResourceLocation location) {
+	public Collection<Item> getItemTagValues(Identifier location) {
 		return getTagValues(Registries.ITEM, location);
 	}
 
 	@Override
-	public ItemStack getPreferredItemStack(Iterable<Item> iterable, int count) {
-		return new ItemStack(getPreferredEntry(BuiltInRegistries.ITEM::getKey, iterable).orElse(Items.AIR), count);
+	public ItemStackTemplate getPreferredItemStackTemplate(Iterable<Item> iterable, int count) {
+		Optional<Item> item = getPreferredEntry(BuiltInRegistries.ITEM::getKey, iterable);
+		return item.isPresent() ? new ItemStackTemplate(item.get(), count) : null;
 	}
 
 	@Override
-	public FluidStack getFluidStack(Object obj, int amount) {
-		FluidStack ret = getPreferredFluidStack(getFluidIngredientResolved(obj).getRight(), amount);
-		return ret.isEmpty() ? FluidStack.EMPTY : ret;
+	public FluidStackTemplate getFluidStackTemplate(Object obj, int amount) {
+		return getPreferredFluidStackTemplate(getFluidIngredientResolved(obj).getRight(), amount);
 	}
 
 	@Override
@@ -319,7 +300,7 @@ public class MiscHelper implements IMiscHelper {
 		Set<Fluid> fluids = new HashSet<>();
 		switch(obj) {
 		case Supplier<?> supplier -> {
-			Pair<FluidIngredient, Set<Fluid>> pair = getFluidIngredientResolved(((Supplier<?>)obj).get());
+			Pair<FluidIngredient, Set<Fluid>> pair = getFluidIngredientResolved(supplier.get());
 			ing = pair.getLeft();
 			fluids.addAll(pair.getRight());
 		}
@@ -373,30 +354,17 @@ public class MiscHelper implements IMiscHelper {
 			BuiltInRegistries.FLUID.forEach(fluids::add);
 		}
 		case String str -> {
-			ResourceLocation location = ResourceLocation.parse(str);
-			ing = FluidIngredient.tag(getFluidTagKey(location));
+			Identifier location = Identifier.parse(str);
+			ing = FluidIngredient.of(HolderSet.emptyNamed(BuiltInRegistries.FLUID, getFluidTagKey(location)));
 			fluids.addAll(getFluidTagValues(location));
 		}
-		case ResourceLocation location -> {
-			ing = FluidIngredient.tag(getFluidTagKey(location));
+		case Identifier location -> {
+			ing = FluidIngredient.of(HolderSet.emptyNamed(BuiltInRegistries.FLUID, getFluidTagKey(location)));
 			fluids.addAll(getFluidTagValues(location));
 		}
 		case TagKey<?> key -> {
-			ing = FluidIngredient.tag(getFluidTagKey(key.location()));
+			ing = FluidIngredient.of(HolderSet.emptyNamed(BuiltInRegistries.FLUID, getFluidTagKey(key.location())));
 			fluids.addAll(getFluidTagValues(key.location()));
-		}
-		case FluidStack stack -> {
-			if(!stack.isEmpty()) {
-				ing = FluidIngredient.of(stack);
-				fluids.add(stack.getFluid());
-			}
-		}
-		case FluidStack[] stacks -> {
-			List<FluidStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
-			if(!nonEmpty.isEmpty()) {
-				ing = FluidIngredient.of(nonEmpty.toArray(FluidStack[]::new));
-				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
-			}
 		}
 		case Holder<?> holder -> {
 			if(holder.isBound() && holder.value() instanceof Fluid fluid && fluid != Fluids.EMPTY) {
@@ -452,35 +420,28 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	@Override
-	public TagKey<Fluid> getFluidTagKey(ResourceLocation location) {
+	public TagKey<Fluid> getFluidTagKey(Identifier location) {
 		return TagKey.create(Registries.FLUID, location);
 	}
 
 	@Override
-	public Collection<Fluid> getFluidTagValues(ResourceLocation location) {
+	public Collection<Fluid> getFluidTagValues(Identifier location) {
 		return getTagValues(Registries.FLUID, location);
 	}
 
 	@Override
-	public FluidStack getPreferredFluidStack(Iterable<Fluid> iterable, int amount) {
-		return new FluidStack(getPreferredEntry(flowingFluidComparator(), BuiltInRegistries.FLUID::getKey, iterable).orElse(Fluids.EMPTY), amount);
+	public FluidStackTemplate getPreferredFluidStackTemplate(Iterable<Fluid> iterable, int amount) {
+		Optional<Fluid> fluid = getPreferredEntry(flowingFluidComparator(), BuiltInRegistries.FLUID::getKey, iterable);
+		return fluid.isPresent() ? new FluidStackTemplate(fluid.get(), amount) : null;
 	}
 
 	@Override
-	public <T> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, ResourceLocation location) {
-		if(tagManager == null) {
-			throw new IllegalStateException("Tag manager not initialized.");
-		}
-		if(tagManager.getResult() != lastTagResults) {
-			lastTagResults = tagManager.getResult();
-			tagMap.clear();
-			if(lastTagResults.isEmpty()) {
-				throw new IllegalStateException("Tags have not been loaded yet.");
-			}
-			lastTagResults.forEach(result->{
-				SetMultimap<ResourceLocation, Object> map = tagMap.computeIfAbsent(result.key(), k->MultimapBuilder.treeKeys().linkedHashSetValues().build());
-				result.tags().forEach((loc, tag)->{
-					tag.forEach(holder->map.put(loc, holder.value()));
+	public <T> Collection<T> getTagValues(ResourceKey<? extends Registry<T>> registry, Identifier location) {
+		if(tagMap.isEmpty()) {
+			postponedTags.forEach(pending->{
+				SetMultimap<Identifier, Object> map = tagMap.computeIfAbsent(pending.key(), _->MultimapBuilder.treeKeys().linkedHashSetValues().build());
+				pending.contents().forEach((loc, tag) -> {
+					tag.forEach(holder->map.put(loc.location(), holder.value()));
 				});
 			});
 		}
@@ -488,17 +449,17 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	@Override
-	public <T> Collection<T> getTagValues(ResourceLocation registry, ResourceLocation location) {
+	public <T> Collection<T> getTagValues(Identifier registry, Identifier location) {
 		return getTagValues(ResourceKey.createRegistryKey(registry), location);
 	}
 
 	@Override
-	public <T> Optional<T> getPreferredEntry(Function<T, ResourceLocation> keyGetter, Iterable<T> iterable) {
+	public <T> Optional<T> getPreferredEntry(Function<T, Identifier> keyGetter, Iterable<T> iterable) {
 		return Streams.stream(iterable).min(entryPreferenceComparator(keyGetter));
 	}
 
 	@Override
-	public <T> Optional<T> getPreferredEntry(Comparator<T> comparator, Function<T, ResourceLocation> keyGetter, Iterable<T> iterable) {
+	public <T> Optional<T> getPreferredEntry(Comparator<T> comparator, Function<T, Identifier> keyGetter, Iterable<T> iterable) {
 		return Streams.stream(iterable).min(comparator.thenComparing(entryPreferenceComparator(keyGetter)));
 	}
 
@@ -509,10 +470,10 @@ public class MiscHelper implements IMiscHelper {
 	};
 
 	@Override
-	public <T> Comparator<T> entryPreferenceComparator(Function<T, ResourceLocation> keyGetter) {
+	public <T> Comparator<T> entryPreferenceComparator(Function<T, Identifier> keyGetter) {
 		return (entry1, entry2)->{
-			ResourceLocation key1 = keyGetter.apply(entry1);
-			ResourceLocation key2 = keyGetter.apply(entry2);
+			Identifier key1 = keyGetter.apply(entry1);
+			Identifier key2 = keyGetter.apply(entry2);
 			if(key1 == key2) return 0;
 			if(key1 == null) return 1;
 			if(key2 == null) return -1;
@@ -584,7 +545,7 @@ public class MiscHelper implements IMiscHelper {
 
 	@Override
 	public <T> JsonElement serialize(Codec<T> codec, T obj) {
-		return codec.encodeStart(JsonOps.INSTANCE, obj).resultOrPartial(LOGGER::warn).get();
+		return codec.encodeStart(RegistryOps.create(JsonOps.INSTANCE, registries), obj).resultOrPartial(LOGGER::warn).get();
 	}
 
 	private static final Predicate<String> CONFIG_MATERIAL_PREDICATE = s->s.equals("*") || s.startsWith("*") && MaterialType.fromName(s.substring(1)) != null || MaterialHandler.containsMaterial(s);
@@ -611,8 +572,8 @@ public class MiscHelper implements IMiscHelper {
 	}
 
 	@Override
-	public boolean hasResource(ResourceLocation location) {
-		return conditionalSupplier(FMLEnvironment.dist::isClient, ()->()->Minecraft.getInstance().getResourceManager().getResource(location).isPresent(), ()->()->false).get();
+	public boolean hasResource(Identifier location) {
+		return conditionalSupplier(FMLEnvironment.getDist()::isClient, ()->()->Minecraft.getInstance().getResourceManager().getResource(location).isPresent(), ()->()->false).get();
 	}
 
 	public <T> Future<T> submitAsyncTask(Callable<T> task) {

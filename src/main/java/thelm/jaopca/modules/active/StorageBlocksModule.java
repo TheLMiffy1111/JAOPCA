@@ -2,7 +2,7 @@ package thelm.jaopca.modules.active;
 
 import java.util.List;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -39,8 +39,8 @@ public class StorageBlocksModule implements IModule {
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : storageBlockForm.getMaterials()) {
 			IBlockInfo storageBlockInfo = BlockFormType.INSTANCE.getMaterialFormInfo(storageBlockForm, material);
-			ResourceLocation storageBlockLocation = miscHelper.getTagLocation("storage_blocks", material.getName());
-			ResourceLocation materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
+			Identifier storageBlockLocation = miscHelper.getTagLocation("storage_blocks", material.getName());
+			Identifier materialLocation = miscHelper.getTagLocation(material.getType().getFormName(), material.getName());
 			if(material.isSmallStorageBlock()) {
 				api.registerShapedRecipe(
 						miscHelper.getRecipeKey("storage_blocks.to_storage_block", material.getName()),

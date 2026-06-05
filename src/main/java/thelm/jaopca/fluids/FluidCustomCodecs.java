@@ -20,7 +20,7 @@ public class FluidCustomCodecs {
 
 	public static final Codec<IFormSettings> FLUID_FORM_SETTINGS =
 			CustomCodecs.<IFluidFormSettings>builder(
-					instance->RecordCodecBuilder.point(FluidFormType.INSTANCE.getNewSettings())).
+					_->RecordCodecBuilder.point(FluidFormType.INSTANCE.getNewSettings())).
 			withField(
 					CustomCodecs.materialIntFunction(8).optionalFieldOf("maxLevel"),
 					s->s.getMaxLevelFunction(),

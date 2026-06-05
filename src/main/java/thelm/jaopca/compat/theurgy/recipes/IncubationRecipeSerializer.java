@@ -9,8 +9,8 @@ import com.google.gson.JsonElement;
 import com.klikli_dev.theurgy.content.recipe.IncubationRecipe;
 import com.klikli_dev.theurgy.content.recipe.result.ItemRecipeResult;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
@@ -19,7 +19,7 @@ public class IncubationRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final Identifier key;
 	public final Object mercury;
 	public final Object salt;
 	public final Object sulfur;
@@ -27,7 +27,7 @@ public class IncubationRecipeSerializer implements IRecipeSerializer {
 	public final int outputCount;
 	public final int time;
 
-	public IncubationRecipeSerializer(ResourceLocation key, Object mercury, Object salt, Object sulfur, Object output, int outputCount, int time) {
+	public IncubationRecipeSerializer(Identifier key, Object mercury, Object salt, Object sulfur, Object output, int outputCount, int time) {
 		this.key = Objects.requireNonNull(key);
 		this.mercury = mercury;
 		this.salt = salt;
@@ -51,8 +51,8 @@ public class IncubationRecipeSerializer implements IRecipeSerializer {
 		if(sulfurIng == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+sulfur);
 		}
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
-		if(stack.isEmpty()) {
+		ItemStackTemplate stack = MiscHelper.INSTANCE.getItemStackTemplate(output, outputCount);
+		if(stack == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		IncubationRecipe recipe = new IncubationRecipe(mercuryIng, saltIng, sulfurIng, new ItemRecipeResult(stack), time);

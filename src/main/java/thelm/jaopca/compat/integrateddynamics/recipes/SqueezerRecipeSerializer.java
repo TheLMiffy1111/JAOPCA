@@ -13,11 +13,11 @@ import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Either;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStackTemplate;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
 
@@ -25,17 +25,17 @@ public class SqueezerRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final Identifier key;
 	public final Object input;
 	public final Object[] itemOutput;
 	public final Object fluidOutput;
 	public final int fluidOutputAmount;
 
-	public SqueezerRecipeSerializer(ResourceLocation key, Object input, Object[] itemOutput) {
+	public SqueezerRecipeSerializer(Identifier key, Object input, Object[] itemOutput) {
 		this(key, input, itemOutput, Fluids.EMPTY, 0);
 	}
 
-	public SqueezerRecipeSerializer(ResourceLocation key, Object input, Object[] itemOutput, Object fluidOutput, int fluidOutputAmount) {
+	public SqueezerRecipeSerializer(Identifier key, Object input, Object[] itemOutput, Object fluidOutput, int fluidOutputAmount) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.itemOutput = itemOutput;
@@ -64,18 +64,18 @@ public class SqueezerRecipeSerializer implements IRecipeSerializer {
 				chance = (Float)itemOutput[i];
 				++i;
 			}
-			ItemStack stack = MiscHelper.INSTANCE.getItemStack(out, count);
-			if(stack.isEmpty()) {
+			ItemStackTemplate stack = MiscHelper.INSTANCE.getItemStackTemplate(out, count);
+			if(stack == null) {
 				LOGGER.warn("Empty output in recipe {}: {}", key, out);
 				continue;
 			}
 			itemResults.add(new RecipeSqueezer.IngredientChance(Either.left(Pair.of(stack, chance))));
 		}
-		FluidStack fluidStack = MiscHelper.INSTANCE.getFluidStack(fluidOutput, fluidOutputAmount);
-		if(itemResults.isEmpty() && fluidStack.isEmpty()) {
+		FluidStackTemplate fluidStack = MiscHelper.INSTANCE.getFluidStackTemplate(fluidOutput, fluidOutputAmount);
+		if(itemResults.isEmpty() && fluidStack == null) {
 			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+Arrays.deepToString(itemOutput)+", "+fluidOutput);
 		}
-		RecipeSqueezer recipe = new RecipeSqueezer(ing, itemResults, fluidStack.isEmpty() ? Optional.empty() : Optional.of(fluidStack));
+		RecipeSqueezer recipe = new RecipeSqueezer(ing, itemResults, Optional.ofNullable(fluidStack));
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

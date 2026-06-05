@@ -1,15 +1,17 @@
 package thelm.jaopca.recipes;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.gson.JsonElement;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe.CommonInfo;
 import net.minecraft.world.item.crafting.SmithingTransformRecipe;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
@@ -18,14 +20,14 @@ public class SmithingRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final Identifier key;
 	public final Object template;
 	public final Object base;
 	public final Object addition;
 	public final Object output;
 	public final int count;
 
-	public SmithingRecipeSerializer(ResourceLocation key, Object template, Object base, Object addition, Object output, int count) {
+	public SmithingRecipeSerializer(Identifier key, Object template, Object base, Object addition, Object output, int count) {
 		this.key = Objects.requireNonNull(key);
 		this.template = template;
 		this.base = base;
@@ -37,22 +39,17 @@ public class SmithingRecipeSerializer implements IRecipeSerializer {
 	@Override
 	public JsonElement get() {
 		Ingredient templateIng = MiscHelper.INSTANCE.getIngredient(template);
-		if(templateIng == null) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+template);
-		}
 		Ingredient baseIng = MiscHelper.INSTANCE.getIngredient(base);
 		if(baseIng == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+base);
 		}
 		Ingredient additionIng = MiscHelper.INSTANCE.getIngredient(addition);
-		if(additionIng == null) {
-			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+addition);
-		}
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, count);
-		if(stack.isEmpty()) {
+		ItemStackTemplate stack = MiscHelper.INSTANCE.getItemStackTemplate(output, count);
+		if(stack == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		SmithingTransformRecipe recipe = new SmithingTransformRecipe(templateIng, baseIng, additionIng, stack);
+		CommonInfo commonInfo = new CommonInfo(false);
+		SmithingTransformRecipe recipe = new SmithingTransformRecipe(commonInfo, Optional.ofNullable(templateIng), baseIng, Optional.ofNullable(additionIng), stack);
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

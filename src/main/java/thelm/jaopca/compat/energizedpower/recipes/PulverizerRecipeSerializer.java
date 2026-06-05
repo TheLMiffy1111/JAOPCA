@@ -9,8 +9,9 @@ import com.google.gson.JsonElement;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrays;
 import me.jddev0.ep.recipe.PulverizerRecipe;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
@@ -19,7 +20,7 @@ public class PulverizerRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final Identifier key;
 	public final Object input;
 	public final Object output;
 	public final double[] chances;
@@ -28,11 +29,11 @@ public class PulverizerRecipeSerializer implements IRecipeSerializer {
 	public final double[] secondChances;
 	public final double[] secondChancesAdvanced;
 
-	public PulverizerRecipeSerializer(ResourceLocation key, Object input, Object output, double[] chances, double[] chancesAdvanced) {
+	public PulverizerRecipeSerializer(Identifier key, Object input, Object output, double[] chances, double[] chancesAdvanced) {
 		this(key, input, output, chances, chancesAdvanced, ItemStack.EMPTY, DoubleArrays.EMPTY_ARRAY, DoubleArrays.EMPTY_ARRAY);
 	}
 
-	public PulverizerRecipeSerializer(ResourceLocation key, Object input, Object output, double[] chances, double[] chancesAdvanced, Object secondOutput, double[] secondChances, double[] secondChancesAdvanced) {
+	public PulverizerRecipeSerializer(Identifier key, Object input, Object output, double[] chances, double[] chancesAdvanced, Object secondOutput, double[] secondChances, double[] secondChancesAdvanced) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
@@ -49,11 +50,11 @@ public class PulverizerRecipeSerializer implements IRecipeSerializer {
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, 1);
-		if(stack.isEmpty() || chances.length == 0) {
+		ItemStackTemplate stack = MiscHelper.INSTANCE.getItemStackTemplate(output, 1);
+		if(stack == null || chances.length == 0) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
-		ItemStack secondStack = MiscHelper.INSTANCE.getItemStack(secondOutput, 1);
+		ItemStackTemplate secondStack = MiscHelper.INSTANCE.getItemStackTemplate(secondOutput, 1);
 		PulverizerRecipe recipe = new PulverizerRecipe(
 				new PulverizerRecipe.OutputItemStackWithPercentages(stack, chances, chancesAdvanced),
 				new PulverizerRecipe.OutputItemStackWithPercentages(secondStack, secondChances, secondChancesAdvanced),

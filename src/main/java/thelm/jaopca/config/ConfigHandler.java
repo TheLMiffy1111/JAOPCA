@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.collect.Lists;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.loading.FMLPaths;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
 import thelm.jaopca.api.materials.IMaterial;
@@ -61,17 +61,17 @@ public class ConfigHandler {
 	private static final List<String> DEFAULT_PREFERRED_MODS = Lists.newArrayList("minecraft");
 	public static final List<String> PREFERRED_MODS = new ArrayList<>();
 
-	public static final Set<ResourceLocation> BLOCK_TAG_BLACKLIST = new TreeSet<>();
-	public static final Set<ResourceLocation> ITEM_TAG_BLACKLIST = new TreeSet<>();
-	public static final Set<ResourceLocation> FLUID_TAG_BLACKLIST = new TreeSet<>();
-	public static final Set<ResourceLocation> ENTITY_TYPE_TAG_BLACKLIST = new TreeSet<>();
+	public static final Set<Identifier> BLOCK_TAG_BLACKLIST = new TreeSet<>();
+	public static final Set<Identifier> ITEM_TAG_BLACKLIST = new TreeSet<>();
+	public static final Set<Identifier> FLUID_TAG_BLACKLIST = new TreeSet<>();
+	public static final Set<Identifier> ENTITY_TYPE_TAG_BLACKLIST = new TreeSet<>();
 
-	public static final Set<ResourceLocation> RECIPE_BLACKLIST = new TreeSet<>();
+	public static final Set<Identifier> RECIPE_BLACKLIST = new TreeSet<>();
 	public static final List<Pattern> RECIPE_REGEX_BLACKLIST = new ArrayList<>();
 
-	public static final Set<ResourceLocation> LOOT_TABLE_BLACKLIST = new TreeSet<>();
+	public static final Set<Identifier> LOOT_TABLE_BLACKLIST = new TreeSet<>();
 
-	public static final Set<ResourceLocation> ADVANCEMENT_BLACKLIST = new TreeSet<>();
+	public static final Set<Identifier> ADVANCEMENT_BLACKLIST = new TreeSet<>();
 
 	public static final Set<String> DATA_MODULE_BLACKLIST = new TreeSet<>();
 	public static final List<String> CUSTOM_TAGS = new ArrayList<>();
@@ -120,41 +120,41 @@ public class ConfigHandler {
 
 		mainConfig.setComment("blockTags", "Configurations related to block tags.");
 		BLOCK_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.blacklist", new ArrayList<>(),
-				"List of block tags that should not be added."), ResourceLocation::parse));
+				"List of block tags that should not be added."), Identifier::parse));
 		DataCollector.getDefinedTags(Registries.BLOCK).addAll(Lists.transform(mainConfig.getDefinedStringList("blockTags.customDefined", new ArrayList<>(),
-				"List of block tags that should be considered as defined."), ResourceLocation::parse));
+				"List of block tags that should be considered as defined."), Identifier::parse));
 
 		mainConfig.setComment("itemTags", "Configurations related to item tags.");
 		ITEM_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.blacklist", new ArrayList<>(),
-				"List of item tags that should not be added."), ResourceLocation::parse));
+				"List of item tags that should not be added."), Identifier::parse));
 		DataCollector.getDefinedTags(Registries.ITEM).addAll(Lists.transform(mainConfig.getDefinedStringList("itemTags.customDefined", new ArrayList<>(),
-				"List of item tags that should be considered as defined."), ResourceLocation::parse));
+				"List of item tags that should be considered as defined."), Identifier::parse));
 
 		mainConfig.setComment("fluidTags", "Configurations related to fluid tags.");
 		FLUID_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.blacklist", new ArrayList<>(),
-				"List of fluid tags that should not be added."), ResourceLocation::parse));
+				"List of fluid tags that should not be added."), Identifier::parse));
 		DataCollector.getDefinedTags(Registries.FLUID).addAll(Lists.transform(mainConfig.getDefinedStringList("fluidTags.customDefined", new ArrayList<>(),
-				"List of fluid tags that should be considered as defined."), ResourceLocation::parse));
+				"List of fluid tags that should be considered as defined."), Identifier::parse));
 
 		mainConfig.setComment("entityTypeTags", "Configurations related to entity type tags.");
 		ENTITY_TYPE_TAG_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("entityTypeTags.blacklist", new ArrayList<>(),
-				"List of entity type tags that should not be added."), ResourceLocation::parse));
+				"List of entity type tags that should not be added."), Identifier::parse));
 		DataCollector.getDefinedTags(Registries.ENTITY_TYPE).addAll(Lists.transform(mainConfig.getDefinedStringList("entityTypeTags.customDefined", new ArrayList<>(),
-				"List of entity type tags that should be considered as defined."), ResourceLocation::parse));
+				"List of entity type tags that should be considered as defined."), Identifier::parse));
 
 		mainConfig.setComment("recipes", "Configurations related to recipes.");
 		RECIPE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("recipes.blacklist", new ArrayList<>(),
-				"List of recipes that should not be added."), ResourceLocation::parse));
+				"List of recipes that should not be added."), Identifier::parse));
 		RECIPE_REGEX_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("recipes.regexBlacklist", new ArrayList<>(),
 				"List of recipes by regex that should not be added."), Pattern::compile));
 
 		mainConfig.setComment("lootTables", "Configurations related to loot tables.");
 		LOOT_TABLE_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("lootTables.blacklist", new ArrayList<>(),
-				"List of loot tables that should not be added."), ResourceLocation::parse));
+				"List of loot tables that should not be added."), Identifier::parse));
 
 		mainConfig.setComment("advancements", "Configurations related to advancements.");
 		ADVANCEMENT_BLACKLIST.addAll(Lists.transform(mainConfig.getDefinedStringList("advancements.blacklist", new ArrayList<>(),
-				"List of advancements that should not be added."), ResourceLocation::parse));
+				"List of advancements that should not be added."), Identifier::parse));
 
 		mainConfig.setComment("data", "Configurations related to data modules.");
 		DATA_MODULE_BLACKLIST.addAll(mainConfig.getDefinedStringList("data.moduleBlacklist", new ArrayList<>(), "List of data modules that should not be registered."));

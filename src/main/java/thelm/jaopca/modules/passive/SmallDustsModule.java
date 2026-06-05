@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.forms.IForm;
@@ -51,8 +51,8 @@ public class SmallDustsModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : smallDustForm.getMaterials()) {
-			ResourceLocation smallDustLocation = miscHelper.getTagLocation("small_dusts", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+			Identifier smallDustLocation = miscHelper.getTagLocation("small_dusts", material.getName());
+			Identifier dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			api.registerShapelessRecipe(
 					miscHelper.getRecipeKey("small_dusts.to_dust", material.getName()),
 					dustLocation, 1, new Object[] {

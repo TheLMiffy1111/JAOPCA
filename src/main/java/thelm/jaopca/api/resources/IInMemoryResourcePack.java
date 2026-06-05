@@ -6,25 +6,25 @@ import java.util.function.Supplier;
 
 import com.google.gson.JsonElement;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 
 public interface IInMemoryResourcePack extends PackResources {
 
-	IInMemoryResourcePack putInputStream(PackType type, ResourceLocation location, Supplier<? extends InputStream> streamSupplier);
+	IInMemoryResourcePack putInputStream(PackType type, Identifier location, Supplier<? extends InputStream> streamSupplier);
 
-	IInMemoryResourcePack putInputStreams(PackType type, Map<ResourceLocation, Supplier<? extends InputStream>> map);
+	IInMemoryResourcePack putInputStreams(PackType type, Map<Identifier, Supplier<? extends InputStream>> map);
 
-	IInMemoryResourcePack putByteArray(PackType type, ResourceLocation location, byte[] file);
+	IInMemoryResourcePack putByteArray(PackType type, Identifier location, byte[] file);
 
-	IInMemoryResourcePack putByteArrays(PackType type, Map<ResourceLocation, byte[]> map);
+	IInMemoryResourcePack putByteArrays(PackType type, Map<Identifier, byte[]> map);
 
-	IInMemoryResourcePack putString(PackType type, ResourceLocation location, String str);
+	IInMemoryResourcePack putString(PackType type, Identifier location, String str);
 
-	IInMemoryResourcePack putStrings(PackType type, Map<ResourceLocation, String> map);
+	IInMemoryResourcePack putStrings(PackType type, Map<Identifier, String> map);
 
-	IInMemoryResourcePack putJson(PackType type, ResourceLocation location, JsonElement json);
+	IInMemoryResourcePack putJson(PackType type, Identifier location, JsonElement json);
 
-	IInMemoryResourcePack putJsons(PackType type, Map<ResourceLocation, ? extends JsonElement> map);
+	IInMemoryResourcePack putJsons(PackType type, Map<Identifier, ? extends JsonElement> map);
 }

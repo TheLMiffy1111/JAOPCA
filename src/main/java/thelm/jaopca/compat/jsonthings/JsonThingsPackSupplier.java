@@ -1,7 +1,5 @@
 package thelm.jaopca.compat.jsonthings;
 
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -28,7 +26,7 @@ public class JsonThingsPackSupplier implements IPackSupplier {
 	@Override
 	public void addPacks(Consumer<PackResources> resourcePacks) {
 		Path thingpacks = ThingResourceManager.instance().getThingPacksLocation();
-		try(DirectoryStream<Path> directorystream = Files.newDirectoryStream(thingpacks)) {
+		try {
 			FolderRepositorySource.discoverPacks(
 					thingpacks,
 					LevelStorageSource.parseValidator(FMLPaths.GAMEDIR.get().resolve("allowed_symlinks.txt")),

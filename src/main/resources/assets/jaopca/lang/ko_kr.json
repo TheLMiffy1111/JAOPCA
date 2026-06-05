@@ -10,39 +10,6 @@
 	"fluid_type.jaopca.molten": "녹인 %s",
 	"item.jaopca.molten": "녹인 %s 양동이",
 
-	"item.jaopca.create_crushed": "분쇄된 %s 광석",
-
-	"item.jaopca.crossroads_grits": "%s 원석 가루",
-	"item.jaopca.crossroads_clumps": "%s 덩어리",
-
-	"item.jaopca.electrodynamics_impuredusts": "불순물이 섞인 %s 가루",
-	"item.jaopca.electrodynamics_crystals": "%s 결정",
-	"fluid_type.jaopca.electrodynamics_pureminerals": "Pure %s Solution",
-	"item.jaopca.electrodynamics_pureminerals": "Pure %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_sulfates": "황산 %s 용액",
-	"item.jaopca.electrodynamics_sulfates": "황산 %s 용액 양동이",
-	"fluid_type.jaopca.electrodynamics_impureminerals": "Impure %s Solution",
-	"item.jaopca.electrodynamics_impureminerals": "Impure %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_dirtyminerals": "Dirty %s Solution",
-	"item.jaopca.electrodynamics_dirtyminerals": "Dirty %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_crudeminerals": "Crude %s Solution",
-	"item.jaopca.electrodynamics_crudeminerals": "Crude %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_royalminerals": "Royal %s Solution",
-	"item.jaopca.electrodynamics_royalminerals": "Royal %s Solution Bucket",
-
-	"item.jaopca.mekanism_dirty_dusts": "불순물이 섞인 %s 가루",
-	"item.jaopca.mekanism_clumps": "%s 덩어리",
-	"item.jaopca.mekanism_shards": "%s 파편",
-	"item.jaopca.mekanism_crystals": "%s 결정",
-	"chemical.jaopca.mekanism_dirty": "불순물이 섞인 %s 슬러리",
-	"chemical.jaopca.mekanism_clean": "순수한 %s 슬러리",
-
-	"item.jaopca.modern_industrialization_crushed_dusts": "%s Crushed Dust",
-
-	"item.jaopca.oritech_clumps": "%s Clump",
-	"item.jaopca.oritech_small_clumps": "Small %s Clump",
-	"item.jaopca.oritech_gems": "%s Gem",
-
 	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

@@ -10,39 +10,6 @@
 	"fluid_type.jaopca.molten": "Erimiş %s",
 	"item.jaopca.molten": "Erimiş %s Kovası",
 
-	"item.jaopca.create_crushed": "Crushed Raw %s",
-
-	"item.jaopca.crossroads_grits": "Raw %s Grit",
-	"item.jaopca.crossroads_clumps": "%s Clumps",
-
-	"item.jaopca.electrodynamics_impuredusts": "Impure %s Dust",
-	"item.jaopca.electrodynamics_crystals": "%s Crystal",
-	"fluid_type.jaopca.electrodynamics_pureminerals": "Pure %s Solution",
-	"item.jaopca.electrodynamics_pureminerals": "Pure %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_sulfates": "%s Sulfate Solution",
-	"item.jaopca.electrodynamics_sulfates": "%s Sulfate Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_impureminerals": "Impure %s Solution",
-	"item.jaopca.electrodynamics_impureminerals": "Impure %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_dirtyminerals": "Dirty %s Solution",
-	"item.jaopca.electrodynamics_dirtyminerals": "Dirty %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_crudeminerals": "Crude %s Solution",
-	"item.jaopca.electrodynamics_crudeminerals": "Crude %s Solution Bucket",
-	"fluid_type.jaopca.electrodynamics_royalminerals": "Royal %s Solution",
-	"item.jaopca.electrodynamics_royalminerals": "Royal %s Solution Bucket",
-
-	"item.jaopca.mekanism_dirty_dusts": "Kirli %s Tozu",
-	"item.jaopca.mekanism_clumps": "%s Tortu",
-	"item.jaopca.mekanism_shards": "%s Kesiti",
-	"item.jaopca.mekanism_crystals": "%s Kristali",
-	"chemical.jaopca.mekanism_dirty": "Kirli %s Bulamacı",
-	"chemical.jaopca.mekanism_clean": "Temiz %s Bulamacı",
-
-	"item.jaopca.modern_industrialization_crushed_dusts": "%s Crushed Dust",
-
-	"item.jaopca.oritech_clumps": "%s Tortu",
-	"item.jaopca.oritech_small_clumps": "Küçük %s Tortu",
-	"item.jaopca.oritech_gems": "%s Değerli Taş",
-
 	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

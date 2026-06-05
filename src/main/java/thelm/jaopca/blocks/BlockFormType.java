@@ -13,7 +13,7 @@ import com.google.common.collect.TreeBasedTable;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import thelm.jaopca.api.JAOPCAApi;
@@ -63,7 +63,7 @@ public class BlockFormType implements IBlockFormType {
 
 	@Override
 	public boolean shouldRegister(IForm form, IMaterial material) {
-		ResourceLocation tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName(), form.getTagSeparator());
+		Identifier tagLocation = MiscHelper.INSTANCE.getTagLocation(form.getSecondaryName(), material.getName(), form.getTagSeparator());
 		return !ApiImpl.INSTANCE.getItemTags().contains(tagLocation);
 	}
 
@@ -101,33 +101,33 @@ public class BlockFormType implements IBlockFormType {
 			String tagSeparator = form.getTagSeparator();
 			for(IMaterial material : form.getMaterials()) {
 				String name = form.getName()+'.'+material.getName();
-				ResourceLocation registryName = ResourceLocation.fromNamespaceAndPath("jaopca", name);
-				ResourceLocation lootLocation = ResourceLocation.fromNamespaceAndPath("jaopca", "blocks/"+name);
+				Identifier registryName = Identifier.fromNamespaceAndPath("jaopca", name);
+				Identifier lootLocation = Identifier.fromNamespaceAndPath("jaopca", "blocks/"+name);
 				String toolTag = settings.getHarvestToolTagFunction().apply(material);
 				String tierTag = settings.getHarvestTierTagFunction().apply(material);
 
-				Supplier<IMaterialFormBlock> materialFormBlock = MemoizingSuppliers.of(()->settings.getBlockCreator().create(form, material, settings));
+				Supplier<IMaterialFormBlock> materialFormBlock = MemoizingSuppliers.of(()->settings.getBlockCreator().create(form, material, settings, registryName));
 				BLOCKS.put(form, material, materialFormBlock);
 				api.registerRegistryEntry(Registries.BLOCK, name, ()->materialFormBlock.get().toBlock());
 
-				Supplier<IMaterialFormBlockItem> materialFormBlockItem = MemoizingSuppliers.of(()->settings.getBlockItemCreator().create(materialFormBlock.get(), settings));
+				Supplier<IMaterialFormBlockItem> materialFormBlockItem = MemoizingSuppliers.of(()->settings.getBlockItemCreator().create(materialFormBlock.get(), settings, registryName));
 				BLOCK_ITEMS.put(form, material, materialFormBlockItem);
 				api.registerRegistryEntry(Registries.ITEM, name, ()->materialFormBlockItem.get().toBlockItem());
 
 				api.registerLootTable(lootLocation, ()->settings.getBlockLootTableCreator().create(materialFormBlock.get(), settings));
 
-				api.registerBlockTag(helper.createResourceLocation(secondaryName), registryName);
+				api.registerBlockTag(helper.createIdentifier(secondaryName), registryName);
 				api.registerBlockTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
 					api.registerBlockTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
 				}
 
-				api.registerBlockTag(ResourceLocation.parse(toolTag), registryName);
+				api.registerBlockTag(Identifier.parse(toolTag), registryName);
 				if(!Strings.isNullOrEmpty(tierTag)) {
-					api.registerBlockTag(ResourceLocation.parse(tierTag), registryName);
+					api.registerBlockTag(Identifier.parse(tierTag), registryName);
 				}
 
-				api.registerItemTag(helper.createResourceLocation(secondaryName), registryName);
+				api.registerItemTag(helper.createIdentifier(secondaryName), registryName);
 				api.registerItemTag(helper.getTagLocation(secondaryName, material.getName(), tagSeparator), registryName);
 				for(String alternativeName : material.getAlternativeNames()) {
 					api.registerItemTag(helper.getTagLocation(secondaryName, alternativeName, tagSeparator), registryName);
@@ -148,12 +148,12 @@ public class BlockFormType implements IBlockFormType {
 	}
 
 	@Override
-	public void addBlockModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+	public void addBlockModelRemaps(Set<Identifier> allLocations, BiConsumer<Identifier, Identifier> output) {
 		getBlocks().forEach(mf->mf.addBlockModelRemaps(allLocations, output));
 	}
 
 	@Override
-	public void addItemModelRemaps(Set<ResourceLocation> allLocations, BiConsumer<ResourceLocation, ResourceLocation> output) {
+	public void addItemModelRemaps(Set<Identifier> allLocations, BiConsumer<Identifier, Identifier> output) {
 		getBlockItems().forEach(mf->mf.addItemModelRemaps(allLocations, output));
 	}
 

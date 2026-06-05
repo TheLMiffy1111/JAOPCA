@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import com.google.gson.JsonElement;
 import com.klikli_dev.theurgy.content.recipe.LiquefactionRecipe;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
@@ -19,7 +19,7 @@ public class LiquefactionRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final Identifier key;
 	public final Object itemInput;
 	public final Object fluidInput;
 	public final int fluidInputAmount;
@@ -27,7 +27,7 @@ public class LiquefactionRecipeSerializer implements IRecipeSerializer {
 	public final int outputCount;
 	public final int time;
 
-	public LiquefactionRecipeSerializer(ResourceLocation key, Object itemInput, Object fluidInput, int fluidInputAmount, Object output, int outputCount, int time) {
+	public LiquefactionRecipeSerializer(Identifier key, Object itemInput, Object fluidInput, int fluidInputAmount, Object output, int outputCount, int time) {
 		this.key = Objects.requireNonNull(key);
 		this.itemInput = itemInput;
 		this.fluidInput = fluidInput;
@@ -47,8 +47,8 @@ public class LiquefactionRecipeSerializer implements IRecipeSerializer {
 		if(fluidIng == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+fluidInput);
 		}
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
-		if(stack.isEmpty()) {
+		ItemStackTemplate stack = MiscHelper.INSTANCE.getItemStackTemplate(output, outputCount);
+		if(stack == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		LiquefactionRecipe recipe = new LiquefactionRecipe(ing, fluidIng, stack, time);

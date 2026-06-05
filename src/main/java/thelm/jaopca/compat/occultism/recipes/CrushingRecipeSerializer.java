@@ -9,8 +9,8 @@ import com.google.gson.JsonElement;
 import com.klikli_dev.occultism.crafting.recipe.CrushingRecipe;
 import com.klikli_dev.occultism.crafting.recipe.result.RecipeResult;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
@@ -19,7 +19,7 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	public final ResourceLocation key;
+	public final Identifier key;
 	public final Object input;
 	public final Object output;
 	public final int outputCount;
@@ -28,11 +28,11 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 	public final int time;
 	public final boolean ignoreMultiplier;
 
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, Object output, int outputCount, int time, boolean ignoreMultiplier) {
+	public CrushingRecipeSerializer(Identifier key, Object input, Object output, int outputCount, int time, boolean ignoreMultiplier) {
 		this(key, input, output, outputCount, -1, -1, time, ignoreMultiplier);
 	}
 
-	public CrushingRecipeSerializer(ResourceLocation key, Object input, Object output, int outputCount, int minTier, int maxTier, int time, boolean ignoreMultiplier) {
+	public CrushingRecipeSerializer(Identifier key, Object input, Object output, int outputCount, int minTier, int maxTier, int time, boolean ignoreMultiplier) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
@@ -49,8 +49,8 @@ public class CrushingRecipeSerializer implements IRecipeSerializer {
 		if(ing == null) {
 			throw new IllegalArgumentException("Empty ingredient in recipe "+key+": "+input);
 		}
-		ItemStack stack = MiscHelper.INSTANCE.getItemStack(output, outputCount);
-		if(stack.isEmpty()) {
+		ItemStackTemplate stack = MiscHelper.INSTANCE.getItemStackTemplate(output, outputCount);
+		if(stack == null) {
 			throw new IllegalArgumentException("Empty output in recipe "+key+": "+output);
 		}
 		CrushingRecipe recipe = new CrushingRecipe(ing, RecipeResult.of(stack), minTier, maxTier, time, ignoreMultiplier);

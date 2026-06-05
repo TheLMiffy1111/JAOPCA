@@ -7,7 +7,10 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -47,8 +50,8 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	protected BooleanSupplier isFireSource;
 	protected Supplier<PushReaction> pushReaction;
 
-	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings) {
-		super(getProperties(form, material, settings));
+	public JAOPCABlock(IForm form, IMaterial material, IBlockFormSettings settings, Identifier registryName) {
+		super(getProperties(form, material, settings, registryName));
 		this.form = form;
 		this.material = material;
 		this.settings = settings;
@@ -68,10 +71,11 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 		pushReaction = MemoizingSuppliers.of(settings.getPushReactionFunction(), ()->material);
 	}
 
-	public static BlockBehaviour.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings) {
+	public static BlockBehaviour.Properties getProperties(IForm form, IMaterial material, IBlockFormSettings settings, Identifier registryName) {
 		BlockBehaviour.Properties prop = Block.Properties.of();
+		prop.setId(ResourceKey.create(Registries.BLOCK, registryName));
 		prop.strength((float)settings.getBlockHardnessFunction().applyAsDouble(material));
-		prop.lightLevel(state->settings.getLightValueFunction().applyAsInt(material));
+		prop.lightLevel(_->settings.getLightValueFunction().applyAsInt(material));
 		if(settings.getReplaceable()) {
 			prop.replaceable();
 		}
@@ -104,7 +108,7 @@ public class JAOPCABlock extends Block implements IMaterialFormBlock {
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter world, BlockPos pos) {
+	protected int getLightDampening(BlockState state) {
 		return lightOpacity.getAsInt();
 	}
 

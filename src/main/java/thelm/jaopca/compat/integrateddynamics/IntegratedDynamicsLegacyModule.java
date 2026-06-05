@@ -6,7 +6,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.Multimap;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.api.materials.IMaterial;
@@ -46,8 +46,8 @@ public class IntegratedDynamicsLegacyModule implements IModule {
 		IntegratedDynamicsHelper helper = IntegratedDynamicsHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
 		for(IMaterial material : moduleData.getMaterials()) {
-			ResourceLocation oreLocation = miscHelper.getTagLocation("ores", material.getName());
-			ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", material.getName());
+			Identifier oreLocation = miscHelper.getTagLocation("ores", material.getName());
+			Identifier dustLocation = miscHelper.getTagLocation("dusts", material.getName());
 			helper.registerSqueezerRecipe(
 					miscHelper.getRecipeKey("integrateddynamics.ore_to_dust", material.getName()),
 					oreLocation, new Object[] {

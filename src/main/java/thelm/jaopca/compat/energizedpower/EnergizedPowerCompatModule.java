@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -58,13 +58,13 @@ public class EnergizedPowerCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		EnergizedPowerHelper helper = EnergizedPowerHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		Set<ResourceLocation> itemTags = api.getItemTags();
+		Set<Identifier> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(!type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				Identifier materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				Identifier dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(dustLocation)) {
 					helper.registerPulverizerRecipe(
 							miscHelper.getRecipeKey("energizedpower.material_to_dust", name),
@@ -72,8 +72,8 @@ public class EnergizedPowerCompatModule implements IModule {
 				}
 			}
 			if(type.isIngot() && !TO_PLATE_BLACKLIST.contains(name) && !configToPlateBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
-				ResourceLocation plateLocation = miscHelper.getTagLocation("plates", name);
+				Identifier materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				Identifier plateLocation = miscHelper.getTagLocation("plates", name);
 				if(itemTags.contains(plateLocation)) {
 					helper.registerCompressorRecipe(
 							miscHelper.getRecipeKey("energizedpower.material_to_plate", name),

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import thelm.jaopca.api.JAOPCAApi;
 import thelm.jaopca.api.config.IDynamicSpecConfig;
@@ -67,13 +67,13 @@ public class OccultismCompatModule implements IModule {
 		JAOPCAApi api = ApiImpl.INSTANCE;
 		OccultismHelper helper = OccultismHelper.INSTANCE;
 		IMiscHelper miscHelper = MiscHelper.INSTANCE;
-		Set<ResourceLocation> itemTags = api.getItemTags();
+		Set<Identifier> itemTags = api.getItemTags();
 		for(IMaterial material : moduleData.getMaterials()) {
 			MaterialType type = material.getType();
 			String name = material.getName();
 			if(!type.isDust() && !TO_DUST_BLACKLIST.contains(name) && !configToDustBlacklist.contains(name)) {
-				ResourceLocation materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
-				ResourceLocation dustLocation = miscHelper.getTagLocation("dusts", name);
+				Identifier materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
+				Identifier dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(dustLocation)) {
 					helper.registerCrushingRecipe(
 							miscHelper.getRecipeKey("occultism.material_to_dust", name),
@@ -81,8 +81,8 @@ public class OccultismCompatModule implements IModule {
 				}
 			}
 			if(type.isIngot() && !TO_DIRTY_DUST_BLACKLIST.contains(name) && !configToDirtyDustBlacklist.contains(name)) {
-				ResourceLocation clumpLocation = miscHelper.getTagLocation("clumps", name);
-				ResourceLocation dirtyDustLocation = miscHelper.getTagLocation("dirty_dusts", name);
+				Identifier clumpLocation = miscHelper.getTagLocation("clumps", name);
+				Identifier dirtyDustLocation = miscHelper.getTagLocation("dirty_dusts", name);
 				if(itemTags.contains(clumpLocation) && itemTags.contains(dirtyDustLocation)) {
 					helper.registerCrushingRecipe(
 							miscHelper.getRecipeKey("occultism.clump_to_dirty_dust", name),

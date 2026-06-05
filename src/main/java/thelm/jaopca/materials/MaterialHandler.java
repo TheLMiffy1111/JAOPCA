@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import thelm.jaopca.api.materials.MaterialType;
 import thelm.jaopca.config.ConfigHandler;
 import thelm.jaopca.utils.ApiImpl;
@@ -44,7 +44,7 @@ public class MaterialHandler {
 	public static void findMaterials() {
 		MATERIALS.clear();
 
-		TreeSet<String> tags = ApiImpl.INSTANCE.getItemTags().stream().map(ResourceLocation::toString).collect(Collectors.toCollection(TreeSet::new));
+		TreeSet<String> tags = ApiImpl.INSTANCE.getItemTags().stream().map(Identifier::toString).collect(Collectors.toCollection(TreeSet::new));
 
 		Set<String> allMaterials = new TreeSet<>();
 
