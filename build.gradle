@@ -318,7 +318,7 @@ dependencies {
 	modImplementation("dev.ftb.mods:ftb-industrial-contraptions:1900.1.7-build.221") {transitive = false}
 
 	// IC2 Classic
-	modImplementation "curse.maven:ic2-classic-242942:6275736"
+	modImplementation "curse.maven:ic2-classic-242942:7841338"
 
 	// Immersive Engineering
 	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.19.2-9.2.4-170"
@@ -329,7 +329,7 @@ dependencies {
 	// Integrated Dynamics
 	modImplementation "curse.maven:cyclops-core-232758:7210362"
 	modImplementation "curse.maven:common-capabilities-247007:7117013"
-	modImplementation "curse.maven:integrated-dynamics-236307:7261403"
+	modImplementation "curse.maven:integrated-dynamics-236307:7827691"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.19.2-10.3.9.13"
