@@ -278,15 +278,15 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip"
 	}
-	forge "net.minecraftforge:forge:1.20.1-47.4.16"
+	forge "net.minecraftforge:forge:1.20.1-47.4.20"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.20.1-forge:15.20.0.129") {transitive = false}
+	modImplementation("mezz.jei:jei-1.20.1-forge:15.20.0.130") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.20-1.3.11"
 	modImplementation "top.theillusivec4.curios:curios-forge:5.14.1+1.20.1"
 	forgeRuntimeLibrary "com.eliotlash.mclib:mclib:20"
 	modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:4.8.3") {transitive = false}
-	modImplementation "vazkii.patchouli:Patchouli:1.20.1-84.1-FORGE"
+	modImplementation "vazkii.patchouli:Patchouli:1.20.1-85-FORGE"
 	forgeRuntimeLibrary "org.commonmark:commonmark:0.25.0"
 	forgeRuntimeLibrary "org.commonmark:commonmark-ext-gfm-strikethrough:0.25.0"
 	forgeRuntimeLibrary "org.commonmark:commonmark-ext-ins:0.25.0"
@@ -294,7 +294,7 @@ dependencies {
 	modImplementation "dev.architectury:architectury-forge:9.2.14"
 
 	// CraftTweaker
-	modImplementation("com.blamejared.crafttweaker:CraftTweaker-forge-1.20.1:14.0.59") {transitive = false}
+	modImplementation("com.blamejared.crafttweaker:CraftTweaker-forge-1.20.1:14.0.60") {transitive = false}
 
 	// KubeJS
 	implementation "dev.latvian.mods:rhino-forge:2001.2.3-build.10"
@@ -304,13 +304,13 @@ dependencies {
 	modImplementation "dev.gigaherz.jsonthings:JsonThings-1.20.1:0.9.9"
 
 	// Open Loader
-	modImplementation "net.darkhax.openloader:OpenLoader-Forge-1.20.1:19.0.4"
+	modImplementation "net.darkhax.openloader:OpenLoader-Forge-1.20.1:19.0.5"
 
 	// Actually Subtractions
-	modImplementation "curse.maven:actually-subtractions-1083685:7208984"
+	modImplementation "curse.maven:actually-subtractions-1083685:7656648"
 
 	// Blood Magic
-	modImplementation "curse.maven:blood-magic-224791:7253333"
+	modImplementation "curse.maven:blood-magic-224791:7956981"
 
 	// Create
 	modImplementation "com.jozufozu.flywheel:flywheel-forge-1.20.1:0.6.11-13"
@@ -324,7 +324,7 @@ dependencies {
 
 	// Crossroads
 	modImplementation "curse.maven:essentials-293752:4640300"
-	modImplementation "curse.maven:crossroads-mc-250231:6260167"
+	modImplementation "curse.maven:crossroads-mc-250231:7708522"
 
 	// Cyclic
 	modImplementation "curse.maven:flib-661261:6369719"
@@ -342,7 +342,7 @@ dependencies {
 	modImplementation "com.enderio:EnderIO:1.20.1-6.2.18-beta"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:7495073"
+	modImplementation "curse.maven:energized-power-782147:7956664"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:3.3.1-build-0:with-library") {transitive = false}
@@ -353,15 +353,15 @@ dependencies {
 	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.1-10.2.0-182"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:7210370"
+	modImplementation "curse.maven:cyclops-core-232758:7637992"
 	modImplementation "curse.maven:common-capabilities-247007:7229322"
-	modImplementation "curse.maven:integrated-dynamics-236307:7261411"
+	modImplementation "curse.maven:integrated-dynamics-236307:7945186"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.20.1-10.4.16.80"
 
 	// NuclearCraft: Neoteric
-	modImplementation "curse.maven:nuclearcraft-neoteric-840010:7136984"
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:7928867"
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.20.1:1.15"
@@ -378,7 +378,7 @@ dependencies {
 	modImplementation "com.teamcofh:thermal_integration:1.20.1-11.0.1.27"
 
 	// Theurgy
-	modImplementation("com.klikli_dev:theurgy-1.20.1:1.25.0") {transitive = false}
+	modImplementation("com.klikli_dev:theurgy-1.20.1:1.28.0") {transitive = false}
 
 	// Tinkers' Construct
 	modImplementation "slimeknights.mantle:Mantle:1.20.1-1.11.104"
@@ -399,7 +399,7 @@ dependencies {
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:4680832"
 	implementation "io.github.llamalad7:mixinextras-forge:0.5.0"
-	modImplementation "curse.maven:modernfix-790626:7515215"
+	modImplementation "curse.maven:modernfix-790626:7928686"
 	modImplementation "curse.maven:ferritecore-429235:4810975"
 }
 
