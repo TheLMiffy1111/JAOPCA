@@ -4,7 +4,7 @@ plugins {
 	id "idea"
 	id "maven-publish"
 	id "com.crystaelix.blossom" version "1.3.2"
-	id "me.modmuss50.mod-publish-plugin" version "1.1.0"
+	id "me.modmuss50.mod-publish-plugin" version "2.1.1"
 }
 
 repositories {
@@ -285,7 +285,7 @@ dependencies {
 	modImplementation "com.tterrag.registrate:Registrate:MC1.20-1.3.11"
 	modImplementation "top.theillusivec4.curios:curios-forge:5.14.1+1.20.1"
 	forgeRuntimeLibrary "com.eliotlash.mclib:mclib:20"
-	modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:4.8.3") {transitive = false}
+	modImplementation("software.bernie.geckolib:geckolib-forge-1.20.1:4.8.4") {transitive = false}
 	modImplementation "vazkii.patchouli:Patchouli:1.20.1-85-FORGE"
 	forgeRuntimeLibrary "org.commonmark:commonmark:0.25.0"
 	forgeRuntimeLibrary "org.commonmark:commonmark-ext-gfm-strikethrough:0.25.0"
@@ -298,7 +298,7 @@ dependencies {
 
 	// KubeJS
 	implementation "dev.latvian.mods:rhino-forge:2001.2.3-build.10"
-	modImplementation("dev.latvian.mods:kubejs-forge:2001.6.5-build.16") {transitive = false}
+	modImplementation("dev.latvian.mods:kubejs-forge:2001.6.5-build.26") {transitive = false}
 
 	// Json Things
 	modImplementation "dev.gigaherz.jsonthings:JsonThings-1.20.1:0.9.9"
@@ -327,12 +327,12 @@ dependencies {
 	modImplementation "curse.maven:crossroads-mc-250231:7708522"
 
 	// Cyclic
-	modImplementation "curse.maven:flib-661261:6369719"
-	modImplementation "curse.maven:cyclic-239286:6373460"
+	modImplementation "curse.maven:flib-661261:8309035"
+	modImplementation "curse.maven:cyclic-239286:8089280"
 
 	// Electrodynamics
-	modImplementation "curse.maven:voltaic-api-1237904:7397504"
-	modImplementation "curse.maven:electrodynamics-316867:7427041"
+	modImplementation "curse.maven:voltaic-api-1237904:8241683"
+	modImplementation "curse.maven:electrodynamics-316867:8244467"
 
 	// Embers Rekindled
 	modImplementation "curse.maven:embers-rekindled-300777:7446478"
@@ -342,7 +342,7 @@ dependencies {
 	modImplementation "com.enderio:EnderIO:1.20.1-6.2.18-beta"
 
 	// Energized Power
-	modImplementation "curse.maven:energized-power-782147:7956664"
+	modImplementation "curse.maven:energized-power-782147:8110004"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:3.3.1-build-0:with-library") {transitive = false}
@@ -353,22 +353,22 @@ dependencies {
 	modImplementation "blusunrize.immersiveengineering:ImmersiveEngineering:1.20.1-10.2.0-182"
 
 	// Integrated Dynamics
-	modImplementation "curse.maven:cyclops-core-232758:7637992"
+	modImplementation "curse.maven:cyclops-core-232758:8006236"
 	modImplementation "curse.maven:common-capabilities-247007:7229322"
-	modImplementation "curse.maven:integrated-dynamics-236307:7945186"
+	modImplementation "curse.maven:integrated-dynamics-236307:8168402"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.20.1-10.4.16.80"
 
 	// NuclearCraft: Neoteric
-	modImplementation "curse.maven:nuclearcraft-neoteric-840010:7928867"
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:8357827"
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.20.1:1.15"
-	modImplementation("com.klikli_dev:occultism-1.20.1:1.157.0") {transitive = false}
+	modImplementation("com.klikli_dev:occultism-1.20.1:1.158.0") {transitive = false}
 
 	// Railcraft Reborn
-	modImplementation "curse.maven:railcraft-reborn-901491:7073676"
+	modImplementation "curse.maven:railcraft-reborn-901491:8044082"
 
 	// Thermal Expansion
 	modImplementation "com.teamcofh:cofh_core:1.20.1-11.0.2.56"
@@ -399,7 +399,7 @@ dependencies {
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:4680832"
 	implementation "io.github.llamalad7:mixinextras-forge:0.5.0"
-	modImplementation "curse.maven:modernfix-790626:7928686"
+	modImplementation "curse.maven:modernfix-790626:8335833"
 	modImplementation "curse.maven:ferritecore-429235:4810975"
 }
 
@@ -525,6 +525,8 @@ publishMods {
 		accessToken = providers.gradleProperty("curseforge.token")
 		projectId = "266936"
 		minecraftVersions.add(mcVersion)
+		client = true
+		server = true
 		optional curseforgeDependencies as String[]
 	}
 
