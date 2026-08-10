@@ -103,6 +103,16 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
+				url = "https://maven.teamresourceful.com/repository/maven-public/"
+			}
+		}
+		filter {
+			includeGroup "earth.terrarium.athena"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
 				url = "https://cursemaven.com/"
 			}
 		}
@@ -141,7 +151,7 @@ def specVersion = "6"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "6.0.0.0"
+version = "6.0.1.1"
 
 def archivesName = "${modName}-${mcVersion}"
 base.archivesName = archivesName
@@ -179,7 +189,7 @@ loom {
 dependencies {
 	// Minecraft
 	minecraft "com.mojang:minecraft:26.1.2"
-	forgeUserdev "net.neoforged:neoforge:26.1.2.71:userdev"
+	forgeUserdev "net.neoforged:neoforge:26.1.2.94:userdev"
 
 	// Common
 	implementation("mezz.jei:jei-26.1.2-neoforge:29.6.2.31") {transitive = false}
@@ -206,6 +216,10 @@ dependencies {
 
 	// Occultism
 	implementation("com.klikli_dev:occultism-26.1.2-neoforge:1.237.0") {transitive = false}
+
+	// Oritech
+	implementation "earth.terrarium.athena:athena-neoforge-26.1:4.7.3"
+	implementation "curse.maven:oritech-1030830:8571095"
 
 	// Theurgy
 	implementation("com.klikli_dev:theurgy-26.1.2-neoforge:1.109.0") {transitive = false}
@@ -280,6 +294,7 @@ def curseforgeDependencies = [
 	"integrated-dynamics",
 	"json-things",
 	"occultism",
+	"oritech",
 	"theurgy"
 ]
 
@@ -288,6 +303,7 @@ def modrinthDependencies = [
 	"energized-power",
 	"integrated-dynamics",
 	"occultism",
+	"oritech",
 	"theurgy"
 ]
 

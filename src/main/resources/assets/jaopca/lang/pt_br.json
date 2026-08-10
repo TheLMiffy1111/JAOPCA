@@ -10,6 +10,10 @@
 	"fluid_type.jaopca.molten": "%s Derretido",
 	"item.jaopca.molten": "Balde de %s Derretido",
 
+	"item.jaopca.oritech_clumps": "Agregado de %s",
+	"item.jaopca.oritech_small_clumps": "Pequeno Agregado de %s",
+	"item.jaopca.oritech_gems": "Gema de %s",
+
 	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

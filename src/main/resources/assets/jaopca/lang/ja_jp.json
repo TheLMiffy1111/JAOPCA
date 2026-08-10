@@ -10,6 +10,10 @@
 	"fluid_type.jaopca.molten": "熔融%s",
 	"item.jaopca.molten": "熔融%s入りバケツ",
 
+	"item.jaopca.oritech_clumps": "%sクランプ",
+	"item.jaopca.oritech_small_clumps": "小さい%sクランプ",
+	"item.jaopca.oritech_gems": "%sジェム",
+
 	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

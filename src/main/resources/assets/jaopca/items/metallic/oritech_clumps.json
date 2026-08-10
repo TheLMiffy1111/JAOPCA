@@ -1,0 +1,11 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"model": "jaopca:item/metallic/oritech_clumps",
+		"tints": [
+			{
+				"type": "jaopca:material_form"
+			}
+		]
+	}
+}
