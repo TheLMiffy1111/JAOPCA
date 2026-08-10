@@ -82,9 +82,10 @@ public class RefineryRecipeSerializer implements IRecipeSerializer {
 		}
 		FluidStack secondFluidStack = MiscHelper.INSTANCE.getFluidStack(secondFluidOutput, secondFluidOutputAmount);
 		FluidStack thirdFluidStack = MiscHelper.INSTANCE.getFluidStack(thirdFluidOutput, thirdFluidOutputAmount);
+		List<Ingredient> inputs = ing == null ? List.of() : List.of(ing);
 		List<ItemStack> results = stack.isEmpty() ? List.of() : List.of(stack);
 		List<FluidStack> fluidResults = thirdFluidStack.isEmpty() ? secondFluidStack.isEmpty() ? fluidStack.isEmpty() ? List.of() : List.of(fluidStack) : List.of(fluidStack, secondFluidStack) : List.of(fluidStack, secondFluidStack, thirdFluidStack);
-		OritechRecipe recipe = new OritechRecipe(time, List.of(ing), results, RecipeContent.REFINERY, fluidIng, Lists.transform(fluidResults, FluidStackHooksForge::fromForge));
+		OritechRecipe recipe = new OritechRecipe(time, inputs, results, RecipeContent.REFINERY, fluidIng, Lists.transform(fluidResults, FluidStackHooksForge::fromForge));
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

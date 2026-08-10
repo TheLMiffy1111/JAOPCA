@@ -365,9 +365,9 @@ dependencies {
 	implementation("com.klikli_dev:occultism-1.21.1-neoforge:1.223.0") {transitive = false}
 
 	// Oritech
-	implementation "earth.terrarium.athena:athena-neoforge-1.21:4.0.6"
+	implementation "earth.terrarium.athena:athena-neoforge-1.21.1:4.0.6"
 	implementation("io.wispforest:owo-lib-neoforge:0.12.15.1-beta.6+1.21") {transitive = false}
-	implementation "curse.maven:oritech-1030830:8295566"
+	implementation "curse.maven:oritech-1030830:8556549"
 
 	// Railcraft Reborn
 	implementation "curse.maven:railcraft-reborn-901491:7393678"

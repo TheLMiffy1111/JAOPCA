@@ -67,8 +67,9 @@ public class CentrifugeFluidRecipeSerializer implements IRecipeSerializer {
 		if(stack.isEmpty() && secondStack.isEmpty() && fluidStack.isEmpty()) {
 			throw new IllegalArgumentException("Empty outputs in recipe "+key+": "+output+", "+secondOutput+", "+fluidOutput);
 		}
+		List<Ingredient> inputs = ing == null ? List.of() : List.of(ing);
 		List<ItemStack> results = secondStack.isEmpty() ? stack.isEmpty() ? List.of() : List.of(stack) : List.of(stack, secondStack);
-		OritechRecipe recipe = new OritechRecipe(time, List.of(ing), results, RecipeContent.CENTRIFUGE_FLUID, fluidIng, FluidStackHooksForge.fromForge(fluidStack));
+		OritechRecipe recipe = new OritechRecipe(time, inputs, results, RecipeContent.CENTRIFUGE_FLUID, fluidIng, FluidStackHooksForge.fromForge(fluidStack));
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }
