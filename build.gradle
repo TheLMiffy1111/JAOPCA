@@ -222,7 +222,7 @@ dependencies {
 	modImplementation("me.shedaniel:architectury-forge:1.32.68") {transitive = false}
 
 	// CraftTweaker
-	modImplementation "com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.533"
+	modImplementation "com.blamejared.crafttweaker:CraftTweaker-1.16.5:7.1.2.534"
 
 	// KubeJS
 	implementation "curse.maven:rhino-416294:3525704"
