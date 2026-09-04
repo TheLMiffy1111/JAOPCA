@@ -319,7 +319,7 @@ dependencies {
 	// QMD
 	modImplementation "curse.maven:nuclearcraft-overhauled-336895:8197222"
 	modImplementation "curse.maven:nco-java-legacy-lib-1032769:5414463"
-	modImplementation "curse.maven:qmd-362056:6098453"
+	modImplementation "curse.maven:qmd-362056:8097146"
 
 	// Thaumcraft
 	modImplementation "curse.maven:thaumcraft-223628:2629023"
