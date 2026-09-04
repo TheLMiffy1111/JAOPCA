@@ -31,7 +31,7 @@ import thelm.jaopca.utils.MiscHelper;
 public class NeoVitaeModule implements IModule {
 
 	private static final Set<String> BLACKLIST = new TreeSet<>(List.of(
-			"copper", "gold", "hellforged", "iron", "netherite_scrap"));
+			"amethyst", "coal", "copper", "diamond", "emerald", "gold", "hellforged", "iron", "lapis", "netherite_scrap", "quartz"));
 
 	private final IForm fragmentForm = ApiImpl.INSTANCE.newForm(this, "neovitae_fragments", ItemFormType.INSTANCE).
 			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("neovitae:fragments").setDefaultMaterialBlacklist(BLACKLIST);
@@ -58,7 +58,7 @@ public class NeoVitaeModule implements IModule {
 
 	@Override
 	public Set<MaterialType> getMaterialTypes() {
-		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY);
+		return EnumSet.of(MaterialType.INGOT, MaterialType.INGOT_LEGACY, MaterialType.GEM, MaterialType.CRYSTAL);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class NeoVitaeModule implements IModule {
 				helper.registerAthanorRecipe(
 						miscHelper.getRecipeKey("neovitae.ore_to_fragment", material.getName()),
 						oreLocation, 1, cuttingFluidLocation, new Object[] {
-								fragmentInfo, 3,
+								fragmentInfo, material.getType().isIngot() ? 3 : 5,
 						}, Map.of(), true);
 			}
 

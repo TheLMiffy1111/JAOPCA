@@ -1,0 +1,11 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"model": "jaopca:item/crystal/neovitae_fragments",
+		"tints": [
+			{
+				"type": "jaopca:material_form"
+			}
+		]
+	}
+}
