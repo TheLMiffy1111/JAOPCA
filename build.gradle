@@ -302,8 +302,8 @@ dependencies {
 	modImplementation "curse.maven:cyclic-239286:5259008"
 
 	// Electrodynamics
-	modImplementation "curse.maven:voltaic-api-1237904:6791633"
-	modImplementation "curse.maven:electrodynamics-316867:6792235"
+	modImplementation "curse.maven:voltaic-api-1237904:8741153"
+	modImplementation "curse.maven:electrodynamics-316867:8748836"
 
 	// Energized Power
 	modImplementation "curse.maven:energized-power-782147:6364049"
@@ -314,7 +314,7 @@ dependencies {
 	modImplementation "curse.maven:factorium-583423:4100713"
 
 	// FTB Industrial Contraptions
-	modImplementation("dev.ftb.mods:ftb-library-forge:1902.4.1-build.236") {transitive = false}
+	modImplementation("dev.ftb.mods:ftb-library-forge:1902.4.2-build.701") {transitive = false}
 	modImplementation("dev.ftb.mods:ftb-industrial-contraptions:1900.1.7-build.221") {transitive = false}
 
 	// IC2 Classic
