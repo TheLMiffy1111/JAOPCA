@@ -279,7 +279,7 @@ dependencies {
 
 	// Electrodynamics
 	modImplementation "curse.maven:voltaic-api-1237904:6791630"
-	modImplementation "curse.maven:electrodynamics-316867:6792226"
+	modImplementation "curse.maven:electrodynamics-316867:8431145"
 
 	// Factorium
 	implementation("com.kotori316:scalablecatsforce:2.13.10-build-12:with-library") {transitive = false}
@@ -287,7 +287,7 @@ dependencies {
 	modImplementation "curse.maven:factorium-583423:3836067"
 
 	// FTB Industrial Contraptions
-	modImplementation("dev.ftb.mods:ftb-library-forge:1802.3.11-build.177") {transitive = false}
+	modImplementation("dev.ftb.mods:ftb-library-forge:1802.3.12-build.726") {transitive = false}
 	modImplementation("dev.ftb.mods:ftb-industrial-contraptions:1802.1.6-build.220") {transitive = false}
 
 	// Futurepack
