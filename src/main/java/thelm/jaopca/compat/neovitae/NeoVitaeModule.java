@@ -34,9 +34,11 @@ public class NeoVitaeModule implements IModule {
 			"amethyst", "coal", "copper", "diamond", "emerald", "gold", "hellforged", "iron", "lapis", "netherite_scrap", "quartz"));
 
 	private final IForm fragmentForm = ApiImpl.INSTANCE.newForm(this, "neovitae_fragments", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("neovitae:fragments").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY, MaterialType.GEM, MaterialType.CRYSTAL).
+			setSecondaryName("neovitae:fragments").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IForm gravelForm = ApiImpl.INSTANCE.newForm(this, "neovitae_gravels", ItemFormType.INSTANCE).
-			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY).setSecondaryName("neovitae:gravels").setDefaultMaterialBlacklist(BLACKLIST);
+			setMaterialTypes(MaterialType.INGOT, MaterialType.INGOT_LEGACY, MaterialType.GEM, MaterialType.CRYSTAL).
+			setSecondaryName("neovitae:gravels").setDefaultMaterialBlacklist(BLACKLIST);
 	private final IFormRequest formRequest = ApiImpl.INSTANCE.newFormRequest(this, fragmentForm, gravelForm).setGrouped(true);
 
 	@Override
@@ -105,17 +107,17 @@ public class NeoVitaeModule implements IModule {
 			}
 
 			helper.registerAthanorRecipe(
-					miscHelper.getRecipeKey("neovitae.fragment_to_gravel", material.getName()),
+					miscHelper.getRecipeKey("neovitae.fragment_to_gravel_athanor", material.getName()),
 					fragmentLocation, 1, resonatorLocation, new Object[] {
 							gravelInfo, 1,
 							corruptedTinyDust, 1, 0.5D,
 					}, Map.of(), false);
 
 			helper.registerAlchemyTableRecipe(
-					miscHelper.getRecipeKey("neovitae.fragment_to_dust", material.getName()),
+					miscHelper.getRecipeKey("neovitae.fragment_to_gravel_corrupted", material.getName()),
 					new Object[] {
 							fragmentLocation, corruptedDust,
-					}, dustLocation, 2, 200, 50, 3);
+					}, gravelInfo, 2, 200, 50, 3);
 
 			helper.registerAthanorRecipe(
 					miscHelper.getRecipeKey("neovitae.gravel_to_dust", material.getName()),
