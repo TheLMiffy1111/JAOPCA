@@ -278,10 +278,10 @@ dependencies {
 		officialMojangMappings()
 		parchment "org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip"
 	}
-	forge "net.minecraftforge:forge:1.20.1-47.4.20"
+	forge "net.minecraftforge:forge:1.20.1-47.4.23"
 
 	// Common
-	modImplementation("mezz.jei:jei-1.20.1-forge:15.20.0.130") {transitive = false}
+	modImplementation("mezz.jei:jei-1.20.1-forge:15.49.0.193") {transitive = false}
 	modImplementation "com.tterrag.registrate:Registrate:MC1.20-1.3.11"
 	modImplementation "top.theillusivec4.curios:curios-forge:5.14.1+1.20.1"
 	forgeRuntimeLibrary "com.eliotlash.mclib:mclib:20"
@@ -310,7 +310,7 @@ dependencies {
 	modImplementation "curse.maven:actually-subtractions-1083685:7656648"
 
 	// Blood Magic
-	modImplementation "curse.maven:blood-magic-224791:7956981"
+	modImplementation "curse.maven:blood-magic-224791:8516586"
 
 	// Create
 	modImplementation "com.jozufozu.flywheel:flywheel-forge-1.20.1:0.6.11-13"
@@ -324,22 +324,22 @@ dependencies {
 
 	// Crossroads
 	modImplementation "curse.maven:essentials-293752:4640300"
-	modImplementation "curse.maven:crossroads-mc-250231:7708522"
+	modImplementation "curse.maven:crossroads-mc-250231:5208926" // older version for Create 0.5
 
 	// Cyclic
-	modImplementation "curse.maven:flib-661261:8309035"
+	modImplementation "curse.maven:flib-661261:8070669"
 	modImplementation "curse.maven:cyclic-239286:8089280"
 
 	// Electrodynamics
-	modImplementation "curse.maven:voltaic-api-1237904:8241683"
-	modImplementation "curse.maven:electrodynamics-316867:8244467"
+	modImplementation "curse.maven:voltaic-api-1237904:8741143"
+	modImplementation "curse.maven:electrodynamics-316867:8748841"
 
 	// Embers Rekindled
 	modImplementation "curse.maven:embers-rekindled-300777:7446478"
 
 	// Ender IO
 	implementation "dev.gigaherz.graph:GraphLib3:3.0.5"
-	modImplementation "com.enderio:EnderIO:1.20.1-6.2.18-beta"
+	modImplementation "com.enderio:EnderIO:1.20.1-6.2.10-beta" // older version for Create 0.5
 
 	// Energized Power
 	modImplementation "curse.maven:energized-power-782147:8110004"
@@ -355,13 +355,13 @@ dependencies {
 	// Integrated Dynamics
 	modImplementation "curse.maven:cyclops-core-232758:8006236"
 	modImplementation "curse.maven:common-capabilities-247007:7229322"
-	modImplementation "curse.maven:integrated-dynamics-236307:8168402"
+	modImplementation "curse.maven:integrated-dynamics-236307:8725844"
 
 	// Mekanism
 	modImplementation "mekanism:Mekanism:1.20.1-10.4.16.80"
 
 	// NuclearCraft: Neoteric
-	modImplementation "curse.maven:nuclearcraft-neoteric-840010:8357827"
+	modImplementation "curse.maven:nuclearcraft-neoteric-840010:7698382" // older version for Create 0.5
 
 	// Occultism
 	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-1.20.1:1.15"
@@ -378,7 +378,7 @@ dependencies {
 	modImplementation "com.teamcofh:thermal_integration:1.20.1-11.0.1.27"
 
 	// Theurgy
-	modImplementation("com.klikli_dev:theurgy-1.20.1:1.28.0") {transitive = false}
+	modImplementation("com.klikli_dev:theurgy-1.20.1:1.30.0") {transitive = false}
 
 	// Tinkers' Construct
 	modImplementation "slimeknights.mantle:Mantle:1.20.1-1.11.104"
@@ -399,7 +399,7 @@ dependencies {
 	// Performance
 	modImplementation "curse.maven:yeetusexperimentus-635427:4680832"
 	implementation "io.github.llamalad7:mixinextras-forge:0.5.0"
-	modImplementation "curse.maven:modernfix-790626:8335833"
+	modImplementation "curse.maven:modernfix-790626:8774721"
 	modImplementation "curse.maven:ferritecore-429235:4810975"
 }
 
