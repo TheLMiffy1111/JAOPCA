@@ -208,7 +208,7 @@ dependencies {
 
 	// Common
 	modImplementation("com.github.GTNewHorizons:CodeChickenCore:1.4.16") {transitive = false}
-	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.8.111-GTNH") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:NotEnoughItems:2.8.114-GTNH") {transitive = false}
 	modImplementation "curse.maven:nei-integration-225251:2282522"
 	modImplementation "curse.maven:baubles-227083:2224857"
 
@@ -300,7 +300,7 @@ dependencies {
 	modImplementation("com.github.GTNewHorizons:TCNEIAdditions:1.5.4") {transitive = false}
 
 	// Performance
-	modImplementation("com.github.GTNewHorizons:GTNHLib:0.11.23") {transitive = false}
+	modImplementation("com.github.GTNewHorizons:GTNHLib:0.11.44") {transitive = false}
 	modImplementation("com.github.GTNewHorizons:NotEnoughIds:2.1.11") {transitive = false}
 	modImplementation "curse.maven:archaicfix-677782:8125364"
 }
