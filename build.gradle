@@ -322,8 +322,10 @@ def curseforgeDependencies = [
 	"energized-power",
 	"integrated-dynamics",
 	"json-things",
+	"neovitae",
 	"occultism",
 	"oritech",
+	"railcraft-reborn",
 	"theurgy"
 ]
 
@@ -331,8 +333,10 @@ def modrinthDependencies = [
 	"enderio",
 	"energized-power",
 	"integrated-dynamics",
+	"neovitae",
 	"occultism",
 	"oritech",
+	"railcraft-reborn",
 	"theurgy"
 ]
 
