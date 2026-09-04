@@ -113,6 +113,26 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
+				url = "https://maven.ftb.dev/releases/"
+			}
+		}
+		filter {
+			includeGroup "dev.ftb.mods"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				url = "https://maven.breakinblocks.com/releases/"
+			}
+		}
+		filter {
+			includeGroup "com.breakinblocks.neovitae"
+		}
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
 				url = "https://cursemaven.com/"
 			}
 		}
@@ -189,15 +209,15 @@ loom {
 dependencies {
 	// Minecraft
 	minecraft "com.mojang:minecraft:26.1.2"
-	forgeUserdev "net.neoforged:neoforge:26.1.2.94:userdev"
+	forgeUserdev "net.neoforged:neoforge:26.1.2.100:userdev"
 
 	// Common
-	implementation("mezz.jei:jei-26.1.2-neoforge:29.6.2.31") {transitive = false}
+	implementation("mezz.jei:jei-26.1.2-neoforge:29.35.0.94") {transitive = false}
 	implementation "top.theillusivec4.curios:curios-neoforge:15.0.0-beta.2+26.1.2"
 	implementation("com.geckolib:geckolib-neoforge-26.1.2:5.5.1") {transitive = false}
 	implementation "vazkii.patchouli:patchouli-neoforge:26.1-94-SNAPSHOT"
-	implementation "org.appliedenergistics:guideme:26.1.11-beta"
-	implementation("com.klikli_dev:modonomicon-26.1.2-neoforge:1.147.0") {transitive = false}
+	implementation "org.appliedenergistics:guideme:26.1.12-beta"
+	implementation("com.klikli_dev:modonomicon-26.1.2-neoforge:2.5.0") {transitive = false}
 	implementation "dev.architectury:architectury-neoforge:20.0.4"
 
 	// Json Things
@@ -207,22 +227,31 @@ dependencies {
 	implementation "com.enderio:enderio:9.0.5-alpha"
 
 	// Energized Power
-	implementation "curse.maven:energized-power-782147:8188404"
+	implementation "curse.maven:energized-power-782147:8610545"
+
+	// FTB Industrial Contraptions
+	implementation("dev.ftb.mods:ftb-industrial-contraptions:26.1.2.10") {transitive = false}
 
 	// Integrated Dynamics
 	implementation "curse.maven:cyclops-core-232758:8126812"
 	implementation "curse.maven:common-capabilities-247007:8102778"
 	implementation "curse.maven:integrated-dynamics-236307:8168412"
+	
+	// Neo Vitae
+	implementation "com.breakinblocks.neovitae:neovitae:26.1.2-1.1.18"
 
 	// Occultism
 	implementation("com.klikli_dev:occultism-26.1.2-neoforge:1.237.0") {transitive = false}
 
 	// Oritech
 	implementation "earth.terrarium.athena:athena-neoforge-26.1:4.7.3"
-	implementation "curse.maven:oritech-1030830:8571095"
+	implementation "curse.maven:oritech-1030830:8780393"
+
+	// Railcraft Reborn
+	implementation "curse.maven:railcraft-reborn-901491:8671915"
 
 	// Theurgy
-	implementation("com.klikli_dev:theurgy-26.1.2-neoforge:1.109.0") {transitive = false}
+	implementation("com.klikli_dev:theurgy-26.1.2-neoforge:1.114.0") {transitive = false}
 
 	// Testing
 	implementation "curse.maven:ato-405593:8023670"
@@ -230,7 +259,7 @@ dependencies {
 
 	// Performance
 	implementation "curse.maven:yeetusexperimentus-635427:7830957"
-	implementation "curse.maven:modernfix-790626:8099992"
+	implementation "curse.maven:modernfix-790626:8774761"
 	implementation "curse.maven:ferritecore-429235:7806039"
 }
 
