@@ -10,6 +10,9 @@
 	"fluid_type.jaopca.molten": "Molten %s",
 	"item.jaopca.molten": "Molten %s Bucket",
 
+	"item.jaopca.neovitae_gravels": "%s Gravel",
+	"item.jaopca.neovitae_fragments": "%s Fragment",
+
 	"item.jaopca.oritech_clumps": "%s Clump",
 	"item.jaopca.oritech_small_clumps": "Small %s Clump",
 	"item.jaopca.oritech_gems": "%s Gem",

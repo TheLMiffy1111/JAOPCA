@@ -27,16 +27,16 @@ public class OritechCompatModule implements IModule {
 	private static final Set<String> PULVERIZER_DUST_BLACKLIST = new TreeSet<>(List.of(
 			"adamant", "biosteel", "coal", "copper", "duratium", "electrum", "ender_pearl", "energite",
 			"gold", "iron", "nickel", "platinum", "quartz", "steel"));
-	private static final Set<String> GRINDER_DUST_BLACKLIST = new TreeSet<>(List.of(
+	private static final Set<String> FRAGMENT_FORGE_DUST_BLACKLIST = new TreeSet<>(List.of(
 			"adamant", "biosteel", "coal", "copper", "duratium", "electrum", "ender_pearl", "energite",
 			"gold", "iron", "nickel", "platinum", "quartz", "steel"));
 	private static Set<String> configPulverizerToDustBlacklist = new TreeSet<>();
-	private static Set<String> configGrinderToDustBlacklist = new TreeSet<>();
+	private static Set<String> configFragmentForgeToDustBlacklist = new TreeSet<>();
 
 	static {
 		if(ModList.get().isLoaded("energizedpower")) {
 			Collections.addAll(PULVERIZER_DUST_BLACKLIST, "tin");
-			Collections.addAll(GRINDER_DUST_BLACKLIST, "tin");
+			Collections.addAll(FRAGMENT_FORGE_DUST_BLACKLIST, "tin");
 		}
 		if(ModList.get().isLoaded("techreborn")) {
 			Collections.addAll(PULVERIZER_DUST_BLACKLIST, "aluminum", "aluminium", "brass", "bronze", "chromium",
@@ -62,9 +62,9 @@ public class OritechCompatModule implements IModule {
 						helper.configMaterialPredicate(), "The materials that should not have pulverizer to dust recipes added."),
 				configPulverizerToDustBlacklist);
 		helper.caclulateMaterialSet(
-				config.getDefinedStringList("recipes.grinderToDustMaterialBlacklist", new ArrayList<>(),
+				config.getDefinedStringList("recipes.fragmentForgeToDustMaterialBlacklist", new ArrayList<>(),
 						helper.configMaterialPredicate(), "The materials that should not have fragment forge to dust recipes added."),
-				configGrinderToDustBlacklist);
+				configFragmentForgeToDustBlacklist);
 	}
 
 	@Override
@@ -85,12 +85,12 @@ public class OritechCompatModule implements IModule {
 							materialLocation, dustLocation, 1, 200);
 				}
 			}
-			if(!type.isDust() && !GRINDER_DUST_BLACKLIST.contains(name) && !configGrinderToDustBlacklist.contains(name)) {
+			if(!type.isDust() && !FRAGMENT_FORGE_DUST_BLACKLIST.contains(name) && !configFragmentForgeToDustBlacklist.contains(name)) {
 				Identifier materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
 				Identifier dustLocation = miscHelper.getTagLocation("dusts", name);
 				if(itemTags.contains(dustLocation)) {
-					helper.registerGrinderRecipe(
-							miscHelper.getRecipeKey("oritech.material_to_dust_grinder", name),
+					helper.registerFragmentForgeRecipe(
+							miscHelper.getRecipeKey("oritech.material_to_dust_fragment_forge", name),
 							materialLocation, dustLocation, 1, 140);
 				}
 			}

@@ -15,7 +15,7 @@ import thelm.jaopca.compat.oritech.recipes.AtomicForgeRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.CentrifugeFluidRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.CentrifugeRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.FoundryRecipeSerializer;
-import thelm.jaopca.compat.oritech.recipes.GrinderRecipeSerializer;
+import thelm.jaopca.compat.oritech.recipes.FragmentForgeRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.PulverizerRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.RefineryRecipeSerializer;
 import thelm.jaopca.utils.ApiImpl;
@@ -35,16 +35,16 @@ public class OritechHelper {
 		return ApiImpl.INSTANCE.registerRecipe(key, new PulverizerRecipeSerializer(key, input, output, outputCount, time));
 	}
 
-	public boolean registerGrinderRecipe(Identifier key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, Object thirdOutput, int thirdOutputCount, int time) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new GrinderRecipeSerializer(key, input, output, outputCount, secondOutput, secondOutputCount, thirdOutput, thirdOutputCount, time));
+	public boolean registerFragmentForgeRecipe(Identifier key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, Object thirdOutput, int thirdOutputCount, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new FragmentForgeRecipeSerializer(key, input, output, outputCount, secondOutput, secondOutputCount, thirdOutput, thirdOutputCount, time));
 	}
 
-	public boolean registerGrinderRecipe(Identifier key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, int time) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new GrinderRecipeSerializer(key, input, output, outputCount, secondOutput, secondOutputCount, time));
+	public boolean registerFragmentForgeRecipe(Identifier key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new FragmentForgeRecipeSerializer(key, input, output, outputCount, secondOutput, secondOutputCount, time));
 	}
 
-	public boolean registerGrinderRecipe(Identifier key, Object input, Object output, int outputCount, int time) {
-		return ApiImpl.INSTANCE.registerRecipe(key, new GrinderRecipeSerializer(key, input, output, outputCount, time));
+	public boolean registerFragmentForgeRecipe(Identifier key, Object input, Object output, int outputCount, int time) {
+		return ApiImpl.INSTANCE.registerRecipe(key, new FragmentForgeRecipeSerializer(key, input, output, outputCount, time));
 	}
 
 	public boolean registerCentrifugeRecipe(Identifier key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, int time) {

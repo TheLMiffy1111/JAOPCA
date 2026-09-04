@@ -158,24 +158,24 @@ public class OritechModule implements IModule {
 				default -> 1;
 				};
 				if(material.getType() == MaterialType.INGOT) {
-					helper.registerGrinderRecipe(
+					helper.registerFragmentForgeRecipe(
 							miscHelper.getRecipeKey("oritech.raw_material_to_clump", material.getName()),
 							rawMaterialLocation, clumpInfo, 1, smallClumpInfo, 3, extraLocation, extraCount, 140);
 				}
 				else {
-					helper.registerGrinderRecipe(
+					helper.registerFragmentForgeRecipe(
 							miscHelper.getRecipeKey("oritech.ore_to_clump", material.getName()),
 							oreLocation, clumpInfo, 1, smallClumpInfo, 3, extraLocation, extraCount, 140);
 				}
 			}
 			else {
 				if(material.getType() == MaterialType.INGOT) {
-					helper.registerGrinderRecipe(
+					helper.registerFragmentForgeRecipe(
 							miscHelper.getRecipeKey("oritech.raw_material_to_clump", material.getName()),
 							rawMaterialLocation, clumpInfo, 1, smallClumpInfo, 3, 140);
 				}
 				else {
-					helper.registerGrinderRecipe(
+					helper.registerFragmentForgeRecipe(
 							miscHelper.getRecipeKey("oritech.ore_to_clump", material.getName()),
 							oreLocation, clumpInfo, 1, smallClumpInfo, 3, 140);
 				}
@@ -247,13 +247,13 @@ public class OritechModule implements IModule {
 					default -> "dusts";
 					};
 					Identifier extraLocation = miscHelper.getTagLocation(extraForm, extraMaterial.getName());
-					helper.registerGrinderRecipe(
-							miscHelper.getRecipeKey("oritech.ore_to_raw_material_grinder", material.getName()),
+					helper.registerFragmentForgeRecipe(
+							miscHelper.getRecipeKey("oritech.ore_to_raw_material_fragment_forge", material.getName()),
 							oreLocation, dustLocation, 2, extraLocation, 1, 140);
 				}
 				else {
-					helper.registerGrinderRecipe(
-							miscHelper.getRecipeKey("oritech.ore_to_raw_material_grinder", material.getName()),
+					helper.registerFragmentForgeRecipe(
+							miscHelper.getRecipeKey("oritech.ore_to_raw_material_fragment_forge", material.getName()),
 							oreLocation, dustLocation, 2, 140);
 				}
 			}

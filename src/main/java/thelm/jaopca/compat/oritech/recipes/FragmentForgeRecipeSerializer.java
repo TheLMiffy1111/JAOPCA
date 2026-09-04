@@ -18,7 +18,7 @@ import rearth.oritech.init.recipes.RecipeContent;
 import thelm.jaopca.api.recipes.IRecipeSerializer;
 import thelm.jaopca.utils.MiscHelper;
 
-public class GrinderRecipeSerializer implements IRecipeSerializer {
+public class FragmentForgeRecipeSerializer implements IRecipeSerializer {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -32,15 +32,15 @@ public class GrinderRecipeSerializer implements IRecipeSerializer {
 	public final int thirdOutputCount;
 	public final int time;
 
-	public GrinderRecipeSerializer(Identifier key, Object input, Object output, int outputCount, int time) {
+	public FragmentForgeRecipeSerializer(Identifier key, Object input, Object output, int outputCount, int time) {
 		this(key, input, output, outputCount, ItemStack.EMPTY, 0, ItemStack.EMPTY, 0, time);
 	}
 
-	public GrinderRecipeSerializer(Identifier key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, int time) {
+	public FragmentForgeRecipeSerializer(Identifier key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, int time) {
 		this(key, input, output, outputCount, secondOutput, secondOutputCount, ItemStack.EMPTY, 0, time);
 	}
 
-	public GrinderRecipeSerializer(Identifier key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, Object thirdOutput, int thirdOutputCount, int time) {
+	public FragmentForgeRecipeSerializer(Identifier key, Object input, Object output, int outputCount, Object secondOutput, int secondOutputCount, Object thirdOutput, int thirdOutputCount, int time) {
 		this.key = Objects.requireNonNull(key);
 		this.input = input;
 		this.output = output;
@@ -65,7 +65,7 @@ public class GrinderRecipeSerializer implements IRecipeSerializer {
 		ItemStackTemplate secondStack = MiscHelper.INSTANCE.getItemStackTemplate(secondOutput, secondOutputCount);
 		ItemStackTemplate thirdStack = MiscHelper.INSTANCE.getItemStackTemplate(thirdOutput, thirdOutputCount);
 		List<ItemStackTemplate> results = thirdStack == null ? secondStack == null ? List.of(stack) : List.of(stack, secondStack) : List.of(stack, secondStack, thirdStack);
-		OritechRecipe recipe = new OritechRecipe(List.of(ing), results, Optional.empty(), List.of(), time, RecipeContent.GRINDER.get());
+		OritechRecipe recipe = new OritechRecipe(List.of(ing), results, Optional.empty(), List.of(), time, RecipeContent.FRAGMENT_FORGE.get());
 		return MiscHelper.INSTANCE.serializeRecipe(recipe);
 	}
 }

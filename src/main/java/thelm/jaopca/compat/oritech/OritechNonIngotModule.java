@@ -56,8 +56,8 @@ public class OritechNonIngotModule implements IModule {
 			helper.registerPulverizerRecipe(
 					miscHelper.getRecipeKey("oritech.ore_to_material_pulverizer", material.getName()),
 					oreLocation, materialLocation, isCrystal ? 1 : 3, 200);
-			helper.registerGrinderRecipe(
-					miscHelper.getRecipeKey("oritech.ore_to_material_grinder", material.getName()),
+			helper.registerFragmentForgeRecipe(
+					miscHelper.getRecipeKey("oritech.ore_to_material_fragment_forge", material.getName()),
 					oreLocation, materialLocation, isCrystal ? 2 : 6, 140);
 		}
 	}

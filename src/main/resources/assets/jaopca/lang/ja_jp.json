@@ -10,6 +10,9 @@
 	"fluid_type.jaopca.molten": "熔融%s",
 	"item.jaopca.molten": "熔融%s入りバケツ",
 
+	"item.jaopca.neovitae_gravels": "%s Gravel",
+	"item.jaopca.neovitae_fragments": "%s Fragment",
+
 	"item.jaopca.oritech_clumps": "%sクランプ",
 	"item.jaopca.oritech_small_clumps": "小さい%sクランプ",
 	"item.jaopca.oritech_gems": "%sジェム",
