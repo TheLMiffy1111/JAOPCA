@@ -202,7 +202,7 @@ public class CreateMetallurgyCompatModule implements IModule {
 						if(itemTags.contains(rodLocation)) {
 							helper.registerMeltingRecipe(
 									new ResourceLocation("jaopca", "createmetallurgy.rod_to_molten."+name),
-									rodLocation, moltenLocation, (int)Math.floor(baseAmount/2F), 4, 20);
+									rodLocation, moltenLocation, (int)Math.floor(baseAmount/2F), 4, 1);
 						}
 					}
 					if(!MATERIAL_BLACKLIST.contains(name) && !configToMaterialBlacklist.contains(name)) {
