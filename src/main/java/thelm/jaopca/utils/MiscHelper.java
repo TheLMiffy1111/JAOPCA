@@ -276,7 +276,7 @@ public class MiscHelper implements IMiscHelper {
 			// We can't know what items the ingredient can have so assume all
 			BuiltInRegistries.ITEM.forEach(items::add);
 		}
-		default -> {}
+		case null, default -> {}
 		}
 		items.remove(Items.AIR);
 		return Pair.of(items.isEmpty() ? null : ing, items);
@@ -445,7 +445,7 @@ public class MiscHelper implements IMiscHelper {
 			// We can't know what fluids the ingredient can have so assume all
 			BuiltInRegistries.FLUID.forEach(fluids::add);
 		}
-		default -> {}
+		case null, default -> {}
 		}
 		fluids.remove(Fluids.EMPTY);
 		return Pair.of(fluids.isEmpty() ? null : ing, fluids);

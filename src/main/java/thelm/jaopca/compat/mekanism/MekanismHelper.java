@@ -197,7 +197,7 @@ public class MekanismHelper {
 			// We can't know what chemicales the ingredient can have so assume all
 			MekanismAPI.CHEMICAL_REGISTRY.forEach(chemicals::add);
 		}
-		default -> {}
+		case null, default -> {}
 		}
 		chemicals.remove(MekanismAPI.EMPTY_CHEMICAL);
 		return Pair.of(chemicals.isEmpty() ? null : ing, chemicals);

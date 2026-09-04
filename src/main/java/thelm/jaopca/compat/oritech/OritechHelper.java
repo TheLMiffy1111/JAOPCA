@@ -66,7 +66,7 @@ public class OritechHelper {
 				ing = ing.withContent(fluid.asFluid()).withAmount(amount);
 			}
 		}
-		default -> {}
+		case null, default -> {}
 		}
 		return ing;
 	}

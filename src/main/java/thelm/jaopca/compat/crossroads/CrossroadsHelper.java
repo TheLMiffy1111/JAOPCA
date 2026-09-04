@@ -131,7 +131,7 @@ public class CrossroadsHelper {
 			// We can't know what fluids the ingredient can have so assume all
 			BuiltInRegistries.FLUID.forEach(fluids::add);
 		}
-		default -> {}
+		case null, default -> {}
 		}
 		fluids.remove(Fluids.EMPTY);
 		return Pair.of(fluids.isEmpty() ? null : ing, fluids);

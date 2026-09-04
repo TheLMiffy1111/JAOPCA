@@ -90,27 +90,10 @@ public class ElectrodynamicsHelper {
 				fluids.add(stack.getFluid());
 			}
 		}
-		case FluidStack[] stacks -> {
-			List<FluidStack> nonEmpty = Arrays.stream(stacks).filter(s->!s.isEmpty()).toList();
-			if(!nonEmpty.isEmpty()) {
-				ing = new FluidIngredient(nonEmpty);
-				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
-			}
-		}
 		case Holder<?> holder -> {
 			if(holder.isBound() && holder.value() instanceof Fluid fluid && fluid != Fluids.EMPTY) {
 				ing = new FluidIngredient(fluid, amount);
 				fluids.add(fluid);
-			}
-		}
-		case @SuppressWarnings("rawtypes") Holder[] holders -> {
-			List<FluidStack> nonEmpty = Arrays.stream(holders).
-					filter(Holder::isBound).map(Holder::value).
-					filter(Fluid.class::isInstance).map(Fluid.class::cast).
-					filter(f->f != Fluids.EMPTY).map(f->new FluidStack(f, amount)).toList();
-			if(!nonEmpty.isEmpty()) {
-				ing = new FluidIngredient(nonEmpty);
-				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
 			}
 		}
 		case Fluid fluid -> {
@@ -119,24 +102,10 @@ public class ElectrodynamicsHelper {
 				fluids.add(fluid);
 			}
 		}
-		case Fluid[] fluidz -> {
-			List<FluidStack> nonEmpty = Arrays.stream(fluidz).filter(f->f != Fluids.EMPTY).map(f->new FluidStack(f, amount)).toList();
-			if(!nonEmpty.isEmpty()) {
-				ing = new FluidIngredient(nonEmpty);
-				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
-			}
-		}
 		case IFluidLike fluid -> {
 			if(fluid.asFluid() != Fluids.EMPTY) {
 				ing = new FluidIngredient(fluid.asFluid(), amount);
 				fluids.add(fluid.asFluid());
-			}
-		}
-		case IFluidLike[] fluidz -> {
-			List<FluidStack> nonEmpty = Arrays.stream(fluidz).map(IFluidLike::asFluid).filter(f->f != Fluids.EMPTY).map(f->new FluidStack(f, amount)).toList();
-			if(!nonEmpty.isEmpty()) {
-				ing = new FluidIngredient(nonEmpty);
-				nonEmpty.stream().map(FluidStack::getFluid).forEach(fluids::add);
 			}
 		}
 		case JsonElement json -> {
@@ -144,7 +113,7 @@ public class ElectrodynamicsHelper {
 			// We can't know what fluids the ingredient can have so assume all
 			BuiltInRegistries.FLUID.forEach(fluids::add);
 		}
-		default -> {}
+		case null, default -> {}
 		}
 		fluids.remove(Fluids.EMPTY);
 		return Pair.of(fluids.isEmpty() ? null : ing, fluids);
@@ -233,7 +202,7 @@ public class ElectrodynamicsHelper {
 			// We can't know what fluids the ingredient can have so assume all
 			VoltaicGases.GAS_REGISTRY.forEach(gases::add);
 		}
-		default -> {}
+		case null, default -> {}
 		}
 		gases.remove(VoltaicGases.EMPTY.get());
 		return Pair.of(gases.isEmpty() ? null : ing, gases);
