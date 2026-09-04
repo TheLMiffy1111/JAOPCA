@@ -3,4 +3,5 @@ Added NuclearCraft Neohaul support
 Added Embers Reignited support  
 Readded Create Metallurgy support  
 Readded Create Dreams & Desires support  
+Added Neo Vitae support  
 Updated Electrodynamics  
