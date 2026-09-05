@@ -1,16 +1,6 @@
 package thelm.jaopca.compat.oritech;
 
-import java.util.function.Supplier;
-
-import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
-import thelm.jaopca.api.fluids.IFluidLike;
-import thelm.jaopca.api.helpers.IMiscHelper;
 import thelm.jaopca.compat.oritech.recipes.AtomicForgeRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.CentrifugeFluidRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.CentrifugeRecipeSerializer;
@@ -19,7 +9,6 @@ import thelm.jaopca.compat.oritech.recipes.FragmentForgeRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.PulverizerRecipeSerializer;
 import thelm.jaopca.compat.oritech.recipes.RefineryRecipeSerializer;
 import thelm.jaopca.utils.ApiImpl;
-import thelm.jaopca.utils.MiscHelper;
 
 public class OritechHelper {
 

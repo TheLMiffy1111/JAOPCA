@@ -15,7 +15,6 @@ import com.google.gson.JsonElement;
 
 import mods.railcraft.world.item.crafting.RollingRecipe;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
