@@ -9,9 +9,6 @@ pluginManagement {
 			url = "https://maven.crystaelix.com/releases/"
 		}
 		maven {
-			url = "https://repo.codemc.io/repository/relativitymc/"
-		}
-		maven {
 			url = "https://maven.architectury.dev/"
 		}
 		maven {
