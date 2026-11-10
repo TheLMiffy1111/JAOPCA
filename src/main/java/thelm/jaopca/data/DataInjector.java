@@ -319,7 +319,7 @@ public class DataInjector {
 	}
 
 	public static <T> JsonElement serialize(Codec<T> codec, T value) {
-		return codec.encodeStart(JsonOps.INSTANCE, value).getOrThrow();
+		return MiscHelper.INSTANCE.serialize(codec, value);
 	}
 
 	public static JsonElement serializeTag(TagBuilder tagBuilder) {

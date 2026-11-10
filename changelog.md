@@ -1,3 +1,2 @@
-Added Neo Vitae support  
-Readded Railcraft Reborn support  
-Updated Oritech  
+Added Hephaestus Forge support  
+Added Thaumaturge support  

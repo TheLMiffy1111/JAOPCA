@@ -1,0 +1,11 @@
+{
+	"model": {
+		"type": "minecraft:model",
+		"model": "jaopca:item/metallic/thaumaturge_clusters",
+		"tints": [
+			{
+				"type": "jaopca:material_form"
+			}
+		]
+	}
+}

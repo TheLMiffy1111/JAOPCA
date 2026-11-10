@@ -29,6 +29,7 @@ repositories {
 			}
 		}
 		filter {
+			includeGroup "net.mezzdev.config"
 			includeGroup "mezz.jei"
 			includeGroup "com.blamejared.crafttweaker"
 			includeGroup "blusunrize.immersiveengineering"
@@ -171,7 +172,7 @@ def specVersion = "6"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "6.0.2.2"
+version = "6.0.3.3"
 
 def archivesName = "${modName}-${mcVersion}"
 base.archivesName = archivesName
@@ -212,7 +213,8 @@ dependencies {
 	neoForge "net.neoforged:neoforge:26.1.2.100"
 
 	// Common
-	implementation("mezz.jei:jei-26.1.2-neoforge:29.35.0.94") {transitive = false}
+	implementation("net.mezzdev.config:mezz_config-26.1.2-neoforge:0.7.1") {transitive = false}
+	implementation("mezz.jei:jei-26.1.2-neoforge:29.53.0.115") {transitive = false}
 	implementation "top.theillusivec4.curios:curios-neoforge:15.0.0-beta.2+26.1.2"
 	implementation("com.geckolib:geckolib-neoforge-26.1.2:5.5.1") {transitive = false}
 	implementation "vazkii.patchouli:patchouli-neoforge:26.1-94-SNAPSHOT"
@@ -232,6 +234,9 @@ dependencies {
 	// FTB Industrial Contraptions
 	implementation("dev.ftb.mods:ftb-industrial-contraptions:26.1.2.10") {transitive = false}
 
+	// Hephaestus Forge
+	implementation "curse.maven:hephaestus-forge-1542467:9415287"
+
 	// Integrated Dynamics
 	implementation "curse.maven:cyclops-core-232758:8126812"
 	implementation "curse.maven:common-capabilities-247007:8102778"
@@ -249,6 +254,10 @@ dependencies {
 
 	// Railcraft Reborn
 	implementation "curse.maven:railcraft-reborn-901491:8671915"
+
+	// Thaumaturge
+	implementation "curse.maven:lithostitched-936015:9170254"
+	implementation "curse.maven:thaumaturge-1628024:9428045"
 
 	// Theurgy
 	implementation("com.klikli_dev:theurgy-26.1.2-neoforge:1.114.0") {transitive = false}
@@ -320,12 +329,14 @@ publishing {
 def curseforgeDependencies = [
 	"ender-io",
 	"energized-power",
+	"hephaestus-forge",
 	"integrated-dynamics",
 	"json-things",
 	"neovitae",
 	"occultism",
 	"oritech",
 	"railcraft-reborn",
+	"thaumaturge",
 	"theurgy"
 ]
 
