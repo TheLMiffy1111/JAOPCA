@@ -48,6 +48,8 @@
 	"item.jaopca.oritech_small_clumps": "Small %s Clump",
 	"item.jaopca.oritech_gems": "%s Gem",
 
+	"item.jaopca.thaumaturge_clusters": "Native %s Cluster",
+
 	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

@@ -48,6 +48,8 @@
 	"item.jaopca.oritech_small_clumps": "小さい%sクランプ",
 	"item.jaopca.oritech_gems": "%sジェム",
 
+	"item.jaopca.thaumaturge_clusters": "自然%sクラスター",
+
 	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

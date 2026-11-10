@@ -48,6 +48,8 @@
 	"item.jaopca.oritech_small_clumps": "Küçük %s Tortu",
 	"item.jaopca.oritech_gems": "%s Değerli Taş",
 
+	"item.jaopca.thaumaturge_clusters": "Yerli %s Yumrusu",
+
 	"item.jaopca.theurgy_alchemical_sulfurs": "Alchemical Sulfur %s",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "Alchemical Sulfur crafted from %s %s %s."
 }

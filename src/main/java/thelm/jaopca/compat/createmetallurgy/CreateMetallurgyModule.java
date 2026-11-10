@@ -48,6 +48,7 @@ public class CreateMetallurgyModule implements IModule {
 		ImmutableSetMultimap.Builder<Integer, String> builder = ImmutableSetMultimap.builder();
 		builder.put(0, "dusts");
 		builder.put(0, "create");
+		builder.put(0, "molten");
 		return builder.build();
 	}
 

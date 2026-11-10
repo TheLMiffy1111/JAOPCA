@@ -48,6 +48,8 @@
 	"item.jaopca.oritech_small_clumps": "%s碎末",
 	"item.jaopca.oritech_gems": "%s晶石",
 
+	"item.jaopca.thaumaturge_clusters": "原生%s礦簇",
+
 	"item.jaopca.theurgy_alchemical_sulfurs": "%s奇蹟硫",
 	"item.jaopca.theurgy_alchemical_sulfurs.tooltip": "由 %s %s %s 製作的奇蹟硫。"
 }
