@@ -1,2 +1,1 @@
-Added Hephaestus Forge support  
-Added Thaumaturge support  
+Fix Hephaestus Forge block melting recipe  

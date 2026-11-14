@@ -312,11 +312,13 @@ public class HephaestusCompatModule implements IModule {
 								tempFunction, (isIngot ? 100 : 120));
 					}
 					if(!STORAGE_BLOCK_BLACKLIST.contains(name) && !configStorageBlockToMoltenBlacklist.contains(name)) {
-						Identifier materialLocation = miscHelper.getTagLocation(type.getFormName(), name);
-						helper.registerMeltingRecipe(
-								miscHelper.getRecipeKey("hephaestus.storage_block_to_molten", name),
-								materialLocation, null, 50, moltenLocation, baseAmount*(material.isSmallStorageBlock() ? 4 : 9),
-								tempFunction, (isIngot ? 200 : 240));
+						Identifier storageBlockLocation = miscHelper.getTagLocation("storage_blocks", name);
+						if(itemTags.contains(storageBlockLocation)) {
+							helper.registerMeltingRecipe(
+									miscHelper.getRecipeKey("hephaestus.storage_block_to_molten", name),
+									storageBlockLocation, null, 50, moltenLocation, baseAmount*(material.isSmallStorageBlock() ? 4 : 9),
+									tempFunction, (isIngot ? 200 : 240));
+						}
 					}
 					if(!NUGGET_BLACKLIST.contains(name) && !configNuggetToMoltenBlacklist.contains(name)) {
 						Identifier nuggetLocation = miscHelper.getTagLocation("nuggets", name);
