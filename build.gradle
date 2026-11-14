@@ -274,7 +274,7 @@ def specVersion = "5"
 def vendor = "thelm"
 
 group = "thelm.jaopca"
-version = "5.0.15.24"
+version = "5.0.15.25"
 
 def archivesName = "${modName}-${mcVersion}"
 base.archivesName = archivesName
@@ -328,7 +328,7 @@ dependencies {
 	neoForge "net.neoforged:neoforge:21.1.249"
 
 	// Common
-	implementation("net.mezzdev.config:mezz_config-1.21.1-neoforge:0.6.7") {transitive = false}
+	implementation("net.mezzdev.config:mezz_config-1.21.1-neoforge:0.7.1") {transitive = false}
 	implementation("mezz.jei:jei-1.21.1-neoforge:19.57.0.450") {transitive = false}
 	implementation "thelm.jeimodelbridge:JEIModelBridge:21.1.0"
 	implementation "top.theillusivec4.curios:curios-neoforge:9.5.1+1.21.1"
