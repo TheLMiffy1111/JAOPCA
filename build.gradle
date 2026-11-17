@@ -452,6 +452,9 @@ dependencies {
 	implementation "net.themcbrothers:useful-foundation:1.21-1.0.0"
 	implementation("net.themcbrothers:useful-machinery:1.21-1.0.0") {transitive = false}
 
+	// Voluminous Energy
+	implementation "curse.maven:voluminous-energy-416704:9658076"
+
 	// Testing
 	implementation "curse.maven:ato-405593:7825464"
 	implementation "curse.maven:allthemodium-364466:7974403"
@@ -544,7 +547,8 @@ def curseforgeDependencies = [
 	"techreborn",
 	"thaumaturge",
 	"theurgy",
-	"useful-machinery"
+	"useful-machinery",
+	"voluminous-energy"
 ]
 
 def modrinthDependencies = [
@@ -572,7 +576,8 @@ def modrinthDependencies = [
 	"railcraft-reborn",
 	"techreborn",
 	"theurgy",
-	"useful-machinery"
+	"useful-machinery",
+	"voluminous_energy"
 ]
 
 publishMods {
