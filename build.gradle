@@ -210,7 +210,7 @@ loom {
 dependencies {
 	// Minecraft
 	minecraft "com.mojang:minecraft:26.1.2"
-	neoForge "net.neoforged:neoforge:26.1.2.126"
+	neoForge "net.neoforged:neoforge:26.1.2.127"
 
 	// Common
 	implementation("net.mezzdev.config:mezz_config-26.1.2-neoforge:0.7.1") {transitive = false}
