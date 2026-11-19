@@ -210,7 +210,7 @@ loom {
 dependencies {
 	// Minecraft
 	minecraft "com.mojang:minecraft:26.1.2"
-	neoForge "net.neoforged:neoforge:26.1.2.100"
+	neoForge "net.neoforged:neoforge:26.1.2.127"
 
 	// Common
 	implementation("net.mezzdev.config:mezz_config-26.1.2-neoforge:0.7.1") {transitive = false}
@@ -261,6 +261,9 @@ dependencies {
 
 	// Theurgy
 	implementation("com.klikli_dev:theurgy-26.1.2-neoforge:1.114.0") {transitive = false}
+
+	// Voluminous Energy
+	implementation "curse.maven:voluminous-energy-416704:9658085"
 
 	// Testing
 	implementation "curse.maven:ato-405593:8023670"
@@ -337,7 +340,8 @@ def curseforgeDependencies = [
 	"oritech",
 	"railcraft-reborn",
 	"thaumaturge",
-	"theurgy"
+	"theurgy",
+	"voluminous-energy"
 ]
 
 def modrinthDependencies = [
@@ -348,7 +352,8 @@ def modrinthDependencies = [
 	"occultism",
 	"oritech",
 	"railcraft-reborn",
-	"theurgy"
+	"theurgy",
+	"voluminous_energy"
 ]
 
 publishMods {
